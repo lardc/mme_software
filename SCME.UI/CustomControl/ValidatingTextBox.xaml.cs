@@ -18,11 +18,28 @@ namespace SCME.UI.CustomControl
         private string m_OldText = string.Empty;
 
         public bool IsNumeric { get; set; }
-        public float Maximum { get; set; }
-        public float Minimum { get; set; }
+        //public float Maximum { get; set; }
+        //public float Minimum { get; set; }
         public bool IsFloat { get; set; }
-       
-       
+
+
+        public float Maximum
+        {
+            get { return (float)GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
+        }
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register(nameof(Maximum), typeof(float), typeof(ValidatingTextBox), new PropertyMetadata(0.0F));
+
+        public float Minimum
+        {
+            get { return (float)GetValue(MinimumProperty); }
+            set { SetValue(MinimumProperty, value); }
+        }
+        public static readonly DependencyProperty MinimumProperty =
+            DependencyProperty.Register(nameof(Minimum), typeof(float), typeof(ValidatingTextBox), new PropertyMetadata(0.0F));
+
+
 
         public ValidatingTextBox()
         {

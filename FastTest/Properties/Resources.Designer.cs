@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SCME.UI.Properties {
+namespace FastTest.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SCME.UI.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SCME.UI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FastTest.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -1119,16 +1119,6 @@ namespace SCME.UI.Properties {
         public static string PasswordIncorrect {
             get {
                 return ResourceManager.GetString("PasswordIncorrect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap PE_logo_1024 {
-            get {
-                object obj = ResourceManager.GetObject("PE_logo_1024", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

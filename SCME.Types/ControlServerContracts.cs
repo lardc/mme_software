@@ -57,7 +57,7 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu);
+        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]

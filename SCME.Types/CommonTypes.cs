@@ -268,6 +268,9 @@ namespace SCME.Types
             public int TimeoutSctu { get; set; }
 
             [DataMember]
+            public int TimeoutTOU { get; set; }
+
+            [DataMember]
             public bool IsATUEnabled { get; set; }
 
             [DataMember]

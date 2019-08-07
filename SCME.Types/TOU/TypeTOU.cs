@@ -45,8 +45,8 @@ namespace SCME.Types.TOU
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        public const ushort CurrentAmplitudeMin = 160;
-        public const ushort CurrentAmplitudeMax = 1250;
+        public static ushort CurrentAmplitudeMin { get; private set; } = 160;
+        public static ushort CurrentAmplitudeMax = 1250;
 
         private ushort m_CurrentAmplitude;
 
@@ -60,16 +60,20 @@ namespace SCME.Types.TOU
             set
             {
                 if (value >= CurrentAmplitudeMin && value <= CurrentAmplitudeMax)
-                    CurrentAmplitude = value;
+                    m_CurrentAmplitude = value;
                 else
                     throw new Exception("Недопустимое значение амплитуды тока(диапазон 160-1250)");
             }
         }
 
+        [DataMember]
+        public bool IsEnabled { get; set; }
+
         public TestParameters()
         {
+            IsEnabled = true;
             TestParametersType = TestParametersType.TOU;
-            CurrentAmplitude = 500;
+            CurrentAmplitude = (ushort)CurrentAmplitudeMin;
         }
 
         public object Clone()

@@ -234,9 +234,9 @@ namespace SCME.Types
 
         public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
-                          QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu)
+                          QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {
-            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu);
+            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
         }
 
         public bool StartHeating(int temperature)

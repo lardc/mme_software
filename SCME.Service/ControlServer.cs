@@ -115,9 +115,9 @@ namespace SCME.Service
             return m_IOMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp);
         }
 
-        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu)
+        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
-            return m_IOMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu);
+            return m_IOMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
         }
 
         void IExternalControl.ClearSafetyTrig()

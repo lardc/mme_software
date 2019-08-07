@@ -781,4 +781,16 @@
   <data name="TOU" xml:space="preserve">
     <value>TOU</value>
   </data>
+  <data name="Amperage" xml:space="preserve">
+    <value>Amperage</value>
+  </data>
+  <data name="ITM" xml:space="preserve">
+    <value>ITM</value>
+  </data>
+  <data name="TGD" xml:space="preserve">
+    <value>tGD</value>
+  </data>
+  <data name="TGT" xml:space="preserve">
+    <value>tGT</value>
+  </data>
 </root>

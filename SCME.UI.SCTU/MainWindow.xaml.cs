@@ -200,7 +200,8 @@ namespace SCME.UI
                 TimeoutClamp = Cache.Welcome.GetTimeout(ComplexParts.Clamping),
                 IsdVdtEnabled = false,
                 IsSctuEnabled = true,
-                TimeoutSctu = Cache.Welcome.GetTimeout(ComplexParts.Sctu)
+                TimeoutSctu = Cache.Welcome.GetTimeout(ComplexParts.Sctu),
+                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
             };
 
             if (!Equals(mainFrame.Content, Cache.Welcome))
