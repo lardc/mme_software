@@ -141,6 +141,9 @@
     <Compile Include="IO\FtdiLibrary.cs" />
     <Compile Include="IO\QueueWorker.cs" />
     <Compile Include="KeyboardLayouts.cs" />
+    <Compile Include="PagesTech\TOUPage.xaml.cs">
+      <DependentUpon>TOUPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PagesTech\ATUPage.xaml.cs">
       <DependentUpon>ATUPage.xaml</DependentUpon>
     </Compile>
@@ -252,6 +255,10 @@
     <Page Include="CustomControl\HardwareItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PagesTech\TOUPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PagesTech\ATUPage.xaml">
       <Generator>MSBuild:Compile</Generator>

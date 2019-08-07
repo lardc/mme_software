@@ -227,7 +227,9 @@ namespace SCME.UI
                 TimeoutRAC = Cache.Welcome.GetTimeout(ComplexParts.RAC),
                 IsRACEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.RAC) && Settings.Default.RACIsVisible,
                 TimeoutIH = Cache.Welcome.GetTimeout(ComplexParts.IH),
-                IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible
+                IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
+                IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
+
             };
 
             if (!Equals(mainFrame.Content, Cache.Welcome))

@@ -288,6 +288,13 @@ namespace SCME.Types
                                     dVdt.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
+        void TOUHandler(DeviceState State, TOU.TestResults Result);
+
+        [OperationContract(IsOneWay = true)]
+        void TOUNotificationHandler(TOU.HWWarningReason Warning, TOU.HWFaultReason Fault,
+                                    TOU.HWDisableReason Disable);
+
+        [OperationContract(IsOneWay = true)]
         void ATUHandler(DeviceState State, ATU.TestResults Result);
 
         [OperationContract(IsOneWay = true)]

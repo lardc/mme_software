@@ -190,6 +190,14 @@
                     </Grid>
                 </Button>
 
+                <Button CommandParameter="17" Name="btnTOU"
+                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}">
+                    <Grid Background="{StaticResource xRed1}">
+                        <Path Data="" />
+                        <Label Content="{x:Static res:Resources.TOU}" />
+                    </Grid>
+                </Button>
+
             </UniformGrid>
         </ScrollViewer>
         <Button Grid.Column="0" Grid.Row="1"

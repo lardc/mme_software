@@ -778,4 +778,7 @@
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
+  <data name="TOU" xml:space="preserve">
+    <value>TOU</value>
+  </data>
 </root>

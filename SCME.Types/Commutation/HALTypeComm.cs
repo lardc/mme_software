@@ -20,7 +20,9 @@ namespace SCME.Types.Commutation
         [EnumMember]
         ATU,
         [EnumMember]
-        RAC
+        RAC,
+        [EnumMember]
+        TOU
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

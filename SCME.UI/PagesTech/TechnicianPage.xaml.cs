@@ -28,6 +28,8 @@ namespace SCME.UI.PagesTech
             btnQrrTq.IsEnabled = Param.IsQrrTqEnabled;
             btnRAC.IsEnabled = Param.IsRACEnabled;
             btnIH.IsEnabled = Param.IsIHEnabled;
+            btnTOU.IsEnabled = Param.IsTOUEnabled;
+
         }
 
         private void Button_Click(object Sender, RoutedEventArgs E)
@@ -97,6 +99,10 @@ namespace SCME.UI.PagesTech
                 case 16:
                     Cache.IH = new IHPage();
                     page = Cache.IH;
+                    break;
+                case 17:
+                    Cache.TOU = new TOUPage();
+                    page = Cache.TOU;
                     break;
             }
 

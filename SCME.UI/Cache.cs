@@ -25,10 +25,12 @@ namespace SCME.UI
         private static ConsolePage ms_ConsolePage;
         private static ClampPage ms_ClampPage;
         private static DVdtPage ms_DVdtPage;
+        private static TOUPage ms_TOUPage;
         private static ATUPage ms_ATUPage;
         private static QrrTqPage ms_QrrTqPage;
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
+
 
         internal static MainWindow Main { get; set; }
 
@@ -144,6 +146,12 @@ namespace SCME.UI
         {
             get { return ms_DVdtPage ?? (ms_DVdtPage = new DVdtPage()); }
             set { ms_DVdtPage = value; }
+        }
+
+        internal static TOUPage TOU
+        {
+            get { return ms_TOUPage ?? (ms_TOUPage = new TOUPage()); }
+            set { ms_TOUPage = value; }
         }
 
         internal static ATUPage ATU

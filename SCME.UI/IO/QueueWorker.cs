@@ -624,6 +624,17 @@ namespace SCME.UI.IO
             });
         }
 
+        public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultTOU(State, Result);
+                else
+                    Cache.TOU.SetResult(State, Result);
+            });
+        }
+
         public void AddDVdtEvent(DeviceState State, Types.dVdt.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate

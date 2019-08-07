@@ -45,6 +45,8 @@ namespace SCME.Types
         [EnumMember]
         RCC = 18,
         [EnumMember]
+        TOU = 19,
+        [EnumMember]
         Database = 255
     };
 
@@ -294,6 +296,8 @@ namespace SCME.Types
 
             [DataMember]
             public int TimeoutRCC { get; set; }
+            [DataMember]
+            public bool IsTOUEnabled { get; set; }
         }
 
         [DataMember]

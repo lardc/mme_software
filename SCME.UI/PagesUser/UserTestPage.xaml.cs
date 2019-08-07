@@ -46,6 +46,7 @@ namespace SCME.UI.PagesUser
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
         private List<Types.QrrTq.TestResults> m_ResultsQrrTq1, m_ResultsQrrTq2;
         private List<Types.RAC.TestResults> m_ResultsRAC1, m_ResultsRAC2;
+        private List<Types.TOU.TestResults> _TOUTestResults1, _TOUTestResults2;
         private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC;
         private Profile m_Profile;
         private bool m_SpecialMeasureMode;
@@ -65,6 +66,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC1 = new List<Types.RAC.TestResults>();
+            _TOUTestResults1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<Types.Gate.TestResults>();
             m_ResultsVTM2 = new List<Types.SL.TestResults>();
@@ -73,6 +75,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC2 = new List<Types.RAC.TestResults>();
+            _TOUTestResults2 = new List<Types.TOU.TestResults>();
 
             m_StateGate = DeviceState.None;
             m_StateVtm = DeviceState.None;
@@ -1325,6 +1328,44 @@ namespace SCME.UI.PagesUser
             }
 
             return results;
+        }
+
+        internal void SetResultTOU(DeviceState state, Types.TOU.TestResults Result)
+        {
+            m_StatedVdt = state;
+
+            if (m_StatedVdt == DeviceState.InProcess)
+                dvdtCounter++;
+
+            if (m_CurrentPos == 1)
+            {
+                _TOUTestResults1[dvdtCounter] = Result;
+            }
+            else
+            {
+                _TOUTestResults2[dvdtCounter] = Result;
+            }
+
+            var dvDtItemContainer = GetDvDtItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(dvDtItemContainer[dvdtCounter]);
+
+            //var labelResult = FindChild<Label>(presenter, "labelResult");
+            //if (labelResult != null)
+            //{
+            //    SetLabel(labelResult, state, Result.Passed, Result.Passed ? "OK" : "Not OK");
+
+            //}
+
+            if (state == DeviceState.Success)
+            {
+                var labelDvdTVoltageRate = FindChild<Label>(presenter, "labelVoltageRate");
+                if (labelDvdTVoltageRate != null)
+                {
+                    SetLabel(labelDvdTVoltageRate, state, true, Result.ToString());
+                }
+
+            }
+
         }
 
         internal void SetResultdVdt(DeviceState state, Types.dVdt.TestResults Result)

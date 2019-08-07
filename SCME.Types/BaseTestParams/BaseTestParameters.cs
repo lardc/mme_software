@@ -43,7 +43,10 @@ namespace SCME.Types.BaseTestParams
         IH = 11,
 
         [EnumMember]
-        RCC = 12
+        RCC = 12,
+
+        [EnumMember]
+        TOU = 13
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

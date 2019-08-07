@@ -10,6 +10,7 @@ using SCME.Types.Clamping;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
+using SCME.Types.TOU;
 using SCME.UI.CustomControl;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
@@ -1713,6 +1714,12 @@ namespace SCME.UI.IO
             m_QueueWorker.AddDVdtEvent(State, Result);
         }
 
+        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
+        {
+            m_QueueWorker.AddTOUEvent(State, Result);
+        }
+
+
         public void DvDtNotificationHandler(Types.dVdt.HWWarningReason Warning, Types.dVdt.HWFaultReason Fault, Types.dVdt.HWDisableReason Disable)
         {
             if (Warning != Types.dVdt.HWWarningReason.None)
@@ -1816,6 +1823,13 @@ namespace SCME.UI.IO
             if (Fault != Types.Clamping.HWFaultReason.None)
                 m_QueueWorker.AddClampingFaultEvent(Fault);
         }
+
+        public void TOUNotificationHandler(Types.TOU.HWWarningReason Warning, Types.TOU.HWFaultReason Fault, Types.TOU.HWDisableReason Disable)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         #endregion
     }

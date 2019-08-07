@@ -753,4 +753,7 @@
   <data name="Total" xml:space="preserve">
     <value>Всего</value>
   </data>
+  <data name="TOU" xml:space="preserve">
+    <value>TOU</value>
+  </data>
 </root>
