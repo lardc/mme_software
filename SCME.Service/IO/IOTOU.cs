@@ -369,18 +369,22 @@ namespace SCME.Service.IO
 
                 if (m_IsTOUEmulation)
                 {
-                    //в режиме эмуляции эмулируем успешный результат проверки
-                    m_State = DeviceState.Success;
-
                     Random rand = new Random(DateTime.Now.Millisecond);
 
                     m_Result.ITM = (float)rand.NextDouble() * 1000;
                     m_Result.TGD = (float)rand.NextDouble() * 1000;
                     m_Result.TGT = (float)rand.NextDouble() * 1000;
+
+                    Thread.Sleep(500);
+                    //проверяем отображение Problem, Warning, Fault
+                    FireNotificationEvent( HWWarningReason.Unknown, HWFaultReason.NoBatteryCharge, HWDisableReason.None);
+
+                    Thread.Sleep(500);
+                  
                 }
                 else
                 {
-                    //перед измерением dVdt исполняем команду включения коммутации см. требование http://elma.pe.local/Tasks/Task/Execute/108699
+                    
                     if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.TOU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
                     {
                         m_State = DeviceState.Fault;
@@ -395,10 +399,12 @@ namespace SCME.Service.IO
                     m_Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
                     m_Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
                     m_Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
-
                 }
 
+                m_State = DeviceState.Success;
                 FireTOUEvent(m_State, m_Result);
+
+
             }
 
             catch (Exception ex)

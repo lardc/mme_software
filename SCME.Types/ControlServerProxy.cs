@@ -61,9 +61,9 @@ namespace SCME.Types
 
         public bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersVTM,
                           BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
-                          Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping)
+                          Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping, TOU.TestParameters ParametersTOU)
         {
-            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping);
+            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
         }
 
         public void Stop()

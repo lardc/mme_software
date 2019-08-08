@@ -100,30 +100,9 @@ namespace SCME.Types.TOU
     {
         [EnumMember]
         None = 0,
+
         [EnumMember]
-        LinkCell1 = 601,
-        [EnumMember]
-        LinkCell2 = 602,
-        [EnumMember]
-        LinkCell3 = 603,
-        [EnumMember]
-        LinkCell4 = 604,
-        [EnumMember]
-        LinkCell5 = 605,
-        [EnumMember]
-        LinkCell6 = 606,
-        [EnumMember]
-        NotReadyCell1 = 611,
-        [EnumMember]
-        NotReadyCell2 = 612,
-        [EnumMember]
-        NotReadyCell3 = 613,
-        [EnumMember]
-        NotReadyCell4 = 614,
-        [EnumMember]
-        NotReadyCell5 = 615,
-        [EnumMember]
-        NotReadyCell6 = 616
+        NoBatteryCharge = 1
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -139,7 +118,7 @@ namespace SCME.Types.TOU
         [EnumMember]
         None = 0,
         [EnumMember]
-        WatchdogReset = 1001
+        Unknown = 1
     };
 
 

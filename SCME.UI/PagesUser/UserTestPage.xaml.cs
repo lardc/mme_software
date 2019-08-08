@@ -1332,40 +1332,17 @@ namespace SCME.UI.PagesUser
 
         internal void SetResultTOU(DeviceState state, Types.TOU.TestResults Result)
         {
-            m_StatedVdt = state;
 
-            if (m_StatedVdt == DeviceState.InProcess)
-                dvdtCounter++;
+        }
 
-            if (m_CurrentPos == 1)
-            {
-                _TOUTestResults1[dvdtCounter] = Result;
-            }
-            else
-            {
-                _TOUTestResults2[dvdtCounter] = Result;
-            }
+        internal void SetTOUWarning(Types.TOU.HWWarningReason Warning)
+        {
 
-            var dvDtItemContainer = GetDvDtItemContainer();
-            var presenter = FindVisualChild<ContentPresenter>(dvDtItemContainer[dvdtCounter]);
+        }
 
-            //var labelResult = FindChild<Label>(presenter, "labelResult");
-            //if (labelResult != null)
-            //{
-            //    SetLabel(labelResult, state, Result.Passed, Result.Passed ? "OK" : "Not OK");
-
-            //}
-
-            if (state == DeviceState.Success)
-            {
-                var labelDvdTVoltageRate = FindChild<Label>(presenter, "labelVoltageRate");
-                if (labelDvdTVoltageRate != null)
-                {
-                    SetLabel(labelDvdTVoltageRate, state, true, Result.ToString());
-                }
-
-            }
-
+        internal void SetTOUFault(Types.TOU.HWFaultReason Warning)
+        {
+          
         }
 
         internal void SetResultdVdt(DeviceState state, Types.dVdt.TestResults Result)
@@ -2426,7 +2403,7 @@ namespace SCME.UI.PagesUser
 
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
                                    Types.SL.TestParameters ParamsVTM,
-                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU)
+                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
         {
             if (this.Profile != null)
             {
@@ -2452,7 +2429,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsRAC, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp))
+            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsRAC, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp, ParamsTOU))
                 return;
 
             ClearStatus(Position == 1, true);

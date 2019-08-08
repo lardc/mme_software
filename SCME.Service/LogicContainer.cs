@@ -839,7 +839,7 @@ namespace SCME.Service
 
         #region Test sequence
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp)
+        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             m_Stop = false;
 
@@ -861,6 +861,7 @@ namespace SCME.Service
             m_IORAC.ActiveCommutation = m_IOActiveCommutation;
             m_IOIH.ActiveCommutation = m_IOActiveCommutation;
             m_IORCC.ActiveCommutation = m_IOActiveCommutation;
+            m_IOTOU.ActiveCommutation = m_IOActiveCommutation;
 
             m_ParametersGate = ParametersGate;
             m_ParametersSL = ParametersSL;
@@ -870,11 +871,12 @@ namespace SCME.Service
             m_ParametersRac = ParametersRac;
             m_ParametersIH = ParametersIH;
             m_ParametersRCC = ParametersRCC;
+            m_ParametersTOU = ParametersTOU;
 
             m_State = DeviceState.InProcess;
 
-            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, SL, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}",
-                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled);
+            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, SL, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}, TOU - {9}",
+                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, message);
 
             m_Communication.PostTestAllEvent(m_State, "Starting tests");
@@ -1414,6 +1416,18 @@ namespace SCME.Service
                                 try
                                 {
                                     res = m_IOIH.Start(m_ParametersIH, ParametersComm);
+                                }
+                                catch (Exception ex)
+                                {
+                                    ThrowFaultException(ComplexParts.IH, ex.Message, "Start IH test");
+                                }
+                            }
+
+                            if (m_ParametersTOU.IsEnabled && m_Param.IsTOUEnabled && !m_Stop)
+                            {
+                                try
+                                {
+                                    res = m_IOTOU.Start(m_ParametersTOU, ParametersComm);
                                 }
                                 catch (Exception ex)
                                 {

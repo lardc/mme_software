@@ -73,11 +73,11 @@ namespace SCME.InterfaceImplementations
         {
             try
             {
-                using (var centralDbClient = new CentralDatabaseServiceClient())
-                {
-                    var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
-                    SaveProfiles(serverProfiles);
-                }
+                //using (var centralDbClient = new CentralDatabaseServiceClient())
+                //{
+                //    var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
+                //    SaveProfiles(serverProfiles);
+                //}
             }
             catch (Exception ex)
             {

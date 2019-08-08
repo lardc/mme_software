@@ -82,17 +82,22 @@
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
                           Text="{Binding Input.CurrentAmplitude}" />
 
-                <Label Content="{x:Static res:Resources.ITM}"   Grid.Column="0"  Grid.Row="2" />
-                <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="3" />
-                <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="4" />
+                <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
+                <Label Content="{x:Static res:Resources.ITM}"   Grid.Column="0"  Grid.Row="3" />
+                <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="4" />
+                <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="5" />
 
-                <Label Content="{Binding Output.ITM}"   Grid.Column="1"  Grid.Row="2" />
-                <Label Content="{Binding Output.TGD}"   Grid.Column="1"  Grid.Row="3" />
-                <Label Content="{Binding Output.TGT}"   Grid.Column="1"  Grid.Row="4" />
-                <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" Padding="10"
-                       Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Content="Fault" />
+                <Label Content="{Binding State}" Grid.Column="1"  Grid.Row="2"  Margin="10" FontSize="{StaticResource FontSize26}"/>
+                <Label Content="{Binding ITM}"   Grid.Column="1"  Grid.Row="3" Margin="10"/>
+                <Label Content="{Binding TGD}"   Grid.Column="1"  Grid.Row="4" Margin="10"/>
+                <Label Content="{Binding TGT}"   Grid.Column="1"  Grid.Row="5" Margin="10"/>
+
                 <Label Name="lblWarning" x:FieldModifier="private" Background="Gold" Height="Auto" Padding="10"
                        Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Content="Warning" />
+                
+                <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" Padding="10"
+                       Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="Fault" />
+                
 
             </Grid>
         </Border>

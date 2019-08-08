@@ -412,14 +412,14 @@ namespace SCME.UI.IO
 
 
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersVtm,
-                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, bool SkipSC = false)
+                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
             if (!IsServerConnected)
                 return false;
 
             try
             {
-                if (!ParametersGate.IsEnabled && !ParametersVtm.IsEnabled && !ParametersBvt.IsEnabled && !ParametersAtu.IsEnabled && !ParametersQrrTq.IsEnabled && !ParametersRAC.IsEnabled && !ParametersIH.IsEnabled && !ParametersRCC.IsEnabled)
+                if (!ParametersGate.IsEnabled && !ParametersVtm.IsEnabled && !ParametersBvt.IsEnabled && !ParametersAtu.IsEnabled && !ParametersQrrTq.IsEnabled && !ParametersRAC.IsEnabled && !ParametersIH.IsEnabled && !ParametersRCC.IsEnabled && !ParametersTOU.IsEnabled)
                 {
                     var dw = new DialogWindow(Resources.Information,
                                               Resources.CanNotStartTest + Environment.NewLine +
@@ -459,7 +459,7 @@ namespace SCME.UI.IO
                     return false;
                 }
 
-                result = m_ControlClient.Start(ParametersGate, ParametersVtm, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping);
+                result = m_ControlClient.Start(ParametersGate, ParametersVtm, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
 
                 return result;
 
@@ -1826,7 +1826,11 @@ namespace SCME.UI.IO
 
         public void TOUNotificationHandler(Types.TOU.HWWarningReason Warning, Types.TOU.HWFaultReason Fault, Types.TOU.HWDisableReason Disable)
         {
-            throw new NotImplementedException();
+            if (Warning != Types.TOU.HWWarningReason.None)
+                m_QueueWorker.AddDVdtWarningEvent(Warning);
+
+            if (Fault != Types.TOU.HWFaultReason.None)
+                m_QueueWorker.AddDVdtFaultEvent(Fault);
         }
 
 
