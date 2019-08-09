@@ -27,7 +27,6 @@ namespace FastTest
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Content = new SCME.UI.PagesTech.TOUPage();
         }
     }
 }

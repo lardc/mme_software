@@ -153,7 +153,8 @@ namespace SCME.InterfaceImplementations
                 new Tuple<int, string>(7, "SCTU"),
                 new Tuple<int, string>(8, "ATU"),
                 new Tuple<int, string>(9, "QrrTq"),
-                new Tuple<int, string>(10, "RAC")
+                new Tuple<int, string>(10, "RAC"),
+                new Tuple<int, string>(11, "TOU")
             };
 
     private readonly string[] _mmeCodes = {

@@ -114,6 +114,10 @@ namespace SCME.UI.IO
                     var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                     if (rac != null)
                         profileItem.RACTestParameters.Add(rac);
+
+                    var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                    if (rac != null)
+                        profileItem.TOUTestParameters.Add(tou);
                 }
 
                 profileItems.Add(profileItem);

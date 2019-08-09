@@ -793,4 +793,7 @@
   <data name="TGT" xml:space="preserve">
     <value>tGT</value>
   </data>
+  <data name="TOUITM" xml:space="preserve">
+    <value>Amperage (ITM), A</value>
+  </data>
 </root>

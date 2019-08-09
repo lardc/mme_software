@@ -768,4 +768,7 @@
   <data name="TGT" xml:space="preserve">
     <value>tGT</value>
   </data>
+  <data name="TOUITM" xml:space="preserve">
+    <value>Сила тока (ITM),  А</value>
+  </data>
 </root>

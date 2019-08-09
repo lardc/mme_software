@@ -24,6 +24,7 @@ using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
 using RACParameters = SCME.Types.RAC.TestParameters;
+using TOUParameters = SCME.Types.TOU.TestParameters;
 using System.Collections.Concurrent;
 using System.Windows.Threading;
 
@@ -397,6 +398,10 @@ namespace SCME.UI.PagesTech
             {
                 item.TestParametersAndNormatives.Add(new RACParameters { Order = order + 1, IsEnabled = true });
             }
+            else if (type.Contains("TOU"))
+            {
+                item.TestParametersAndNormatives.Add(new TOUParameters { Order = order + 1, IsEnabled = true });
+            }
             else
             {
                 item.IsHeightMeasureEnabled = true;
@@ -499,6 +504,14 @@ namespace SCME.UI.PagesTech
             if (item != null)
             {
                 tabControl.SelectedIndex = 7;
+                this.FLastSelectedItem = null;
+                return;
+            }
+
+            item = ListBox.SelectedItem as TOUParameters;
+            if (item != null)
+            {
+                tabControl.SelectedIndex = 8;
                 this.FLastSelectedItem = null;
                 return;
             }

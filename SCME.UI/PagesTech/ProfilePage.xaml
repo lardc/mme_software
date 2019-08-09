@@ -248,6 +248,7 @@
                             <ComboBoxItem Content="ATU"></ComboBoxItem>
                             <ComboBoxItem Content="QrrTq"></ComboBoxItem>
                             <ComboBoxItem Content="RAC"></ComboBoxItem>
+                            <ComboBoxItem Content="TOU"></ComboBoxItem>
                         </ComboBox>
 
                         <Button Grid.Column="3" Margin="10" x:Name="ButtonAddTestParameters" Content="{x:Static res:Resources.Add}" Click="ButtonAddTestParameters_OnClick"></Button>
@@ -905,6 +906,33 @@
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.RACResVoltage}"/>
                     <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding SelectedItem.ResVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem>
+                <Grid Margin="50,30" Height="640">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.TOU}" />
+
+                    <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}"/>
+                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding SelectedItem.ITM, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                 </Grid>
             </TabItem>

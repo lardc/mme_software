@@ -1880,6 +1880,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Amperage (ITM), A.
+        /// </summary>
+        public static string TOUITM {
+            get {
+                return ResourceManager.GetString("TOUITM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Type.
         /// </summary>
         public static string Type {

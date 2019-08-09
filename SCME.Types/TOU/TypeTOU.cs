@@ -51,7 +51,7 @@ namespace SCME.Types.TOU
         private ushort m_CurrentAmplitude;
 
         [DataMember]
-        public ushort CurrentAmplitude
+        public ushort ITM
         {
             get
             {
@@ -73,7 +73,7 @@ namespace SCME.Types.TOU
         {
             IsEnabled = true;
             TestParametersType = TestParametersType.TOU;
-            CurrentAmplitude = (ushort)CurrentAmplitudeMin;
+            ITM = (ushort)CurrentAmplitudeMin;
         }
 
         public object Clone()
@@ -88,7 +88,7 @@ namespace SCME.Types.TOU
             if (tOUOldParameters == null)
                 throw new InvalidCastException("oldParameters must be tOUOldParameters");
 
-            if (CurrentAmplitude != tOUOldParameters.CurrentAmplitude)
+            if (ITM != tOUOldParameters.ITM)
                 return true;
 
             return false;

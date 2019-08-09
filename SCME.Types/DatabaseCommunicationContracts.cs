@@ -144,6 +144,9 @@ namespace SCME.Types
         public List<RAC.TestParameters> RACTestParameters { get; set; }
 
         [DataMember]
+        public List<TOU.TestParameters> TOUTestParameters { get; set; }
+
+        [DataMember]
         public ModuleCommutationType CommTestParameters { get; set; }
 
         [DataMember]

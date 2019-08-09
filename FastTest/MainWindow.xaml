@@ -8,6 +8,73 @@
         xmlns:UI="clr-namespace:SCME.UI;assembly=SCME.UI"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" FontSize="32" HorizontalAlignment="Center"
+                           Content="qwe" />
+
+        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                           Content="qwe" />
+        <ComboBox Grid.Column="2" Grid.Row="1" Padding="5" Margin="10"
+                              ItemsSource="{Binding Source={StaticResource DataFromTestdVdtTypeEnum}}"
+                              SelectedItem="{Binding SelectedItem.Mode, Converter={StaticResource E2S}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource CComboboxStyle}" />
+
+        <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                         />
+        <TextBox Grid.Column="2" Grid.Row="2" Padding="5" Margin="10"
+                                   TextBlock.TextAlignment="Right" 
+                                   Text="{Binding SelectedItem.Voltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                          
+                           Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2V}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox Grid.Column="2" Grid.Row="3" Padding="5" Margin="10"
+                              ItemsSource="{Binding Source={StaticResource DataFromTestdVdtVoltageRateEnum}}"
+                              SelectedItem="{Binding SelectedItem.VoltageRate, Converter={StaticResource E2S}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource CComboboxStyle}" 
+                              Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2V}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                          
+                           Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2V}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
+                                                TextBlock.TextAlignment="Right"
+                                                Text="{Binding SelectedItem.ConfirmationCount, ElementName=TestParameters}" 
+                                                Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                         
+                           Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Column="2" Grid.Row="3" Padding="5" Margin="10"
+                                                TextBlock.TextAlignment="Right" 
+                                                Text="{Binding SelectedItem.VoltageRateLimit, ElementName=TestParameters}" 
+                                                Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
+                          
+                           Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
+                                                TextBlock.TextAlignment="Right" 
+                                                
+                                                Text="{Binding SelectedItem.VoltageRateOffSet, ElementName=TestParameters}" 
+                                                Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

@@ -46,6 +46,33 @@ namespace SCME.Service.IO
             set { m_IOCommutation = value; }
         }
 
+
+        private void WaitState(HWDeviceState needState)
+        {
+            var timeStamp = Environment.TickCount + m_Timeout;
+            HWDeviceState devState;
+            while (Environment.TickCount < timeStamp)
+            {
+                Thread.Sleep(100);
+
+                devState = (HWDeviceState)
+                           ReadRegister(REG_DEV_STATE);
+
+                if (devState == needState)
+                    break;
+
+                if (devState == HWDeviceState.Fault)
+                    throw new Exception(string.Format("TOU is in fault state, reason: {0}",
+                                                      (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                if (devState == HWDeviceState.Disabled)
+                    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
+                                                      (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+            }
+
+            if (Environment.TickCount > timeStamp)
+                throw new Exception("Timeout while waiting for device to power up");
+        }
+
         internal DeviceConnectionState Initialize(bool Enable, int timeoutTOU)
         {
             m_Timeout = timeoutTOU;
@@ -71,45 +98,53 @@ namespace SCME.Service.IO
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
                 if (devState != HWDeviceState.PowerReady)
                 {
-                    if (devState == HWDeviceState.Fault)
-                    {
-                        ClearFault();
-                        Thread.Sleep(100);
-
-                        devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
-
-                        if (devState == HWDeviceState.Fault)
-                            throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-                                (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    }
-
-                    if (devState == HWDeviceState.Disabled)
-                        throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-                                (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
-
+                    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU state !PowerReady, call ACT_DISABLE_POWER");
+                    CallAction(ACT_DISABLE_POWER);
+                    WaitState(HWDeviceState.Disabled);
+                    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU call ACT_ENABLE_POWER");
                     CallAction(ACT_ENABLE_POWER);
+                    WaitState(HWDeviceState.PowerReady);
+
+                    //devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
+                    //if (devState == HWDeviceState.Fault)
+                    //{
+                    //    ClearFault();
+                    //    Thread.Sleep(100);
+
+                    //    devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
+
+                    //    if (devState == HWDeviceState.Fault)
+                    //        throw new Exception(string.Format("TOU is in fault state, reason: {0}",
+                    //            (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                    //}
+
+                    //if (devState == HWDeviceState.Disabled)
+                    //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
+                    //            (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
 
-                while (Environment.TickCount < timeStamp)
-                {
-                    Thread.Sleep(100);
+                WaitState(HWDeviceState.PowerReady);
 
-                    devState = (HWDeviceState)
-                               ReadRegister(REG_DEV_STATE);
+                //while (Environment.TickCount < timeStamp)
+                //{
+                //    Thread.Sleep(100);
 
-                    if (devState == HWDeviceState.PowerReady)
-                        break;
+                //    devState = (HWDeviceState)
+                //               ReadRegister(REG_DEV_STATE);
 
-                    if (devState == HWDeviceState.Fault)
-                        throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-                                                          (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    if (devState == HWDeviceState.Disabled)
-                        throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-                                                          (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
-                }
+                //    if (devState == HWDeviceState.PowerReady)
+                //        break;
 
-                if (Environment.TickCount > timeStamp)
-                    throw new Exception("Timeout while waiting for device to power up");
+                //    if (devState == HWDeviceState.Fault)
+                //        throw new Exception(string.Format("TOU is in fault state, reason: {0}",
+                //                                          (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                //    if (devState == HWDeviceState.Disabled)
+                //        throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
+                //                                          (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+                //}
+
+                //if (Environment.TickCount > timeStamp)
+                //    throw new Exception("Timeout while waiting for device to power up");
 
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
@@ -392,7 +427,7 @@ namespace SCME.Service.IO
                         return;
                     }
 
-                    WriteRegister(REG_CURRENT_VALUE, m_Parameters.CurrentAmplitude);
+                    WriteRegister(REG_CURRENT_VALUE, m_Parameters.ITM);
                     CallAction(ACT_START_TEST);
                     m_State = WaitForEndOfTest();
 
@@ -448,6 +483,10 @@ namespace SCME.Service.IO
 
                 if (devState != HWDeviceState.InProcess)
                 {
+                    ushort finish = ReadRegister(REG_TEST_FINISHED);
+                    if(finish != OPRESULT_OK)
+                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+
                     var warning = (HWWarningReason)ReadRegister(REG_WARNING);
 
                     if (warning != HWWarningReason.None)

@@ -511,7 +511,7 @@
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>powershell Compress-Archive -Path "../bin" -DestinationPath  "../bin.zip"</PostBuildEvent>
+    <PostBuildEvent>powershell Compress-Archive -Path "../bin" -DestinationPath "../bin.zip" -Force</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -501,7 +501,40 @@
                     <Label Name="lbProblem" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
                 </Grid>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="touParameters:TestParameters" x:Key="TOUParametersTemplate">
+                <Grid Margin="30,0,0,0">
+                    <Grid.Visibility>
+                        <MultiBinding Converter="{StaticResource MB2V}">
+                            <Binding Path="IsEnabled" />
+                            <Binding Source="{x:Static res:Settings.Default}" Path="TOUIsVisible" />
+                        </MultiBinding>
+                    </Grid.Visibility>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TOUITM}"/>
+                    <Label Grid.Column="1" Grid.Row="0" Content="0" x:Name="lbTOUITM" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+
+                    <Label Name="lbTittleWarning" Grid.Column="0" Grid.Row="1" Content="Warning"/>
+                    <Label Name="lbWarning" Background="Gold" Grid.Column="1" Grid.Row="1" Style="{StaticResource WarningFaultLabelStyle}"/>
+
+                    <Label Name="lbTittleFaultReason" Grid.Column="0" Grid.Row="2" Content="Fault" Height="Auto"/>
+                    <Label Name="lbFaultReason" Background="Tomato" Grid.Column="1" Grid.Row="2" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
+
+                    <Label Name="lbTittleProblem" Grid.Column="0" Grid.Row="3" Content="Problem" Height="Auto"/>
+                    <Label Name="lbProblem" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
+                </Grid>
+            </DataTemplate>
+
         </customControl:ResultsDataTemplateDictionary>
 
     </ListView.Resources>
