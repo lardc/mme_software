@@ -47,6 +47,34 @@ namespace SCME.Service.IO
         }
 
 
+        private void CheckDevStateThrow(HWDeviceState devState)
+        {
+            //if (devState == HWDeviceState.Fault)
+            //    throw new Exception(string.Format("TOU is in fault state, reason: {0}",
+            //                                      (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+            //if (devState == HWDeviceState.Disabled)
+            //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
+            //                                      (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+
+            if (devState == HWDeviceState.Fault)
+            {
+                var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
+                FireNotificationEvent(HWWarningReason.None, faultReason,
+                                      HWDisableReason.None);
+
+                throw new Exception(string.Format("TOU is in fault state, reason: {0}", faultReason));
+            }
+
+            if (devState == HWDeviceState.Disabled)
+            {
+                var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
+                FireNotificationEvent(HWWarningReason.None,
+                                      HWFaultReason.None, disableReason);
+
+                throw new Exception(string.Format("TOU is in disabled state, reason: {0}", disableReason));
+            }
+        }
+
         private void WaitState(HWDeviceState needState)
         {
             var timeStamp = Environment.TickCount + m_Timeout;
@@ -61,12 +89,7 @@ namespace SCME.Service.IO
                 if (devState == needState)
                     break;
 
-                if (devState == HWDeviceState.Fault)
-                    throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-                                                      (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                if (devState == HWDeviceState.Disabled)
-                    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-                                                      (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+                CheckDevStateThrow(devState);
             }
 
             if (Environment.TickCount > timeStamp)
@@ -92,60 +115,21 @@ namespace SCME.Service.IO
             try
             {
                 var timeStamp = Environment.TickCount + m_Timeout;
-
                 ClearWarning();
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
-                if (devState != HWDeviceState.PowerReady)
+
+                if (devState == HWDeviceState.None)
+                    CallAction(ACT_ENABLE_POWER);
+                else if (devState != HWDeviceState.PowerReady)
                 {
-                    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU state !PowerReady, call ACT_DISABLE_POWER");
                     CallAction(ACT_DISABLE_POWER);
                     WaitState(HWDeviceState.Disabled);
-                    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU call ACT_ENABLE_POWER");
                     CallAction(ACT_ENABLE_POWER);
-                    WaitState(HWDeviceState.PowerReady);
-
-                    //devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
-                    //if (devState == HWDeviceState.Fault)
-                    //{
-                    //    ClearFault();
-                    //    Thread.Sleep(100);
-
-                    //    devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
-
-                    //    if (devState == HWDeviceState.Fault)
-                    //        throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-                    //            (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    //}
-
-                    //if (devState == HWDeviceState.Disabled)
-                    //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-                    //            (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
 
                 WaitState(HWDeviceState.PowerReady);
-
-                //while (Environment.TickCount < timeStamp)
-                //{
-                //    Thread.Sleep(100);
-
-                //    devState = (HWDeviceState)
-                //               ReadRegister(REG_DEV_STATE);
-
-                //    if (devState == HWDeviceState.PowerReady)
-                //        break;
-
-                //    if (devState == HWDeviceState.Fault)
-                //        throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-                //                                          (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                //    if (devState == HWDeviceState.Disabled)
-                //        throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-                //                                          (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
-                //}
-
-                //if (Environment.TickCount > timeStamp)
-                //    throw new Exception("Timeout while waiting for device to power up");
-
+                
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
                 FireConnectionEvent(m_ConnectionState, "TOU initialized");
@@ -202,23 +186,7 @@ namespace SCME.Service.IO
             if (!m_IsTOUEmulation)
             {
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
-                if (devState == HWDeviceState.Fault)
-                {
-                    var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
-                    FireNotificationEvent(HWWarningReason.None, faultReason,
-                                          HWDisableReason.None);
-
-                    throw new Exception(string.Format("TOU is in fault state, reason: {0}", faultReason));
-                }
-
-                if (devState == HWDeviceState.Disabled)
-                {
-                    var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-                    FireNotificationEvent(HWWarningReason.None,
-                                          HWFaultReason.None, disableReason);
-
-                    throw new Exception(string.Format("TOU is in disabled state, reason: {0}", disableReason));
-                }
+                CheckDevStateThrow(devState);
             }
 
             MeasurementLogicRoutine(commParameters);
@@ -270,20 +238,6 @@ namespace SCME.Service.IO
             return value;
         }
 
-        internal short ReadRegisterS(ushort Address, bool SkipJournal = false)
-        {
-            short value = 0;
-
-            if (!m_IsTOUEmulation)
-                value = m_IOAdapter.Read16S(m_Node, Address);
-
-            if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-                                         string.Format("TOU @ReadRegisterS, address {0}, value {1}", Address, value));
-
-            return value;
-        }
-
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
@@ -296,9 +250,10 @@ namespace SCME.Service.IO
             m_IOAdapter.Write16(m_Node, Address, Value);
         }
 
-        internal void CallAction(ushort Action)
+        internal void CallAction(ushort Action, bool SkipJournal = false)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
+            if (!SkipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
                                          string.Format("TOU @Call, action {0}", Action));
 
             if (m_IsTOUEmulation)
@@ -309,6 +264,77 @@ namespace SCME.Service.IO
 
         #endregion
 
+        private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
+        {
+            try
+            {
+                m_State = DeviceState.InProcess;
+                FireTOUEvent(m_State, m_Result);
+
+                if (m_IsTOUEmulation)
+                {
+                    Random rand = new Random(DateTime.Now.Millisecond);
+
+                    m_Result.ITM = (float)rand.NextDouble() * 1000;
+                    m_Result.TGD = (float)rand.NextDouble() * 1000;
+                    m_Result.TGT = (float)rand.NextDouble() * 1000;
+
+                    Thread.Sleep(500);
+                    //проверяем отображение Problem, Warning, Fault
+                    FireNotificationEvent( HWWarningReason.Unknown, HWFaultReason.NoBatteryCharge, HWDisableReason.None);
+                    Thread.Sleep(500);
+                  
+                }
+                else
+                {
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.TOU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                    {
+                        m_State = DeviceState.Fault;
+                        FireTOUEvent(m_State, m_Result);
+                        return;
+                    }
+
+                    WriteRegister(REG_CURRENT_VALUE, m_Parameters.ITM);
+                    CallAction(ACT_START_TEST);
+                    WaitState(HWDeviceState.PowerReady);
+
+                    ushort finish = ReadRegister(REG_TEST_FINISHED);
+                    if (finish != OPRESULT_OK)
+                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+
+                    m_Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
+                    m_Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
+                    m_Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
+                }
+
+                m_State = DeviceState.Success;
+                FireTOUEvent(m_State, m_Result);
+            }
+
+            catch (Exception ex)
+            {
+                m_State = DeviceState.Fault;
+                FireTOUEvent(m_State, m_Result);
+                FireExceptionEvent(ex.Message);
+
+                throw;
+            }
+
+        }
+
+        //internal short ReadRegisterS(ushort Address, bool SkipJournal = false)
+        //{
+        //    short value = 0;
+
+        //    if (!m_IsTOUEmulation)
+        //        value = m_IOAdapter.Read16S(m_Node, Address);
+
+        //    if (!SkipJournal)
+        //        SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
+        //                                 string.Format("TOU @ReadRegisterS, address {0}, value {1}", Address, value));
+
+        //    return value;
+        //}
         //internal void WriteCalibrationParams(CalibrationParams Parameters)
         //{
         //    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
@@ -395,121 +421,62 @@ namespace SCME.Service.IO
         //}
 
 
-        private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
-        {
-            try
-            {
-                m_State = DeviceState.InProcess;
-                FireTOUEvent(m_State, m_Result);
+        //private DeviceState WaitForEndOfTest()
+        //{
+        //    var timeStamp = Environment.TickCount + m_Timeout;
 
-                if (m_IsTOUEmulation)
-                {
-                    Random rand = new Random(DateTime.Now.Millisecond);
+        //    while (Environment.TickCount < timeStamp)
+        //    {
 
-                    m_Result.ITM = (float)rand.NextDouble() * 1000;
-                    m_Result.TGD = (float)rand.NextDouble() * 1000;
-                    m_Result.TGT = (float)rand.NextDouble() * 1000;
+        //        var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE, true);
 
-                    Thread.Sleep(500);
-                    //проверяем отображение Problem, Warning, Fault
-                    FireNotificationEvent( HWWarningReason.Unknown, HWFaultReason.NoBatteryCharge, HWDisableReason.None);
+        //        if (devState == HWDeviceState.Fault)
+        //        {
+        //            var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
 
-                    Thread.Sleep(500);
-                  
-                }
-                else
-                {
-                    
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.TOU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
-                    {
-                        m_State = DeviceState.Fault;
-                        FireTOUEvent(m_State, m_Result);
-                        return;
-                    }
+        //            FireNotificationEvent(HWWarningReason.None, faultReason,
+        //                                  HWDisableReason.None);
+        //            throw new Exception(string.Format("TOU device is in fault state, reason: {0}", faultReason));
+        //        }
 
-                    WriteRegister(REG_CURRENT_VALUE, m_Parameters.ITM);
-                    CallAction(ACT_START_TEST);
-                    m_State = WaitForEndOfTest();
+        //        if (devState == HWDeviceState.Disabled)
+        //        {
+        //            var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
 
-                    m_Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                    m_Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
-                    m_Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
-                }
+        //            FireNotificationEvent(HWWarningReason.None,
+        //                                  HWFaultReason.None, disableReason);
+        //            throw new Exception(string.Format("TOU device is in disabled state, reason: {0}", disableReason));
+        //        }
 
-                m_State = DeviceState.Success;
-                FireTOUEvent(m_State, m_Result);
+        //        if (devState != HWDeviceState.InProcess)
+        //        {
+        //            ushort finish = ReadRegister(REG_TEST_FINISHED);
+        //            if(finish != OPRESULT_OK)
+        //                throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
 
+        //            var warning = (HWWarningReason)ReadRegister(REG_WARNING);
 
-            }
+        //            if (warning != HWWarningReason.None)
+        //            {
+        //                FireNotificationEvent(warning, HWFaultReason.None,
+        //                                      HWDisableReason.None);
+        //                ClearWarning();
+        //            }
 
-            catch (Exception ex)
-            {
-                m_State = DeviceState.Fault;
-                FireTOUEvent(m_State, m_Result);
-                FireExceptionEvent(ex.Message);
+        //            break;
+        //        }
 
-                throw;
-            }
+        //        Thread.Sleep(REQUEST_DELAY_MS);
+        //    }
 
-        }
+        //    if (Environment.TickCount > timeStamp)
+        //    {
+        //        FireExceptionEvent("Timeout while waiting for TOU test to end");
+        //        throw new Exception("Timeout while waiting for TOU test to end");
+        //    }
 
-
-        private DeviceState WaitForEndOfTest()
-        {
-            var timeStamp = Environment.TickCount + m_Timeout;
-
-            while (Environment.TickCount < timeStamp)
-            {
-
-                var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE, true);
-
-                if (devState == HWDeviceState.Fault)
-                {
-                    var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
-
-                    FireNotificationEvent(HWWarningReason.None, faultReason,
-                                          HWDisableReason.None);
-                    throw new Exception(string.Format("TOU device is in fault state, reason: {0}", faultReason));
-                }
-
-                if (devState == HWDeviceState.Disabled)
-                {
-                    var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-
-                    FireNotificationEvent(HWWarningReason.None,
-                                          HWFaultReason.None, disableReason);
-                    throw new Exception(string.Format("TOU device is in disabled state, reason: {0}", disableReason));
-                }
-
-                if (devState != HWDeviceState.InProcess)
-                {
-                    ushort finish = ReadRegister(REG_TEST_FINISHED);
-                    if(finish != OPRESULT_OK)
-                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
-
-                    var warning = (HWWarningReason)ReadRegister(REG_WARNING);
-
-                    if (warning != HWWarningReason.None)
-                    {
-                        FireNotificationEvent(warning, HWFaultReason.None,
-                                              HWDisableReason.None);
-                        ClearWarning();
-                    }
-
-                    break;
-                }
-
-                Thread.Sleep(REQUEST_DELAY_MS);
-            }
-
-            if (Environment.TickCount > timeStamp)
-            {
-                FireExceptionEvent("Timeout while waiting for TOU test to end");
-                throw new Exception("Timeout while waiting for TOU test to end");
-            }
-
-            return DeviceState.Success;
-        }
+        //    return DeviceState.Success;
+        //}
 
         #region Events
 
