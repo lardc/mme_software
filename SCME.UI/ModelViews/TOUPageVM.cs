@@ -13,7 +13,7 @@ namespace SCME.UI.ModelViews
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Types.TOU.TestParameters Input { get; set; } = new Types.TOU.TestParameters();
+        public Types.TOU.TestParameters Input { get; set; } = new Types.TOU.TestParameters() { IsEnabled = true };
 
         public string State { get; set; }
 

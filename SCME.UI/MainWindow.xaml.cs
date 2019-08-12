@@ -229,6 +229,7 @@ namespace SCME.UI
                 TimeoutIH = Cache.Welcome.GetTimeout(ComplexParts.IH),
                 IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
                 IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
+                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU)
 
             };
 

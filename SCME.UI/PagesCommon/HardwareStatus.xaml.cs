@@ -173,7 +173,7 @@ namespace SCME.UI.PagesCommon
                 case ComplexParts.IH:
                     return ihControl.OperationTimeout;
                 case ComplexParts.TOU:
-                    return ihControl.OperationTimeout;
+                    return touControl.OperationTimeout;
                 default:
                     return 10000;
             }

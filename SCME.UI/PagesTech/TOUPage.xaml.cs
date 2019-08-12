@@ -16,7 +16,6 @@ namespace SCME.UI.PagesTech
         
         public TOUPageVM VM { get; set; } = new TOUPageVM();
         public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.TOU.TestParameters paramTOU { get; set; }
         public Types.Commutation.ModuleCommutationType CommType { get; set; }
         public Types.Commutation.ModulePosition ModPosition { get; set; }
 
@@ -27,7 +26,6 @@ namespace SCME.UI.PagesTech
 
         public TOUPage()
         {
-            paramTOU = new Types.TOU.TestParameters { IsEnabled = true };
             ClampParameters = new Types.Clamping.TestParameters { StandardForce = Types.Clamping.ClampingForceInternal.Custom, CustomForce = 5 };
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
             Temperature = RoomTemp;
@@ -101,7 +99,7 @@ namespace SCME.UI.PagesTech
                                      BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
                                      CommutationType = ConverterUtil.MapCommutationType(CommType),
                                      Position = ConverterUtil.MapModulePosition(ModPosition)
-                                 }, ClampParameters, paramTOU))
+                                 }, ClampParameters, VM.Input))
                 return;
 
             ClearStatus();
