@@ -13,8 +13,7 @@ namespace SCME.UI.PagesTech
     /// </summary>
     public partial class TOUPage : Page
     {
-        private bool m_IsRunning;
-
+        
         public TOUPageVM VM { get; set; } = new TOUPageVM();
         public Types.Clamping.TestParameters ClampParameters { get; set; }
         public Types.TOU.TestParameters paramTOU { get; set; }
@@ -38,18 +37,7 @@ namespace SCME.UI.PagesTech
             ClearStatus();
         }
 
-        internal bool IsRunning
-        {
-            get
-            {
-                return m_IsRunning;
-            }
-            set
-            {
-                m_IsRunning = value;
-                btnBack.IsEnabled = !m_IsRunning;
-            }
-        }
+
 
         private void ClearStatus()
         {
@@ -67,12 +55,12 @@ namespace SCME.UI.PagesTech
         {
             lblFault.Content = Fault.ToString();
             lblFault.Visibility = Visibility.Visible;
-            IsRunning = false;
+            VM.IsRunning = false;
         }
 
         internal void SetResult(DeviceState State, Types.TOU.TestResults Result)
         {
-            IsRunning = false;
+            VM.IsRunning = false;
             VM.State = State.ToString();
             VM.ITM = Result.ITM;
             VM.TGD = Result.TGD;
@@ -92,8 +80,7 @@ namespace SCME.UI.PagesTech
 
         private void BtnStart_OnClick(object sender, RoutedEventArgs e)
         {
-
-            if (IsRunning)
+            if (VM.IsRunning)
                 return;
 
             var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
@@ -118,7 +105,7 @@ namespace SCME.UI.PagesTech
                 return;
 
             ClearStatus();
-            IsRunning = true;
+            VM.IsRunning = true;
 
 
             //Cache.Net.Start()

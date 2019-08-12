@@ -13,7 +13,8 @@
 
     <Page.Resources>
 
-        <ui:BooleanToVisibilityConverter x:Key="B2V" />
+        <ui:TryBooleanToVisibilityConverter x:Key="B2V" />
+        <ui:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
 
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Padding" Value="5,0,0,0" />
@@ -80,7 +81,7 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
-                          Text="{Binding Input.CurrentAmplitude}" />
+                          Text="{Binding Input.ITM}" />
 
                 <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
                 <Label Content="{x:Static res:Resources.ITM}"   Grid.Column="0"  Grid.Row="3" />
@@ -110,11 +111,13 @@
                 Grid.Column="0" Grid.Row="1"
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"
+                Visibility="{Binding IsRunning, Converter={StaticResource B2VI}}"
                 Margin="6" />
         
         <Button Grid.Column="2" Grid.Row="1"
                 Content="{x:Static res:Resources.Stop}"
                 Click="Stop_Click"
+                Visibility="{Binding IsRunning, Converter={StaticResource B2V}}"
                 Margin="6" Background="{StaticResource xRed1}" />
         
         <Button x:Name="btnStart"

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SCME.UI.ModelViews
 {
@@ -21,5 +22,9 @@ namespace SCME.UI.ModelViews
         public float TGD { get; set; }
 
         public float TGT { get; set; }
+
+
+        public bool IsRunning { get; set; }
+
     }
 }

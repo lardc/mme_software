@@ -269,7 +269,7 @@ namespace SCME.Service.IO
             try
             {
                 m_State = DeviceState.InProcess;
-                FireTOUEvent(m_State, m_Result);
+                //FireTOUEvent(m_State, m_Result);
 
                 if (m_IsTOUEmulation)
                 {
