@@ -14,8 +14,8 @@ namespace SCME.Types.TOU
         None = 0,
         [EnumMember]
         Fault = 1,
-        [EnumMember]
-        Disabled = 2,
+        //[EnumMember]
+        //Disabled = 2,
         [EnumMember]
         Charging = 3,
         [EnumMember]

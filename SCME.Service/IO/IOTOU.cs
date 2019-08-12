@@ -61,14 +61,14 @@ namespace SCME.Service.IO
                 throw new Exception(string.Format("TOU is in fault state, reason: {0}", faultReason));
             }
 
-            if (devState == HWDeviceState.Disabled)
-            {
-                var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-                FireNotificationEvent(HWWarningReason.None,
-                                      HWFaultReason.None, disableReason);
+            //if (devState == HWDeviceState.Disabled)
+            //{
+            //    var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
+            //    FireNotificationEvent(HWWarningReason.None,
+            //                          HWFaultReason.None, disableReason);
 
-                throw new Exception(string.Format("TOU is in disabled state, reason: {0}", disableReason));
-            }
+            //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}", disableReason));
+            //}
         }
 
         private void WaitState(HWDeviceState needState)
@@ -123,7 +123,7 @@ namespace SCME.Service.IO
                     //Выключаем питание
                     CallAction(ACT_DISABLE_POWER);
                     //Ждём перехода в выключенное состояние
-                    WaitState(HWDeviceState.Disabled);
+                    WaitState(HWDeviceState.None);
                     //Включаем питание
                     CallAction(ACT_ENABLE_POWER);
                 }
@@ -289,8 +289,6 @@ namespace SCME.Service.IO
                         FireNotificationEvent(HWWarningReason.AnperageOutOfRange, HWFaultReason.NoPotensialSignal, HWDisableReason.None);
                         Thread.Sleep(500);
                         FireTOUEvent(_State, _Result);
-
-
                     }
                     else
                     {
@@ -301,7 +299,6 @@ namespace SCME.Service.IO
                         _State = DeviceState.Success;
                         FireTOUEvent(_State, _Result);
                     }
-                  
                 }
                 else
                 {

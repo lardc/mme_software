@@ -147,7 +147,7 @@
 
             <customControls:HardwareItem x:Name="touControl"
                                               Title="{x:Static res:Resources.TOU}"
-                                              InitializeTimeout="25000" OperationTimeout="25000"
+                                              InitializeTimeout="40000" OperationTimeout="40000"
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xRed1}"
                                               Logo="" 
