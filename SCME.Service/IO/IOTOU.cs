@@ -11,40 +11,36 @@ namespace SCME.Service.IO
     {
         private const int REQUEST_DELAY_MS = 50;
 
-        private readonly IOAdapter m_IOAdapter;
-        private readonly BroadcastCommunication m_Communication;
-        private readonly ushort m_Node;
-        private readonly bool m_IsTOUEmulationHard;
-        private IOCommutation m_IOCommutation;
-        private bool m_IsTOUEmulation;
-        private TestParameters m_Parameters;
-        private DeviceConnectionState m_ConnectionState;
-        private volatile DeviceState m_State;
-        private volatile TestResults m_Result;
-        private volatile bool m_Stop;
+        private readonly IOAdapter _IOAdapter;
+        private readonly BroadcastCommunication _Communication;
+        private readonly ushort _Node;
+        private readonly bool _IsTOUEmulationHard;
+        private bool _IsTOUEmulation;
+        private TestParameters _Parameters;
+        private DeviceConnectionState _ConnectionState;
+        private volatile DeviceState _State;
+        private volatile TestResults _Result;
+        internal IOCommutation ActiveCommutation { get; set; }
+
 
         private int m_Timeout = 25000;
 
         internal IOTOU(IOAdapter Adapter, BroadcastCommunication Communication)
         {
-            m_IOAdapter = Adapter;
-            m_Communication = Communication;
+            _IOAdapter = Adapter;
+            _Communication = Communication;
             //Устанавливаем режим эмуляции
-            m_IsTOUEmulation = m_IsTOUEmulationHard = Settings.Default.TOUEmulation;
+            _IsTOUEmulation = _IsTOUEmulationHard = Settings.Default.TOUEmulation;
             ///////////////////////////////////////////////////////////
-            m_Node = (ushort)Settings.Default.TOUNode;
-            m_Result = new TestResults();
+            _Node = (ushort)Settings.Default.TOUNode;
+            _Result = new TestResults();
 
             SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Info,
-                                         String.Format("TOU created. Emulation mode: {0}", m_IsTOUEmulation));
+                                         String.Format("TOU created. Emulation mode: {0}", _IsTOUEmulation));
         }
 
 
-        internal IOCommutation ActiveCommutation
-        {
-            get { return m_IOCommutation; }
-            set { m_IOCommutation = value; }
-        }
+        
 
 
         private void CheckDevStateThrow(HWDeviceState devState)
@@ -99,17 +95,17 @@ namespace SCME.Service.IO
         internal DeviceConnectionState Initialize(bool Enable, int timeoutTOU)
         {
             m_Timeout = timeoutTOU;
-            m_IsTOUEmulation = m_IsTOUEmulationHard || !Enable;
+            _IsTOUEmulation = _IsTOUEmulationHard || !Enable;
 
-            m_ConnectionState = DeviceConnectionState.ConnectionInProcess;
-            FireConnectionEvent(m_ConnectionState, "TOU initializing");
+            _ConnectionState = DeviceConnectionState.ConnectionInProcess;
+            FireConnectionEvent(_ConnectionState, "TOU initializing");
 
-            if (m_IsTOUEmulation)
+            if (_IsTOUEmulation)
             {
-                m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
-                FireConnectionEvent(m_ConnectionState, "TOU initialized");
+                _ConnectionState = DeviceConnectionState.ConnectionSuccess;
+                FireConnectionEvent(_ConnectionState, "TOU initialized");
 
-                return m_ConnectionState;
+                return _ConnectionState;
             }
 
             try
@@ -119,93 +115,101 @@ namespace SCME.Service.IO
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
 
+                //Если блок в состоянии None то просто подаём сигнал включения
                 if (devState == HWDeviceState.None)
                     CallAction(ACT_ENABLE_POWER);
-                else if (devState != HWDeviceState.PowerReady)
+                else if (devState != HWDeviceState.Ready)//Если какое то друго состояние отличное от готовного 
                 {
+                    //Выключаем питание
                     CallAction(ACT_DISABLE_POWER);
+                    //Ждём перехода в выключенное состояние
                     WaitState(HWDeviceState.Disabled);
+                    //Включаем питание
                     CallAction(ACT_ENABLE_POWER);
                 }
 
-                WaitState(HWDeviceState.PowerReady);
+                //Ждём когда блок будет готов
+                WaitState(HWDeviceState.Ready);
                 
-                m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
+                _ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
-                FireConnectionEvent(m_ConnectionState, "TOU initialized");
+                FireConnectionEvent(_ConnectionState, "TOU initialized");
             }
             catch (Exception ex)
             {
-                m_ConnectionState = DeviceConnectionState.ConnectionFailed;
-                FireConnectionEvent(m_ConnectionState, String.Format("TOU initialization error: {0}", ex.Message));
+                _ConnectionState = DeviceConnectionState.ConnectionFailed;
+                FireConnectionEvent(_ConnectionState, String.Format("TOU initialization error: {0}", ex.Message));
             }
 
-            return m_ConnectionState;
+            return _ConnectionState;
         }
 
         internal void Deinitialize()
         {
-            var oldState = m_ConnectionState;
+            var oldState = _ConnectionState;
 
-            m_ConnectionState = DeviceConnectionState.DisconnectionInProcess;
+            _ConnectionState = DeviceConnectionState.DisconnectionInProcess;
             FireConnectionEvent(DeviceConnectionState.DisconnectionInProcess, "TOU disconnecting");
 
             try
             {
-                if (!m_IsTOUEmulation && oldState == DeviceConnectionState.ConnectionSuccess)
+                if (!_IsTOUEmulation && oldState == DeviceConnectionState.ConnectionSuccess)
                 {
                     Stop();
                     CallAction(ACT_DISABLE_POWER);
                 }
 
-                m_ConnectionState = DeviceConnectionState.DisconnectionSuccess;
+                _ConnectionState = DeviceConnectionState.DisconnectionSuccess;
                 FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "TOU disconnected");
             }
             catch (Exception)
             {
-                m_ConnectionState = DeviceConnectionState.DisconnectionError;
+                _ConnectionState = DeviceConnectionState.DisconnectionError;
                 FireConnectionEvent(DeviceConnectionState.DisconnectionError, "TOU disconnection error");
             }
         }
 
         internal DeviceState Start(TestParameters Parameters, Types.Commutation.TestParameters commParameters)
         {
-            m_Parameters = Parameters;
+            _Parameters = Parameters;
 
-            if (m_State == DeviceState.InProcess)
+            if (_State == DeviceState.InProcess)
                 throw new Exception("TOU test is already started");
 
-            m_Result = new TestResults()
+            _Result = new TestResults()
             {
-                TestTypeId = m_Parameters.TestTypeId,
+                TestTypeId = _Parameters.TestTypeId,
             };
-            m_Stop = false;
 
-            ClearWarning();
-
-            if (!m_IsTOUEmulation)
+            if (!_IsTOUEmulation)
             {
+                //Считываем регистр состояния
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
+                //Проверяем на наличие ошибки либо отключения
                 CheckDevStateThrow(devState);
+                if (devState != HWDeviceState.Ready)
+                {
+                    string error = "Launch test, TOU State not Ready, function Start";
+                    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, error);
+                    throw new Exception(error);
+                }
             }
 
             MeasurementLogicRoutine(commParameters);
 
-            return m_State;
+            return _State;
         }
 
         internal void Stop()
         {
             CallAction(ACT_STOP);
-            m_Stop = true;
-            m_State = DeviceState.Stopped;
+            _State = DeviceState.Stopped;
         }
 
         internal bool IsReadyToStart()
         {
             var devState = (Types.TOU.HWDeviceState)ReadRegister(REG_DEV_STATE);
-
-            return !((devState == Types.TOU.HWDeviceState.Fault) || (devState == Types.TOU.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
+            return devState == HWDeviceState.None;
         }
 
         #region Standart API
@@ -228,8 +232,8 @@ namespace SCME.Service.IO
         {
             ushort value = 0;
 
-            if (!m_IsTOUEmulation)
-                value = m_IOAdapter.Read16(m_Node, Address);
+            if (!_IsTOUEmulation)
+                value = _IOAdapter.Read16(_Node, Address);
 
             if (!SkipJournal)
                 SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
@@ -244,10 +248,10 @@ namespace SCME.Service.IO
                 SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
                                          string.Format("TOU @WriteRegister, address {0}, value {1}", Address, Value));
 
-            if (m_IsTOUEmulation)
+            if (_IsTOUEmulation)
                 return;
 
-            m_IOAdapter.Write16(m_Node, Address, Value);
+            _IOAdapter.Write16(_Node, Address, Value);
         }
 
         internal void CallAction(ushort Action, bool SkipJournal = false)
@@ -256,10 +260,10 @@ namespace SCME.Service.IO
                 SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
                                          string.Format("TOU @Call, action {0}", Action));
 
-            if (m_IsTOUEmulation)
+            if (_IsTOUEmulation)
                 return;
 
-            m_IOAdapter.Call(m_Node, Action);
+            _IOAdapter.Call(_Node, Action);
         }
 
         #endregion
@@ -268,53 +272,77 @@ namespace SCME.Service.IO
         {
             try
             {
-                m_State = DeviceState.InProcess;
+                _State = DeviceState.InProcess;
                 //FireTOUEvent(m_State, m_Result);
 
-                if (m_IsTOUEmulation)
+                if (_IsTOUEmulation)
                 {
                     Random rand = new Random(DateTime.Now.Millisecond);
 
-                    m_Result.ITM = (float)rand.NextDouble() * 1000;
-                    m_Result.TGD = (float)rand.NextDouble() * 1000;
-                    m_Result.TGT = (float)rand.NextDouble() * 1000;
+                    var randValue = rand.Next(0, 2);
 
-                    Thread.Sleep(500);
-                    //проверяем отображение Problem, Warning, Fault
-                    FireNotificationEvent( HWWarningReason.Unknown, HWFaultReason.NoBatteryCharge, HWDisableReason.None);
-                    Thread.Sleep(500);
+                    if (randValue == 0)
+                    {
+                        _State = DeviceState.Problem;
+                        Thread.Sleep(500);
+                        //проверяем отображение Problem, Warning, Fault
+                        FireNotificationEvent(HWWarningReason.AnperageOutOfRange, HWFaultReason.NoPotensialSignal, HWDisableReason.None);
+                        Thread.Sleep(500);
+                        FireTOUEvent(_State, _Result);
+
+
+                    }
+                    else
+                    {
+                        Thread.Sleep(2000);
+                        _Result.ITM = (float)rand.NextDouble() * 1000;
+                        _Result.TGD = (float)rand.NextDouble() * 1000;
+                        _Result.TGT = (float)rand.NextDouble() * 1000;
+                        _State = DeviceState.Success;
+                        FireTOUEvent(_State, _Result);
+                    }
                   
                 }
                 else
                 {
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.TOU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                    if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.TOU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
                     {
-                        m_State = DeviceState.Fault;
-                        FireTOUEvent(m_State, m_Result);
+                        _State = DeviceState.Fault;
+                        FireTOUEvent(_State, _Result);
                         return;
                     }
 
-                    WriteRegister(REG_CURRENT_VALUE, m_Parameters.ITM);
+                    WriteRegister(REG_CURRENT_VALUE, _Parameters.ITM);
                     CallAction(ACT_START_TEST);
-                    WaitState(HWDeviceState.PowerReady);
+                    WaitState(HWDeviceState.Ready);
 
                     ushort finish = ReadRegister(REG_TEST_FINISHED);
-                    if (finish != OPRESULT_OK)
-                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+                    if (finish == OPRESULT_OK)
+                    {
+                        _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
+                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
+                        _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
 
-                    m_Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                    m_Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
-                    m_Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
+                        _State = DeviceState.Success;
+                        FireTOUEvent(_State, _Result);
+                    }
+                    else
+                    {
+                        FireTOUEvent(DeviceState.Problem, _Result);
+
+                        HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
+                        HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
+                        FireNotificationEvent(warningReason, faultReason, HWDisableReason.None);
+                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+                    }
                 }
 
-                m_State = DeviceState.Success;
-                FireTOUEvent(m_State, m_Result);
             }
 
             catch (Exception ex)
             {
-                m_State = DeviceState.Fault;
-                FireTOUEvent(m_State, m_Result);
+                _State = DeviceState.Fault;
+                FireTOUEvent(_State, _Result);
                 FireExceptionEvent(ex.Message);
 
                 throw;
@@ -483,7 +511,7 @@ namespace SCME.Service.IO
         private void FireConnectionEvent(DeviceConnectionState State, string Message)
         {
             SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Info, Message);
-            m_Communication.PostDeviceConnectionEvent(ComplexParts.TOU, State, Message);
+            _Communication.PostDeviceConnectionEvent(ComplexParts.TOU, State, Message);
         }
 
         private void FireTOUEvent(DeviceState State, TestResults Result)
@@ -494,7 +522,7 @@ namespace SCME.Service.IO
                 message = string.Format("TOU test result {0} {1} {2}", Result.ITM, Result.TGD, Result.TGT);
 
             SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Info, message);
-            m_Communication.PostTOUEvent(State, Result);
+            _Communication.PostTOUEvent(State, Result);
         }
 
         private void FireNotificationEvent(HWWarningReason Warning, HWFaultReason Fault, HWDisableReason Disable)
@@ -504,13 +532,13 @@ namespace SCME.Service.IO
                                              "TOU device notification: problem None, warning {0}, fault {1}, disable {2}",
                                              Warning, Fault, Disable));
 
-            m_Communication.PostTOUNotificationEvent(Warning, Fault, Disable);
+            _Communication.PostTOUNotificationEvent(Warning, Fault, Disable);
         }
 
         private void FireExceptionEvent(string Message)
         {
             SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Error, Message);
-            m_Communication.PostExceptionEvent(ComplexParts.TOU, Message);
+            _Communication.PostExceptionEvent(ComplexParts.TOU, Message);
         }
 
         #endregion

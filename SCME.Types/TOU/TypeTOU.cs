@@ -17,9 +17,11 @@ namespace SCME.Types.TOU
         [EnumMember]
         Disabled = 2,
         [EnumMember]
-        PowerReady = 3,
+        Charging = 3,
         [EnumMember]
-        InProcess = 4
+        Ready = 4,
+        [EnumMember]
+        InProcess = 5
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -34,7 +36,7 @@ namespace SCME.Types.TOU
         [DataMember]
         public float TGT { get; set; }
 
-        public TestResults(){}
+        public TestResults() { }
 
         public override string ToString()
         {
@@ -100,9 +102,18 @@ namespace SCME.Types.TOU
     {
         [EnumMember]
         None = 0,
-
         [EnumMember]
-        NoBatteryCharge = 1
+        NoControlNoPower = 1, // Отсутствие тока управления и силового тока
+        [EnumMember]
+        NoPower = 2, // Отсутствие силового тока
+        [EnumMember]
+        Short = 3, // КЗ на выходе
+        [EnumMember]
+        NoPotensialSignal = 4,// Нет сигнала с потенциальной линии
+        [EnumMember]
+        Overflow90 = 5, // Переполнение счётчика уровня 90%
+        [EnumMember]
+        Overflow10 = 6, // Переполнение счётчика уровня 10%
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -118,7 +129,7 @@ namespace SCME.Types.TOU
         [EnumMember]
         None = 0,
         [EnumMember]
-        Unknown = 1
+        AnperageOutOfRange = 1 // Измеренное значение тока вне диапазона
     };
 
 
