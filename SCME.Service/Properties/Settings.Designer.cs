@@ -187,7 +187,7 @@ namespace SCME.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DisableResultDB {
             get {
                 return ((bool)(this["DisableResultDB"]));
@@ -196,7 +196,7 @@ namespace SCME.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DisableLogDB {
             get {
                 return ((bool)(this["DisableLogDB"]));
@@ -457,7 +457,7 @@ namespace SCME.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MME002")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
         public string MMECode {
             get {
                 return ((string)(this["MMECode"]));

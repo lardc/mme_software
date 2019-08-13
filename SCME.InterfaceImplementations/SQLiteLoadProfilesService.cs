@@ -76,6 +76,7 @@ namespace SCME.InterfaceImplementations
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                         RACTestParameters = new List<Types.RAC.TestParameters>(),
+                        TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                         ParametersClamp = profile.ParametersClamp,
@@ -104,6 +105,7 @@ namespace SCME.InterfaceImplementations
                             ATUTestParameters = new List<Types.ATU.TestParameters>(),
                             QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                             RACTestParameters = new List<Types.RAC.TestParameters>(),
+                            TOUTestParameters = new List<Types.TOU.TestParameters>(),
                             CommTestParameters = childProfile.ParametersComm,
                             IsHeightMeasureEnabled = childProfile.IsHeightMeasureEnabled,
                             ParametersClamp = childProfile.ParametersClamp,
@@ -164,6 +166,10 @@ namespace SCME.InterfaceImplementations
                 var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                 if (rac != null)
                     profileItem.RACTestParameters.Add(rac);
+
+                var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                if (tou != null)
+                    profileItem.TOUTestParameters.Add(tou);
             }
         }
 
@@ -276,6 +282,7 @@ namespace SCME.InterfaceImplementations
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                         RACTestParameters = new List<Types.RAC.TestParameters>(),
+                        TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                         ParametersClamp = profile.ParametersClamp,
@@ -317,6 +324,10 @@ namespace SCME.InterfaceImplementations
                         var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                         if (rac != null)
                             profileItem.RACTestParameters.Add(rac);
+
+                        var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                        if (tou != null)
+                            profileItem.TOUTestParameters.Add(tou);
                     }
 
                     profilesList.Add(profileItem);
@@ -370,6 +381,11 @@ namespace SCME.InterfaceImplementations
                 case (int)TestParametersType.RAC:
                     var racParams = FillRacConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(racParams);
+                    break;
+
+                case (int)TestParametersType.TOU:
+                    var touParams = FillTOUConditions(testTypeId);
+                    profile.TestParametersAndNormatives.Add(touParams);
                     break;
 
                 case (int)TestParametersType.Clamping:
@@ -532,6 +548,35 @@ namespace SCME.InterfaceImplementations
 
                     case "RAC_ResVoltage":
                         testParams.ResVoltage = ushort.Parse(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
+        private Types.TOU.TestParameters FillTOUConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.TOU.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "TOU_En":
+                        testParams.IsEnabled = bool.Parse(result.Value.ToString());
+                        break;
+
+                    case "TOU_ITM":
+                        testParams.ITM = ushort.Parse(result.Value.ToString());
                         break;
                 }
             }
@@ -975,6 +1020,7 @@ namespace SCME.InterfaceImplementations
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                         RACTestParameters = new List<Types.RAC.TestParameters>(),
+                        TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                         ParametersClamp = profile.ParametersClamp,
@@ -1011,6 +1057,10 @@ namespace SCME.InterfaceImplementations
                         var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                         if (rac != null)
                             Result.RACTestParameters.Add(rac);
+
+                        var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                        if (tou != null)
+                            Result.TOUTestParameters.Add(tou);
                     }
                 }
 

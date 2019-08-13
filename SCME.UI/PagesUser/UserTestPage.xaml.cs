@@ -674,6 +674,7 @@ namespace SCME.UI.PagesUser
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
                         RACTestParameters = Profile.TestParametersAndNormatives.OfType<Types.RAC.TestParameters>().ToArray(),
+                        TOUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.TOU.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
                         IsHeightMeasureEnabled = paramsClamp.IsHeightMeasureEnabled,
                         IsHeightOk = HeightMeasureResult

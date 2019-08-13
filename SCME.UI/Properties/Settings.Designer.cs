@@ -88,7 +88,7 @@ namespace SCME.UI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1234")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string TechPassword {
             get {
                 return ((string)(this["TechPassword"]));
@@ -352,7 +352,7 @@ namespace SCME.UI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MME008")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
         public string MMECode {
             get {
                 return ((string)(this["MMECode"]));

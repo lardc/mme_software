@@ -31,7 +31,6 @@ namespace SCME.UI
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
 
-
         internal static MainWindow Main { get; set; }
 
         internal static ControlLogic Net { get; set; }
@@ -63,6 +62,12 @@ namespace SCME.UI
         }
 
         internal static ProfileSelectionPage ProfileSelection { get; set; }
+        //{
+        //    get { return _ProfileSelection ?? (_ProfileSelection = new ProfileSelectionPage()); }
+        //    set { _ProfileSelection = value; }
+        //}
+
+        //internal static ProfileSelectionPage ProfileSelection { get; set; }
 
         internal static UserTestPage UserTest
         {

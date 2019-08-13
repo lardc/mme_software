@@ -149,8 +149,9 @@ namespace SCME.Service
 
         public List<ProfileItem> GetProfileItemsByMmeCode(string mmeCode)
         {
-            if (Properties.Settings.Default.DisableResultDB)
-                return null;
+            //Почему ???
+            //if (Properties.Settings.Default.DisableResultDB)
+            //    return null;
 
             try
             {
@@ -166,8 +167,9 @@ namespace SCME.Service
 
         public ProfileItem GetProfileByProfName(string profName, string mmmeCode, ref bool Found)
         {
-            if (Properties.Settings.Default.DisableResultDB)
-                return null;
+            //Почему ???
+            //if (Properties.Settings.Default.DisableResultDB)
+            //    return null;
 
             try
             {

@@ -88,7 +88,9 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("QrrTq_OffStateVoltage", "QrrTq_OffStateVoltage", true),
                 new Tuple<string, string, bool>("QrrTq_OsvRate", "QrrTq_OsvRate", true),
                 new Tuple<string, string, bool>("RAC_En", "RAC_En", true),
-                new Tuple<string, string, bool>("RAC_ResVoltage", "RAC_ResVoltage", true)
+                new Tuple<string, string, bool>("RAC_ResVoltage", "RAC_ResVoltage", true),
+                new Tuple<string, string, bool>("TOU_En", "TOU_En", true),
+                new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM", true)
             };
 
         private readonly Tuple<string, string, bool>[] _mParamsList = new[]
@@ -139,7 +141,8 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, int>("ERR_UBR", "UBR out of range", 36),
                 new Tuple<string, string, int>("ERR_UPRSM", "UPRSM out of range", 37),
                 new Tuple<string, string, int>("ERR_IPRSM", "IPRSM out of range", 38),
-                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39)
+                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39),
+                new Tuple<string, string, int>("ERR_TOU", "PRSM out of range", 39)
             };
 
         private readonly Tuple<int, string>[] m_TestTypes = new[]
@@ -196,6 +199,7 @@ namespace SCME.InterfaceImplementations
                 ATUTestParameters = new List<Types.ATU.TestParameters>(),
                 QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                 RACTestParameters = new List<Types.RAC.TestParameters>(),
+                TOUTestParameters = new List<Types.TOU.TestParameters>(),
                 CommTestParameters = profile.ParametersComm,
                 IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                 ParametersClamp = profile.ParametersClamp,
@@ -235,7 +239,11 @@ namespace SCME.InterfaceImplementations
                 var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                 if (rac != null)
                     profileItem.RACTestParameters.Add(rac);
-            }
+
+                var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                if (tou != null)
+                    profileItem.TOUTestParameters.Add(tou);
+                }
             profileItems.Add(profileItem);
 
         }

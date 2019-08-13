@@ -360,6 +360,17 @@ namespace SCME.UI.PagesUser
                         }
 
                         break;
+
+                    case TestParametersType.TOU:
+                        for (int i = 0; i < profileItem.TOUTestParameters.Count; i++)
+                        {
+                            Test = profileItem.TOUTestParameters[i];
+
+                            if (Test.Order == order)
+                                return Test;
+                        }
+
+                        break;
                 }
             }
 
@@ -395,6 +406,7 @@ namespace SCME.UI.PagesUser
                 int ATUCount = 0;
                 int QrrTqCount = 0;
                 int RACCount = 0;
+                int TOUCount = 0;
 
                 foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
                 {
@@ -495,6 +507,20 @@ namespace SCME.UI.PagesUser
 
                         RACCount++;
                     }
+
+                    var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                    if (tou != null)
+                    {
+                        var r = TestByTypeAndOrder(actualProfileItem, TestParametersType.TOU, tou.Order);
+
+                        if (r == null)
+                            return true;
+
+                        if (r.IsHasChanges(tou))
+                            return true;
+
+                        TOUCount++;
+                    }
                 }
 
                 //проверяем, что количество параметров в принятых actualProfileItem и profile одинаково
@@ -529,6 +555,11 @@ namespace SCME.UI.PagesUser
                     return Result;
 
                 Result = (RACCount != actualProfileItem.RACTestParameters.Count);
+
+                if (Result)
+                    return Result;
+
+                Result = (TOUCount != actualProfileItem.TOUTestParameters.Count);
 
                 if (Result)
                     return Result;
@@ -577,6 +608,9 @@ namespace SCME.UI.PagesUser
 
                     foreach (var r in Source.RACTestParameters)
                         Dest.TestParametersAndNormatives.Add(r);
+
+                    foreach (var t in Source.TOUTestParameters)
+                        Dest.TestParametersAndNormatives.Add(t);
                 }
             }
         }

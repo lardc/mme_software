@@ -475,6 +475,7 @@ namespace SCME.InterfaceImplementations
             InsertAtuParameterValues(result, devId, trans);
             InsertQrrTqParameterValues(result, devId, trans);
             InsertRacParameterValues(result, devId, trans);
+            InsertTOUParameterValues(result, devId, trans);
         }
 
         private void InsertGateParameterValues(ResultItem result, long devId, SqlTransaction trans)
@@ -563,6 +564,19 @@ namespace SCME.InterfaceImplementations
                 if (result.RACTestParameters[i].IsEnabled)
                 {
                     InsertParameterValue(devId, "ResultR", result.RAC[i].ResultR, result.ProfileKey, "RAC", trans);
+                }
+            }
+        }
+
+        private void InsertTOUParameterValues(ResultItem result, long devId, SqlTransaction trans)
+        {
+            for (int i = 0; i < result.TOUTestParameters.Length; i++)
+            {
+                if (result.TOUTestParameters[i].IsEnabled)
+                {
+                    InsertParameterValue(devId, "TOU_ITM", result.TOU[i].ITM, result.ProfileKey, "TOU", trans);
+                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, "TOU", trans);
+                    InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.ProfileKey, "TOU", trans);
                 }
             }
         }

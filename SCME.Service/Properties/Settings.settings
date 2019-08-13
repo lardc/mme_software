@@ -57,10 +57,10 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DisableResultDB" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DisableLogDB" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="CommutationEmulation" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
@@ -147,7 +147,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MMECode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">MME002</Value>
+      <Value Profile="(Default)">MME005</Value>
     </Setting>
     <Setting Name="QrrTqNode" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">10</Value>

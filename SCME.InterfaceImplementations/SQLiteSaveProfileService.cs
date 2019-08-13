@@ -20,17 +20,70 @@ namespace SCME.InterfaceImplementations
         public SQLiteSaveProfileService(SQLiteConnection connection)
         {
             _connection = connection;
-            _testTypes = new Dictionary<string, long>(10);
+            _testTypes = new Dictionary<string, long>(11);
             _conditions = new Dictionary<string, long>(64);
             _params = new Dictionary<string, long>(64);
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
+            MigrationTOU();
         }
 
         private readonly Dictionary<string, long> _testTypes;
         private readonly Dictionary<string, long> _conditions;
         private readonly Dictionary<string, long> _params;
         private int orderNew;
+
+        private void MigrationTOU()
+        {
+            
+            using (var cmd = _connection.CreateCommand())
+            {
+                long countTOUTypes;
+
+                Action throwFail = () => throw new Exception($"MigrationTOU failed: {cmd.CommandText}"); 
+
+                cmd.CommandText = @"SELECT COUNT (*) FROM TEST_TYPE WHERE NAME = 'TOU'";
+                countTOUTypes = (long)cmd.ExecuteScalar();
+                if(countTOUTypes == 0)
+                {
+                    cmd.CommandText = @"INSERT INTO TEST_TYPE (ID, NAME) VALUES (13, 'TOU')";
+                    int countInsertedLines = cmd.ExecuteNonQuery();
+                    if (countInsertedLines != 1)
+                        throwFail();
+                }
+
+                cmd.CommandText = @"SELECT COUNT (*) FROM PARAMS WHERE PARAM_NAME = 'ITM'";
+                countTOUTypes = (long)cmd.ExecuteScalar();
+                if (countTOUTypes == 0)
+                {
+                    cmd.CommandText = @"INSERT INTO PARAMS (PARAM_ID, PARAM_NAME, PARAM_NAME_LOCAL, PARAM_IS_HIDE) VALUES (24, 'ITM', 'ITM, A', 0)";
+                    int countInsertedLines = cmd.ExecuteNonQuery();
+                    if (countInsertedLines != 1)
+                        throwFail();
+                }
+
+                cmd.CommandText = @"SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = 'TOU_En'";
+                countTOUTypes = (long)cmd.ExecuteScalar();
+                if (countTOUTypes == 0)
+                {
+                    cmd.CommandText = @"INSERT INTO CONDITIONS (COND_ID, COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES (57, 'TOU_En', 'TOU_En', 1)";
+                    int countInsertedLines = cmd.ExecuteNonQuery();
+                    if (countInsertedLines != 1)
+                        throwFail();
+                }
+
+                cmd.CommandText = @"SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = 'TOU_ITM'";
+                countTOUTypes = (long)cmd.ExecuteScalar();
+                if (countTOUTypes == 0)
+                {
+                    cmd.CommandText = @"INSERT INTO CONDITIONS (COND_ID, COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES (58, 'TOU_ITM', 'TOU_ITM', 1)";
+                    int countInsertedLines = cmd.ExecuteNonQuery();
+                    if (countInsertedLines != 1)
+                        throwFail();
+                }
+            }
+        }
+
 
         /// <summary>
         /// Populate dictionaries from db
@@ -157,10 +210,18 @@ namespace SCME.InterfaceImplementations
                         InsertParameters(racTestParameter, testTypeId, profileId);
                     }
 
+                    foreach (var touTestParameter in profileItem.TOUTestParameters)
+                    {
+                        var testTypeId = InsertTOUTestType(profileId, touTestParameter.Order);
+                        touTestParameter.IsEnabled = true;
+                        InsertConditions(touTestParameter, testTypeId, profileId);
+                        InsertParameters(touTestParameter, testTypeId, profileId);
+                    }
+
                     trans.Commit();
                     return profileId;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     trans.Rollback();
                     throw;
@@ -406,6 +467,11 @@ namespace SCME.InterfaceImplementations
             return InsertTestType(_testTypes["RAC"], profileId, order);
         }
 
+        private long InsertTOUTestType(long profileId, int order)
+        {
+            return InsertTestType(_testTypes["TOU"], profileId, order);
+        }
+
         private long InsertTestType(long typeId, long profileId, int order = 0)
         {
             orderNew++;
@@ -471,6 +537,10 @@ namespace SCME.InterfaceImplementations
 
                 case TestParametersType.RAC:
                     InsertRacConditions(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId);
+                    break;
+
+                case TestParametersType.TOU:
+                    InsertTOUConditions(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId);
                     break;
             }
         }
@@ -586,6 +656,12 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "RAC_ResVoltage", testParameters.ResVoltage);
         }
 
+        private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId)
+        {
+            InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled);
+            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM);
+        }
+
         private void InsertCondition(long testTypeId, long profileId, string name, object value)
         {
             var profCondInsertCommand = new SQLiteCommand("INSERT INTO PROF_COND(PROF_TESTTYPE_ID, PROF_ID, COND_ID, VALUE) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @COND_ID, @VALUE)", _connection);
@@ -629,6 +705,9 @@ namespace SCME.InterfaceImplementations
                     break;
                 case TestParametersType.RAC:
                     InsertRacParameters(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId);
+                    break;
+                case TestParametersType.TOU:
+                    InsertTOUParameters(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId);
                     break;
             }
         }
@@ -691,6 +770,11 @@ namespace SCME.InterfaceImplementations
         private void InsertRacParameters(Types.RAC.TestParameters racTestParameters, long testTypeId, long profileId)
         {
             InsertParameter(testTypeId, profileId, "ResultR", racTestParameters.ResultR, DBNull.Value);
+        }
+
+        private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId)
+        {
+            InsertParameter(testTypeId, profileId, "ITM", touTestParameters.ITM, DBNull.Value);
         }
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max)

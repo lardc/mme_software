@@ -84,7 +84,9 @@ namespace SCME.Service
             try
             {
                 Results = new ResultsJournal();
-                Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
+                ///??
+                //Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
+                Results.Open(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
 
                 if (!Settings.Default.DisableResultDB)
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, Resources.Log_SystemHost_Result_journal_opened);
