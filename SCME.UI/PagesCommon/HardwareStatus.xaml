@@ -149,8 +149,8 @@
                                               Title="{x:Static res:Resources.TOU}"
                                               InitializeTimeout="40000" OperationTimeout="40000"
                                               DisableAvailable="True"                                             
-                                              Backcolor="{StaticResource xRed1}"
-                                              Logo="" 
+                                              Backcolor="{StaticResource xGreen2}"
+                                              Logo="{StaticResource TOUPath}" 
                                               Visibility="{Binding Source={x:Static res:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}" />
 
         </UniformGrid>
