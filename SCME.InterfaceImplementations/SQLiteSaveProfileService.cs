@@ -25,7 +25,6 @@ namespace SCME.InterfaceImplementations
             _params = new Dictionary<string, long>(64);
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
-            MigrationTOU();
         }
 
         private readonly Dictionary<string, long> _testTypes;
@@ -33,59 +32,7 @@ namespace SCME.InterfaceImplementations
         private readonly Dictionary<string, long> _params;
         private int orderNew;
 
-        private void MigrationTOU()
-        {
-            
-            using (var cmd = _connection.CreateCommand())
-            {
-                long countTOUTypes;
-
-                Action throwFail = () => throw new Exception($"MigrationTOU failed: {cmd.CommandText}"); 
-
-                cmd.CommandText = @"SELECT COUNT (*) FROM TEST_TYPE WHERE NAME = 'TOU'";
-                countTOUTypes = (long)cmd.ExecuteScalar();
-                if(countTOUTypes == 0)
-                {
-                    cmd.CommandText = @"INSERT INTO TEST_TYPE (ID, NAME) VALUES (13, 'TOU')";
-                    int countInsertedLines = cmd.ExecuteNonQuery();
-                    if (countInsertedLines != 1)
-                        throwFail();
-                }
-
-                cmd.CommandText = @"SELECT COUNT (*) FROM PARAMS WHERE PARAM_NAME = 'ITM'";
-                countTOUTypes = (long)cmd.ExecuteScalar();
-                if (countTOUTypes == 0)
-                {
-                    cmd.CommandText = @"INSERT INTO PARAMS (PARAM_ID, PARAM_NAME, PARAM_NAME_LOCAL, PARAM_IS_HIDE) VALUES (24, 'ITM', 'ITM, A', 0)";
-                    int countInsertedLines = cmd.ExecuteNonQuery();
-                    if (countInsertedLines != 1)
-                        throwFail();
-                }
-
-                cmd.CommandText = @"SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = 'TOU_En'";
-                countTOUTypes = (long)cmd.ExecuteScalar();
-                if (countTOUTypes == 0)
-                {
-                    cmd.CommandText = @"INSERT INTO CONDITIONS (COND_ID, COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES (57, 'TOU_En', 'TOU_En', 1)";
-                    int countInsertedLines = cmd.ExecuteNonQuery();
-                    if (countInsertedLines != 1)
-                        throwFail();
-                }
-
-                cmd.CommandText = @"SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = 'TOU_ITM'";
-                countTOUTypes = (long)cmd.ExecuteScalar();
-                if (countTOUTypes == 0)
-                {
-                    cmd.CommandText = @"INSERT INTO CONDITIONS (COND_ID, COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES (58, 'TOU_ITM', 'TOU_ITM', 1)";
-                    int countInsertedLines = cmd.ExecuteNonQuery();
-                    if (countInsertedLines != 1)
-                        throwFail();
-                }
-            }
-        }
-
-
-        /// <summary>
+           /// <summary>
         /// Populate dictionaries from db
         /// </summary>
         private void PopulateDictionaries()

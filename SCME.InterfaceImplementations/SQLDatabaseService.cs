@@ -9,7 +9,7 @@ using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
 using System.Windows.Forms;
-
+using System.Collections.Generic;
 
 namespace SCME.InterfaceImplementations
 {
@@ -19,31 +19,32 @@ namespace SCME.InterfaceImplementations
 
         #region Properties
 
-        private const string InsertConditionCmdTemplate =
+        public const string InsertConditionCmdTemplate =
             "INSERT INTO CONDITIONS(COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES(@COND_NAME, @COND_NAME_LOCAL, @COND_IS_TECH)";
 
-        private const string InsertParamCmdTemplate =
+        public const string InsertParamCmdTemplate =
             "INSERT INTO PARAMS(PARAM_NAME, PARAM_NAME_LOCAL, PARAM_IS_HIDE) VALUES(@PARAM_NAME, @PARAM_NAME_LOCAL, @PARAM_IS_HIDE)";
 
-        private const string InsertTestTypeCmdTemplate = "INSERT INTO TEST_TYPE(TEST_TYPE_ID, TEST_TYPE_NAME) VALUES(@ID, @NAME)";
+        public const string InsertTestTypeCmdTemplate =
+            "INSERT INTO TEST_TYPE(TEST_TYPE_ID, TEST_TYPE_NAME) VALUES(@ID, @NAME)";
 
-        private const string InsertErrorCmdTemplate =
+        public const string InsertErrorCmdTemplate =
             "INSERT INTO ERRORS(ERR_NAME, ERR_NAME_LOCAL, ERR_CODE) VALUES(@ERR_NAME, @ERR_NAME_LOCAL, @ERR_CODE)";
 
-        private readonly string[] _mDbTablesList =
+        public static readonly string[] _mDbTablesList =
             {
                 "MME_CODES_TO_PROFILES", "PROF_COND", "PROF_PARAM", "PROF_TEST_TYPE",
                 "DEV_PARAM",  "DEV_ERR", "GROUPS", "DEVICES", "CONDITIONS", "PARAMS", "PROFILES",
                 "ERRORS", "TEST_TYPE", "MME_CODES"
             };
 
-        private readonly string[] _mDbTablesListReseed =
+        public static readonly string[] _mDbTablesListReseed =
             {
                 "PROF_TEST_TYPE", "GROUPS", "DEVICES", "CONDITIONS", "PARAMS", "PROFILES",
                 "ERRORS", "MME_CODES", "DEV_PARAM"
             };
 
-        private readonly Tuple<string, string, bool>[] _mConditionsList =
+        public static readonly Tuple<string, string, bool>[] _mConditionsList =
             {
                 new Tuple<string, string, bool>("Gate_En", "Gate_En", true),
                 new Tuple<string, string, bool>("Gate_EnableCurrent", "Gate_EnableCurrent", false),
@@ -99,9 +100,11 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("QrrTq_OsvRate", "QrrTq_OsvRate", true),
                 new Tuple<string, string, bool>("RAC_En", "RAC_En", true),
                 new Tuple<string, string, bool>("RAC_ResVoltage", "RAC_ResVoltage", true),
+                new Tuple<string, string, bool>("TOU_En", "TOU_En", true),
+                new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM", true),
             };
 
-        private readonly Tuple<string, string, bool>[] _mParamsList =
+        public static readonly Tuple<string, string, bool>[] _mParamsList =
             {
                 new Tuple<string, string, bool>("K", "K", true),
                 new Tuple<string, string, bool>("RG", "RG, Ohm", false),
@@ -125,10 +128,14 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("TRR", "TRR, us", false),
                 new Tuple<string, string, bool>("DCFactFallRate", "dIDC/dt, A/us", false),
                 new Tuple<string, string, bool>("TQ", "TQ, us", false),
-                new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false)
+                new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false),
+                new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM, A", false),
+                new Tuple<string, string, bool>("TOU_TGD", "TOU_TGD, us", false),
+                new Tuple<string, string, bool>("TOU_TGT", "TOU_TGT, us", false),
+
             };
 
-        private readonly Tuple<string, string, int>[] _mDefectCodes =
+        public static readonly Tuple<string, string, int>[] _mDefectCodes =
             {
                 new Tuple<string, string, int>("ERR_KELVIN", "Error connection", 11),
                 new Tuple<string, string, int>("ERR_RG", "RG out of range", 12),
@@ -149,10 +156,18 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, int>("ERR_UBR", "UBR out of range", 36),
                 new Tuple<string, string, int>("ERR_UPRSM", "UPRSM out of range", 37),
                 new Tuple<string, string, int>("ERR_IPRSM", "IPRSM out of range", 38),
-                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39)
+                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39),
+                new Tuple<string, string, int>("ERR_NO_CTRL_NO_PWR", "Lack of control current and power current", 40),
+                new Tuple<string, string, int>("ERR_NO_PWR", "Lack of power current", 41),
+                new Tuple<string, string, int>("ERR_SHORT", "Short circuit on output", 42),
+                new Tuple<string, string, int>("ERR_NO_POT_SIGNAL", "There is no signal from the potential line", 43),
+                new Tuple<string, string, int>("ERR_OVERFLOW90", "90% Level Counter Overflow", 44),
+                new Tuple<string, string, int>("ERR_OVERFLOW10", "Overflow level counter 10%", 45),
+
+
             };
 
-        private readonly Tuple<int, string>[] m_TestTypes =
+        public static readonly Tuple<int, string>[] m_TestTypes =
             {
                 new Tuple<int, string>(1, "Gate"),
                 new Tuple<int, string>(2, "SL"),
@@ -164,21 +179,29 @@ namespace SCME.InterfaceImplementations
                 new Tuple<int, string>(8, "ATU"),
                 new Tuple<int, string>(9, "QrrTq"),
                 new Tuple<int, string>(10, "RAC"),
-                new Tuple<int, string>(11, "TOU")
+                new Tuple<int, string>(13, "TOU")
             };
 
-        private readonly string[] _mmeCodes = { };
+        public static readonly string[] _mmeCodes ={
+            "MME002",
+            "MME005",
+            "MME006",
+            "MME007",
+            "MME008",
+            "MME009"
+        };
 
         private readonly SqlConnection _mConnection;
 
         #endregion
 
-        public SQLDatabaseService(string connectionString)
+        public SQLDatabaseService(string connectionString, bool withoutProfilesService = false)
         {
             _mConnection =
                 new SqlConnection(connectionString);
 
-            _profilesService = new SQLProfilesService(connectionString);
+            if(withoutProfilesService == false)
+                _profilesService = new SQLProfilesService(connectionString);
         }
 
         public void ImportProfiles(string filePath)
@@ -747,6 +770,11 @@ namespace SCME.InterfaceImplementations
                     throw;
                 }
             }
+        }
+
+        public void Migrate()
+        {
+            throw new NotImplementedException();
         }
     }
 }
