@@ -309,7 +309,7 @@ namespace SCME.Service.IO
                         return;
                     }
 
-                    WriteRegister(REG_CURRENT_VALUE, _Parameters.ITM);
+                    WriteRegister(REG_CURRENT_VALUE, _Parameters.ITM_Input);
                     CallAction(ACT_START_TEST);
                     WaitState(HWDeviceState.Ready);
 

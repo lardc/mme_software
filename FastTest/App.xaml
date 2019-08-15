@@ -4,16 +4,5 @@
              xmlns:local="clr-namespace:FastTest"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/CommonResources.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/LabelResource.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/ButtonResource.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/CheckBoxResource.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/ComboBoxResource.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/ProgressBarResources.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/Constraints.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using SCME.EntityDataDB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +22,23 @@ namespace FastTest
     /// </summary>
     public partial class MainWindow : Window
     {
+
+       
         public MainWindow()
         {
+            Entities DB = new Entities();
+
+            try
+            {
+                var profilesByMME = DB.MME_CODES.Include(m=> m.MME_CODES_TO_PROFILES).Single(m => m.Name == "MME008").MME_CODES_TO_PROFILES.Select(m => m.PROFILE).GroupBy(m => m.PROF_NAME);
+                var highVersionProfiles = profilesByMME.Select(m => m.OrderByDescending(n => n.PROF_VERS).First()).ToList();
+
+
+            }
+            catch(Exception ex)
+            {
+
+            }
             InitializeComponent();
         }
 

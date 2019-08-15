@@ -621,7 +621,7 @@ namespace SCME.InterfaceImplementations
         private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
             InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled, trans);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM, trans);
+            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input, trans);
         }
 
         private void InsertCondition(long testTypeId, long profileId, string name, object value, SqlTransaction trans)
@@ -729,7 +729,7 @@ namespace SCME.InterfaceImplementations
 
         private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
-            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM, DBNull.Value, trans);
+            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Input, DBNull.Value, trans);
         }
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max, SqlTransaction trans)

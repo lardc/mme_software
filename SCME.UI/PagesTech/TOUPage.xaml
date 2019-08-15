@@ -81,7 +81,7 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
-                          Text="{Binding Input.ITM}" />
+                          Text="{Binding Input.ITM_Input}" />
 
                 <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
                 <Label Content="{x:Static res:Resources.ITM}"   Grid.Column="0"  Grid.Row="3" />

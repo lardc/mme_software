@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Linq;
+using SCME.EntityDataDB;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
@@ -17,8 +19,28 @@ namespace SCME.InterfaceImplementations
     {
         private readonly SQLiteConnection _connection;
 
+        private Entities GetContext => new Entities(ConnectionStringForEF);
+
+        private string _ConnectionStringForEF;
+        private string ConnectionStringForEF
+        {
+            get
+            {
+                return _ConnectionStringForEF;
+            }
+            set
+            {
+                string cs = value;
+                int index1 = cs.IndexOf("data source");
+                int index2 = cs.IndexOf(";");
+                _ConnectionStringForEF = cs.Substring(index1, index2 - index1);
+            }
+
+        }
+
         public SQLiteSaveProfileService(SQLiteConnection connection)
         {
+            ConnectionStringForEF = connection.ConnectionString;
             _connection = connection;
             _testTypes = new Dictionary<string, long>(11);
             _conditions = new Dictionary<string, long>(64);
@@ -352,16 +374,18 @@ namespace SCME.InterfaceImplementations
 
         private long GetProfileId(Guid profileKey)
         {
-            var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
-            profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
-            profileSelectCommand.Prepare();
-            profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
-            var possibleProfileId = profileSelectCommand.ExecuteScalar();
+            using(var db = GetContext)
+                return db.PROFILES.Where(m => m.PROF_GUID == profileKey).OrderByDescending(m => m.PROF_VERS).First().PROF_ID;
+            //var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
+            //profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+            //profileSelectCommand.Prepare();
+            //profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
+            //var possibleProfileId = profileSelectCommand.ExecuteScalar();
 
-            if (possibleProfileId == null)
-                throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
+            //if (possibleProfileId == null)
+            //    throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
 
-            return (long)possibleProfileId;
+            //return (long)possibleProfileId;
         }
 
 
@@ -606,7 +630,7 @@ namespace SCME.InterfaceImplementations
         private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId)
         {
             InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM);
+            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input);
         }
 
         private void InsertCondition(long testTypeId, long profileId, string name, object value)
@@ -721,7 +745,9 @@ namespace SCME.InterfaceImplementations
 
         private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId)
         {
-            InsertParameter(testTypeId, profileId, "ITM", touTestParameters.ITM, DBNull.Value);
+            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Output, DBNull.Value);
+            InsertParameter(testTypeId, profileId, "TOU_TGD", touTestParameters.TGD, DBNull.Value);
+            InsertParameter(testTypeId, profileId, "TOU_TGT", touTestParameters.TGT, DBNull.Value);
         }
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max)
