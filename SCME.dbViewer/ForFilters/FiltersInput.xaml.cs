@@ -34,7 +34,14 @@ namespace SCME.dbViewer.ForFilters
         {
             if (position != null)
             {
-                this.Left = position.X;
+                double workAreaWidth = System.Windows.SystemParameters.WorkArea.Width;
+                double left;
+
+                if ((position.X + this.Width) > workAreaWidth)
+                    left = workAreaWidth - this.Width;
+                else left = position.X;
+
+                this.Left = left;
                 this.Top = position.Y;
             }
 

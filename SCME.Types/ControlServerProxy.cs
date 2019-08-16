@@ -61,9 +61,9 @@ namespace SCME.Types
 
         public bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersVTM,
                           BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
-                          Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping, TOU.TestParameters ParametersTOU)
+                          Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping)
         {
-            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
+            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping);
         }
 
         public void Stop()
@@ -234,9 +234,9 @@ namespace SCME.Types
 
         public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
-                          QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
+                          QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu)
         {
-            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
+            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu);
         }
 
         public bool StartHeating(int temperature)

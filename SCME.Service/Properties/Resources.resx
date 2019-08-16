@@ -145,7 +145,7 @@
     <value>Exit</value>
   </data>
   <data name="Log_LogicContainer_Requested_block_modes" xml:space="preserve">
-    <value>Requested block modes: Gate - {0}, SL - {1}, BVT - {2}, Clamp - {3}, dVdt - {4}, ATU - {5}, QrrTq - {6}, RAC - {7}, IH - {8}, TOU - {8}</value>
+    <value>Requested block modes: Gate - {0}, SL - {1}, BVT - {2}, Clamp - {3}, dVdt - {4}, ATU - {5}, QrrTq - {6}, RAC - {7}, IH - {8}</value>
   </data>
   <data name="Log_LogicContainer_Main_test_manual_stop" xml:space="preserve">
     <value>Main test manual stop</value>

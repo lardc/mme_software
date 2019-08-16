@@ -1708,6 +1708,15 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UDSM/URSM.
+        /// </summary>
+        public static string UseUdsmUrsm {
+            get {
+                return ResourceManager.GetString("UseUdsmUrsm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to В.
         /// </summary>
         public static string V {

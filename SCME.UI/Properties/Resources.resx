@@ -778,22 +778,28 @@
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
-  <data name="TOU" xml:space="preserve">
-    <value>TOU</value>
+  <data name="UseUdsmUrsm" xml:space="preserve">
+    <value>UDSM/URSM</value>
   </data>
-  <data name="Amperage" xml:space="preserve">
-    <value>Amperage</value>
+  <data name="IDSM_mA" xml:space="preserve">
+    <value>IDSM, mA</value>
   </data>
-  <data name="ITM" xml:space="preserve">
-    <value>ITM</value>
+  <data name="IRSM_mA" xml:space="preserve">
+    <value>IRSM, mA</value>
   </data>
-  <data name="TGD" xml:space="preserve">
-    <value>tGD</value>
+  <data name="VDSM_V" xml:space="preserve">
+    <value>VDSM, V</value>
   </data>
-  <data name="TGT" xml:space="preserve">
-    <value>tGT</value>
+  <data name="VRSM_V" xml:space="preserve">
+    <value>VRSM, V</value>
   </data>
-  <data name="TOUITM" xml:space="preserve">
-    <value>Amperage (ITM), A</value>
+  <data name="DeviceRTClass" xml:space="preserve">
+    <value>Class by RT</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="ErrorRealisation" xml:space="preserve">
+    <value>Error realisation</value>
   </data>
 </root>

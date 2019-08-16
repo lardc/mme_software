@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:ui="clr-namespace:SCME.UI"
-      xmlns:TOUTypes="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
@@ -249,7 +248,6 @@
                             <ComboBoxItem Content="ATU"></ComboBoxItem>
                             <ComboBoxItem Content="QrrTq"></ComboBoxItem>
                             <ComboBoxItem Content="RAC"></ComboBoxItem>
-                            <ComboBoxItem Content="TOU"></ComboBoxItem>
                         </ComboBox>
 
                         <Button Grid.Column="3" Margin="10" x:Name="ButtonAddTestParameters" Content="{x:Static res:Resources.Add}" Click="ButtonAddTestParameters_OnClick"></Button>
@@ -583,15 +581,15 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" FontSize="32" HorizontalAlignment="Center"
@@ -667,11 +665,13 @@
 
                     <Label Grid.Column="0" Grid.Row="6" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.Mode}" />
-                    <ComboBox Grid.Column="1" Grid.Row="6" Margin="10" Padding="5"
+                    <ComboBox x:Name="cmbMeasurementMode" Grid.Column="1" Grid.Row="6" Margin="10" Padding="5"
                               ItemsSource="{Binding Source={StaticResource DataFromMeasurementModeEnum}}"
                               SelectedItem="{Binding SelectedItem.MeasurementMode, Converter={StaticResource E2S}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource CComboboxStyle}" />
+                              Style="{StaticResource CComboboxStyle}"/>
 
+                    <Label Grid.Column="2" Grid.Row="6" Margin="10" HorizontalAlignment="Right" Content="{x:Static res:Resources.UseUdsmUrsm}"/>
+                    <CheckBox x:Name="chbUseUdsmUrsm" Grid.Column="3" Grid.Row="6" Margin="4" IsChecked="{Binding SelectedItem.UseUdsmUrsm, ElementName=TestParameters}"/>
 
                     <Label Grid.Column="0" Grid.Row="8" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MinVdrm_V}"
@@ -908,36 +908,6 @@
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.RACResVoltage}"/>
                     <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding SelectedItem.ResVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
-                </Grid>
-            </TabItem>
-
-            <TabItem>
-                <Grid Margin="50,30" Height="640">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.TOU}" />
-
-                    <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}"/>
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" 
-                                                    Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
-                                                    Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}"
-                                                    Text="{Binding SelectedItem.ITM_Input, ElementName=TestParameters, UpdateSourceTrigger=LostFocus}"/>
-                    
                 </Grid>
             </TabItem>
 

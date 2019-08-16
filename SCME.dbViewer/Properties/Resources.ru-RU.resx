@@ -175,7 +175,7 @@
     <value>Отчёт</value>
   </data>
   <data name="ReportCannotBeGenerated" xml:space="preserve">
-    <value>Список изделий для построения отчёта пуст. Формирование отчёта не имеет смысла.</value>
+    <value>Исходные данные для построения отчёта отсутствуют. Формирование отчёта не имеет смысла.</value>
   </data>
   <data name="SiOmnity" xml:space="preserve">
     <value>УЭС кремния</value>
@@ -197,5 +197,11 @@
   </data>
   <data name="Usr" xml:space="preserve">
     <value>Оператор</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Печать</value>
   </data>
 </root>

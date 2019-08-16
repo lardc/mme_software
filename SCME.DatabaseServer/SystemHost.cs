@@ -11,7 +11,7 @@ namespace SCME.DatabaseServer
 {
     internal static class SystemHost
     {
-        private static ServiceHost ms_ServiceHost;
+        private static ServiceHost ms_ServiceHost; 
 
         internal static LogJournal Journal { get; private set; }
 

@@ -38,7 +38,14 @@ namespace SCME.UI.PagesTech
 
         internal BvtPage()
         {
-            Parameters = new Types.BVT.TestParameters {IsEnabled = true};
+            Parameters = new Types.BVT.TestParameters
+            {
+                IsEnabled = true,
+
+                //форма не даёт возможность управлять значением параметра MeasurementMode - нет необходимости в этом, данный параметр никак не влияет на режимы измерений, он нужен только для контроля полученных результатов измерений, но если его значение не равно ModeI, то включить тест Udsm/Ursm будет нельзя. CheckBox, который включает режим Udsm/Ursm никак не изменяет значение параметра MeasurementMode поэтому будем устанавливать MeasurementMode=ModeI по умолчанию
+                MeasurementMode = Types.BVT.BVTMeasurementMode.ModeI
+            };
+
             ClampParameters = new Types.Clamping.TestParameters
             {
                 StandardForce = Types.Clamping.ClampingForceInternal.Custom,
@@ -49,8 +56,8 @@ namespace SCME.UI.PagesTech
             Temperature = RoomTemp;
             InitializeComponent();
 
-            m_XRed = (SolidColorBrush) FindResource("xRed1");
-            m_XOrange = (SolidColorBrush) FindResource("xOrange1");
+            m_XRed = (SolidColorBrush)FindResource("xRed1");
+            m_XOrange = (SolidColorBrush)FindResource("xOrange1");
 
             ClearStatus();
 
@@ -146,24 +153,43 @@ namespace SCME.UI.PagesTech
         {
             if (labelWarning.Visibility != Visibility.Visible)
             {
+                if (labelWarning.Content.ToString() != string.Empty)
+                    labelWarning.Content += " ";
 
-            labelWarning.Content = Warning.ToString();
-            labelWarning.Visibility = Visibility.Visible;
+                labelWarning.Content += Warning.ToString();
+                labelWarning.Visibility = Visibility.Visible;
+            }
         }
-}
 
         internal void SetProblem(Types.BVT.HWProblemReason Problem)
         {
-            labelWarning.Content = Problem.ToString();
+            if (labelWarning.Content.ToString() != string.Empty)
+                labelWarning.Content += " ";
+
+            labelWarning.Content += Problem.ToString();
             labelWarning.Visibility = Visibility.Visible;
         }
 
         internal void SetFault(Types.BVT.HWFaultReason Fault)
         {
-            labelFault.Content = Fault.ToString();
+            if (labelFault.Content.ToString() != string.Empty)
+                labelFault.Content += " ";
+
+            labelFault.Content += Fault.ToString();
             labelFault.Visibility = Visibility.Visible;
             IsRunning = false;
+        }
 
+        internal void SetResultBvtUdsmUrsmDirect(DeviceState State, Types.BVT.TestResults Result)
+        {
+            SetLabel(labelDirectSM, State,
+                $"{Result.VDSM}{Properties.Resources.V} : {Result.IDSM}{Properties.Resources.mA}");
+        }
+
+        internal void SetResultBvtUdsmUrsmReverse(DeviceState State, Types.BVT.TestResults Result)
+        {
+            SetLabel(labelReverseSM, State,
+                $"{Result.VRSM}{Properties.Resources.V} : {Result.IRSM}{Properties.Resources.mA}");
         }
 
         private void ClearStatus()
@@ -174,15 +200,18 @@ namespace SCME.UI.PagesTech
             ResetLabel(labelDirect);
             ResetLabel(labelReverse);
 
-            chartPlotter.Children.RemoveAll(typeof (LineGraph));
-            chartPlotter.Children.RemoveAll(typeof (MarkerPointsGraph));
+            chartPlotter.Children.RemoveAll(typeof(LineGraph));
+            chartPlotter.Children.RemoveAll(typeof(MarkerPointsGraph));
+
+            ResetLabel(labelDirectSM);
+            ResetLabel(labelReverseSM);
         }
 
         private void PlotYX(string LineName, Color LineColor, ICollection<short> UxPoints, IEnumerable<short> UyPoints)
         {
             var crop = UxPoints.Count - DATA_LENGTH;
 
-            var dataI = UxPoints.Skip(crop).Select(I => (Math.Abs(I) <= 2 ? (short) 0 : I));
+            var dataI = UxPoints.Skip(crop).Select(I => (Math.Abs(I) <= 2 ? (short)0 : I));
             var dataV = UyPoints.Skip(crop);
 
             if (dataI.Any() && (dataI.Min() < -7 * 10 || Math.Abs(dataI.Max()) > 7 * 10) || wasCurrentMore)
@@ -198,7 +227,7 @@ namespace SCME.UI.PagesTech
             }
 
             var points =
-                dataI.Zip(dataV, (I, V) => new PointF(V, I/10.0f))
+                dataI.Zip(dataV, (I, V) => new PointF(V, I / 10.0f))
                      .Select((P => (Math.Abs(P.X) < 200 ? new PointF(P.X, 0) : P)));
 
             var dataSource = new EnumerableDataSource<PointF>(points);
@@ -247,28 +276,27 @@ namespace SCME.UI.PagesTech
         {
             if (IsRunning)
                 return;
-            
-            var paramGate = new Types.Gate.TestParameters {IsEnabled = false};
-            var paramVtm = new Types.SL.TestParameters {IsEnabled = false};
+
+            var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
+            var paramVtm = new Types.SL.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
             var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
             var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
 
             ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
 
             Parameters.VoltageFrequency = (ushort)Settings.Default.BVTVoltageFrequency;
-            Parameters.MeasurementMode = Types.BVT.BVTMeasurementMode.ModeV;
+            //Parameters.MeasurementMode = Types.BVT.BVTMeasurementMode.ModeV; //закоментировал после реализации UDSM/URSM
 
             if (!Cache.Net.Start(paramGate, paramVtm, Parameters, paramATU, paramQrrTq, paramRAC, paramIH, paramRCC,
                                  new Types.Commutation.TestParameters
-                                     {
-                                         BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
-                                         CommutationType = ConverterUtil.MapCommutationType(CommType),
-                                         Position = ConverterUtil.MapModulePosition(ModPosition)
-                                     }, ClampParameters, paramTOU))
+                                 {
+                                     BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
+                                     CommutationType = ConverterUtil.MapCommutationType(CommType),
+                                     Position = ConverterUtil.MapModulePosition(ModPosition)
+                                 }, ClampParameters))
                 return;
 
             ClearStatus();

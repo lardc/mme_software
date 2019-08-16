@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using SCME.EntityDataDB;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
@@ -12,7 +10,6 @@ using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
 using SCME.Types.SL;
-using Microsoft.EntityFrameworkCore;
 
 namespace SCME.InterfaceImplementations
 {
@@ -20,27 +17,8 @@ namespace SCME.InterfaceImplementations
     {
         private readonly SQLiteConnection _connection;
 
-        private Entities GetContext => new Entities(ConnectionStringForEF);
-
-        private string _ConnectionStringForEF;
-        private string ConnectionStringForEF
-        {
-            get
-            {
-                return _ConnectionStringForEF;
-            }
-            set
-            {
-                string cs = value;
-                int index1 = cs.IndexOf("data source");
-                int index2 = cs.IndexOf(";");
-                _ConnectionStringForEF = cs.Substring(index1, index2 - index1);
-            }
-
-        }
         public SQLiteLoadProfilesService(SQLiteConnection connection)
         {
-            ConnectionStringForEF = connection.ConnectionString;
             _connection = connection;
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
@@ -98,7 +76,6 @@ namespace SCME.InterfaceImplementations
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                         RACTestParameters = new List<Types.RAC.TestParameters>(),
-                        TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                         ParametersClamp = profile.ParametersClamp,
@@ -127,7 +104,6 @@ namespace SCME.InterfaceImplementations
                             ATUTestParameters = new List<Types.ATU.TestParameters>(),
                             QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                             RACTestParameters = new List<Types.RAC.TestParameters>(),
-                            TOUTestParameters = new List<Types.TOU.TestParameters>(),
                             CommTestParameters = childProfile.ParametersComm,
                             IsHeightMeasureEnabled = childProfile.IsHeightMeasureEnabled,
                             ParametersClamp = childProfile.ParametersClamp,
@@ -188,10 +164,6 @@ namespace SCME.InterfaceImplementations
                 var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                 if (rac != null)
                     profileItem.RACTestParameters.Add(rac);
-
-                var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
-                if (tou != null)
-                    profileItem.TOUTestParameters.Add(tou);
             }
         }
 
@@ -225,225 +197,138 @@ namespace SCME.InterfaceImplementations
 
         public List<ProfileItem> GetProfileItems(string mmeCode)
         {
-            List<ProfileItem> ProfileItems = new List<ProfileItem>();
-
-            List<PROFILE> highVersionProfiles;
-
-            using (var db = GetContext)
+            try
             {
-                var profilesByMME = db.MME_CODES.Include(m=> m.MME_CODES_TO_PROFILES)
-                                                .ThenInclude(m=> m.PROFILE)
-                                                .ThenInclude(m=> m.PROF_TEST_TYPE)
-                    .Single(m => m.Name == mmeCode).MME_CODES_TO_PROFILES.Select(m => m.PROFILE).GroupBy(m => m.PROF_NAME);
-                highVersionProfiles = profilesByMME.Select(m => m.OrderByDescending(n => n.PROF_VERS).First()).ToList();
-                db.PROF_TEST_TYPE.Load();
-            }
+                var profilesList = new List<ProfileItem>();
+                /*
+                работает не корректно, дурной синтасис группировки, при исполнении запроса ошибок нет, но возвращаемый результат не предсказуем
+                var profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, Max(P.PROF_TS), P.PROF_VERS FROM PROFILES P 
+                                       JOIN MME_CODES_TO_PROFILES MCP ON MCP.PROFILE_ID = P.PROF_ID
+                                       JOIN MME_CODES MC ON MC.MME_CODE_ID = MCP.MME_CODE_ID
+                                       WHERE MC.MME_CODE = @MME_CODE
+                                       GROUP BY P.PROF_NAME";
+                
+                */
 
-            foreach (var prof in highVersionProfiles)
-            {
-                var profile = new Profile(prof.PROF_NAME, prof.PROF_GUID, prof.PROF_TS);
+                //построение списка профилей последних редакций. последние редакции профилей имеют максимальное значение идентификаторов PROF_ID
+                string profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, DATETIME(P.PROF_TS)
+                                          FROM (
+                                                 SELECT MAX(PR.PROF_ID) AS MAX_PROF_ID
+                                                 FROM PROFILES PR
+                                                 GROUP BY PR.PROF_NAME
+	                                           ) PP
+                                           INNER JOIN PROFILES P ON (P.PROF_ID=PP.MAX_PROF_ID)
+                                           INNER JOIN MME_CODES_TO_PROFILES MCP ON (MCP.PROFILE_ID=P.PROF_ID)
+                                           INNER JOIN MME_CODES MC ON (
+                                                                       (MC.MME_CODE_ID=MCP.MME_CODE_ID) AND
+	                                                                   (MC.MME_CODE=@MME_CODE)
+                                                                      )";
 
-                foreach (var testType in prof.PROF_TEST_TYPE)
-                    FillParameters(profile, testType.ID, testType.TEST_TYPE_ID);
+                var profilesDict = new List<Tuple<long, string, Guid, DateTime>>();
 
-                var profileItem = new ProfileItem
+                using (var condCmd = _connection.CreateCommand())
                 {
-                    ProfileId = prof.PROF_ID,
-                    ProfileName = prof.PROF_NAME,
-                    ProfileKey = prof.PROF_GUID,
-                    ProfileTS = prof.PROF_TS,
-                    GateTestParameters = new List<Types.Gate.TestParameters>(),
-                    VTMTestParameters = new List<Types.SL.TestParameters>(),
-                    BVTTestParameters = new List<Types.BVT.TestParameters>(),
-                    DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
-                    ATUTestParameters = new List<Types.ATU.TestParameters>(),
-                    QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                    RACTestParameters = new List<Types.RAC.TestParameters>(),
-                    TOUTestParameters = new List<Types.TOU.TestParameters>(),
-                    CommTestParameters = profile.ParametersComm,
-                    IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
-                    ParametersClamp = profile.ParametersClamp,
-                    Height = profile.Height,
-                    Temperature = profile.Temperature
-                };
+                    condCmd.CommandText = profilesSelect;
+                    condCmd.Parameters.Add("@MME_CODE", DbType.String);
+                    condCmd.Prepare();
+                    condCmd.Parameters["@MME_CODE"].Value = mmeCode;
 
-                foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
-                {
-                    switch (baseTestParametersAndNormativese)
+                    using (var reader = condCmd.ExecuteReader())
                     {
-                        case Types.Gate.TestParameters gate:
-                            profileItem.GateTestParameters.Add(gate);
-                            break;
-                        case Types.SL.TestParameters sl:
-                            profileItem.VTMTestParameters.Add(sl);
-                            break;
-                        case Types.BVT.TestParameters bvt:
-                            profileItem.BVTTestParameters.Add(bvt);
-                            break;
-                        case Types.dVdt.TestParameters dvdt:
-                            profileItem.DvDTestParameterses.Add(dvdt);
-                            break;
-                        case Types.ATU.TestParameters atu:
-                            profileItem.ATUTestParameters.Add(atu);
-                            break;
-                        case Types.QrrTq.TestParameters qrrTq:
-                            profileItem.QrrTqTestParameters.Add(qrrTq);
-                            break;
-                        case Types.RAC.TestParameters rac:
-                            profileItem.RACTestParameters.Add(rac);
-                            break;
-                        case Types.TOU.TestParameters tou:
-                            profileItem.TOUTestParameters.Add(tou);
-                            break;
+                        while (reader.Read())
+                            profilesDict.Add(new Tuple<long, string, Guid, DateTime>((long)reader[0], (string)reader[1], (Guid)reader[2], DateTime.Parse((string)reader[3])));
                     }
                 }
 
-                ProfileItems.Add(profileItem);
+                foreach (var prof in profilesDict)
+                {
+                    var profile = new Profile(prof.Item2, prof.Item3, prof.Item4);
+
+                    var testTypes = new Dictionary<long, long>(5);
+
+                    using (var condCmd = new SQLiteCommand("SELECT ID, TEST_TYPE_ID FROM PROF_TEST_TYPE WHERE PROF_ID=@PROF_ID", _connection))
+                    {
+                        condCmd.Parameters.Add("@PROF_ID", DbType.Int64);
+                        condCmd.Prepare();
+                        condCmd.Parameters["@PROF_ID"].Value = prof.Item1;
+
+                        using (var reader = condCmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                                testTypes.Add((long)reader[0], (long)reader[1]);
+                        }
+                        foreach (var testType in testTypes)
+                        {
+                            FillParameters(profile, testType.Key, testType.Value);
+                        }
+                    }
+
+                    var profileItem = new ProfileItem
+                    {
+                        ProfileId = prof.Item1,
+                        ProfileName = profile.Name,
+                        ProfileKey = profile.Key,
+                        ProfileTS = profile.Timestamp,
+                        GateTestParameters = new List<Types.Gate.TestParameters>(),
+                        VTMTestParameters = new List<Types.SL.TestParameters>(),
+                        BVTTestParameters = new List<Types.BVT.TestParameters>(),
+                        DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
+                        ATUTestParameters = new List<Types.ATU.TestParameters>(),
+                        QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
+                        RACTestParameters = new List<Types.RAC.TestParameters>(),
+                        CommTestParameters = profile.ParametersComm,
+                        IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
+                        ParametersClamp = profile.ParametersClamp,
+                        Height = profile.Height,
+                        Temperature = profile.Temperature
+                    };
+                    foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
+                    {
+                        var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                        if (gate != null)
+                        {
+                            profileItem.GateTestParameters.Add(gate);
+                            continue;
+                        }
+
+                        var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                        if (sl != null)
+                        {
+                            profileItem.VTMTestParameters.Add(sl);
+                            continue;
+                        }
+
+                        var bvt = baseTestParametersAndNormativese as Types.BVT.TestParameters;
+                        if (bvt != null)
+                            profileItem.BVTTestParameters.Add(bvt);
+
+                        var dvdt = baseTestParametersAndNormativese as Types.dVdt.TestParameters;
+                        if (dvdt != null)
+                            profileItem.DvDTestParameterses.Add(dvdt);
+
+                        var atu = baseTestParametersAndNormativese as Types.ATU.TestParameters;
+                        if (atu != null)
+                            profileItem.ATUTestParameters.Add(atu);
+
+                        var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
+                        if (qrrTq != null)
+                            profileItem.QrrTqTestParameters.Add(qrrTq);
+
+                        var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
+                        if (rac != null)
+                            profileItem.RACTestParameters.Add(rac);
+                    }
+
+                    profilesList.Add(profileItem);
+                }
+
+                return profilesList;
             }
-            
-            return ProfileItems;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
-       
-        //public List<ProfileItem> GetProfileItems(string mmeCode)
-        //{
-        //    try
-        //    {
-        //        var profilesList = new List<ProfileItem>();
-        //        /*
-        //        работает не корректно, дурной синтасис группировки, при исполнении запроса ошибок нет, но возвращаемый результат не предсказуем
-        //        var profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, Max(P.PROF_TS), P.PROF_VERS FROM PROFILES P 
-        //                               JOIN MME_CODES_TO_PROFILES MCP ON MCP.PROFILE_ID = P.PROF_ID
-        //                               JOIN MME_CODES MC ON MC.MME_CODE_ID = MCP.MME_CODE_ID
-        //                               WHERE MC.MME_CODE = @MME_CODE
-        //                               GROUP BY P.PROF_NAME";
-                
-        //        */
-
-        //        //построение списка профилей последних редакций. последние редакции профилей имеют максимальное значение идентификаторов PROF_ID
-        //        string profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, DATETIME(P.PROF_TS)
-        //                                  FROM (
-        //                                         SELECT MAX(PR.PROF_ID) AS MAX_PROF_ID
-        //                                         FROM PROFILES PR
-        //                                         GROUP BY PR.PROF_NAME
-	       //                                    ) PP
-        //                                   INNER JOIN PROFILES P ON (P.PROF_ID=PP.MAX_PROF_ID)
-        //                                   INNER JOIN MME_CODES_TO_PROFILES MCP ON (MCP.PROFILE_ID=P.PROF_ID)
-        //                                   INNER JOIN MME_CODES MC ON (
-        //                                                               (MC.MME_CODE_ID=MCP.MME_CODE_ID) AND
-	       //                                                            (MC.MME_CODE=@MME_CODE)
-        //                                                              )";
-
-        //        var profilesDict = new List<Tuple<long, string, Guid, DateTime>>();
-
-        //        using (var condCmd = _connection.CreateCommand())
-        //        {
-        //            condCmd.CommandText = profilesSelect;
-        //            condCmd.Parameters.Add("@MME_CODE", DbType.String);
-        //            condCmd.Prepare();
-        //            condCmd.Parameters["@MME_CODE"].Value = mmeCode;
-
-        //            using (var reader = condCmd.ExecuteReader())
-        //            {
-        //                while (reader.Read())
-        //                    profilesDict.Add(new Tuple<long, string, Guid, DateTime>((long)reader[0], (string)reader[1], (Guid)reader[2], DateTime.Parse((string)reader[3])));
-        //            }
-        //        }
-
-        //        foreach (var prof in profilesDict)
-        //        {
-        //            var profile = new Profile(prof.Item2, prof.Item3, prof.Item4);
-
-        //            var testTypes = new Dictionary<long, long>(5);
-
-        //            using (var condCmd = new SQLiteCommand("SELECT ID, TEST_TYPE_ID FROM PROF_TEST_TYPE WHERE PROF_ID=@PROF_ID", _connection))
-        //            {
-        //                condCmd.Parameters.Add("@PROF_ID", DbType.Int64);
-        //                condCmd.Prepare();
-        //                condCmd.Parameters["@PROF_ID"].Value = prof.Item1;
-
-        //                using (var reader = condCmd.ExecuteReader())
-        //                {
-        //                    while (reader.Read())
-        //                        testTypes.Add((long)reader[0], (long)reader[1]);
-        //                }
-        //                foreach (var testType in testTypes)
-        //                {
-        //                    FillParameters(profile, testType.Key, testType.Value);
-        //                }
-        //            }
-
-        //            var profileItem = new ProfileItem
-        //            {
-        //                ProfileId = prof.Item1,
-        //                ProfileName = profile.Name,
-        //                ProfileKey = profile.Key,
-        //                ProfileTS = profile.Timestamp,
-        //                GateTestParameters = new List<Types.Gate.TestParameters>(),
-        //                VTMTestParameters = new List<Types.SL.TestParameters>(),
-        //                BVTTestParameters = new List<Types.BVT.TestParameters>(),
-        //                DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
-        //                ATUTestParameters = new List<Types.ATU.TestParameters>(),
-        //                QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-        //                RACTestParameters = new List<Types.RAC.TestParameters>(),
-        //                TOUTestParameters = new List<Types.TOU.TestParameters>(),
-        //                CommTestParameters = profile.ParametersComm,
-        //                IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
-        //                ParametersClamp = profile.ParametersClamp,
-        //                Height = profile.Height,
-        //                Temperature = profile.Temperature
-        //            };
-        //            foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
-        //            {
-        //                var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
-        //                if (gate != null)
-        //                {
-        //                    profileItem.GateTestParameters.Add(gate);
-        //                    continue;
-        //                }
-
-        //                var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
-        //                if (sl != null)
-        //                {
-        //                    profileItem.VTMTestParameters.Add(sl);
-        //                    continue;
-        //                }
-
-        //                var bvt = baseTestParametersAndNormativese as Types.BVT.TestParameters;
-        //                if (bvt != null)
-        //                    profileItem.BVTTestParameters.Add(bvt);
-
-        //                var dvdt = baseTestParametersAndNormativese as Types.dVdt.TestParameters;
-        //                if (dvdt != null)
-        //                    profileItem.DvDTestParameterses.Add(dvdt);
-
-        //                var atu = baseTestParametersAndNormativese as Types.ATU.TestParameters;
-        //                if (atu != null)
-        //                    profileItem.ATUTestParameters.Add(atu);
-
-        //                var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
-        //                if (qrrTq != null)
-        //                    profileItem.QrrTqTestParameters.Add(qrrTq);
-
-        //                var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-        //                if (rac != null)
-        //                    profileItem.RACTestParameters.Add(rac);
-
-        //                var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
-        //                if (tou != null)
-        //                    profileItem.TOUTestParameters.Add(tou);
-        //            }
-
-        //            profilesList.Add(profileItem);
-        //        }
-
-        //        return profilesList;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
 
         private void FillParameters(Profile profile, long testTypeId, long testParametersType)
         {
@@ -485,11 +370,6 @@ namespace SCME.InterfaceImplementations
                 case (int)TestParametersType.RAC:
                     var racParams = FillRacConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(racParams);
-                    break;
-
-                case (int)TestParametersType.TOU:
-                    var touParams = FillTOUConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(touParams);
                     break;
 
                 case (int)TestParametersType.Clamping:
@@ -659,35 +539,6 @@ namespace SCME.InterfaceImplementations
             return testParams;
         }
 
-        private Types.TOU.TestParameters FillTOUConditions(long testTypeId)
-        {
-            var results = new Dictionary<string, object>(2);
-
-            var testParams = new Types.TOU.TestParameters();
-            testParams.IsEnabled = true;
-            testParams.TestTypeId = testTypeId;
-
-            FillOrder(testTypeId, testParams);
-
-            FillConditionsResults(testTypeId, results);
-
-            foreach (var result in results)
-            {
-                switch (result.Key)
-                {
-                    case "TOU_En":
-                        testParams.IsEnabled = bool.Parse(result.Value.ToString());
-                        break;
-
-                    case "TOU_ITM":
-                        testParams.ITM_Input = ushort.Parse(result.Value.ToString());
-                        break;
-                }
-            }
-
-            return testParams;
-        }
-
         private void FillComutationConditions(Profile profile, long testTypeId)
         {
             var results = new Dictionary<string, object>(2);
@@ -847,6 +698,10 @@ namespace SCME.InterfaceImplementations
                     case "BVT_Mode":
                         testParams.MeasurementMode =
                             (BVTMeasurementMode)(Enum.Parse(typeof(BVTMeasurementMode), result.Value.ToString()));
+                        break;
+
+                    case "BVT_UseUdsmUrsm":
+                        testParams.UseUdsmUrsm = bool.Parse(result.Value.ToString());
                         break;
 
                     case "BVT_VR":
@@ -1124,7 +979,6 @@ namespace SCME.InterfaceImplementations
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
                         RACTestParameters = new List<Types.RAC.TestParameters>(),
-                        TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
                         ParametersClamp = profile.ParametersClamp,
@@ -1161,10 +1015,6 @@ namespace SCME.InterfaceImplementations
                         var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                         if (rac != null)
                             Result.RACTestParameters.Add(rac);
-
-                        var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
-                        if (tou != null)
-                            Result.TOUTestParameters.Add(tou);
                     }
                 }
 

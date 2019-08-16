@@ -90,6 +90,9 @@ namespace SCME.Types.BVT
         public BVTMeasurementMode MeasurementMode { get; set; }
 
         [DataMember]
+        public bool UseUdsmUrsm { get; set; }
+
+        [DataMember]
         public ushort VoltageLimitD { get; set; }
 
         [DataMember]
@@ -136,6 +139,8 @@ namespace SCME.Types.BVT
 
             if (MeasurementMode != oldParameters.MeasurementMode)
                 return true;
+            if (UseUdsmUrsm != oldParameters.UseUdsmUrsm)
+                return true;
             if (VoltageLimitD != oldParameters.VoltageLimitD)
                 return true;
             if (VoltageLimitR != oldParameters.VoltageLimitR)
@@ -171,6 +176,7 @@ namespace SCME.Types.BVT
             IsEnabled = false;
             TestType = BVTTestType.Reverse;
             MeasurementMode = BVTMeasurementMode.ModeV;
+            UseUdsmUrsm = false;
             VoltageLimitD = 1000;
             VoltageLimitR = 1000;
             CurrentLimit = 5;
@@ -230,6 +236,18 @@ namespace SCME.Types.BVT
 
         [DataMember]
         public float IRRM { get; set; }
+
+        [DataMember]
+        public ushort VDSM { get; set; }
+
+        [DataMember]
+        public ushort VRSM { get; set; }
+
+        [DataMember]
+        public float IDSM { get; set; }
+
+        [DataMember]
+        public float IRSM { get; set; }
 
         [DataMember]
         public List<short> VoltageData { get; set; }

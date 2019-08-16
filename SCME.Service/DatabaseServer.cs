@@ -30,7 +30,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -44,7 +44,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -58,7 +58,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -72,7 +72,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -86,7 +86,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -100,7 +100,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 throw new FaultException<FaultData>(
-                    new FaultData {Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now},
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
                     String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
@@ -110,6 +110,20 @@ namespace SCME.Service
             try
             {
                 return SystemHost.Results.ReadDeviceNormatives(InternalID);
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException<FaultData>(
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
+                    String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+        }
+
+        int? IDatabaseCommunicationService.ReadDeviceRTClass(string devCode, string profName)
+        {
+            try
+            {
+                return SystemHost.Results.ReadDeviceRTClass(devCode, profName);
             }
             catch (Exception ex)
             {
@@ -149,9 +163,8 @@ namespace SCME.Service
 
         public List<ProfileItem> GetProfileItemsByMmeCode(string mmeCode)
         {
-            //Почему ???
-            //if (Properties.Settings.Default.DisableResultDB)
-            //    return null;
+            if (Properties.Settings.Default.DisableResultDB)
+                return null;
 
             try
             {
@@ -167,9 +180,8 @@ namespace SCME.Service
 
         public ProfileItem GetProfileByProfName(string profName, string mmmeCode, ref bool Found)
         {
-            //Почему ???
-            //if (Properties.Settings.Default.DisableResultDB)
-            //    return null;
+            if (Properties.Settings.Default.DisableResultDB)
+                return null;
 
             try
             {

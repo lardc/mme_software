@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.ServiceModel;
 using System.Windows.Forms;
-using SCME.InterfaceImplementations;
 using SCME.Logger;
 using SCME.Service.Properties;
 using SCME.Types;
@@ -84,22 +83,8 @@ namespace SCME.Service
 
             try
             {
-                DatabaseService dbForMigration = new DatabaseService(Settings.Default.ResultsDatabasePath);
-                dbForMigration.Open();
-                dbForMigration.Migrate();
-                dbForMigration.Close();
-            }
-            catch (Exception ex)
-            {
-                Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, String.Format("Migrate database error: {0}", ex.Message));
-            }
-
-            try
-            {
                 Results = new ResultsJournal();
-                ///??
-                //Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
-                Results.Open(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
+                Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
 
                 if (!Settings.Default.DisableResultDB)
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, Resources.Log_SystemHost_Result_journal_opened);

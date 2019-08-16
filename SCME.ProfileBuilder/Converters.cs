@@ -15,33 +15,6 @@ using TestParameters = SCME.Types.SL.TestParameters;
 
 namespace SCME.ProfileBuilder
 {
-
-    public class TextToFloatConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value;
-
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            string str = value.ToString();
-            string separator = System.Convert.ToString(NumberFormatInfo.CurrentInfo.NumberDecimalSeparator);
-            str = str.Replace(",", separator);
-            str = str.Replace(".", separator);
-
-            float val=0;
-
-            if (float.TryParse(str, out val))
-                return val;
-            else return value;
-
-        }
-    }
-
-
-
     public class BvtTestTypeToVisibilityConverter : IValueConverter
     {
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)

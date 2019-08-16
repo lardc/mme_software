@@ -1608,6 +1608,16 @@ namespace SCME.UI.IO
             //      m_QueueWorker.AddBvtFaultEvent(Disable);
         }
 
+        public void BVTUdsmUrsmDirectHandler(DeviceState State, Types.BVT.TestResults Result)
+        {
+            //заглушка
+        }
+
+        public void BVTUdsmUrsmReverseHandler(DeviceState State, Types.BVT.TestResults Result)
+        {
+            //заглушка
+        }
+
         public void DvDtHandler(DeviceState State, Types.dVdt.TestResults Result)
         {
             m_QueueWorker.AddDVdtEvent(State, Result);

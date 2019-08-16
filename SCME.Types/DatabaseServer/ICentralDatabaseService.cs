@@ -147,5 +147,13 @@ namespace SCME.Types.DatabaseServer
         /// <returns>Result of inserting</returns>
         [OperationContract(IsOneWay = true)]
         void Check();
+
+        /// <summary>
+        /// Read Device RT Class
+        /// </summary>
+        /// <returns>RT Class</returns>
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        int? ReadDeviceRTClass(string devCode, string profileName);
     }
 }

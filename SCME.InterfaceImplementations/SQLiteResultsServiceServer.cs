@@ -172,7 +172,7 @@ namespace SCME.InterfaceImplementations
                 devErrDeleteCommand.Prepare();
                 devErrDeleteCommand.Parameters["@DEV_ID"].Value = devId;
                 devErrDeleteCommand.ExecuteNonQuery();
-                
+
                 var deviceDeleteCmd = new SQLiteCommand("DELETE FROM DEVICES WHERE DEV_ID = @DEV_ID", _connection);
                 deviceDeleteCmd.Parameters.Add("@DEV_ID", DbType.Int64);
                 deviceDeleteCmd.Prepare();
@@ -217,7 +217,6 @@ namespace SCME.InterfaceImplementations
             InsertAtuParameterValues(result, devId);
             InsertQrrTqParameterValues(result, devId);
             InsertRacParameterValues(result, devId);
-            InsertTOUParameterValues(result, devId);
         }
 
         private void InsertGateParameterValues(ResultItem result, long devId)
@@ -265,6 +264,31 @@ namespace SCME.InterfaceImplementations
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
                             InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
                     }
+
+                    //результаты теста UDSM/URSM
+                    if (result.BVTTestParameters[i].UseUdsmUrsm)
+                    {
+                        switch (result.BVTTestParameters[i].TestType)
+                        {
+                            case BVTTestType.Both:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId);
+
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId);
+                                break;
+
+                            case BVTTestType.Direct:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId);
+                                break;
+
+                            case BVTTestType.Reverse:
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId);
+                                break;
+                        }
+                    }
                 }
             }
         }
@@ -306,19 +330,6 @@ namespace SCME.InterfaceImplementations
                 if (result.RACTestParameters[i].IsEnabled)
                 {
                     InsertParameterValue(devId, "ResultR", result.RAC[i].ResultR, result.RAC[i].TestTypeId);
-                }
-            }
-        }
-
-        private void InsertTOUParameterValues(ResultItem result, long devId)
-        {
-            for (int i = 0; i < result.TOUTestParameters.Length; i++)
-            {
-                if (result.TOUTestParameters[i].IsEnabled)
-                {
-                    InsertParameterValue(devId, "TOU_ITM", result.TOU[i].ITM, result.TOU[i].TestTypeId);
-                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.TOU[i].TestTypeId);
-                    InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.TOU[i].TestTypeId);
                 }
             }
         }
@@ -542,6 +553,12 @@ namespace SCME.InterfaceImplementations
 
                 return list;
             }
+        }
+
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            //нет смысла вычислять класс по данным одной локально расположенной базы данных
+            return null;
         }
 
         public virtual List<DeviceLocalItem> GetUnsendedDevices()

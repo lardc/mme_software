@@ -53,11 +53,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
+        bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
+        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -281,18 +281,17 @@ namespace SCME.Types
                                     BVT.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
+        void BVTUdsmUrsmDirectHandler(DeviceState State, BVT.TestResults Result);
+
+        [OperationContract(IsOneWay = true)]
+        void BVTUdsmUrsmReverseHandler(DeviceState State, BVT.TestResults Result);
+
+        [OperationContract(IsOneWay = true)]
         void DvDtHandler(DeviceState State, dVdt.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
         void DvDtNotificationHandler(dVdt.HWWarningReason Warning, dVdt.HWFaultReason Fault,
                                     dVdt.HWDisableReason Disable);
-
-        [OperationContract(IsOneWay = true)]
-        void TOUHandler(DeviceState State, TOU.TestResults Result);
-
-        [OperationContract(IsOneWay = true)]
-        void TOUNotificationHandler(TOU.HWWarningReason Warning, TOU.HWFaultReason Fault,
-                                    TOU.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
         void ATUHandler(DeviceState State, ATU.TestResults Result);

@@ -16,7 +16,7 @@
 
     <Page.Resources>
         <ui:MultiBooleanToVisibilityConverter x:Key="MB2V" />
-        <thisPage:MultiIdentificationFieldsToVisibilityConverter x:Key="MIF2V"/>
+        <thisPage:MultiIdentificationFieldsToTextConverter x:Key="MIF2T"/>
         <ui:VtmTestTypeToCurrentConverter x:Key="TT2C" />
         <ui:BvtTestTypeToVisibilityConverter x:Key="TT2V" />
 
@@ -63,13 +63,14 @@
         <Label x:Name="lbPsdSerialNumber" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Content="{x:Static res:Resources.PsdSerialNumber}" FontSize="28" Height="Auto" />
 
         <customControl:ValidatingTextBox x:Name="tbPsdJob" Grid.Row="1" Grid.Column="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="1" Text="{Binding PsdJob, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <customControl:ValidatingTextBox x:Name="tbPsdSerialNumber" Grid.Row="1" Grid.Column="1" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="2" Text="{Binding PsdSerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <customControl:ValidatingTextBox x:Name="tbPsdSerialNumber" Grid.Row="1" Grid.Column="1" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="2" Text="{Binding PsdSerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPsdSerialNumber_TextChanged"/>
 
         <Label x:Name="lbPseJob" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static res:Resources.PseJob}" FontSize="28" Height="Auto" />
         <Label x:Name="lbPseNumber" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static res:Resources.PseNumber}" FontSize="28" Height="Auto" />
 
         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -80,10 +81,10 @@
             </Grid.ColumnDefinitions>
 
             <customControl:ValidatingTextBox x:Name="tbPseJob" Grid.Column="0" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="3" Text="{Binding PseJob, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <customControl:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <customControl:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
             <TextBlock x:Name="tblIdentificationWarning" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="13" Foreground="{StaticResource xRed1}">
                 <TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource MIF2V}">
+                    <MultiBinding Converter="{StaticResource MIF2T}">
                         <Binding Path="Profile.Name"/>
                         <Binding Path="PsdJob"/>
                         <Binding Path="PsdSerialNumber"/>
@@ -93,6 +94,8 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
+
+            <Label x:Name="lblDeviceClass" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static res:Resources.DeviceRTClass}" FontSize="24" FontWeight="Bold" Height="Auto"/>
         </Grid>
 
         <Label Grid.Column="0" x:Name="lblSettingTemperature" Grid.Row="4" HorizontalAlignment="Center" Content="{x:Static res:Resources.SettingTemperatureName}" FontSize="25" Height="Auto" />
@@ -119,7 +122,7 @@
         <Grid Name="gridResult1" Grid.Column="2" Grid.Row="0"  Grid.RowSpan="8" Margin="0,0,0,1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -149,7 +152,7 @@
         <Grid Name="gridResult2" Grid.Column="3" Grid.Row="0" Grid.RowSpan="8" Margin="0,0,0,1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 

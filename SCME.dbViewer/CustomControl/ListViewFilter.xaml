@@ -65,6 +65,30 @@
                 </Grid>
             </DataTemplate>
 
+            <DataTemplate DataType="forFilters:FilterDescription" x:Key="intFilterTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btDeleteSelectedFilter" Grid.Column="0" Height="27" Width="{Binding ElementName=btDeleteSelectedFilter, Path=ActualHeight}"
+                            Click="btDeleteSelectedFilter_Click" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}">
+                        <Path Style="{StaticResource delFilterPath}"/>
+                    </Button>
+                    <Label Grid.Column="1" Content="{Binding Path=tittlefieldName}"/>
+                    <ComboBox Grid.Column="2" IsReadOnly="True" IsEditable="True" Text="{Binding Path=comparison, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem Content="="/>
+                        <ComboBoxItem Content="&lt;"/>
+                        <ComboBoxItem Content=">"/>
+                        <ComboBoxItem Content="&lt;="/>
+                        <ComboBoxItem Content=">="/>
+                    </ComboBox>
+                    <TextBox Grid.Column="3" FontSize="14" Text="{Binding Path=value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
         </customControl:FilterDataTemplateDictionary>
     </ListView.Resources>
 

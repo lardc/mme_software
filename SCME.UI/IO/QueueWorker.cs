@@ -549,6 +549,28 @@ namespace SCME.UI.IO
                 });
         }
 
+        public void AddBvtUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultBvtUdsmUrsmDirect(State, Result);
+                else
+                    Cache.Bvt.SetResultBvtUdsmUrsmDirect(State, Result);
+            });
+        }
+
+        public void AddBvtUdsmUrsmReverseEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultBvtUdsmUrsmReverse(State, Result);
+                else
+                    Cache.Bvt.SetResultBvtUdsmUrsmReverse(State, Result);
+            });
+        }
+
         public void AddBvtWarningEvent(Types.BVT.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
@@ -624,39 +646,6 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetResultTOU(State, Result);
-                else
-                    Cache.TOU.SetResult(State, Result);
-            });
-        }
-
-        public void AddDVdtWarningEvent(Types.TOU.HWWarningReason Warning)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetTOUWarning(Warning);
-                else
-                    Cache.TOU.SetWarning(Warning);
-            });
-        }
-
-        public void AddDVdtFaultEvent(Types.TOU.HWFaultReason Fault)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetTOUFault(Fault);
-                else
-                    Cache.TOU.SetFault(Fault);
-            });
-        }
-
         public void AddDVdtEvent(DeviceState State, Types.dVdt.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
@@ -707,7 +696,6 @@ namespace SCME.UI.IO
                 else Cache.ATU.SetWarning(Warning);
             });
         }
-
 
         public void AddATUFaultEvent(ushort Fault)
         {

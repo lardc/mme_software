@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -9,7 +10,7 @@ namespace SCME.ProfileBuilder.CustomControl
     /// <summary>
     ///     Interaction logic for CTextBox.xaml
     /// </summary>
-    public partial class ValidatingTextBox 
+    public partial class ValidatingTextBox
     {
         private string m_OldText = string.Empty;
 
@@ -17,7 +18,7 @@ namespace SCME.ProfileBuilder.CustomControl
         public float Maximum { get; set; }
         public float Minimum { get; set; }
         public bool IsFloat { get; set; }
-       
+        private CultureInfo ci;
 
         public ValidatingTextBox()
         {
@@ -31,6 +32,10 @@ namespace SCME.ProfileBuilder.CustomControl
             toolTip.PlacementTarget = this;
             toolTip.Placement = PlacementMode.Bottom;
             toolTip.Visibility = Visibility.Collapsed;
+
+            //в качестве разделителя дробной части от целой всегда будем использовать запятую
+            ci = CultureInfo.InvariantCulture.Clone() as CultureInfo;
+            ci.NumberFormat.NumberDecimalSeparator = ",";
         }
 
         public void ShowTip(string Message)
@@ -55,22 +60,6 @@ namespace SCME.ProfileBuilder.CustomControl
 
         private void TextBox_GotFocus(object Sender, RoutedEventArgs E)
         {
-            if (IsFloat)
-            {
-                ValidatingTextBox vtb=null;
-
-                vtb = (ValidatingTextBox)Sender;
-                if (vtb!=null)
-                {
-                    string separator = Convert.ToString(NumberFormatInfo.CurrentInfo.NumberDecimalSeparator);
-                    string GoodText=vtb.Text.Replace(",", separator);
-                    GoodText = GoodText.Replace(".", separator);
-
-                    vtb.Text = GoodText;
-                }
-                    
-            }
-
             m_OldText = Text;
             SelectAll();
         }
@@ -84,13 +73,13 @@ namespace SCME.ProfileBuilder.CustomControl
             bool badEntry;
 
             if (String.IsNullOrWhiteSpace(Text))
-                Text = m_OldText;
+                Text = m_OldText;            
 
             if (IsFloat)
             {
                 badEntry =
                     !double.TryParse(Text, NumberStyles.Number | NumberStyles.AllowDecimalPoint,
-                                     CultureInfo.InvariantCulture, out floatValue);
+                                     ci, out floatValue);
             }
             else
             {
@@ -98,7 +87,7 @@ namespace SCME.ProfileBuilder.CustomControl
 
                 badEntry =
                     !int.TryParse(Text, NumberStyles.Number | NumberStyles.AllowDecimalPoint,
-                                     CultureInfo.InvariantCulture, out value);
+                                     ci, out value);
                 floatValue = value;
             }
 
@@ -106,26 +95,22 @@ namespace SCME.ProfileBuilder.CustomControl
             {
                 if (floatValue > Maximum)
                 {
-                    Text = Maximum.ToString(CultureInfo.InvariantCulture);
+                    Text = Maximum.ToString(ci);
                     Select(Text.Length, 0);
                 }
                 else if (floatValue < Minimum)
                 {
-                    Text = Minimum.ToString(CultureInfo.InvariantCulture);
+                    Text = Minimum.ToString(ci);
                     Select(Text.Length, 0);
                 }
                 else
                 {
-                    Text = floatValue.ToString(CultureInfo.InvariantCulture);
+                    Text = floatValue.ToString(ci);
                     Select(Text.Length, 0);
                 }
             }
             else
                 Text = m_OldText;
-        }
-
-        private void ValidatingTextBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-        }
+        }       
     }
 }

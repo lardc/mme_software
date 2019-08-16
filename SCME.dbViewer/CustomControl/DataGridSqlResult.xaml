@@ -74,10 +74,10 @@
 
                                     <Path x:Name="PathArrowUp" Style="{StaticResource ArrowUp}" Grid.Row="0" Grid.RowSpan="2"/>
                                     <Path x:Name="PathArrowDown" Style="{StaticResource ArrowDown}" Grid.Row="0" Grid.RowSpan="2"/>
-                                    <Button Style="{StaticResource hidingButton}" Grid.Row="0" Grid.RowSpan="2" Click="btFilter_Click"/>
                                     <ContentPresenter Grid.Row="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 			                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-				                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+				                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    <Button Style="{StaticResource hidingButton}" Grid.Row="0" Grid.RowSpan="2" Click="btFilter_Click" />
                                 </Grid>
                             </Border>
                             <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Width="2" BorderThickness="1" Cursor="SizeWE"

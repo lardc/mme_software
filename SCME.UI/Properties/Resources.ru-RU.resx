@@ -753,22 +753,28 @@
   <data name="Total" xml:space="preserve">
     <value>Всего</value>
   </data>
-  <data name="TOU" xml:space="preserve">
-    <value>TOU</value>
+  <data name="UseUdsmUrsm" xml:space="preserve">
+    <value>UDSM/URSM</value>
   </data>
-  <data name="Amperage" xml:space="preserve">
-    <value>Сила тока</value>
+  <data name="IDSM_mA" xml:space="preserve">
+    <value>IDSM, мА</value>
   </data>
-  <data name="ITM" xml:space="preserve">
-    <value>ITM</value>
+  <data name="IRSM_mA" xml:space="preserve">
+    <value>IRSM, мА</value>
   </data>
-  <data name="TGD" xml:space="preserve">
-    <value>tGD</value>
+  <data name="VDSM_V" xml:space="preserve">
+    <value>UDSM, В</value>
   </data>
-  <data name="TGT" xml:space="preserve">
-    <value>tGT</value>
+  <data name="VRSM_V" xml:space="preserve">
+    <value>URSM, В</value>
   </data>
-  <data name="TOUITM" xml:space="preserve">
-    <value>Сила тока (ITM),  А</value>
+  <data name="DeviceRTClass" xml:space="preserve">
+    <value>Класс при RT</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>Нет результатов</value>
+  </data>
+  <data name="ErrorRealisation" xml:space="preserve">
+    <value>Ошибка реализации</value>
   </data>
 </root>

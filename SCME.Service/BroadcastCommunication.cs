@@ -148,6 +148,16 @@ namespace SCME.Service
             EnumerateClients(Client => Client.BVTNotificationHandler(Problem, Warning, Fault, Disable));
         }
 
+        public void PostBVTUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            EnumerateClients(Client => Client.BVTUdsmUrsmDirectHandler(State, Result));
+        }
+
+        public void PostBVTUdsmUrsmReverseEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            EnumerateClients(Client => Client.BVTUdsmUrsmReverseHandler(State, Result));
+        }
+
         public void PostClampingSwitchEvent(Types.Clamping.SqueezingState SQState, IList<float> ArrayF, IList<float> ArrayFd)
         {
             EnumerateClients(Client => Client.ClampingSwitchHandler(SQState, ArrayF, ArrayFd));
@@ -163,11 +173,6 @@ namespace SCME.Service
         public void PostClampingTemperatureEvent(Types.Clamping.HeatingChannel channel, int temeprature)
         {
             EnumerateClients(client => client.ClampingTemperatureHandler(channel, temeprature));
-        }
-
-        public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
-        {
-            EnumerateClients(Client => Client.TOUHandler(State, Result));
         }
 
         public void PostdVdtEvent(DeviceState State, Types.dVdt.TestResults Result)
@@ -203,12 +208,6 @@ namespace SCME.Service
         public void PostSctuEvent(SctuHwState state, SctuTestResults results)
         {
             EnumerateClients(client => client.SctuHandler(state, results));
-        }
-
-        public void PostTOUNotificationEvent(Types.TOU.HWWarningReason Warning,
-                                   Types.TOU.HWFaultReason Fault, Types.TOU.HWDisableReason Disable)
-        {
-            EnumerateClients(Client => Client.TOUNotificationHandler(Warning, Fault, Disable));
         }
 
         public void PostdVdtNotificationEvent(Types.dVdt.HWWarningReason Warning,

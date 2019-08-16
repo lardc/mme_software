@@ -56,6 +56,11 @@ namespace SCME.Types
             return Channel.ReadDeviceNormatives(InternalID);
         }
 
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            return Channel.ReadDeviceRTClass(devCode, profName);
+        }
+
         public List<int> ReadDeviceErrors(long InternalID)
         {
             return Channel.ReadDeviceErrors(InternalID);

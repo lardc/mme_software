@@ -32,6 +32,7 @@ namespace SCME.InterfaceImplementations
         private SqlCommand _selectDevParamsCommand;
         private SqlCommand _selectDevCondsCommand;
         private SqlCommand _selectDevNormCommand;
+        private SqlCommand _selectDevRTClassCommand;
         private SqlCommand _devLookupPTTSelectCommand;
         private SqlCommand _devLookupProfileIdSelectCommand;
 
@@ -160,6 +161,27 @@ namespace SCME.InterfaceImplementations
                     _connection);
             _selectDevNormCommand.Parameters.Add("@DEV_ID", SqlDbType.Int);
             _selectDevNormCommand.Prepare();
+
+            _selectDevRTClassCommand =
+                new SqlCommand(
+                               "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @RTProfName) AS DEVICECLASS" +
+                               " FROM" +
+                               " (" +
+                                  "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                                  " FROM DEVICES D" +
+                                  "  INNER JOIN PROFILES P ON (" +
+                                  "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
+                                  "                            (P.PROF_NAME LIKE @ProfBody)" +
+                                  "                           )" +
+                                  " WHERE (D.CODE=@DevCode)" +
+                                  " GROUP BY P.PROF_ID" +
+                               " ) AS z", _connection);
+
+            _selectDevRTClassCommand.Parameters.Add("@ProfName", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@RTProfName", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@ProfBody", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
+            _selectDevRTClassCommand.Prepare();
 
             _devLookupPTTSelectCommand =
                 new SqlCommand(
@@ -475,7 +497,6 @@ namespace SCME.InterfaceImplementations
             InsertAtuParameterValues(result, devId, trans);
             InsertQrrTqParameterValues(result, devId, trans);
             InsertRacParameterValues(result, devId, trans);
-            InsertTOUParameterValues(result, devId, trans);
         }
 
         private void InsertGateParameterValues(ResultItem result, long devId, SqlTransaction trans)
@@ -523,6 +544,31 @@ namespace SCME.InterfaceImplementations
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
                             InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", trans);
                     }
+
+                    if (result.BVTTestParameters[i].UseUdsmUrsm)
+                    {
+                        //результаты теста UDSM/URSM
+                        switch (result.BVTTestParameters[i].TestType)
+                        {
+                            case BVTTestType.Both:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", trans);
+
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", trans);
+                                break;
+
+                            case BVTTestType.Direct:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", trans);
+                                break;
+
+                            case BVTTestType.Reverse:
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", trans);
+                                break;
+                        }
+                    }
                 }
             }
         }
@@ -564,19 +610,6 @@ namespace SCME.InterfaceImplementations
                 if (result.RACTestParameters[i].IsEnabled)
                 {
                     InsertParameterValue(devId, "ResultR", result.RAC[i].ResultR, result.ProfileKey, "RAC", trans);
-                }
-            }
-        }
-
-        private void InsertTOUParameterValues(ResultItem result, long devId, SqlTransaction trans)
-        {
-            for (int i = 0; i < result.TOUTestParameters.Length; i++)
-            {
-                if (result.TOUTestParameters[i].IsEnabled)
-                {
-                    InsertParameterValue(devId, "TOU_ITM", result.TOU[i].ITM, result.ProfileKey, "TOU", trans);
-                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, "TOU", trans);
-                    InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.ProfileKey, "TOU", trans);
                 }
             }
         }
@@ -770,6 +803,48 @@ namespace SCME.InterfaceImplementations
 
                 return list;
             }
+        }
+
+        public int? ReadDeviceRTClass(string devCode, string profileName)
+        {
+            //считывает класс самого свежего изделия, имеющего номер devCode, измеренного по профилю с обозначением profileName
+            //возвращает:
+            //            null - по запрошенным devCode и profileName класс RT вычислить не возможо;
+            //              -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
+            //           класс - целое положительное число - успешное вычисление класса.
+
+            int? result = null;
+
+            lock (MsLocker)
+            {
+                if (_connection == null || _connection.State != ConnectionState.Open)
+                    return null;
+
+                _selectDevRTClassCommand.Parameters["@ProfName"].Value = profileName;
+                _selectDevRTClassCommand.Parameters["@RTProfName"].Value = SCME.Types.Profiles.ProfileRoutines.MakeRT(profileName);
+                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
+                _selectDevRTClassCommand.Parameters["@DevCode"].Value = devCode;
+
+                using (var reader = _selectDevRTClassCommand.ExecuteReader())
+                {
+                    int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
+
+                    int recordCount = 0;
+                    while (reader.Read())
+                    {
+                        object res = reader.GetInt32(deviceClassFieldID);
+                        result = (res == DBNull.Value) ? null : (int?)res;
+
+                        recordCount++;
+                    }
+
+                    //может быть считана либо одна запись, либо ни одной
+                    if (recordCount > 1)
+                        result = -1;
+                }
+            }
+
+            return result;
         }
 
         #endregion

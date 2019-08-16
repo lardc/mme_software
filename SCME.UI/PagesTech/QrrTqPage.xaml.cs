@@ -252,7 +252,6 @@ namespace SCME.UI.PagesTech
             var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
 
             //если пресс был зажат вручную - не стоит пробовать зажимать его ещё раз
             ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
@@ -263,7 +262,7 @@ namespace SCME.UI.PagesTech
                                      BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
                                      CommutationType = ConverterUtil.MapCommutationType(CommType),
                                      Position = ConverterUtil.MapModulePosition(ModPosition)
-                                 }, ClampParameters, paramTOU))
+                                 }, ClampParameters))
                 return;
 
             ClearStatus();

@@ -717,4 +717,7 @@
   <data name="QrrTqTrrMeasureBy9050Method" xml:space="preserve">
     <value>Measure Trr by 90%-50% method</value>
   </data>
+  <data name="UseUdsmUrsm" xml:space="preserve">
+    <value>UDSM/URSM</value>
+  </data>
 </root>

@@ -175,7 +175,7 @@
     <value>Report</value>
   </data>
   <data name="ReportCannotBeGenerated" xml:space="preserve">
-    <value>The list of products for building a report is empty. Report generation does not make sense.</value>
+    <value>The source data for building a report is empty. Report generation does not make sense.</value>
   </data>
   <data name="SiOmnity" xml:space="preserve">
     <value>Silicon omnity</value>
@@ -197,5 +197,11 @@
   </data>
   <data name="Usr" xml:space="preserve">
     <value>Operator</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
   </data>
 </root>

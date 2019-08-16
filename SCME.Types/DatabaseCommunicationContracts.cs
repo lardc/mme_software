@@ -77,9 +77,6 @@ namespace SCME.Types
         public RAC.TestResults[] RAC { get; set; }
 
         [DataMember]
-        public TOU.TestResults[] TOU { get; set; }
-
-        [DataMember]
         public TestParameters[] GateTestParameters { get; set; }
 
         [DataMember]
@@ -99,9 +96,6 @@ namespace SCME.Types
 
         [DataMember]
         public RAC.TestParameters[] RACTestParameters { get; set; }
-
-        [DataMember]
-        public TOU.TestParameters[] TOUTestParameters { get; set; }
 
         [DataMember]
         public bool IsHeightMeasureEnabled { get; set; }
@@ -148,9 +142,6 @@ namespace SCME.Types
 
         [DataMember]
         public List<RAC.TestParameters> RACTestParameters { get; set; }
-
-        [DataMember]
-        public List<TOU.TestParameters> TOUTestParameters { get; set; }
 
         [DataMember]
         public ModuleCommutationType CommTestParameters { get; set; }
@@ -220,9 +211,6 @@ namespace SCME.Types
             if (RACTestParameters.Count != oldItem.RACTestParameters.Count)
                 return true;
 
-            if (TOUTestParameters.Count != oldItem.TOUTestParameters.Count)
-                return true;
-
             if (CommTestParameters != oldItem.CommTestParameters)
                 return true;
 
@@ -277,12 +265,6 @@ namespace SCME.Types
             for (var i = 0; i < RACTestParameters.Count; i++)
             {
                 if (RACTestParameters[i].IsHasChanges(oldItem.RACTestParameters[i]))
-                    return true;
-            }
-
-            for (var i = 0; i < TOUTestParameters.Count; i++)
-            {
-                if (TOUTestParameters[i].IsHasChanges(oldItem.TOUTestParameters[i]))
                     return true;
             }
 
@@ -397,6 +379,10 @@ namespace SCME.Types
         [OperationContract]
         [FaultContract(typeof(FaultData))]
         List<ParameterNormativeItem> ReadDeviceNormatives(long InternalID);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        int? ReadDeviceRTClass(string devCode, string profName);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]

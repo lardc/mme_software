@@ -327,6 +327,8 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0"
@@ -383,8 +385,14 @@
                             <Label Grid.Column="4" Grid.Row="4" HorizontalAlignment="Right"
                                        Content="{Binding MeasurementMode}" />
 
-
-                            <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5"
+                            <Label Grid.Column="0" Grid.Row="5" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.UseUdsmUrsm}" />
+                            <Path Grid.Column="1" Grid.Row="5" Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60"  
+                                      Stretch="Uniform" HorizontalAlignment="Right"
+                                      Visibility="{Binding UseUdsmUrsm, Converter={StaticResource B2V}}"/>
+                            
+                            <Grid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="5"
                                       Visibility="{Binding MeasurementMode, ConverterParameter=1, Converter={StaticResource MM2V}, UpdateSourceTrigger=PropertyChanged}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="35*" />
@@ -411,7 +419,7 @@
                                            Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
-                            <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5"
+                            <Grid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="5"
                                       Visibility="{Binding MeasurementMode, ConverterParameter=0, Converter={StaticResource MM2V}, UpdateSourceTrigger=PropertyChanged}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="35*" />
@@ -427,14 +435,14 @@
                                            Content="{x:Static res:Resources.MaxIdrm_mA}"
                                            Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
                                 <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right"
-                                           Content="{Binding IDRM, ElementName=profilesList}"
+                                           Content="{Binding IDRM}"
                                            Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <Label Grid.Column="3" Grid.Row="0" Margin="0,0,0,0"
                                            Content="{x:Static res:Resources.MaxIrrm_mA}"
                                            Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
                                 <Label Grid.Column="4" Grid.Row="0" HorizontalAlignment="Right"
-                                           Content="{Binding IRRM, ElementName=profilesList}"
+                                           Content="{Binding IRRM}"
                                            Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 

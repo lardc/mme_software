@@ -35,6 +35,41 @@ namespace SCME.UI
         }
     }
 
+    public class MultiBvtRSMTestTypeToVisibilityConverter : IMultiValueConverter
+    {
+        public object Convert(object[] Values, Type TargetType, object Parameter, CultureInfo culture)
+        {
+            BVTTestType testType;
+            bool parseResult = Enum.TryParse(Values[0]?.ToString(), out testType);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            bool useUdsmUrsm;
+            parseResult = bool.TryParse(Values[1]?.ToString(), out useUdsmUrsm);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            int indexInEnum;
+            parseResult = int.TryParse(Values[2]?.ToString(), out indexInEnum);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            bool result = (useUdsmUrsm) &&
+                          (
+                           testType == BVTTestType.Both ||
+                           (testType == BVTTestType.Direct && indexInEnum == (int)BVTTestType.Direct) ||
+                           (testType == BVTTestType.Reverse && indexInEnum == (int)BVTTestType.Reverse)
+                          );
+
+            return result ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object[] ConvertBack(object Value, Type[] TargetTypes, object Parameter, CultureInfo Culture)
+        {
+            throw new InvalidOperationException("ConvertBack method is not implemented in MultiBvtRSMTestTypeToVisibilityConverter");
+        }
+    }   
+
     public class MeasureModeToVisibilityConverter : IValueConverter
     {
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
@@ -195,139 +230,6 @@ namespace SCME.UI
         }
     }
 
-
-    /// <summary>
-    /// Конвертор булевого в System.Windows.Visibility
-    /// </summary>
-    public class TryBooleanToVisibilityConverter : IValueConverter
-    {
-        /// <summary>
-        /// Конвертирует bool в Visibility
-        /// </summary>
-        /// <param name="value">Конвертируемое значение</param>
-        /// <returns></returns>
-        public object ConvertWithoutCheckValue(object value)
-        {
-            switch ((bool)value)
-            {
-                case true:
-                    return Visibility.Visible;
-                case false:
-                    return Visibility.Hidden;
-                default:
-                    throw new NotImplementedException($"{nameof(TryBooleanToVisibilityConverter)} {nameof(NotImplementedException)} error");
-            }
-        }
-
-        /// <summary>
-        ///Конвертирует Visibility в bool
-        /// </summary>
-        /// <param name="value">Конвертируемое значение</param>
-        /// <returns></returns>
-        public object ConvertBackWithoutCheckValue(object value)
-        {
-            switch ((Visibility)value)
-            {
-                case Visibility.Visible:
-                    return true;
-                case Visibility.Hidden:
-                    return false;
-                case Visibility.Collapsed:
-                    return false;
-                default:
-                    throw new NotImplementedException($"{nameof(TryBooleanToVisibilityConverter)} {nameof(NotImplementedException)} error");
-            }
-        }
-    
-        /// <summary>
-        /// Проверяет значение на null и на принадлежность к типу bool
-        /// </summary>
-        /// <param name="value">Проверяемое значение</param>
-        public void ConvertCheck(object value)
-        {
-            if (value == null)
-                throw new NullReferenceException("Value is null");
-            if (typeof(bool).Equals(value.GetType()) == false)
-                throw new InvalidCastException($"Value has type {value.GetType()} , need bool ");
-        }
-
-        /// <summary>
-        /// Проверяет значение на null и на принадлежность к типу Visibility
-        /// </summary>
-        /// <param name="value">Проверяемое значение</param>
-        public void ConvertBackCheck(object value)
-        {
-            if (value == null)
-                throw new NullReferenceException("Value is null");
-            if (typeof(Visibility).Equals(value.GetType()) == false)
-                throw new InvalidCastException($"Value has type {value.GetType()} , need bool ");
-        }
-
-        /// <summary>
-        /// Конвертортирует bool в System.Windows.Visibility
-        /// </summary>
-        /// <param name="value">Значение, произведенное исходной привязкой.</param>
-        /// <param name="targetType">Тип целевого свойства привязки.</param>
-        /// <param name="parameter">Используемый параметр преобразователя.</param>
-        /// <param name="culture">Язык и региональные параметры, используемые в преобразователе.</param>
-        /// <returns></returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            ConvertCheck(value);
-            return ConvertWithoutCheckValue(value);
-        }
-
-        /// <summary>
-        /// Конвертортирует System.Windows.Visibility в bool
-        /// </summary>
-        /// <param name="value">Значение, произведенное исходной привязкой.</param>
-        /// <param name="targetType">Тип целевого свойства привязки.</param>
-        /// <param name="parameter">Используемый параметр преобразователя.</param>
-        /// <param name="culture">Язык и региональные параметры, используемые в преобразователе.</param>
-        /// <returns></returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            ConvertBackCheck(value);
-            return ConvertBackWithoutCheckValue(value);
-        }
-
-    }
-
-    public class TryBooleanToVisibilityInverseConverter: IValueConverter
-    {
-        public TryBooleanToVisibilityConverter _Converter = new TryBooleanToVisibilityConverter();
-
-        /// <summary>
-        /// Инверсионно конвертортирует System.Windows.Visibility в bool
-        /// </summary>
-        /// <param name="value">Значение, произведенное исходной привязкой.</param>
-        /// <param name="targetType">Тип целевого свойства привязки.</param>
-        /// <param name="parameter">Используемый параметр преобразователя.</param>
-        /// <param name="culture">Язык и региональные параметры, используемые в преобразователе.</param>
-        /// <returns>Преобразованное значение</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            _Converter.ConvertCheck(value);
-            bool inverseValue = !((bool)value);
-            return _Converter.ConvertWithoutCheckValue(inverseValue);
-        }
-
-        /// <summary>
-        /// Инверсионно конвертортирует System.Windows.Visibility в bool
-        /// </summary>
-        /// <param name="value">Значение, произведенное исходной привязкой.</param>
-        /// <param name="targetType">Тип целевого свойства привязки.</param>
-        /// <param name="parameter">Используемый параметр преобразователя.</param>
-        /// <param name="culture">Язык и региональные параметры, используемые в преобразователе.</param>
-        /// <returns>Преобразованное значение</returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            _Converter.ConvertBackCheck(value);
-            Visibility inverseValue = (Visibility)value == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            return _Converter.ConvertBackWithoutCheckValue(inverseValue);
-        }
-    }
-
     public class ListBoxDefaultItemToVisibilityConverter : IValueConverter
     {
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
@@ -389,7 +291,7 @@ namespace SCME.UI
     {
         public object Convert(object[] Values, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            var visible = Values.OfType<bool>().Aggregate(true, (Current, Value) => Current && Value);
+            var visible = Values.OfType<bool>().Aggregate(true, (current, value) => current && value);
 
             return visible ? Visibility.Visible : Visibility.Collapsed;
         }

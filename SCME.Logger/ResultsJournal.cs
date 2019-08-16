@@ -321,6 +321,12 @@ namespace SCME.Logger
             }
         }
 
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            //нет смысла вычислять класс по данным одной локально расположенной базы данных
+            return null;
+        }
+
         public List<int> ReadDeviceErrors(long InternalID)
         {
             lock (ms_Locker)
@@ -468,7 +474,7 @@ namespace SCME.Logger
             m_SelectDevNormCommand.Parameters.Add("@DEV_ID", DbType.Int64);
             m_SelectDevNormCommand.Prepare();
 
-            m_SelectDevErrCommand = new SQLiteCommand(SELECT_DEV_ERR_CMD, m_Connection);
+             m_SelectDevErrCommand = new SQLiteCommand(SELECT_DEV_ERR_CMD, m_Connection);
             m_SelectDevErrCommand.Parameters.Add("@DEV_ID", DbType.Int64);
             m_SelectDevErrCommand.Prepare();
         }

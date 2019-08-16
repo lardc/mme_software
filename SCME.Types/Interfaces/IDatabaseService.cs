@@ -6,8 +6,6 @@ namespace SCME.Types.Interfaces
     {
         void ImportProfiles(string filePath);
 
-        void Migrate();
-
         void Open();
         void Close();
         void ResetContent();

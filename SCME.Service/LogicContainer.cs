@@ -33,7 +33,6 @@ namespace SCME.Service
         private readonly IORCC m_IORCC;
         private readonly IoSctu _ioSctu;
         private readonly ThreadService m_Thread;
-        private readonly IOTOU m_IOTOU;
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
@@ -45,7 +44,6 @@ namespace SCME.Service
         private Types.RAC.TestParameters m_ParametersRac;
         private Types.IH.TestParameters m_ParametersIH;
         private Types.RCC.TestParameters m_ParametersRCC;
-        private Types.TOU.TestParameters m_ParametersTOU;
 
         private Types.Gate.TestParameters[] m_ParametersGateDyn;
         private Types.SL.TestParameters[] m_ParametersSLDyn;
@@ -55,7 +53,6 @@ namespace SCME.Service
         private Types.QrrTq.TestParameters[] m_ParametersQrrTqDyn;
         private Types.RAC.TestParameters[] m_ParametersRacDyn;
         private SctuTestParameters[] _sctuTestParameters;
-        private Types.TOU.TestParameters[] m_ParametersTOUDyn;
 
         private TypeCommon.InitParams m_Param;
         private DeviceState m_State = DeviceState.None;
@@ -84,7 +81,6 @@ namespace SCME.Service
             m_ParametersRac = new Types.RAC.TestParameters { IsEnabled = false };
             m_ParametersIH = new Types.IH.TestParameters { IsEnabled = false };
             m_ParametersRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            m_ParametersTOU = new Types.TOU.TestParameters { IsEnabled = false };
 
             m_IOAdapter = new IOAdapter(m_Communication);
             m_IOGateway = new IOGateway(m_IOAdapter, m_Communication);
@@ -105,7 +101,6 @@ namespace SCME.Service
             m_IOIH = new IOIH(m_IOGate, m_IOStls, m_Communication);
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
-            m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -117,7 +112,6 @@ namespace SCME.Service
             m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOIH.ActiveCommutation = m_IOCommutation;
             m_IORCC.ActiveCommutation = m_IOCommutation;
-            m_IOTOU.ActiveCommutation = m_IOCommutation;
         }
 
         void Thread_FinishedHandler(object Sender, ThreadFinishedEventArgs E)
@@ -144,7 +138,7 @@ namespace SCME.Service
             var state = DeviceConnectionState.ConnectionInProcess;
 
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info,
-                                         string.Format(Resources.Log_LogicContainer_Requested_block_modes, m_Param.IsGateEnabled, m_Param.IsSLEnabled, m_Param.IsBVTEnabled, m_Param.IsClampEnabled, m_Param.IsdVdtEnabled, m_Param.IsATUEnabled, m_Param.IsQrrTqEnabled, m_Param.IsRACEnabled, m_Param.IsIHEnabled, m_Param.IsTOUEnabled));
+                                         string.Format(Resources.Log_LogicContainer_Requested_block_modes, m_Param.IsGateEnabled, m_Param.IsSLEnabled, m_Param.IsBVTEnabled, m_Param.IsClampEnabled, m_Param.IsdVdtEnabled, m_Param.IsATUEnabled, m_Param.IsQrrTqEnabled, m_Param.IsRACEnabled, m_Param.IsIHEnabled));
 
             try
             {
@@ -191,9 +185,6 @@ namespace SCME.Service
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = _ioSctu.Initialize(m_Param.IsSctuEnabled, m_Param.TimeoutSctu);
-
-                if (state == DeviceConnectionState.ConnectionSuccess)
-                    state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
 
                 //при инициализации оборудования необходимо включить зеленый светодиод (запись 1 в регистр 128 gateway)
                 if (state == DeviceConnectionState.ConnectionSuccess)
@@ -387,17 +378,6 @@ namespace SCME.Service
             try
             {
                 _ioSctu.Deinitialize();
-            }
-            catch (Exception ex)
-            {
-                var message = string.Format(Resources.Error_LogicContainer_Exception, ex.Message);
-                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, message);
-                savedEx = ex;
-            }
-
-            try
-            {
-                m_IOTOU.Deinitialize();
             }
             catch (Exception ex)
             {
@@ -617,7 +597,7 @@ namespace SCME.Service
         {
             string res = "";
 
-            var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
+            var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length);
             orderedParameters.AddRange(m_ParametersGateDyn);
             orderedParameters.AddRange(m_ParametersSLDyn);
             orderedParameters.AddRange(m_ParametersBvtDyn);
@@ -626,7 +606,6 @@ namespace SCME.Service
             orderedParameters.AddRange(m_ParametersQrrTqDyn);
             orderedParameters.AddRange(m_ParametersRacDyn);
             orderedParameters.AddRange(_sctuTestParameters);
-            orderedParameters.AddRange(m_ParametersTOUDyn);
             orderedParameters = orderedParameters.OrderBy(o => o.Order).ToList();
 
             foreach (var baseTestParametersAndNormativese in orderedParameters)
@@ -703,18 +682,6 @@ namespace SCME.Service
                             res = res + ", ";
 
                         res = res + "RAC";
-                    }
-                }
-
-                var tOuParameters = baseTestParametersAndNormativese as Types.TOU.TestParameters;
-                if (!ReferenceEquals(tOuParameters, null))
-                {
-                    if (!m_IOTOU.IsReadyToStart())
-                    {
-                        if (res != "")
-                            res = res + ", ";
-
-                        res = res + "TOU";
                     }
                 }
             }
@@ -839,7 +806,7 @@ namespace SCME.Service
 
         #region Test sequence
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
+        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp)
         {
             m_Stop = false;
 
@@ -861,7 +828,6 @@ namespace SCME.Service
             m_IORAC.ActiveCommutation = m_IOActiveCommutation;
             m_IOIH.ActiveCommutation = m_IOActiveCommutation;
             m_IORCC.ActiveCommutation = m_IOActiveCommutation;
-            m_IOTOU.ActiveCommutation = m_IOActiveCommutation;
 
             m_ParametersGate = ParametersGate;
             m_ParametersSL = ParametersSL;
@@ -871,12 +837,11 @@ namespace SCME.Service
             m_ParametersRac = ParametersRac;
             m_ParametersIH = ParametersIH;
             m_ParametersRCC = ParametersRCC;
-            m_ParametersTOU = ParametersTOU;
 
             m_State = DeviceState.InProcess;
 
-            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, SL, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}, TOU - {9}",
-                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
+            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, SL, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}",
+                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, message);
 
             m_Communication.PostTestAllEvent(m_State, "Starting tests");
@@ -893,7 +858,7 @@ namespace SCME.Service
             return true;
         }
 
-        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu)
         {
             m_Stop = false;
 
@@ -917,7 +882,6 @@ namespace SCME.Service
             m_IOQrrTq.ActiveCommutation = m_IOCommutation;
             m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOClamping.ActiveCommutation = m_IOActiveCommutation;
-            m_IOTOU.ActiveCommutation = m_IOActiveCommutation;
 
             m_ParametersGateDyn = parametersGate;
             m_ParametersBvtDyn = parametersBvt;
@@ -927,7 +891,6 @@ namespace SCME.Service
             m_ParametersQrrTqDyn = parametersQrrTq;
             m_ParametersRacDyn = parametersRac;
             _sctuTestParameters = parametersSctu;
-            m_ParametersTOUDyn = parametersTOU;
 
             m_State = DeviceState.InProcess;
 
@@ -1000,7 +963,7 @@ namespace SCME.Service
             {
                 SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, "Start after unsqueeze routine");
 
-                var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
+                var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + _sctuTestParameters.Length);
                 orderedParameters.AddRange(m_ParametersGateDyn);
                 orderedParameters.AddRange(m_ParametersSLDyn);
                 orderedParameters.AddRange(m_ParametersBvtDyn);
@@ -1008,7 +971,6 @@ namespace SCME.Service
                 orderedParameters.AddRange(m_ParametersAtuDyn);
                 orderedParameters.AddRange(m_ParametersQrrTqDyn);
                 orderedParameters.AddRange(_sctuTestParameters);
-                orderedParameters.AddRange(m_ParametersTOUDyn);
                 orderedParameters = orderedParameters.OrderBy(o => o.Order).ToList();
 
                 foreach (var baseTestParametersAndNormativese in orderedParameters)
@@ -1065,7 +1027,7 @@ namespace SCME.Service
 
                     if (res == DeviceState.Success)
                     {
-                        var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
+                        var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length);
                         orderedParameters.AddRange(m_ParametersGateDyn);
                         orderedParameters.AddRange(m_ParametersSLDyn);
                         orderedParameters.AddRange(m_ParametersBvtDyn);
@@ -1074,8 +1036,6 @@ namespace SCME.Service
                         orderedParameters.AddRange(m_ParametersQrrTqDyn);
                         orderedParameters.AddRange(m_ParametersRacDyn);
                         orderedParameters.AddRange(_sctuTestParameters);
-                        orderedParameters.AddRange(m_ParametersTOUDyn);
-
                         orderedParameters = orderedParameters.OrderBy(o => o.Order).ToList();
 
                         foreach (var baseTestParametersAndNormativese in orderedParameters)
@@ -1203,22 +1163,6 @@ namespace SCME.Service
                                 catch (Exception ex)
                                 {
                                     ThrowFaultException(ComplexParts.Sctu, ex.Message, "Start SCTU test");
-                                }
-                            }
-
-                            var tOUparameters = baseTestParametersAndNormativese as Types.TOU.TestParameters;
-                            if (!ReferenceEquals(tOUparameters, null))
-                            {
-                                try
-                                {
-                                    if (m_ClampingSystemConnected && m_Param.IsClampEnabled && !m_Stop)
-                                        m_IOClamping.SetCustomForce();
-
-                                    res = m_IOTOU.Start(tOUparameters, parametersCommutation);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ThrowFaultException(ComplexParts.BVT, ex.Message, "Start TOU test");
                                 }
                             }
                         }
@@ -1422,18 +1366,6 @@ namespace SCME.Service
                                     ThrowFaultException(ComplexParts.IH, ex.Message, "Start IH test");
                                 }
                             }
-
-                            if (m_ParametersTOU.IsEnabled && m_Param.IsTOUEnabled && !m_Stop)
-                            {
-                                try
-                                {
-                                    res = m_IOTOU.Start(m_ParametersTOU, ParametersComm);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ThrowFaultException(ComplexParts.IH, ex.Message, "Start IH test");
-                                }
-                            }
                         }
                     }
                 }
@@ -1500,9 +1432,6 @@ namespace SCME.Service
 
             if (m_ParametersIH.IsEnabled)
                 m_IOIH.Stop();
-
-            if (m_ParametersTOU.IsEnabled)
-                m_IOTOU.Stop();
 
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, Resources.Log_LogicContainer_Main_test_manual_stop);
         }
@@ -1651,9 +1580,7 @@ namespace SCME.Service
                     case ComplexParts.IH:
                         //блок IH физичести не существует
                         break;
-                    case ComplexParts.TOU:
-                        res = m_IOTOU.ReadRegister(Address);
-                        break;
+
                     case ComplexParts.Sctu:
                         res = _ioSctu.ReadRegister(Address);
                         break;
@@ -1708,9 +1635,6 @@ namespace SCME.Service
                         break;
                     case ComplexParts.RAC:
                         m_IORAC.WriteRegister(Address, Value);
-                        break;
-                    case ComplexParts.TOU:
-                        m_IOTOU.WriteRegister(Address, Value);
                         break;
                     case ComplexParts.IH:
                         //блок IH физичести не существует
@@ -1768,9 +1692,7 @@ namespace SCME.Service
                     case ComplexParts.IH:
                         //блок IH физичести не существует
                         break;
-                    case ComplexParts.TOU:
-                        m_IOTOU.CallAction(Address);
-                        break;
+
                     case ComplexParts.Sctu:
                         _ioSctu.CallAction(Address);
                         break;
@@ -1826,9 +1748,6 @@ namespace SCME.Service
                         break;
                     case ComplexParts.IH:
                         m_IOIH.ClearFault();
-                        break;
-                    case ComplexParts.TOU:
-                        m_IOTOU.ClearFault();
                         break;
 
                     //если обработка для Device не предусмотрена

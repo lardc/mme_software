@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
-using System.Linq;
-using SCME.EntityDataDB;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
@@ -19,30 +17,10 @@ namespace SCME.InterfaceImplementations
     {
         private readonly SQLiteConnection _connection;
 
-        private Entities GetContext => new Entities(ConnectionStringForEF);
-
-        private string _ConnectionStringForEF;
-        private string ConnectionStringForEF
-        {
-            get
-            {
-                return _ConnectionStringForEF;
-            }
-            set
-            {
-                string cs = value;
-                int index1 = cs.IndexOf("data source");
-                int index2 = cs.IndexOf(";");
-                _ConnectionStringForEF = cs.Substring(index1, index2 - index1);
-            }
-
-        }
-
         public SQLiteSaveProfileService(SQLiteConnection connection)
         {
-            ConnectionStringForEF = connection.ConnectionString;
             _connection = connection;
-            _testTypes = new Dictionary<string, long>(11);
+            _testTypes = new Dictionary<string, long>(10);
             _conditions = new Dictionary<string, long>(64);
             _params = new Dictionary<string, long>(64);
             if (_connection.State != ConnectionState.Open)
@@ -54,7 +32,7 @@ namespace SCME.InterfaceImplementations
         private readonly Dictionary<string, long> _params;
         private int orderNew;
 
-           /// <summary>
+        /// <summary>
         /// Populate dictionaries from db
         /// </summary>
         private void PopulateDictionaries()
@@ -179,18 +157,10 @@ namespace SCME.InterfaceImplementations
                         InsertParameters(racTestParameter, testTypeId, profileId);
                     }
 
-                    foreach (var touTestParameter in profileItem.TOUTestParameters)
-                    {
-                        var testTypeId = InsertTOUTestType(profileId, touTestParameter.Order);
-                        touTestParameter.IsEnabled = true;
-                        InsertConditions(touTestParameter, testTypeId, profileId);
-                        InsertParameters(touTestParameter, testTypeId, profileId);
-                    }
-
                     trans.Commit();
                     return profileId;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     trans.Rollback();
                     throw;
@@ -308,23 +278,23 @@ namespace SCME.InterfaceImplementations
         {
             try
             {
+                //случай редактирования существующего профиля. если профиль редактируется, то создаётся новый профиль, версия которого на 1 больше редактируемого с новым значением GUID. ибо любая версия профиля имеют уникальный GUID
                 var profileId = GetProfileId(profile.ProfileKey);
 
-                var profileVersionSelect =
-                    new SQLiteCommand("SELECT P.PROF_VERS FROM PROFILES P WHERE P.PROF_ID = @PROF_ID", _connection);
+                var profileVersionSelect = new SQLiteCommand("SELECT P.PROF_VERS FROM PROFILES P WHERE P.PROF_ID = @PROF_ID", _connection);
+
                 profileVersionSelect.Parameters.Add("@PROF_ID", DbType.Int64);
                 profileVersionSelect.Prepare();
                 profileVersionSelect.Parameters["@PROF_ID"].Value = profileId;
                 var version = profileVersionSelect.ExecuteScalar();
 
-                var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS,PROF_VERS) VALUES (NULL, @PROF_NAME, @PROF_GUID, @PROF_TS,@VERSION)", _connection);
-
+                var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS) VALUES (NULL, @PROF_NAME, @PROF_GUID, @PROF_TS, @VERSION)", _connection);
                 profileInsertCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
                 profileInsertCommand.Parameters.Add("@VERSION", DbType.Int64);
                 profileInsertCommand.Parameters.Add("@PROF_TS", DbType.String);
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
                 profileInsertCommand.Prepare();
-                profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
+                profileInsertCommand.Parameters["@PROF_GUID"].Value = Guid.NewGuid(); //profile.ProfileKey нельзя генерировать новое значение
                 profileInsertCommand.Parameters["@VERSION"].Value = (long)version + 1;
                 profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
                 profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
@@ -338,6 +308,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (ArgumentException)
             {
+                //случай создания нового профиля
                 var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS) VALUES(NULL, @PROF_NAME, @PROF_GUID, @PROF_TS, 1)", _connection);
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
                 profileInsertCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
@@ -374,18 +345,16 @@ namespace SCME.InterfaceImplementations
 
         private long GetProfileId(Guid profileKey)
         {
-            using(var db = GetContext)
-                return db.PROFILES.Where(m => m.PROF_GUID == profileKey).OrderByDescending(m => m.PROF_VERS).First().PROF_ID;
-            //var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
-            //profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
-            //profileSelectCommand.Prepare();
-            //profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
-            //var possibleProfileId = profileSelectCommand.ExecuteScalar();
+            var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
+            profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+            profileSelectCommand.Prepare();
+            profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
+            var possibleProfileId = profileSelectCommand.ExecuteScalar();
 
-            //if (possibleProfileId == null)
-            //    throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
+            if (possibleProfileId == null)
+                throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
 
-            //return (long)possibleProfileId;
+            return (long)possibleProfileId;
         }
 
 
@@ -436,11 +405,6 @@ namespace SCME.InterfaceImplementations
         private long InsertRacTestType(long profileId, int order)
         {
             return InsertTestType(_testTypes["RAC"], profileId, order);
-        }
-
-        private long InsertTOUTestType(long profileId, int order)
-        {
-            return InsertTestType(_testTypes["TOU"], profileId, order);
         }
 
         private long InsertTestType(long typeId, long profileId, int order = 0)
@@ -509,10 +473,6 @@ namespace SCME.InterfaceImplementations
                 case TestParametersType.RAC:
                     InsertRacConditions(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId);
                     break;
-
-                case TestParametersType.TOU:
-                    InsertTOUConditions(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId);
-                    break;
             }
         }
 
@@ -566,6 +526,7 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "BVT_FD", profile.FrequencyDivisor);
             InsertCondition(testTypeId, profileId, "BVT_Mode", profile.MeasurementMode);
             InsertCondition(testTypeId, profileId, "BVT_PlateTime", profile.PlateTime);
+            InsertCondition(testTypeId, profileId, "BVT_UseUdsmUrsm", profile.UseUdsmUrsm);
 
             switch (profile.TestType)
             {
@@ -627,12 +588,6 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "RAC_ResVoltage", testParameters.ResVoltage);
         }
 
-        private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId)
-        {
-            InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input);
-        }
-
         private void InsertCondition(long testTypeId, long profileId, string name, object value)
         {
             var profCondInsertCommand = new SQLiteCommand("INSERT INTO PROF_COND(PROF_TESTTYPE_ID, PROF_ID, COND_ID, VALUE) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @COND_ID, @VALUE)", _connection);
@@ -676,9 +631,6 @@ namespace SCME.InterfaceImplementations
                     break;
                 case TestParametersType.RAC:
                     InsertRacParameters(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId);
-                    break;
-                case TestParametersType.TOU:
-                    InsertTOUParameters(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId);
                     break;
             }
         }
@@ -741,13 +693,6 @@ namespace SCME.InterfaceImplementations
         private void InsertRacParameters(Types.RAC.TestParameters racTestParameters, long testTypeId, long profileId)
         {
             InsertParameter(testTypeId, profileId, "ResultR", racTestParameters.ResultR, DBNull.Value);
-        }
-
-        private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId)
-        {
-            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Output, DBNull.Value);
-            InsertParameter(testTypeId, profileId, "TOU_TGD", touTestParameters.TGD, DBNull.Value);
-            InsertParameter(testTypeId, profileId, "TOU_TGT", touTestParameters.TGT, DBNull.Value);
         }
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max)

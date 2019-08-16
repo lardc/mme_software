@@ -178,6 +178,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print.
+        /// </summary>
+        public static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string Profile {
@@ -223,6 +232,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report.
         /// </summary>
         public static string Report {
@@ -232,7 +250,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The list of products for building a report is empty. Report generation does not make sense..
+        ///   Looks up a localized string similar to The source data for building a report is empty. Report generation does not make sense..
         /// </summary>
         public static string ReportCannotBeGenerated {
             get {

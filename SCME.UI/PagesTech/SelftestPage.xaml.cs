@@ -242,7 +242,6 @@ namespace SCME.UI.PagesTech
             var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
 
             switch (tabControl.SelectedIndex)
             {
@@ -258,7 +257,7 @@ namespace SCME.UI.PagesTech
                                               BlockIndex = Types.Commutation.HWBlockIndex.Block1,
                                               CommutationType = Types.Commutation.HWModuleCommutationType.Direct,
                                               Position = Types.Commutation.HWModulePosition.Position1
-                                          }, new Types.Clamping.TestParameters { SkipClamping = true }, paramTOU, true);
+                                          }, new Types.Clamping.TestParameters { SkipClamping = true }, true);
 
             var stopped = Cache.Net.IsStopButtonPressed;
             if (stopped || !started)

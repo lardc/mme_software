@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:gateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types" 
              xmlns:bvtParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types" 
              xmlns:vtmParameters="clr-namespace:SCME.Types.SL;assembly=SCME.Types"
@@ -18,7 +19,7 @@
         <ui:MultiBooleanToVisibilityConverter x:Key="MB2V" />
         <ui:VtmTestTypeToCurrentConverter x:Key="TT2C" />
         <ui:BvtTestTypeToVisibilityConverter x:Key="TT2V" />
-
+        <ui:MultiBvtRSMTestTypeToVisibilityConverter x:Key="MBvtRSMTT2V"/>
         <ui:BooleanToVisibilityConverter x:Key="B2V" />
         <ui:GridLengthConverter x:Key="G2L" />
         <ui:DvdtTestTypeToVisibilityUnConverter x:Key="DT2VB"/>
@@ -290,6 +291,11 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Content="{x:Static res:Resources.VdrmV}" Grid.Column="0" Grid.Row="0"
@@ -324,10 +330,113 @@
                        Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=2}"
                         />
 
-                    <Label Name="labelBvtWarning1"  Background="Gold" Grid.Column="0" Grid.Row="4"
+
+                    <Label Content="{x:Static res:Resources.VDSM_V}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <Label Name="labelBvtVdsmResult1" Grid.Column="1" Grid.Row="4" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+
+                    <Label Content="{x:Static res:Resources.IDSM_mA}" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <Label Name="labelBvtIdsmResult1" Grid.Column="1" Grid.Row="5" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+
+                    <Label Content="{x:Static res:Resources.VRSM_V}" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <Label Name="labelBvtVrsmResult1" Grid.Column="1" Grid.Row="6" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+
+                    <Label Content="{x:Static res:Resources.IRSM_mA}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">
+                        <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>
+                    </Label>
+                    <Label Name="labelBvtIrsmResult1" Grid.Column="1" Grid.Row="7" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}">
+                      <Label.Resources>
+                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
+                        </Label.Resources>
+                        <Label.Visibility>
+                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
+                                <Binding Path="TestType"/>
+                                <Binding Path="UseUdsmUrsm"/>
+                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
+                            </MultiBinding>
+                        </Label.Visibility>  
+                    </Label>
+
+
+
+                    <Label Name="labelBvtWarning1"  Background="Gold" Grid.Column="0" Grid.Row="8"
                        Content="Warning"
                        Style="{StaticResource WarningFaultLabelStyle}" Grid.ColumnSpan="2" />
-                    <Label Name="labelBvtFault1" Background="Tomato" Grid.Column="1" Grid.Row="4"
+                    <Label Name="labelBvtFault1" Background="Tomato" Grid.Column="1" Grid.Row="8"
                        Content="Fault"
                        Style="{StaticResource WarningFaultLabelStyle}"  />
                 </Grid>
@@ -395,16 +504,16 @@
                     <Label Name="lbAtuUBR" Grid.Column="1" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
                     <Label Content="{x:Static res:Resources.AtuUPRSM}" Grid.Column="0" Grid.Row="1"/>
-                    <Label Name="lbAtuUPRSM"  Grid.Column="1" Grid.Row="1" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                    <Label Name="lbAtuUPRSM" Grid.Column="1" Grid.Row="1" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
                     <Label Content="{x:Static res:Resources.AtuIPRSM}" Grid.Column="0" Grid.Row="2"/>
-                    <Label Name="lbAtuIPRSM"  Grid.Column="1" Grid.Row="2" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                    <Label Name="lbAtuIPRSM" Grid.Column="1" Grid.Row="2" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
                     <Label Content="{x:Static res:Resources.AtuPRSM}" Grid.Column="0" Grid.Row="3"/>
                     <Label Name="lbAtuPRSM" Grid.Column="1" Grid.Row="3" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
-                    <Label Name="lbAtuWarning"  Background="Gold" Grid.Column="0" Grid.Row="4" Content="Warning" Style="{StaticResource WarningFaultLabelStyle}"/>
-                    <Label Name="lbAtuFaultReason"  Background="Tomato" Grid.Column="1" Grid.Row="4" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
+                    <Label Name="lbAtuWarning" Background="Gold" Grid.Column="0" Grid.Row="4" Content="Warning" Style="{StaticResource WarningFaultLabelStyle}"/>
+                    <Label Name="lbAtuFaultReason" Background="Tomato" Grid.Column="1" Grid.Row="4" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
                 </Grid>
             </DataTemplate>
 
@@ -501,40 +610,7 @@
                     <Label Name="lbProblem" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
                 </Grid>
             </DataTemplate>
-
-            <DataTemplate DataType="touParameters:TestParameters" x:Key="TOUParametersTemplate">
-                <Grid Margin="30,0,0,0">
-                    <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource MB2V}">
-                            <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="TOUIsVisible" />
-                        </MultiBinding>
-                    </Grid.Visibility>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TOUITM}"/>
-                    <Label Grid.Column="1" Grid.Row="0" Content="0" x:Name="lbTOUITM" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
-
-                    <Label Name="lbTittleWarning" Grid.Column="0" Grid.Row="1" Content="Warning"/>
-                    <Label Name="lbWarning" Background="Gold" Grid.Column="1" Grid.Row="1" Style="{StaticResource WarningFaultLabelStyle}"/>
-
-                    <Label Name="lbTittleFaultReason" Grid.Column="0" Grid.Row="2" Content="Fault" Height="Auto"/>
-                    <Label Name="lbFaultReason" Background="Tomato" Grid.Column="1" Grid.Row="2" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
-
-                    <Label Name="lbTittleProblem" Grid.Column="0" Grid.Row="3" Content="Problem" Height="Auto"/>
-                    <Label Name="lbProblem" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
-                </Grid>
-            </DataTemplate>
-
+            
         </customControl:ResultsDataTemplateDictionary>
 
     </ListView.Resources>

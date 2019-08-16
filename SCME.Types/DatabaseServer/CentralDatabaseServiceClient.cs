@@ -104,6 +104,9 @@ namespace SCME.Types.DatabaseServer
             Channel.SaveConnections(mmeCodes);
         }
 
-
+        public int? ReadDeviceRTClass(string devCode, string profileName)
+        {
+            return Channel.ReadDeviceRTClass(devCode, profileName);
+        }
     }
 }

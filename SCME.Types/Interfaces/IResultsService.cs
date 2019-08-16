@@ -36,6 +36,8 @@ namespace SCME.Types.Interfaces
 
         List<ParameterNormativeItem> ReadDeviceNormatives(long internalId);
 
+        int? ReadDeviceRTClass(string devCode, string profName);
+
         List<DeviceLocalItem> GetUnsendedDevices();
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace SCME.UI.PagesUser
     {
         private const int DATA_LENGTH = 600;
 
-        private readonly SolidColorBrush m_XRed, m_XGreen, m_XOrange;
+        private readonly SolidColorBrush m_XRed, m_XGreen, m_XGreen3, m_XOrange;
         private readonly Brush m_TbBrush;
         private readonly List<string> m_Errors1, m_Errors2;
         private List<Types.Gate.TestResults> m_ResultsGate1, m_ResultsGate2;
@@ -46,7 +46,6 @@ namespace SCME.UI.PagesUser
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
         private List<Types.QrrTq.TestResults> m_ResultsQrrTq1, m_ResultsQrrTq2;
         private List<Types.RAC.TestResults> m_ResultsRAC1, m_ResultsRAC2;
-        private List<Types.TOU.TestResults> _TOUTestResults1, _TOUTestResults2;
         private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC;
         private Profile m_Profile;
         private bool m_SpecialMeasureMode;
@@ -54,7 +53,7 @@ namespace SCME.UI.PagesUser
         private int m_CurrentPos = 1;
         private MeasureDialog measureDialog;
         private bool wasCurrentMore;
-        
+
         public UserTestPage()
         {
             this.DataContext = new UserTestPageViewModel();
@@ -66,7 +65,6 @@ namespace SCME.UI.PagesUser
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC1 = new List<Types.RAC.TestResults>();
-            _TOUTestResults1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<Types.Gate.TestResults>();
             m_ResultsVTM2 = new List<Types.SL.TestResults>();
@@ -75,7 +73,6 @@ namespace SCME.UI.PagesUser
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC2 = new List<Types.RAC.TestResults>();
-            _TOUTestResults2 = new List<Types.TOU.TestResults>();
 
             m_StateGate = DeviceState.None;
             m_StateVtm = DeviceState.None;
@@ -91,6 +88,7 @@ namespace SCME.UI.PagesUser
 
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XGreen = (SolidColorBrush)FindResource("xGreen1");
+            m_XGreen3 = (SolidColorBrush)FindResource("xGreen3");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
 
             m_TbBrush = tbPsdJob.BorderBrush;
@@ -111,7 +109,7 @@ namespace SCME.UI.PagesUser
                 Grid.SetRowSpan(chartPlotter1, 2);
             }
 
-            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);                      
+            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);
         }
 
         private void SetChartPlotterSettings(bool SinglePositionModuleMode)
@@ -191,7 +189,7 @@ namespace SCME.UI.PagesUser
         }
 
         public void InitTemp()
-        { 
+        {
             if (Profile.Temperature >= 60)
             {
                 lblTitleTop.Visibility =
@@ -632,9 +630,7 @@ namespace SCME.UI.PagesUser
 
                 if (this.Profile != null)
                 {
-                    ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-
-                    switch (profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name))
+                    switch (ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name))
                     {
                         case SubjectForMeasure.PSD:
                             needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
@@ -674,7 +670,6 @@ namespace SCME.UI.PagesUser
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
                         RACTestParameters = Profile.TestParametersAndNormatives.OfType<Types.RAC.TestParameters>().ToArray(),
-                        TOUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.TOU.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
                         IsHeightMeasureEnabled = paramsClamp.IsHeightMeasureEnabled,
                         IsHeightOk = HeightMeasureResult
@@ -695,6 +690,10 @@ namespace SCME.UI.PagesUser
 
                     //сохраняем результаты измерений в локальную базу данных
                     Cache.Net.WriteResultLocal(DataForSave, errors);
+
+                    //вычисляем класс только что измеренного изделия и выводим его на форму
+                    TextBox tb = (tbPsdSerialNumber.Visibility == Visibility.Visible) ? tbPsdSerialNumber : (tbPseNumber.Visibility == Visibility) ? tbPseNumber : null;
+                    CalcDeviceClass(tb);
                 }
 
                 if (paramsClamp.IsHeightMeasureEnabled)
@@ -711,7 +710,6 @@ namespace SCME.UI.PagesUser
                     }
                 }
 
-                tbPseJob.Text = "";
                 tbPseNumber.Text = "";
                 tbPsdSerialNumber.Text = "";
                 tbPsdSerialNumber.Focus();
@@ -1231,7 +1229,69 @@ namespace SCME.UI.PagesUser
             }
 
             if (state == DeviceState.Success && Settings.Default.PlotUserBVT)
-                PlotYX(m_CurrentPos, "Reverse", m_XOrange.Color, result.VoltageData, result.CurrentData);
+                PlotYX(m_CurrentPos, "Reverse", m_XGreen3.Color, result.VoltageData, result.CurrentData);
+        }
+
+        internal void SetResultBvtUdsmUrsmDirect(DeviceState state, Types.BVT.TestResults result)
+        {
+            m_StateBvt = state;
+
+            if (m_CurrentPos == 1)
+            {
+                ResultsBVT1[bvtCounter].IDSM = result.IDSM;
+                ResultsBVT1[bvtCounter].VDSM = result.VDSM;
+            }
+            else
+            {
+                ResultsBVT2[bvtCounter].IDSM = result.IDSM;
+                ResultsBVT2[bvtCounter].VDSM = result.VDSM;
+            }
+
+            var bvtItemContainer = GetBvtItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
+
+            var labelBvtVdsmResult = FindChild<Label>(presenter, "labelBvtVdsmResult1");
+            if (labelBvtVdsmResult != null)
+                labelBvtVdsmResult.Content = result.VDSM.ToString(CultureInfo.InvariantCulture);
+
+            var labelBvtIdsmResult = FindChild<Label>(presenter, "labelBvtIdsmResult1");
+            if (labelBvtIdsmResult != null)
+                SetLabel(labelBvtIdsmResult, state, result.IDSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM, result.IDSM.ToString(CultureInfo.InvariantCulture));
+
+            if (state != DeviceState.InProcess)
+                if (result.IDSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
+                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IDSM");
+        }
+
+        internal void SetResultBvtUdsmUrsmReverse(DeviceState state, Types.BVT.TestResults result)
+        {
+            m_StateBvt = state;
+
+            if (m_CurrentPos == 1)
+            {
+                ResultsBVT1[bvtCounter].IRSM = result.IRSM;
+                ResultsBVT1[bvtCounter].VRSM = result.VRSM;
+            }
+            else
+            {
+                ResultsBVT2[bvtCounter].IRSM = result.IRSM;
+                ResultsBVT2[bvtCounter].VRSM = result.VRSM;
+            }
+
+            var bvtItemContainer = GetBvtItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
+
+            var labelBvtVrsmResult = FindChild<Label>(presenter, "labelBvtVrsmResult1");
+            if (labelBvtVrsmResult != null)
+                labelBvtVrsmResult.Content = result.VRSM.ToString(CultureInfo.InvariantCulture);
+
+            var labelBvtIrsmResult = FindChild<Label>(presenter, "labelBvtIrsmResult1");
+            if (labelBvtIrsmResult != null)
+                SetLabel(labelBvtIrsmResult, state, result.IRSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM, result.IRSM.ToString(CultureInfo.InvariantCulture));
+
+            if (state != DeviceState.InProcess)
+                if (result.IRSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
+                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IRSM");
         }
 
         internal void SetBvtWarning(Types.BVT.HWWarningReason Warning)
@@ -1243,7 +1303,10 @@ namespace SCME.UI.PagesUser
 
             if (labelBvtWarning != null && labelBvtWarning.Visibility != Visibility.Visible)
             {
-                labelBvtWarning.Content = Warning.ToString();
+                if (labelBvtWarning.Content.ToString() != string.Empty)
+                    labelBvtWarning.Content += " ";
+
+                labelBvtWarning.Content += Warning.ToString();
                 labelBvtWarning.Visibility = Visibility.Visible;
             }
         }
@@ -1256,7 +1319,10 @@ namespace SCME.UI.PagesUser
 
             if (labelBvtWarning != null)
             {
-                labelBvtWarning.Content = Problem.ToString();
+                if (labelBvtWarning.Content.ToString() != string.Empty)
+                    labelBvtWarning.Content += " ";
+
+                labelBvtWarning.Content += Problem.ToString();
                 labelBvtWarning.Visibility = Visibility.Visible;
             }
         }
@@ -1269,7 +1335,10 @@ namespace SCME.UI.PagesUser
             var labelBvtFault = FindChild<Label>(presenter, "labelBvtFault1");
             if (labelBvtFault != null)
             {
-                labelBvtFault.Content = Fault.ToString();
+                if (labelBvtFault.Content.ToString() != string.Empty)
+                    labelBvtFault.Content += " ";
+
+                labelBvtFault.Content += Fault.ToString();
                 labelBvtFault.Visibility = Visibility.Visible;
             }
             switch (Fault)
@@ -1329,21 +1398,6 @@ namespace SCME.UI.PagesUser
             }
 
             return results;
-        }
-
-        internal void SetResultTOU(DeviceState state, Types.TOU.TestResults Result)
-        {
-
-        }
-
-        internal void SetTOUWarning(Types.TOU.HWWarningReason Warning)
-        {
-
-        }
-
-        internal void SetTOUFault(Types.TOU.HWFaultReason Warning)
-        {
-          
         }
 
         internal void SetResultdVdt(DeviceState state, Types.dVdt.TestResults Result)
@@ -2145,11 +2199,17 @@ namespace SCME.UI.PagesUser
 
             var labelBvtWarning1 = FindChild<Label>(presenter, "labelBvtWarning1");
             if (labelBvtWarning1 != null)
+            {
                 labelBvtWarning1.Visibility = Visibility.Collapsed;
+                ResetLabel(labelBvtWarning1);
+            }
 
             var labelBvtFault1 = FindChild<Label>(presenter, "labelBvtFault1");
             if (labelBvtFault1 != null)
+            {
                 labelBvtFault1.Visibility = Visibility.Collapsed;
+                ResetLabel(labelBvtFault1);
+            }
 
             var labelBvtVdrmResult1 = FindChild<Label>(presenter, "labelBvtVdrmResult1");
             if (labelBvtVdrmResult1 != null)
@@ -2166,6 +2226,23 @@ namespace SCME.UI.PagesUser
             var labelBvtIrrmResult1 = FindChild<Label>(presenter, "labelBvtIrrmResult1");
             if (labelBvtIrrmResult1 != null)
                 ResetLabel(labelBvtIrrmResult1);
+
+
+            var labelBvtVdsmResult1 = FindChild<Label>(presenter, "labelBvtVdsmResult1");
+            if (labelBvtVdsmResult1 != null)
+                ResetLabel(labelBvtVdsmResult1);
+
+            var labelBvtVrsmResult1 = FindChild<Label>(presenter, "labelBvtVrsmResult1");
+            if (labelBvtVrsmResult1 != null)
+                ResetLabel(labelBvtVrsmResult1);
+
+            var labelBvtIdsmResult1 = FindChild<Label>(presenter, "labelBvtIdsmResult1");
+            if (labelBvtIdsmResult1 != null)
+                ResetLabel(labelBvtIdsmResult1);
+
+            var labelBvtIrsmResult1 = FindChild<Label>(presenter, "labelBvtIrsmResult1");
+            if (labelBvtIrsmResult1 != null)
+                ResetLabel(labelBvtIrsmResult1);
         }
 
         private void ClearVtmResults(DependencyObject element)
@@ -2268,6 +2345,106 @@ namespace SCME.UI.PagesUser
 
             label = FindChild<Label>(presenter, "lbAtuFaultReason");
             if (label != null) label.Visibility = Visibility.Collapsed;
+        }
+
+        private void CalcDeviceClass(TextBox sourceOfdeviceCode)
+        {
+            //вычисляет класс изделия и выводит его на форме
+            if (sourceOfdeviceCode != null)
+            {
+                //чтобы система смогла вычислить класс изделия надо чтобы обозначение изделия было введено полностью - пример 2/4-00020997
+                //для этого будем проверять количество символов после символа '/' и если оно равно 10 - будем пытаться вычислить класс этого изделия
+                string deviceCode = sourceOfdeviceCode.Text;
+                int jobFirstSimbol = deviceCode.IndexOf("/", 0);
+
+                if (jobFirstSimbol != -1)
+                {
+                    jobFirstSimbol++;
+                    string job = deviceCode.Substring(jobFirstSimbol);
+
+                    if (job.Length == 10)
+                    {
+                        string sDeviceRTClass = string.Empty;
+                        int? deviceRTClass = null;
+
+                        //пробуем вычислить значение класса
+                        deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
+
+                        switch (deviceRTClass == null)
+                        {
+                            case true:
+                                //для вычисления класса при RT нет измерений на основе которых можно его вычислить
+                                sDeviceRTClass = Properties.Resources.NoResults;
+                                break;
+
+                            default:
+                                {
+                                    //класс не null - какое-то значение получено, разбираемся что получено
+                                    int iDeviceRTClass = (int)deviceRTClass;
+
+                                    switch (iDeviceRTClass)
+                                    {
+                                        case (-1):
+                                            //случай ошибки в реализации вычисления класса
+                                            sDeviceRTClass = Properties.Resources.ErrorRealisation;
+                                            break;
+
+                                        default:
+                                            //получено вменяемое значение класса изделия
+                                            sDeviceRTClass = iDeviceRTClass.ToString();
+
+                                            //вычисляем значение класса по наименованию профиля
+                                            int? classByProfileName = ProfileRoutines.DeviceClassByProfileName(Profile?.Name);
+
+                                            if (classByProfileName == null)
+                                            {
+                                                //по обозначению профиля не удаётся вычислить значение класса
+                                                btnStart.IsEnabled = true;
+                                            }
+                                            else
+                                            {
+                                                //по обозначению профиля значение класса получено, сравниваем его с iDeviceRTClass
+                                                int iclassByProfileName = (int)classByProfileName;
+
+                                                switch (iDeviceRTClass >= iclassByProfileName)
+                                                {
+                                                    case true:
+                                                        btnStart.IsEnabled = true;
+                                                        lblDeviceClass.Foreground = Brushes.Black;
+                                                        break;
+
+                                                    default:
+                                                        btnStart.IsEnabled = false;
+                                                        lblDeviceClass.Foreground = Brushes.Red;
+                                                        break;
+                                                }
+                                            }
+                                            break;
+                                    }
+                                }
+                                break;
+                        }
+
+                        //выводим полученный класс на форму
+                        lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, sDeviceRTClass);
+                    }
+                    else btnStart.IsEnabled = true;
+
+                }
+            }
+
+        }
+
+        private void tbPsdSerialNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            CalcDeviceClass(tb);
+        }
+
+        private void tbPseNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            CalcDeviceClass(tb);
         }
 
         private void ClearResultsQrrTq(DependencyObject element)
@@ -2404,13 +2581,11 @@ namespace SCME.UI.PagesUser
 
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
                                    Types.SL.TestParameters ParamsVTM,
-                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
+                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU)
         {
             if (this.Profile != null)
             {
-                ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-
-                switch (profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name))
+                switch (ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name))
                 {
                     case SubjectForMeasure.PSD:
                         tbPsdJob.BorderBrush = String.IsNullOrWhiteSpace(tbPsdJob.Text) ? Brushes.Tomato : m_TbBrush;
@@ -2430,7 +2605,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsRAC, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp, ParamsTOU))
+            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsRAC, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp))
                 return;
 
             ClearStatus(Position == 1, true);
@@ -2464,7 +2639,6 @@ namespace SCME.UI.PagesUser
                 !(Profile.ParametersComm == Types.Commutation.ModuleCommutationType.MT1 ||
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.MD1 ||
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Direct);
-
 
             StartN(1);
         }
@@ -2599,9 +2773,7 @@ namespace SCME.UI.PagesUser
         {
             if (this.Profile != null)
             {
-                ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-
-                switch (profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name))
+                switch (ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name))
                 {
                     case SubjectForMeasure.PSD:
                         tbPsdJob.BorderBrush = String.IsNullOrWhiteSpace(tbPsdJob.Text) ? Brushes.Tomato : m_TbBrush;
@@ -2660,13 +2832,14 @@ namespace SCME.UI.PagesUser
         }
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
-        {          
+        {
             tbPsdJob.Text = "";
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
             tbPseJob.Text = "";
 
             ClearStatus(true, true);
+            lblDeviceClass.Content = string.Empty;
 
             //в режиме специальных измерений пользователь не должен вводить идентификационную информацию, поле для вывода предупреждений по поводу не заполненных полей для ввода идентификационной информации становится не нужным
             if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
@@ -2686,8 +2859,7 @@ namespace SCME.UI.PagesUser
             else
             {
                 //случай режима отличного от 'режим специальных измерений'. поля для ввода идентификационных данных должны быть введены, поэтому делаем их видимыми
-                ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-                Types.SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name);
+                Types.SubjectForMeasure subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name);
 
                 switch (subjectForMeasure)
                 {
@@ -2767,20 +2939,22 @@ namespace SCME.UI.PagesUser
         #endregion
     }
 
-    public class MultiIdentificationFieldsToVisibilityConverter : IMultiValueConverter
+    public class MultiIdentificationFieldsToTextConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] Values, Type TargetType, object Parameter, CultureInfo Culture)
         {
-            string profileName = values[0] as string;
+            string profileName = Values[0]?.ToString();
+            string psdJob = Values[1]?.ToString();
+            string psdSerialNumber = Values[2]?.ToString();
+            string pseJob = Values[3]?.ToString();
+            string pseNumber = Values[4]?.ToString();
 
-            string psdJob = values[1] as string;
-            string psdSerialNumber = values[2] as string;
-            string pseJob = values[3] as string;
-            string pseNumber = values[4] as string;
-            bool specialMeasureMode = (bool)values[5];
+            bool specialMeasureMode;
+            bool parseResult = bool.TryParse(Values[5]?.ToString(), out specialMeasureMode);
+            if (!parseResult)
+                return "Flag 'specialMeasureMode' parsing error!";
 
-            ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-            SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);
+            SubjectForMeasure subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(profileName);
 
             if (specialMeasureMode)
             {
@@ -2808,7 +2982,7 @@ namespace SCME.UI.PagesUser
             return Properties.Resources.ResultsWillNotBeSaved;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object Value, Type[] TargetTypes, object Parameter, CultureInfo Culture)
         {
             throw new NotImplementedException("ConvertBack method is not implemented in MultiIdentificationFieldsToVisibilityConverter");
         }

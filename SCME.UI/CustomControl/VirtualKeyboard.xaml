@@ -260,21 +260,26 @@
                             <Button Content="1" />
                             <Button Content="2" />
                             <Button Content="3" />
+                            <Button Content="-" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button Content="4" />
                             <Button Content="5" />
                             <Button Content="6" />
+                            <Button Content="/" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button Content="7" />
                             <Button Content="8" />
                             <Button Content="9" />
+                            <Button Content="RT " />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Button Content="0" Width="{StaticResource BSizeErase}" />
                             <Button Content="." />
+                            <Button Content="Tm " />
                         </StackPanel>
+
                     </StackPanel>
                 </Grid>
             </Grid>

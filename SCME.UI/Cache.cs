@@ -25,7 +25,6 @@ namespace SCME.UI
         private static ConsolePage ms_ConsolePage;
         private static ClampPage ms_ClampPage;
         private static DVdtPage ms_DVdtPage;
-        private static TOUPage ms_TOUPage;
         private static ATUPage ms_ATUPage;
         private static QrrTqPage ms_QrrTqPage;
         private static RACPage ms_RACPage;
@@ -62,12 +61,6 @@ namespace SCME.UI
         }
 
         internal static ProfileSelectionPage ProfileSelection { get; set; }
-        //{
-        //    get { return _ProfileSelection ?? (_ProfileSelection = new ProfileSelectionPage()); }
-        //    set { _ProfileSelection = value; }
-        //}
-
-        //internal static ProfileSelectionPage ProfileSelection { get; set; }
 
         internal static UserTestPage UserTest
         {
@@ -151,12 +144,6 @@ namespace SCME.UI
         {
             get { return ms_DVdtPage ?? (ms_DVdtPage = new DVdtPage()); }
             set { ms_DVdtPage = value; }
-        }
-
-        internal static TOUPage TOU
-        {
-            get { return ms_TOUPage ?? (ms_TOUPage = new TOUPage()); }
-            set { ms_TOUPage = value; }
         }
 
         internal static ATUPage ATU

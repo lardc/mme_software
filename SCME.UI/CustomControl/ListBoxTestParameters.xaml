@@ -359,6 +359,7 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
                                 <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0"
@@ -415,8 +416,14 @@
                                 <Label Grid.Column="4" Grid.Row="4" HorizontalAlignment="Right"
                                        Content="{Binding MeasurementMode}" />
 
+                                <Label Grid.Column="0" Grid.Row="5" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.UseUdsmUrsm}" />
+                                <Path Grid.Column="1" Grid.Row="5" Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60"  
+                                      Stretch="Uniform" HorizontalAlignment="Right"
+                                      Visibility="{Binding UseUdsmUrsm, Converter={StaticResource B2V}}"/>
 
-                                <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5"
+                                <Grid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="5"
                                       Visibility="{Binding MeasurementMode, ConverterParameter=1, Converter={StaticResource MM2V}, UpdateSourceTrigger=PropertyChanged}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="35*" />
@@ -443,7 +450,7 @@
                                            Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
 
-                                <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5"
+                                <Grid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="5"
                                       Visibility="{Binding MeasurementMode, ConverterParameter=0, Converter={StaticResource MM2V}, UpdateSourceTrigger=PropertyChanged}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="35*" />
@@ -742,6 +749,7 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
+
             <DataTemplate DataType="atuParameters:TestParameters" x:Key="ATUParametersTemplate">
                 <Grid Visibility="{Binding ATUIsVisible, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}" Margin="0,10,70,10" >
                     <Grid.ColumnDefinitions>
@@ -784,6 +792,7 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
+
             <DataTemplate DataType="QrrTqParameters:TestParameters" x:Key="QrrTqParametersTemplate">
                 <Grid Visibility="{Binding QrrTqIsVisible, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}" Margin="0,10,70,10" >
                     <Grid.ColumnDefinitions>
@@ -821,7 +830,7 @@
 
                                 <Label Grid.Column="0" Grid.Row="2" Margin="0,0,0,0" Content="{x:Static res:Resources.QrrTqDirectCurrent}"/>
                                 <Label Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Content="{Binding DirectCurrent, UpdateSourceTrigger=PropertyChanged}"/>
-
+                                
                                 <Label Grid.Column="0" Grid.Row="3" Margin="0,0,0,0" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
                                 <Label Grid.Column="2" Grid.Row="3" HorizontalAlignment="Right" Content="{Binding DCPulseWidth, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -849,6 +858,7 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
+
             <DataTemplate DataType="RACParameters:TestParameters" x:Key="RACParametersTemplate">
                 <Grid Visibility="{Binding RACIsVisible, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}" Margin="0,10,70,10" >
                     <Grid.ColumnDefinitions>
@@ -868,45 +878,9 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-
+                                
                                 <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.RACResVoltage}" />
                                 <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Content="{Binding ResVoltage, UpdateSourceTrigger=PropertyChanged}" />
-
-                            </Grid>
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <Button Name="button" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=IsButtonDeleteVisible, Converter={StaticResource B2V}}"
-                            Background="White" Foreground="{StaticResource xPurple1}"
-                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                            Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
-                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"
-                            Content="{StaticResource ClosePath}" Click="Button_OnClick"/>
-                    </Grid>
-                </Grid>
-            </DataTemplate>
-            <DataTemplate DataType="TOUParameters:TestParameters" x:Key="TOUParametersTemplate">
-                <Grid Visibility="{Binding TOUIsVisible, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}" Margin="0,10,70,10" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="93*"/>
-                        <ColumnDefinition Width="7*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Style="{StaticResource ListItemGrid}">
-                        <Border BorderBrush="{StaticResource xWhite1}" BorderThickness="1" />
-                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" Margin="5,10" Content="TOU" />
-                        <Button x:Name="btnTOU" CommandParameter="7" Style="{StaticResource SpcButton}" IsEnabled="False" Margin="140,0,20,0">
-                            <Grid Margin="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="84*" />
-                                    <ColumnDefinition Width="2*" />
-                                    <ColumnDefinition Width="14*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-
-                                <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.TOUITM}" />
-                                <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Content="{Binding ITM_Input, UpdateSourceTrigger=LostFocus}" />
 
                             </Grid>
                         </Button>

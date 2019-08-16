@@ -33,8 +33,8 @@ namespace SCME.dbViewer.CustomControl
         private Button btFilterClicked = null;
         private ActiveFilters activeFilters;
 
-        public delegate void BuildDataHandler();
-        public BuildDataHandler BuildData { get; set; }
+        public delegate void ReBuildDataHandler();
+        public ReBuildDataHandler ReBuildData { get; set; }
 
         public DataGridSqlResult() : base()
         {
@@ -98,7 +98,7 @@ namespace SCME.dbViewer.CustomControl
             if (dv != null)
             {
                 dv.RowFilter = this.FiltersToString();
-                this.BuildData();
+                this.ReBuildData();
             }
         }
 
@@ -124,7 +124,6 @@ namespace SCME.dbViewer.CustomControl
                 this.ItemsSource = dv;
 
                 this.SetRowFilter();
-                //dv.RowFilter = this.FiltersToString();
 
                 if (this.Items.Count > 0)
                     this.SelectedIndex = 0;
@@ -160,22 +159,7 @@ namespace SCME.dbViewer.CustomControl
         {
             var columnHeader = sender as System.Windows.Controls.Primitives.DataGridColumnHeader;
 
-            if (btFilterClicked != null)
-            {
-                //мы начали обработку нажатия кнопки фильтра, поэтому сбрасываем флаг о прошедшем нажатии кнопки фильтра
-                Point position = btFilterClicked.PointToScreen(new Point(0d, 0d));
-                position.Y += columnHeader.Height;
-
-                btFilterClicked = null;
-
-                DataGridTextColumn textColumn = (DataGridTextColumn)columnHeader.Column;
-
-                string bindPath;
-                Type filterType = DataTypeByColumn(textColumn, out bindPath);
-
-                SetFilter(position, filterType, columnHeader.Content.ToString(), bindPath);
-            }
-            else
+            if (btFilterClicked == null)
             {
                 //вычисляем поле сортировки и его направление
                 if (columnHeader != null)
@@ -224,6 +208,21 @@ namespace SCME.dbViewer.CustomControl
                         founded.Visibility = Visibility.Visible;
                 }
             }
+            else
+            {
+                //мы начали обработку нажатия кнопки фильтра, поэтому сбрасываем флаг о прошедшем нажатии кнопки фильтра
+                Point position = btFilterClicked.PointToScreen(new Point(0d, 0d));
+                position.Y += columnHeader.Height;
+
+                btFilterClicked = null;
+
+                DataGridTextColumn textColumn = (DataGridTextColumn)columnHeader.Column;
+
+                string bindPath;
+                Type filterType = DataTypeByColumn(textColumn, out bindPath);
+
+                SetFilter(position, filterType, columnHeader.Content.ToString(), bindPath);
+            }
         }
 
         private string SelectedText(string bindPath)
@@ -266,19 +265,8 @@ namespace SCME.dbViewer.CustomControl
                         switch (this.activeFilters.FieldNameStoredMoreThanOnce(f.fieldName))
                         {
                             case true:
-                                {
-                                    //по полю f.fieldName определено более одного фильтра
-                                    switch (f.valueCorrected.Contains("%"))
-                                    {
-                                        case true:
-                                            result += " AND ";
-                                            break;
-
-                                        default:
-                                            result += " OR ";
-                                            break;
-                                    }
-                                }
+                                //по полю f.fieldName определено более одного фильтра
+                                result += (f.valueCorrected.Contains("%")) ? " AND " : " OR ";
                                 break;
 
                             default:
@@ -290,31 +278,24 @@ namespace SCME.dbViewer.CustomControl
 
                     if (f.type == typeof(DateTime))
                         result += " AND ";
+
+                    if (f.type == typeof(int))
+                        result += " AND ";
                 }
 
-                if ((Type)f.type == typeof(string))
+                if (f.type == typeof(string))
                     result += string.Format("{0}{1}'{2}'", f.fieldName, f.comparisonCorrected, f.valueCorrected);
 
-                if ((Type)f.type == typeof(DateTime))
+                if (f.type == typeof(DateTime))
                 {
                     DateTime date = DateTime.Parse(f.value.ToString());
+                    result += string.Format("{0}{1}'{2}'", f.fieldName, f.comparison, date.ToShortDateString());
+                }
 
-                    switch (f.comparison)
-                    {
-                        case "<":
-                        case "<=":
-                            result += string.Format("{0}{1}'{2}'", f.fieldName, f.comparison, date.ToShortDateString()); //new DateTime(date.Year, date.Month, date.Day, 23, 59, 59));
-                            break;
-
-                        case "=":
-                        case ">":
-                        case ">=":
-                            result += string.Format("{0}{1}'{2}'", f.fieldName, f.comparison, date.ToShortDateString()); //new DateTime(date.Year, date.Month, date.Day, 00, 00, 00));
-                            break;
-
-                        default:
-                            throw new Exception(string.Format("FiltersToString(). No processing is provided for f.comparison='{0}'.", f.comparison));
-                    }
+                if (f.type == typeof(int))
+                {
+                    int value = int.Parse(f.value.ToString());
+                    result += string.Format("{0}{1}{2}", f.fieldName, f.comparison, value.ToString());
                 }
             }
 
@@ -336,7 +317,7 @@ namespace SCME.dbViewer.CustomControl
                     fmFiltersInput.Owner = Application.Current.MainWindow;
 
                     if (fmFiltersInput.Demonstrate(position) == true)
-                        this.SetRowFilter();                    
+                        this.SetRowFilter();
 
                     if (this.Items.Count > 0)
                         this.SelectedIndex = 0;

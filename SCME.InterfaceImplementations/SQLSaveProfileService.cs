@@ -258,14 +258,6 @@ namespace SCME.InterfaceImplementations
                         InsertParameters(racTestParameter, testTypeId, profileId, trans);
                     }
 
-                    foreach (var touTestParameter in profileItem.TOUTestParameters)
-                    {
-                        var testTypeId = InsertTOUTestType(profileId, touTestParameter.Order, trans);
-                        touTestParameter.IsEnabled = true;
-                        InsertConditions(touTestParameter, testTypeId, profileId, trans);
-                        InsertParameters(touTestParameter, testTypeId, profileId, trans);
-                    }
-
                     trans.Commit();
 
                     return profileId;
@@ -442,11 +434,6 @@ namespace SCME.InterfaceImplementations
             return InsertTestType(_testTypes["RAC"], profileId, trans, order);
         }
 
-        private long InsertTOUTestType(long profileId, int order, SqlTransaction trans)
-        {
-            return InsertTestType(_testTypes["TOU"], profileId, trans, order);
-        }
-
         private long InsertTestType(long typeId, long profileId, SqlTransaction trans, int order = 0)
         {
             orderNew++;
@@ -501,9 +488,6 @@ namespace SCME.InterfaceImplementations
                 case TestParametersType.RAC:
                     InsertRacConditions(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.TOU:
-                    InsertTOUConditions(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId, trans);
-                    break;
             }
         }
 
@@ -556,6 +540,7 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "BVT_FD", profile.FrequencyDivisor, trans);
             InsertCondition(testTypeId, profileId, "BVT_Mode", profile.MeasurementMode, trans);
             InsertCondition(testTypeId, profileId, "BVT_PlateTime", profile.PlateTime, trans);
+            InsertCondition(testTypeId, profileId, "BVT_UseUdsmUrsm", profile.UseUdsmUrsm, trans);
 
             switch (profile.TestType)
             {
@@ -618,12 +603,6 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "RAC_ResVoltage", testParameters.ResVoltage, trans);
         }
 
-        private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId, SqlTransaction trans)
-        {
-            InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled, trans);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input, trans);
-        }
-
         private void InsertCondition(long testTypeId, long profileId, string name, object value, SqlTransaction trans)
         {
             _profCondInsertCommand.Parameters["@PROF_TESTTYPE_ID"].Value = testTypeId;
@@ -660,9 +639,6 @@ namespace SCME.InterfaceImplementations
                     break;
                 case TestParametersType.RAC:
                     InsertRacParameters(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId, trans);
-                    break;
-                case TestParametersType.TOU:
-                    InsertTOUParameters(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId, trans);
                     break;
             }
         }
@@ -725,11 +701,6 @@ namespace SCME.InterfaceImplementations
         private void InsertRacParameters(Types.RAC.TestParameters racTestParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
             InsertParameter(testTypeId, profileId, "ResultR", racTestParameters.ResultR, DBNull.Value, trans);
-        }
-
-        private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId, SqlTransaction trans)
-        {
-            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Input, DBNull.Value, trans);
         }
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max, SqlTransaction trans)

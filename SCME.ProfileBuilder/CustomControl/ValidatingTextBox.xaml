@@ -4,9 +4,9 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="50"
-         GotFocus="TextBox_GotFocus" PreviewMouseDown="ValidatingTextBox_OnPreviewMouseDown"
-         LostKeyboardFocus="TextBox_LostFocus"
-    >
+         GotFocus="TextBox_GotFocus"
+         LostKeyboardFocus="TextBox_LostFocus">
+    
     <TextBox.Style>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="Foreground" Value="{StaticResource xBlack1}" />
