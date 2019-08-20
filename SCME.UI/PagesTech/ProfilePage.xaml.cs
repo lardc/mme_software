@@ -27,6 +27,7 @@ using RACParameters = SCME.Types.RAC.TestParameters;
 using TOUParameters = SCME.Types.TOU.TestParameters;
 using System.Collections.Concurrent;
 using System.Windows.Threading;
+using SCME.Types.SQL;
 
 namespace SCME.UI.PagesTech
 {
@@ -164,8 +165,10 @@ namespace SCME.UI.PagesTech
 
             var newProfile = new Profile
             {
+                Version = 0,
                 Name = name + i,
-                Key = Guid.NewGuid(),
+                Key = Guid.Empty,
+                NextGenerationKey = Guid.NewGuid(),
                 ParametersComm =
                     Settings.Default.SinglePositionModuleMode
                         ? ModuleCommutationType.Direct
@@ -239,11 +242,32 @@ namespace SCME.UI.PagesTech
                 tbProfileName.HideTip();
 
                 mainGrid.IsEnabled = false;
-                ProfilesDbLogic.SaveProfilesToDb(m_ProfileEngine.PlainCollection);
 
-                var dialog = new DialogWindow("Сообщение", "Профили в базе обновлены");
+                DialogWindow dialog = null;
+
+                var dbProfiles = ProfilesDbLogic.SaveProfilesToDb(m_ProfileEngine.PlainCollection);
+
+                if (dbProfiles == null)
+                    dialog = new DialogWindow("Ошибка", "Ошибка при сохранении профилей или передачи данных");
+                else
+                {
+                    dialog = new DialogWindow("Сообщение", "Профили в базе обновлены");
+                    dbProfiles.Join(m_ProfileEngine.PlainCollection, m => new KeyValuePair<string, int>(m.Name, m.Version),
+                                                           n => new KeyValuePair<string, int>(n.Name, n.Version + 1), (m, n) => new { profileSql = m, profile = n }).ToList().ForEach((m) =>
+                                                           {
+                                                               m.profile.Version = m.profileSql.Version;
+                                                               m.profile.Key = m.profileSql.Key;
+                                                               m.profile.Timestamp = m.profileSql.TS;
+                                                               m.profile.NextGenerationKey = Guid.NewGuid();
+                                                           });
+                }
+
+             
+
+                //Ищем пересечения по имени + версися
+              
+
                 dialog.ButtonConfig(DialogWindow.EbConfig.OK);
-
                 var result = dialog.ShowDialog();
 
                 if (result.HasValue && result.Value)

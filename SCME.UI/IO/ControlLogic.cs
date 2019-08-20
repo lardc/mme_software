@@ -10,6 +10,7 @@ using SCME.Types.Clamping;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
+using SCME.Types.SQL;
 using SCME.Types.TOU;
 using SCME.UI.CustomControl;
 using SCME.UI.PagesUser;
@@ -1152,13 +1153,13 @@ namespace SCME.UI.IO
             }
         }
 
-        public void SaveProfilesToServer(List<ProfileItem> profileItems)
+        public List<ProfileForSqlSelect> SaveProfilesToServer(List<ProfileItem> profileItems)
         {
             using (var centralDbClient = new CentralDatabaseServiceClient())
             {
                 try
                 {
-                    centralDbClient.SaveProfilesFromMme(profileItems, Cache.Main.MmeCode);
+                    return centralDbClient.SaveProfilesFromMme(profileItems, Cache.Main.MmeCode);
                 }
                 catch (FaultException<FaultData> ex)
                 {
@@ -1169,14 +1170,15 @@ namespace SCME.UI.IO
                     ProcessCommunicationException(ex);
                 }
             }
+            return null;
 
         }
 
-        public void SaveProfilesToLocal(List<ProfileItem> profileItems)
+        public List<ProfileForSqlSelect> SaveProfilesToLocal(List<ProfileItem> profileItems)
         {
             try
             {
-                m_ControlClient.SaveProfiles(profileItems);
+                return m_ControlClient.SaveProfiles(profileItems);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1190,6 +1192,7 @@ namespace SCME.UI.IO
             {
                 ProcessGeneralException(ex);
             }
+            return null;
         }
 
         public void Squeeze(Types.Clamping.TestParameters ParametersClamping)
@@ -1714,12 +1717,6 @@ namespace SCME.UI.IO
             m_QueueWorker.AddDVdtEvent(State, Result);
         }
 
-        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
-        {
-            m_QueueWorker.AddTOUEvent(State, Result);
-        }
-
-
         public void DvDtNotificationHandler(Types.dVdt.HWWarningReason Warning, Types.dVdt.HWFaultReason Fault, Types.dVdt.HWDisableReason Disable)
         {
             if (Warning != Types.dVdt.HWWarningReason.None)
@@ -1780,6 +1777,24 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddRACFaultEvent(Fault);
         }
 
+        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
+        {
+            m_QueueWorker.AddTOUEvent(State, Result);
+        }
+
+
+        public void TOUNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        {
+            if (Problem != (ushort)Types.TOU.HWProblemReason.None)
+                m_QueueWorker.AddTOUProblemEvent(Problem);
+
+            if (Warning != (ushort)Types.TOU.HWWarningReason.None)
+                m_QueueWorker.AddTOUWarningEvent(Warning);
+
+            if (Fault != (ushort)Types.TOU.HWFaultReason.None)
+                m_QueueWorker.AddTOUFaultEvent(Fault);
+        }
+
         public void IHHandler(DeviceState State, Types.IH.TestResults Result)
         {
             m_QueueWorker.AddIHEvent(State, Result);
@@ -1824,14 +1839,7 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddClampingFaultEvent(Fault);
         }
 
-        public void TOUNotificationHandler(Types.TOU.HWWarningReason Warning, Types.TOU.HWFaultReason Fault, Types.TOU.HWDisableReason Disable)
-        {
-            if (Warning != Types.TOU.HWWarningReason.None)
-                m_QueueWorker.AddDVdtWarningEvent(Warning);
 
-            if (Fault != Types.TOU.HWFaultReason.None)
-                m_QueueWorker.AddDVdtFaultEvent(Fault);
-        }
 
 
 

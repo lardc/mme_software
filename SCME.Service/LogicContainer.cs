@@ -11,6 +11,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
+using SCME.Types.SQL;
 
 namespace SCME.Service
 {
@@ -1563,8 +1564,17 @@ namespace SCME.Service
             }
         }
 
-        internal void SaveProfiles(List<ProfileItem> profileItems)
+        internal List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profileItems)
         {
+            try
+            {
+                return  SystemHost.Results.SaveProfiles(profileItems, Settings.Default.MMECode);
+            }
+            catch (Exception ex)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.Database, LogMessageType.Error, ex.Message);
+                return null;
+            }
             try
             {
                 ThreadPool.QueueUserWorkItem(delegate

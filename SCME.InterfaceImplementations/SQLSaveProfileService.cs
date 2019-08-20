@@ -8,6 +8,7 @@ using SCME.Types.BVT;
 using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
 using SCME.Types.SL;
+using SCME.Types.SQL;
 using TestParameters = SCME.Types.Gate.TestParameters;
 
 namespace SCME.InterfaceImplementations
@@ -185,7 +186,7 @@ namespace SCME.InterfaceImplementations
         /// Saving profile to Db
         /// </summary>
         /// <param name="profileItem"></param>
-        public long SaveProfileItem(ProfileItem profileItem)
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem)
         {
             if (_connection != null && _connection.State == ConnectionState.Open)
             {
@@ -194,7 +195,9 @@ namespace SCME.InterfaceImplementations
                 try
                 {
                     orderNew = 0;
-                    var profileId = InsertProfile(profileItem, trans);
+                    ProfileForSqlSelect profileSql;
+                    profileSql = InsertProfile(profileItem, trans);
+                    var profileId = profileSql.Id;
 
                     var commutationTestTypeId = InsertCommutationTestType(profileId, trans);
                     InsertCommutationConditions(profileItem, commutationTestTypeId, profileId, trans);
@@ -268,7 +271,7 @@ namespace SCME.InterfaceImplementations
 
                     trans.Commit();
 
-                    return profileId;
+                    return profileSql;
                 }
                 catch (Exception)
                 {
@@ -277,7 +280,7 @@ namespace SCME.InterfaceImplementations
                 }
             }
 
-            return 0;
+            return null;
         }
 
         public void DeleteProfiles(List<ProfileItem> profilesToDelete)
@@ -299,14 +302,13 @@ namespace SCME.InterfaceImplementations
 
         public void DeleteProfiles(List<ProfileItem> profilesToDelete, string mmeCode)
         {
+            var mmeCodeId = GetMmeCodeId(mmeCode);
+
             foreach (var profileItem in profilesToDelete)
             {
                 try
                 {
-                    var profileId = GetProfileId(profileItem.ProfileKey, null);
-                    var mmeCodeId = GetMmeCodeId(mmeCode);
-
-                    _condDeleteCommand.Parameters["@PROF_ID"].Value = profileId;
+                    _condDeleteCommand.Parameters["@PROF_ID"].Value = profileItem.ProfileId;
                     _condDeleteCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
                     _condDeleteCommand.ExecuteNonQuery();
                 }
@@ -328,49 +330,64 @@ namespace SCME.InterfaceImplementations
             return (int)_mmeInsertCommand.ExecuteScalar();
         }
 
-        public void SaveProfileItem(ProfileItem profileItem, string mmeCode)
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem, string mmeCode)
         {
-            var profileId = SaveProfileItem(profileItem);
+            var profileSql = SaveProfileItem(profileItem);
             var mmeCodeId = GetMmeCodeId(mmeCode);
 
-            _codesInsertCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
-            _codesInsertCommand.Parameters["@PROFILE_ID"].Value = profileId;
-            _codesInsertCommand.ExecuteScalar();
+            if (!profileItem.Exists)
+            {
+                _codesInsertCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
+                _codesInsertCommand.Parameters["@PROFILE_ID"].Value = profileSql.Id;
+                _codesInsertCommand.ExecuteScalar();
+            }
+
+            return profileSql;
         }
 
         #region ProfileHelpers
 
-        private long InsertProfile(ProfileItem profile, SqlTransaction trans)
+        private ProfileForSqlSelect InsertProfile(ProfileItem profile, SqlTransaction trans)
         {
-            try
-            {
-                var profileId = GetProfileId(profile.ProfileKey, trans);
 
-                _profileVersionSelect.Parameters["@PROF_ID"].Value = profileId;
-                _profileVersionSelect.Transaction = trans;
-                var version = _profileVersionSelect.ExecuteScalar();
+            int oldProfileId = -1;
+            int version = 0;
 
-                _profileInsertCommand.Parameters["@PROF_GUID"].Value = Guid.NewGuid();
-                _profileInsertCommand.Parameters["@VERSION"].Value = (int)version + 1;
-                _profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now;
-                _profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
-                _profileInsertCommand.Transaction = trans;
-                var insertedId = (int)_profileInsertCommand.ExecuteScalar();
+                try
+                {
+                    oldProfileId = GetProfileId(profile.ProfileKey, trans);
+                    _profileVersionSelect.Parameters["@PROF_ID"].Value = oldProfileId;
+                    _profileVersionSelect.Transaction = trans;
+                    version = (int)_profileVersionSelect.ExecuteScalar();
+                }
+                catch (ArgumentException)
+                { }
 
-                UpdateConnections(profileId, insertedId, trans);
+            ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, version + 1, DateTime.Now);
 
-                return insertedId;
-            }
-            catch (ArgumentException)
-            {
-                _profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
-                _profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey;
-                _profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now;
-                _profileInsertCommand.Parameters["@VERSION"].Value = 1;
-                _profileInsertCommand.Transaction = trans;
+            _profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key;
+            _profileInsertCommand.Parameters["@VERSION"].Value = profileSql.Version;
+            _profileInsertCommand.Parameters["@PROF_TS"].Value = profileSql.TS;
+            _profileInsertCommand.Parameters["@PROF_NAME"].Value = profileSql.Name;
+            _profileInsertCommand.Transaction = trans;
+            profileSql.Id = (int)_profileInsertCommand.ExecuteScalar();
 
-                return (int)_profileInsertCommand.ExecuteScalar();
-            }
+            if (oldProfileId != -1)
+                UpdateConnections(oldProfileId, profileSql.Id, trans);
+
+            return profileSql;
+
+            //catch (ArgumentException)
+            //{
+            //    throw new NotImplementedException();
+            //    //_profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
+            //    //_profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey;
+            //    //_profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now;
+            //    //_profileInsertCommand.Parameters["@VERSION"].Value = 1;
+            //    //_profileInsertCommand.Transaction = trans;
+
+            //    //return (int)_profileInsertCommand.ExecuteScalar();
+            //}
         }
 
         private void UpdateConnections(long profileId, long insertedId, SqlTransaction trans)
@@ -381,7 +398,7 @@ namespace SCME.InterfaceImplementations
             _connectionsUpdateCommand.ExecuteNonQuery();
         }
 
-        private long GetProfileId(Guid profileKey, SqlTransaction trans)
+        private int GetProfileId(Guid profileKey, SqlTransaction trans)
         {
             _profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
             _profileSelectCommand.Transaction = trans;
@@ -392,6 +409,7 @@ namespace SCME.InterfaceImplementations
 
             return (int)possibleProfileId;
         }
+
 
         #endregion
 
@@ -621,7 +639,7 @@ namespace SCME.InterfaceImplementations
         private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
             InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled, trans);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input, trans);
+            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.CurrentAmplitude, trans);
         }
 
         private void InsertCondition(long testTypeId, long profileId, string name, object value, SqlTransaction trans)
@@ -729,8 +747,10 @@ namespace SCME.InterfaceImplementations
 
         private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
-            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Input, DBNull.Value, trans);
+            InsertParameter(testTypeId, profileId, "TOU_TGD", touTestParameters.TGD, DBNull.Value, trans);
+            InsertParameter(testTypeId, profileId, "TOU_TGT", touTestParameters.TGT, DBNull.Value, trans);
         }
+
 
         private void InsertParameter(long testTypeId, long profileId, string name, object min, object max, SqlTransaction trans)
         {
@@ -743,6 +763,8 @@ namespace SCME.InterfaceImplementations
 
             _paramInsertCommand.ExecuteNonQuery();
         }
+
+
 
         #endregion
     }

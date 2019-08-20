@@ -113,6 +113,7 @@
     <Compile Include="SCTU\SctuTestResult.cs" />
     <Compile Include="SL\HALTypeSL.cs" />
     <Compile Include="SL\TypeSL.cs" />
+    <Compile Include="SQL\ProfileForSqlSelect.cs" />
     <Compile Include="TOU\TypeTOU.cs" />
     <Compile Include="Utils\LogJournal.cs" />
   </ItemGroup>

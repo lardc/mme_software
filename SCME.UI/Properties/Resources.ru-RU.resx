@@ -759,14 +759,11 @@
   <data name="Amperage" xml:space="preserve">
     <value>Сила тока</value>
   </data>
-  <data name="ITM" xml:space="preserve">
-    <value>ITM</value>
-  </data>
   <data name="TGD" xml:space="preserve">
-    <value>tGD</value>
+    <value>tGD, us</value>
   </data>
   <data name="TGT" xml:space="preserve">
-    <value>tGT</value>
+    <value>tGT, us</value>
   </data>
   <data name="TOUITM" xml:space="preserve">
     <value>Сила тока (ITM),  А</value>

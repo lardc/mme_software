@@ -936,7 +936,7 @@
                     <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                     Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                     Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}"
-                                                    Text="{Binding SelectedItem.ITM_Input, ElementName=TestParameters, UpdateSourceTrigger=LostFocus}"/>
+                                                    Text="{Binding SelectedItem.CurrentAmplitude, ElementName=TestParameters, UpdateSourceTrigger=LostFocus}"/>
                     
                 </Grid>
             </TabItem>

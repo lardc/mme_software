@@ -36,7 +36,7 @@ namespace SCME.Service
                     IsSyncedWithServer = false;
 
                     LogMessageType logMessageType;
-                    switch (Settings.Default.DisableResultDB)
+                    switch (Settings.Default.LocalOrCentral)
                     {
                         case true:
                             //синхронизация не выполнена потому, что отключена параметром в конфигурационном файле
@@ -84,7 +84,7 @@ namespace SCME.Service
 
             try
             {
-                DatabaseService dbForMigration = new DatabaseService(Settings.Default.ResultsDatabasePath);
+                SQLiteDatabaseService dbForMigration = new SQLiteDatabaseService(Settings.Default.ResultsDatabasePath);
                 dbForMigration.Open();
                 dbForMigration.Migrate();
                 dbForMigration.Close();
@@ -92,6 +92,7 @@ namespace SCME.Service
             catch (Exception ex)
             {
                 Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, String.Format("Migrate database error: {0}", ex.Message));
+                return false;
             }
 
             try
@@ -101,13 +102,13 @@ namespace SCME.Service
                 //Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
                 Results.Open(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
 
-                if (!Settings.Default.DisableResultDB)
+                if (!Settings.Default.LocalOrCentral)
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, Resources.Log_SystemHost_Result_journal_opened);
 
                 //нам ещё не известно как завершится процесс синхронизации данных, поэтому
                 IsSyncedWithServer = null;
 
-                switch (Settings.Default.DisableResultDB)
+                switch (Settings.Default.LocalOrCentral)
                 {
                     case true:
                         //синхронизация отключена, уведомляем UI, что стадия синхронизации баз данных пройдена

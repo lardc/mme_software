@@ -55,7 +55,7 @@ namespace SCME.Service.IO
             if (devState == HWDeviceState.Fault)
             {
                 var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
-                FireNotificationEvent(HWWarningReason.None, faultReason,
+                FireNotificationEvent(HWProblemReason.None, HWWarningReason.None, faultReason,
                                       HWDisableReason.None);
 
                 throw new Exception(string.Format("TOU is in fault state, reason: {0}", faultReason));
@@ -273,7 +273,8 @@ namespace SCME.Service.IO
             try
             {
                 _State = DeviceState.InProcess;
-                //FireTOUEvent(m_State, m_Result);
+                CallAction(ACT_CLEAR_WARNING);
+                FireTOUEvent(_State, _Result);
 
                 if (_IsTOUEmulation)
                 {
@@ -281,24 +282,29 @@ namespace SCME.Service.IO
 
                     var randValue = rand.Next(0, 2);
 
-                    if (randValue == 0)
-                    {
-                        _State = DeviceState.Problem;
-                        Thread.Sleep(500);
-                        //проверяем отображение Problem, Warning, Fault
-                        FireNotificationEvent(HWWarningReason.AnperageOutOfRange, HWFaultReason.NoPotensialSignal, HWDisableReason.None);
-                        Thread.Sleep(500);
-                        FireTOUEvent(_State, _Result);
-                    }
-                    else
-                    {
-                        Thread.Sleep(2000);
+                    //if (randValue == 0)
+                    //{
+                    //    _State = DeviceState.Problem;
+                    //    Thread.Sleep(500);
+                    //    //проверяем отображение Problem, Warning, Fault
+                    //    FireNotificationEvent(HWProblemReason.None, HWWarningReason.AnperageOutOfRange, HWFaultReason.NoPotensialSignal, HWDisableReason.None);
+                    //    Thread.Sleep(500);
+                    //    FireTOUEvent(_State, _Result);
+                    //}
+                    //else
+                    //{
+                    //Как в RAC проверка ошибок
+                    Thread.Sleep(500);
+                    FireNotificationEvent(HWProblemReason.None, HWWarningReason.AnperageOutOfRange, HWFaultReason.None, HWDisableReason.None);
+                    Thread.Sleep(500);
+                    FireNotificationEvent(HWProblemReason.None, HWWarningReason.None, HWFaultReason.Overflow90, HWDisableReason.None);
+                    Thread.Sleep(500);
                         _Result.ITM = (float)rand.NextDouble() * 1000;
                         _Result.TGD = (float)rand.NextDouble() * 1000;
                         _Result.TGT = (float)rand.NextDouble() * 1000;
                         _State = DeviceState.Success;
                         FireTOUEvent(_State, _Result);
-                    }
+                    //}
                 }
                 else
                 {
@@ -309,7 +315,7 @@ namespace SCME.Service.IO
                         return;
                     }
 
-                    WriteRegister(REG_CURRENT_VALUE, _Parameters.ITM_Input);
+                    WriteRegister(REG_CURRENT_VALUE, _Parameters.CurrentAmplitude);
                     CallAction(ACT_START_TEST);
                     WaitState(HWDeviceState.Ready);
 
@@ -329,7 +335,7 @@ namespace SCME.Service.IO
 
                         HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
                         HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
-                        FireNotificationEvent(warningReason, faultReason, HWDisableReason.None);
+                        FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
                         throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
                     }
                 }
@@ -522,14 +528,14 @@ namespace SCME.Service.IO
             _Communication.PostTOUEvent(State, Result);
         }
 
-        private void FireNotificationEvent(HWWarningReason Warning, HWFaultReason Fault, HWDisableReason Disable)
+        private void FireNotificationEvent(HWProblemReason problem, HWWarningReason warning, HWFaultReason fault, HWDisableReason disable)
         {
             SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Warning,
                                          string.Format(
                                              "TOU device notification: problem None, warning {0}, fault {1}, disable {2}",
-                                             Warning, Fault, Disable));
+                                             warning, fault, disable));
 
-            _Communication.PostTOUNotificationEvent(Warning, Fault, Disable);
+            _Communication.PostTOUNotificationEvent((ushort)problem, (ushort)warning, (ushort)fault, (ushort)disable);
         }
 
         private void FireExceptionEvent(string Message)

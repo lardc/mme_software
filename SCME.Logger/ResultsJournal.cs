@@ -8,6 +8,7 @@ using SCME.InterfaceImplementations;
 using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
+using SCME.Types.SQL;
 
 namespace SCME.Logger
 {
@@ -101,11 +102,11 @@ namespace SCME.Logger
             }
         }
 
-        public void SaveProfiles(List<ProfileItem> profilesItems, string mmeCode)
+        public List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profilesItems, string mmeCode)
         {
             lock (ms_Locker)
             {
-                _profilesService.SaveProfilesFromMme(profilesItems, mmeCode);
+                return _profilesService.SaveProfilesFromMme(profilesItems, mmeCode);
             }
         }
 

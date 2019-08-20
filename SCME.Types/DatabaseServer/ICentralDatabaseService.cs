@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using SCME.Types.DataContracts;
+using SCME.Types.SQL;
 
 namespace SCME.Types.DatabaseServer
 {
@@ -15,7 +16,7 @@ namespace SCME.Types.DatabaseServer
         /// <param name="profileItems"></param>
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        new void SaveProfiles(List<ProfileItem> profileItems);
+        new List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profileItems);
 
         /// <summary>
         /// Return profiles from db
@@ -40,7 +41,7 @@ namespace SCME.Types.DatabaseServer
         /// <param name="mmeCode"></param>
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        new void SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode);
+        new List<ProfileForSqlSelect> SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode);
 
         /// <summary>
         /// Get profile by profName

@@ -50,25 +50,25 @@ namespace SCME.Types.TOU
         public static ushort CurrentAmplitudeMin { get; private set; } = 160;
         public static ushort CurrentAmplitudeMax = 1250;
 
-        private ushort m_CurrentAmplitude;
+        private ushort _CurrentAmplitude;
 
         [DataMember]
-        public ushort ITM_Input
+        public ushort CurrentAmplitude
         {
             get
             {
-                return m_CurrentAmplitude;
+                return _CurrentAmplitude;
             }
             set
             {
                 if (value >= CurrentAmplitudeMin && value <= CurrentAmplitudeMax)
-                    m_CurrentAmplitude = value;
+                    _CurrentAmplitude = value;
                 else
                     throw new Exception("Недопустимое значение амплитуды тока(диапазон 160-1250)");
             }
         }
 
-        public ushort ITM_Output { get; set; }
+        public ushort ITM { get; set; }
         public ushort TGD { get; set; }
         public ushort TGT { get; set; }
 
@@ -79,7 +79,7 @@ namespace SCME.Types.TOU
         {
             IsEnabled = true;
             TestParametersType = TestParametersType.TOU;
-            ITM_Input = (ushort)CurrentAmplitudeMin;
+            CurrentAmplitude = (ushort)CurrentAmplitudeMin;
         }
 
         public object Clone()
@@ -94,10 +94,10 @@ namespace SCME.Types.TOU
             if (tOUOldParameters == null)
                 throw new InvalidCastException("oldParameters must be tOUOldParameters");
 
-            if (ITM_Input != tOUOldParameters.ITM_Input)
+            if (CurrentAmplitude != tOUOldParameters.CurrentAmplitude)
                 return true;
 
-            if (ITM_Output != tOUOldParameters.ITM_Output)
+            if (ITM != tOUOldParameters.ITM)
                 return true;
 
             if (TGD != tOUOldParameters.TGD)
@@ -108,6 +108,13 @@ namespace SCME.Types.TOU
 
             return false;
         }
+    }
+
+    public enum HWProblemReason
+    {
+        [EnumMember]
+        None = 0,
+        StateIsNoGood = 1000 //в описании блока не было такого значения, зарезервировал его себе для случая не корректного состояния блока
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

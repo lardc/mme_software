@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using SCME.Types.BaseTestParams;
+using SCME.Types.SQL;
 
 namespace SCME.Types.Profiles
 {
@@ -28,8 +29,16 @@ namespace SCME.Types.Profiles
         }
         [DataMember]
         public Guid Key { get; set; }
+
+        [DataMember]
+        public Guid NextGenerationKey { get; set; }
+
+        [DataMember]
+        public int Version { get; set; }
+
         [DataMember]
         public DateTime Timestamp { get; set; }
+
 
         public string TimeStampFormated
         {
@@ -46,15 +55,17 @@ namespace SCME.Types.Profiles
             Name = "Default";
             Key = new Guid();
             Timestamp = DateTime.Now;
+            Version = 1;
 
             ChildrenList = new ObservableCollection<ProfileDictionaryObject>();
         }
 
-        public ProfileDictionaryObject(string Name, Guid Key, DateTime Timestamp)
+        public ProfileDictionaryObject(string Name, Guid Key, int version, DateTime Timestamp)
         {
             this.Name = Name;
             this.Key = Key;
             this.Timestamp = Timestamp;
+            this.Version = version;
 
             ChildrenList = new ObservableCollection<ProfileDictionaryObject>();
         }
@@ -86,7 +97,13 @@ namespace SCME.Types.Profiles
         }
 
         public ProfileFolder(string Name, Guid Key, DateTime TimeStamp)
-            : base(Name, Key, TimeStamp)
+           : base(Name, Key, 0, TimeStamp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProfileFolder(string Name, Guid Key, int version, DateTime TimeStamp)
+            : base(Name, Key, version, TimeStamp)
         {
 
         }
@@ -99,11 +116,19 @@ namespace SCME.Types.Profiles
 
         }
 
-        public ProfileSet(string Name, Guid Key, DateTime TimeStamp)
-            : base(Name, Key, TimeStamp)
+        public ProfileSet(string Name, Guid Key, int version, DateTime TimeStamp)
+            : base(Name, Key, version, TimeStamp)
         {
 
         }
+
+        public ProfileSet(string Name, Guid Key, DateTime TimeStamp)
+           : base(Name, Key, 0, TimeStamp)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -153,36 +178,43 @@ namespace SCME.Types.Profiles
             }
         }
 
-        public Profile()
+
+        private void ConstructorInit()
         {
             ParametersGate = new Gate.TestParameters();
             ParametersVTM = new SL.TestParameters();
             ParametersBVT = new BVT.TestParameters();
-
-            TestParametersAndNormatives = new ObservableCollection<BaseTestParametersAndNormatives>(new List<BaseTestParametersAndNormatives>());
-
             ParametersComm = new Commutation.ModuleCommutationType();
             ParametersClamp = 5.0f;
+            TestParametersAndNormatives = new ObservableCollection<BaseTestParametersAndNormatives>(new List<BaseTestParametersAndNormatives>());
+
 
             NormativesGate = new Gate.ResultNormatives();
             NormativesVTM = new SL.ResultNormatives();
             NormativesBVT = new BVT.ResultNormatives();
         }
 
-        public Profile(string Name, Guid Key, DateTime TimeStamp)
-            : base(Name, Key, TimeStamp)
+        public Profile()
         {
-            ParametersGate = new Gate.TestParameters();
-            ParametersVTM = new SL.TestParameters();
-            ParametersBVT = new BVT.TestParameters();
-            ParametersComm = new Commutation.ModuleCommutationType();
-            ParametersClamp = 5.0f;
-            TestParametersAndNormatives = new ObservableCollection<BaseTestParametersAndNormatives>(new List<BaseTestParametersAndNormatives>());
+            ConstructorInit();
+        }
 
+        public Profile(ProfileForSqlSelect prof)
+           : base(prof.Name, prof.Key, Convert.ToInt32(prof.Version), prof.TS)
+        {
+            ConstructorInit();
+        }
 
-            NormativesGate = new Gate.ResultNormatives();
-            NormativesVTM = new SL.ResultNormatives();
-            NormativesBVT = new BVT.ResultNormatives();
+        public Profile(string Name, Guid Key, long version, DateTime TS)
+            : base(Name, Key, Convert.ToInt32(version), TS)
+        {
+            ConstructorInit();
+        }
+
+        public Profile(string Name, Guid Key, DateTime TS)
+          : base(Name, Key, 0, TS)
+        {
+            throw new NotImplementedException();
         }
     }
 }

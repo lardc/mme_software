@@ -519,19 +519,23 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TOUITM}"/>
+                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Itm_A}"/>
                     <Label Grid.Column="1" Grid.Row="0" Content="0" x:Name="lbTOUITM" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
-                    <Label Name="lbTittleWarning" Grid.Column="0" Grid.Row="1" Content="Warning"/>
-                    <Label Name="lbWarning" Background="Gold" Grid.Column="1" Grid.Row="1" Style="{StaticResource WarningFaultLabelStyle}"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.TGD}"/>
+                    <Label Grid.Column="1" Grid.Row="1" Content="0" x:Name="lbTOUTGD" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
-                    <Label Name="lbTittleFaultReason" Grid.Column="0" Grid.Row="2" Content="Fault" Height="Auto"/>
-                    <Label Name="lbFaultReason" Background="Tomato" Grid.Column="1" Grid.Row="2" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.TGT}"/>
+                    <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbTOUTGT" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
-                    <Label Name="lbTittleProblem" Grid.Column="0" Grid.Row="3" Content="Problem" Height="Auto"/>
-                    <Label Name="lbProblem" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
+                    <Label Name="lbTittleWarning" Grid.Column="0" Grid.Row="3" Content="Warning"/>
+                    <Label Name="lbWarning" Background="Gold" Grid.Column="1" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}"/>
+
+                    <Label Name="lbTittleFaultReason" Grid.Column="0" Grid.Row="4" Content="Fault" Height="Auto"/>
+                    <Label Name="lbFaultReason" Background="Tomato" Grid.Column="1" Grid.Row="4" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}"/>
                 </Grid>
             </DataTemplate>
 

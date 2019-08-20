@@ -46,8 +46,8 @@ namespace SCME.UI.PagesUser
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
         private List<Types.QrrTq.TestResults> m_ResultsQrrTq1, m_ResultsQrrTq2;
         private List<Types.RAC.TestResults> m_ResultsRAC1, m_ResultsRAC2;
-        private List<Types.TOU.TestResults> _TOUTestResults1, _TOUTestResults2;
-        private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC;
+        private List<Types.TOU.TestResults> _ResultsTOU1, _ResultsTOU2;
+        private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC, _StateTOU;
         private Profile m_Profile;
         private bool m_SpecialMeasureMode;
         private bool m_TwoPosRequested, m_IsRunning;
@@ -66,7 +66,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC1 = new List<Types.RAC.TestResults>();
-            _TOUTestResults1 = new List<Types.TOU.TestResults>();
+            _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<Types.Gate.TestResults>();
             m_ResultsVTM2 = new List<Types.SL.TestResults>();
@@ -75,7 +75,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC2 = new List<Types.RAC.TestResults>();
-            _TOUTestResults2 = new List<Types.TOU.TestResults>();
+            _ResultsTOU2 = new List<Types.TOU.TestResults>();
 
             m_StateGate = DeviceState.None;
             m_StateVtm = DeviceState.None;
@@ -83,6 +83,7 @@ namespace SCME.UI.PagesUser
             m_StateATU = DeviceState.None;
             m_StateQrrTq = DeviceState.None;
             m_StateRAC = DeviceState.None;
+            _StateTOU = DeviceState.None;
 
             m_Errors1 = new List<string>();
             m_Errors2 = new List<string>();
@@ -344,6 +345,26 @@ namespace SCME.UI.PagesUser
             {
                 m_ResultsRAC2 = value;
                 OnPropertyChanged("ResultsRAC2");
+            }
+        }
+
+        public List<Types.TOU.TestResults> ResultsTOU1
+        {
+            get { return _ResultsTOU1; }
+            set
+            {
+                _ResultsTOU1 = value;
+                OnPropertyChanged("ResultsTOU1");
+            }
+        }
+
+        public List<Types.TOU.TestResults> ResultsTOU2
+        {
+            get { return _ResultsTOU2; }
+            set
+            {
+                _ResultsTOU2 = value;
+                OnPropertyChanged("ResultsTOU2");
             }
         }
 
@@ -668,6 +689,7 @@ namespace SCME.UI.PagesUser
                         ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                         QrrTq = (m_CurrentPos == 1) ? ResultsQrrTq1.ToArray() : ResultsQrrTq2.ToArray(),
                         RAC = (m_CurrentPos == 1) ? ResultsRAC1.ToArray() : ResultsRAC2.ToArray(),
+                        TOU = (m_CurrentPos == 1) ? ResultsTOU1.ToArray() : ResultsTOU2.ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
                         VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
@@ -1331,21 +1353,6 @@ namespace SCME.UI.PagesUser
             return results;
         }
 
-        internal void SetResultTOU(DeviceState state, Types.TOU.TestResults Result)
-        {
-
-        }
-
-        internal void SetTOUWarning(Types.TOU.HWWarningReason Warning)
-        {
-
-        }
-
-        internal void SetTOUFault(Types.TOU.HWFaultReason Warning)
-        {
-          
-        }
-
         internal void SetResultdVdt(DeviceState state, Types.dVdt.TestResults Result)
         {
             m_StatedVdt = state;
@@ -1896,6 +1903,140 @@ namespace SCME.UI.PagesUser
             }
         }
 
+        private int TOUCounter;
+
+        private List<DependencyObject> GetTOUItemContainer()
+        {
+            var results = new List<DependencyObject>(7);
+            ListView ListView = null;
+
+            switch (m_CurrentPos)
+            {
+                case (1):
+                    ListView = ListViewResults1;
+                    break;
+
+                default:
+                    ListView = ListViewResults2;
+                    break;
+            }
+
+            bool isNewlyRealized;
+
+            for (int i = 0; i < ListView.Items.Count; i++)
+            {
+                if (ListView.Items[i] is Types.TOU.TestParameters)
+                {
+                    IItemContainerGenerator generator = ListView.ItemContainerGenerator;
+
+                    var position = generator.GeneratorPositionFromIndex(i);
+                    using (generator.StartAt(position, GeneratorDirection.Forward, true))
+                    {
+                        var child = generator.GenerateNext(out isNewlyRealized);
+                        generator.PrepareItemContainer(child);
+                        results.Add(child);
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        internal void SetResultTOU(DeviceState state, Types.TOU.TestResults result)
+        {
+            _StateTOU = state;
+
+            if (_StateTOU == DeviceState.InProcess)
+                TOUCounter++;
+
+            List<Types.TOU.TestResults> results = m_CurrentPos == 1 ? ResultsTOU1 : ResultsTOU2;
+
+            results[TOUCounter].ITM = result.ITM;
+            results[TOUCounter].TGD = result.TGD;
+            results[TOUCounter].TGT = result.TGT;
+
+            if (state == DeviceState.Success)
+            {
+                List<DependencyObject> TOUItemContainer = GetTOUItemContainer();
+                ContentPresenter presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
+
+                Label labelITM = FindChild<Label>(presenter, "lbTOUITM");
+                Label labelTGD = FindChild<Label>(presenter, "lbTOUTGD");
+                Label labelTGT = FindChild<Label>(presenter, "lbTOUTGT");
+
+                if (labelITM != null)
+                    SetLabel(labelITM, state, true, result.ITM.ToString());
+
+                if (labelTGD != null)
+                    SetLabel(labelTGD, state, true, result.ITM.ToString());
+
+                if (labelTGT != null)
+                    SetLabel(labelTGT, state, true, result.ITM.ToString());
+            }
+        }
+
+        internal void SetTOUProblem(ushort Problem)
+        {
+            var TOUItemContainer = GetTOUItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
+
+            var label = FindChild<Label>(presenter, "lbProblem");
+
+            if (label != null && label.Visibility != Visibility.Visible)
+            {
+                Types.TOU.HWProblemReason ProblemReason = (Types.TOU.HWProblemReason)Problem;
+                label.Content = ProblemReason.ToString();
+
+                label.Visibility = Visibility.Visible;
+
+                label = FindChild<Label>(presenter, "lbTittleProblem");
+                label.Visibility = Visibility.Visible;
+            }
+
+            IsRunning = false;
+        }
+
+        internal void SetTOUWarning(ushort Warning)
+        {
+            var TOUItemContainer = GetTOUItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
+
+            var label = FindChild<Label>(presenter, "lbWarning");
+
+            if (label != null && label.Visibility != Visibility.Visible)
+            {
+                Types.TOU.HWWarningReason WarningReason = (Types.TOU.HWWarningReason)Warning;
+
+                label.Content = WarningReason.ToString();
+                label.Visibility = Visibility.Visible;
+
+                label = FindChild<Label>(presenter, "lbTittleWarning");
+                label.Visibility = Visibility.Visible;
+            }
+
+            IsRunning = false;
+        }
+
+        internal void SetTOUFault(ushort Fault)
+        {
+            var TOUItemContainer = GetTOUItemContainer();
+            var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
+
+            var label = FindChild<Label>(presenter, "lbFaultReason");
+
+            if (label != null && label.Visibility != Visibility.Visible)
+            {
+                Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason)Fault;
+
+                label.Content = FaultReason.ToString();
+                label.Visibility = Visibility.Visible;
+
+                label = FindChild<Label>(presenter, "lbTittleFaultReason");
+                label.Visibility = Visibility.Visible;
+            }
+        }
+
+
         public void SetSettingTemperature(int temeprature)
         {
             SettingTemperatureLabel.Content = temeprature;
@@ -2083,6 +2224,11 @@ namespace SCME.UI.PagesUser
                         {
                             ClearResultsRAC(element);
                         }
+
+                        if (ListViewResults1.Items[i] is Types.TOU.TestParameters)
+                        {
+                            ClearResultsTOU(element);
+                        }
                     }
                 }
 
@@ -2130,6 +2276,11 @@ namespace SCME.UI.PagesUser
                         if (ListViewResults2.Items[i] is Types.RAC.TestParameters)
                         {
                             ClearResultsRAC(element);
+                        }
+
+                        if (ListViewResults2.Items[i] is Types.TOU.TestParameters)
+                        {
+                            ClearResultsTOU(element);
                         }
                     }
                 }
@@ -2335,6 +2486,40 @@ namespace SCME.UI.PagesUser
             if (label != null) label.Visibility = Visibility.Collapsed;
         }
 
+        private void ClearResultsTOU(DependencyObject element)
+        {
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
+
+            //чистим результаты измерений
+            var label = FindChild<Label>(presenter, "lbTOUITM");
+            if (label != null) 
+                ResetLabel(label);
+
+            label = FindChild<Label>(presenter, "lbTOUTGD");
+            if (label != null)
+                ResetLabel(label);
+
+            label = FindChild<Label>(presenter, "lbTOUTGT");
+            if (label != null)
+                ResetLabel(label);
+
+            //чистим Warning, Fault и Problem
+            label = FindChild<Label>(presenter, "lbTittleWarning");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+            label = FindChild<Label>(presenter, "lbWarning");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+
+            label = FindChild<Label>(presenter, "lbTittleFaultReason");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+            label = FindChild<Label>(presenter, "lbFaultReason");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+
+            label = FindChild<Label>(presenter, "lbTittleProblem");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+            label = FindChild<Label>(presenter, "lbProblem");
+            if (label != null) label.Visibility = Visibility.Collapsed;
+        }
+
         private bool IsRunning
         {
             get { return m_IsRunning; }
@@ -2480,6 +2665,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC1 = new List<Types.RAC.TestResults>();
+            _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<TestResults>();
             m_ResultsVTM2 = new List<Types.SL.TestResults>();
@@ -2488,6 +2674,7 @@ namespace SCME.UI.PagesUser
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
             m_ResultsRAC2 = new List<Types.RAC.TestResults>();
+            _ResultsTOU2 = new List<Types.TOU.TestResults>();
 
             _gateCounter = -1;
             slCounter = -1;
@@ -2496,6 +2683,7 @@ namespace SCME.UI.PagesUser
             ATUCounter = -1;
             QrrTqCounter = -1;
             RACCounter = -1;
+            TOUCounter = -1;
 
             var parameters = Profile.TestParametersAndNormatives.ToList();
 
@@ -2566,6 +2754,14 @@ namespace SCME.UI.PagesUser
                 {
                     m_ResultsRAC1.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
                     m_ResultsRAC2.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    continue;
+                }
+
+                var parTOU = baseTestParametersAndNormativese as Types.TOU.TestParameters;
+                if (parTOU != null)
+                {
+                    _ResultsTOU1.Add(new Types.TOU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    _ResultsTOU2.Add(new Types.TOU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
                     continue;
                 }
             }

@@ -574,7 +574,6 @@ namespace SCME.InterfaceImplementations
             {
                 if (result.TOUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "TOU_ITM", result.TOU[i].ITM, result.ProfileKey, "TOU", trans);
                     InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, "TOU", trans);
                     InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.ProfileKey, "TOU", trans);
                 }

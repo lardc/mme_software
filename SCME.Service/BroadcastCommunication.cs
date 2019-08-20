@@ -165,11 +165,6 @@ namespace SCME.Service
             EnumerateClients(client => client.ClampingTemperatureHandler(channel, temeprature));
         }
 
-        public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
-        {
-            EnumerateClients(Client => Client.TOUHandler(State, Result));
-        }
-
         public void PostdVdtEvent(DeviceState State, Types.dVdt.TestResults Result)
         {
             EnumerateClients(Client => Client.DvDtHandler(State, Result));
@@ -190,6 +185,11 @@ namespace SCME.Service
             EnumerateClients(Client => Client.RACHandler(State, Result));
         }
 
+        public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
+        {
+            EnumerateClients(Client => Client.TOUHandler(State, Result));
+        }
+
         public void PostIHEvent(DeviceState State, Types.IH.TestResults Result)
         {
             EnumerateClients(Client => Client.IHHandler(State, Result));
@@ -203,12 +203,6 @@ namespace SCME.Service
         public void PostSctuEvent(SctuHwState state, SctuTestResults results)
         {
             EnumerateClients(client => client.SctuHandler(state, results));
-        }
-
-        public void PostTOUNotificationEvent(Types.TOU.HWWarningReason Warning,
-                                   Types.TOU.HWFaultReason Fault, Types.TOU.HWDisableReason Disable)
-        {
-            EnumerateClients(Client => Client.TOUNotificationHandler(Warning, Fault, Disable));
         }
 
         public void PostdVdtNotificationEvent(Types.dVdt.HWWarningReason Warning,
@@ -236,6 +230,12 @@ namespace SCME.Service
         {
             EnumerateClients(Client => Client.RACNotificationHandler(Problem, Warning, Fault, Disable));
         }
+
+        public void PostTOUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        {
+            EnumerateClients(Client => Client.TOUNotificationHandler(Problem, Warning, Fault, Disable));
+        }
+
 
         public void PostIHNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {

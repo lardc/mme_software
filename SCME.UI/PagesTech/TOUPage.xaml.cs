@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.UI.ModelViews;
@@ -43,18 +45,49 @@ namespace SCME.UI.PagesTech
             lblFault.Visibility = Visibility.Collapsed;
         }
 
-        internal void SetWarning(Types.TOU.HWWarningReason Warning)
+      
+
+        internal void SetProblem(ushort Problem)
         {
-            lblWarning.Content = Warning.ToString();
+            throw new NotImplementedException();
+        }
+
+        internal void SetWarning(ushort Warning)
+        {
+            //закрашиваем цветом поле вывода Warning, чтобы обратить на него внимание оператора
+            SetColorByWarning(Warning);
+
+            Types.RAC.HWWarningReason WarningReason = (Types.RAC.HWWarningReason)Warning;
+            lblWarning.Content = "Warning " + WarningReason.ToString();
+
             lblWarning.Visibility = Visibility.Visible;
         }
 
-        internal void SetFault(Types.TOU.HWFaultReason Fault)
+        internal void SetFault(ushort Fault)
         {
-            lblFault.Content = Fault.ToString();
+            Types.RAC.HWFaultReason FaultReason = (Types.RAC.HWFaultReason)Fault;
+
+            lblFault.Content = "Fault " + FaultReason.ToString();
             lblFault.Visibility = Visibility.Visible;
             VM.IsRunning = false;
         }
+
+        internal void SetColorByWarning(ushort Warning)
+        {
+            //установка цвета lbWarning в зависимости от принятого кода Warning
+            switch (Warning)
+            {
+                //будем привлекать внимание оператора с помощью выделения сообщения цветом
+                case (ushort)Types.RAC.HWWarningReason.None:
+                    lblWarning.Background = Brushes.Transparent;
+                    break;
+
+                default:
+                    lblWarning.Background = (SolidColorBrush)FindResource("xRed1");
+                    break;
+            }
+        }
+
 
         internal void SetResult(DeviceState State, Types.TOU.TestResults Result)
         {

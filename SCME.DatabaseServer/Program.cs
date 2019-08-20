@@ -66,7 +66,7 @@ namespace SCME.DatabaseServer
             var ico = Resources.ServiceIcon;
             ms_TrayIcon = new NotifyIcon
             {
-                Text = @"SCME.DatabaseServer: " + SystemHost.GetPort().ToString(),
+                Text = @"SCME.DatabaseServer: " + SystemHost.GetHost() + ":" + SystemHost.GetPort().ToString(),
                 Icon = new Icon(ico, ico.Width, ico.Height),
                 ContextMenu = new ContextMenu(new[] { new MenuItem(@"Exit", OnExit) }),
                 Visible = true

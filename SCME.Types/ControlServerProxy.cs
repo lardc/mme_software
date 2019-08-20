@@ -4,6 +4,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
+using SCME.Types.SQL;
 
 namespace SCME.Types
 {
@@ -221,9 +222,9 @@ namespace SCME.Types
             Channel.WriteResults(Item, Errors);
         }
 
-        public void SaveProfiles(List<ProfileItem> Item)
+        public List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> Item)
         {
-            Channel.SaveProfiles(Item);
+            return Channel.SaveProfiles(Item);
         }
 
         public bool RequestRemotePrinting(string GroupName, string CustomerName, string DeviceType,

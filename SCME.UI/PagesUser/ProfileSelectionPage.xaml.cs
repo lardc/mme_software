@@ -158,8 +158,9 @@ namespace SCME.UI.PagesUser
 
         private void OnTimerSyncSelectedProfileTick(object Sender, EventArgs E)
         {
-            //вызывается при истечении интервала времени, отсчитываемого таймером TimerSyncSelectedProfile
-            CheckSyncedSelectedProfile();
+            if (Cache.Main.SyncState == "SYNCED")
+                //вызывается при истечении интервала времени, отсчитываемого таймером TimerSyncSelectedProfile
+                CheckSyncedSelectedProfile();
         }
 
         public void InitSorting()
@@ -723,8 +724,11 @@ namespace SCME.UI.PagesUser
 
         private void ProfileSelectionPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            //чтобы пользователь не смог начать измерения с профилем, который ещё не синхронизирован
-            CheckSyncedSelectedProfile();
+            if (Cache.Main.SyncState == "SYNCED")
+            {
+                //чтобы пользователь не смог начать измерения с профилем, который ещё не синхронизирован
+                CheckSyncedSelectedProfile();
+            }
 
             //TimerForFound.IsEnabled = true;
             TimerSyncSelectedProfile.IsEnabled = true;

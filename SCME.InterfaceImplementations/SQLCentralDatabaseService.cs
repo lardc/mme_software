@@ -11,6 +11,7 @@ using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.DataContracts;
 using SCME.Types.Interfaces;
+using SCME.Types.SQL;
 
 namespace SCME.InterfaceImplementations
 {
@@ -31,11 +32,13 @@ namespace SCME.InterfaceImplementations
         private SqlCommand _codesInsertCommand;
         private SqlCommand _codesDeleteCommand;
 
-        public SQLCentralDatabaseService(ApplicationSettingsBase Settings)
-        {
-            var connectionString = Convert.ToBoolean(Settings["DBIntegratedSecurity"])
+        public static string GetConnectionStringFromSettings(ApplicationSettingsBase Settings) => Convert.ToBoolean(Settings["DBIntegratedSecurity"])
                 ? $"Server={Settings["DbPath"]}; Database={Settings["DBName"]}; Integrated Security=true;"
                 : $"Server={Settings["DbPath"]}; Database={Settings["DBName"]}; User Id={Settings["DBUser"]}; Password={Settings["DBPassword"]};";
+
+        public SQLCentralDatabaseService(ApplicationSettingsBase Settings)
+        {
+            var connectionString = GetConnectionStringFromSettings(Settings);
 
             _connection = new SqlConnection(connectionString);
             _connection.Open();
@@ -119,14 +122,14 @@ namespace SCME.InterfaceImplementations
             return _profilesService.GetProfileByProfName(profName, mmmeCode, ref Found);
         }
 
-        public void SaveProfiles(List<ProfileItem> profileItems)
+        public List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profileItems)
         {
-            _profilesService.SaveProfiles(profileItems);
+            return _profilesService.SaveProfiles(profileItems);
         }
 
-        public void SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
+        public List<ProfileForSqlSelect> SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
         {
-            _profilesService.SaveProfilesFromMme(profileItems, mmeCode);
+            return _profilesService.SaveProfilesFromMme(profileItems, mmeCode);
         }
 
         public List<string> GetGroups(DateTime? from, DateTime? to)

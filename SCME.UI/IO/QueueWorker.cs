@@ -624,39 +624,6 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetResultTOU(State, Result);
-                else
-                    Cache.TOU.SetResult(State, Result);
-            });
-        }
-
-        public void AddDVdtWarningEvent(Types.TOU.HWWarningReason Warning)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetTOUWarning(Warning);
-                else
-                    Cache.TOU.SetWarning(Warning);
-            });
-        }
-
-        public void AddDVdtFaultEvent(Types.TOU.HWFaultReason Fault)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetTOUFault(Fault);
-                else
-                    Cache.TOU.SetFault(Fault);
-            });
-        }
-
         public void AddDVdtEvent(DeviceState State, Types.dVdt.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
@@ -797,6 +764,42 @@ namespace SCME.UI.IO
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetRACFault(Fault);
                 else Cache.RAC.SetFault(Fault);
+            });
+        }
+
+          public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetResultTOU(State, Result);
+                else Cache.TOU.SetResult(State, Result);
+            });
+        }
+
+        public void AddTOUProblemEvent(ushort Problem)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetTOUProblem(Problem);
+                else Cache.TOU.SetProblem(Problem);
+            });
+        }
+
+        public void AddTOUWarningEvent(ushort Warning)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetTOUWarning(Warning);
+                else Cache.TOU.SetWarning(Warning);
+            });
+        }
+
+        public void AddTOUFaultEvent(ushort Fault)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetTOUFault(Fault);
+                else Cache.TOU.SetFault(Fault);
             });
         }
 

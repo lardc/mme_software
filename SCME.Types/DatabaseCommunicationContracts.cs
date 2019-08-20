@@ -123,7 +123,12 @@ namespace SCME.Types
         public string ProfileName { get; set; }
 
         [DataMember]
+        public int Version { get; set; }
+
+        [DataMember]
         public Guid ProfileKey { get; set; }
+        [DataMember]
+        public Guid NextGenerationKey { get; set; }
 
         [DataMember]
         public DateTime ProfileTS { get; set; }

@@ -6,6 +6,7 @@ using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Commutation;
 using SCME.Types.SCTU;
+using SCME.Types.SQL;
 
 namespace SCME.Service
 {
@@ -290,9 +291,9 @@ namespace SCME.Service
             m_IOMain.WriteResults(Item, Errors);
         }
 
-        void IExternalControl.SaveProfiles(List<ProfileItem> profileItems)
+        List<ProfileForSqlSelect> IExternalControl.SaveProfiles(List<ProfileItem> profileItems)
         {
-            m_IOMain.SaveProfiles(profileItems);
+            return m_IOMain.SaveProfiles(profileItems);
         }
 
         bool IExternalControl.RequestRemotePrinting(string GroupName, string CustomerName, string DeviceType,

@@ -12,6 +12,7 @@ using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
 using SCME.Types.SL;
+using SCME.Types.SQL;
 using TestParameters = SCME.Types.Gate.TestParameters;
 
 namespace SCME.InterfaceImplementations
@@ -126,15 +127,19 @@ namespace SCME.InterfaceImplementations
             _profileSingleSelect.Prepare();
         }
 
+    
+
+       
+
         public List<ProfileItem> GetProfileItems()
         {
             try
             {
                 var profilesList = new List<ProfileItem>();
-                const string profilesSelect = "SELECT P.[PROF_ID], P.[PROF_NAME], P.[PROF_GUID], PP.MAX_PROF_TS " +
+                const string profilesSelect = "SELECT P.[PROF_ID], P.[PROF_NAME], P.[PROF_GUID], P.[PROF_VERS] , PP.MAX_PROF_TS " +
                                               " FROM (SELECT [PROF_NAME], MAX([PROF_TS]) AS MAX_PROF_TS FROM [dbo].[PROFILES] WHERE (ISNULL([IS_DELETED], 0)=0) GROUP BY [PROF_NAME]) PP " +
                                               " INNER JOIN [dbo].[PROFILES] P ON PP.PROF_NAME = P.PROF_NAME AND PP.MAX_PROF_TS = P.PROF_TS";
-                var profilesDict = new List<Tuple<int, string, Guid, DateTime>>();
+                var profilesDict = new List<ProfileForSqlSelect>();
 
                 using (var condCmd = _connection.CreateCommand())
                 {
@@ -144,7 +149,7 @@ namespace SCME.InterfaceImplementations
                     using (var reader = condCmd.ExecuteReader())
                     {
                         while (reader.Read())
-                            profilesDict.Add(new Tuple<int, string, Guid, DateTime>((int)reader[0], (string)reader[1], (Guid)reader[2], (DateTime)reader[3]));
+                            profilesDict.Add(new ProfileForSqlSelect((int)reader[0],(string)reader[1],(Guid)reader[2],(int)reader[3],(DateTime)reader[4]));
                     }
                 }
 
@@ -152,22 +157,23 @@ namespace SCME.InterfaceImplementations
                 {
                     var profile = Profile(prof);
 
-                    var profilesChildsDict = new List<Tuple<int, string, Guid, DateTime>>();
+                    var profilesChildsDict = new List<ProfileForSqlSelect>();
 
-                    _childsCmd.Parameters["@PROF_NAME"].Value = prof.Item2;
+                    _childsCmd.Parameters["@PROF_NAME"].Value = prof.Name;
 
                     a++;
                     using (var reader = _childsCmd.ExecuteReader())
                     {
                         while (reader.Read())
-                            profilesChildsDict.Add(new Tuple<int, string, Guid, DateTime>((int)reader[0], (string)reader[1], (Guid)reader[2], (DateTime)reader[3]));
+                            profilesChildsDict.Add(new ProfileForSqlSelect((int)reader[0],(string)reader[1],(Guid)reader[2],(int)reader[3],(DateTime)reader[4]));
                     }
 
                     var profileItem = new ProfileItem
                     {
-                        ProfileId = prof.Item1,
+                        ProfileId = prof.Id,
                         ProfileName = profile.Name,
                         ProfileKey = profile.Key,
+                        Version = prof.Version,
                         ProfileTS = profile.Timestamp,
                         GateTestParameters = new List<TestParameters>(),
                         VTMTestParameters = new List<Types.SL.TestParameters>(),
@@ -194,10 +200,11 @@ namespace SCME.InterfaceImplementations
 
                         var childProfileItem = new ProfileItem
                         {
-                            ProfileId = profilesChildsDict[i].Item1,
+                            ProfileId = profilesChildsDict[i].Id,
                             ProfileName = childProfile.Name,
                             ProfileKey = childProfile.Key,
                             ProfileTS = childProfile.Timestamp,
+                            Version = profilesChildsDict[i].Version,
                             GateTestParameters = new List<TestParameters>(),
                             VTMTestParameters = new List<Types.SL.TestParameters>(),
                             BVTTestParameters = new List<Types.BVT.TestParameters>(),
@@ -272,13 +279,13 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private Profile Profile(Tuple<int, string, Guid, DateTime> prof)
+        private Profile Profile(ProfileForSqlSelect prof)
         {
-            var profile = new Profile(prof.Item2, prof.Item3, prof.Item4);
+            var profile = new Profile(prof);
 
             var testTypes = new Dictionary<long, long>(5);
 
-            _condCmd.Parameters["@PROF_ID"].Value = prof.Item1;
+            _condCmd.Parameters["@PROF_ID"].Value = prof.Id;
 
             a++;
             using (var reader = _condCmd.ExecuteReader())
@@ -298,7 +305,7 @@ namespace SCME.InterfaceImplementations
             try
             {
                 var profilesList = new List<ProfileItem>();
-                var profilesDict = new List<Tuple<int, string, Guid, DateTime>>();
+                var profilesDict = new List<ProfileForSqlSelect>();
 
                 _profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
 
@@ -306,16 +313,16 @@ namespace SCME.InterfaceImplementations
                 using (var reader = _profileSelect.ExecuteReader())
                 {
                     while (reader.Read())
-                        profilesDict.Add(new Tuple<int, string, Guid, DateTime>((int)reader[0], (string)reader[1], (Guid)reader[2], (DateTime)reader[3]));
+                        profilesDict.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[4], (DateTime)reader[3]));
                 }
 
                 foreach (var prof in profilesDict)
                 {
-                    var profile = new Profile(prof.Item2, prof.Item3, prof.Item4);
-
+                    var profile = new Profile(prof.Name, prof.Key, prof.Version, prof.TS);
+                    
                     var testTypes = new Dictionary<long, long>(5);
 
-                    _condCmd.Parameters["@PROF_ID"].Value = prof.Item1;
+                    _condCmd.Parameters["@PROF_ID"].Value = prof.Id;
 
                     a++;
                     using (var reader = _condCmd.ExecuteReader())
@@ -331,10 +338,11 @@ namespace SCME.InterfaceImplementations
 
                     var profileItem = new ProfileItem
                     {
-                        ProfileId = prof.Item1,
+                        ProfileId = prof.Id,
                         ProfileName = profile.Name,
                         ProfileKey = profile.Key,
                         ProfileTS = profile.Timestamp,
+                        Version = prof.Version,
                         GateTestParameters = new List<TestParameters>(),
                         VTMTestParameters = new List<Types.SL.TestParameters>(),
                         BVTTestParameters = new List<Types.BVT.TestParameters>(),
@@ -442,6 +450,11 @@ namespace SCME.InterfaceImplementations
                 case (int)TestParametersType.RAC:
                     var racParams = FillRACConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(racParams);
+                    break;
+
+                case (int)TestParametersType.TOU:
+                    var touParams = FillTOUConditions(testTypeId);
+                    profile.TestParametersAndNormatives.Add(touParams);
                     break;
 
                 case (int)TestParametersType.Clamping:
@@ -597,6 +610,35 @@ namespace SCME.InterfaceImplementations
 
                     case "RAC_ResVoltage":
                         testParams.ResVoltage = UInt16.Parse(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
+        private Types.TOU.TestParameters FillTOUConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.TOU.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "TOU_En":
+                        testParams.IsEnabled = bool.Parse(result.Value.ToString());
+                        break;
+
+                    case "TOU_ITM":
+                        testParams.CurrentAmplitude = ushort.Parse(result.Value.ToString());
                         break;
                 }
             }
@@ -981,7 +1023,9 @@ namespace SCME.InterfaceImplementations
                             testTypes.Add((int)reader[0], (int)reader[1]);
                     }
 
-                    Profile profile = new Profile(profileDict.Item2, profileDict.Item3, profileDict.Item4);
+                    Profile profile = null;
+                    //Profile profile = new Profile(profileDict.Item2, profileDict.Item3, profileDict.Item4);
+                    throw new NotImplementedException();
 
                     foreach (var testType in testTypes)
                         FillParameters(profile, testType.Key, testType.Value);

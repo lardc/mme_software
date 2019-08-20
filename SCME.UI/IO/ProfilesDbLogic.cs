@@ -6,6 +6,7 @@ using SCME.UI.CustomControl;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using System;
+using SCME.Types.SQL;
 
 namespace SCME.UI.IO
 {
@@ -30,7 +31,7 @@ namespace SCME.UI.IO
             var profiles = new List<Profile>();
             foreach (var profileItem in profileItems)
             {
-                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.ProfileTS)
+                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.Version, profileItem.ProfileTS)
                 {
                     IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
                     ParametersClamp = profileItem.ParametersClamp,
@@ -58,7 +59,7 @@ namespace SCME.UI.IO
             Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
         }
         
-        public static void SaveProfilesToDb(IList<Profile> profiles)
+        public static List<ProfileForSqlSelect> SaveProfilesToDb(IList<Profile> profiles)
         {
             var profileItems = new List<ProfileItem>(profiles.Count);
             foreach (var profile in profiles)
@@ -68,6 +69,8 @@ namespace SCME.UI.IO
                     ProfileName = profile.Name,
                     ProfileKey = profile.Key,
                     ProfileTS = profile.Timestamp,
+                    Version = profile.Version,
+                    NextGenerationKey = profile.NextGenerationKey,
                     GateTestParameters = new List<TestParameters>(),
                     VTMTestParameters = new List<Types.SL.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
@@ -125,7 +128,15 @@ namespace SCME.UI.IO
                 profileItems.Add(profileItem);
             }
 
-            Cache.Net.SaveProfilesToLocal(profileItems);
+
+            if (Cache.Main.SyncState == "SYNCED")
+            {
+                Cache.Net.SaveProfilesToLocal(profileItems);
+                return Cache.Net.SaveProfilesToServer(profileItems);
+            }
+            else
+                return Cache.Net.SaveProfilesToLocal(profileItems); 
+            
         }
     }
 }

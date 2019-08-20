@@ -853,15 +853,6 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на ITM.
-        /// </summary>
-        public static string ITM {
-            get {
-                return ResourceManager.GetString("ITM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на ITM, A.
         /// </summary>
         public static string Itm_A {
@@ -1799,7 +1790,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на tGD.
+        ///   Ищет локализованную строку, похожую на tGD, us.
         /// </summary>
         public static string TGD {
             get {
@@ -1808,7 +1799,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на tGT.
+        ///   Ищет локализованную строку, похожую на tGT, us.
         /// </summary>
         public static string TGT {
             get {

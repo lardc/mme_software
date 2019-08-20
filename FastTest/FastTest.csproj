@@ -107,11 +107,5 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EntityDataDB\SCME.EntityDataDB.csproj">
-      <Project>{8706c477-d919-4937-9154-cfe00c5727b9}</Project>
-      <Name>SCME.EntityDataDB</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

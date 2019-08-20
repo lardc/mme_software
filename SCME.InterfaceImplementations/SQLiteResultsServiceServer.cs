@@ -316,7 +316,6 @@ namespace SCME.InterfaceImplementations
             {
                 if (result.TOUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "TOU_ITM", result.TOU[i].ITM, result.TOU[i].TestTypeId);
                     InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.TOU[i].TestTypeId);
                     InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.TOU[i].TestTypeId);
                 }

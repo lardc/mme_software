@@ -187,10 +187,10 @@ namespace SCME.Service.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DisableResultDB {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LocalOrCentral {
             get {
-                return ((bool)(this["DisableResultDB"]));
+                return ((bool)(this["LocalOrCentral"]));
             }
         }
         

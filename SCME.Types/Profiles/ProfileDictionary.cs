@@ -60,7 +60,7 @@ namespace SCME.Types.Profiles
             //    InnerXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?> <Items> </Items>"
             //};
 
-            var root = new ProfileFolder("ROOT", Guid.Empty, DateTime.MinValue);
+            var root = new ProfileFolder("ROOT", Guid.Empty, 1, DateTime.MinValue);
             foreach (var profile in profileList)
                 root.ChildrenList.Add(profile);
 

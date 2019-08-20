@@ -44,7 +44,7 @@ namespace SCME.InterfaceImplementations
                 "ERRORS", "MME_CODES", "DEV_PARAM"
             };
 
-        public static readonly Tuple<string, string, bool>[] _mConditionsList =
+        public static readonly Tuple<string, string, bool>[] _ConditionsList =
             {
                 new Tuple<string, string, bool>("Gate_En", "Gate_En", true),
                 new Tuple<string, string, bool>("Gate_EnableCurrent", "Gate_EnableCurrent", false),
@@ -104,7 +104,7 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM", true),
             };
 
-        public static readonly Tuple<string, string, bool>[] _mParamsList =
+        public static readonly Tuple<string, string, bool>[] _ParamsList =
             {
                 new Tuple<string, string, bool>("K", "K", true),
                 new Tuple<string, string, bool>("RG", "RG, Ohm", false),
@@ -129,13 +129,12 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("DCFactFallRate", "dIDC/dt, A/us", false),
                 new Tuple<string, string, bool>("TQ", "TQ, us", false),
                 new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false),
-                new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM, A", false),
                 new Tuple<string, string, bool>("TOU_TGD", "TOU_TGD, us", false),
                 new Tuple<string, string, bool>("TOU_TGT", "TOU_TGT, us", false),
 
             };
 
-        public static readonly Tuple<string, string, int>[] _mDefectCodes =
+        public static readonly Tuple<string, string, int>[] _DefectCodes =
             {
                 new Tuple<string, string, int>("ERR_KELVIN", "Error connection", 11),
                 new Tuple<string, string, int>("ERR_RG", "RG out of range", 12),
@@ -167,7 +166,7 @@ namespace SCME.InterfaceImplementations
 
             };
 
-        public static readonly Tuple<int, string>[] m_TestTypes =
+        public static readonly Tuple<int, string>[] _TestTypes =
             {
                 new Tuple<int, string>(1, "Gate"),
                 new Tuple<int, string>(2, "SL"),
@@ -191,13 +190,13 @@ namespace SCME.InterfaceImplementations
             "MME009"
         };
 
-        private readonly SqlConnection _mConnection;
+        private readonly SqlConnection _Connection;
 
         #endregion
 
         public SQLDatabaseService(string connectionString, bool withoutProfilesService = false)
         {
-            _mConnection =
+            _Connection =
                 new SqlConnection(connectionString);
 
             if(withoutProfilesService == false)
@@ -210,7 +209,7 @@ namespace SCME.InterfaceImplementations
 
         public void ImportData(string connectionString, bool importProfiles, bool importResults)
         {
-            if (_mConnection.State != ConnectionState.Open)
+            if (_Connection.State != ConnectionState.Open)
                 return;
 
             try
@@ -242,14 +241,14 @@ namespace SCME.InterfaceImplementations
 
         private void ImportSQliteResults(SQLiteConnection sqliteConnection)
         {
-            var trans = _mConnection.BeginTransaction();
+            var trans = _Connection.BeginTransaction();
 
             try
             {
                 // COPY GROUPS
 
                 var cmdSelectGroups = new SQLiteCommand("SELECT * FROM GROUPS", sqliteConnection);
-                var cmdInsertGroups = new SqlCommand("INSERT INTO [dbo].GROUPS(GROUP_ID, GROUP_NAME) VALUES(@ID, @NAME)", _mConnection);
+                var cmdInsertGroups = new SqlCommand("INSERT INTO [dbo].GROUPS(GROUP_ID, GROUP_NAME) VALUES(@ID, @NAME)", _Connection);
                 cmdInsertGroups.Parameters.Add("@ID", SqlDbType.Int);
                 cmdInsertGroups.Parameters.Add("@NAME", SqlDbType.NChar, 32);
                 cmdInsertGroups.Transaction = trans;
@@ -257,7 +256,7 @@ namespace SCME.InterfaceImplementations
 
                 try
                 {
-                    new SqlCommand("SET IDENTITY_INSERT GROUPS ON", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT GROUPS ON", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -273,12 +272,12 @@ namespace SCME.InterfaceImplementations
                 }
                 finally
                 {
-                    new SqlCommand("SET IDENTITY_INSERT GROUPS OFF", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT GROUPS OFF", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
 
-                    new SqlCommand("DBCC CHECKIDENT ('GROUPS')", _mConnection)
+                    new SqlCommand("DBCC CHECKIDENT ('GROUPS')", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -290,7 +289,7 @@ namespace SCME.InterfaceImplementations
                 var cmdInsertDevices =
                     new SqlCommand(
                         "INSERT INTO [dbo].[DEVICES](DEV_ID, GROUP_ID, PROFILE_ID, CODE, SIL_N_1, SIL_N_2, TS, USR, POS, MME_CODE) VALUES(@DEV_ID, @GROUP_ID, @PROFILE_ID, @CODE, @SIL_N_1, @SIL_N_2, @TS, @USR, @POS, @MME_CODE)",
-                        _mConnection);
+                        _Connection);
                 cmdInsertDevices.Parameters.Add("@DEV_ID", SqlDbType.Int);
                 cmdInsertDevices.Parameters.Add("@GROUP_ID", SqlDbType.Int);
                 cmdInsertDevices.Parameters.Add("@PROFILE_ID", SqlDbType.UniqueIdentifier);
@@ -306,7 +305,7 @@ namespace SCME.InterfaceImplementations
 
                 try
                 {
-                    new SqlCommand("SET IDENTITY_INSERT DEVICES ON", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT DEVICES ON", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -330,12 +329,12 @@ namespace SCME.InterfaceImplementations
                 }
                 finally
                 {
-                    new SqlCommand("SET IDENTITY_INSERT DEVICES OFF", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT DEVICES OFF", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
 
-                    new SqlCommand("DBCC CHECKIDENT ('DEVICES')", _mConnection)
+                    new SqlCommand("DBCC CHECKIDENT ('DEVICES')", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -347,7 +346,7 @@ namespace SCME.InterfaceImplementations
                 var cmdInsertDevParam =
                     new SqlCommand(
                         "INSERT INTO [dbo].[DEV_PARAM](DEV_ID, PARAM_ID, VALUE, TEST_TYPE_ID) VALUES(@DEV_ID, @PARAM_ID, @VALUE, @TEST_TYPE_ID)",
-                        _mConnection);
+                        _Connection);
                 cmdInsertDevParam.Parameters.Add("@DEV_ID", SqlDbType.Int);
                 cmdInsertDevParam.Parameters.Add("@PARAM_ID", SqlDbType.Int);
                 cmdInsertDevParam.Parameters.Add("@VALUE", SqlDbType.Float);
@@ -376,7 +375,7 @@ namespace SCME.InterfaceImplementations
 
                 var cmdSelectDevErr = new SQLiteCommand("SELECT * FROM DEV_ERR", sqliteConnection);
                 var cmdInsertDevErr =
-                    new SqlCommand("INSERT INTO [dbo].[DEV_ERR](DEV_ID, ERR_ID) VALUES(@DEV_ID, @ERR_ID)", _mConnection);
+                    new SqlCommand("INSERT INTO [dbo].[DEV_ERR](DEV_ID, ERR_ID) VALUES(@DEV_ID, @ERR_ID)", _Connection);
                 cmdInsertDevErr.Parameters.Add("@DEV_ID", SqlDbType.Int);
                 cmdInsertDevErr.Parameters.Add("@ERR_ID", SqlDbType.Int);
                 cmdInsertDevErr.Transaction = trans;
@@ -407,14 +406,14 @@ namespace SCME.InterfaceImplementations
 
         private void ImportSQliteProfiles(SQLiteConnection sqliteConnection)
         {
-            var trans = _mConnection.BeginTransaction();
+            var trans = _Connection.BeginTransaction();
 
             try
             {
                 // COPY PROFILES
 
                 var cmdSelectProfiles = new SQLiteCommand("SELECT * FROM PROFILES", sqliteConnection);
-                var cmdInsertProfiles = new SqlCommand("INSERT INTO [dbo].[PROFILES](PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS, IS_DELETED) VALUES (@PROF_ID, @PROF_NAME, @PROF_GUID, @PROF_TS, @VERSION, @IS_DELETED)", _mConnection);
+                var cmdInsertProfiles = new SqlCommand("INSERT INTO [dbo].[PROFILES](PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS, IS_DELETED) VALUES (@PROF_ID, @PROF_NAME, @PROF_GUID, @PROF_TS, @VERSION, @IS_DELETED)", _Connection);
                 cmdInsertProfiles.Parameters.Add("@PROF_ID", SqlDbType.Int);
                 cmdInsertProfiles.Parameters.Add("@PROF_NAME", SqlDbType.NVarChar, 32);
                 cmdInsertProfiles.Parameters.Add("@PROF_GUID", SqlDbType.UniqueIdentifier);
@@ -426,7 +425,7 @@ namespace SCME.InterfaceImplementations
 
                 try
                 {
-                    new SqlCommand("SET IDENTITY_INSERT PROFILES ON", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT PROFILES ON", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -446,12 +445,12 @@ namespace SCME.InterfaceImplementations
                 }
                 finally
                 {
-                    new SqlCommand("SET IDENTITY_INSERT PROFILES OFF", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT PROFILES OFF", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
 
-                    new SqlCommand("DBCC CHECKIDENT ('PROFILES')", _mConnection)
+                    new SqlCommand("DBCC CHECKIDENT ('PROFILES')", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -460,7 +459,7 @@ namespace SCME.InterfaceImplementations
                 // COPY PROF_TEST_TYPE
 
                 var cmdSelectProfTestType = new SQLiteCommand("SELECT P.ID, P.[PROF_ID], P.[TEST_TYPE_ID], P.[ORDER] AS ORD FROM PROF_TEST_TYPE P", sqliteConnection);
-                var cmdInsertProfTestType = new SqlCommand("INSERT INTO [dbo].[PROF_TEST_TYPE] (PTT_ID, PROF_ID, TEST_TYPE_ID, [ORD]) VALUES (@PTT_ID, @PROF_ID, @TEST_TYPE_ID, @ORD)", _mConnection);
+                var cmdInsertProfTestType = new SqlCommand("INSERT INTO [dbo].[PROF_TEST_TYPE] (PTT_ID, PROF_ID, TEST_TYPE_ID, [ORD]) VALUES (@PTT_ID, @PROF_ID, @TEST_TYPE_ID, @ORD)", _Connection);
                 cmdInsertProfTestType.Parameters.Add("@PTT_ID", SqlDbType.Int);
                 cmdInsertProfTestType.Parameters.Add("@PROF_ID", SqlDbType.Int);
                 cmdInsertProfTestType.Parameters.Add("@TEST_TYPE_ID", SqlDbType.Int);
@@ -470,7 +469,7 @@ namespace SCME.InterfaceImplementations
 
                 try
                 {
-                    new SqlCommand("SET IDENTITY_INSERT PROF_TEST_TYPE ON", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT PROF_TEST_TYPE ON", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -488,12 +487,12 @@ namespace SCME.InterfaceImplementations
                 }
                 finally
                 {
-                    new SqlCommand("SET IDENTITY_INSERT PROF_TEST_TYPE OFF", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT PROF_TEST_TYPE OFF", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
 
-                    new SqlCommand("DBCC CHECKIDENT ('PROF_TEST_TYPE')", _mConnection)
+                    new SqlCommand("DBCC CHECKIDENT ('PROF_TEST_TYPE')", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -502,7 +501,7 @@ namespace SCME.InterfaceImplementations
                 // COPY PROF_COND
 
                 var cmdSelectProfCond = new SQLiteCommand("SELECT * FROM PROF_COND", sqliteConnection);
-                var cmdInsertProfCond = new SqlCommand("INSERT INTO [dbo].[PROF_COND](PROF_TESTTYPE_ID, PROF_ID, COND_ID, VALUE) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @COND_ID, @VALUE)", _mConnection);
+                var cmdInsertProfCond = new SqlCommand("INSERT INTO [dbo].[PROF_COND](PROF_TESTTYPE_ID, PROF_ID, COND_ID, VALUE) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @COND_ID, @VALUE)", _Connection);
                 cmdInsertProfCond.Parameters.Add("@PROF_TESTTYPE_ID", SqlDbType.Int);
                 cmdInsertProfCond.Parameters.Add("@PROF_ID", SqlDbType.Int);
                 cmdInsertProfCond.Parameters.Add("@COND_ID", SqlDbType.Int);
@@ -530,7 +529,7 @@ namespace SCME.InterfaceImplementations
                 // COPY PROF_PARAM
 
                 var cmdSelectProfParam = new SQLiteCommand("SELECT * FROM PROF_PARAM", sqliteConnection);
-                var cmdInsertProfParam = new SqlCommand("INSERT INTO [dbo].[PROF_PARAM](PROF_TESTTYPE_ID, PROF_ID, PARAM_ID, MIN_VAL, MAX_VAL) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @PARAM_ID, @MIN_VAL, @MAX_VAL)", _mConnection);
+                var cmdInsertProfParam = new SqlCommand("INSERT INTO [dbo].[PROF_PARAM](PROF_TESTTYPE_ID, PROF_ID, PARAM_ID, MIN_VAL, MAX_VAL) VALUES(@PROF_TESTTYPE_ID, @PROF_ID, @PARAM_ID, @MIN_VAL, @MAX_VAL)", _Connection);
                 cmdInsertProfParam.Parameters.Add("@PROF_TESTTYPE_ID", SqlDbType.Int);
                 cmdInsertProfParam.Parameters.Add("@PROF_ID", SqlDbType.Int);
                 cmdInsertProfParam.Parameters.Add("@PARAM_ID", SqlDbType.Int);
@@ -560,7 +559,7 @@ namespace SCME.InterfaceImplementations
                 // COPY MME_CODES
 
                 var cmdSelectMme = new SQLiteCommand("SELECT * FROM MME_CODES", sqliteConnection);
-                var cmdInsertMme = new SqlCommand("INSERT INTO [dbo].[MME_CODES] (MME_CODE_ID, MME_CODE) VALUES (@MME_CODE_ID, @MME_CODE)", _mConnection);
+                var cmdInsertMme = new SqlCommand("INSERT INTO [dbo].[MME_CODES] (MME_CODE_ID, MME_CODE) VALUES (@MME_CODE_ID, @MME_CODE)", _Connection);
                 cmdInsertMme.Parameters.Add("@MME_CODE_ID", SqlDbType.Int);
                 cmdInsertMme.Parameters.Add("@MME_CODE", SqlDbType.NVarChar, 64);
                 cmdInsertMme.Transaction = trans;
@@ -568,7 +567,7 @@ namespace SCME.InterfaceImplementations
 
                 try
                 {
-                    new SqlCommand("SET IDENTITY_INSERT MME_CODES ON", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT MME_CODES ON", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -584,12 +583,12 @@ namespace SCME.InterfaceImplementations
                 }
                 finally
                 {
-                    new SqlCommand("SET IDENTITY_INSERT MME_CODES OFF", _mConnection)
+                    new SqlCommand("SET IDENTITY_INSERT MME_CODES OFF", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
 
-                    new SqlCommand("DBCC CHECKIDENT ('MME_CODES')", _mConnection)
+                    new SqlCommand("DBCC CHECKIDENT ('MME_CODES')", _Connection)
                     {
                         Transaction = trans
                     }.ExecuteNonQuery();
@@ -598,7 +597,7 @@ namespace SCME.InterfaceImplementations
                 // COPY MME_CODES_TO_PROFILES
 
                 var cmdSelectMmeCtoP = new SQLiteCommand("SELECT * FROM MME_CODES_TO_PROFILES", sqliteConnection);
-                var cmdInsertMmeCtoP = new SqlCommand("INSERT INTO [dbo].[MME_CODES_TO_PROFILES] (MME_CODE_ID, PROFILE_ID) VALUES (@MME_CODE_ID, @PROFILE_ID)", _mConnection);
+                var cmdInsertMmeCtoP = new SqlCommand("INSERT INTO [dbo].[MME_CODES_TO_PROFILES] (MME_CODE_ID, PROFILE_ID) VALUES (@MME_CODE_ID, @PROFILE_ID)", _Connection);
                 cmdInsertMmeCtoP.Parameters.Add("@MME_CODE_ID", SqlDbType.Int);
                 cmdInsertMmeCtoP.Parameters.Add("@PROFILE_ID", SqlDbType.Int);
                 cmdInsertMmeCtoP.Transaction = trans;
@@ -631,30 +630,30 @@ namespace SCME.InterfaceImplementations
 
         public void Open()
         {
-            _mConnection.Open();
+            _Connection.Open();
         }
 
         public void Close()
         {
-            if (_mConnection.State == ConnectionState.Open)
-                _mConnection.Close();
+            if (_Connection.State == ConnectionState.Open)
+                _Connection.Close();
         }
 
         public ConnectionState State
         {
-            get { return _mConnection.State; }
+            get { return _Connection.State; }
             set { throw new NotImplementedException(); }
         }
 
         public void ResetContent()
         {
-            if (_mConnection.State == ConnectionState.Open)
+            if (_Connection.State == ConnectionState.Open)
             {
-                var trans = _mConnection.BeginTransaction();
+                var trans = _Connection.BeginTransaction();
 
                 try
                 {
-                    using (var deleteCmd = _mConnection.CreateCommand())
+                    using (var deleteCmd = _Connection.CreateCommand())
                     {
                         foreach (var table in _mDbTablesList)
                         {
@@ -664,7 +663,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var reseedCmd = _mConnection.CreateCommand())
+                    using (var reseedCmd = _Connection.CreateCommand())
                     {
                         foreach (var table in _mDbTablesListReseed)
                         {
@@ -674,7 +673,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var insertCmd = _mConnection.CreateCommand())
+                    using (var insertCmd = _Connection.CreateCommand())
                     {
                         insertCmd.CommandText = InsertConditionCmdTemplate;
                         insertCmd.Parameters.Add("@COND_NAME", SqlDbType.Char, 32);
@@ -683,7 +682,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var condition in _mConditionsList)
+                        foreach (var condition in _ConditionsList)
                         {
                             insertCmd.Parameters["@COND_NAME"].Value = condition.Item1;
                             insertCmd.Parameters["@COND_NAME_LOCAL"].Value = condition.Item2;
@@ -693,7 +692,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var insertCmd = _mConnection.CreateCommand())
+                    using (var insertCmd = _Connection.CreateCommand())
                     {
                         insertCmd.CommandText = InsertTestTypeCmdTemplate;
                         insertCmd.Parameters.Add("@ID", SqlDbType.Int);
@@ -701,7 +700,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var testType in m_TestTypes)
+                        foreach (var testType in _TestTypes)
                         {
                             insertCmd.Parameters["@ID"].Value = testType.Item1;
                             insertCmd.Parameters["@NAME"].Value = testType.Item2;
@@ -710,7 +709,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var insertCmd = _mConnection.CreateCommand())
+                    using (var insertCmd = _Connection.CreateCommand())
                     {
                         insertCmd.CommandText = InsertParamCmdTemplate;
                         insertCmd.Parameters.Add("@PARAM_NAME", SqlDbType.Char, 16);
@@ -719,7 +718,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var param in _mParamsList)
+                        foreach (var param in _ParamsList)
                         {
                             insertCmd.Parameters["@PARAM_NAME"].Value = param.Item1;
                             insertCmd.Parameters["@PARAM_NAME_LOCAL"].Value = param.Item2;
@@ -729,7 +728,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var insertCmd = _mConnection.CreateCommand())
+                    using (var insertCmd = _Connection.CreateCommand())
                     {
                         insertCmd.CommandText = InsertErrorCmdTemplate;
                         insertCmd.Parameters.Add("@ERR_NAME", SqlDbType.Char, 20);
@@ -738,7 +737,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var err in _mDefectCodes)
+                        foreach (var err in _DefectCodes)
                         {
                             insertCmd.Parameters["@ERR_NAME"].Value = err.Item1;
                             insertCmd.Parameters["@ERR_NAME_LOCAL"].Value = err.Item2;
@@ -748,7 +747,7 @@ namespace SCME.InterfaceImplementations
                         }
                     }
 
-                    using (var insertCmd = _mConnection.CreateCommand())
+                    using (var insertCmd = _Connection.CreateCommand())
                     {
                         insertCmd.CommandText = "INSERT INTO MME_CODES (MME_CODE) VALUES (@MME_CODE)";
                         insertCmd.Parameters.Add("@MME_CODE", SqlDbType.NVarChar, 64);
@@ -772,9 +771,100 @@ namespace SCME.InterfaceImplementations
             }
         }
 
+        public static readonly MigratorInserter[] MigrationSet =
+    {
+            new MigratorInserterTemplate<Tuple<int,string>, SqlParameterCollection>("TEST_TYPE", "TEST_TYPE_NAME", InsertTestTypeCmdTemplate, _TestTypes,
+                (c, i) =>
+                {
+
+                    i.Add("@ID", SqlDbType.Int);
+                    i.Add("@NAME", SqlDbType.NVarChar, 32);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.NVarChar  , 32);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item2;
+                },
+                (i, o) =>
+                {
+                    i["@ID"].Value = o.Item1;
+                    i["@NAME"].Value = o.Item2;
+                }),
+
+             new MigratorInserterTemplate<Tuple<string,string, bool>, SqlParameterCollection>("PARAMS", "PARAM_NAME", InsertParamCmdTemplate, _ParamsList,
+                (c, i) =>
+                {
+
+                    i.Add("@PARAM_NAME", SqlDbType.NVarChar, 16);
+                    i.Add("@PARAM_NAME_LOCAL", SqlDbType.NVarChar, 64);
+                    i.Add("@PARAM_IS_HIDE", SqlDbType.Bit);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.NVarChar, 16);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@PARAM_NAME"].Value = o.Item1;
+                    i["@PARAM_NAME_LOCAL"].Value = o.Item2;
+                    i["@PARAM_IS_HIDE"].Value = o.Item3;
+                }),
+
+              new MigratorInserterTemplate<Tuple<string,string, bool>, SqlParameterCollection>("CONDITIONS", "COND_NAME", InsertConditionCmdTemplate, _ConditionsList,
+                (c, i) =>
+                {
+
+                    i.Add("@COND_NAME", SqlDbType.Char, 32);
+                    i.Add("@COND_NAME_LOCAL", SqlDbType.NVarChar, 64);
+                    i.Add("@COND_IS_TECH", SqlDbType.Bit);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.Char, 32);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@COND_NAME"].Value = o.Item1;
+                    i["@COND_NAME_LOCAL"].Value = o.Item2;
+                    i["@COND_IS_TECH"].Value = o.Item3;
+                }),
+
+
+              new MigratorInserterTemplate<Tuple<string,string, int>, SqlParameterCollection>("ERRORS", "ERR_NAME", InsertErrorCmdTemplate, _DefectCodes,
+                (c, i) =>
+                {
+
+                    i.Add("@ERR_NAME", SqlDbType.Char, 20);
+                    i.Add("@ERR_NAME_LOCAL", SqlDbType.NVarChar, 32);
+                    i.Add("@ERR_CODE", SqlDbType.Int);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.Char, 20);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@ERR_NAME"].Value = o.Item1;
+                    i["@ERR_NAME_LOCAL"].Value = o.Item2;
+                    i["@ERR_CODE"].Value = o.Item3;
+                }),
+
+        };
+
         public void Migrate()
         {
-            throw new NotImplementedException();
+            if (State == ConnectionState.Open)
+            {
+                foreach (var i in MigrationSet)
+                    i.Migrate(_Connection);
+            }
         }
     }
 }

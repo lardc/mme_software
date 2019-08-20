@@ -37,6 +37,19 @@ namespace SCME.DatabaseServer
 
             try
             {
+                SQLDatabaseService dbForMigration = new SQLDatabaseService(SQLCentralDatabaseService.GetConnectionStringFromSettings(Settings.Default));
+                dbForMigration.Open();
+                dbForMigration.Migrate();
+                dbForMigration.Close();
+            }
+            catch (Exception ex)
+            {
+                Journal.AppendLog("Central DB SQL SERVER migration", LogJournalMessageType.Error, String.Format("Migrate database error: {0}", ex.Message));
+                return;
+            }
+
+            try
+            {
                 var service = new SQLCentralDatabaseService(Settings.Default);
                 ms_ServiceHost = new ServiceHost(service);
                 ms_ServiceHost.Open();
@@ -123,5 +136,39 @@ namespace SCME.DatabaseServer
 
             return result;
         }
+
+        public static string GetHost()
+        {
+            //возвращает хост слушающего порта сервера:
+            //  успешный результат возврата всегда больше нуля;
+            //  возвращает -1 при не успешном чтении номера слушающего порта сервера
+            string result = string.Empty;
+
+            if (ms_ServiceHost != null)
+            {
+                try
+                {
+                    switch (ms_ServiceHost.ChannelDispatchers.Count)
+                    {
+                        case 1:
+                            result = ms_ServiceHost.ChannelDispatchers.FirstOrDefault().Listener.Uri.Host;
+                            break;
+
+                        default:
+                            result = string.Empty;
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Journal.AppendLog("SystemHost", LogJournalMessageType.Error, $"Error getting listener port from database service: {ex.Message}");
+                    result = string.Empty;
+                }
+            }
+
+            return result;
+        }
+
+
     }
 }

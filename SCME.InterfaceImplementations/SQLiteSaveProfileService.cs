@@ -4,13 +4,13 @@ using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
-using SCME.EntityDataDB;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
 using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
 using SCME.Types.SL;
+using SCME.Types.SQL;
 using TestParameters = SCME.Types.Gate.TestParameters;
 
 namespace SCME.InterfaceImplementations
@@ -19,28 +19,28 @@ namespace SCME.InterfaceImplementations
     {
         private readonly SQLiteConnection _connection;
 
-        private Entities GetContext => new Entities(ConnectionStringForEF);
+        //private Entities GetContext => new Entities(ConnectionStringForEF);
 
-        private string _ConnectionStringForEF;
-        private string ConnectionStringForEF
-        {
-            get
-            {
-                return _ConnectionStringForEF;
-            }
-            set
-            {
-                string cs = value;
-                int index1 = cs.IndexOf("data source");
-                int index2 = cs.IndexOf(";");
-                _ConnectionStringForEF = cs.Substring(index1, index2 - index1);
-            }
+        //private string _ConnectionStringForEF;
+        //private string ConnectionStringForEF
+        //{
+        //    get
+        //    {
+        //        return _ConnectionStringForEF;
+        //    }
+        //    set
+        //    {
+        //        string cs = value;
+        //        int index1 = cs.IndexOf("data source");
+        //        int index2 = cs.IndexOf(";");
+        //        _ConnectionStringForEF = cs.Substring(index1, index2 - index1);
+        //    }
 
-        }
+        //}
 
         public SQLiteSaveProfileService(SQLiteConnection connection)
         {
-            ConnectionStringForEF = connection.ConnectionString;
+            //ConnectionStringForEF = connection.ConnectionString;
             _connection = connection;
             _testTypes = new Dictionary<string, long>(11);
             _conditions = new Dictionary<string, long>(64);
@@ -104,7 +104,7 @@ namespace SCME.InterfaceImplementations
         /// Saving profile to Db
         /// </summary>
         /// <param name="profileItem"></param>
-        public long SaveProfileItem(ProfileItem profileItem)
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem)
         {
             if (_testTypes.Count == 0)
                 PopulateDictionaries();
@@ -115,7 +115,8 @@ namespace SCME.InterfaceImplementations
                 try
                 {
                     orderNew = 0;
-                    var profileId = InsertProfile(profileItem);
+                    var profileSql = InsertProfile(profileItem);
+                    var profileId = profileSql.Id;
 
                     var commutationTestTypeId = InsertCommutationTestType(profileId);
                     InsertCommutationConditions(profileItem, commutationTestTypeId, profileId);
@@ -188,7 +189,7 @@ namespace SCME.InterfaceImplementations
                     }
 
                     trans.Commit();
-                    return profileId;
+                    return profileSql;
                 }
                 catch (Exception ex)
                 {
@@ -196,7 +197,7 @@ namespace SCME.InterfaceImplementations
                     throw;
                 }
             }
-            return 0;
+            return null;
         }
 
         public void DeleteProfiles(List<ProfileItem> profilesToDelete)
@@ -205,6 +206,7 @@ namespace SCME.InterfaceImplementations
             {
                 try
                 {
+                    
                     var profileId = GetProfileId(profileItem.ProfileKey);
 
                     //var condDeleteCommand = new SQLiteCommand("DELETE FROM PROF_COND WHERE PROF_ID = @PROF_ID", _connection);
@@ -282,9 +284,9 @@ namespace SCME.InterfaceImplementations
             return _connection.LastInsertRowId;
         }
 
-        public void SaveProfileItem(ProfileItem profileItem, string mmeCode)
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem, string mmeCode)
         {
-            var profileId = SaveProfileItem(profileItem);
+            var profileSql = SaveProfileItem(profileItem);
             var mmeCodeId = GetMmeCodeId(mmeCode);
 
             //профиль либо новый - не существующий в БД, либо старый - существующий в БД и не требующий привязки к коду MME, т.к. на данный момент она уже создана
@@ -297,25 +299,31 @@ namespace SCME.InterfaceImplementations
                 codesInsertCommand.Parameters.Add("@PROFILE_ID", DbType.Int64);
                 codesInsertCommand.Prepare();
                 codesInsertCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
-                codesInsertCommand.Parameters["@PROFILE_ID"].Value = profileId;
+                codesInsertCommand.Parameters["@PROFILE_ID"].Value = profileSql.Id;
                 codesInsertCommand.ExecuteScalar();
             }
+
+            return profileSql;
         }
 
         #region ProfileHelpers
 
-        private long InsertProfile(ProfileItem profile)
+        private ProfileForSqlSelect InsertProfile(ProfileItem profile)
         {
-            try
-            {
-                var profileId = GetProfileId(profile.ProfileKey);
-
-                var profileVersionSelect =
-                    new SQLiteCommand("SELECT P.PROF_VERS FROM PROFILES P WHERE P.PROF_ID = @PROF_ID", _connection);
-                profileVersionSelect.Parameters.Add("@PROF_ID", DbType.Int64);
-                profileVersionSelect.Prepare();
-                profileVersionSelect.Parameters["@PROF_ID"].Value = profileId;
-                var version = profileVersionSelect.ExecuteScalar();
+           
+                long oldProfileId = -1;
+                long version = 0;
+                try
+                {
+                    oldProfileId = GetProfileId(profile.ProfileKey);
+                    var profileVersionSelect = new SQLiteCommand("SELECT P.PROF_VERS FROM PROFILES P WHERE P.PROF_ID = @PROF_ID", _connection);
+                    profileVersionSelect.Parameters.Add("@PROF_ID", DbType.Int64);
+                    profileVersionSelect.Prepare();
+                    profileVersionSelect.Parameters["@PROF_ID"].Value = oldProfileId;
+                    version = (long)profileVersionSelect.ExecuteScalar();
+                }
+                catch(ArgumentException)
+                { }
 
                 var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS,PROF_VERS) VALUES (NULL, @PROF_NAME, @PROF_GUID, @PROF_TS,@VERSION)", _connection);
 
@@ -324,33 +332,38 @@ namespace SCME.InterfaceImplementations
                 profileInsertCommand.Parameters.Add("@PROF_TS", DbType.String);
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
                 profileInsertCommand.Prepare();
-                profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
-                profileInsertCommand.Parameters["@VERSION"].Value = (long)version + 1;
-                profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
+
+                ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(version + 1), DateTime.Now);
+
+                //profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
+                profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key; //Guid.NewGuid(); нельзя генерировать новое значение
+                profileInsertCommand.Parameters["@VERSION"].Value = profileSql.Version;
+                profileInsertCommand.Parameters["@PROF_TS"].Value = profileSql.TS.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                profileInsertCommand.Parameters["@PROF_NAME"].Value = profileSql.Name;
                 profileInsertCommand.ExecuteNonQuery();
 
-                var insertedId = _connection.LastInsertRowId;
+                profileSql.Id = Convert.ToInt32(_connection.LastInsertRowId);
 
-                UpdateConnections(profileId, insertedId);
+                if(oldProfileId != -1)
+                    UpdateConnections(oldProfileId, profileSql.Id);
 
-                return insertedId;
-            }
-            catch (ArgumentException)
-            {
-                var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS) VALUES(NULL, @PROF_NAME, @PROF_GUID, @PROF_TS, 1)", _connection);
-                profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
-                profileInsertCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
-                profileInsertCommand.Parameters.Add("@PROF_TS", DbType.String);
-                profileInsertCommand.Prepare();
+                return profileSql;
+            
+            //catch (ArgumentException)
+            //{
+            //    var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS, PROF_VERS) VALUES(NULL, @PROF_NAME, @PROF_GUID, @PROF_TS, 1)", _connection);
+            //    profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
+            //    profileInsertCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+            //    profileInsertCommand.Parameters.Add("@PROF_TS", DbType.String);
+            //    profileInsertCommand.Prepare();
 
-                profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
-                profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey;
-                profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                profileInsertCommand.ExecuteNonQuery();
+            //    profileInsertCommand.Parameters["@PROF_NAME"].Value = profile.ProfileName;
+            //    profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey;
+            //    profileInsertCommand.Parameters["@PROF_TS"].Value = DateTime.Now.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            //    profileInsertCommand.ExecuteNonQuery();
 
-                return _connection.LastInsertRowId;
-            }
+            //    return _connection.LastInsertRowId;
+            //}
         }
 
         private void UpdateConnections(long profileId, long insertedId)
@@ -371,21 +384,23 @@ namespace SCME.InterfaceImplementations
             }
 
         }
-
+        
         private long GetProfileId(Guid profileKey)
         {
-            using(var db = GetContext)
-                return db.PROFILES.Where(m => m.PROF_GUID == profileKey).OrderByDescending(m => m.PROF_VERS).First().PROF_ID;
-            //var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
-            //profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
-            //profileSelectCommand.Prepare();
-            //profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
-            //var possibleProfileId = profileSelectCommand.ExecuteScalar();
+            //using(var db = GetContext)
+            //    return db.PROFILES.Where(m => m.PROF_GUID == profileKey).OrderByDescending(m => m.PROF_VERS).First().PROF_ID;
 
-            //if (possibleProfileId == null)
-            //    throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
 
-            //return (long)possibleProfileId;
+            var profileSelectCommand = new SQLiteCommand("SELECT P.PROF_ID FROM PROFILES P WHERE P.PROF_GUID = @PROF_GUID", _connection);
+            profileSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+            profileSelectCommand.Prepare();
+            profileSelectCommand.Parameters["@PROF_GUID"].Value = profileKey;
+            var possibleProfileId = profileSelectCommand.ExecuteScalar();
+
+            if (possibleProfileId == null)
+                throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
+
+            return (long)possibleProfileId;
         }
 
 
@@ -630,7 +645,7 @@ namespace SCME.InterfaceImplementations
         private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId)
         {
             InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled);
-            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.ITM_Input);
+            InsertCondition(testTypeId, profileId, "TOU_ITM", testParameters.CurrentAmplitude);
         }
 
         private void InsertCondition(long testTypeId, long profileId, string name, object value)
@@ -745,7 +760,6 @@ namespace SCME.InterfaceImplementations
 
         private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId)
         {
-            InsertParameter(testTypeId, profileId, "TOU_ITM", touTestParameters.ITM_Output, DBNull.Value);
             InsertParameter(testTypeId, profileId, "TOU_TGD", touTestParameters.TGD, DBNull.Value);
             InsertParameter(testTypeId, profileId, "TOU_TGT", touTestParameters.TGT, DBNull.Value);
         }

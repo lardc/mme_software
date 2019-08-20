@@ -6,6 +6,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Clamping;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
+using SCME.Types.SQL;
 using TestParameters = SCME.Types.Commutation.TestParameters;
 
 namespace SCME.Types
@@ -185,7 +186,7 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void SaveProfiles(List<ProfileItem> Item);
+        List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> Item);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -291,8 +292,7 @@ namespace SCME.Types
         void TOUHandler(DeviceState State, TOU.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
-        void TOUNotificationHandler(TOU.HWWarningReason Warning, TOU.HWFaultReason Fault,
-                                    TOU.HWDisableReason Disable);
+        void TOUNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
         void ATUHandler(DeviceState State, ATU.TestResults Result);

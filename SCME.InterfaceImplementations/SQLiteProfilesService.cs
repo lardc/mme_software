@@ -6,6 +6,7 @@ using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using System;
+using SCME.Types.SQL;
 
 namespace SCME.InterfaceImplementations
 {
@@ -31,8 +32,9 @@ namespace SCME.InterfaceImplementations
             _loadProfilesService = loadProfilesService;
         }
 
-        public void SaveProfiles(List<ProfileItem> profileItems)
+        public List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profileItems)
         {
+            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
             var dbProfiles = GetProfileItems();
 
             var profilesToDelete = GetProfilesToDelete(profileItems, dbProfiles);
@@ -40,13 +42,14 @@ namespace SCME.InterfaceImplementations
 
             var profilesToSave = GetProfilesToChange(profileItems, dbProfiles);
             foreach (var profileItem in profilesToSave)
-            {
-                _saveProfileService.SaveProfileItem(profileItem);
-            }
+                res.Add(_saveProfileService.SaveProfileItem(profileItem));
+
+            return res;
         }
 
-        public void SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
+        public List<ProfileForSqlSelect> SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
         {
+            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
             var dbProfiles = GetProfileItemsByMme(mmeCode);
 
             var profilesToDelete = GetProfilesToDelete(profileItems, dbProfiles);
@@ -58,9 +61,9 @@ namespace SCME.InterfaceImplementations
 
             var profilesToSave = GetProfilesToChange(profileItems, dbProfiles);
             foreach (var profileItem in profilesToSave)
-            {
-                _saveProfileService.SaveProfileItem(profileItem, mmeCode);
-            }
+                res.Add(_saveProfileService.SaveProfileItem(profileItem, mmeCode));
+
+            return res;
         }
 
         private static IEnumerable<ProfileItem> GetProfilesToChange(IEnumerable<ProfileItem> profilesToSave, List<ProfileItem> dbProfileItems)

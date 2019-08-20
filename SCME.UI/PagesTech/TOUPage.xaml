@@ -81,10 +81,10 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
-                          Text="{Binding Input.ITM_Input}" />
+                          Text="{Binding Input.CurrentAmplitude}" />
 
                 <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
-                <Label Content="{x:Static res:Resources.ITM}"   Grid.Column="0"  Grid.Row="3" />
+                <Label Content="{x:Static res:Resources.Itm_A}"   Grid.Column="0"  Grid.Row="3" />
                 <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="4" />
                 <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="5" />
 
@@ -98,8 +98,6 @@
                 
                 <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" Padding="10"
                        Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="Fault" />
-                
-
             </Grid>
         </Border>
 

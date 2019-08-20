@@ -4,6 +4,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using SCME.Types.DataContracts;
+using SCME.Types.SQL;
 
 namespace SCME.Types.DatabaseServer
 {
@@ -34,14 +35,14 @@ namespace SCME.Types.DatabaseServer
             return Channel.GetProfileByProfName(profName, mmmeCode, ref Found);
         }
 
-        public void SaveProfiles(List<ProfileItem> profileItems)
+        public List<ProfileForSqlSelect> SaveProfiles(List<ProfileItem> profileItems)
         {
-            Channel.SaveProfiles(profileItems);
+            return Channel.SaveProfiles(profileItems);
         }
 
-        public void SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
+        public List<ProfileForSqlSelect> SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
         {
-            Channel.SaveProfilesFromMme(profileItems, mmeCode);
+            return Channel.SaveProfilesFromMme(profileItems, mmeCode);
         }
 
         public List<string> GetGroups(DateTime? @from, DateTime? to)
@@ -103,7 +104,6 @@ namespace SCME.Types.DatabaseServer
         {
             Channel.SaveConnections(mmeCodes);
         }
-
 
     }
 }
