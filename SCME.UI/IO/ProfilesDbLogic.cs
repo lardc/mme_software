@@ -33,6 +33,8 @@ namespace SCME.UI.IO
             {
                 var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.Version, profileItem.ProfileTS)
                 {
+                    Key = profileItem.ProfileKey,
+                    NextGenerationKey = Guid.NewGuid(),
                     IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
                     ParametersClamp = profileItem.ParametersClamp,
                     Height = profileItem.Height,

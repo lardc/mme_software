@@ -106,7 +106,7 @@ namespace SCME.InterfaceImplementations
             _paramSelect.Prepare();
 
             //чтение одного профиля последней редакции по его PROF_NAME и MME_CODE
-            _profileSingleSelect = new SqlCommand(@"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, P.PROF_TS
+            _profileSingleSelect = new SqlCommand(@"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, P.PROF_VERS, P.PROF_TS
                                                     FROM (
                                                            SELECT MAX(PR.PROF_ID) AS MAX_PROF_ID
                                                            FROM PROFILES PR
@@ -993,7 +993,7 @@ namespace SCME.InterfaceImplementations
             {
                 ProfileItem Result = null;
 
-                Tuple<int, string, Guid, DateTime> profileDict = null;
+                ProfileForSqlSelect profileDict = null;
 
                 _profileSingleSelect.Parameters["@ProfName"].Value = profName;
                 _profileSingleSelect.Parameters["@MmmeCode"].Value = mmmeCode;
@@ -1001,7 +1001,7 @@ namespace SCME.InterfaceImplementations
                 using (var reader = _profileSingleSelect.ExecuteReader())
                 {
                     while (reader.Read())
-                        profileDict = new Tuple<int, string, Guid, DateTime>((int)reader[0], (string)reader[1], (Guid)reader[2], (DateTime)reader[3]);
+                        profileDict = new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]);
                 }
 
                 if (profileDict == null)
@@ -1015,7 +1015,7 @@ namespace SCME.InterfaceImplementations
 
                     var testTypes = new Dictionary<long, long>(5);
 
-                    _condCmd.Parameters["@PROF_ID"].Value = profileDict.Item1;
+                    _condCmd.Parameters["@PROF_ID"].Value = profileDict.Id;
 
                     using (var reader = _condCmd.ExecuteReader())
                     {
@@ -1023,19 +1023,18 @@ namespace SCME.InterfaceImplementations
                             testTypes.Add((int)reader[0], (int)reader[1]);
                     }
 
-                    Profile profile = null;
-                    //Profile profile = new Profile(profileDict.Item2, profileDict.Item3, profileDict.Item4);
-                    throw new NotImplementedException();
+                    Profile profile = new Profile(profileDict.Name, profileDict.Key, profileDict.Version, profileDict.TS);
+                    
 
                     foreach (var testType in testTypes)
                         FillParameters(profile, testType.Key, testType.Value);
 
                     Result = new ProfileItem
                     {
-                        ProfileId = profileDict.Item1,
-                        ProfileName = profileDict.Item2,
-                        ProfileKey = profileDict.Item3,
-                        ProfileTS = profileDict.Item4,
+                        ProfileId = profileDict.Id,
+                        ProfileName = profileDict.Name,
+                        ProfileKey = profileDict.Key,
+                        ProfileTS = profileDict.TS,
                         GateTestParameters = new List<TestParameters>(),
                         VTMTestParameters = new List<Types.SL.TestParameters>(),
                         BVTTestParameters = new List<Types.BVT.TestParameters>(),

@@ -163,12 +163,13 @@ namespace SCME.UI.PagesTech
                 exists = CheckForExistingName(m_ProfileEngine.PlainCollection, name + i);
             } while (exists);
 
+            var nextGenerationKey = Guid.NewGuid();
             var newProfile = new Profile
             {
                 Version = 0,
                 Name = name + i,
-                Key = Guid.Empty,
-                NextGenerationKey = Guid.NewGuid(),
+                Key = nextGenerationKey,
+                NextGenerationKey = nextGenerationKey,
                 ParametersComm =
                     Settings.Default.SinglePositionModuleMode
                         ? ModuleCommutationType.Direct
@@ -252,8 +253,7 @@ namespace SCME.UI.PagesTech
                 else
                 {
                     dialog = new DialogWindow("Сообщение", "Профили в базе обновлены");
-                    dbProfiles.Join(m_ProfileEngine.PlainCollection, m => new KeyValuePair<string, int>(m.Name, m.Version),
-                                                           n => new KeyValuePair<string, int>(n.Name, n.Version + 1), (m, n) => new { profileSql = m, profile = n }).ToList().ForEach((m) =>
+                    dbProfiles.Join(m_ProfileEngine.PlainCollection, m => m.Key, n=> n.NextGenerationKey, (m, n) => new { profileSql = m, profile = n }).ToList().ForEach((m) =>
                                                            {
                                                                m.profile.Version = m.profileSql.Version;
                                                                m.profile.Key = m.profileSql.Key;
