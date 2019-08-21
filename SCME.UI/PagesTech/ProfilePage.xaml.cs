@@ -166,7 +166,7 @@ namespace SCME.UI.PagesTech
             var nextGenerationKey = Guid.NewGuid();
             var newProfile = new Profile
             {
-                Version = 0,
+                Version = 1,
                 Name = name + i,
                 Key = nextGenerationKey,
                 NextGenerationKey = nextGenerationKey,

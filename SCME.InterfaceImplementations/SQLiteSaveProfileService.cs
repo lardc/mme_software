@@ -312,7 +312,7 @@ namespace SCME.InterfaceImplementations
         {
            
                 long oldProfileId = -1;
-                long version = 0;
+                long newVersion = 0;
                 try
                 {
                     oldProfileId = GetProfileId(profile.ProfileKey);
@@ -320,10 +320,14 @@ namespace SCME.InterfaceImplementations
                     profileVersionSelect.Parameters.Add("@PROF_ID", DbType.Int64);
                     profileVersionSelect.Prepare();
                     profileVersionSelect.Parameters["@PROF_ID"].Value = oldProfileId;
-                    version = (long)profileVersionSelect.ExecuteScalar();
+                    newVersion = (long)profileVersionSelect.ExecuteScalar() + 1;
                 }
                 catch(ArgumentException)
-                { }
+                {
+
+                    //В случаи отсутствия профиля(в том числе и при синхронизации)
+                    newVersion = profile.Version;
+                }
 
                 var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS,PROF_VERS) VALUES (NULL, @PROF_NAME, @PROF_GUID, @PROF_TS,@VERSION)", _connection);
 
@@ -333,7 +337,7 @@ namespace SCME.InterfaceImplementations
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
                 profileInsertCommand.Prepare();
 
-                ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(version + 1), DateTime.Now);
+                ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(newVersion), DateTime.Now);
 
                 //profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
                 profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key; //Guid.NewGuid(); нельзя генерировать новое значение

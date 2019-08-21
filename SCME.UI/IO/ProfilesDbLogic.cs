@@ -16,7 +16,12 @@ namespace SCME.UI.IO
         {
             bool seviceConnected;
 
-            var profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
+            List<ProfileItem> profileItems;
+
+            if (Cache.Main.SyncState == "SYNCED")
+                profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
+            else
+                profileItems = Cache.Net.GetProfilesFromServerDb(Cache.Main.MmeCode, out seviceConnected);
 
             if (profileItems == null || profileItems.Count <= 0 && !seviceConnected)
                 return;

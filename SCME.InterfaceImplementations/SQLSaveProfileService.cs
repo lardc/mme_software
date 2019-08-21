@@ -351,19 +351,22 @@ namespace SCME.InterfaceImplementations
         {
 
             int oldProfileId = -1;
-            int version = 0;
+            int newVersion = 0;
 
                 try
                 {
                     oldProfileId = GetProfileId(profile.ProfileKey, trans);
                     _profileVersionSelect.Parameters["@PROF_ID"].Value = oldProfileId;
                     _profileVersionSelect.Transaction = trans;
-                    version = (int)_profileVersionSelect.ExecuteScalar();
+                    newVersion = (int)_profileVersionSelect.ExecuteScalar() + 1;
                 }
                 catch (ArgumentException)
-                { }
+                {
+                    //В случаи отсутствия профиля(в том числе и при синхронизации)
+                    newVersion = profile.Version;
+                }
 
-            ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, version + 1, DateTime.Now);
+            ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, newVersion, DateTime.Now);
 
             _profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key;
             _profileInsertCommand.Parameters["@VERSION"].Value = profileSql.Version;

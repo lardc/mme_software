@@ -76,6 +76,8 @@ namespace SCME.InterfaceImplementations
                 using (var centralDbClient = new CentralDatabaseServiceClient())
                 {
                     var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
+                    serverProfiles.ForEach(m => m.NextGenerationKey = m.ProfileKey);
+
                     SaveProfiles(serverProfiles);
                 }
             }

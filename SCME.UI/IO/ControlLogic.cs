@@ -1422,8 +1422,10 @@ namespace SCME.UI.IO
 
         #endregion
 
-        public List<ProfileItem> GetProfilesFromServerDb(string mmeCode)
+        public List<ProfileItem> GetProfilesFromServerDb(string mmeCode, out bool serviceConnected)
         {
+            serviceConnected = true;
+
             List<ProfileItem> profiles = null;
             using (var centralDbClient = new CentralDatabaseServiceClient())
             {
@@ -1438,8 +1440,15 @@ namespace SCME.UI.IO
                 catch (CommunicationException ex)
                 {
                     ProcessCommunicationException(ex);
+                    serviceConnected = false;
+                }
+                catch (Exception ex)
+                {
+                    ProcessGeneralException(ex);
+                    serviceConnected = false;
                 }
             }
+
             return profiles;
 
         }
