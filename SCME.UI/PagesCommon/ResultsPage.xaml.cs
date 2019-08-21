@@ -179,12 +179,14 @@ namespace SCME.UI.PagesCommon
                 try
                 {
                     firstDevice = Cache.Net.ReadDevicesFromServer(lbGroupList.SelectedItem.ToString()).FirstOrDefault();
+                    if(firstDevice == null)
+                        firstDevice = Cache.Net.ReadDevicesFromLocal(lbGroupList.SelectedItem.ToString()).FirstOrDefault();
                 }
                 catch (Exception ex)
                 {
-                    var dialog = new DialogWindow("Ошибка чтения девайса", ex.ToString());
-                    dialog.ButtonConfig(DialogWindow.EbConfig.OK);
-                    var result = dialog.ShowDialog();
+                    //var dialog = new DialogWindow("Ошибка чтения девайса", ex.ToString());
+                    //dialog.ButtonConfig(DialogWindow.EbConfig.OK);
+                    //var result = dialog.ShowDialog();
 
                     firstDevice = Cache.Net.ReadDevicesFromLocal(lbGroupList.SelectedItem.ToString()).FirstOrDefault();
                 }

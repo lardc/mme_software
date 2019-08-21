@@ -1364,7 +1364,7 @@ namespace SCME.UI.IO
                 catch (FaultException<FaultData> ex)
                 {
                     ShowFaultError("Read database error", ex);
-                    return new List<DeviceItem>();
+                    return null;
                 }
                 catch (CommunicationException ex)
                 {

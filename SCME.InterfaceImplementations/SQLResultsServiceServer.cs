@@ -644,8 +644,8 @@ namespace SCME.InterfaceImplementations
                                 {
                                     InternalID = reader.GetInt32(ordID),
                                     Code = reader.GetString(ordCode),
-                                    StructureOrd = reader.GetString(ordSn1),
-                                    StructureID = reader.GetString(ordSn2),
+                                    StructureOrd = ((reader.GetValue(ordSn1) as System.DBNull) == System.DBNull.Value)? string.Empty : reader.GetString(ordSn1),
+                                    StructureID = ((reader.GetValue(ordSn2) as System.DBNull) == System.DBNull.Value) ? string.Empty : reader.GetString(ordSn2),
                                     Position = reader.GetBoolean(ordPos) ? 2 : 1,
                                     User = reader.GetString(ordUser),
                                     Timestamp = reader.GetDateTime(ordTs),
