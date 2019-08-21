@@ -575,7 +575,7 @@ namespace SCME.InterfaceImplementations
                 if (result.TOUTestParameters[i].IsEnabled)
                 {
                     InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, "TOU", trans);
-                    InsertParameterValue(devId, "TOU_IGT", result.TOU[i].TGT, result.ProfileKey, "TOU", trans);
+                    InsertParameterValue(devId, "TOU_TGT", result.TOU[i].TGT, result.ProfileKey, "TOU", trans);
                 }
             }
         }
@@ -618,41 +618,52 @@ namespace SCME.InterfaceImplementations
 
         public List<DeviceItem> GetDevices(string @group)
         {
-            lock (MsLocker)
+            try
             {
-                var list = new List<DeviceItem>();
-
-                if (_connection != null && _connection.State == ConnectionState.Open)
+                lock (MsLocker)
                 {
-                    _selectDevicesCommand.Parameters["@GROUP_NAME"].Value = @group;
+                    var list = new List<DeviceItem>();
 
-                    using (var reader = _selectDevicesCommand.ExecuteReader())
+                    if (_connection != null && _connection.State == ConnectionState.Open)
                     {
-                        var ordID = reader.GetOrdinal("DEV_ID");
-                        var ordCode = reader.GetOrdinal("CODE");
-                        var ordSn1 = reader.GetOrdinal("SIL_N_1");
-                        var ordSn2 = reader.GetOrdinal("SIL_N_2");
-                        var ordPos = reader.GetOrdinal("POS");
-                        var ordUser = reader.GetOrdinal("USR");
-                        var ordTs = reader.GetOrdinal("TS");
-                        var ordProf = reader.GetOrdinal("PROF_NAME");
+                        _selectDevicesCommand.Parameters["@GROUP_NAME"].Value = @group;
 
-                        while (reader.Read())
-                            list.Add(new DeviceItem
-                            {
-                                InternalID = reader.GetInt32(ordID),
-                                Code = reader.GetString(ordCode),
-                                StructureOrd = reader.GetString(ordSn1),
-                                StructureID = reader.GetString(ordSn2),
-                                Position = reader.GetBoolean(ordPos) ? 2 : 1,
-                                User = reader.GetString(ordUser),
-                                Timestamp = reader.GetDateTime(ordTs),
-                                ProfileName = reader.GetString(ordProf)
-                            });
+                        using (var reader = _selectDevicesCommand.ExecuteReader())
+                        {
+                            var ordID = reader.GetOrdinal("DEV_ID");
+                            var ordCode = reader.GetOrdinal("CODE");
+                            var ordSn1 = reader.GetOrdinal("SIL_N_1");
+                            var ordSn2 = reader.GetOrdinal("SIL_N_2");
+                            var ordPos = reader.GetOrdinal("POS");
+                            var ordUser = reader.GetOrdinal("USR");
+                            var ordTs = reader.GetOrdinal("TS");
+                            var ordProf = reader.GetOrdinal("PROF_NAME");
+
+                            while (reader.Read())
+                                list.Add(new DeviceItem
+                                {
+                                    InternalID = reader.GetInt32(ordID),
+                                    Code = reader.GetString(ordCode),
+                                    StructureOrd = reader.GetString(ordSn1),
+                                    StructureID = reader.GetString(ordSn2),
+                                    Position = reader.GetBoolean(ordPos) ? 2 : 1,
+                                    User = reader.GetString(ordUser),
+                                    Timestamp = reader.GetDateTime(ordTs),
+                                    ProfileName = reader.GetString(ordProf)
+                                });
+                        }
                     }
-                }
 
-                return list;
+                    return list;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new System.ServiceModel.FaultException<FaultData>(new FaultData()
+                {
+                    Device = ComplexParts.Database,
+                    TimeStamp = DateTime.Now,
+                }, new Exception("ReadDevicesFromServer -> GetDevices not work", ex).ToString());
             }
         }
 

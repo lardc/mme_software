@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SCME.Types;
 using SCME.UI.Annotations;
+using SCME.UI.CustomControl;
 
 namespace SCME.UI.PagesCommon
 {
@@ -179,8 +180,12 @@ namespace SCME.UI.PagesCommon
                 {
                     firstDevice = Cache.Net.ReadDevicesFromServer(lbGroupList.SelectedItem.ToString()).FirstOrDefault();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    var dialog = new DialogWindow("Ошибка чтения девайса", ex.ToString());
+                    dialog.ButtonConfig(DialogWindow.EbConfig.OK);
+                    var result = dialog.ShowDialog();
+
                     firstDevice = Cache.Net.ReadDevicesFromLocal(lbGroupList.SelectedItem.ToString()).FirstOrDefault();
                 }
                 

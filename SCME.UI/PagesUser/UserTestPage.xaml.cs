@@ -2017,7 +2017,7 @@ namespace SCME.UI.PagesUser
             IsRunning = false;
         }
 
-        internal void SetTOUFault(ushort Fault)
+        internal void SetTOUFault(ushort fault)
         {
             var TOUItemContainer = GetTOUItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
@@ -2026,13 +2026,36 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason)Fault;
+                Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason)fault;
 
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
 
                 label = FindChild<Label>(presenter, "lbTittleFaultReason");
                 label.Visibility = Visibility.Visible;
+            }
+
+            List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
+            switch ((Types.TOU.HWFaultReason)fault)
+            {
+                case Types.TOU.HWFaultReason.NoControlNoPower:
+                    errors.Add("ERR_NO_CTRL_NO_PWR");
+                    break;
+                case Types.TOU.HWFaultReason.NoPower:
+                    errors.Add("ERR_NO_PWR");
+                    break;
+                case Types.TOU.HWFaultReason.Short:
+                    errors.Add("ERR_SHORT");
+                    break;
+                case Types.TOU.HWFaultReason.NoPotensialSignal:
+                    errors.Add("ERR_NO_POT_SIGNAL");
+                    break;
+                case Types.TOU.HWFaultReason.Overflow90:
+                    errors.Add("ERR_OVERFLOW90");
+                    break;
+                case Types.TOU.HWFaultReason.Overflow10:
+                    errors.Add("ERR_OVERFLOW10");
+                    break;
             }
         }
 
