@@ -1968,10 +1968,10 @@ namespace SCME.UI.PagesUser
                     SetLabel(labelITM, state, true, result.ITM.ToString());
 
                 if (labelTGD != null)
-                    SetLabel(labelTGD, state, true, result.ITM.ToString());
+                    SetLabel(labelTGD, state, true, result.TGD.ToString());
 
                 if (labelTGT != null)
-                    SetLabel(labelTGT, state, true, result.ITM.ToString());
+                    SetLabel(labelTGT, state, true, result.TGT.ToString());
             }
         }
 

@@ -149,7 +149,7 @@ namespace SCME.Types.TOU
         [EnumMember]
         None = 0,
         [EnumMember]
-        AnperageOutOfRange = 1 // Измеренное значение тока вне диапазона
+        CurrentOutOfRange = 1 // Измеренное значение тока вне диапазона
     };
 
 

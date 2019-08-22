@@ -486,6 +486,10 @@ namespace SCME.Service.IO
                         //для RAC (сделан на блоке BVT) может быть только коммутация ACT_COMM2_BVT_D
                         CallAction(ACT_COMM2_BVT_D);
                         break;
+                    case Types.Commutation.CommutationMode.TOU:
+                        //для TOU может быть только коммутация ACT_COMM2_TOU
+                        CallAction(ACT_COMM2_TOU);
+                        break;
                 }
 
                 FireSwitchEvent(Mode, CommutationType, Position);
@@ -557,6 +561,7 @@ namespace SCME.Service.IO
             ACT_COMM2_BVT_R = 114,
             ACT_COMM2_DVDT = 115,
             ACT_COMM2_ATU = 115,
+            ACT_COMM2_TOU = 115,
             ACT_COMM_IH = 116,
             ACT_COMM6_NONE = 120,
             ACT_COMM6_GATE = 121,

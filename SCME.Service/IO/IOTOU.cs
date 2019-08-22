@@ -295,7 +295,7 @@ namespace SCME.Service.IO
                     //{
                     //Как в RAC проверка ошибок
                     Thread.Sleep(500);
-                    FireNotificationEvent(HWProblemReason.None, HWWarningReason.AnperageOutOfRange, HWFaultReason.None, HWDisableReason.None);
+                    FireNotificationEvent(HWProblemReason.None, HWWarningReason.CurrentOutOfRange, HWFaultReason.None, HWDisableReason.None);
                     Thread.Sleep(500);
                     FireNotificationEvent(HWProblemReason.None, HWWarningReason.None, HWFaultReason.Overflow90, HWDisableReason.None);
                     Thread.Sleep(500);
