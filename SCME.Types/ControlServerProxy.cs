@@ -255,5 +255,9 @@ namespace SCME.Types
             Channel.SetPermissionToUseCanDataBus(PermissionToUseCanDataBus);
         }
 
+        public void SetSafetyMode(SafetyMode safetyMode)
+        {
+            Channel.SetSafetyMode(safetyMode);
+        }
     }
 }

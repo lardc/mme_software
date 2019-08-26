@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
-using SCME.UI.ModelViews;
+using SCME.UI.ViewModels;
 using SCME.UI.Properties;
 
 namespace SCME.UI.PagesTech

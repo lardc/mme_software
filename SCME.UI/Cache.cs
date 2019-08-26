@@ -5,7 +5,7 @@ using SCME.UI.PagesUser;
 
 namespace SCME.UI
 {
-    enum UserWorkMode : byte { Operator, ServiceMan, SpecialMeasure }
+    internal enum UserWorkMode : byte { Operator, ServiceMan, SpecialMeasure, OperatorBuildMode }
 
     internal static class Cache
     {

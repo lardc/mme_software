@@ -793,4 +793,13 @@
   <data name="TOUITM" xml:space="preserve">
     <value>Amperage (ITM), A</value>
   </data>
+  <data name="OperatorBuildMode" xml:space="preserve">
+    <value>Operator in Build Mode</value>
+  </data>
+  <data name="SafetySystemExternal" xml:space="preserve">
+    <value>Turn on ex the  safety</value>
+  </data>
+  <data name="SafetySystemInternal" xml:space="preserve">
+    <value>Turn on in the  safety</value>
+  </data>
 </root>

@@ -768,4 +768,13 @@
   <data name="TOUITM" xml:space="preserve">
     <value>Сила тока (ITM),  А</value>
   </data>
+  <data name="OperatorBuildMode" xml:space="preserve">
+    <value>Оператор в режиме сборки</value>
+  </data>
+  <data name="SafetySystemExternal" xml:space="preserve">
+    <value>Вкл. внеш. сис. безопасности</value>
+  </data>
+  <data name="SafetySystemInternal" xml:space="preserve">
+    <value>Вкл. внут. сис. безопасности</value>
+  </data>
 </root>

@@ -610,8 +610,8 @@ namespace SCME.UI.PagesUser
             if (State == DeviceState.None || State == DeviceState.Heating)
                 return;
 
-            Cache.Main.AccountButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
-            Cache.Main.GoTechButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
+            Cache.Main.VM.AccountButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
+            Cache.Main.VM.GoTechButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
 
             if (State == DeviceState.InProcess)
                 ClearStatus(m_CurrentPos == 1, true);
@@ -2953,7 +2953,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            Cache.Main.TopTitle = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Profile.Name;
+            Cache.Main.VM.TopTitle = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Profile.Name;
         }
 
         private void UserTestPage_PreviewKeyDown(object Sender, KeyEventArgs E)

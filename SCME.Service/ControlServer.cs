@@ -340,6 +340,12 @@ namespace SCME.Service
             }
         }
 
+        public void SetSafetyMode(SafetyMode safetyMode)
+        {
+            m_IOMain.SetSafetyMode(safetyMode);
+            SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, $"Safety mode is: {safetyMode}");
+        }
+
 
 
         #endregion

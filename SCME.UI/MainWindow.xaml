@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="1024" Width="1280" Height="1024"
-        xmlns:custom="clr-namespace:SCME.UI.CustomControl"
+        xmlns:custom="clr-namespace:SCME.UI.CustomControl" 
         xmlns:props="clr-namespace:SCME.UI.Properties"
-        xmlns:ui="clr-namespace:SCME.UI"
+        xmlns:ui="clr-namespace:SCME.UI" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
         Name="mainWindow" Title="SCME.UI"
         WindowStyle="None"
         Focusable="False"
@@ -77,53 +77,64 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0"
-                       Name="titleLabel" Content="{Binding ElementName=mainWindow, Path=TopTitle}"
-                       FontSize="28" Margin="40,0,0,0"
-                       HorizontalAlignment="Left" Width="auto" 
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0"
+                       Name="titleLabel" Content="{Binding TopTitle}"
+                       FontSize="28" 
+                       HorizontalAlignment="Center" Width="auto" 
                        VerticalContentAlignment="Center"/>
-                
-                <Label Grid.Column="0" Grid.Row="0"
+
+                    <Label Grid.Column="1" Grid.Row="0"
                        Name="deviceLable" Content="MME005"
-                       FontSize="28" Margin="0,0,800,0"
+                       FontSize="28" Margin="0,0,15,0"
                        HorizontalAlignment="Right" />
 
-                <Label Grid.Column="0" Grid.Row="0"
-                       Name="stateLable" Content="{Binding ElementName=mainWindow, Path=SyncState}"
-                       FontSize="28" Margin="0,0,670,0"
+                    <Label Grid.Column="2" Grid.Row="0"
+                       Name="stateLable" Content="{Binding SyncState}"
+                       FontSize="28"
                        HorizontalAlignment="Right" />
 
-                <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Border Margin="0,5,30,5" Padding="10, 0, 10, 0"
+                    <StackPanel Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Border Margin="0,5,30,5" Padding="10, 0, 10, 0"
                             Visibility="{Binding Source={x:Static props:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                            <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
                                   StrokeThickness="5" VerticalAlignment="Center"
                                   Stretch="UniformToFill" Margin="0, 5, 20, 10"/>
-                            <Label x:Name="clampLabel" Content="{x:Static props:Resources.Clamp}" FontSize="28" HorizontalAlignment="Right"
+                                <Label x:Name="clampLabel" Content="{x:Static props:Resources.Clamp}" FontSize="28" HorizontalAlignment="Right"
                                VerticalContentAlignment="Center" />
-                        </StackPanel>
-                    </Border>
-                    <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
+                            </StackPanel>
+                        </Border>
+                        <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
                            VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed"/>
-                    <Path Data="{StaticResource CircutBrakePath}"
+                        <Path Data="{StaticResource CircutBrakePath}"
                           Stroke="{StaticResource xRed1}"
                           StrokeThickness="4" VerticalAlignment="Center"
                           Stretch="UniformToFill" Margin="0, 10, 30, 10" 
-                          Visibility="{Binding ElementName=mainWindow, Path=IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
-                    <Label x:Name="accountLabel" Content="User Account" FontSize="24" HorizontalAlignment="Left"
-                           Visibility="{Binding ElementName=mainWindow, Path=AccountButtonVisibility}"
+                          Visibility="{Binding IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
+                        <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
+                        <Label x:Name="accountLabel" Content="User Account" FontSize="24" HorizontalAlignment="Left"
+                           Visibility="{Binding AccountButtonVisibility}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
-                    <Button Content="{StaticResource LogoutPath}" Click="Logout_Click"
-                            Visibility="{Binding ElementName=mainWindow, Path=AccountButtonVisibility}"
+                        <Button Content="{StaticResource LogoutPath}" Click="Logout_Click"
+                            Visibility="{Binding AccountButtonVisibility}"
                             Style="{StaticResource ButtonPath}" Margin="0, 10, 30, 10" Padding="5" />
-                    <Button Content="{StaticResource Tech2Path}" Click="Tech_Click"
-                            Visibility="{Binding ElementName=mainWindow, Path=GoTechButtonVisibility}"
+                        <Button Content="{StaticResource Tech2Path}" Click="Tech_Click"
+                            Visibility="{Binding GoTechButtonVisibility}"
                             Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10"/>
-                    <Button Content="{StaticResource ClosePath}" Click="BtnExit_Click"
+                        <Button Content="{StaticResource ClosePath}" Click="BtnExit_Click"
                             Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10"
                             Visibility="{Binding Source={x:Static props:Settings.Default}, Path=ExitButtonIsVisible, Converter={StaticResource B2V}}" />
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
+             
 
                 <Frame x:Name="mainFrame" Grid.Column="0" Grid.Row="1"
                        NavigationUIVisibility="Hidden"

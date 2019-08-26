@@ -58,7 +58,7 @@ namespace SCME.UI.IO
                                 //Cache.Calibration.PatchClamp();
                                 //выполнена инициализация аппаратных модулей, вполне возможно, что при наступлении данного события синхронизация баз данных уже будет завершена процессом Service.exe, поэтому проверяем это и если синхронизация уже действительно завершилась - выполняем то, что надо выполнять после её завершения 
                                 if (Cache.Net.IsDBSyncInProgress)
-                                    Cache.Main.SyncState = "RunSync";
+                                    Cache.Main.VM.SyncState = "RunSync";
                                 else
                                     AfterEndOfSincedProcessDBRoutine();
 
@@ -68,7 +68,7 @@ namespace SCME.UI.IO
                                     Cache.FTDI.LedGreenSwitch(false);
                                 }
 
-                                Cache.Main.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
+                                Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
                             }
                             break;
 
@@ -198,7 +198,7 @@ namespace SCME.UI.IO
                     Cache.Clamp.Unclamp();
 
                     //прячем иконку Safety
-                    Cache.Main.IsSafetyBreakIconVisible = false;
+                    Cache.Main.VM.IsSafetyBreakIconVisible = false;
 
                     //строим строку с именами устройств, которые не готовы к очередному измерению
                     string NotReadyDevicesToStart = Cache.Net.NotReadyDevicesToStart();
@@ -229,7 +229,7 @@ namespace SCME.UI.IO
         private void AfterEndOfSincedProcessDBRoutine()
         {
             //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
-            Cache.Main.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
+            Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
 
             if (Cache.Net.IsModulesInitialized)
                 Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
@@ -277,7 +277,7 @@ namespace SCME.UI.IO
 
                     if (Button == ComplexButtons.ButtonSC1)
                     {
-                        Cache.Main.IsSafetyBreakIconVisible = !State;
+                        Cache.Main.VM.IsSafetyBreakIconVisible = !State;
 
                         //if (!State) 
                         //    Cache.Net.Stop();
@@ -294,7 +294,7 @@ namespace SCME.UI.IO
                     Cache.Net.Stop();
 
                 //показываем или прячем иконку состояния системы Safety
-                Cache.Main.IsSafetyBreakIconVisible = Alarm;
+                Cache.Main.VM.IsSafetyBreakIconVisible = Alarm;
 
                 if (Alarm)
                 {
@@ -335,7 +335,7 @@ namespace SCME.UI.IO
                         Cache.Clamp.Unclamp();
 
                         //прячем иконку Safety
-                        Cache.Main.IsSafetyBreakIconVisible = false;
+                        Cache.Main.VM.IsSafetyBreakIconVisible = false;
 
                         //строим строку с именами устройств, которые не готовы к очередному измерению
                         string NotReadyDevicesToStart = Cache.Net.NotReadyDevicesToStart();

@@ -681,6 +681,26 @@ namespace SCME.UI.IO
             }
         }
 
+        public void SetSafetyMode(SafetyMode safetyMode)
+        {
+            if (!IsServerConnected)
+                return;
+
+            try
+            {
+                m_ControlClient.SetSafetyMode(safetyMode);
+                Cache.Main.VM.SafetyMode = safetyMode;
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+        }
+
         public void SafetySystemOff()
         {
             if (!IsServerConnected)

@@ -154,7 +154,9 @@
     <Compile Include="IO\FtdiLibrary.cs" />
     <Compile Include="IO\QueueWorker.cs" />
     <Compile Include="KeyboardLayouts.cs" />
-    <Compile Include="ModelViews\TOUPageVM.cs" />
+    <Compile Include="ViewModels\MainWindowVM.cs" />
+    <Compile Include="ViewModels\TOUPageVM.cs" />
+    <Compile Include="ViewModels\UserWorkModePageVM.cs" />
     <Compile Include="PagesTech\TOUPage.xaml.cs">
       <DependentUpon>TOUPage.xaml</DependentUpon>
     </Compile>

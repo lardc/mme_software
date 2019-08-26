@@ -201,6 +201,18 @@ namespace SCME.UI.PagesTech
             Cache.Net.SafetySystemOff();
         }
 
+        private void SafetySystemInternalButton_Click(object sender, RoutedEventArgs e)
+        {
+            Cache.Net.SetSafetyMode(SafetyMode.Internal);
+            Cache.Net.SafetySystemOn();
+        }
+
+        private void SafetySystemExternalButton_Click(object sender, RoutedEventArgs e)
+        {
+            Cache.Net.SetSafetyMode(SafetyMode.External);
+            Cache.Net.SafetySystemOn();
+        }
+
         private void BtnCool_OnClick(object sender, RoutedEventArgs e)
         {
             Cache.Net.StopHeating();

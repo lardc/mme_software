@@ -108,6 +108,15 @@ namespace SCME.Types
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum SafetyMode
+    {
+        [EnumMember]
+        Internal = 0,
+        [EnumMember]
+        External,
+    };
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexLamps
     {
         [EnumMember]
@@ -301,6 +310,9 @@ namespace SCME.Types
             public int TimeoutRCC { get; set; }
             [DataMember]
             public bool IsTOUEnabled { get; set; }
+
+            [DataMember]
+            public SafetyMode SafetyMode { get; set; }
         }
 
         [DataMember]

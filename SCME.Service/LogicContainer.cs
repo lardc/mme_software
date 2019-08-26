@@ -155,7 +155,10 @@ namespace SCME.Service
                     state = m_IOGateway.Initialize();
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
+                {
+                    m_IOCommutation.SetSafetyMode(m_Param.SafetyMode);
                     state = m_IOCommutation.Initialize();
+                }
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOCommutationEx.Initialize();
@@ -419,11 +422,13 @@ namespace SCME.Service
 
         internal bool IsInitialized { get; private set; }
 
-        private void SetSafetyState(IOCommutation Commutation, bool Safety)
+        public void SetSafetyMode(SafetyMode safetyMode) => m_IOCommutation.SetSafetyMode(safetyMode);
+
+        private void SetSafetyState(IOCommutation Commutation, bool isSafetyOn)
         {
             try
             {
-                if (Safety)
+                if (isSafetyOn)
                 {
                     switch (m_SafetyType)
                     {

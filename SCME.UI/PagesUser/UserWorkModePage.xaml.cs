@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using SCME.UI.IO;
 using SCME.UI.Properties;
 using System.Windows.Navigation;
+using SCME.UI.CustomControl;
 
 namespace SCME.UI.PagesUser
 {
@@ -21,44 +22,57 @@ namespace SCME.UI.PagesUser
     /// </summary>
     public partial class UserWorkModePage
     {
+        public ViewModels.UserWorkModePageVM VM { get; set; } = new ViewModels.UserWorkModePageVM();
         public UserWorkModePage()
         {
             InitializeComponent();
-
-            btn_SpecialMeasure.Visibility = Settings.Default.SpecialMeasureForUse ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void SetButtonsIsEnabled(bool IsEnabled)
+
+        private void SelectOperatorMode(UserWorkMode userWorkMode)
         {
-            btn_Operator.IsEnabled = IsEnabled;
-            btn_ServiceMan.IsEnabled = IsEnabled;
-            btn_SpecialMeasure.IsEnabled = IsEnabled;
-            btn_Back.IsEnabled = IsEnabled;
+            switch (userWorkMode)
+            {
+                case UserWorkMode.Operator:
+                    Cache.Net.SetSafetyMode(Types.SafetyMode.Internal);
+                    break;
+                case UserWorkMode.OperatorBuildMode:
+                    Cache.Net.SetSafetyMode(Types.SafetyMode.External);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            if (userWorkMode == UserWorkMode.Operator)
+                Cache.Net.SetSafetyMode(Types.SafetyMode.Internal);
+            else
+
+            //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
+            if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
+                ProfilesDbLogic.ImportProfilesFromDb();
+
+            //запоминаем выбранный пользователем режим работы
+            Cache.WorkMode = UserWorkMode.Operator;
+
+            NavigationService?.Navigate(Cache.Login);
         }
 
-        private void Button_Click(object Sender, RoutedEventArgs E)
+        private void SelectMode_Click(object Sender, RoutedEventArgs E)
         {
             //чтобы пользователь не смог нажать повторно на кнопку, чей обработчик уже исполняется или на любую другую кнопку этой формы
-            SetButtonsIsEnabled(false);
+            VM.ButtonsModeIsEnabled = false;
 
             try
             {
-                var btn = (Button)Sender;
-                switch (Convert.ToUInt16(btn.CommandParameter))
+                UserWorkMode userWorkMode = ((UserWorkMode)(Sender as Button).CommandParameter) ;
+
+                switch (userWorkMode)
                 {
-                    case 1:
-                        //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
-                        if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
-                            ProfilesDbLogic.ImportProfilesFromDb();
-
-                        //запоминаем выбранный пользователем режим работы
-                        Cache.WorkMode = UserWorkMode.Operator;
-
-                        NavigationService?.Navigate(Cache.Login);
-
+                    case UserWorkMode.Operator:
+                    case UserWorkMode.OperatorBuildMode:
+                        SelectOperatorMode(userWorkMode);
                         break;
 
-                    case 2:
+                    case UserWorkMode.ServiceMan:
                         //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
                         if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
                             ProfilesDbLogic.ImportProfilesFromDb();
@@ -66,10 +80,9 @@ namespace SCME.UI.PagesUser
                         //запоминаем выбранный пользователем режим работы
                         Cache.WorkMode = UserWorkMode.ServiceMan;
                         Cache.Main.ServiceManLogin();
-
                         break;
 
-                    case 3:
+                    case UserWorkMode.SpecialMeasure:
                         if (Settings.Default.IsTechPasswordEnabled)
                         {
                             //без ввода пароля наладчика не будем пускать в режим специальных измерений
@@ -77,13 +90,21 @@ namespace SCME.UI.PagesUser
                             NavigationService?.Navigate(Cache.Password);
                         }
                         else SpecialMeasureCallBack(NavigationService);
-
                         break;
+
+                    default:
+                        throw new NotImplementedException();
                 }
+            }
+            catch(Exception ex)
+            {
+                var dialog = new DialogWindow("Ошибка", ex.ToString());
+                dialog.ButtonConfig(DialogWindow.EbConfig.OK);
+                dialog.ShowDialog();
             }
             finally
             {
-                SetButtonsIsEnabled(true);
+                VM.ButtonsModeIsEnabled = true;
             }
         }
 
@@ -98,7 +119,7 @@ namespace SCME.UI.PagesUser
             ns?.Navigate(Cache.ProfileEdit);
         }
 
-        private void btn_Back_OnClick(object Sender, RoutedEventArgs E)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(Cache.Welcome);
         }

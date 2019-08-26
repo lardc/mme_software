@@ -18,7 +18,7 @@ namespace SCME.UI.IO
 
             List<ProfileItem> profileItems;
 
-            if (Cache.Main.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncState == "SYNCED")
                 profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
             else
                 profileItems = Cache.Net.GetProfilesFromServerDb(Cache.Main.MmeCode, out seviceConnected);
@@ -136,7 +136,7 @@ namespace SCME.UI.IO
             }
 
 
-            if (Cache.Main.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncState == "SYNCED")
             {
                 Cache.Net.SaveProfilesToLocal(profileItems);
                 return Cache.Net.SaveProfilesToServer(profileItems);

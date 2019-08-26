@@ -2,7 +2,7 @@
 using System.Threading;
 using SCME.Types;
 using SCME.Service.Properties;
-
+using System.Collections.Generic;
 
 namespace SCME.Service.IO
 {
@@ -23,6 +23,7 @@ namespace SCME.Service.IO
         private const int REQUEST_DELAY_MS = 100;
 
         private bool m_SafetyOn = false;
+        private SafetyMode _SafetyMode;
 
         internal IOCommutation(IOAdapter Adapter, BroadcastCommunication Communication, bool CommutationEmulation, int CommutationNode, bool Type6, ComplexParts ID)
         {
@@ -294,6 +295,32 @@ namespace SCME.Service.IO
             }
         }
 
+        public void SetSafetyMode(SafetyMode safetyMode) => _SafetyMode = safetyMode;
+
+        private void WriteSafetyRegister(bool isOn)
+        {
+            if (isOn == false)
+            {
+                WriteRegister(REG_EN_SFTY_IN1, 0);
+                WriteRegister(REG_EN_SFTY_IN2, 1);
+                WriteRegister(REG_EN_SFTY_IN3, 0);
+            }
+            else
+            {
+                WriteRegister(REG_EN_SFTY_IN2, 0);
+                if (_SafetyMode == SafetyMode.Internal)
+                {
+                    WriteRegister(REG_EN_SFTY_IN1, 1);
+                    WriteRegister(REG_EN_SFTY_IN3, 0);
+                }
+                else
+                {
+                    WriteRegister(REG_EN_SFTY_IN1, 0);
+                    WriteRegister(REG_EN_SFTY_IN3, 1);
+                }
+            }
+        }
+
         internal void SetSafetyOn()
         {
             if ((m_SafetyType == ComplexSafety.Optical) && (m_ID == ComplexParts.Commutation))
@@ -303,6 +330,8 @@ namespace SCME.Service.IO
 
                 if (m_IsCommutationEmulation)
                     return;
+
+                WriteSafetyRegister(true);
 
                 CallAction(ACT_SAFETY_ON);
 
@@ -331,6 +360,8 @@ namespace SCME.Service.IO
 
                 if (m_IsCommutationEmulation)
                     return;
+
+                WriteSafetyRegister(false);
 
                 CallAction(ACT_SAFETY_OFF);
 
@@ -545,6 +576,21 @@ namespace SCME.Service.IO
         }
 
         #region Registers
+
+        /// <summary>
+        /// Enable safety input #1 (Internal)
+        /// </summary>
+        internal const ushort REG_EN_SFTY_IN1 = 80;
+
+        /// <summary>
+        /// Enable safety input #2 (STOP)
+        /// </summary>
+        internal const ushort REG_EN_SFTY_IN2 = 81;
+
+        /// <summary>
+        /// Enable safety input #3 (External)
+        /// </summary>
+        internal const ushort REG_EN_SFTY_IN3 = 82;
 
         internal const ushort
 

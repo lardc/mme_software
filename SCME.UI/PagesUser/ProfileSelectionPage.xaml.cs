@@ -158,7 +158,7 @@ namespace SCME.UI.PagesUser
 
         private void OnTimerSyncSelectedProfileTick(object Sender, EventArgs E)
         {
-            if (Cache.Main.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncState == "SYNCED")
                 //вызывается при истечении интервала времени, отсчитываемого таймером TimerSyncSelectedProfile
                 CheckSyncedSelectedProfile();
         }
@@ -273,7 +273,7 @@ namespace SCME.UI.PagesUser
             if (profilesList != null)
                 Title = Title + "\n" + Properties.Resources.Total.ToLower() + string.Format(" {0} шт.", profilesList.Items.Count);
 
-            Cache.Main.TopTitle = Title;
+            Cache.Main.VM.TopTitle = Title;
         }
 
         private BaseTestParametersAndNormatives TestByTypeAndOrder(ProfileItem profileItem, TestParametersType type, int order)
@@ -724,7 +724,7 @@ namespace SCME.UI.PagesUser
 
         private void ProfileSelectionPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Cache.Main.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncState == "SYNCED")
             {
                 //чтобы пользователь не смог начать измерения с профилем, который ещё не синхронизирован
                 CheckSyncedSelectedProfile();

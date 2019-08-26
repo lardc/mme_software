@@ -132,8 +132,14 @@
                 <Button Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="2" x:Name="btnSafetySystemOff" Content="{x:Static res:Resources.SafetySystemOff}"
                         Padding="10" Margin="0,10,0,0" Click="btnSafetySystemOff_OnClick" Background="{StaticResource xRed1}" FontSize="32"/>
 
-                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="btnSafetySystemOn" Content="{x:Static res:Resources.SafetySystemOn}"
+                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="btnSafetySystemOn" Content="{x:Static res:Resources.SafetySystemOn}" Visibility="Hidden"
                         Padding="10" Margin="0,10,0,0" Click="btnSafetySystemOn_OnClick" Background="{StaticResource xGreen2}" FontSize="32"/>
+
+                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="SafetySystemInternalButton" Content="{x:Static res:Resources.SafetySystemInternal}"
+                        Padding="10" Margin="0,10,0,0" Click="SafetySystemInternalButton_Click" Background="{StaticResource xGreen2}" FontSize="32"/>
+
+                <Button Grid.Column="0" Grid.Row="15" Grid.ColumnSpan="2" x:Name="SafetySystemExternalButton" Content="{x:Static res:Resources.SafetySystemExternal}"
+                        Padding="10" Margin="0,10,0,0" Click="SafetySystemExternalButton_Click" Background="{StaticResource xGreen2}" FontSize="32"/>
             </Grid>
         </Border>
 

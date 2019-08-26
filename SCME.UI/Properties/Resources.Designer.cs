@@ -1078,6 +1078,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Operator in Build Mode.
+        /// </summary>
+        public static string OperatorBuildMode {
+            get {
+                return ResourceManager.GetString("OperatorBuildMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Operator.
         /// </summary>
         public static string OperatorMode {
@@ -1597,6 +1606,24 @@ namespace SCME.UI.Properties {
         public static string SafetyOpticalAlarm {
             get {
                 return ResourceManager.GetString("SafetyOpticalAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn on ex the  safety.
+        /// </summary>
+        public static string SafetySystemExternal {
+            get {
+                return ResourceManager.GetString("SafetySystemExternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn on in the  safety.
+        /// </summary>
+        public static string SafetySystemInternal {
+            get {
+                return ResourceManager.GetString("SafetySystemInternal", resourceCulture);
             }
         }
         

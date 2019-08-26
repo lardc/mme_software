@@ -21,13 +21,14 @@ using SCME.UI.IO;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
+using SCME.UI.ViewModels;
 
 namespace SCME.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class MainWindow
     {
         private const string PROFILE_ENDPOINT_NAME = "SCME.ProfileService";
 
@@ -41,6 +42,7 @@ namespace SCME.UI
         private Page m_PrevPage;
         private Brush m_NominalClampPathStroke;
 
+        public MainWindowVM VM { get; set; } = new MainWindowVM();
         public MainWindow()
         {
             Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
@@ -71,7 +73,7 @@ namespace SCME.UI
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
 
-            TechPasswordVisibility = Visibility.Collapsed;
+            VM.TechPasswordVisibility = Visibility.Collapsed;
 
             try
             {
@@ -96,7 +98,7 @@ namespace SCME.UI
                 Cache.Net = new ControlLogic();
                 MmeCode = Settings.Default.MMECode;
 
-                IsSafetyBreakIconVisible = false;
+                VM.IsSafetyBreakIconVisible = false;
 
                 RestartRoutine(null, null);
             }
@@ -125,71 +127,13 @@ namespace SCME.UI
             set { connectionLabel.Visibility = value ? Visibility.Visible : Visibility.Collapsed; }
         }
 
-        public bool IsSafetyBreakIconVisible
-        {
-            get { return m_IsSafetyBreakIconVisible; }
-            set
-            {
-                m_IsSafetyBreakIconVisible = value;
-                NotifyPropertyChanged("IsSafetyBreakIconVisible");
-            }
-        }
-
-        public Visibility GoTechButtonVisibility
-        {
-            get { return m_GoTechButtonVisibility; }
-            set
-            {
-                m_GoTechButtonVisibility = value;
-                NotifyPropertyChanged("GoTechButtonVisibility");
-            }
-        }
-
-        public Visibility AccountButtonVisibility
-        {
-            get { return m_AccountButtonVisibility; }
-            set
-            {
-                m_AccountButtonVisibility = value;
-                NotifyPropertyChanged("AccountButtonVisibility");
-            }
-        }
-
-        public Visibility TechPasswordVisibility
-        {
-            get { return m_TechPasswordVisibility; }
-            set
-            {
-                m_TechPasswordVisibility = value;
-                NotifyPropertyChanged("TechPasswordVisibility");
-            }
-        }
-
+    
         internal string AccountName
         {
             get { return accountLabel.Content.ToString(); }
             set { accountLabel.Content = value; }
         }
 
-        public string SyncState
-        {
-            get { return _state; }
-            set
-            {
-                _state = value;
-                NotifyPropertyChanged(nameof(SyncState));
-            }
-        }
-
-        public string TopTitle
-        {
-            get { return _TopTitle; }
-            set
-            {
-                _TopTitle = value;
-                NotifyPropertyChanged(nameof(TopTitle));
-            }
-        }
 
         internal string MmeCode
         {
@@ -229,8 +173,8 @@ namespace SCME.UI
                 TimeoutIH = Cache.Welcome.GetTimeout(ComplexParts.IH),
                 IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
                 IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
-                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU)
-
+                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
+                SafetyMode = VM.SafetyMode
             };
 
             if (!Equals(mainFrame.Content, Cache.Welcome))
@@ -335,13 +279,13 @@ namespace SCME.UI
 
         private void Frame_Navigated(object Sender, NavigationEventArgs E)
         {
-            TopTitle = ((Page)mainFrame.Content).Title;
-            GoTechButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
+            VM.TopTitle = ((Page)mainFrame.Content).Title;
+            VM.GoTechButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
                                      Equals(mainFrame.Content, Cache.UserTest) ||
                                      Equals(mainFrame.Content, Cache.Login)
                                          ? Visibility.Visible
                                          : Visibility.Collapsed;
-            AccountButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
+            VM.AccountButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
                                       Equals(mainFrame.Content, Cache.UserTest)
                                           ? Visibility.Visible
                                           : Visibility.Collapsed;
@@ -468,16 +412,6 @@ namespace SCME.UI
 
         #endregion
 
-        #region IPropertyChanged implementation
-
-        private void NotifyPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
     }
 
     public class ScrollViewerBehavior
