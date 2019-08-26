@@ -110,9 +110,6 @@
     <Setting Name="SpecialMeasureForUse" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MMECode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">MME005</Value>
-    </Setting>
     <Setting Name="TOUIsVisible" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>

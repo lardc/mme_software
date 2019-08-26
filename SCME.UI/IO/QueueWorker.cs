@@ -57,10 +57,18 @@ namespace SCME.UI.IO
                             {
                                 //Cache.Calibration.PatchClamp();
                                 //выполнена инициализация аппаратных модулей, вполне возможно, что при наступлении данного события синхронизация баз данных уже будет завершена процессом Service.exe, поэтому проверяем это и если синхронизация уже действительно завершилась - выполняем то, что надо выполнять после её завершения 
-                                if (Cache.Net.IsDBSyncInProgress)
+
+                                var stateService = Cache.Net.GetStateService;
+
+
+                                if (Cache.Net.IsDBSyncInProgress(stateService.InitializationResult))
                                     Cache.Main.SyncState = "RunSync";
                                 else
+                                {
+                                    Cache.Main.MmeCode = stateService.MMECode;
+                                    Cache.Main.IsLocal = stateService.IsLocal;
                                     AfterEndOfSincedProcessDBRoutine();
+                                }
 
                                 if (Settings.Default.FTDIPresent)
                                 {

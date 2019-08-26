@@ -65,6 +65,18 @@ namespace SCME.Types
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public class InitializationResponce
+    {
+        [DataMember]
+        public InitializationResult InitializationResult { get; set; }
+        [DataMember]
+        public bool IsLocal { get; set; }
+        [DataMember]
+        public string MMECode { get; set; }
+    }
+
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexButtons
     {
         [EnumMember]

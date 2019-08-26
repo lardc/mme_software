@@ -56,29 +56,27 @@ namespace SCME.UI.IO
             {
                 var initState = m_ControlClient.IsInitialized();
 
-                return (initState & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
+                return (initState.InitializationResult & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
             }
         }
 
-        public bool IsDBSyncInProgress
-        {
-            get
-            {
-                //отвечает на вопрос: процесс синхронизации ещё выполняется или уже завершился
-                //true - процесс синхронизации ещё выполняется
-                //false - процесс синхронизации завершился
-                InitializationResult initState = m_ControlClient.IsInitialized();
+        public InitializationResponce GetStateService => m_ControlClient.IsInitialized();
 
-                return (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
-            }
-        }
+        /// <summary>
+        /// отвечает на вопрос: процесс синхронизации ещё выполняется или уже завершился
+        /// true - процесс синхронизации ещё выполняется
+        /// false - процесс синхронизации завершился
+        /// </summary>
+        /// <param name="initState"></param>
+        /// <returns></returns>
+        public bool IsDBSyncInProgress(InitializationResult initState) => (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
 
         public bool IsModulesInitialized
         {
             get
             {
                 //отвечает на вопрос: инициализация модулей (аппаратных, например BVT) выполнена?
-                InitializationResult initState = m_ControlClient.IsInitialized();
+                InitializationResult initState = m_ControlClient.IsInitialized().InitializationResult;
 
                 return (initState & InitializationResult.ModulesInitialized) == InitializationResult.ModulesInitialized;
             }
@@ -373,7 +371,7 @@ namespace SCME.UI.IO
                 {
                     var initState = m_ControlClient.IsInitialized();
 
-                    if ((initState & InitializationResult.ModulesInitialized) == InitializationResult.None)
+                    if ((initState.InitializationResult & InitializationResult.ModulesInitialized) == InitializationResult.None)
                         Cache.Main.RestartRoutine(null, null);
                     else
                         m_NetPingTimer.Start();
