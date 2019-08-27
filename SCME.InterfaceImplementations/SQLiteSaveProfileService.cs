@@ -320,7 +320,7 @@ namespace SCME.InterfaceImplementations
                     profileVersionSelect.Parameters.Add("@PROF_ID", DbType.Int64);
                     profileVersionSelect.Prepare();
                     profileVersionSelect.Parameters["@PROF_ID"].Value = oldProfileId;
-                    newVersion = (long)profileVersionSelect.ExecuteScalar() + 1;
+                    newVersion = Convert.ToInt64(profileVersionSelect.ExecuteScalar()) + 1;
                 }
                 catch(ArgumentException)
                 {

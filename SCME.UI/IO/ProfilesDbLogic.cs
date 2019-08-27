@@ -133,7 +133,7 @@ namespace SCME.UI.IO
             }
 
 
-            if (Cache.Main.SyncState == "SYNCED")
+            if (Cache.Main.IsLocal == false)
             {
                 Cache.Net.SaveProfilesToLocal(profileItems);
                 return Cache.Net.SaveProfilesToServer(profileItems);

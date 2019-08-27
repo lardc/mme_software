@@ -21,12 +21,14 @@ using SCME.UI.IO;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
+using PropertyChanged;
 
 namespace SCME.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [AddINotifyPropertyChangedInterface]
     public partial class MainWindow : INotifyPropertyChanged
     {
         private const string PROFILE_ENDPOINT_NAME = "SCME.ProfileService";
@@ -197,6 +199,8 @@ namespace SCME.UI
         }
 
         public bool IsLocal { get; set; }
+        [DependsOn(nameof(IsLocal))]
+        public string ProfilePageToolTip => IsLocal ? "" : "Профили не доступны к редактированию в режиме синхронизации с центральным сервером";
 
         internal bool IsNeedToRestart { get; private set; }
 

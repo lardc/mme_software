@@ -24,6 +24,7 @@ using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
 using RacParameters = SCME.Types.RAC.TestParameters;
+using TOUParameters = SCME.Types.TOU.TestParameters;
 
 namespace SCME.ProfileBuilder.PagesTech
 {
@@ -284,6 +285,7 @@ namespace SCME.ProfileBuilder.PagesTech
                     ProfileName = profile.Name,
                     ProfileKey = profile.Key,
                     ProfileTS = profile.Timestamp,
+                    NextGenerationKey = Guid.NewGuid(),
                     GateTestParameters = new List<GateTestParameters>(),
                     VTMTestParameters = new List<Types.SL.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
@@ -485,6 +487,10 @@ namespace SCME.ProfileBuilder.PagesTech
             {
                 item.TestParametersAndNormatives.Add(new RacParameters { Order = order + 1, IsEnabled = true });
             }
+            else if (type.Contains("TOU"))
+            {
+                item.TestParametersAndNormatives.Add(new TOUParameters { Order = order + 1, IsEnabled = true });
+            }
             else
             {
                 item.IsHeightMeasureEnabled = true;
@@ -543,6 +549,13 @@ namespace SCME.ProfileBuilder.PagesTech
             if (item != null)
             {
                 tabControl.SelectedIndex = 7;
+                return;
+            }
+
+            item = selectedItem.SelectedItem as TOUParameters;
+            if (item != null)
+            {
+                tabControl.SelectedIndex = 8;
                 return;
             }
         }

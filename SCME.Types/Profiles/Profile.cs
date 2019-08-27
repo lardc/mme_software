@@ -214,7 +214,7 @@ namespace SCME.Types.Profiles
         public Profile(string Name, Guid Key, DateTime TS)
           : base(Name, Key, 0, TS)
         {
-            throw new NotImplementedException();
+            ConstructorInit();
         }
     }
 }

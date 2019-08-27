@@ -31,7 +31,7 @@ namespace SCME.UI
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
 
-        internal static MainWindow Main { get; set; }
+        public static MainWindow Main { get; set; }
 
         internal static ControlLogic Net { get; set; }
 

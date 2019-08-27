@@ -14,6 +14,7 @@ using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuTestParameters = SCME.Types.ATU.TestParameters;
 using QrrTqTestParameters = SCME.Types.QrrTq.TestParameters;
 using RacTestParameters = SCME.Types.RAC.TestParameters;
+using TOUTestParameters = SCME.Types.TOU.TestParameters;
 
 namespace SCME.ProfileBuilder.CustomControl
 {
@@ -141,6 +142,12 @@ namespace SCME.ProfileBuilder.CustomControl
                 {
                     if (_extension.TemplateDictionary.ContainsKey("racParametersTemplate"))
                         isFound = (_extension.TemplateDictionary.TryGetValue("racParametersTemplate", out dataTemplate));
+                }
+
+                if (item is TOUTestParameters)
+                {
+                    if (_extension.TemplateDictionary.ContainsKey("touParametersTemplate"))
+                        isFound = (_extension.TemplateDictionary.TryGetValue("touParametersTemplate", out dataTemplate));
                 }
 
                 if (isFound) return dataTemplate;
