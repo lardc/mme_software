@@ -22,5 +22,10 @@ namespace SCME.ProfileBuilder
             Cache.ConnectPage = new ConnectPage();
             mainFrame.Navigate(Cache.ConnectPage);
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
     }
 }

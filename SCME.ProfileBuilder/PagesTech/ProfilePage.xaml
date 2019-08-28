@@ -835,7 +835,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.Itm_A}" />
+                        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.TOUITM}" />
 
                         <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.Itm_A}"/>
                         <customControl:ValidatingTextBox x:Name="lbTOUCurrentAmplitude" Grid.Column="2" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True"

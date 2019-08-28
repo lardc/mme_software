@@ -717,4 +717,7 @@
   <data name="QrrTqTrrMeasureBy9050Method" xml:space="preserve">
     <value>Измерение Trr по методу 90%-50%</value>
   </data>
+  <data name="TOUITM" xml:space="preserve">
+    <value>Сила тока (ITM),  А</value>
+  </data>
 </root>

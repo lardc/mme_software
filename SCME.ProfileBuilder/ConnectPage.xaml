@@ -37,7 +37,7 @@
                             <ColumnDefinition  Width="30*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Label Content="{x:Static res:Resources.ProfileBuilderTitle}" Style="{StaticResource CLabelBlackStyle}" />
-                        <TextBox x:Name="tbDbPath" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
+                        <TextBox Text="{Binding Source={x:Static res:Settings.Default}, Path=SQLiteFileName, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDbPath" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
                         <Button Content="{x:Static res:Resources.Browse}" Grid.Row="3" Grid.Column="1" Style="{StaticResource CButtonStyle}" Margin="5" Click="ButtonSQliteBrowse_Click" />
                         <Button Content="{x:Static res:Resources.Connect}" Grid.Row="3" Grid.Column="2" Style="{StaticResource CButtonStyle}" Margin="5" Click="ButtonSQliteConnect_Click" />
                     </Grid>
@@ -71,12 +71,12 @@
                         </Grid.ColumnDefinitions>
                         
                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="{x:Static res:Resources.ProfileBuilderServerName}" Style="{StaticResource CLabelBlackStyle}"/>
-                        <TextBox x:Name="tbServerName" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" />
+                        <TextBox Text="{Binding Source={x:Static res:Settings.Default}, Path=MSSQLServer, UpdateSourceTrigger=PropertyChanged}" x:Name="tbServerName" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" />
                         <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="{x:Static res:Resources.ProfileBuilderDBName}" Style="{StaticResource CLabelBlackStyle}"/>
-                        <TextBox x:Name="tbDBName" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" />
-                        <CheckBox x:Name="chkDbIntSec" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}" Content="{x:Static res:Resources.ProfileBuilderIntegratedSecurity}" Foreground="{StaticResource BlackBackground}"/>
+                        <TextBox Text="{Binding Source={x:Static res:Settings.Default}, Path=MSSQLDatabase, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDBName" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" />
+                        <CheckBox IsChecked="{Binding Source={x:Static res:Settings.Default}, Path=MSSQLIntegratedSecurity, UpdateSourceTrigger=PropertyChanged}" x:Name="chkDbIntSec" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}" Content="{x:Static res:Resources.ProfileBuilderIntegratedSecurity}" Foreground="{StaticResource BlackBackground}"/>
                         <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Content="{x:Static res:Resources.ProfileBuilderDBUser}" Style="{StaticResource CLabelBlackStyle}"/>
-                        <TextBox x:Name="tbDBUser" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" IsEnabled="{Binding IsChecked, ElementName=chkDbIntSec, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource B2nB}}"/>
+                        <TextBox Text="{Binding Source={x:Static res:Settings.Default}, Path=MSSQLUserId, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDBUser" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" IsEnabled="{Binding IsChecked, ElementName=chkDbIntSec, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource B2nB}}"/>
                         <Label Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Content="{x:Static res:Resources.ProfileBuilderDBPassword}" Style="{StaticResource CLabelBlackStyle}"/>
                         <TextBox x:Name="tbDBPassword" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" FontSize="{StaticResource FontSize32}"  TextAlignment="Left" TextWrapping="Wrap" IsEnabled="{Binding IsChecked, ElementName=chkDbIntSec, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource B2nB}}" />
                         <Button Content="{x:Static res:Resources.Connect}" Grid.Row="10" Grid.Column="2" Style="{StaticResource CButtonStyle}" Margin="5" Click="ButtonSQLConnect_Click" />

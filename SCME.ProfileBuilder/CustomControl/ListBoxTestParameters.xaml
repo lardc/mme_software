@@ -927,7 +927,7 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.Itm_A}" />
+                                <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.TOUITM}" />
                                 <Label Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Content="{Binding CurrentAmplitude, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </Button>
