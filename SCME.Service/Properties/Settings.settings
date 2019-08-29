@@ -170,10 +170,10 @@
     <Setting Name="RCCEmulation" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TOUEmulation" Type="System.Boolean" Scope="User">
+    <Setting Name="TOUEmulation" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TOUNode" Type="System.Int32" Scope="User">
+    <Setting Name="TOUNode" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">11</Value>
     </Setting>
   </Settings>

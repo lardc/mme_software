@@ -527,27 +527,21 @@ namespace SCME.Service.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool TOUEmulation {
             get {
                 return ((bool)(this["TOUEmulation"]));
             }
-            set {
-                this["TOUEmulation"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("11")]
         public int TOUNode {
             get {
                 return ((int)(this["TOUNode"]));
-            }
-            set {
-                this["TOUNode"] = value;
             }
         }
     }
