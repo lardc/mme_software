@@ -346,7 +346,11 @@ namespace SCME.Service.IO
                 ushort FactState = ReadDeviceState(WaitedState, 3000);
 
                 if (FactState != (ushort)WaitedState)
+                {
+                    m_SafetyAlarm = true;
+                    FireSafetyEvent(m_SafetyAlarm);
                     throw new Exception(string.Format("Device is in a bad state. WaitedState={0}, factstate={1}.", (((ushort)WaitedState)).ToString(), FactState.ToString()));
+                }
 
                 CheckSafetyOn();
 
@@ -376,7 +380,12 @@ namespace SCME.Service.IO
                 ushort FactState = ReadDeviceState(WaitedState, 3000);
 
                 if (FactState != (ushort)WaitedState)
+                {
+                    m_SafetyAlarm = true;
+                    FireSafetyEvent(m_SafetyAlarm);
                     throw new Exception(string.Format("Device is in a bad state. WaitedState={0}, factstate={1}.", (((ushort)WaitedState)).ToString(), FactState.ToString()));
+                }
+                    
 
                 SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "Commutation optical safety is off");
             }
