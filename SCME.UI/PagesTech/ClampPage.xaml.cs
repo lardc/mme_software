@@ -198,6 +198,7 @@ namespace SCME.UI.PagesTech
         private void btnSafetySystemOff_OnClick(object sender, RoutedEventArgs e)
         {
             //выключаем систему безопасности
+            Cache.Net.SetSafetyMode(SafetyMode.Disabled);
             Cache.Net.SafetySystemOff();
         }
 

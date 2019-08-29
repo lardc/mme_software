@@ -297,28 +297,29 @@ namespace SCME.Service.IO
 
         public void SetSafetyMode(SafetyMode safetyMode) => _SafetyMode = safetyMode;
 
-        private void WriteSafetyRegister(bool isOn)
+        private void WriteSafetyRegister()
         {
-            if (isOn == false)
-            {
-                WriteRegister(REG_EN_SFTY_IN1, 0);
-                WriteRegister(REG_EN_SFTY_IN2, 1);
-                WriteRegister(REG_EN_SFTY_IN3, 0);
-            }
-            else
-            {
-                WriteRegister(REG_EN_SFTY_IN2, 0);
-                if (_SafetyMode == SafetyMode.Internal)
+            if (Properties.Settings.Default.IsWriteSafetyRegister == true)
+                switch (_SafetyMode)
                 {
-                    WriteRegister(REG_EN_SFTY_IN1, 1);
-                    WriteRegister(REG_EN_SFTY_IN3, 0);
+                    case SafetyMode.Internal:
+                        WriteRegister(REG_EN_SFTY_IN1, 1);
+                        WriteRegister(REG_EN_SFTY_IN2, 0);
+                        WriteRegister(REG_EN_SFTY_IN3, 0);
+                        break;
+                    case SafetyMode.External:
+                        WriteRegister(REG_EN_SFTY_IN1, 0);
+                        WriteRegister(REG_EN_SFTY_IN2, 0);
+                        WriteRegister(REG_EN_SFTY_IN3, 1);
+                        break;
+                    case SafetyMode.Disabled:
+                        WriteRegister(REG_EN_SFTY_IN1, 0);
+                        WriteRegister(REG_EN_SFTY_IN2, 1);
+                        WriteRegister(REG_EN_SFTY_IN3, 0);
+                        break;
+                    default:
+                        throw new NotImplementedException("WriteSafetyRegister _SafetyMode != Internal && _SafetyMode != Internal");
                 }
-                else
-                {
-                    WriteRegister(REG_EN_SFTY_IN1, 0);
-                    WriteRegister(REG_EN_SFTY_IN3, 1);
-                }
-            }
         }
 
         internal void SetSafetyOn()
@@ -331,7 +332,7 @@ namespace SCME.Service.IO
                 if (m_IsCommutationEmulation)
                     return;
 
-                WriteSafetyRegister(true);
+                WriteSafetyRegister();
 
                 CallAction(ACT_SAFETY_ON);
 
@@ -361,7 +362,7 @@ namespace SCME.Service.IO
                 if (m_IsCommutationEmulation)
                     return;
 
-                WriteSafetyRegister(false);
+                WriteSafetyRegister();
 
                 CallAction(ACT_SAFETY_OFF);
 

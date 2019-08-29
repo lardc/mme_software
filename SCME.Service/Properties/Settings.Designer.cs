@@ -544,5 +544,17 @@ namespace SCME.Service.Properties {
                 return ((int)(this["TOUNode"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsWriteSafetyRegister {
+            get {
+                return ((bool)(this["IsWriteSafetyRegister"]));
+            }
+            set {
+                this["IsWriteSafetyRegister"] = value;
+            }
+        }
     }
 }

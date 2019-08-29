@@ -176,5 +176,8 @@
     <Setting Name="TOUNode" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">11</Value>
     </Setting>
+    <Setting Name="IsWriteSafetyRegister" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
