@@ -141,6 +141,10 @@ namespace SCME.Service.IO
                     }
                 }
 
+
+                WriteRegister(REG_EN_SFTY_IN4, 0);
+                SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "REG_EN_SFTY_IN4 write state 0");
+
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
                 FireConnectionEvent(m_ConnectionState, "Commutation initialized");
@@ -592,6 +596,11 @@ namespace SCME.Service.IO
         /// Enable safety input #3 (External)
         /// </summary>
         internal const ushort REG_EN_SFTY_IN3 = 82;
+
+        /// <summary>
+        /// Enable safety input #4 (Reserved)
+        /// </summary>
+        internal const ushort REG_EN_SFTY_IN4 = 83;
 
         internal const ushort
 

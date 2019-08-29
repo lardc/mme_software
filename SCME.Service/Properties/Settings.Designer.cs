@@ -545,15 +545,12 @@ namespace SCME.Service.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsWriteSafetyRegister {
             get {
                 return ((bool)(this["IsWriteSafetyRegister"]));
-            }
-            set {
-                this["IsWriteSafetyRegister"] = value;
             }
         }
     }
