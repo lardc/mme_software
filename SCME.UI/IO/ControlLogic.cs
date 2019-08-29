@@ -709,6 +709,7 @@ namespace SCME.UI.IO
             try
             {
                 m_ControlClient.SafetySystemOff();
+                Cache.Main.VM.SafetyMode = SafetyMode.Disabled;
             }
             catch (CommunicationException ex)
             {

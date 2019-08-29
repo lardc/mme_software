@@ -114,6 +114,8 @@ namespace SCME.Types
         Internal = 0,
         [EnumMember]
         External,
+        [EnumMember]
+        Disabled,
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
