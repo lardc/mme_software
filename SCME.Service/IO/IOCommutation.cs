@@ -308,12 +308,12 @@ namespace SCME.Service.IO
                 {
                     case SafetyMode.Internal:
                         WriteRegister(REG_EN_SFTY_IN1, 1);
-                        WriteRegister(REG_EN_SFTY_IN2, 0);
+                        WriteRegister(REG_EN_SFTY_IN2, 1);
                         WriteRegister(REG_EN_SFTY_IN3, 0);
                         break;
                     case SafetyMode.External:
                         WriteRegister(REG_EN_SFTY_IN1, 0);
-                        WriteRegister(REG_EN_SFTY_IN2, 0);
+                        WriteRegister(REG_EN_SFTY_IN2, 1);
                         WriteRegister(REG_EN_SFTY_IN3, 1);
                         break;
                     case SafetyMode.Disabled:
