@@ -621,11 +621,16 @@ namespace SCME.Service
 
         public string NotReadyDevicesToStartDynamic()
         {
-            if(m_ParametersGateDyn == null)
+            
+            if (m_ParametersGateDyn == null)
             {
-                return "NotReadyDevicesToStartDynamic - не реализован";
+                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, "NotReadyDevicesToStartDynamic масивы параметров не инициализированы");
+                return string.Empty;
             }
+
             string res = "";
+
+
 
             var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
             orderedParameters.AddRange(m_ParametersGateDyn);
