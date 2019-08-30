@@ -859,8 +859,11 @@ namespace SCME.Service
             m_Stop = false;
 
             if (m_State == DeviceState.InProcess)
+            {
                 ThrowFaultException(ComplexParts.Service, "Test is already started", String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name), false);
-
+                //SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, "Start bug ");
+            }
+                
             IOCommutation m_IOActiveCommutation = null;
 
             if (ParametersComm.BlockIndex == Types.Commutation.HWBlockIndex.Block1)
@@ -913,7 +916,13 @@ namespace SCME.Service
             m_Stop = false;
 
             //наладчик в принципе не может запускать данную реализацию, но забыть включить систему безопасности он может, поэтому спасём оператора
-            SafetySystemOn();
+            SetSafetyState(m_IOCommutation, true);
+            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
+                m_State = DeviceState.None;
+                return false;
+            }
 
             if (m_State == DeviceState.InProcess)
                 ThrowFaultException(ComplexParts.Service, "Test is already started", String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name), false);
@@ -1304,6 +1313,12 @@ namespace SCME.Service
             else m_IOActiveCommutation = m_IOCommutationEx;
 
             SetSafetyState(m_IOCommutation, true);
+            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
+                m_State = DeviceState.None;
+                return;
+            }
 
             try
             {
@@ -1446,7 +1461,7 @@ namespace SCME.Service
                                 }
                                 catch (Exception ex)
                                 {
-                                    ThrowFaultException(ComplexParts.IH, ex.Message, "Start IH test");
+                                    ThrowFaultException(ComplexParts.TOU, ex.Message, "Start TOU test");
                                 }
                             }
                         }

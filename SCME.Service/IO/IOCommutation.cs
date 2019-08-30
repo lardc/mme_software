@@ -267,11 +267,12 @@ namespace SCME.Service.IO
             m_SafetyOn = false;
         }
 
-        private ushort ReadDeviceState(Types.Commutation.HWDeviceState WaitedState, int Timeout)
+        private ushort ReadDeviceStateWithAlarm(Types.Commutation.HWDeviceState WaitedState, int Timeout)
         //реализация чтения состояния конечного автомата
         //в WaitedState принимается состояние, в которое должен перейти конечный автомат 
         //реализация ожидает перехода конечного автомата в состояние WaitedState в течении времени Timeout
         //реализация возвращает считанный номер состояния конечного автомата
+        //В случаи аларма прекращаем ожидание
         {
             if (m_IsCommutationEmulation)
                 return (ushort)WaitedState;
@@ -289,6 +290,13 @@ namespace SCME.Service.IO
                     Thread.Sleep(100);
 
                     State = GetDeviceState();
+
+                    if((Types.Commutation.HWDeviceState)State == Types.Commutation.HWDeviceState.SafetyTrig)
+                    {
+                        m_SafetyAlarm = true;
+                        FireSafetyEvent(m_SafetyAlarm);
+                        return State;
+                    }
 
                     //считано состояние State, равное ожидаемому состоянию WaitedState - прерываем цикл ожидания
                     if (State == (ushort)WaitedState) return State;
@@ -334,7 +342,15 @@ namespace SCME.Service.IO
                 SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "Try to commutation optical safety set to on");
 
                 if (m_IsCommutationEmulation)
+                {
+                    if(Properties.Settings.Default.AlarmEmulation)
+                    {
+                        m_SafetyAlarm = true;
+                        FireSafetyEvent(m_SafetyAlarm);
+                        //throw new Exception("Safety alarm");
+                    }
                     return;
+                }
 
                 WriteSafetyRegister();
 
@@ -343,14 +359,12 @@ namespace SCME.Service.IO
                 //блок коммутации должен перейти в состояние SafetyActive. подождём его
                 var WaitedState = Types.Commutation.HWDeviceState.SafetyActive;
 
-                ushort FactState = ReadDeviceState(WaitedState, 3000);
+                ushort FactState = ReadDeviceStateWithAlarm(WaitedState, 3000);
 
+                if (FactState == (ushort)Types.Commutation.HWDeviceState.SafetyTrig)
+                    return;
                 if (FactState != (ushort)WaitedState)
-                {
-                    m_SafetyAlarm = true;
-                    FireSafetyEvent(m_SafetyAlarm);
                     throw new Exception(string.Format("Device is in a bad state. WaitedState={0}, factstate={1}.", (((ushort)WaitedState)).ToString(), FactState.ToString()));
-                }
 
                 CheckSafetyOn();
 
@@ -367,8 +381,14 @@ namespace SCME.Service.IO
 
                 SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "Try to commutation optical safety set to off");
 
+
+
                 if (m_IsCommutationEmulation)
+                {
+                    if (Properties.Settings.Default.AlarmEmulation)
+                        m_SafetyAlarm = false;
                     return;
+                }
 
                 WriteSafetyRegister();
 
@@ -377,14 +397,13 @@ namespace SCME.Service.IO
                 //блок должен перейти в состояние PowerReady. подождём его
                 var WaitedState = Types.Commutation.HWDeviceState.PowerReady;
 
-                ushort FactState = ReadDeviceState(WaitedState, 3000);
+                ushort FactState = ReadDeviceStateWithAlarm(WaitedState, 3000);
+
+                if (FactState == (ushort)Types.Commutation.HWDeviceState.SafetyTrig)
+                    return;
 
                 if (FactState != (ushort)WaitedState)
-                {
-                    m_SafetyAlarm = true;
-                    FireSafetyEvent(m_SafetyAlarm);
-                    throw new Exception(string.Format("Device is in a bad state. WaitedState={0}, factstate={1}.", (((ushort)WaitedState)).ToString(), FactState.ToString()));
-                }
+                     throw new Exception(string.Format("Device is in a bad state. WaitedState={0}, factstate={1}.", (((ushort)WaitedState)).ToString(), FactState.ToString()));
                     
 
                 SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "Commutation optical safety is off");

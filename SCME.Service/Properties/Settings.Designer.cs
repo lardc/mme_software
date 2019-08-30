@@ -553,5 +553,14 @@ namespace SCME.Service.Properties {
                 return ((bool)(this["IsWriteSafetyRegister"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AlarmEmulation {
+            get {
+                return ((bool)(this["AlarmEmulation"]));
+            }
+        }
     }
 }

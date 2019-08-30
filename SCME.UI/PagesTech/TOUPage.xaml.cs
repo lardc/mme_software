@@ -114,6 +114,8 @@ namespace SCME.UI.PagesTech
             if (VM.IsRunning)
                 return;
 
+            VM.IsRunning = true;
+
             var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
             var paramVtm = new Types.SL.TestParameters { IsEnabled = false };
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
@@ -136,11 +138,6 @@ namespace SCME.UI.PagesTech
                 return;
 
             ClearStatus();
-            VM.IsRunning = true;
-
-
-            //Cache.Net.Start()
-
         }
     }
 }
