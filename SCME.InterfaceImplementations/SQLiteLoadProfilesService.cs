@@ -318,7 +318,7 @@ namespace SCME.InterfaceImplementations
 
             */
             //построение списка профилей последних редакций. последние редакции профилей имеют максимальное значение идентификаторов PROF_ID
-            string profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, P.PROF_VERS, DATETIME(P.PROF_TS)
+            string profilesSelect = @"SELECT P.PROF_ID, P.PROF_NAME, P.PROF_GUID, P.PROF_VERS, P.PROF_TS
                                           FROM (
                                                  SELECT MAX(PR.PROF_ID) AS MAX_PROF_ID
                                                  FROM PROFILES PR
@@ -342,7 +342,7 @@ namespace SCME.InterfaceImplementations
 
                 using (var reader = condCmd.ExecuteReader())
                     while (reader.Read())
-                        res.Add(new ProfileForSqlSelect( Convert.ToInt32((long)reader[0]), (string)reader[1], (Guid)reader[2], Convert.ToInt32((long)reader[3]), DateTime.Parse((string)reader[4])));
+                        res.Add(new ProfileForSqlSelect( Convert.ToInt32((long)reader[0]), (string)reader[1], (Guid)reader[2], Convert.ToInt32((long)reader[3]), (DateTime)reader[4] ));
             }
 
             return res;

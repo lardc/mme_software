@@ -139,6 +139,7 @@
                         <TextBlock FontSize="28" Text="{Binding Path=Name}">
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
+                                    <MenuItem Name="EditProfileMenuItem" Header="{x:Static res:Resources.Edit}" Click="EditProfileMenuItem_Click"/>
                                     <MenuItem Header="{x:Static res:Resources.Delete}" Click="MenuItem_OnClick"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>

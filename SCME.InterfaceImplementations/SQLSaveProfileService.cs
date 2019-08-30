@@ -366,7 +366,7 @@ namespace SCME.InterfaceImplementations
                     newVersion = profile.Version;
                 }
 
-            ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, newVersion, DateTime.Now);
+            ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, newVersion, profile.ProfileTS);
 
             _profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key;
             _profileInsertCommand.Parameters["@VERSION"].Value = profileSql.Version;

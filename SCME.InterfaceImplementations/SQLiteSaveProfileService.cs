@@ -337,7 +337,7 @@ namespace SCME.InterfaceImplementations
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
                 profileInsertCommand.Prepare();
 
-                ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(newVersion), DateTime.Now);
+                ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(newVersion), profile.ProfileTS);
 
                 //profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
                 profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key; //Guid.NewGuid(); нельзя генерировать новое значение

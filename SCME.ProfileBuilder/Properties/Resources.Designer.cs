@@ -529,6 +529,15 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Изменить.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Подключить.
         /// </summary>
         public static string Enable {

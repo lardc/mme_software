@@ -77,7 +77,7 @@ namespace SCME.InterfaceImplementations
                     profileItem.Exists = false;
                     profilesToChange.Add(profileItem);
                 }
-                else if (profileItem.HasChanges(oldProfile))
+                else if (profileItem.ProfileTS != oldProfile.ProfileTS)
                 {
                     profileItem.Exists = true;
                     profilesToChange.Add(profileItem);

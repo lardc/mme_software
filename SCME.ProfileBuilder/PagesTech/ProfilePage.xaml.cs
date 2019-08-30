@@ -38,6 +38,8 @@ namespace SCME.ProfileBuilder.PagesTech
         private string m_OldName = string.Empty;
         private Profile _selectedItem;
 
+        private List<Guid> _ChangingProfiles = new List<Guid>();
+
         public ProfilePage(IProfilesService profilesService)
         {
             InitializeComponent();
@@ -185,14 +187,22 @@ namespace SCME.ProfileBuilder.PagesTech
                 exists = CheckForExistingName(m_ProfileEngine.PlainCollection, name + i);
             } while (exists);
 
+            var nextGenerationKey = Guid.NewGuid();
             var newProfile = new Profile
             {
+                Version = 1,
                 Name = name + i,
-                Key = Guid.NewGuid(),
-                ParametersComm = Settings.Default.SinglePositionModuleMode ? ModuleCommutationType.Direct : ModuleCommutationType.MT3,
+                Key = nextGenerationKey,
+                NextGenerationKey = nextGenerationKey,
+                ParametersComm =
+                    Settings.Default.SinglePositionModuleMode
+                        ? ModuleCommutationType.Direct
+                        : ModuleCommutationType.MT3,
                 IsParent = true
 
             };
+
+            _ChangingProfiles.Add(newProfile.Key);
 
             var index =
                 m_ProfileEngine.PlainCollection.TakeWhile(
@@ -270,6 +280,13 @@ namespace SCME.ProfileBuilder.PagesTech
                 tabControl.SelectedIndex = 0;
                 return;
             }
+
+            m_ProfileEngine.PlainCollection.Join(_ChangingProfiles, m => m.Key, m => m, (m, n) => m).ToList().ForEach((m) =>
+            {
+                m.Timestamp = DateTime.Now;
+            });
+            _ChangingProfiles.Clear();
+
             //profilesList.IsCloseVisible = Visibility.Collapsed;
             treeViewProfiles.Items.Refresh();
             tbProfileName.HideTip();
@@ -286,6 +303,7 @@ namespace SCME.ProfileBuilder.PagesTech
                     ProfileKey = profile.Key,
                     ProfileTS = profile.Timestamp,
                     NextGenerationKey = Guid.NewGuid(),
+                    Version = profile.Version,
                     GateTestParameters = new List<GateTestParameters>(),
                     VTMTestParameters = new List<Types.SL.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
@@ -345,7 +363,19 @@ namespace SCME.ProfileBuilder.PagesTech
                 profileItems.Add(profileItem);
             }
 
-            _profilesService.SaveProfiles(profileItems);
+           
+
+            var dbProfiles = _profilesService.SaveProfiles(profileItems);
+
+            dbProfiles.Join(profileItems, m => m.Key, n => n.NextGenerationKey, (m, n) => new { profileSql = m, profile = n }).ToList().ForEach((m) =>
+            {
+                m.profile.Version = m.profileSql.Version;
+                m.profile.ProfileKey = m.profileSql.Key;
+                m.profile.ProfileTS = m.profileSql.TS;
+                m.profile.NextGenerationKey = Guid.NewGuid();
+            });
+
+
             m_ProfileEngine = new ProfileDictionary(GetProfiles());
             treeViewProfiles.ItemsSource = ProfileItems;
             InitFilter();
@@ -588,6 +618,11 @@ namespace SCME.ProfileBuilder.PagesTech
         {
             tabControl.SelectedIndex = 0;
             InitSorting();
+        }
+
+        private void EditProfileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _ChangingProfiles.Add(((sender as MenuItem).DataContext as Profile).Key);
         }
     }
 }
