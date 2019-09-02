@@ -192,7 +192,7 @@ namespace SCME.UI.IO
                     //пользователь нажал в появившемся диалоговом окне кнопку OK
                     //сбрасываем состояние SafetyTrig. справедливо для оптической, механической шторки и оптической шторки подключенной как кнопка Стоп. только после этого можно разжать пресс                     
                     Cache.Net.ClearSafetyTrig();
-
+                    Cache.Net.Stop();
                     
                     Cache.Clamp.IsRunning = false;
                     //разжимаем зажимное устройство
@@ -341,9 +341,18 @@ namespace SCME.UI.IO
                         //сбрасываем состояние SafetyTrig. справедливо и для оптической и механической шторки. только после этого можно разжимать пресс                     
                         Cache.Net.ClearSafetyTrig();
 
-                        //разжимаем зажимное устройство
                         Cache.Clamp.IsRunning = false;
+                        //разжимаем зажимное устройство
                         Cache.Clamp.Unclamp();
+                        //Cache.Clamp.IsRunning в состоянии true после разжатия
+                        Cache.Clamp.IsRunning = false;
+
+                        Cache.TOU.VM.IsRunning = false;
+                        Cache.IH.IsRunning = false;
+                        Cache.RAC.IsRunning = false;
+                        Cache.QrrTq.IsRunning = false;
+                        Cache.ATU.IsRunning = false;
+                        Cache.DVdt.IsRunning = false;
 
                         //прячем иконку Safety
                         Cache.Main.VM.IsSafetyBreakIconVisible = false;
