@@ -1,12 +1,11 @@
-﻿using SCME.UI.IO;
+﻿using SCME.Types;
+using SCME.UI.IO;
 using SCME.UI.PagesCommon;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 
 namespace SCME.UI
 {
-    internal enum UserWorkMode : byte { Operator, ServiceMan, SpecialMeasure, OperatorBuildMode }
-
     internal static class Cache
     {
         private static HardwareStatusPage ms_WelcomeScreen;

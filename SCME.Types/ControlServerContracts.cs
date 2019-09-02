@@ -18,6 +18,10 @@ namespace SCME.Types
     {
         [OperationContract]
         [FaultContract(typeof(FaultData))]
+        void SetUserWorkMode(UserWorkMode userWorkMode);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
         void SetSafetyMode(SafetyMode safetyMode);
 
         [OperationContract]

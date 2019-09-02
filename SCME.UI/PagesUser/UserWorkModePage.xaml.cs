@@ -14,6 +14,7 @@ using SCME.UI.IO;
 using SCME.UI.Properties;
 using System.Windows.Navigation;
 using SCME.UI.CustomControl;
+using SCME.Types;
 
 namespace SCME.UI.PagesUser
 {
@@ -65,6 +66,7 @@ namespace SCME.UI.PagesUser
             {
                 UserWorkMode userWorkMode = ((UserWorkMode)(Sender as Button).CommandParameter) ;
 
+                Cache.Net.SetUserWorkMode(userWorkMode);
                 switch (userWorkMode)
                 {
                     case UserWorkMode.Operator:

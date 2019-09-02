@@ -346,6 +346,11 @@ namespace SCME.Service
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, $"Safety mode is: {safetyMode}");
         }
 
+        public void SetUserWorkMode(UserWorkMode userWorkMode)
+        {
+            m_IOMain.SetUserWorkMode(userWorkMode);
+        }
+
 
 
         #endregion

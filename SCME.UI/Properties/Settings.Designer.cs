@@ -370,5 +370,17 @@ namespace SCME.UI.Properties {
                 this["TOUIsVisible"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WindowIs1280x1024 {
+            get {
+                return ((bool)(this["WindowIs1280x1024"]));
+            }
+            set {
+                this["WindowIs1280x1024"] = value;
+            }
+        }
     }
 }

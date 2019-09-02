@@ -78,20 +78,31 @@ namespace SCME.UI
             try
             {
                 Cache.Main = this;
-
-                if (Settings.Default.NormalWindow)
-                {
-                    WindowStyle = WindowStyle.SingleBorderWindow;
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    ResizeMode = ResizeMode.CanResize;
-                    WindowState = WindowState.Maximized;
-                }
-                else
+                if (Settings.Default.WindowIs1280x1024 == true)
                 {
                     Top = SystemParameters.WorkArea.Top;
                     Left = SystemParameters.WorkArea.Left;
-                    Width = SystemParameters.WorkArea.Width;
-                    Height = SystemParameters.WorkArea.Height;
+                    Width = 1280;
+                    Height = 1024;
+                    WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    if (Settings.Default.NormalWindow)
+                    {
+                        WindowStyle = WindowStyle.SingleBorderWindow;
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                        ResizeMode = ResizeMode.CanResize;
+                        WindowState = WindowState.Maximized;
+
+                    }
+                    else
+                    {
+                        Top = SystemParameters.WorkArea.Top;
+                        Left = SystemParameters.WorkArea.Left;
+                        Width = SystemParameters.WorkArea.Width;
+                        Height = SystemParameters.WorkArea.Height;
+                    }
                 }
 
                 Cache.Storage = new LocalStorage(Settings.Default.StoragePath);

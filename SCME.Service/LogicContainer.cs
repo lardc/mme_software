@@ -63,6 +63,7 @@ namespace SCME.Service
         private DeviceConnectionState m_ConnectionState = DeviceConnectionState.None;
         private Boolean m_Stop;
         private ComplexSafety m_SafetyType;
+        private UserWorkMode _UserWorkMode;
 
         public LogicContainer(BroadcastCommunication Communication)
         {
@@ -1546,11 +1547,19 @@ namespace SCME.Service
             FireStopEvent();
         }
 
+        internal void SetUserWorkMode(UserWorkMode userWorkMode)
+        {
+            _UserWorkMode = userWorkMode;
+        }
+
         internal void Squeeze(Types.Clamping.TestParameters ClampingParameters)
         {
             try
             {
-                m_Thread.StartSingle(Dummy => m_IOClamping.Squeeze(ClampingParameters, false));
+                if (_UserWorkMode != UserWorkMode.OperatorBuildMode)
+                    m_Thread.StartSingle(Dummy => m_IOClamping.Squeeze(ClampingParameters, false));
+                else
+                    SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Note, "Call Squeeze function, Squeeze not run, operator mode: OperatorBuildMode");
             }
             catch (Exception ex)
             {
@@ -1562,8 +1571,13 @@ namespace SCME.Service
         {
             try
             {
-                if (m_ClampingSystemConnected && m_Param.IsClampEnabled)
-                    m_Thread.StartSingle(Dummy => m_IOClamping.Unsqueeze(ClampingParameters));
+                if (_UserWorkMode != UserWorkMode.OperatorBuildMode)
+                {
+                    if (m_ClampingSystemConnected && m_Param.IsClampEnabled)
+                        m_Thread.StartSingle(Dummy => m_IOClamping.Unsqueeze(ClampingParameters));
+                }
+                else
+                    SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Note, "Call Unsqueeze function, Squeeze not run, operator mode: OperatorBuildMode");
             }
             catch (Exception ex)
             {

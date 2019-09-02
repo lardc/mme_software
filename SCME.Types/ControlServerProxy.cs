@@ -259,5 +259,10 @@ namespace SCME.Types
         {
             Channel.SetSafetyMode(safetyMode);
         }
+
+        public void SetUserWorkMode(UserWorkMode userWorkMode)
+        {
+            Channel.SetUserWorkMode(userWorkMode);
+        }
     }
 }
