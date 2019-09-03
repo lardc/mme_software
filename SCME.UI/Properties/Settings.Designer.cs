@@ -382,5 +382,17 @@ namespace SCME.UI.Properties {
                 this["WindowIs1280x1024"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Profile")]
+        public global::SCME.Types.DUTType DUTType {
+            get {
+                return ((global::SCME.Types.DUTType)(this["DUTType"]));
+            }
+            set {
+                this["DUTType"] = value;
+            }
+        }
     }
 }

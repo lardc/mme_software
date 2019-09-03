@@ -653,23 +653,35 @@ namespace SCME.UI.PagesUser
 
                 if (this.Profile != null)
                 {
-                    ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-
-                    switch (profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name))
+                    switch (Settings.Default.DUTType)
                     {
-                        case SubjectForMeasure.PSD:
-                            needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
-                            break;
-
-                        case SubjectForMeasure.PSE:
+                        case DUTType.Element:
                             needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
                             break;
-
-                        default:
-                            needSave = false;
+                        case DUTType.Device:
+                            needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
                             break;
+                        case DUTType.Profile:
+                            ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                            SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(Profile.Name);
+                            switch (subjectForMeasure)
+                            {
+                                case SubjectForMeasure.PSE:
+                                    needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
+                                    break;
+                                case SubjectForMeasure.PSD:
+                                    needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
+                                    break;
+                                default:
+                                    needSave = false;
+                                    break;
+                            }
+                            break;
+                        default:
+                            throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                     }
                 }
+
 
                 if (needSave)
                 {
@@ -2878,6 +2890,40 @@ namespace SCME.UI.PagesUser
             Cache.Net.StopHeating();
         }
 
+        private void EnabledPSDMode()
+        {
+            lbPsdJob.Visibility = Visibility.Visible;
+            tbPsdJob.Visibility = Visibility.Visible;
+
+            lbPsdSerialNumber.Visibility = Visibility.Visible;
+            tbPsdSerialNumber.Visibility = Visibility.Visible;
+
+            lbPseNumber.Visibility = Visibility.Collapsed;
+            tbPseNumber.Visibility = Visibility.Collapsed;
+
+            lbPseJob.Visibility = Visibility.Collapsed;
+            tbPseJob.Visibility = Visibility.Collapsed;
+
+            tbPsdJob.Focus();
+        }
+
+        private void EnabledPSEMode()
+        {
+            lbPseNumber.Visibility = Visibility.Visible;
+            tbPseNumber.Visibility = Visibility.Visible;
+
+            lbPseJob.Visibility = Visibility.Visible;
+            tbPseJob.Visibility = Visibility.Visible;
+
+            lbPsdJob.Visibility = Visibility.Collapsed;
+            tbPsdJob.Visibility = Visibility.Collapsed;
+
+            lbPsdSerialNumber.Visibility = Visibility.Collapsed;
+            tbPsdSerialNumber.Visibility = Visibility.Collapsed;
+
+            lbPseJob.Focus();
+        }
+
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
         {          
             tbPsdJob.Text = "";
@@ -2905,51 +2951,32 @@ namespace SCME.UI.PagesUser
             else
             {
                 //случай режима отличного от 'режим специальных измерений'. поля для ввода идентификационных данных должны быть введены, поэтому делаем их видимыми
-                ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-                Types.SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name);
 
-                switch (subjectForMeasure)
+                switch (Settings.Default.DUTType)
                 {
-                    case Types.SubjectForMeasure.PSD:
+                    case DUTType.Element:
+                        EnabledPSEMode();
+                        break;
+                    case DUTType.Device:
+                        EnabledPSDMode();
+                        break;
+                    case DUTType.Profile:
+                        ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                        SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(Profile.Name);
+                        switch (subjectForMeasure)
                         {
-                            //видны
-                            lbPsdJob.Visibility = Visibility.Visible;
-                            tbPsdJob.Visibility = Visibility.Visible;
-
-                            lbPsdSerialNumber.Visibility = Visibility.Visible;
-                            tbPsdSerialNumber.Visibility = Visibility.Visible;
-
-                            //не видны
-                            lbPseNumber.Visibility = Visibility.Collapsed;
-                            tbPseNumber.Visibility = Visibility.Collapsed;
-
-                            lbPseJob.Visibility = Visibility.Collapsed;
-                            tbPseJob.Visibility = Visibility.Collapsed;
-
-                            tbPsdJob.Focus();
-
-                            break;
+                            case SubjectForMeasure.PSE:
+                                EnabledPSEMode();
+                                break;
+                            case SubjectForMeasure.PSD:
+                                EnabledPSDMode();
+                                break;
+                            default:
+                                break;
                         }
-
-                    case Types.SubjectForMeasure.PSE:
-                        {
-                            lbPseNumber.Visibility = Visibility.Visible;
-                            tbPseNumber.Visibility = Visibility.Visible;
-
-                            lbPseJob.Visibility = Visibility.Visible;
-                            tbPseJob.Visibility = Visibility.Visible;
-
-                            //не видны
-                            lbPsdJob.Visibility = Visibility.Collapsed;
-                            tbPsdJob.Visibility = Visibility.Collapsed;
-
-                            lbPsdSerialNumber.Visibility = Visibility.Collapsed;
-                            tbPsdSerialNumber.Visibility = Visibility.Collapsed;
-
-                            lbPseJob.Focus();
-
-                            break;
-                        }
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                 }
             }
 
@@ -2998,8 +3025,6 @@ namespace SCME.UI.PagesUser
             string pseNumber = values[4] as string;
             bool specialMeasureMode = (bool)values[5];
 
-            ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-            SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);
 
             if (specialMeasureMode)
             {
@@ -3008,23 +3033,39 @@ namespace SCME.UI.PagesUser
             }
             else
             {
-                switch (subjectForMeasure)
+                switch (Settings.Default.DUTType)
                 {
-                    case SubjectForMeasure.PSD:
-                        if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
-                            return null;
-                        else
-                            return Properties.Resources.ResultsWillNotBeSaved;
-
-                    case SubjectForMeasure.PSE:
+                    case DUTType.Element:
                         if (!string.IsNullOrEmpty(pseJob) && !string.IsNullOrEmpty(pseNumber))
                             return null;
-                        else
-                            return Properties.Resources.ResultsWillNotBeSaved;
+                        break;
+                    case DUTType.Device:
+                        if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
+                            return null;
+                        break;
+                    case DUTType.Profile:
+                        ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                        SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);
+                        switch (subjectForMeasure)
+                        {
+                            case SubjectForMeasure.PSE:
+                                if (!string.IsNullOrEmpty(pseJob) && !string.IsNullOrEmpty(pseNumber))
+                                    return null;
+                                break;
+                            case SubjectForMeasure.PSD:
+                                if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
+                                    return null;
+                                break;
+                            default:
+                                return Resources.ResultsWillNotBeSaved;
+                        }
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                 }
             }
 
-            return Properties.Resources.ResultsWillNotBeSaved;
+            return Resources.ResultsWillNotBeSaved;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -4,6 +4,17 @@ using System.Runtime.Serialization;
 namespace SCME.Types
 {
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum DUTType
+    {
+        [EnumMember]
+        Element = 0,
+        [EnumMember]
+        Device = 1,
+        [EnumMember]
+        Profile = 2
+    }
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum UserWorkMode : byte 
     {
         [EnumMember]
