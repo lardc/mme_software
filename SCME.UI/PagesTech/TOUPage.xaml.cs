@@ -17,35 +17,18 @@ namespace SCME.UI.PagesTech
     {
         
         public TOUPageVM VM { get; set; } = new TOUPageVM();
-        public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.Commutation.ModuleCommutationType CommType { get; set; }
-        public Types.Commutation.ModulePosition ModPosition { get; set; }
-
-        private const int RoomTemp = 25;
-        private const int TIME_STEP = 5;
-
-        public int Temperature { get; set; }
 
         public TOUPage()
         {
-            ClampParameters = new Types.Clamping.TestParameters { StandardForce = Types.Clamping.ClampingForceInternal.Custom, CustomForce = 5 };
-            CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
-            Temperature = RoomTemp;
-
             InitializeComponent();
-
             ClearStatus();
         }
-
-
 
         private void ClearStatus()
         {
             lblWarning.Visibility = Visibility.Collapsed;
             lblFault.Visibility = Visibility.Collapsed;
         }
-
-      
 
         internal void SetProblem(ushort Problem)
         {
@@ -88,7 +71,6 @@ namespace SCME.UI.PagesTech
             }
         }
 
-
         internal void SetResult(DeviceState State, Types.TOU.TestResults Result)
         {
             VM.IsRunning = false;
@@ -126,18 +108,56 @@ namespace SCME.UI.PagesTech
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
 
             //если пресс был зажат вручную - не стоит пробовать зажимать его ещё раз
-            ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
+            VM.Clamping.SkipClamping = Cache.Clamp.ManualClamping;
 
-            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramRAC, paramIH, paramRCC,
-                                 new Types.Commutation.TestParameters
-                                 {
-                                     BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
-                                     CommutationType = ConverterUtil.MapCommutationType(CommType),
-                                     Position = ConverterUtil.MapModulePosition(ModPosition)
-                                 }, ClampParameters, VM.Input))
+            Types.Commutation.TestParameters commutation = new Types.Commutation.TestParameters()
+            {
+                BlockIndex = (!Cache.Clamp.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
+                CommutationType = ConverterUtil.MapCommutationType(VM.CommutationType),
+                Position = ConverterUtil.MapModulePosition(VM.Position)
+            };
+
+
+
+            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramRAC, paramIH, paramRCC, commutation, VM.Clamping, VM.TOU))
                 return;
 
             ClearStatus();
+        }
+
+        public void SetTopTemp(int temeprature)
+        {
+            TopTempLabel.Content = temeprature;
+            var bottomTemp = VM.Temperature - 2;
+            var topTemp = VM.Temperature + 2;
+            if (temeprature < bottomTemp || temeprature > topTemp)
+            {
+                TopTempLabel.Background = Brushes.Tomato;
+            }
+            else
+            {
+                TopTempLabel.Background = Brushes.LightGreen;
+            }
+        }
+
+        public void SetBottomTemp(int temeprature)
+        {
+            BotTempLabel.Content = temeprature;
+            var bottomTemp = VM.Temperature - 2;
+            var topTemp = VM.Temperature + 2;
+            if (temeprature < bottomTemp || temeprature > topTemp)
+            {
+                BotTempLabel.Background = Brushes.Tomato;
+            }
+            else
+            {
+                BotTempLabel.Background = Brushes.LightGreen;
+            }
+        }
+
+        private void BtnTemp_OnClick(object sender, RoutedEventArgs e)
+        {
+            Cache.Net.StartHeating(VM.Temperature);
         }
     }
 }

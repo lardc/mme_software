@@ -15,7 +15,8 @@
 
         <ui:TryBooleanToVisibilityConverter x:Key="B2V" />
         <ui:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
-
+        <ui:EnumValueToString x:Key="E2S" />
+        
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Padding" Value="5,0,0,0" />
             <Setter Property="Height" Value="62" />
@@ -81,23 +82,61 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
-                          Text="{Binding Input.CurrentAmplitude}" />
+                          Text="{Binding TOU.CurrentAmplitude}" />
 
                 <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
                 <Label Content="{x:Static res:Resources.Itm_A}"   Grid.Column="0"  Grid.Row="3" />
                 <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="4" />
                 <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="5" />
 
-                <Label Content="{Binding State}" Grid.Column="1"  Grid.Row="2"  Margin="10" FontSize="{StaticResource FontSize26}"/>
-                <Label Content="{Binding ITM}"   Grid.Column="1"  Grid.Row="3" Margin="10"/>
-                <Label Content="{Binding TGD}"   Grid.Column="1"  Grid.Row="4" Margin="10"/>
-                <Label Content="{Binding TGT}"   Grid.Column="1"  Grid.Row="5" Margin="10"/>
+                <Label Content="{Binding State}" Grid.Column="1"  Grid.Row="2"  Margin="0" FontSize="{StaticResource FontSize26}"/>
+                <Label Content="{Binding ITM}"   Grid.Column="1"  Grid.Row="3" Margin="0"/>
+                <Label Content="{Binding TGD}"   Grid.Column="1"  Grid.Row="4" Margin="0"/>
+                <Label Content="{Binding TGT}"   Grid.Column="1"  Grid.Row="5" Margin="0"/>
 
                 <Label Name="lblWarning" x:FieldModifier="private" Background="Gold" Height="Auto" Padding="10"
                        Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Content="Warning" />
-                
+
                 <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" Padding="10"
                        Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="Fault" />
+                
+                <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.CommutationType}" />
+
+                <ComboBox Grid.Column="1" Grid.Row="8" Margin="10" Padding="5" MaxDropDownHeight="1500"
+                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
+                          SelectedItem="{Binding CommutationType, Converter={StaticResource E2S}}"
+                          Style="{StaticResource CComboboxStyle}" />
+
+                <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.Position}" />
+
+                <ComboBox Grid.Column="1" Grid.Row="9" Margin="10" Padding="5"
+                          ItemsSource="{Binding Source={StaticResource DataFromModulePositionEnum}}"
+                          SelectedItem="{Binding Position, Converter={StaticResource E2S}}"
+                          Style="{StaticResource CComboboxStyle}" />
+
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" />
+                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="10" Padding="5" Margin="10"
+                          TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
+                          Text="{Binding Clamping.Height}" />
+
+                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" />
+                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="11" Margin="10" Padding="5"
+                          TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
+                          IsNumeric="True" IsFloat="True"
+                          Text="{Binding Clamping.CustomForce}" />
+
+                <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="12" />
+                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="12"  Padding="5" Margin="10"
+                          TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}" 
+                          Text="{Binding Temperature}" />
+
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="13" Content="{x:Static res:Resources.TopTempName}" />
+                <Label Grid.Column="1" Grid.Row="13" Content="0" x:Name="TopTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0"   />
+
+                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="14" Content="{x:Static res:Resources.BotTempName}"/>
+                <Label Grid.Column="1" x:Name="BotTempLabel" Grid.Row="14" HorizontalAlignment="Right" Content="0" Background="LightGreen" Height="Auto"  Margin="0,0,7,0"  />
+                
+                
             </Grid>
         </Border>
 
@@ -110,6 +149,12 @@
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"
                 Visibility="{Binding IsRunning, Converter={StaticResource B2VI}}"
+                Margin="6" />
+
+        <Button x:Name="btnTemp" x:FieldModifier="private"
+                Grid.Column="1" Grid.Row="1"
+                Content="{x:Static res:Resources.SetTemp}"
+                Click="BtnTemp_OnClick"
                 Margin="6" />
         
         <Button Grid.Column="2" Grid.Row="1"

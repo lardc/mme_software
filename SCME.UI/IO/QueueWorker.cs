@@ -950,31 +950,35 @@ namespace SCME.UI.IO
                     Cache.QrrTq.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
                     Cache.RAC.SetTopTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
+                    Cache.TOU.SetTopTemp(temperature);
             });
         }
 
-        public void AddClampingBottomTempEvent(int temeprature)
+        public void AddClampingBottomTempEvent(int temperature)
         {
             m_ActionQueue.Enqueue(delegate
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetBottomTemp(temeprature);
+                    Cache.UserTest.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Clamp))
-                    Cache.Clamp.SetBottomTemp(temeprature);
+                    Cache.Clamp.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.DVdt))
-                    Cache.DVdt.SetBottomTemp(temeprature);
+                    Cache.DVdt.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Bvt))
-                    Cache.Bvt.SetBottomTemp(temeprature);
+                    Cache.Bvt.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.SL))
-                    Cache.SL.SetBottomTemp(temeprature);
+                    Cache.SL.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Gate))
-                    Cache.Gate.SetBottomTemp(temeprature);
+                    Cache.Gate.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.ATU))
-                    Cache.ATU.SetBottomTemp(temeprature);
+                    Cache.ATU.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.QrrTq))
-                    Cache.QrrTq.SetBottomTemp(temeprature);
+                    Cache.QrrTq.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
-                    Cache.RAC.SetBottomTemp(temeprature);
+                    Cache.RAC.SetBottomTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
+                    Cache.TOU.SetBottomTemp(temperature);
             });
         }
     }
