@@ -327,20 +327,9 @@ namespace SCME.Service.IO
                     WaitState(HWDeviceState.Ready);
 
                     ushort finish = ReadRegister(REG_TEST_FINISHED);
-                    if (finish == OPRESULT_OK)
-                    {
-                        _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
-                        _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
-                    }
-
-                    //по окончании процесса измерения - отключаем коммутацию
-                    if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
-                    {
-                        _State = DeviceState.Fault;
-                        FireTOUEvent(_State, _Result);
-                        return;
-                    }
+                    _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
+                    _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
+                    _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
 
                     _State = DeviceState.Success;
                     FireTOUEvent(_State, _Result);
@@ -349,6 +338,14 @@ namespace SCME.Service.IO
                         HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
                         HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
                         FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
+                    }
+
+                    //по окончании процесса измерения - отключаем коммутацию
+                    if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    {
+                        _State = DeviceState.Fault;
+                        FireTOUEvent(_State, _Result);
+                        return;
                     }
                 }
 
