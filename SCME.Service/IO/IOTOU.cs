@@ -20,7 +20,6 @@ namespace SCME.Service.IO
         private DeviceConnectionState _ConnectionState;
         private volatile DeviceState _State;
         private volatile TestResults _Result;
-        private volatile bool _Stop;
         internal IOCommutation ActiveCommutation { get; set; }
 
 
@@ -177,8 +176,6 @@ namespace SCME.Service.IO
             if (_State == DeviceState.InProcess)
                 throw new Exception("TOU test is already started");
 
-            _Stop = false;
-
             _Result = new TestResults()
             {
                 TestTypeId = _Parameters.TestTypeId,
@@ -206,7 +203,6 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP);
-            _Stop = true;
             _State = DeviceState.Stopped;
         }
 
@@ -267,7 +263,14 @@ namespace SCME.Service.IO
             if (_IsTOUEmulation)
                 return;
 
-            _IOAdapter.Call(_Node, Action);
+            try
+            {
+                _IOAdapter.Call(_Node, Action);
+            }
+            catch(Exception ex)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Error, ex.ToString());
+            }
         }
 
         #endregion
@@ -303,11 +306,11 @@ namespace SCME.Service.IO
                     Thread.Sleep(500);
                     FireNotificationEvent(HWProblemReason.None, HWWarningReason.None, HWFaultReason.Overflow90, HWDisableReason.None);
                     Thread.Sleep(500);
-                        _Result.ITM = (float)rand.NextDouble() * 1000;
-                        _Result.TGD = (float)rand.NextDouble() * 1000;
-                        _Result.TGT = (float)rand.NextDouble() * 1000;
-                        _State = DeviceState.Success;
-                        FireTOUEvent(_State, _Result);
+                    _Result.ITM = (float)rand.NextDouble() * 1000;
+                    _Result.TGD = (float)rand.NextDouble() * 1000;
+                    _Result.TGT = (float)rand.NextDouble() * 1000;
+                    _State = DeviceState.Success;
+                    FireTOUEvent(_State, _Result);
                     //}
                 }
                 else
@@ -338,29 +341,19 @@ namespace SCME.Service.IO
                         FireTOUEvent(_State, _Result);
                         return;
                     }
-
-                    if (_Stop)
+                    if (finish == OPRESULT_OK)
                     {
-                        _State = DeviceState.Stopped;
+                        _State = DeviceState.Success;
                         FireTOUEvent(_State, _Result);
                     }
                     else
                     {
-                        if (finish == OPRESULT_OK)
-                        {
-                            _State = DeviceState.Success;
-                            FireTOUEvent(_State, _Result);
-                        }
-                        else
-                        {
-                            _State = DeviceState.Problem;
-                            FireTOUEvent(DeviceState.Problem, _Result);
+                        _State = DeviceState.Fault;
+                        FireTOUEvent(_State, _Result);
 
-                            HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
-                            HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
-                            FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
-                            throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
-                        }
+                        HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
+                        HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
+                        FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
                     }
                 }
 
