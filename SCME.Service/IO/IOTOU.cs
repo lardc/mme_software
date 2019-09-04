@@ -323,14 +323,26 @@ namespace SCME.Service.IO
                     if (finish == OPRESULT_OK)
                     {
                         _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
+                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY) / 1000;
                         _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
+                    }
 
+                    //по окончании процесса измерения - отключаем коммутацию
+                    if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    {
+                        _State = DeviceState.Fault;
+                        FireTOUEvent(_State, _Result);
+                        return;
+                    }
+
+                    if (finish == OPRESULT_OK)
+                    {
                         _State = DeviceState.Success;
                         FireTOUEvent(_State, _Result);
                     }
                     else
                     {
+                        _State = DeviceState.Problem;
                         FireTOUEvent(DeviceState.Problem, _Result);
 
                         HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
@@ -344,6 +356,7 @@ namespace SCME.Service.IO
 
             catch (Exception ex)
             {
+                ActiveCommutation.Switch(Types.Commutation.CommutationMode.None);
                 _State = DeviceState.Fault;
                 FireTOUEvent(_State, _Result);
                 FireExceptionEvent(ex.Message);
