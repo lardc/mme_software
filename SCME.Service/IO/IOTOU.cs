@@ -341,16 +341,11 @@ namespace SCME.Service.IO
                         FireTOUEvent(_State, _Result);
                         return;
                     }
-                    if (finish == OPRESULT_OK)
-                    {
-                        _State = DeviceState.Success;
-                        FireTOUEvent(_State, _Result);
-                    }
-                    else
-                    {
-                        _State = DeviceState.Fault;
-                        FireTOUEvent(_State, _Result);
 
+                    _State = DeviceState.Success;
+                    FireTOUEvent(_State, _Result);
+                    if (finish != OPRESULT_OK)
+                    { 
                         HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
                         HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
                         FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
