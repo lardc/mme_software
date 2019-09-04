@@ -39,7 +39,7 @@
       <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="IsClampingSystemConnected" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DBOptionsLogs" Type="System.String" Scope="Application">
       <Value Profile="(Default)">synchronous=Full;failifmissing=True;</Value>
@@ -180,7 +180,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AlarmEmulation" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

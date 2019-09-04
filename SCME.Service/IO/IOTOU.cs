@@ -20,6 +20,7 @@ namespace SCME.Service.IO
         private DeviceConnectionState _ConnectionState;
         private volatile DeviceState _State;
         private volatile TestResults _Result;
+        private volatile bool _Stop;
         internal IOCommutation ActiveCommutation { get; set; }
 
 
@@ -176,6 +177,8 @@ namespace SCME.Service.IO
             if (_State == DeviceState.InProcess)
                 throw new Exception("TOU test is already started");
 
+            _Stop = false;
+
             _Result = new TestResults()
             {
                 TestTypeId = _Parameters.TestTypeId,
@@ -203,6 +206,7 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP);
+            _Stop = true;
             _State = DeviceState.Stopped;
         }
 
@@ -335,20 +339,28 @@ namespace SCME.Service.IO
                         return;
                     }
 
-                    if (finish == OPRESULT_OK)
+                    if (_Stop)
                     {
-                        _State = DeviceState.Success;
+                        _State = DeviceState.Stopped;
                         FireTOUEvent(_State, _Result);
                     }
                     else
                     {
-                        _State = DeviceState.Problem;
-                        FireTOUEvent(DeviceState.Problem, _Result);
+                        if (finish == OPRESULT_OK)
+                        {
+                            _State = DeviceState.Success;
+                            FireTOUEvent(_State, _Result);
+                        }
+                        else
+                        {
+                            _State = DeviceState.Problem;
+                            FireTOUEvent(DeviceState.Problem, _Result);
 
-                        HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
-                        HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
-                        FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
-                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+                            HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
+                            HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
+                            FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
+                            throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+                        }
                     }
                 }
 
