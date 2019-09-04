@@ -1550,6 +1550,7 @@ namespace SCME.Service
         internal void SetUserWorkMode(UserWorkMode userWorkMode)
         {
             _UserWorkMode = userWorkMode;
+            m_IOClamping.SetUserWorkMode(userWorkMode);
         }
 
         internal void Squeeze(Types.Clamping.TestParameters ClampingParameters)
