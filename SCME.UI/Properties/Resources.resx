@@ -802,4 +802,7 @@
   <data name="SafetySystemInternal" xml:space="preserve">
     <value>Turn on in the  safety</value>
   </data>
+  <data name="MessageErrorSaveTestFault" xml:space="preserve">
+    <value>An error occurred, the changes will not be saved</value>
+  </data>
 </root>

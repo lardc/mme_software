@@ -18,6 +18,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
+using SCME.UI.CustomControl;
 using SCME.UI.Properties;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -54,7 +55,7 @@ namespace SCME.UI.PagesUser
         private int m_CurrentPos = 1;
         private MeasureDialog measureDialog;
         private bool wasCurrentMore;
-        
+        private bool _HasFault = false;
         public UserTestPage()
         {
             this.DataContext = new UserTestPageViewModel();
@@ -683,7 +684,13 @@ namespace SCME.UI.PagesUser
                 }
 
 
-                if (needSave)
+                if(_HasFault == true)
+                {
+                    var dw = new DialogWindow("Error", Properties.Resources.MessageErrorSaveTestFault);
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+                }
+                else if (needSave)
                 {
                     ResultItem DataForSave = new ResultItem
                     {
@@ -931,6 +938,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetGateFault(HWFaultReason Fault)
         {
+            _HasFault = true;
             var gateResults = GetGateItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
@@ -1082,6 +1090,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetSLFault(Types.SL.HWFaultReason Fault)
         {
+            _HasFault = true;
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
 
@@ -1297,6 +1306,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetBvtFault(Types.BVT.HWFaultReason Fault)
         {
+            _HasFault = true;
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
 
@@ -1416,6 +1426,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetDVdtFault(Types.dVdt.HWFaultReason Fault)
         {
+            _HasFault = true;
             var dvDtItemContainer = GetDvDtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(dvDtItemContainer[dvdtCounter]);
 
@@ -1562,6 +1573,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetATUFault(ushort Fault)
         {
+            _HasFault = true;
             var ATUItemContainer = GetATUItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(ATUItemContainer[ATUCounter]);
 
@@ -1763,6 +1775,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetQrrTqFault(ushort Fault)
         {
+            _HasFault = true;
             var QrrTqItemContainer = GetQrrTqItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(QrrTqItemContainer[QrrTqCounter]);
 
@@ -1898,6 +1911,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetRACFault(ushort Fault)
         {
+            _HasFault = true;
             var RACItemContainer = GetRACItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
 
@@ -2031,6 +2045,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetTOUFault(ushort fault)
         {
+            _HasFault = true;
             var TOUItemContainer = GetTOUItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
 
@@ -2659,6 +2674,7 @@ namespace SCME.UI.PagesUser
 
         private void Start_Click(object Sender, RoutedEventArgs E)
         {
+            _HasFault = false;
             wasCurrentMore = false;
             //Cache.Net.StopMeasuringTemp();
             StartFirst();

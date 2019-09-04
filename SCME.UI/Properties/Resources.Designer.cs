@@ -1015,6 +1015,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на An error occurred, the changes will not be saved.
+        /// </summary>
+        public static string MessageErrorSaveTestFault {
+            get {
+                return ResourceManager.GetString("MessageErrorSaveTestFault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Min. VDRM, V.
         /// </summary>
         public static string MinVdrm_V {
