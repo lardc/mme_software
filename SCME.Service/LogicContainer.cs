@@ -1557,10 +1557,7 @@ namespace SCME.Service
         {
             try
             {
-                if (_UserWorkMode != UserWorkMode.OperatorBuildMode)
                     m_Thread.StartSingle(Dummy => m_IOClamping.Squeeze(ClampingParameters, false));
-                else
-                    SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Note, "Call Squeeze function, Squeeze not run, operator mode: OperatorBuildMode");
             }
             catch (Exception ex)
             {
@@ -1572,13 +1569,9 @@ namespace SCME.Service
         {
             try
             {
-                if (_UserWorkMode != UserWorkMode.OperatorBuildMode)
-                {
+                SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Note, $"Call Unsqueeze {m_ClampingSystemConnected} {m_Param.IsClampEnabled}");
                     if (m_ClampingSystemConnected && m_Param.IsClampEnabled)
                         m_Thread.StartSingle(Dummy => m_IOClamping.Unsqueeze(ClampingParameters));
-                }
-                else
-                    SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Note, "Call Unsqueeze function, Squeeze not run, operator mode: OperatorBuildMode");
             }
             catch (Exception ex)
             {

@@ -147,11 +147,11 @@
 
             <customControls:HardwareItem x:Name="touControl"
                                               Title="{x:Static res:Resources.TOU}"
-                                              InitializeTimeout="40000" OperationTimeout="40000"
+                                              InitializeTimeout="80000" OperationTimeout="80000"
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xGreen2}"
                                               Logo="{StaticResource TOUPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}" />
 
         </UniformGrid>
 
