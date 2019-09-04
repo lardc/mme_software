@@ -27,6 +27,7 @@ namespace SCME.UI.PagesUser
         public UserWorkModePage()
         {
             InitializeComponent();
+            Cache.Net.SetSafetyMode(Types.SafetyMode.Disabled);
         }
 
 
@@ -43,10 +44,6 @@ namespace SCME.UI.PagesUser
                 default:
                     throw new NotImplementedException();
             }
-            if (userWorkMode == UserWorkMode.Operator)
-                Cache.Net.SetSafetyMode(Types.SafetyMode.Internal);
-            else
-
             //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
             if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
                 ProfilesDbLogic.ImportProfilesFromDb();
