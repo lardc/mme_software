@@ -1980,10 +1980,10 @@ namespace SCME.UI.PagesUser
                     SetLabel(labelITM, state, true, result.ITM.ToString());
 
                 if (labelTGD != null)
-                    SetLabel(labelTGD, state, true, result.TGD.ToString());
+                    SetLabel(labelTGD, state, true, (result.TGD / 1000).ToString());
 
                 if (labelTGT != null)
-                    SetLabel(labelTGT, state, true, result.TGT.ToString());
+                    SetLabel(labelTGT, state, true, (result.TGT / 1000).ToString());
             }
         }
 

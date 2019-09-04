@@ -323,7 +323,7 @@ namespace SCME.Service.IO
                     if (finish == OPRESULT_OK)
                     {
                         _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY) / 1000;
+                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
                         _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
                     }
 

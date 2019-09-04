@@ -94,8 +94,8 @@ namespace SCME.UI.PagesTech
             VM.IsRunning = false;
             VM.State = State.ToString();
             VM.ITM = Result.ITM;
-            VM.TGD = Result.TGD;
-            VM.TGT = Result.TGT;
+            VM.TGD = Result.TGD / 1000;
+            VM.TGT = Result.TGT / 1000;
         }
 
         private void Stop_Click(object Sender, RoutedEventArgs E)
