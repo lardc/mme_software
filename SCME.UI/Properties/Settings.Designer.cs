@@ -359,39 +359,39 @@ namespace SCME.UI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool TOUIsVisible {
             get {
                 return ((bool)(this["TOUIsVisible"]));
             }
-            set {
-                this["TOUIsVisible"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool WindowIs1280x1024 {
             get {
                 return ((bool)(this["WindowIs1280x1024"]));
             }
-            set {
-                this["WindowIs1280x1024"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Profile")]
         public global::SCME.Types.DUTType DUTType {
             get {
                 return ((global::SCME.Types.DUTType)(this["DUTType"]));
             }
-            set {
-                this["DUTType"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OperatorBuildModeIsEnabled {
+            get {
+                return ((bool)(this["OperatorBuildModeIsEnabled"]));
             }
         }
     }
