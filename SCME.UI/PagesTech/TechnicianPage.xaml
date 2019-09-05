@@ -34,7 +34,7 @@
         <Style TargetType="{x:Type Button}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Opacity" Value="1" />
-            <Setter Property="Margin" Value="10" />
+            <Setter Property="Margin" Value="5" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -67,8 +67,8 @@
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility = "Disabled">
-            <UniformGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Columns="3" Margin="80,20">
+        
+       <UniformGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Columns="3" Margin="80,20">
                 <Button CommandParameter="1" Name="btnGate"
                     Visibility="{Binding Source={x:Static res:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xOrange2}">
@@ -199,7 +199,7 @@
                 </Button>
 
             </UniformGrid>
-        </ScrollViewer>
+       
         <Button Grid.Column="0" Grid.Row="1"
                 Content="{x:Static res:Resources.Back}"
                 Click="BtnBack_Click"
