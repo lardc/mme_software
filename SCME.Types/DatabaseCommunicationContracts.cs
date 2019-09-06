@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using SCME.Types.Clamping;
@@ -62,7 +63,7 @@ namespace SCME.Types
         public TestResults[] Gate { get; set; }
 
         [DataMember]
-        public SL.TestResults[] VTM { get; set; }
+        public VTM.TestResults[] VTM { get; set; }
 
         [DataMember]
         public BVT.TestResults[] BVT { get; set; }
@@ -83,7 +84,7 @@ namespace SCME.Types
         public TestParameters[] GateTestParameters { get; set; }
 
         [DataMember]
-        public SL.TestParameters[] VTMTestParameters { get; set; }
+        public VTM.TestParameters[] VTMTestParameters { get; set; }
 
         [DataMember]
         public BVT.TestParameters[] BVTTestParameters { get; set; }
@@ -137,7 +138,7 @@ namespace SCME.Types
         public List<TestParameters> GateTestParameters { get; set; }
 
         [DataMember]
-        public List<SL.TestParameters> VTMTestParameters { get; set; }
+        public List<VTM.TestParameters> VTMTestParameters { get; set; }
 
         [DataMember]
         public List<BVT.TestParameters> BVTTestParameters { get; set; }
@@ -194,6 +195,27 @@ namespace SCME.Types
         public override int GetHashCode()
         {
             return ProfileKey.GetHashCode();
+        }
+
+        public Profiles.Profile ToProfileSuperficially()
+        {
+            return new Profiles.Profile()
+            {
+                Id = Convert.ToInt32(ProfileId),
+                Version = Version,
+                Timestamp = ProfileTS,
+                Key = ProfileKey,
+                Name = ProfileName,
+            };
+        }
+
+        public Profiles.Profile ToProfileWithChildSuperficially()
+        {
+            var profile = ToProfileSuperficially();
+            profile.IsTop = true;
+            profile.Parent = null;
+            profile.Childrens = new System.Collections.ObjectModel.ObservableCollection<Profiles.ProfileDictionaryObject>( ChildProfileItems.Select(m=> m.ToProfileSuperficially() as Profiles.ProfileDictionaryObject));
+            return profile;
         }
 
         public bool HasChanges(ProfileItem oldItem)

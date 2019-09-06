@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SCME.Types.Profiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -28,5 +29,48 @@ namespace SCME.Types.SQL
             Version = version;
             TS = tS;
         }
+
+        public Profile ToProfile()
+        {
+            return new Profile()
+            {
+                Id = Id,
+                Key = Key,
+                Version = Version,
+                Timestamp = TS,
+                Name = Name
+            };
+        }
+
+        public ProfileItem ToProfileItem()
+        {
+            return new ProfileItem()
+            {
+                ProfileId = Id,
+                ProfileKey = Key,
+                Version = Version,
+                ProfileTS = TS,
+                ProfileName = Name
+            };
+        }
+
+        public ProfileItem ToProfileItemWithChild(IEnumerable<ProfileForSqlSelect> profileItems)
+        {
+            ProfileItem profile = ToProfileItem();
+            profile.ChildProfileItems = profileItems.Select(m=> m.ToProfileItem()).ToList();
+            return profile;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            else if (obj.GetType() == GetType())
+                return false;
+            else
+                return Key == (obj as ProfileForSqlSelect).Key;
+
+        }
+
     }
 }

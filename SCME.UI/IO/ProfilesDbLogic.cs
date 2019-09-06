@@ -76,7 +76,7 @@ namespace SCME.UI.IO
                     Version = profile.Version,
                     NextGenerationKey = profile.NextGenerationKey,
                     GateTestParameters = new List<TestParameters>(),
-                    VTMTestParameters = new List<Types.SL.TestParameters>(),
+                    VTMTestParameters = new List<Types.VTM.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
                     DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                     ATUTestParameters = new List<Types.ATU.TestParameters>(),
@@ -98,7 +98,7 @@ namespace SCME.UI.IO
                         profileItem.GateTestParameters.Add(gate);
                         continue;
                     }
-                    var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                    var sl = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                     if (sl != null)
                     {
                         profileItem.VTMTestParameters.Add(sl);

@@ -40,7 +40,7 @@ namespace SCME.UI.PagesUser
         private readonly Brush m_TbBrush;
         private readonly List<string> m_Errors1, m_Errors2;
         private List<Types.Gate.TestResults> m_ResultsGate1, m_ResultsGate2;
-        private List<Types.SL.TestResults> m_ResultsVTM1, m_ResultsVTM2; //m_ResultsITM1, m_ResultsITM2
+        private List<Types.VTM.TestResults> m_ResultsVTM1, m_ResultsVTM2; //m_ResultsITM1, m_ResultsITM2
         private List<Types.BVT.TestResults> m_ResultsBVT1, m_ResultsBVT2;
         private List<Types.dVdt.TestResults> _dvdTestResults1, _dvdTestResults2;
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
@@ -60,7 +60,7 @@ namespace SCME.UI.PagesUser
             this.DataContext = new UserTestPageViewModel();
 
             m_ResultsGate1 = new List<Types.Gate.TestResults>();
-            m_ResultsVTM1 = new List<Types.SL.TestResults>();
+            m_ResultsVTM1 = new List<Types.VTM.TestResults>();
             m_ResultsBVT1 = new List<Types.BVT.TestResults>();
             _dvdTestResults1 = new List<Types.dVdt.TestResults>();
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
@@ -69,7 +69,7 @@ namespace SCME.UI.PagesUser
             _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<Types.Gate.TestResults>();
-            m_ResultsVTM2 = new List<Types.SL.TestResults>();
+            m_ResultsVTM2 = new List<Types.VTM.TestResults>();
             m_ResultsBVT2 = new List<Types.BVT.TestResults>();
             _dvdTestResults2 = new List<Types.dVdt.TestResults>();
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
@@ -248,7 +248,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        public List<Types.SL.TestResults> ResultsVTM1
+        public List<Types.VTM.TestResults> ResultsVTM1
         {
             get { return m_ResultsVTM1; }
             set
@@ -258,7 +258,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        public List<Types.SL.TestResults> ResultsVTM2
+        public List<Types.VTM.TestResults> ResultsVTM2
         {
             get { return m_ResultsVTM2; }
             set
@@ -473,7 +473,7 @@ namespace SCME.UI.PagesUser
                                 BVT = (m_CurrentPos == 1) ? ResultsBVT1.ToArray() : ResultsBVT2.ToArray(),
                                 ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                                 GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
-                                VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
+                                VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                                 BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                                 ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                                 Position = m_CurrentPos,
@@ -500,7 +500,7 @@ namespace SCME.UI.PagesUser
                             BVT = (m_CurrentPos == 1) ? ResultsBVT1.ToArray() : ResultsBVT2.ToArray(),
                             ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                             GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
-                            VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
+                            VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                             BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                             ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                             Position = m_CurrentPos,
@@ -548,7 +548,7 @@ namespace SCME.UI.PagesUser
                             BVT = (m_CurrentPos == 1) ? ResultsBVT1.ToArray() : ResultsBVT2.ToArray(),
                             ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                             GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
-                            VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
+                            VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                             BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
 
                             Position = m_CurrentPos,
@@ -576,7 +576,7 @@ namespace SCME.UI.PagesUser
                         BVT = (m_CurrentPos == 1) ? ResultsBVT1.ToArray() : ResultsBVT2.ToArray(),
                         ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
-                        VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
+                        VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
                         IsHeightMeasureEnabled = true,
@@ -691,7 +691,7 @@ namespace SCME.UI.PagesUser
                         RAC = (m_CurrentPos == 1) ? ResultsRAC1.ToArray() : ResultsRAC2.ToArray(),
                         TOU = (m_CurrentPos == 1) ? ResultsTOU1.ToArray() : ResultsTOU2.ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
-                        VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
+                        VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
@@ -955,7 +955,7 @@ namespace SCME.UI.PagesUser
             {
                 for (int i = 0; i < ListViewResults1.Items.Count; i++)
                 {
-                    if (ListViewResults1.Items[i] is Types.SL.TestParameters)
+                    if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
                     {
                         IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
@@ -973,7 +973,7 @@ namespace SCME.UI.PagesUser
             {
                 for (int i = 0; i < ListViewResults2.Items.Count; i++)
                 {
-                    if (ListViewResults2.Items[i] is Types.SL.TestParameters)
+                    if (ListViewResults2.Items[i] is Types.VTM.TestParameters)
                     {
                         IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
 
@@ -991,7 +991,7 @@ namespace SCME.UI.PagesUser
             return gateResults;
         }
 
-        internal void SetResultSl(DeviceState state, Types.SL.TestResults result)
+        internal void SetResultSl(DeviceState state, Types.VTM.TestResults result)
         {
             m_StateVtm = state;
             if (state == DeviceState.InProcess)
@@ -1011,11 +1011,11 @@ namespace SCME.UI.PagesUser
             var labelVtmResult = FindChild<Label>(presenter, "labelVtmResult1");
             if (labelVtmResult != null)
                 SetLabel(labelVtmResult, state,
-                     ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray())[slCounter].VTM,
+                     ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM,
                      string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage));
 
             if (state != DeviceState.InProcess)
-                if (((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage > (Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray())[slCounter].VTM)
+                if (((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage > (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VTM");
 
             //ток. не используем реализацию SetLabel т.к. нам не надо устанавливать Background
@@ -1030,7 +1030,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        internal void SetSLWarning(Types.SL.HWWarningReason Warning)
+        internal void SetSLWarning(Types.VTM.HWWarningReason Warning)
         {
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
@@ -1043,7 +1043,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        internal void SetSLProblem(Types.SL.HWProblemReason Problem)
+        internal void SetSLProblem(Types.VTM.HWProblemReason Problem)
         {
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
@@ -1057,18 +1057,18 @@ namespace SCME.UI.PagesUser
 
             switch (Problem)
             {
-                case Types.SL.HWProblemReason.NoCurrent:
-                case Types.SL.HWProblemReason.FollowingError:
-                case Types.SL.HWProblemReason.SCurveRateIsTooLarge:
+                case Types.VTM.HWProblemReason.NoCurrent:
+                case Types.VTM.HWProblemReason.FollowingError:
+                case Types.VTM.HWProblemReason.SCurveRateIsTooLarge:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_ITM_PROBLEM");
                     break;
-                case Types.SL.HWProblemReason.VTMOverload:
+                case Types.VTM.HWProblemReason.VTMOverload:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VTM_PROBLEM");
                     break;
             }
         }
 
-        internal void SetSLFault(Types.SL.HWFaultReason Fault)
+        internal void SetSLFault(Types.VTM.HWFaultReason Fault)
         {
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
@@ -1082,12 +1082,12 @@ namespace SCME.UI.PagesUser
 
             switch (Fault)
             {
-                case Types.SL.HWFaultReason.ThermalCell1:
-                case Types.SL.HWFaultReason.ThermalCell2:
-                case Types.SL.HWFaultReason.ThermalCell3:
-                case Types.SL.HWFaultReason.ThermalCell4:
-                case Types.SL.HWFaultReason.ThermalCell5:
-                case Types.SL.HWFaultReason.Timeout:
+                case Types.VTM.HWFaultReason.ThermalCell1:
+                case Types.VTM.HWFaultReason.ThermalCell2:
+                case Types.VTM.HWFaultReason.ThermalCell3:
+                case Types.VTM.HWFaultReason.ThermalCell4:
+                case Types.VTM.HWFaultReason.ThermalCell5:
+                case Types.VTM.HWFaultReason.Timeout:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_ITM_PROBLEM");
                     break;
             }
@@ -2217,7 +2217,7 @@ namespace SCME.UI.PagesUser
                             continue;
                         }
 
-                        if (ListViewResults1.Items[i] is Types.SL.TestParameters)
+                        if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
                         {
                             ClearVtmResults(element);
                             continue;
@@ -2272,7 +2272,7 @@ namespace SCME.UI.PagesUser
                             ClearResultsGate(element);
                             continue;
                         }
-                        if (ListViewResults2.Items[i] is Types.SL.TestParameters)
+                        if (ListViewResults2.Items[i] is Types.VTM.TestParameters)
                         {
                             ClearVtmResults(element);
                             continue;
@@ -2611,7 +2611,7 @@ namespace SCME.UI.PagesUser
         }
 
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
-                                   Types.SL.TestParameters ParamsVTM,
+                                   Types.VTM.TestParameters ParamsVTM,
                                    Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
         {
             if (this.Profile != null)
@@ -2682,7 +2682,7 @@ namespace SCME.UI.PagesUser
             var options = ConverterUtil.MapCommutationType(Profile.ParametersComm, Position);
 
             m_ResultsGate1 = new List<TestResults>();
-            m_ResultsVTM1 = new List<Types.SL.TestResults>();
+            m_ResultsVTM1 = new List<Types.VTM.TestResults>();
             m_ResultsBVT1 = new List<Types.BVT.TestResults>();
             _dvdTestResults1 = new List<Types.dVdt.TestResults>();
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
@@ -2691,7 +2691,7 @@ namespace SCME.UI.PagesUser
             _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<TestResults>();
-            m_ResultsVTM2 = new List<Types.SL.TestResults>();
+            m_ResultsVTM2 = new List<Types.VTM.TestResults>();
             m_ResultsBVT2 = new List<Types.BVT.TestResults>();
             _dvdTestResults2 = new List<Types.dVdt.TestResults>();
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
@@ -2721,11 +2721,11 @@ namespace SCME.UI.PagesUser
                     continue;
                 }
 
-                var parVtm = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                var parVtm = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                 if (parVtm != null)
                 {
-                    m_ResultsVTM1.Add(new Types.SL.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsVTM2.Add(new Types.SL.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsVTM1.Add(new Types.VTM.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsVTM2.Add(new Types.VTM.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
                     parVtm.UseLsqMethod = Settings.Default.UseVTMPostProcessing;
                     continue;
                 }

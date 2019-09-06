@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="SCME.WpfControlLibrary.CustomControls.AccentAndThemeUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:viewModels="clr-namespace:SCME.WpfControlLibrary.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Column="0" Grid.Row="0" Name="AccentsListView"  ItemsSource="{x:Static viewModels:AccentAndThemeUserControlVM.AccentColors}" SelectedItem="{Binding Path=(viewModels:AccentAndThemeUserControlVM.SelectAccentWrapper)}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel  Orientation="Horizontal"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse  Width="{StaticResource BaseFontSize}" Height="{StaticResource BaseFontSize}"  Fill="{Binding Color, Mode=OneWay}"></Ellipse>
+                        <TextBlock FontSize="{StaticResource BaseFontSize}" Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+                    
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView Grid.Column="0" Grid.Row="1"  ItemsSource="{x:Static viewModels:AccentAndThemeUserControlVM.AppThemes}" SelectedItem="{Binding Path=(viewModels:AccentAndThemeUserControlVM.SelectAppThemesWrapper)}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel   Orientation="Horizontal" Background="{DynamicResource WindowBackgroundBrush}" ></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" >
+                        <Ellipse Width="{StaticResource BaseFontSize}" Height="{StaticResource BaseFontSize}"  Fill="{Binding Color, Mode=OneWay}"></Ellipse>
+                        <TextBlock FontSize="{StaticResource BaseFontSize}" Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

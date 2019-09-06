@@ -499,7 +499,7 @@ namespace SCME.InterfaceImplementations
             for (int i = 0; i < result.VTMTestParameters.Length; i++)
             {
                 if (result.VTMTestParameters[i].IsEnabled)
-                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, "SL", trans);
+                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, "VTM", trans);
             }
         }
 

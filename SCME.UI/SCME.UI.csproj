@@ -198,8 +198,8 @@
     <Compile Include="PagesTech\GatePage.xaml.cs">
       <DependentUpon>GatePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PagesTech\SLPage.xaml.cs">
-      <DependentUpon>SLPage.xaml</DependentUpon>
+    <Compile Include="PagesTech\VTMPage.xaml.cs">
+      <DependentUpon>VTMPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesCommon\ResultsPage.xaml.cs">
       <DependentUpon>ResultsPage.xaml</DependentUpon>
@@ -350,7 +350,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PagesTech\SLPage.xaml">
+    <Page Include="PagesTech\VTMPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

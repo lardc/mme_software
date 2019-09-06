@@ -45,8 +45,8 @@ namespace SCME.UI.PagesTech
                     page = Cache.Gate;
                     break;
                 case 2:
-                    Cache.SL = new SLPage();
-                    page = Cache.SL;
+                    Cache.VTM = new VTMPage();
+                    page = Cache.VTM;
                     break;
                 case 3:
                     Cache.Bvt = new BvtPage();

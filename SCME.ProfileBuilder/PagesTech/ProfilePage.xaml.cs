@@ -19,7 +19,7 @@ using SCME.Types.DatabaseServer;
 using SCME.Types.Profiles;
 using GateTestParameters = SCME.Types.Gate.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
-using VtmTestParameters = SCME.Types.SL.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
 using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
@@ -56,57 +56,20 @@ namespace SCME.ProfileBuilder.PagesTech
 
         private List<Profile> GetProfiles()
         {
-            var profileItems = _profilesService.GetProfileItems();
+            return  _profilesService.GetProfileItemsWithChildSuperficially(null).Select(m=> m.ToProfileSuperficially()).ToList();
 
-            var profiles = new List<Profile>();
-            foreach (var profileItem in profileItems)
-            {
-                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.ProfileTS)
-                {
-                    IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
-                    ParametersClamp = profileItem.ParametersClamp,
-                    Height = profileItem.Height,
-                    Temperature = profileItem.Temperature,
-                    ChilProfiles = new List<Profile>(profileItem.ChildProfileItems.Count),
-                    IsParent = true
-                };
-
-                foreach (var g in profileItem.GateTestParameters) profile.TestParametersAndNormatives.Add(g);
-                foreach (var b in profileItem.BVTTestParameters) profile.TestParametersAndNormatives.Add(b);
-                foreach (var v in profileItem.VTMTestParameters) profile.TestParametersAndNormatives.Add(v);
-                foreach (var d in profileItem.DvDTestParameterses) profile.TestParametersAndNormatives.Add(d);
-                foreach (var a in profileItem.ATUTestParameters) profile.TestParametersAndNormatives.Add(a);
-                foreach (var q in profileItem.QrrTqTestParameters) profile.TestParametersAndNormatives.Add(q);
-                foreach (var r in profileItem.RACTestParameters) profile.TestParametersAndNormatives.Add(r);
-                foreach (var t in profileItem.TOUTestParameters) profile.TestParametersAndNormatives.Add(t);
-
-                foreach (var childProfileItem in profileItem.ChildProfileItems)
-                {
-                    var childProfile = new Profile(childProfileItem.ProfileName, childProfileItem.ProfileKey,
-                        childProfileItem.ProfileTS)
-                    {
-                        IsHeightMeasureEnabled = childProfileItem.IsHeightMeasureEnabled,
-                        ParametersClamp = childProfileItem.ParametersClamp,
-                        Height = childProfileItem.Height,
-                        Temperature = childProfileItem.Temperature,
-                        IsParent = false
-                    };
-
-                    foreach (var g in childProfileItem.GateTestParameters) childProfile.TestParametersAndNormatives.Add(g);
-                    foreach (var b in childProfileItem.BVTTestParameters) childProfile.TestParametersAndNormatives.Add(b);
-                    foreach (var v in childProfileItem.VTMTestParameters) childProfile.TestParametersAndNormatives.Add(v);
-                    foreach (var d in childProfileItem.DvDTestParameterses) childProfile.TestParametersAndNormatives.Add(d);
-                    foreach (var a in childProfileItem.ATUTestParameters) childProfile.TestParametersAndNormatives.Add(a);
-                    foreach (var q in childProfileItem.QrrTqTestParameters) childProfile.TestParametersAndNormatives.Add(q);
-                    foreach (var r in childProfileItem.RACTestParameters) childProfile.TestParametersAndNormatives.Add(r);
-                    foreach (var t in childProfileItem.TOUTestParameters) childProfile.TestParametersAndNormatives.Add(t);
-
-                    profile.ChilProfiles.Add(childProfile);
-                }
-
-                profiles.Add(profile);
-            }
-            return profiles;
+                //IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
+                //ParametersClamp = profileItem.ParametersClamp,
+                //Height = profileItem.Height,
+                //Temperature = profileItem.Temperature,
+                //foreach (var g in profileItem.GateTestParameters) profile.TestParametersAndNormatives.Add(g);
+                //foreach (var b in profileItem.BVTTestParameters) profile.TestParametersAndNormatives.Add(b);
+                //foreach (var v in profileItem.VTMTestParameters) profile.TestParametersAndNormatives.Add(v);
+                //foreach (var d in profileItem.DvDTestParameterses) profile.TestParametersAndNormatives.Add(d);
+                //foreach (var a in profileItem.ATUTestParameters) profile.TestParametersAndNormatives.Add(a);
+                //foreach (var q in profileItem.QrrTqTestParameters) profile.TestParametersAndNormatives.Add(q);
+                //foreach (var r in profileItem.RACTestParameters) profile.TestParametersAndNormatives.Add(r);
+                //foreach (var t in profileItem.TOUTestParameters) profile.TestParametersAndNormatives.Add(t);
         }
 
         public void InitSorting()
@@ -198,7 +161,7 @@ namespace SCME.ProfileBuilder.PagesTech
                     Settings.Default.SinglePositionModuleMode
                         ? ModuleCommutationType.Direct
                         : ModuleCommutationType.MT3,
-                IsParent = true
+                IsTop = true
 
             };
 
@@ -305,7 +268,7 @@ namespace SCME.ProfileBuilder.PagesTech
                     NextGenerationKey = Guid.NewGuid(),
                     Version = profile.Version,
                     GateTestParameters = new List<GateTestParameters>(),
-                    VTMTestParameters = new List<Types.SL.TestParameters>(),
+                    VTMTestParameters = new List<Types.VTM.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
                     DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                     ATUTestParameters = new List<Types.ATU.TestParameters>(),
@@ -328,7 +291,7 @@ namespace SCME.ProfileBuilder.PagesTech
                         continue;
                     }
 
-                    var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                    var sl = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                     if (sl != null)
                     {
                         profileItem.VTMTestParameters.Add(sl);
@@ -497,7 +460,7 @@ namespace SCME.ProfileBuilder.PagesTech
             {
                 item.TestParametersAndNormatives.Add(new BvtTestParameters() { Order = order + 1 });
             }
-            else if (type.Contains("SL"))
+            else if (type.Contains("VTM"))
             {
                 item.TestParametersAndNormatives.Add(new VtmTestParameters() { Order = order + 1 });
             }

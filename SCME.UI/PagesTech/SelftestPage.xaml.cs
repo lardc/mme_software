@@ -67,7 +67,7 @@ namespace SCME.UI.PagesTech
             }
         }
 
-        internal void SetResult(DeviceState State, Types.SL.TestResults Result)
+        internal void SetResult(DeviceState State, Types.VTM.TestResults Result)
         {
             if (State != DeviceState.InProcess)
             {
@@ -80,19 +80,19 @@ namespace SCME.UI.PagesTech
                 ClearStatus();
         }
 
-        internal void SetWarning(Types.SL.HWWarningReason Warning)
+        internal void SetWarning(Types.VTM.HWWarningReason Warning)
         {
             labelWarning.Content = Warning.ToString();
             labelWarning.Visibility = Visibility.Visible;
         }
 
-        internal void SetProblem(Types.SL.HWProblemReason Problem)
+        internal void SetProblem(Types.VTM.HWProblemReason Problem)
         {
             labelWarning.Content = Problem.ToString();
             labelWarning.Visibility = Visibility.Visible;
         }
 
-        internal void SetFault(Types.SL.HWFaultReason Fault)
+        internal void SetFault(Types.VTM.HWFaultReason Fault)
         {
             labelFault.Content = Fault.ToString();
             labelFault.Visibility = Visibility.Visible;
@@ -236,7 +236,7 @@ namespace SCME.UI.PagesTech
 
             var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
-            var paramVtm = new Types.SL.TestParameters { IsEnabled = false };
+            var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
             var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
             var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };

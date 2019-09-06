@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.GateDataTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ListViewTestParametersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+            <Grid Visibility="Visible" Margin="0,10,70,10" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="93*"></ColumnDefinition>
+                    <ColumnDefinition Width="7*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Style="{StaticResource ListItemGrid}">
+                    <Border BorderBrush="{StaticResource xWhite1}" BorderThickness="1" />
+                    <Label  HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"
+                                  Margin="10" Padding="2" Content="Gate" />
+                    <Button x:Name="btnGate" CommandParameter="1" Style="{StaticResource SpcButton}" IsEnabled="False"
+                                Margin="120,0,20,0">
+
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45*" />
+                                <ColumnDefinition Width="10*" />
+                                <ColumnDefinition Width="35" />
+                                <ColumnDefinition Width="45*" />
+                                <ColumnDefinition Width="10*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,0" Visibility="{Binding IsCurrentEnabled, Converter={StaticResource B2V}}"
+                                       Content="{x:Static res:Resources.PureVgt}" />
+                            <Path Grid.Column="1" Grid.Row="0"  Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60" Visibility="{Binding IsCurrentEnabled, Converter={StaticResource B2V}}" 
+                                      Stretch="Uniform"  HorizontalAlignment="Right" />
+
+                            <!--IsEnabled="{}" Width="60"-->
+                            <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.HoldingCurrent}" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}" />
+                            <Path Grid.Column="4" Grid.Row="0" Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}" 
+                                      Stretch="Uniform"  HorizontalAlignment="Right" />
+
+                            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Visibility="{Binding IsIhStrikeCurrentEnabled, Converter={StaticResource B2V}}"
+                                       Content="{x:Static res:Resources.HoldingStrikeCurrent}" />
+                            <Path Grid.Column="1" Grid.Row="1" Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60" Visibility="{Binding IsIhStrikeCurrentEnabled, Converter={StaticResource B2V}}" 
+                                      Stretch="Uniform"  HorizontalAlignment="Right" />
+
+                            <Label Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}"
+                                       Content="{x:Static res:Resources.LatchingCurrent}" />
+                            <Path Grid.Column="4" Grid.Row="1" Margin="6" Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" 
+                                      Stroke="{StaticResource xWhite1}" Width="60" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}" 
+                                      Stretch="Uniform"  HorizontalAlignment="Right"  />
+                            <Label Grid.Column="0" Grid.Row="2" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.MaxResistance_Ohm}" />
+                            <Label Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right"
+                                       Content="{Binding Resistance}" />
+
+                            <Label Grid.Column="0" Grid.Row="3" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.MaxIgt_mA}" />
+                            <Label Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right"
+                                       Content="{Binding IGT }" />
+
+                            <Label Grid.Column="3" Grid.Row="3" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.MaxVgt_V}" />
+                            <Label Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right"
+                                       Content="{Binding VGT }" />
+
+                            <Label Grid.Column="0" Grid.Row="4" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.MaxIh_mA}" />
+                            <Label Grid.Column="1" Grid.Row="4" HorizontalAlignment="Right"
+                                       Content="{Binding IH }" />
+
+                            <Label Grid.Column="3" Grid.Row="4" Margin="0,0,0,0"
+                                       Content="{x:Static res:Resources.MaxIl_mA}" />
+                            <Label Grid.Column="4" Grid.Row="4" HorizontalAlignment="Right"
+                                       Content="{Binding IL}" />
+
+
+                        </Grid>
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Button Name="button" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=IsButtonDeleteVisible, Converter={StaticResource B2V}}"
+                            Background="White" Foreground="{StaticResource xPurple1}"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                            Width="{Binding RelativeSource={RelativeSource Self}, Path=Height}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}"
+                            Content="{StaticResource ClosePath}" Click="Button_OnClick"
+                            />
+                </Grid>
+            </Grid>
+    </Grid>
+</UserControl>

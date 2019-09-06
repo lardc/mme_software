@@ -1,4 +1,5 @@
-﻿using SCME.ProfileBuilder.PagesTech;
+﻿using SCME.ProfileBuilder.CommonPages;
+using SCME.ProfileBuilder.PagesTech;
 
 namespace SCME.ProfileBuilder
 {

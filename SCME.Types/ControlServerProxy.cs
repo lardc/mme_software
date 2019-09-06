@@ -60,7 +60,7 @@ namespace SCME.Types
             return Channel.GetSafetyType();
         }
 
-        public bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersVTM,
+        public bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersVTM,
                           BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
                           Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping, TOU.TestParameters ParametersTOU)
         {
@@ -147,12 +147,12 @@ namespace SCME.Types
             return Channel.GateReadCalibrationParameters();
         }
 
-        public void SLWriteCalibrationParameters(SL.CalibrationParameters Parameters)
+        public void SLWriteCalibrationParameters(VTM.CalibrationParameters Parameters)
         {
             Channel.SLWriteCalibrationParameters(Parameters);
         }
 
-        public SL.CalibrationParameters SLReadCalibrationParameters()
+        public VTM.CalibrationParameters SLReadCalibrationParameters()
         {
             return Channel.SLReadCalibrationParameters();
         }
@@ -233,7 +233,7 @@ namespace SCME.Types
             return Channel.RequestRemotePrinting(GroupName, CustomerName, DeviceType, Predicate);
         }
 
-        public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm,
+        public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
                           QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {

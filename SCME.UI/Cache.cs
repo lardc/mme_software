@@ -16,7 +16,7 @@ namespace SCME.UI
         private static UserTestPage ms_UserTestPage;
         private static TechnicianPage ms_TechnicianPage;
         private static CalibrationPage ms_CalibrationPage;
-        private static SLPage ms_SLPage;
+        private static VTMPage ms_SLPage;
         private static GatePage ms_GatePage;
         private static BvtPage ms_BVTPage;
         private static SelftestPage ms_SelftestPage;
@@ -99,9 +99,9 @@ namespace SCME.UI
             set { ms_CalibrationPage = value; }
         }
 
-        internal static SLPage SL
+        internal static VTMPage VTM
         {
-            get { return ms_SLPage ?? (ms_SLPage = new SLPage()); }
+            get { return ms_SLPage ?? (ms_SLPage = new VTMPage()); }
             set { ms_SLPage = value; }
         }
 

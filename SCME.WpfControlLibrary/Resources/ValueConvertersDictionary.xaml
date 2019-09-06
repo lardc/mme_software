@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters">
+
+    
+    <Converters:TryBooleanToVisibilityConverter x:Key="B2V" />
+    <Converters:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
+    <Converters:EnumValueToString x:Key="E2S" />
+    <Converters:dVdtTypeToStringConverter x:Key="DT2S"/>
+    <Converters:DvdtTestTypeToVisibilityConverter x:Key="DT2V"/>
+    <Converters:DvdtTestTypeToVisibilityUnConverter x:Key="DT2VB" />
+    <Converters:VtmTestTypeToVisibilityConverter x:Key="VT2V"/>
+    <Converters:VtmTestTypeToStringConverter x:Key="VT2S"/>
+    <Converters:BvtTestTypeToVisibilityConverter x:Key="TT2V"/>
+
+</ResourceDictionary>

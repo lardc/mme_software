@@ -122,7 +122,7 @@ namespace SCME.InterfaceImplementations
                 if (_connection == null || _connection.State != ConnectionState.Open)
                     return list;
 
-                list = _profilesService.GetProfileItems().Select(p => new ProfileMme { Id = p.ProfileId, Name = p.ProfileName }).ToList();
+                list = _profilesService.GetProfileItemsSuperficially(null).Select(p => new ProfileMme { Id = p.ProfileId, Name = p.ProfileName }).ToList();
 
                 _codesSelectCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
                 using (var reader = _codesSelectCommand.ExecuteReader())

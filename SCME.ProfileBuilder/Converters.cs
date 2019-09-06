@@ -9,9 +9,9 @@ using SCME.Types.Clamping;
 using SCME.Types.Commutation;
 using SCME.Types.dVdt;
 using SCME.Types.Profiles;
-using SCME.Types.SL;
+using SCME.Types.VTM;
 using SCME.Types.QrrTq;
-using TestParameters = SCME.Types.SL.TestParameters;
+using TestParameters = SCME.Types.VTM.TestParameters;
 
 namespace SCME.ProfileBuilder
 {

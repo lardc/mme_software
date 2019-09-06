@@ -11,6 +11,7 @@ using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.DataContracts;
 using SCME.Types.Interfaces;
+using SCME.Types.Profiles;
 using SCME.Types.SQL;
 
 namespace SCME.InterfaceImplementations
@@ -326,6 +327,26 @@ namespace SCME.InterfaceImplementations
                 _codesDeleteCommand.Parameters["@PROFILE_ID"].Value = profileId;
                 _codesDeleteCommand.ExecuteScalar();
             }
+        }
+
+        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Profile GetProfileDeep(Guid key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

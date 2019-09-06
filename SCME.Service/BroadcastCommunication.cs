@@ -116,13 +116,13 @@ namespace SCME.Service
             EnumerateClients(Client => Client.GateNotificationHandler(Problem, Warning, Fault, Disable));
         }
 
-        public void PostSLEvent(DeviceState State, Types.SL.TestResults Result)
+        public void PostSLEvent(DeviceState State, Types.VTM.TestResults Result)
         {
             EnumerateClients(Client => Client.SLHandler(State, Result));
         }
 
-        public void PostSLNotificationEvent(Types.SL.HWProblemReason Problem, Types.SL.HWWarningReason Warning,
-                                             Types.SL.HWFaultReason Fault, Types.SL.HWDisableReason Disable)
+        public void PostSLNotificationEvent(Types.VTM.HWProblemReason Problem, Types.VTM.HWWarningReason Warning,
+                                             Types.VTM.HWFaultReason Fault, Types.VTM.HWDisableReason Disable)
         {
             EnumerateClients(Client => Client.SLNotificationHandler(Problem, Warning, Fault, Disable));
         }

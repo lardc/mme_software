@@ -62,7 +62,7 @@ namespace SCME.Types.Profiles
 
             var root = new ProfileFolder("ROOT", Guid.Empty, 1, DateTime.MinValue);
             foreach (var profile in profileList)
-                root.ChildrenList.Add(profile);
+                root.Childrens.Add(profile);
 
             Root = root;
 
@@ -100,7 +100,7 @@ namespace SCME.Types.Profiles
                     }
                     else
                     {
-                        foreach (var item in Root.ChildrenList)
+                        foreach (var item in Root.Childrens)
                             m_Doc.DocumentElement.AppendChild(SerializeItem(item));
                     }
             }
@@ -163,7 +163,7 @@ namespace SCME.Types.Profiles
         {
             var list = new ObservableCollection<Profile>();
 
-            foreach (var profile in Source.ChildrenList.OrderBy(Item => Item.Name).SelectMany(Item => Item.ChildrenList.OfType<Profile>()))
+            foreach (var profile in Source.Childrens.OrderBy(Item => Item.Name).SelectMany(Item => Item.Childrens.OfType<Profile>()))
                 list.Add(profile);
 
             return list;
@@ -179,7 +179,7 @@ namespace SCME.Types.Profiles
                     foreach (var element in
                             (from XmlElement element in m_Doc.DocumentElement select ParseElement(element, ParentType.Folder)).OrderBy(
                                 Item => Item.Name))
-                        root.ChildrenList.Add(element);
+                        root.Childrens.Add(element);
 
                 return root;
             }
@@ -208,7 +208,7 @@ namespace SCME.Types.Profiles
                     var prof = ParseProfile(Element, name, key, timestamp);
                     prof.IsTop = true;
                     var set = new ProfileSet(prof.Name, Guid.NewGuid(), prof.Timestamp);
-                    set.ChildrenList.Add(prof);
+                    set.Childrens.Add(prof);
                     prof.Parent = set;
 
                     return set;
@@ -225,11 +225,11 @@ namespace SCME.Types.Profiles
                     {
                         element.Name = name;
                         element.Parent = set;
-                        set.ChildrenList.Add(element);
+                        set.Childrens.Add(element);
                     }
 
-                    if (set.ChildrenList.Count > 0)
-                        ((Profile)set.ChildrenList[0]).IsTop = true;
+                    if (set.Childrens.Count > 0)
+                        ((Profile)set.Childrens[0]).IsTop = true;
 
                     return set;
                 }
@@ -243,7 +243,7 @@ namespace SCME.Types.Profiles
                             Item => Item.Name))
                     {
                         element.Parent = folder;
-                        folder.ChildrenList.Add(element);
+                        folder.Childrens.Add(element);
                     }
 
                     return folder;
@@ -258,7 +258,7 @@ namespace SCME.Types.Profiles
         private static Profile ParseProfile(XmlNode Element, string Name, Guid Key, DateTime Timestamp)
         {
             var nodeGate = Element["Gate"];
-            var nodeVtm = Element["SL"];
+            var nodeVtm = Element["VTM"];
             var nodeBvt = Element["BVT"];
             var nodeComm = Element["Commutation"];
             var nodeClamp = Element["Clamping"];
@@ -299,8 +299,8 @@ namespace SCME.Types.Profiles
                         IsEnabled = bool.Parse(nodeVtm.Attributes[0].Value),
                         IsSelfTest = false,
                         TestType =
-                            (SL.VTMTestType)
-                                Enum.Parse(typeof(SL.VTMTestType), nodeVtm.ChildNodes[0].Attributes[0].Value),
+                            (VTM.VTMTestType)
+                                Enum.Parse(typeof(VTM.VTMTestType), nodeVtm.ChildNodes[0].Attributes[0].Value),
                         RampCurrent =
                             ushort.Parse(nodeVtm.ChildNodes[0].Attributes[1].Value,
                                 CultureInfo.InvariantCulture),
@@ -428,7 +428,7 @@ namespace SCME.Types.Profiles
                 var setElement = m_Doc.CreateNode(XmlNodeType.Element, SET_TAG, "");
                 SerializeBase(m_Doc, Item, setElement);
 
-                foreach (var profile in Item.ChildrenList.Cast<Profile>())
+                foreach (var profile in Item.Childrens.Cast<Profile>())
                     setElement.AppendChild(SerializeProfile(m_Doc, profile));
 
                 return setElement;
@@ -437,7 +437,7 @@ namespace SCME.Types.Profiles
             var folderElement = m_Doc.CreateNode(XmlNodeType.Element, FOLDER_TAG, "");
             SerializeBase(m_Doc, Item, folderElement);
 
-            foreach (var folder in Item.ChildrenList)
+            foreach (var folder in Item.Childrens)
                 folderElement.AppendChild(SerializeItem(folder));
 
             return folderElement;
@@ -529,7 +529,7 @@ namespace SCME.Types.Profiles
                 element.AppendChild(nodeGate);
 
                 // Add VTM
-                var nodeVtm = Host.CreateNode(XmlNodeType.Element, "SL", "");
+                var nodeVtm = Host.CreateNode(XmlNodeType.Element, "VTM", "");
 
                 attr = Host.CreateAttribute("Enable");
                 attr.Value = Item.ParametersVTM.IsEnabled.ToString(CultureInfo.InvariantCulture);

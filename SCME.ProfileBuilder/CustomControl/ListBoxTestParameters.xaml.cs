@@ -9,7 +9,7 @@ using SCME.ProfileBuilder.Annotations;
 using SCME.Types.BaseTestParams;
 using GateTestParameters = SCME.Types.Gate.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
-using VtmTestParameters = SCME.Types.SL.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
 using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuTestParameters = SCME.Types.ATU.TestParameters;
 using QrrTqTestParameters = SCME.Types.QrrTq.TestParameters;

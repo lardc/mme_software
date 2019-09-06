@@ -7,6 +7,7 @@ using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using System;
 using SCME.Types.SQL;
+using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations
 {
@@ -112,6 +113,26 @@ namespace SCME.InterfaceImplementations
         {
             if (_connection.State == ConnectionState.Open)
                 _connection.Close();
+        }
+
+        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Profile GetProfileDeep(Guid key)
+        {
+            return _loadProfilesService.GetProfileDeep(key);
         }
     }
 }

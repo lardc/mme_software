@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using PropertyChanged;
 using SCME.Types.BaseTestParams;
 using SCME.Types.SQL;
 
@@ -13,20 +14,12 @@ namespace SCME.Types.Profiles
     [KnownType(typeof(Profile))]
     [KnownType(typeof(ProfileSet))]
     [KnownType(typeof(ProfileFolder))]
-    public abstract class ProfileDictionaryObject : INotifyPropertyChanged
+    [AddINotifyPropertyChangedInterface]
+    public abstract class ProfileDictionaryObject
     {
         [DataMember]
-        private string m_Name;
+        public string Name { get; set; }
 
-        public string Name
-        {
-            get { return m_Name; }
-            set
-            {
-                m_Name = value;
-                OnPropertyChanged("Name");
-            }
-        }
         [DataMember]
         public Guid Key { get; set; }
 
@@ -39,6 +32,11 @@ namespace SCME.Types.Profiles
         [DataMember]
         public DateTime Timestamp { get; set; }
 
+        [DataMember]
+        public int Id { get; set; }
+
+
+
 
         public string TimeStampFormated
         {
@@ -46,7 +44,7 @@ namespace SCME.Types.Profiles
         }
 
         [DataMember]
-        public ObservableCollection<ProfileDictionaryObject> ChildrenList { get; private set; }
+        public ObservableCollection<ProfileDictionaryObject> Childrens { get; set; }
         [DataMember]
         public ProfileDictionaryObject Parent { get; set; }
 
@@ -57,7 +55,7 @@ namespace SCME.Types.Profiles
             Timestamp = DateTime.Now;
             Version = 1;
 
-            ChildrenList = new ObservableCollection<ProfileDictionaryObject>();
+            Childrens = new ObservableCollection<ProfileDictionaryObject>();
         }
 
         public ProfileDictionaryObject(string Name, Guid Key, int version, DateTime Timestamp)
@@ -67,7 +65,7 @@ namespace SCME.Types.Profiles
             this.Timestamp = Timestamp;
             this.Version = version;
 
-            ChildrenList = new ObservableCollection<ProfileDictionaryObject>();
+            Childrens = new ObservableCollection<ProfileDictionaryObject>();
         }
 
         public override string ToString()
@@ -75,18 +73,6 @@ namespace SCME.Types.Profiles
             return Name;
         }
 
-        #region INotifyPropertyChanged implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string PropertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(PropertyName));
-        }
-
-        #endregion
     }
 
     public sealed class ProfileFolder : ProfileDictionaryObject
@@ -131,11 +117,12 @@ namespace SCME.Types.Profiles
         
     }
 
+    [AddINotifyPropertyChangedInterface]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public sealed class Profile : ProfileDictionaryObject
     {
         [DataMember]
-        private bool m_IsTop;
+        public bool IsTop { get; set; }
 
         [DataMember]
         public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives { get; set; }
@@ -145,9 +132,9 @@ namespace SCME.Types.Profiles
         [DataMember]
         public Gate.ResultNormatives NormativesGate { get; set; }
         [DataMember]
-        public SL.TestParameters ParametersVTM { get; set; }
+        public VTM.TestParameters ParametersVTM { get; set; }
         [DataMember]
-        public SL.ResultNormatives NormativesVTM { get; set; }
+        public VTM.ResultNormatives NormativesVTM { get; set; }
         [DataMember]
         public BVT.TestParameters ParametersBVT { get; set; }
         [DataMember]
@@ -163,26 +150,16 @@ namespace SCME.Types.Profiles
         [DataMember]
         public int Temperature { get; set; }
 
-        public bool IsParent { get; set; }
-
-        public List<Profile> ChilProfiles { get; set; }
 
 
-        public bool IsTop
-        {
-            get { return m_IsTop; }
-            set
-            {
-                m_IsTop = value;
-                OnPropertyChanged("IsTop");
-            }
-        }
+        
+      
 
 
         private void ConstructorInit()
         {
             ParametersGate = new Gate.TestParameters();
-            ParametersVTM = new SL.TestParameters();
+            ParametersVTM = new VTM.TestParameters();
             ParametersBVT = new BVT.TestParameters();
             ParametersComm = new Commutation.ModuleCommutationType();
             ParametersClamp = 5.0f;
@@ -190,8 +167,67 @@ namespace SCME.Types.Profiles
 
 
             NormativesGate = new Gate.ResultNormatives();
-            NormativesVTM = new SL.ResultNormatives();
+            NormativesVTM = new VTM.ResultNormatives();
             NormativesBVT = new BVT.ResultNormatives();
+        }
+
+        public ProfileItem ToProfileItem()
+        {
+            ProfileItem profileItem = new ProfileItem()
+            {
+                ProfileId = Id,
+                ProfileTS = Timestamp,
+                ProfileKey = Key,
+                ProfileName = Name,
+                Version = Version,
+                GateTestParameters = new List<Gate.TestParameters>(),
+                VTMTestParameters = new List<VTM.TestParameters>(),
+                BVTTestParameters = new List<BVT.TestParameters>(),
+                DvDTestParameterses = new List<dVdt.TestParameters>(),
+                ATUTestParameters = new List<ATU.TestParameters>(),
+                QrrTqTestParameters = new List<QrrTq.TestParameters>(),
+                RACTestParameters = new List<RAC.TestParameters>(),
+                TOUTestParameters = new List<TOU.TestParameters>(),
+                CommTestParameters = ParametersComm,
+                IsHeightMeasureEnabled = IsHeightMeasureEnabled,
+                ParametersClamp = ParametersClamp,
+                Height = Height,
+                Temperature = Temperature,
+            };
+
+            foreach (var baseTestParametersAndNormativese in TestParametersAndNormatives)
+            {
+                switch (baseTestParametersAndNormativese)
+                {
+                    case Gate.TestParameters gate:
+                        profileItem.GateTestParameters.Add(gate);
+                        break;
+                    case VTM.TestParameters sl:
+                        profileItem.VTMTestParameters.Add(sl);
+                        break;
+                    case BVT.TestParameters bvt:
+                        profileItem.BVTTestParameters.Add(bvt);
+                        break;
+                    case dVdt.TestParameters dvdt:
+                        profileItem.DvDTestParameterses.Add(dvdt);
+                        break;
+                    case ATU.TestParameters atu:
+                        profileItem.ATUTestParameters.Add(atu);
+                        break;
+                    case QrrTq.TestParameters qrrTq:
+                        profileItem.QrrTqTestParameters.Add(qrrTq);
+                        break;
+                    case RAC.TestParameters rac:
+                        profileItem.RACTestParameters.Add(rac);
+                        break;
+                    case TOU.TestParameters tou:
+                        profileItem.TOUTestParameters.Add(tou);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            return profileItem;
         }
 
         public Profile()

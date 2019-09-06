@@ -7,6 +7,8 @@ using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using System;
 using SCME.Types.SQL;
+using SCME.InterfaceImplementations.Common;
+using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations
 {
@@ -23,7 +25,7 @@ namespace SCME.InterfaceImplementations
             _connection.Open();
 
             _saveProfileService = new SQLSaveProfileService(_connection);
-            _loadProfilesService = new SQLLoadProfilesService(_connection);
+            _loadProfilesService = new SQLLoadProfilesService1(_connection);
         }
 
         public SQLProfilesService(ISaveProfileService saveProfileService, ILoadProfilesService loadProfilesService)
@@ -110,6 +112,26 @@ namespace SCME.InterfaceImplementations
         {
             if (_connection.State == ConnectionState.Open)
                 _connection.Close();
+        }
+
+        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        {
+            return _loadProfilesService.GetProfileItemsSuperficially(mmeCode);
+        }
+
+        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
+        {
+            return _loadProfilesService.GetProfileItemsDeep(mmeCode);
+        }
+
+        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
+        {
+            return _loadProfilesService.GetProfileItemsWithChildSuperficially(mmeCode);
+        }
+
+        public Profile GetProfileDeep(Guid key)
+        {
+            return _loadProfilesService.GetProfileDeep(key);
         }
     }
 }

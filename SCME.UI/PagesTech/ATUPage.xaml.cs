@@ -176,7 +176,7 @@ namespace SCME.UI.PagesTech
             if (IsRunning) return;
 
             var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
-            var paramVtm = new Types.SL.TestParameters { IsEnabled = false };
+            var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
             var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
             var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };

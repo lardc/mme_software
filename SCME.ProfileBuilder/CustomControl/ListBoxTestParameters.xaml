@@ -8,7 +8,7 @@
              xmlns:customControl="clr-namespace:SCME.ProfileBuilder.CustomControl"
              xmlns:gateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types" 
              xmlns:bvtParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types" 
-             xmlns:vtmParameters="clr-namespace:SCME.Types.SL;assembly=SCME.Types"
+             xmlns:vtmParameters="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
              xmlns:dVdt="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
              Background="{StaticResource xWhite1}" HorizontalAlignment="Stretch" x:Name="lbTestParams" >
     <ListView.Resources>

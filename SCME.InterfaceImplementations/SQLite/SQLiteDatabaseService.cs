@@ -67,7 +67,7 @@ namespace SCME.InterfaceImplementations
                 ProfileKey = profile.Key,
                 ProfileTS = profile.Timestamp,
                 GateTestParameters = new List<Types.Gate.TestParameters>(),
-                VTMTestParameters = new List<Types.SL.TestParameters>(),
+                VTMTestParameters = new List<Types.VTM.TestParameters>(),
                 BVTTestParameters = new List<Types.BVT.TestParameters>(),
                 DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                 ATUTestParameters = new List<Types.ATU.TestParameters>(),
@@ -88,7 +88,7 @@ namespace SCME.InterfaceImplementations
                     profileItem.GateTestParameters.Add(gate);
                     continue;
                 }
-                var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                var sl = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                 if (sl != null)
                 {
                     profileItem.VTMTestParameters.Add(sl);

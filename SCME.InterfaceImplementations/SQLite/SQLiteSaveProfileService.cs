@@ -9,7 +9,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
 using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
-using SCME.Types.SL;
+using SCME.Types.VTM;
 using SCME.Types.SQL;
 using TestParameters = SCME.Types.Gate.TestParameters;
 
@@ -506,7 +506,7 @@ namespace SCME.InterfaceImplementations
                     break;
 
                 case TestParametersType.StaticLoses:
-                    InsertSlConditions(baseTestParametersAndNormatives as Types.SL.TestParameters, testTypeId, profileId);
+                    InsertSlConditions(baseTestParametersAndNormatives as Types.VTM.TestParameters, testTypeId, profileId);
                     break;
 
                 case TestParametersType.Bvt:
@@ -545,7 +545,7 @@ namespace SCME.InterfaceImplementations
 
         }
 
-        private void InsertSlConditions(Types.SL.TestParameters profile, long testTypeId, long profileId)
+        private void InsertSlConditions(Types.VTM.TestParameters profile, long testTypeId, long profileId)
         {
             InsertCondition(testTypeId, profileId, "SL_En", profile.IsEnabled);
             InsertCondition(testTypeId, profileId, "SL_Type", profile.TestType);
@@ -682,7 +682,7 @@ namespace SCME.InterfaceImplementations
                     InsertGateParameters(baseTestParametersAndNormatives as TestParameters, testTypeId, profileId);
                     break;
                 case TestParametersType.StaticLoses:
-                    InsertVtmParameters(baseTestParametersAndNormatives as Types.SL.TestParameters, testTypeId, profileId);
+                    InsertVtmParameters(baseTestParametersAndNormatives as Types.VTM.TestParameters, testTypeId, profileId);
                     break;
                 case TestParametersType.Bvt:
                     InsertBvtParameters(baseTestParametersAndNormatives as Types.BVT.TestParameters, testTypeId, profileId);
@@ -714,7 +714,7 @@ namespace SCME.InterfaceImplementations
                 InsertParameter(testTypeId, profileId, "IL", DBNull.Value, gateTestParameters.IL);
         }
 
-        private void InsertVtmParameters(Types.SL.TestParameters vtmTestParameters, long testTypeId, long profileId)
+        private void InsertVtmParameters(Types.VTM.TestParameters vtmTestParameters, long testTypeId, long profileId)
         {
             InsertParameter(testTypeId, profileId, "VTM", DBNull.Value, vtmTestParameters.VTM);
         }

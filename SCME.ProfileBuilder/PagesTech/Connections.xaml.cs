@@ -45,9 +45,9 @@ namespace SCME.ProfileBuilder.PagesTech
 
         private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
         {
-            Cache.Main.mainFrame.IsEnabled = false;
+            Cache.Main.MainFrame.IsEnabled = false;
             _service.SaveConnections(MmeCodes.ToList());
-            Cache.Main.mainFrame.IsEnabled = true;
+            Cache.Main.MainFrame.IsEnabled = true;
         }
 
         private void ListViewMmeCodes_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

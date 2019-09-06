@@ -218,7 +218,7 @@
                                       Style="{StaticResource CComboboxStyle}" HorizontalContentAlignment="Right"
                                       IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}">
                                 <ComboBoxItem Content="Gate"/>
-                                <ComboBoxItem Content="SL"/>
+                                <ComboBoxItem Content="VTM"/>
                                 <ComboBoxItem Content="BVT"/>
                                 <ComboBoxItem Content="dVdt"/>
                                 <ComboBoxItem Content="ATU"/>

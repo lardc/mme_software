@@ -169,10 +169,10 @@ namespace SCME.Service.IO
 
                     if (devState == HWDeviceState.Fault)
                         throw new Exception(string.Format("Clamping is in fault state, reason: {0}",
-                            (Types.SL.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                            (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
                     if (devState == HWDeviceState.Disabled)
                         throw new Exception(string.Format("Clamping is in disabled state, reason: {0}",
-                            (Types.SL.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+                            (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
 
                 if (Environment.TickCount > timeStamp)
@@ -315,7 +315,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16S(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note,
+                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note,
                                              string.Format("Clamping @ReadRegisterS, address {0}, value {1}", Address, value));
 
             return value;

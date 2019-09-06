@@ -23,7 +23,7 @@ namespace SCME.Types
         [EnumMember]
         Gate = 7,
         [EnumMember]
-        SL = 8,
+        VTM = 8,
         [EnumMember]
         BVT = 9,
         [EnumMember]

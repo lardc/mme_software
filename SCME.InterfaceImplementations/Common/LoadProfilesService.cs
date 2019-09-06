@@ -4,7 +4,7 @@ using SCME.Types.BVT;
 using SCME.Types.Commutation;
 using SCME.Types.dVdt;
 using SCME.Types.Profiles;
-using SCME.Types.SL;
+using SCME.Types.VTM;
 using SCME.Types.SQL;
 using System;
 using System.Collections.Generic;
@@ -21,19 +21,20 @@ namespace SCME.InterfaceImplementations.Common
     //    void PrepareQueries();
     //}
 
-    public abstract class LoadProfilesService 
+    public abstract class LoadProfilesService<TDbCommand, TDbConnection> where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-        private readonly DbConnection _Connection;
-        private DbCommand _ChildsCmd;
-        private DbCommand _CondCmd;
-        private DbCommand _ProfileSelect;
-        private DbCommand _ProfileSelectWithMME;
-        private DbCommand _OrderSelect;
-        private DbCommand _CondSelect;
-        private DbCommand _ParamSelect;
-        private DbCommand _ProfileSingleSelect;
+        protected TDbConnection _Connection;
+        protected TDbCommand _ChildsCmd;
+        protected TDbCommand _CondCmd;
+        protected TDbCommand _ProfileSelect;
+        protected TDbCommand _ProfileSelectWithMME;
+        protected TDbCommand _OrderSelect;
+        protected TDbCommand _CondSelect;
+        protected TDbCommand _ParamSelect;
+        protected TDbCommand _ProfileSingleSelect;
+        protected TDbCommand _ProfileByKey;
 
-        public LoadProfilesService(DbConnection connection)
+        public LoadProfilesService(TDbConnection connection)
         {
             _Connection = connection;
             if (_Connection.State != ConnectionState.Open)
@@ -47,7 +48,7 @@ namespace SCME.InterfaceImplementations.Common
         public List<ProfileForSqlSelect> GetProfilesSuperficially(string mmeCode)
         {
             DbCommand profileSelect;
-            var profiles = new List<ProfileForSqlSelect>();
+            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
 
             if (mmeCode == null)
                 profileSelect = _ProfileSelect;
@@ -57,13 +58,32 @@ namespace SCME.InterfaceImplementations.Common
                 profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
             }
 
-            profileSelect.ExecuteReader();
-
             using (var reader = profileSelect.ExecuteReader())
                 while (reader.Read())
-                    profiles.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]));
+                    res.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]));
 
-            return profiles;
+            return res;
+        }
+
+        public ProfileForSqlSelect GetProfileByKey(Guid key)
+        {
+            _ProfileByKey.Parameters["@PROF_GUID"].Value = key;
+            using (var reader = _ProfileByKey.ExecuteReader())
+                while (reader.Read())
+                    return new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]);
+            throw new Exception($"GetProfileByKey, could not find item by key {key}");
+        }
+
+        public List<ProfileForSqlSelect> GetProfileChildsSuperficially(ProfileForSqlSelect profile)
+        {
+            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
+
+            _ChildsCmd.Parameters["@PROF_NAME"].Value = profile.Name;
+            using (var reader = _ChildsCmd.ExecuteReader())
+                while (reader.Read())
+                    res.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[4], (DateTime)reader[3]));
+
+            return res;
         }
 
         public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
@@ -73,18 +93,23 @@ namespace SCME.InterfaceImplementations.Common
 
         public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
         {
-            return GetProfilesSuperficially(mmeCode).Select(m=> LoadConditionsToProfile(m).ToProfileItem()).ToList();
+            return GetProfilesSuperficially(mmeCode).Select(m=> LoadConditionsForProfile(m).ToProfileItem()).ToList();
         }
 
         public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
         {
-            return GetProfilesSuperficially(mmeCode).Select(m => m.ToProfileItem()).ToList();
+            return GetProfilesSuperficially(mmeCode).Select(m => m.ToProfileItemWithChild(GetProfileChildsSuperficially(m))).ToList();
         }
 
 
-        private Profile LoadConditionsToProfile(ProfileForSqlSelect prof)
+        public Profile GetProfileDeep(Guid key)
         {
-            var profile = new Profile(prof);
+            return LoadConditionsForProfile(GetProfileByKey(key));
+        }
+
+        private Profile LoadConditionsForProfile(ProfileForSqlSelect prof)
+        {
+            var profile = prof.ToProfile();
             var testTypes = new Dictionary<long, long>();
 
             _CondCmd.Parameters["@PROF_ID"].Value = prof.Id;
@@ -531,10 +556,10 @@ namespace SCME.InterfaceImplementations.Common
             }
         }
 
-        private Types.SL.TestParameters FillSlConditions(long testTypeId)
+        private Types.VTM.TestParameters FillSlConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(9);
-            var testParams = new Types.SL.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.VTM.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
 
             FillOrder(testTypeId, testParams);
 
@@ -547,7 +572,7 @@ namespace SCME.InterfaceImplementations.Common
                 switch (result.Key)
                 {
                     case "SL_Type":
-                        testParams.TestType = (Types.SL.VTMTestType)(Enum.Parse(typeof(Types.SL.VTMTestType), result.Value.ToString()));
+                        testParams.TestType = (Types.VTM.VTMTestType)(Enum.Parse(typeof(Types.VTM.VTMTestType), result.Value.ToString()));
                         break;
                     case "SL_FS":
                         testParams.UseFullScale = Boolean.Parse(result.Value.ToString());
@@ -610,7 +635,7 @@ namespace SCME.InterfaceImplementations.Common
             return testParams;
         }
 
-        private void FillSlParameters(Types.SL.TestParameters parameters, long testTypeId)
+        private void FillSlParameters(Types.VTM.TestParameters parameters, long testTypeId)
         {
             var results = new List<Tuple<string, float?, float?>>();
             FillParametersResults(testTypeId, results);

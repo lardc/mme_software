@@ -74,23 +74,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackGround.cs" />
+    <Compile Include="Common\LoadProfilesService.cs" />
+    <Compile Include="Common\SQLLoadProfilesService1.cs" />
     <Compile Include="MigratorInserter.cs" />
     <Compile Include="MigratorInserterTemplate.cs" />
-    <Compile Include="SQLDatabaseService.cs" />
-    <Compile Include="SQLCentralDatabaseService.cs" />
-    <Compile Include="SQLiteDatabaseService.cs" />
-    <Compile Include="SQLProfilesConnectionService.cs" />
-    <Compile Include="SQLLoadProfilesService.cs" />
+    <Compile Include="MSSQL\SQLCentralDatabaseService.cs" />
+    <Compile Include="MSSQL\SQLLoadProfilesService.cs" />
+    <Compile Include="MSSQL\SQLProfilesConnectionService.cs" />
+    <Compile Include="MSSQL\SQLProfilesService.cs" />
+    <Compile Include="MSSQL\SQLResultsServiceServer.cs" />
+    <Compile Include="MSSQL\SQLSaveProfileService.cs" />
+    <Compile Include="SQLite\SQLDatabaseService.cs" />
+    <Compile Include="SQLite\SQLiteDatabaseService.cs" />
+    <Compile Include="SQLite\SQLiteLoadProfilesService.cs" />
+    <Compile Include="SQLite\SQLiteProfilesConnectionService.cs" />
+    <Compile Include="SQLite\SQLiteProfilesService.cs" />
+    <Compile Include="SQLite\SQLiteResultsServiceLocal.cs" />
+    <Compile Include="SQLite\SQLiteResultsServiceServer.cs" />
+    <Compile Include="SQLite\SQLiteSaveProfileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQLSaveProfileService.cs" />
-    <Compile Include="SQLiteLoadProfilesService.cs" />
-    <Compile Include="SQLiteProfilesConnectionService.cs" />
-    <Compile Include="SQLProfilesService.cs" />
-    <Compile Include="SQLiteProfilesService.cs" />
-    <Compile Include="SQLiteResultsServiceLocal.cs" />
-    <Compile Include="SQLResultsServiceServer.cs" />
-    <Compile Include="SQLiteResultsServiceServer.cs" />
-    <Compile Include="SQLiteSaveProfileService.cs" />
     <Compile Include="SyncService.cs" />
   </ItemGroup>
   <ItemGroup>
