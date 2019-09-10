@@ -36,7 +36,7 @@ namespace SCME.Service
                     IsSyncedWithServer = false;
 
                     LogMessageType logMessageType;
-                    switch (Settings.Default.LocalOrCentral)
+                    switch (Settings.Default.IsLocal)
                     {
                         case true:
                             //синхронизация не выполнена потому, что отключена параметром в конфигурационном файле
@@ -102,13 +102,13 @@ namespace SCME.Service
                 //Results.Open(Settings.Default.DisableResultDB ? String.Empty : Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
                 Results.Open(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
 
-                if (!Settings.Default.LocalOrCentral)
+                if (!Settings.Default.IsLocal)
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, Resources.Log_SystemHost_Result_journal_opened);
 
                 //нам ещё не известно как завершится процесс синхронизации данных, поэтому
                 IsSyncedWithServer = null;
 
-                switch (Settings.Default.LocalOrCentral)
+                switch (Settings.Default.IsLocal)
                 {
                     case true:
                         //синхронизация отключена, уведомляем UI, что стадия синхронизации баз данных пройдена

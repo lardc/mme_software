@@ -188,9 +188,9 @@ namespace SCME.Service.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool LocalOrCentral {
+        public bool IsLocal {
             get {
-                return ((bool)(this["LocalOrCentral"]));
+                return ((bool)(this["IsLocal"]));
             }
         }
         

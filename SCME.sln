@@ -22,6 +22,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB_SCMEResultDB", "SQLDatab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.LOGGER", "SCME.Logger\SCME.LOGGER.csproj", "{CDEE465E-8961-4D91-92FC-DA2615683951}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.DatabaseServer", "SCME.DatabaseServer\SCME.DatabaseServer.csproj", "{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,14 @@ Global
 		{CDEE465E-8961-4D91-92FC-DA2615683951}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDEE465E-8961-4D91-92FC-DA2615683951}.Release|x86.ActiveCfg = Release|x86
 		{CDEE465E-8961-4D91-92FC-DA2615683951}.Release|x86.Build.0 = Release|x86
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Debug|x86.ActiveCfg = Debug|x86
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Debug|x86.Build.0 = Debug|x86
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|x86.ActiveCfg = Release|x86
+		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
