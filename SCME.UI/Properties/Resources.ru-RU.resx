@@ -777,4 +777,7 @@
   <data name="SafetySystemInternal" xml:space="preserve">
     <value>Вкл. внут. сис. безопасности</value>
   </data>
+  <data name="MessageErrorSaveTestFault" xml:space="preserve">
+    <value>Произошла ошибка изменения не будут сохранены</value>
+  </data>
 </root>

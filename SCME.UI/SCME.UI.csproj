@@ -498,10 +498,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="KeyboardLayouts\Keyboards.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="FodyWeavers.xml" />
     <Content Include="Lib\DynamicDataDisplay.SilverLight.dll" />
     <Content Include="Lib\FTD2XX_NET.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <Import Project="..\packages\Fody.5.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.6\build\Fody.targets')" />

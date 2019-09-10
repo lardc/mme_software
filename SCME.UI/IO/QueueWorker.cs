@@ -178,22 +178,86 @@ namespace SCME.UI.IO
                 });
         }
 
+        //public void AddStopEvent()
+        //{
+        //    m_ActionQueue.Enqueue(delegate
+        //    {
+        //        Cache.Net.Stop();
+
+        //        var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
+
+        //        dw.ButtonConfig(DialogWindow.EbConfig.OK);
+        //        dw.ShowDialog();
+
+        //        if (dw.DialogResult ?? false)
+        //        {
+        //            //пользователь нажал в появившемся диалоговом окне кнопку OK
+        //            //сбрасываем состояние SafetyTrig. справедливо для оптической, механической шторки и оптической шторки подключенной как кнопка Стоп. только после этого можно разжать пресс                     
+        //            Cache.Net.ClearSafetyTrig();
+
+
+        //            Cache.Clamp.IsRunning = false;
+        //            //разжимаем зажимное устройство
+        //            Cache.Clamp.Unclamp();
+        //            //Cache.Clamp.IsRunning в состоянии true после разжатия
+        //            Cache.Clamp.IsRunning = false;
+
+        //            Cache.TOU.VM.IsRunning = false;
+        //            Cache.IH.IsRunning = false;
+        //            Cache.RAC.IsRunning = false;
+        //            Cache.QrrTq.IsRunning = false;
+        //            Cache.ATU.IsRunning = false;
+        //            Cache.DVdt.IsRunning = false;
+
+
+        //            //прячем иконку Safety
+        //            Cache.Main.VM.IsSafetyBreakIconVisible = false;
+
+        //            //строим строку с именами устройств, которые не готовы к очередному измерению
+        //            string NotReadyDevicesToStart = Cache.Net.NotReadyDevicesToStart();
+        //            string NotReadyDevicesToStartDynamic = Cache.Net.NotReadyDevicesToStartDynamic();
+
+        //            if (NotReadyDevicesToStartDynamic != "")
+        //            {
+        //                if (NotReadyDevicesToStart != "")
+        //                    NotReadyDevicesToStart = NotReadyDevicesToStart + ", ";
+
+        //                NotReadyDevicesToStart = NotReadyDevicesToStart + NotReadyDevicesToStartDynamic;
+        //            }
+
+        //            //проверяем есть ли блоки, которые не готовы к проведению очередного измерения
+        //            if (NotReadyDevicesToStart != "")
+        //            {
+        //                //ругаемся, т.к. есть блоки, которые не готовы выполнить очередное измерение
+        //                //вывешиваем пользователю форму с сообщением о не готовых к очередному измерению блоках
+        //                dw = new DialogWindow(Resources.Information, "Блоки: " + NotReadyDevicesToStart + " не готовы для проведения измерений.");
+
+        //                dw.ButtonConfig(DialogWindow.EbConfig.OK);
+        //                dw.ShowDialog();
+        //            }
+        //        }
+        //    });
+        //}
+
         public void AddStopEvent()
         {
             m_ActionQueue.Enqueue(delegate
             {
-                var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
+                    Cache.Net.Stop();
 
-                dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                dw.ShowDialog();
+
+
+                    var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
+
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
 
                 if (dw.DialogResult ?? false)
                 {
                     //пользователь нажал в появившемся диалоговом окне кнопку OK
-                    //сбрасываем состояние SafetyTrig. справедливо для оптической, механической шторки и оптической шторки подключенной как кнопка Стоп. только после этого можно разжать пресс                     
+                    //сбрасываем состояние SafetyTrig. справедливо и для оптической и механической шторки. только после этого можно разжимать пресс                     
                     Cache.Net.ClearSafetyTrig();
-                    Cache.Net.Stop();
-                    
+
                     Cache.Clamp.IsRunning = false;
                     //разжимаем зажимное устройство
                     Cache.Clamp.Unclamp();
@@ -206,7 +270,6 @@ namespace SCME.UI.IO
                     Cache.QrrTq.IsRunning = false;
                     Cache.ATU.IsRunning = false;
                     Cache.DVdt.IsRunning = false;
-                    
 
                     //прячем иконку Safety
                     Cache.Main.VM.IsSafetyBreakIconVisible = false;
@@ -234,66 +297,8 @@ namespace SCME.UI.IO
                         dw.ShowDialog();
                     }
                 }
+                
             });
-        }
-
-        private void AfterEndOfSincedProcessDBRoutine()
-        {
-            //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
-            Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
-
-            if (Cache.Net.IsModulesInitialized)
-                Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
-
-            ProfilesDbLogic.ImportProfilesFromDb();
-            Cache.Welcome.IsRestartEnable = true;
-            Cache.Welcome.IsBackEnable = true;
-        }
-
-        public void AddSyncDBAreProcessedEvent()
-        {
-            //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
-            m_ActionQueue.Enqueue(delegate
-            {
-                AfterEndOfSincedProcessDBRoutine();
-            });
-        }
-
-        public void AddButtonPressedEvent(ComplexButtons Button, bool State)
-        {
-            m_ActionQueue.Enqueue(delegate
-                {
-                    if (State && (Button == ComplexButtons.ButtonStartFTDI || Button == ComplexButtons.ButtonStart))
-                    {
-                        if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
-                            Cache.UserTest.StartFirst();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Gate))
-                            Cache.Gate.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.SL))
-                            Cache.SL.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Bvt))
-                            Cache.Bvt.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.ATU))
-                            Cache.ATU.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.QrrTq))
-                            Cache.QrrTq.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.RAC))
-                            Cache.RAC.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.IH))
-                            Cache.IH.Start();
-                    }
-
-                    if (State && (Button == ComplexButtons.ButtonStopFTDI || Button == ComplexButtons.ButtonStop))
-                        Cache.Net.StopByButtonStop();
-
-                    if (Button == ComplexButtons.ButtonSC1)
-                    {
-                        Cache.Main.VM.IsSafetyBreakIconVisible = !State;
-
-                        //if (!State) 
-                        //    Cache.Net.Stop();
-                    }
-                });
         }
 
         public void AddSafetyHandlerEvent(bool Alarm, ComplexSafety SafetyType, ComplexButtons Button)
@@ -382,6 +387,65 @@ namespace SCME.UI.IO
                     }
                 }
             });
+        }
+
+        private void AfterEndOfSincedProcessDBRoutine()
+        {
+            //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
+            Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
+
+            if (Cache.Net.IsModulesInitialized)
+                Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
+
+            ProfilesDbLogic.ImportProfilesFromDb();
+            Cache.Welcome.IsRestartEnable = true;
+            Cache.Welcome.IsBackEnable = true;
+        }
+
+        public void AddSyncDBAreProcessedEvent()
+        {
+            //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
+            m_ActionQueue.Enqueue(delegate
+            {
+                AfterEndOfSincedProcessDBRoutine();
+            });
+        }
+
+        public void AddButtonPressedEvent(ComplexButtons Button, bool State)
+        {
+            m_ActionQueue.Enqueue(delegate
+                {
+                    if (State && (Button == ComplexButtons.ButtonStartFTDI || Button == ComplexButtons.ButtonStart))
+                    {
+                        if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
+                            Cache.UserTest.StartFirst();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Gate))
+                            Cache.Gate.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.SL))
+                            Cache.SL.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Bvt))
+                            Cache.Bvt.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.ATU))
+                            Cache.ATU.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.QrrTq))
+                            Cache.QrrTq.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.RAC))
+                            Cache.RAC.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.IH))
+                            Cache.IH.Start();
+                    }
+
+                    if (State && (Button == ComplexButtons.ButtonStopFTDI || Button == ComplexButtons.ButtonStop))
+                        Cache.Net.StopByButtonStop();
+
+                    if (Button == ComplexButtons.ButtonSC1)
+                    {
+                        Cache.Main.VM.IsSafetyBreakIconVisible = !State;
+
+                        //if (!State) 
+                        //    Cache.Net.Stop();
+                    }
+                });
         }
 
         public void AddGatewayWarningEvent(Types.Gateway.HWWarningReason Warning) { }
@@ -886,31 +950,35 @@ namespace SCME.UI.IO
                     Cache.QrrTq.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
                     Cache.RAC.SetTopTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
+                    Cache.TOU.SetTopTemp(temperature);
             });
         }
 
-        public void AddClampingBottomTempEvent(int temeprature)
+        public void AddClampingBottomTempEvent(int temperature)
         {
             m_ActionQueue.Enqueue(delegate
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetBottomTemp(temeprature);
+                    Cache.UserTest.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Clamp))
-                    Cache.Clamp.SetBottomTemp(temeprature);
+                    Cache.Clamp.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.DVdt))
-                    Cache.DVdt.SetBottomTemp(temeprature);
+                    Cache.DVdt.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Bvt))
-                    Cache.Bvt.SetBottomTemp(temeprature);
+                    Cache.Bvt.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.SL))
-                    Cache.SL.SetBottomTemp(temeprature);
+                    Cache.SL.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Gate))
-                    Cache.Gate.SetBottomTemp(temeprature);
+                    Cache.Gate.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.ATU))
-                    Cache.ATU.SetBottomTemp(temeprature);
+                    Cache.ATU.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.QrrTq))
-                    Cache.QrrTq.SetBottomTemp(temeprature);
+                    Cache.QrrTq.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
-                    Cache.RAC.SetBottomTemp(temeprature);
+                    Cache.RAC.SetBottomTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
+                    Cache.TOU.SetBottomTemp(temperature);
             });
         }
     }

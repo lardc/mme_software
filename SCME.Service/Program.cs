@@ -58,6 +58,7 @@ namespace SCME.Service
         {
             try
             {
+                File.AppendAllText(@"SCME.Service UnhandledException.txt", $"{DateTime.Now} {Environment.NewLine} {Ex.ExceptionObject.ToString()}");
                 File.AppendAllText(@"SCME.Service error.txt",
                     String.Format("\n\n{0}\nEXCEPTION: {1}\nINNER EXCEPTION: {2}\n", DateTime.Now, Ex.ExceptionObject,
                         ((Exception) (Ex.ExceptionObject)).InnerException ??
@@ -72,6 +73,7 @@ namespace SCME.Service
         {
             try
             {
+                File.AppendAllText(@"SCME.Service ThreadException.txt", $"{DateTime.Now} {Environment.NewLine} {Ex.Exception.ToString()}");
                 File.AppendAllText(@"SCME.Service error.txt",
                     String.Format("\n\n{0}\nEXCEPTION: {1}\nINNER EXCEPTION: {2}\n", DateTime.Now, Ex.Exception,
                         Ex.Exception.InnerException ??

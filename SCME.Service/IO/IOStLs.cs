@@ -305,7 +305,14 @@ namespace SCME.Service.IO
             if (m_IsSLEmulation)
                 return;
 
-            m_IOAdapter.Call(m_Node, Action);
+            try
+            {
+                m_IOAdapter.Call(m_Node, Action);
+            }
+            catch(Exception ex)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Error, ex.ToString());
+            }
         }
 
         internal IList<ushort> ReadArrayFast(ushort Address)

@@ -701,6 +701,25 @@ namespace SCME.UI.IO
             }
         }
 
+        public void SetUserWorkMode(UserWorkMode userWorkMode)
+        {
+            if (!IsServerConnected)
+                return;
+
+            try
+            {
+                m_ControlClient.SetUserWorkMode(userWorkMode);
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+        }
+
         public void SafetySystemOff()
         {
             if (!IsServerConnected)

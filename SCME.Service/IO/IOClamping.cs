@@ -24,6 +24,7 @@ namespace SCME.Service.IO
         private volatile bool m_Stop;
         private volatile bool m_SendTemperature;
         private volatile bool m_PermissionClampingScan = true;
+        private UserWorkMode _UserWorkMode;
 
         private int m_Timeout = 120000;
 
@@ -536,8 +537,16 @@ namespace SCME.Service.IO
 
         #endregion
 
+        internal void SetUserWorkMode(UserWorkMode userWorkMode)
+        {
+            _UserWorkMode = userWorkMode;
+        }
+
         internal DeviceState Squeeze(TestParameters ClampingParameters, bool SkipReadingArrays = true)
         {
+            if(_UserWorkMode == UserWorkMode.OperatorBuildMode)
+                return DeviceState.Success;
+
             if (ClampingParameters.SkipClamping)
                 return DeviceState.Success;
 
@@ -748,6 +757,9 @@ namespace SCME.Service.IO
 
         internal DeviceState Unsqueeze(TestParameters ClampingParameters)
         {
+            if (_UserWorkMode == UserWorkMode.OperatorBuildMode)
+                return DeviceState.Success;
+
             if (ClampingParameters.SkipClamping)
                 return DeviceState.Success;
 

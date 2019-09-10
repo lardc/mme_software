@@ -263,7 +263,14 @@ namespace SCME.Service.IO
             if (_IsTOUEmulation)
                 return;
 
-            _IOAdapter.Call(_Node, Action);
+            try
+            {
+                _IOAdapter.Call(_Node, Action);
+            }
+            catch(Exception ex)
+            {
+                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Error, ex.ToString());
+            }
         }
 
         #endregion
@@ -299,11 +306,11 @@ namespace SCME.Service.IO
                     Thread.Sleep(500);
                     FireNotificationEvent(HWProblemReason.None, HWWarningReason.None, HWFaultReason.Overflow90, HWDisableReason.None);
                     Thread.Sleep(500);
-                        _Result.ITM = (float)rand.NextDouble() * 1000;
-                        _Result.TGD = (float)rand.NextDouble() * 1000;
-                        _Result.TGT = (float)rand.NextDouble() * 1000;
-                        _State = DeviceState.Success;
-                        FireTOUEvent(_State, _Result);
+                    _Result.ITM = (float)rand.NextDouble() * 1000;
+                    _Result.TGD = (float)rand.NextDouble() * 1000;
+                    _Result.TGT = (float)rand.NextDouble() * 1000;
+                    _State = DeviceState.Success;
+                    FireTOUEvent(_State, _Result);
                     //}
                 }
                 else
@@ -320,23 +327,25 @@ namespace SCME.Service.IO
                     WaitState(HWDeviceState.Ready);
 
                     ushort finish = ReadRegister(REG_TEST_FINISHED);
-                    if (finish == OPRESULT_OK)
-                    {
-                        _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
-                        _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
-                        _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
+                    _Result.ITM = ReadRegister(REG_MEAS_CURRENT_VALUE);
+                    _Result.TGD = ReadRegister(REG_MEAS_TIME_DELAY);
+                    _Result.TGT = ReadRegister(REG_MEAS_TIME_ON);
 
-                        _State = DeviceState.Success;
-                        FireTOUEvent(_State, _Result);
-                    }
-                    else
-                    {
-                        FireTOUEvent(DeviceState.Problem, _Result);
-
+                    _State = DeviceState.Success;
+                    FireTOUEvent(_State, _Result);
+                    if (finish != OPRESULT_OK)
+                    { 
                         HWFaultReason faultReason = (HWFaultReason)ReadRegister(REG_PROBLEM);
                         HWWarningReason warningReason = (HWWarningReason)ReadRegister(REG_WARNING);
                         FireNotificationEvent(HWProblemReason.None, warningReason, faultReason, HWDisableReason.None);
-                        throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
+                    }
+
+                    //по окончании процесса измерения - отключаем коммутацию
+                    if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    {
+                        _State = DeviceState.Fault;
+                        FireTOUEvent(_State, _Result);
+                        return;
                     }
                 }
 
@@ -344,6 +353,7 @@ namespace SCME.Service.IO
 
             catch (Exception ex)
             {
+                ActiveCommutation.Switch(Types.Commutation.CommutationMode.None);
                 _State = DeviceState.Fault;
                 FireTOUEvent(_State, _Result);
                 FireExceptionEvent(ex.Message);

@@ -18,6 +18,7 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
+using SCME.UI.CustomControl;
 using SCME.UI.Properties;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -54,7 +55,7 @@ namespace SCME.UI.PagesUser
         private int m_CurrentPos = 1;
         private MeasureDialog measureDialog;
         private bool wasCurrentMore;
-        
+        private bool _HasFault = false;
         public UserTestPage()
         {
             this.DataContext = new UserTestPageViewModel();
@@ -653,25 +654,43 @@ namespace SCME.UI.PagesUser
 
                 if (this.Profile != null)
                 {
-                    ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-
-                    switch (profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name))
+                    switch (Settings.Default.DUTType)
                     {
-                        case SubjectForMeasure.PSD:
-                            needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
-                            break;
-
-                        case SubjectForMeasure.PSE:
+                        case DUTType.Element:
                             needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
                             break;
-
-                        default:
-                            needSave = false;
+                        case DUTType.Device:
+                            needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
                             break;
+                        case DUTType.Profile:
+                            ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                            SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(Profile.Name);
+                            switch (subjectForMeasure)
+                            {
+                                case SubjectForMeasure.PSE:
+                                    needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
+                                    break;
+                                case SubjectForMeasure.PSD:
+                                    needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
+                                    break;
+                                default:
+                                    needSave = false;
+                                    break;
+                            }
+                            break;
+                        default:
+                            throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                     }
                 }
 
-                if (needSave)
+
+                if(_HasFault == true)
+                {
+                    var dw = new DialogWindow("Error", Properties.Resources.MessageErrorSaveTestFault);
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+                }
+                else if (needSave)
                 {
                     ResultItem DataForSave = new ResultItem
                     {
@@ -919,6 +938,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetGateFault(HWFaultReason Fault)
         {
+            _HasFault = true;
             var gateResults = GetGateItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
@@ -1070,6 +1090,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetSLFault(Types.SL.HWFaultReason Fault)
         {
+            _HasFault = true;
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
 
@@ -1285,6 +1306,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetBvtFault(Types.BVT.HWFaultReason Fault)
         {
+            _HasFault = true;
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
 
@@ -1404,6 +1426,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetDVdtFault(Types.dVdt.HWFaultReason Fault)
         {
+            _HasFault = true;
             var dvDtItemContainer = GetDvDtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(dvDtItemContainer[dvdtCounter]);
 
@@ -1550,6 +1573,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetATUFault(ushort Fault)
         {
+            _HasFault = true;
             var ATUItemContainer = GetATUItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(ATUItemContainer[ATUCounter]);
 
@@ -1751,6 +1775,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetQrrTqFault(ushort Fault)
         {
+            _HasFault = true;
             var QrrTqItemContainer = GetQrrTqItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(QrrTqItemContainer[QrrTqCounter]);
 
@@ -1886,6 +1911,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetRACFault(ushort Fault)
         {
+            _HasFault = true;
             var RACItemContainer = GetRACItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
 
@@ -1968,10 +1994,10 @@ namespace SCME.UI.PagesUser
                     SetLabel(labelITM, state, true, result.ITM.ToString());
 
                 if (labelTGD != null)
-                    SetLabel(labelTGD, state, true, result.TGD.ToString());
+                    SetLabel(labelTGD, state, true, (result.TGD / 1000).ToString());
 
                 if (labelTGT != null)
-                    SetLabel(labelTGT, state, true, result.TGT.ToString());
+                    SetLabel(labelTGT, state, true, (result.TGT / 1000).ToString());
             }
         }
 
@@ -2019,6 +2045,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetTOUFault(ushort fault)
         {
+            _HasFault = true;
             var TOUItemContainer = GetTOUItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
 
@@ -2647,6 +2674,7 @@ namespace SCME.UI.PagesUser
 
         private void Start_Click(object Sender, RoutedEventArgs E)
         {
+            _HasFault = false;
             wasCurrentMore = false;
             //Cache.Net.StopMeasuringTemp();
             StartFirst();
@@ -2878,6 +2906,40 @@ namespace SCME.UI.PagesUser
             Cache.Net.StopHeating();
         }
 
+        private void EnabledPSDMode()
+        {
+            lbPsdJob.Visibility = Visibility.Visible;
+            tbPsdJob.Visibility = Visibility.Visible;
+
+            lbPsdSerialNumber.Visibility = Visibility.Visible;
+            tbPsdSerialNumber.Visibility = Visibility.Visible;
+
+            lbPseNumber.Visibility = Visibility.Collapsed;
+            tbPseNumber.Visibility = Visibility.Collapsed;
+
+            lbPseJob.Visibility = Visibility.Collapsed;
+            tbPseJob.Visibility = Visibility.Collapsed;
+
+            tbPsdJob.Focus();
+        }
+
+        private void EnabledPSEMode()
+        {
+            lbPseNumber.Visibility = Visibility.Visible;
+            tbPseNumber.Visibility = Visibility.Visible;
+
+            lbPseJob.Visibility = Visibility.Visible;
+            tbPseJob.Visibility = Visibility.Visible;
+
+            lbPsdJob.Visibility = Visibility.Collapsed;
+            tbPsdJob.Visibility = Visibility.Collapsed;
+
+            lbPsdSerialNumber.Visibility = Visibility.Collapsed;
+            tbPsdSerialNumber.Visibility = Visibility.Collapsed;
+
+            lbPseJob.Focus();
+        }
+
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
         {          
             tbPsdJob.Text = "";
@@ -2905,51 +2967,32 @@ namespace SCME.UI.PagesUser
             else
             {
                 //случай режима отличного от 'режим специальных измерений'. поля для ввода идентификационных данных должны быть введены, поэтому делаем их видимыми
-                ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-                Types.SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(this.Profile.Name);
 
-                switch (subjectForMeasure)
+                switch (Settings.Default.DUTType)
                 {
-                    case Types.SubjectForMeasure.PSD:
+                    case DUTType.Element:
+                        EnabledPSEMode();
+                        break;
+                    case DUTType.Device:
+                        EnabledPSDMode();
+                        break;
+                    case DUTType.Profile:
+                        ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                        SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(Profile.Name);
+                        switch (subjectForMeasure)
                         {
-                            //видны
-                            lbPsdJob.Visibility = Visibility.Visible;
-                            tbPsdJob.Visibility = Visibility.Visible;
-
-                            lbPsdSerialNumber.Visibility = Visibility.Visible;
-                            tbPsdSerialNumber.Visibility = Visibility.Visible;
-
-                            //не видны
-                            lbPseNumber.Visibility = Visibility.Collapsed;
-                            tbPseNumber.Visibility = Visibility.Collapsed;
-
-                            lbPseJob.Visibility = Visibility.Collapsed;
-                            tbPseJob.Visibility = Visibility.Collapsed;
-
-                            tbPsdJob.Focus();
-
-                            break;
+                            case SubjectForMeasure.PSE:
+                                EnabledPSEMode();
+                                break;
+                            case SubjectForMeasure.PSD:
+                                EnabledPSDMode();
+                                break;
+                            default:
+                                break;
                         }
-
-                    case Types.SubjectForMeasure.PSE:
-                        {
-                            lbPseNumber.Visibility = Visibility.Visible;
-                            tbPseNumber.Visibility = Visibility.Visible;
-
-                            lbPseJob.Visibility = Visibility.Visible;
-                            tbPseJob.Visibility = Visibility.Visible;
-
-                            //не видны
-                            lbPsdJob.Visibility = Visibility.Collapsed;
-                            tbPsdJob.Visibility = Visibility.Collapsed;
-
-                            lbPsdSerialNumber.Visibility = Visibility.Collapsed;
-                            tbPsdSerialNumber.Visibility = Visibility.Collapsed;
-
-                            lbPseJob.Focus();
-
-                            break;
-                        }
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                 }
             }
 
@@ -2998,8 +3041,6 @@ namespace SCME.UI.PagesUser
             string pseNumber = values[4] as string;
             bool specialMeasureMode = (bool)values[5];
 
-            ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
-            SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);
 
             if (specialMeasureMode)
             {
@@ -3008,23 +3049,39 @@ namespace SCME.UI.PagesUser
             }
             else
             {
-                switch (subjectForMeasure)
+                switch (Settings.Default.DUTType)
                 {
-                    case SubjectForMeasure.PSD:
-                        if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
-                            return null;
-                        else
-                            return Properties.Resources.ResultsWillNotBeSaved;
-
-                    case SubjectForMeasure.PSE:
+                    case DUTType.Element:
                         if (!string.IsNullOrEmpty(pseJob) && !string.IsNullOrEmpty(pseNumber))
                             return null;
-                        else
-                            return Properties.Resources.ResultsWillNotBeSaved;
+                        break;
+                    case DUTType.Device:
+                        if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
+                            return null;
+                        break;
+                    case DUTType.Profile:
+                        ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
+                        SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);
+                        switch (subjectForMeasure)
+                        {
+                            case SubjectForMeasure.PSE:
+                                if (!string.IsNullOrEmpty(pseJob) && !string.IsNullOrEmpty(pseNumber))
+                                    return null;
+                                break;
+                            case SubjectForMeasure.PSD:
+                                if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
+                                    return null;
+                                break;
+                            default:
+                                return Resources.ResultsWillNotBeSaved;
+                        }
+                        break;
+                    default:
+                        throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                 }
             }
 
-            return Properties.Resources.ResultsWillNotBeSaved;
+            return Resources.ResultsWillNotBeSaved;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
