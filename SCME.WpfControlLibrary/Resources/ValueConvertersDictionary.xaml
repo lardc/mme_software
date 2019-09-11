@@ -12,5 +12,12 @@
     <Converters:VtmTestTypeToVisibilityConverter x:Key="VT2V"/>
     <Converters:VtmTestTypeToStringConverter x:Key="VT2S"/>
     <Converters:BvtTestTypeToVisibilityConverter x:Key="TT2V"/>
+    <Converters:BvtTypeToStringConverter x:Key="BT2S" />
+    <Converters:FrequencyDivisorToFrequency x:Key="FD2F" />
+    <Converters:MeasureModeToVisibilityConverter x:Key="MM2V" />
+    <Converters:TestParametrToString x:Key="TP2S" />
+    <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
+    <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
+
 
 </ResourceDictionary>

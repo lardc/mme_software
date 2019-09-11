@@ -29,5 +29,11 @@
     <Setting Name="Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="IsTouch" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LastSelectedMMECode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MME005</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

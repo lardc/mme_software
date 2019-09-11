@@ -124,5 +124,26 @@ namespace SCME.ProfileBuilder.Properties {
                 this["Theme"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsTouch {
+            get {
+                return ((bool)(this["IsTouch"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
+        public string LastSelectedMMECode {
+            get {
+                return ((string)(this["LastSelectedMMECode"]));
+            }
+            set {
+                this["LastSelectedMMECode"] = value;
+            }
+        }
     }
 }

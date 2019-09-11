@@ -1,12 +1,10 @@
 ﻿using MahApps.Metro;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
+using Application = System.Windows.Application;
+using Point = System.Drawing.Point;
 
 namespace SCME.ProfileBuilder
 {
@@ -15,14 +13,40 @@ namespace SCME.ProfileBuilder
     /// </summary>
     public partial class App : Application
     {
+        private static readonly int LOGPIXELSX = 88;    // Used for GetDeviceCaps().
+        private static readonly int LOGPIXELSY = 90;    // Used for GetDeviceCaps().
+
+        [DllImport("gdi32.dll")]
+        private static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDC(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        public static (int DPIX, int DPIY) GetSystemDpi()
+        {
+            Point result = new Point();
+
+            IntPtr hDC = GetDC(IntPtr.Zero);
+
+            result.X = GetDeviceCaps(hDC, LOGPIXELSX);
+            result.Y = GetDeviceCaps(hDC, LOGPIXELSY);
+
+            ReleaseDC(IntPtr.Zero, hDC);
+
+            return (result.X, result.Y);
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(Application.Current);
+            var (_, DPIY) = GetSystemDpi();
 
-            // now set the Green accent and dark theme
-            //ThemeManager.ChangeAppStyle(Current,
-            //                            ThemeManager.GetAccent(ProfileBuilder.Properties.Settings.Default.Accent),
-            //                            ThemeManager.GetAppTheme(ProfileBuilder.Properties.Settings.Default.Theme));
+            //Полтора сантиметра высота кнопки
+            //WpfControlLibrary.ViewModels.ResourceBinding.HeightButton = DPIY / 2.54 * 4;
+            ////Сантиметр высота шрифта
+            //WpfControlLibrary.ViewModels.ResourceBinding.FontSize = DPIY / 2.54;
         }
     }
 }

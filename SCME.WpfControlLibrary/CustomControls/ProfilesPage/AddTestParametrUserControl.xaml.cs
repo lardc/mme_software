@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PropertyChanged;
+using SCME.Types.BaseTestParams;
+using SCME.WpfControlLibrary.IValueConverters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,16 +21,21 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPage
     /// <summary>
     /// Логика взаимодействия для AddTestParametrUserControl.xaml
     /// </summary>
+    [AddINotifyPropertyChangedInterface]
     public partial class AddTestParametrUserControl : UserControl
     {
+        public event AddTestParametrDelegate AddTestParametersEvent;
+
+        public TestParametersType SelectedParametersType { get; set; }
+
         public AddTestParametrUserControl()
         {
             InitializeComponent();
         }
 
-        private void ButtonAddTestParameters_OnClick(object sender, RoutedEventArgs e)
+        private void AddTestParameters_Click(object sender, RoutedEventArgs e)
         {
-
+            AddTestParametersEvent?.Invoke(SelectedParametersType);
         }
     }
 }

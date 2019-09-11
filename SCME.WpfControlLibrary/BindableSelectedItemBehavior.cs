@@ -38,6 +38,7 @@ namespace SCME.WpfControlLibrary
         {
             base.OnAttached();
 
+            
             AssociatedObject.SelectedItemChanged += OnTreeViewSelectedItemChanged;
         }
 

@@ -10,10 +10,16 @@
              xmlns:controlsEx="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
              d:DesignHeight="450" d:DesignWidth="800">
-
-        <StackPanel>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderServerName}"/>
-        <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}" x:Name="tbServerName" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  TextAlignment="Left" TextWrapping="Wrap" />
+        <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  TextAlignment="Left" TextWrapping="Wrap" />
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderDBName}" />
         <TextBox Text="{Binding Database, UpdateSourceTrigger=PropertyChanged}"/>
         <CheckBox IsChecked="{Binding IntegratedSecurity, UpdateSourceTrigger=PropertyChanged}"   Content="{x:Static res:Resources.ProfileBuilderIntegratedSecurity}"/>
@@ -21,7 +27,7 @@
         <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IntegratedSecurity, Converter={StaticResource B2VI}}" />
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderDBPassword}" />
         <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IntegratedSecurity, Converter={StaticResource B2VI}}" />
-        <Button Content="{x:Static res:Resources.Connect}" IsEnabled="{Binding ConnectedButtonEnabled}"  HorizontalAlignment="Right" Click="ButtonSQLConnect_Click" />
+        <Button Content="{x:Static res:Resources.Connect}" IsEnabled="{Binding ConnectedButtonEnabled}"  HorizontalAlignment="Right" Click="ConnectToMSSQL_Click" />
     </StackPanel>
     
 </UserControl>

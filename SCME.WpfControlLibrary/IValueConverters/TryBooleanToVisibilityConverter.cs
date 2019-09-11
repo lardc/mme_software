@@ -19,7 +19,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
                 case true:
                     return Visibility.Visible;
                 case false:
-                    return Visibility.Hidden;
+                    return Visibility.Collapsed;
                 default:
                     throw new NotImplementedException($"{nameof(TryBooleanToVisibilityConverter)} {nameof(NotImplementedException)} error");
             }

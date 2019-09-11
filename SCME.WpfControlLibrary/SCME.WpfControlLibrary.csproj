@@ -49,6 +49,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -66,13 +70,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTestParametersDelegate.cs" />
+    <Compile Include="IValueConverters\BvtTypeToStringConverter.cs" />
+    <Compile Include="IValueConverters\FrequencyDivisorToFrequency.cs" />
+    <Compile Include="IValueConverters\MeasureModeToVisibilityConverter.cs" />
+    <Compile Include="IValueConverters\TDcFallRateValueFromEnum.cs" />
+    <Compile Include="TestParametersDictionary.cs" />
+    <Compile Include="IValueConverters\TestParametrToString.cs" />
+    <Compile Include="IValueConverters\TOsvRateValueFromEnum.cs" />
+    <Compile Include="ViewModels\ProfilesPage\AddTestParametrUserControlVM.cs" />
+    <Compile Include="ViewModels\ResourceBinding.cs" />
     <Compile Include="Wrappers\AccentWrapper.cs" />
     <Compile Include="CustomControls\AccentAndThemeUserControl.xaml.cs">
       <DependentUpon>AccentAndThemeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ScaleFontBehavior.cs" />
     <Compile Include="ViewModels\AccentAndThemeUserControlVM.cs" />
-    <Compile Include="ViewModels\ProfilesPageVM.cs" />
     <Compile Include="VisualHelper.cs" />
     <Compile Include="Wrappers\AppThemeWrapper.cs" />
     <Page Include="CustomControls\AccentAndThemeUserControl.xaml">
@@ -103,7 +116,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\ProfilesPage\ListViewTestParameters.xaml">
+    <Page Include="CustomControls\ProfilesPage\ListViewTestParametersUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,8 +133,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="BindableSelectedItemBehavior.cs" />
-    <Compile Include="CustomControls\ProfilesPage\ListViewTestParameters.xaml.cs">
-      <DependentUpon>ListViewTestParameters.xaml</DependentUpon>
+    <Compile Include="CustomControls\ProfilesPage\ListViewTestParametersUserControl.xaml.cs">
+      <DependentUpon>ListViewTestParametersUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\ProfilesPage\AddTestParametrUserControl.xaml.cs">
       <DependentUpon>AddTestParametrUserControl.xaml</DependentUpon>
@@ -190,15 +203,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\ProfilePageDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\ValueConvertersDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ListViewTestParametersDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,16 +248,16 @@
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
-      <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
-      <Name>SCME.Types</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\WindowsIcons-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
+      <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
+      <Name>SCME.Types</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />

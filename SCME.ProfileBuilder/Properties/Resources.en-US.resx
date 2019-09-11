@@ -723,4 +723,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="MMECodesEmpty" xml:space="preserve">
+    <value>Missing MME codes in the database, no further work possible</value>
+  </data>
 </root>

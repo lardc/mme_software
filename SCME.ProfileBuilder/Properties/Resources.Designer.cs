@@ -1015,6 +1015,15 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Отсутствуют MME коды в базе данных, дальнейшая работа невозможна.
+        /// </summary>
+        public static string MMECodesEmpty {
+            get {
+                return ResourceManager.GetString("MMECodesEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Режим.
         /// </summary>
         public static string Mode {

@@ -4,6 +4,15 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
+using GateTestParameters = SCME.Types.Gate.TestParameters;
+using BvtTestParameters = SCME.Types.BVT.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
+using DvDtParameters = SCME.Types.dVdt.TestParameters;
+using AtuParameters = SCME.Types.ATU.TestParameters;
+using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
+using RacParameters = SCME.Types.RAC.TestParameters;
+using TOUParameters = SCME.Types.TOU.TestParameters;
+
 namespace SCME.Types.BaseTestParams
 {
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -62,6 +71,31 @@ namespace SCME.Types.BaseTestParams
         public long TestTypeId { get; set; }
 
         public abstract bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase);
+
+        public static BaseTestParametersAndNormatives CreateParametersByType(TestParametersType type)
+        {
+            switch (type)
+            {
+                case TestParametersType.Gate:
+                    return new GateTestParameters() { IsEnabled = false };
+                case TestParametersType.Bvt:
+                    return new BvtTestParameters() { IsEnabled = false };
+                case TestParametersType.StaticLoses:
+                    return new VtmTestParameters() { IsEnabled = false };
+                case TestParametersType.Dvdt:
+                    return new DvDtParameters() { IsEnabled = true };
+                case TestParametersType.ATU:
+                    return new AtuParameters() { IsEnabled = true };
+                case TestParametersType.QrrTq:
+                    return new QrrTqParameters() { IsEnabled = true };
+                case TestParametersType.RAC:
+                    return new RacParameters() { IsEnabled = true };
+                case TestParametersType.TOU:
+                    return new TOUParameters() { IsEnabled = true };
+                default:
+                    throw new NotImplementedException("CreateParametersByType");
+            }
+        }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

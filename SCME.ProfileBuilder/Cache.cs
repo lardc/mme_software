@@ -3,8 +3,9 @@ using SCME.ProfileBuilder.PagesTech;
 
 namespace SCME.ProfileBuilder
 {
-    public class Cache
+    public static class Cache
     {
+        public static ProfilesPage ProfilesPage { get; set; }
         internal static MainWindow Main { get; set; }
 
         internal static ProfilePage ProfileEdit { get; set; }

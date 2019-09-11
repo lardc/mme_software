@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using SCME.InterfaceImplementations;
 using SCME.ProfileBuilder.CustomControl;
@@ -25,6 +26,30 @@ namespace SCME.ProfileBuilder.CommonPages
         public ConnectPage()
         {
             InitializeComponent();
+        }
+
+        public async void ConnectToMSSQL()
+        {
+            try
+            {
+                var vm = VM.ConnectToMSSQLVM;
+                var connectionString = (vm.IntegratedSecurity == true)
+                    ? $"Server={vm.Server}; Database={vm.Database}; Integrated Security=true;"
+                    : $"Server={vm.Server}; Database={vm.Database}; User Id={vm.UserId}; Password={vm.Password};";
+
+                IProfilesService service = new SQLProfilesService(connectionString);
+                IProfilesConnectionService connectionService = new SQLProfilesConnectionService(connectionString, service);
+
+                var loadProfileService = new InterfaceImplementations.Common.SQLLoadProfilesServiceTest(new System.Data.SqlClient.SqlConnection(connectionString));
+
+                Cache.ProfilesPage = new ProfilesPage(loadProfileService);
+
+//                NavigationService?.Navigate(Cache.ProfilesPage);
+            }
+            catch (Exception ex)
+            {
+                await Cache.Main.ShowMessageAsync("Error", ex.Message, MessageDialogStyle.Affirmative);
+            }
         }
 
         private void ButtonSQLConnect_Click(object sender, RoutedEventArgs e)

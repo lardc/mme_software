@@ -75,7 +75,7 @@
   <ItemGroup>
     <Compile Include="BackGround.cs" />
     <Compile Include="Common\LoadProfilesService.cs" />
-    <Compile Include="Common\SQLLoadProfilesService1.cs" />
+    <Compile Include="Common\SQLLoadProfilesServiceTest.cs" />
     <Compile Include="MigratorInserter.cs" />
     <Compile Include="MigratorInserterTemplate.cs" />
     <Compile Include="MSSQL\SQLCentralDatabaseService.cs" />

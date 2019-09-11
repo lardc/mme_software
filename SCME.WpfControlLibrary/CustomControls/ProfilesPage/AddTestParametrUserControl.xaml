@@ -4,103 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:CustomControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:local="clr-namespace:SCME.WpfControlLibrary"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800">
     <UserControl.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ProfilePageDictionary.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Viewbox Stretch="Uniform" StretchDirection="DownOnly">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*"></RowDefinition>
-                    <RowDefinition Height="10*"></RowDefinition>
-                    <RowDefinition Height="10*"></RowDefinition>
-                    <RowDefinition Height="60*"></RowDefinition>
-                    <RowDefinition Height="10*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280*" />
-                        <ColumnDefinition Width="200*" />
-                        <ColumnDefinition Width="30*" />
-                        <ColumnDefinition Width="150*" />
-                        <ColumnDefinition Width="230*" />
-                    </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.CommutationTypeT}" Height="Auto" />
-                    <ComboBox Grid.Column="1" Grid.Row="0" Padding="10" Margin="10" MaxDropDownHeight="1000"
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static res:Resources.CommutationTypeT}"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" 
                                       ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
-                                      SelectedItem="{Binding SelectedItem.ParametersComm, Converter={StaticResource E2S}, ElementName=treeViewProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource CComboboxStyle}" HorizontalContentAlignment="Right"
-                                      IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"/>
+                                      SelectedItem="{Binding SelectedItem.ParametersComm, Converter={StaticResource E2S}, ElementName=treeViewProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="2" Grid.Row="0" Text="{x:Static res:Resources.Force}" />
+            <mahappsControls:NumericUpDown Grid.Column="3" Grid.Row="0" Maximum="50" Minimum="5" />
 
-                    <Label Grid.Column="3" Grid.Row="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Force}" Height="Auto" />
-                    <CustomControl:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5"
-                                           TextBlock.TextAlignment="Right" Maximum="50" Minimum="5"
-                                           IsNumeric="True" IsFloat="True"
-                                           Text="{Binding SelectedItem.ParametersClamp, ElementName=treeViewProfiles}"
-                                           IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"/>
-                </Grid>
-                <Grid Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280*" />
-                        <ColumnDefinition Width="200*" />
-                        <ColumnDefinition Width="30*" />
-                        <ColumnDefinition Width="230*" />
-                        <ColumnDefinition Width="150*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.ParameterType}" Height="Auto" />
-                    <ComboBox Grid.Column="1" x:Name="ComboBoxParametersType" Padding="10" Margin="10" MaxDropDownHeight="1000"
-                                      Style="{StaticResource CComboboxStyle}" HorizontalContentAlignment="Right"
-                                      IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}">
-                        <ComboBoxItem Content="Gate"></ComboBoxItem>
-                        <ComboBoxItem Content="VTM"></ComboBoxItem>
-                        <ComboBoxItem Content="BVT"></ComboBoxItem>
-                        <ComboBoxItem Content="dVdt"></ComboBoxItem>
-                        <ComboBoxItem Content="ATU"></ComboBoxItem>
-                        <ComboBoxItem Content="QrrTq"></ComboBoxItem>
-                        <ComboBoxItem Content="RAC"></ComboBoxItem>
-                        <ComboBoxItem Content="TOU"></ComboBoxItem>
-                    </ComboBox>
-
-                    <Button Grid.Column="3" Margin="10" x:Name="ButtonAddTestParameters" Content="{x:Static res:Resources.Add}" Click="ButtonAddTestParameters_OnClick"
-                                IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"
-                                ></Button>
-                </Grid>
-                <Grid Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280*" />
-                        <ColumnDefinition Width="200*" />
-                        <ColumnDefinition Width="30*" />
-                        <ColumnDefinition Width="150*" />
-                        <ColumnDefinition Width="230*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Height_Prof}" Height="Auto"/>
-                    <CustomControl:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10,10,10,10" Padding="5" TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="100000" Minimum="0"
-                                           Text="{Binding SelectedItem.Height, ElementName=treeViewProfiles}" IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"/>
-
-                    <Label Grid.Column="3" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Temp}" Height="Auto"/>
-                    <CustomControl:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5" TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0" 
-                                           Text="{Binding SelectedItem.Temperature, ElementName=treeViewProfiles}" IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"/>
-                </Grid>
-
-                <Grid Row="4" Visibility="{Binding IsHeighMeasureEnable, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}" Margin="16,0,85,10" Background="{StaticResource xPurple2}">
-                    <Border BorderBrush="{StaticResource xWhite1}" BorderThickness="1"/>
-                    <CheckBox x:Name="cbIsHeigtMeasureEnabled" x:FieldModifier="private" IsEnabled="{Binding SelectedItem.IsParent, ElementName=treeViewProfiles}"
-                    		          IsChecked="{Binding SelectedItem.IsHeightMeasureEnabled, ElementName=treeViewProfiles, UpdateSourceTrigger=PropertyChanged}"
-                    	     	      HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"
-                    		          Margin="10" Padding="2" Content="{x:Static res:Resources.MeasureDialog_Title}"/>
-                </Grid>
-            </Grid>
-        </Viewbox>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="{x:Static res:Resources.ParameterType}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{x:Static local:TestParametersDictionary.TestParametersList}" DisplayMemberPath="Name" SelectedValuePath="TestParametersType" 
+                      SelectedValue="{Binding Path=SelectedParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                <!--<ComboBoxItem Content="Gate"></ComboBoxItem>
+                <ComboBoxItem Content="VTM"></ComboBoxItem>
+                <ComboBoxItem Content="BVT"></ComboBoxItem>
+                <ComboBoxItem Content="dVdt"></ComboBoxItem>
+                <ComboBoxItem Content="ATU"></ComboBoxItem>
+                <ComboBoxItem Content="QrrTq"></ComboBoxItem>
+                <ComboBoxItem Content="RAC"></ComboBoxItem>
+                <ComboBoxItem Content="TOU"></ComboBoxItem>-->
+            </ComboBox>
+            <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="{x:Static res:Resources.Height_Prof}" />
+            <mahappsControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}" />
+            <TextBlock Grid.Column="2" Grid.Row="2" Text="{x:Static res:Resources.Temp}" />
+            <mahappsControls:NumericUpDown Grid.Column="3" Grid.Row="2" />
+        </Grid>
     </Grid>
 </UserControl>

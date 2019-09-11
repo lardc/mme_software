@@ -32,6 +32,7 @@ namespace SCME.ProfileBuilder
             Cache.Main = this;
             Cache.ConnectPage = new ConnectPage();
             MainFrame.Navigate(Cache.ConnectPage);
+            
 
             //var connectionString = @"Server=IVAN-PC\SQLEXPRESS01; Database=SCME_ResultsDB; Integrated Security=true;";
             //IProfilesService service = new SQLProfilesService(connectionString);
@@ -44,6 +45,11 @@ namespace SCME.ProfileBuilder
         {
             Settings.Default.Save();
             WpfControlLibrary.Properties.Settings.Default.Save();
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Cache.ConnectPage.ConnectToMSSQL();
         }
     }
 }

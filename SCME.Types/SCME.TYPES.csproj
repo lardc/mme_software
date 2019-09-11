@@ -105,6 +105,7 @@
     <Compile Include="Commutation\HALTypeComm.cs" />
     <Compile Include="DatabaseCommunicationContracts.cs" />
     <Compile Include="PrintingServiceContracts.cs" />
+    <Compile Include="Profiles\MyProfile.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Profiles\ProfileCalcSubject.cs" />
     <Compile Include="Profiles\ProfileDictionary.cs" />

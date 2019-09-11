@@ -1,11 +1,7 @@
 ﻿using SCME.Types.VTM;
 using SCME.WpfControlLibrary.Properties;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace SCME.WpfControlLibrary.IValueConverters
@@ -19,6 +15,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
 
             switch (type)
             {
+                
                 case VTMTestType.Ramp:
                     line = Resources.Ramp;
                     break;

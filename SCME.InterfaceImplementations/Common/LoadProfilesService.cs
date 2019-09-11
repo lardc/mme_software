@@ -13,6 +13,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace SCME.InterfaceImplementations.Common
 {
@@ -33,6 +34,7 @@ namespace SCME.InterfaceImplementations.Common
         protected TDbCommand _ParamSelect;
         protected TDbCommand _ProfileSingleSelect;
         protected TDbCommand _ProfileByKey;
+        protected TDbCommand _GetMMECodes;
 
         public LoadProfilesService(TDbConnection connection)
         {
@@ -45,10 +47,22 @@ namespace SCME.InterfaceImplementations.Common
 
         public abstract void PrepareQueries();
 
-        public List<ProfileForSqlSelect> GetProfilesSuperficially(string mmeCode)
+
+        public List<string> GetMMECodes()
+        {
+            List<string> MMECodes = new List<string>();
+
+            using (var reader = _GetMMECodes.ExecuteReader())
+                while (reader.Read())
+                    MMECodes.Add(reader.GetString(0));
+
+            return MMECodes;
+        }
+
+        public List<MyProfile> GetProfilesSuperficially(string mmeCode)
         {
             DbCommand profileSelect;
-            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
+            List<MyProfile> profiles = new List<MyProfile>();
 
             if (mmeCode == null)
                 profileSelect = _ProfileSelect;
@@ -60,116 +74,139 @@ namespace SCME.InterfaceImplementations.Common
 
             using (var reader = profileSelect.ExecuteReader())
                 while (reader.Read())
-                    res.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]));
+                    profiles.Add(new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4))
+                    {
+                        IsTop = true
+                    });
 
-            return res;
+            return profiles;
         }
 
-        public ProfileForSqlSelect GetProfileByKey(Guid key)
+        public MyProfile GetProfileByKey(Guid key)
         {
             _ProfileByKey.Parameters["@PROF_GUID"].Value = key;
             using (var reader = _ProfileByKey.ExecuteReader())
                 while (reader.Read())
-                    return new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[3], (DateTime)reader[4]);
+                    return new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
             throw new Exception($"GetProfileByKey, could not find item by key {key}");
         }
 
-        public List<ProfileForSqlSelect> GetProfileChildsSuperficially(ProfileForSqlSelect profile)
+        public List<MyProfile> GetProfileChildsSuperficially(MyProfile profile)
         {
-            List<ProfileForSqlSelect> res = new List<ProfileForSqlSelect>();
+            List<MyProfile> profiles = new List<MyProfile>();
 
             _ChildsCmd.Parameters["@PROF_NAME"].Value = profile.Name;
             using (var reader = _ChildsCmd.ExecuteReader())
                 while (reader.Read())
-                    res.Add(new ProfileForSqlSelect((int)reader[0], (string)reader[1], (Guid)reader[2], (int)reader[4], (DateTime)reader[3]));
+                    profiles.Add(new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4))
+                    {
+                        IsTop = false
+                    }); ;
 
-            return res;
-        }
-
-        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
-        {
-            return GetProfilesSuperficially(mmeCode).Select(m=> m.ToProfileItem()).ToList();
-        }
-
-        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
-        {
-            return GetProfilesSuperficially(mmeCode).Select(m=> LoadConditionsForProfile(m).ToProfileItem()).ToList();
-        }
-
-        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
-        {
-            return GetProfilesSuperficially(mmeCode).Select(m => m.ToProfileItemWithChild(GetProfileChildsSuperficially(m))).ToList();
+            return profiles;
         }
 
 
-        public Profile GetProfileDeep(Guid key)
+
+        //public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        //{
+        //    return GetProfilesSuperficially(mmeCode).Select(m=> m.ToProfileItem()).ToList();
+        //}
+
+
+        public List<MyProfile> GetProfilesWithChildSuperficially(string mmeCode)
         {
-            return LoadConditionsForProfile(GetProfileByKey(key));
+            var profiles = GetProfilesSuperficially(mmeCode);
+            foreach (var i in profiles)
+                i.Childrens = new ObservableCollection<MyProfile>(GetProfileChildsSuperficially(i));
+            return profiles;
         }
 
-        private Profile LoadConditionsForProfile(ProfileForSqlSelect prof)
+
+        //public MyProfile GetProfileDeep(Guid key)
+        //{
+        //    return LoadConditionsForProfile(GetProfileByKey(key));
+        //}
+
+        public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
-            var profile = prof.ToProfile();
+            ProfileDeepData profileDeepData = new ProfileDeepData();
             var testTypes = new Dictionary<long, long>();
-
-            _CondCmd.Parameters["@PROF_ID"].Value = prof.Id;
+            
+            _CondCmd.Parameters["@PROF_ID"].Value = profile.Id;
 
             using (var reader = _CondCmd.ExecuteReader())
                 while (reader.Read())
                     testTypes.Add((int)reader[0], (int)reader[1]);
 
             foreach (var testType in testTypes)
-                FillParameters(profile, testType.Key, testType.Value);
+                FillParameters(profileDeepData, testType.Key, testType.Value);
 
-            return profile;
+            return profileDeepData;
         }
+
+        //private MyProfile LoadConditionsForProfile(MyProfile profile)
+        //{
+        //    var testTypes = new Dictionary<long, long>();
+
+        //    _CondCmd.Parameters["@PROF_ID"].Value = profile.Id;
+
+        //    using (var reader = _CondCmd.ExecuteReader())
+        //        while (reader.Read())
+        //            testTypes.Add((int)reader[0], (int)reader[1]);
+
+        //    foreach (var testType in testTypes)
+        //        FillParameters(profile.ProfileDeepData, testType.Key, testType.Value);
+
+        //    return profile;
+        //}
 
         #region Fill
 
-        private void FillParameters(Profile profile, long testTypeId, long testParametersType)
+        private void FillParameters(ProfileDeepData data, long testTypeId, long testParametersType)
         {
             switch ((TestParametersType)testParametersType)
             {
                 case TestParametersType.Gate:
                     var gatePars = FillGateConditions(testTypeId);
                     FillGateParameters(gatePars, testTypeId);
-                    profile.TestParametersAndNormatives.Add(gatePars);
+                    data.TestParametersAndNormatives.Add(gatePars);
                     break;
                 case TestParametersType.Bvt:
                     var bvtPars = FillBvtConditions(testTypeId);
                     FillBvtParameters(bvtPars, testTypeId);
-                    profile.TestParametersAndNormatives.Add(bvtPars);
+                    data.TestParametersAndNormatives.Add(bvtPars);
                     break;
                 case TestParametersType.StaticLoses:
                     var slParams = FillSlConditions(testTypeId);
                     FillSlParameters(slParams, testTypeId);
-                    profile.TestParametersAndNormatives.Add(slParams);
+                    data.TestParametersAndNormatives.Add(slParams);
                     break;
                 case TestParametersType.Dvdt:
                     var dVdtParams = FillDvdtConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(dVdtParams);
+                    data.TestParametersAndNormatives.Add(dVdtParams);
                     break;
                 case TestParametersType.ATU:
                     var atuParams = FillAtuConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(atuParams);
+                    data.TestParametersAndNormatives.Add(atuParams);
                     break;
                 case TestParametersType.QrrTq:
                     var qrrTqParams = FillQrrTqConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(qrrTqParams);
+                    data.TestParametersAndNormatives.Add(qrrTqParams);
                     break;
                 case TestParametersType.RAC:
                     var racParams = FillRACConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(racParams);
+                    data.TestParametersAndNormatives.Add(racParams);
                     break;
                 case TestParametersType.TOU:
                     var touParams = FillTOUConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(touParams);
+                    data.TestParametersAndNormatives.Add(touParams);
                     break;
                 case TestParametersType.Clamping:
-                    FillClampConditions(profile, testTypeId);
+                    FillClampConditions(data, testTypeId);
                     break;
                 case TestParametersType.Commutation:
-                    FillComutationConditions(profile, testTypeId);
+                    FillComutationConditions(data, testTypeId);
                     break;
             }
         }
@@ -353,7 +390,7 @@ namespace SCME.InterfaceImplementations.Common
             return testParams;
         }
 
-        private void FillComutationConditions(Profile profile, long testTypeId)
+        private void FillComutationConditions(ProfileDeepData data, long testTypeId)
         {
             var results = new Dictionary<string, object>(2);
 
@@ -361,12 +398,12 @@ namespace SCME.InterfaceImplementations.Common
 
             foreach (var result in results)
             {
-                profile.ParametersComm =
+                data.ParametersComm =
                     (ModuleCommutationType)Enum.Parse(typeof(ModuleCommutationType), result.Value.ToString());
             }
         }
 
-        private void FillClampConditions(Profile profile, long testTypeId)
+        private void FillClampConditions(ProfileDeepData data, long testTypeId)
         {
             var results = new Dictionary<string, object>(1);
 
@@ -377,16 +414,16 @@ namespace SCME.InterfaceImplementations.Common
                 switch (result.Key)
                 {
                     case "CLAMP_HeightMeasure":
-                        profile.IsHeightMeasureEnabled = Boolean.Parse(result.Value.ToString());
+                        data.IsHeightMeasureEnabled = Boolean.Parse(result.Value.ToString());
                         break;
                     case "CLAMP_HeightValue":
-                        profile.Height = ushort.Parse(result.Value.ToString());
+                        data.Height = ushort.Parse(result.Value.ToString());
                         break;
                     case "CLAMP_Force":
-                        profile.ParametersClamp = long.Parse(result.Value.ToString());
+                        data.ParametersClamp = long.Parse(result.Value.ToString());
                         break;
                     case "CLAMP_Temperature":
-                        profile.Temperature = ushort.Parse(result.Value.ToString());
+                        data.Temperature = ushort.Parse(result.Value.ToString());
                         break;
                 }
             }

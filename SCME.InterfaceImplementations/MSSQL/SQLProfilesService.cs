@@ -25,7 +25,7 @@ namespace SCME.InterfaceImplementations
             _connection.Open();
 
             _saveProfileService = new SQLSaveProfileService(_connection);
-            _loadProfilesService = new SQLLoadProfilesService1(_connection);
+            _loadProfilesService = new SQLLoadProfilesService(_connection);
         }
 
         public SQLProfilesService(ISaveProfileService saveProfileService, ILoadProfilesService loadProfilesService)

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SCME.ProfileBuilder.CustomControl.ConnectPage"
              mc:Ignorable="d" 
+             xmlns:vmControlLibrary="clr-namespace:SCME.WpfControlLibrary.ViewModels;assembly=SCME.WpfControlLibrary"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -21,16 +22,16 @@
             <ColumnDefinition Width="7*"></ColumnDefinition>
             <ColumnDefinition  Width="3*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Content="{x:Static res:Resources.ProfileBuilderTitle}" />
+        <TextBlock Text="{x:Static res:Resources.ProfileBuilderTitle}" />
         <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SQLiteFileName, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDbPath"  TextAlignment="Left" TextWrapping="Wrap"/>
+            <TextBox Grid.Column="0" Grid.Row="0"  Text="{Binding SQLiteFileName, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDbPath"   TextWrapping="Wrap"/>
             <Button Grid.Column="1" Grid.Row="0" Name="SelectSqlPathButton" Click="SelectSqlPathButton_Click">
-                <iconPacks:PackIconMaterial Width="32" Height="32" Kind="Magnify" />
+                <iconPacks:PackIconMaterial   Kind="Magnify" />
             </Button>
         </Grid>
         <Button  Grid.Column="1" Grid.Row="2" Content="{x:Static res:Resources.Connect}" IsEnabled="{Binding ConnectedButtonEnabled}" Name="SQliteConnectButton"  Click="SQliteConnectButton_Click" />
