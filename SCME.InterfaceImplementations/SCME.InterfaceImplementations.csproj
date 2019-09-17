@@ -70,12 +70,23 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackGround.cs" />
-    <Compile Include="Common\LoadProfilesService.cs" />
-    <Compile Include="Common\SQLLoadProfilesServiceTest.cs" />
+    <Compile Include="Common\ILoadProfilesServiceTest.cs" />
+    <Compile Include="Common\InserterBaseTestParametersAndNormatives.cs" />
+    <Compile Include="Common\ISaveProfileServiceTest.cs" />
+    <Compile Include="Common\LoadProfilesServiceTest.cs" />
+    <Compile Include="NewImplement\MSSQL\MSSQLLoadProfilesServiceTest.cs" />
+    <Compile Include="Common\SaveProfilesServiceTest.cs" />
+    <Compile Include="NewImplement\MSSQL\MSSQLSaveProfileServiceTest.cs" />
+    <Compile Include="NewImplement\SQLite\SQLiteSaveProfilesServiceTest.cs" />
+    <Compile Include="NewImplement\SQLite\SQLiteLoadProfilesServiceTest.cs" />
+    <Compile Include="Common\TDbCommandParametr.cs" />
     <Compile Include="MigratorInserter.cs" />
     <Compile Include="MigratorInserterTemplate.cs" />
     <Compile Include="MSSQL\SQLCentralDatabaseService.cs" />
@@ -104,7 +115,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

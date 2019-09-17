@@ -96,6 +96,7 @@
     <Compile Include="Interfaces\IResultsService.cs" />
     <Compile Include="Interfaces\ISaveProfileService.cs" />
     <Compile Include="Interfaces\ISyncService.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="PrintingServiceProxy.cs" />
     <Compile Include="DatabaseMaintenanceContracts.cs" />
     <Compile Include="DatabaseCommunicationProxy.cs" />

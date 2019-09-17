@@ -71,13 +71,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddTestParametersDelegate.cs" />
+    <Compile Include="CustomControls\CheckBox.cs" />
+    <Compile Include="CustomControls\ProfilesPage.xaml.cs">
+      <DependentUpon>ProfilesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\SmartLabel.xaml.cs">
+      <DependentUpon>SmartLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IValueConverters\BvtTypeToStringConverter.cs" />
     <Compile Include="IValueConverters\FrequencyDivisorToFrequency.cs" />
     <Compile Include="IValueConverters\MeasureModeToVisibilityConverter.cs" />
     <Compile Include="IValueConverters\TDcFallRateValueFromEnum.cs" />
+    <Compile Include="CustomControls\NumericUpDown.cs" />
     <Compile Include="TestParametersDictionary.cs" />
     <Compile Include="IValueConverters\TestParametrToString.cs" />
     <Compile Include="IValueConverters\TOsvRateValueFromEnum.cs" />
+    <Compile Include="ViewModels\ProfilesPageVM.cs" />
     <Compile Include="ViewModels\ProfilesPage\AddTestParametrUserControlVM.cs" />
     <Compile Include="ViewModels\ResourceBinding.cs" />
     <Compile Include="Wrappers\AccentWrapper.cs" />
@@ -92,7 +101,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\ProfilesPage\TreeViewProfilesUserControl.xaml">
+    <Page Include="CustomControls\ProfilesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CustomControls\SmartLabel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -116,11 +129,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\ProfilesPage\ListViewTestParametersUserControl.xaml">
+    <Page Include="CustomControls\ProfilesPageComponents\ListViewTestParametersUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\ProfilesPage\AddTestParametrUserControl.xaml">
+    <Page Include="CustomControls\ProfilesPageComponents\AddTestParametrUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,14 +146,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="BindableSelectedItemBehavior.cs" />
-    <Compile Include="CustomControls\ProfilesPage\ListViewTestParametersUserControl.xaml.cs">
+    <Compile Include="CustomControls\ProfilesPageComponents\ListViewTestParametersUserControl.xaml.cs">
       <DependentUpon>ListViewTestParametersUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ProfilesPage\AddTestParametrUserControl.xaml.cs">
+    <Compile Include="CustomControls\ProfilesPageComponents\AddTestParametrUserControl.xaml.cs">
       <DependentUpon>AddTestParametrUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\ProfilesPage\TreeViewProfilesUserControl.xaml.cs">
-      <DependentUpon>TreeViewProfilesUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\ValidatingTextBox.xaml.cs">
       <DependentUpon>ValidatingTextBox.xaml</DependentUpon>
@@ -203,6 +213,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\ObjectDataProvider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\ValueConvertersDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,6 +268,10 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
+      <Project>{41fad811-1a7a-4ac2-95e8-6195f905e1c6}</Project>
+      <Name>SCME.InterfaceImplementations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
       <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
       <Name>SCME.Types</Name>

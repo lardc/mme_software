@@ -1,8 +1,7 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Markup;
 
 // Общие сведения об этой сборке предоставляются следующим набором
 // атрибутов. Отредактируйте значения этих атрибутов, чтобы изменить
@@ -15,6 +14,11 @@ using System.Windows;
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+
+//[assembly: XmlnsDefinition("WpfControlLibrary", "SCME.WpfControlLibrary.IValueConverters")]
+
+
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
 // для компонентов COM. Если необходимо обратиться к типу в этой сборке через
@@ -31,13 +35,13 @@ using System.Windows;
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
 
-[assembly:ThemeInfo(
+[assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //где расположены словари ресурсов по конкретным тематикам
-                             //(используется, если ресурс не найден на странице,
-                             // или в словарях ресурсов приложения)
+                                     //(используется, если ресурс не найден на странице,
+                                     // или в словарях ресурсов приложения)
     ResourceDictionaryLocation.SourceAssembly //где расположен словарь универсальных ресурсов
-                                      //(используется, если ресурс не найден на странице,
-                                      // в приложении или в каких-либо словарях ресурсов для конкретной темы)
+                                              //(используется, если ресурс не найден на странице,
+                                              // в приложении или в каких-либо словарях ресурсов для конкретной темы)
 )]
 
 
@@ -53,3 +57,7 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: XmlnsDefinition("WpfControlLibrary", "SCME.WpfControlLibrary.CustomControls")]
+[assembly: XmlnsDefinition("WpfControlLibrary", "SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents")]
+[assembly: XmlnsDefinition("WpfControlLibrary", "SCME.WpfControlLibrary.DataTemplates")]
+[assembly: XmlnsDefinition("WpfControlLibrary", "SCME.WpfControlLibrary.DataTemplates.TestParameters")]

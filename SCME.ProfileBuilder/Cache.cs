@@ -1,5 +1,6 @@
 ﻿using SCME.ProfileBuilder.CommonPages;
 using SCME.ProfileBuilder.PagesTech;
+using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.ProfileBuilder
 {

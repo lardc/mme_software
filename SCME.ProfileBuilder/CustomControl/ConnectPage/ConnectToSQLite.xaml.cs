@@ -22,7 +22,8 @@ namespace SCME.ProfileBuilder.CustomControl.ConnectPage
     /// </summary>
     public partial class ConnectToSQLite : UserControl
     {
-        public ConnectToSQLiteVM VM => DataContext as ConnectToSQLiteVM;
+        public event Action ConnetToSQLite;
+        private ConnectToSQLiteVM _VM => DataContext as ConnectToSQLiteVM;
         public ConnectToSQLite()
         {
             InitializeComponent();
@@ -39,12 +40,12 @@ namespace SCME.ProfileBuilder.CustomControl.ConnectPage
             if (openFileDialog.ShowDialog() != true)
                 return;
 
-            VM.SQLiteFileName = openFileDialog.FileName;
+            _VM.SQLiteFileName = openFileDialog.FileName;
         }
 
         private void SQliteConnectButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ConnetToSQLite.Invoke();
         }
     }
 }

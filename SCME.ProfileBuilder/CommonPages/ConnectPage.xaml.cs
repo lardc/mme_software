@@ -8,6 +8,7 @@ using SCME.InterfaceImplementations;
 using SCME.ProfileBuilder.CustomControl;
 using SCME.ProfileBuilder.PagesTech;
 using SCME.Types.DatabaseServer;
+using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.ProfileBuilder.CommonPages
 {
@@ -16,11 +17,6 @@ namespace SCME.ProfileBuilder.CommonPages
     /// </summary>
     public partial class ConnectPage : Page
     {
-        private const string DBSettings = "synchronous=Full;journal mode=Truncate;failifmissing=True";
-
-        private DispatcherTimer m_NetPingTimer;
-        private CentralDatabaseServiceClient m_Client;
-
         public ViewModels.ConnectPage.ConnectPageVM VM { get; set; } = new ViewModels.ConnectPage.ConnectPageVM();
 
         public ConnectPage()
@@ -33,18 +29,26 @@ namespace SCME.ProfileBuilder.CommonPages
             try
             {
                 var vm = VM.ConnectToMSSQLVM;
-                var connectionString = (vm.IntegratedSecurity == true)
-                    ? $"Server={vm.Server}; Database={vm.Database}; Integrated Security=true;"
-                    : $"Server={vm.Server}; Database={vm.Database}; User Id={vm.UserId}; Password={vm.Password};";
 
-                IProfilesService service = new SQLProfilesService(connectionString);
-                IProfilesConnectionService connectionService = new SQLProfilesConnectionService(connectionString, service);
+                System.Data.SqlClient.SqlConnectionStringBuilder connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder();
 
-                var loadProfileService = new InterfaceImplementations.Common.SQLLoadProfilesServiceTest(new System.Data.SqlClient.SqlConnection(connectionString));
+                connectionStringBuilder.DataSource = vm.Server;
+                connectionStringBuilder.InitialCatalog = vm.Database;
+                connectionStringBuilder.IntegratedSecurity = vm.IntegratedSecurity;
+                if (vm.IntegratedSecurity == false)
+                {
+                    connectionStringBuilder.UserID = vm.UserId;
+                    connectionStringBuilder.Password = vm.Password;
+                }
 
-                Cache.ProfilesPage = new ProfilesPage(loadProfileService);
+                var sqlConnection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString());
+                var loadProfileService = new InterfaceImplementations.NewImplement.MSSQL.MSSQLLoadProfilesServiceTest(sqlConnection);
+                var saveProfileService = new InterfaceImplementations.NewImplement.MSSQL.MSSQLSaveProfileServiceTest(sqlConnection);
+               
 
-//                NavigationService?.Navigate(Cache.ProfilesPage);
+                Cache.ProfilesPage = new ProfilesPage(loadProfileService, saveProfileService);
+
+                NavigationService?.Navigate(Cache.ProfilesPage);
             }
             catch (Exception ex)
             {
@@ -52,102 +56,37 @@ namespace SCME.ProfileBuilder.CommonPages
             }
         }
 
-        private void ButtonSQLConnect_Click(object sender, RoutedEventArgs e)
-        {
-            //if (!string.IsNullOrEmpty(tbDBName.Text) && !string.IsNullOrEmpty(tbServerName.Text))
-            //{
-            //    try
-            //    {
-            //        var connectionString = (chkDbIntSec.IsChecked != null && (bool) chkDbIntSec.IsChecked) 
-            //            ? $"Server={tbServerName.Text}; Database={tbDBName.Text}; Integrated Security=true;"
-            //            : $"Server={tbServerName.Text}; Database={tbDBName.Text}; User Id={tbDBUser.Text}; Password={tbDBPassword.Text};";
-
-            //        IProfilesService service = new SQLProfilesService(connectionString);
-            //        IProfilesConnectionService connectionService = new SQLProfilesConnectionService(connectionString, service);
-
-            //        Cache.ProfileEdit = new ProfilePage(service);
-            //        Cache.ConnectionsPage = new Connections(connectionService);
-
-            //        NavigationService?.Navigate(Cache.ProfileEdit);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var dw = new DialogWindow("Error", ex.Message);
-            //        dw.ButtonConfig(DialogWindow.EbConfig.OK);
-            //        dw.ShowDialog();
-            //    }
-            //}
-        }
-
-        private void ButtonSQliteBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            //var dlg = new OpenFileDialog
-            //{
-            //    Filter = "SQLite database|*.sqlite",
-            //    FilterIndex = 1
-            //};
-
-            //if (dlg.ShowDialog() != true)
-            //    return;
-            
-            //// Open document
-            //var filename = dlg.FileName;
-            //tbDbPath.Text = filename;
-        }
-
-        private void ButtonSQliteConnect_Click(object sender, RoutedEventArgs e)
-        {
-            //if (!string.IsNullOrEmpty(tbDbPath.Text))
-            //{
-            //    try
-            //    {
-            //        var connString = $"data source={tbDbPath.Text};{DBSettings}";
-
-            //        IProfilesService service = new SQLiteProfilesService(connString);
-            //        IProfilesConnectionService connectionService = new SQLiteProfilesConnectionService(connString);
-
-            //        Cache.ProfileEdit = new ProfilePage(service);
-            //        Cache.ConnectionsPage = new Connections(connectionService);
-
-            //        NavigationService?.Navigate(Cache.ProfileEdit);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        var dw = new DialogWindow("Error", ex.Message);
-            //        dw.ButtonConfig(DialogWindow.EbConfig.OK);
-            //        dw.ShowDialog();
-            //    }
-            //}
-        }
-
-        private void ButtonWcfConnect_OnClick(object sender, RoutedEventArgs e)
-        {
-            m_Client = new CentralDatabaseServiceClient();
-
-            Cache.ProfileEdit = new ProfilePage(m_Client);
-            Cache.ConnectionsPage = new Connections(m_Client);
-
-            NavigationService?.Navigate(Cache.ProfileEdit);
-
-            m_NetPingTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 10) };
-            m_NetPingTimer.Tick += NetPingTimerOnTick;
-            m_NetPingTimer.Start();
-        }
-
-        private void NetPingTimerOnTick(object Sender, EventArgs Args)
+        public async void ConnectToSQLite()
         {
             try
             {
-                m_Client.Check();
+                var vm = VM.ConnectToSQLiteVM;
+
+                System.Data.SQLite.SQLiteConnectionStringBuilder connectionStringBuilder = new System.Data.SQLite.SQLiteConnectionStringBuilder()
+                {
+                    DataSource = vm.SQLiteFileName,
+                    SyncMode = System.Data.SQLite.SynchronizationModes.Full,
+                    JournalMode = System.Data.SQLite.SQLiteJournalModeEnum.Truncate,
+                    FailIfMissing = true
+                };
+
+                var sqliteConnection = new System.Data.SQLite.SQLiteConnection(connectionStringBuilder.ToString());
+                var loadProfileService = new InterfaceImplementations.NewImplement.SQLite.SQLiteLoadProfilesServiceTest(sqliteConnection);
+                var saveProfileService = new InterfaceImplementations.NewImplement.SQLite.SQLiteSaveProfilesServiceTest(sqliteConnection);
+
+                Cache.ProfilesPage = new ProfilesPage(loadProfileService, saveProfileService);
+
+                NavigationService?.Navigate(Cache.ProfilesPage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await Cache.Main.ShowMessageAsync("Error", ex.Message, MessageDialogStyle.Affirmative);
             }
         }
 
-        private void SelectSqlPathButton_Click(object sender, RoutedEventArgs e)
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
-
+            (sender as TextBlock).IsEnabled = true;
         }
     }
 }

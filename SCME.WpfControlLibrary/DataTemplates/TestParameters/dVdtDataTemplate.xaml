@@ -4,15 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+             mc:Ignorable="d" >
+
     <Grid Visibility="Visible" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -27,22 +20,22 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static res:Resources.Mode}" />
-                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Mode, Converter={StaticResource DT2S},  UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Mode}" />
+                    <Label Grid.Column="1" Grid.Row="0" Content="{Binding Mode, Converter={StaticResource DT2S},  UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="1"  Text="{x:Static res:Resources.DvDtVoltage}" />
-                    <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Voltage }" />
+                    <Label Grid.Column="0" Grid.Row="1"  Content="{x:Static res:Resources.DvDtVoltage}" />
+                    <Label Grid.Column="1" Grid.Row="1"  Content="{Binding Voltage }" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="2"  Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{x:Static res:Resources.DvdtVoltageRate}" />
-                    <TextBlock Grid.Column="1" Grid.Row="2" Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding VoltageRate }" />
+                    <Label Grid.Column="0" Grid.Row="2"  Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{x:Static res:Resources.DvdtVoltageRate}" />
+                    <Label Grid.Column="1" Grid.Row="2" Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding VoltageRate }" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="3"  Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{x:Static res:Resources.DvdtConfirmationCount}" />
-                    <TextBlock Grid.Column="1" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding ConfirmationCount }" />
+                    <Label Grid.Column="0" Grid.Row="3"  Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{x:Static res:Resources.DvdtConfirmationCount}" />
+                    <Label Grid.Column="1" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ConfirmationCount }" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{x:Static res:Resources.DvdtVoltageRateOffSet}" />
-                    <TextBlock Grid.Column="1" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding VoltageRateOffSet }" />
+                    <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" />
+                    <Label Grid.Column="1" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding VoltageRateOffSet }" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{x:Static res:Resources.DvdtVoltageRateLimit}" />
-                    <TextBlock Grid.Column="1" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Text="{Binding VoltageRateLimit }" />
+                    <Label Grid.Column="0" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{x:Static res:Resources.DvdtVoltageRateLimit}" />
+                    <Label Grid.Column="1" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding VoltageRateLimit }" />
                 </Grid>
 </UserControl>

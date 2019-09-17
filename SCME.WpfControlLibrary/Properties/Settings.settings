@@ -8,5 +8,8 @@
     <Setting Name="AppTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">BaseLight</Value>
     </Setting>
+    <Setting Name="LastSelectedMMECode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MME005</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

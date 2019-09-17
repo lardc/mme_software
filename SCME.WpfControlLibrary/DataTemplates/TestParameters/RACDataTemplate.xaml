@@ -6,13 +6,7 @@
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              mc:Ignorable="d" 
               d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+   
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -22,7 +16,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="{x:Static res:Resources.RACResVoltage}" />
-        <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding ResVoltage, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}" />
+        <Label Grid.Column="1" Grid.Row="0"  Content="{Binding ResVoltage, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

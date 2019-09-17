@@ -20,6 +20,7 @@ namespace SCME.ProfileBuilder.CustomControl.ConnectPage
     /// </summary>
     public partial class ConnectToMSSQL : UserControl
     {
+        public event Action ConnetToMSSQL;
         public ConnectToMSSQL()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace SCME.ProfileBuilder.CustomControl.ConnectPage
 
         private void ConnectToMSSQL_Click(object sender, RoutedEventArgs e)
         {
-            Cache.ConnectPage.ConnectToMSSQL();
+            ConnetToMSSQL?.Invoke();
         }
     }
 }

@@ -50,19 +50,50 @@ namespace SCME.WpfControlLibrary.ViewModels
             TopMargin = new Thickness(0, cm * 0.3, 0, 0);
 
             ScrollBarWidth = cm;
-            HeightButton = cm * 1.5;
+            SizeButtonWithIcon = cm * 1.5;
+
+
+            RepeatButtonUpSize = cm * 1.5;
+            RepeatButtonUpDownMarginLeft = cm * 0.1;
+            //Изначальное соотношение высоты ширины для минуса в стилях
+            RepeatButtonDownSize = RepeatButtonUpSize / 14 * 3;
+
+            CheckBoxBorderSize = cm;
+            CheckBoxPathWidth = cm / 18 * 12;
+            CheckBoxPathHeight = cm / 18 * 10;
+
+
             FontSize = cm;
             EllipseSize = cm * 2;
+
+            MarginLeft05 = new Thickness(0.5 * cm, 0, 0, 0);
         }
 
         public static double FontSize { get; set; }
-        public static double HeightButton { get; set; }
+        public static double SizeButtonWithIcon { get; set; }
+
+
+        //CheckBox
+
+
+        //NumericUpDown
+        public static double RepeatButtonUpSize { get; set; }
+        public static double RepeatButtonDownSize { get; set; }
+        public static double RepeatButtonUpDownMarginLeft { get; set; }
+
+        public static double CheckBoxBorderSize { get; set; }
+        public static double CheckBoxPathWidth { get; set; }
+        public static double CheckBoxPathHeight { get; set; }
+
+
         public static double ScrollBarWidth { get; set; }
         public static double EllipseSize { get; set; }
 
         public static Thickness TopBottomMargin { get; set; }
         public static Thickness BottomMargin { get; set; }
         public static Thickness TopMargin { get; set; }
+
+        public static Thickness MarginLeft05 { get; set; }
 
 
     }

@@ -3,6 +3,7 @@
                     xmlns:converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters"
                     xmlns:CustomControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
                     xmlns:app="profile"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -15,7 +16,9 @@
                     xmlns:profiles="clr-namespace:SCME.Types.BaseTestParams;assembly=SCME.Types"
                     xmlns:dvdt="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
                     xmlns:qrrtq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:MahappsConverters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
                     xmlns:DataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
                     >
     
@@ -24,30 +27,49 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />
 
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+
+   
     </ResourceDictionary.MergedDictionaries>
 
+    <MahappsConverters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
+    
     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
     </Style>
 
-    <Style TargetType="TextBlock" >
+    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+        <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
+    </Style>
+
+    <Style TargetType="CustomControl:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
         <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
     </Style>
 
     <Style  TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
-        <!--<Setter Property="Height" Value="{Binding Source={x:Static vm:ResourceBinding.HeightButton}}"/>-->
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
 
-    <Style  TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-        <Setter Property="Height" Value="{Binding Source={x:Static vm:ResourceBinding.HeightButton}}"/>
+    <Style x:Key="ButtonWithIcon" TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
+        <Setter Property="Height" Value="{Binding Source={x:Static vm:ResourceBinding.SizeButtonWithIcon}}"/>
+        <Setter Property="Width" Value="{Binding Source={x:Static vm:ResourceBinding.SizeButtonWithIcon}}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style TargetType="CustomControl:NumericUpDown" BasedOn="{StaticResource {x:Type mahappsControls:NumericUpDown}}">
         <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
     </Style>
 
-    <Style  TargetType="mahappsControls:NumericUpDown" >
+    <Style  TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
         <!--<Setter Property="Height" Value="{Binding Source={x:Static vm:ResourceBinding.HeightButton}}"/>-->
         <Setter Property="FontSize" Value="{Binding Source={x:Static vm:ResourceBinding.FontSize}}"/>
     </Style>
@@ -57,74 +79,18 @@
     </Style>
 
     <Style  TargetType="iconPacks:PackIconMaterial" BasedOn="{StaticResource {x:Type iconPacks:PackIconMaterial}}">
-        <Setter Property="Height" Value="{Binding Source={x:Static vm:ResourceBinding.HeightButton}}"/>
-        <Setter Property="Width" Value="{Binding Source={x:Static vm:ResourceBinding.HeightButton}}"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Width" Value="auto"/>
     </Style>
 
 
 
     
-    <ObjectDataProvider x:Key="DataFromMeasurementModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="bvt:BVTMeasurementMode"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
+   
 
-    <ObjectDataProvider x:Key="DataFromTestBvtTypeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="bvt:BVTTestType"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
 
-    <ObjectDataProvider x:Key="DataFromTestdVdtTypeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="dvdt:DvdtMode"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
 
-    <ObjectDataProvider x:Key="DataFromTestdVdtVoltageRateEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="dvdt:VoltageRate"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromFreqRateEnum" MethodName="GetRates" ObjectType="{x:Type bvt:BVTRates}">
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromTestVtmTypeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="vtm:VTMTestType"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromCommutationModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="commutation:ModuleCommutationType"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromModulePositionEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="commutation:ModulePosition"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromClampingForceEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="clamping:ClampingForce"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="DataFromTestParamsEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="profiles:TestParametersType"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
-
-    <ObjectDataProvider x:Key="NamesFromQrrTqModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="qrrtq:TMode"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
     
+   
+
 </ResourceDictionary>

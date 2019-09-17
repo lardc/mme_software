@@ -8,19 +8,12 @@
       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:local="clr-namespace:SCME.WpfControlLibrary;assembly=SCME.WpfControlLibrary"
       mc:Ignorable="d" 
-      xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls;assembly=SCME.WpfControlLibrary"
+      xmlns:CustomControls="WpfControlLibrary"
       xmlns:connectPage="clr-namespace:SCME.ProfileBuilder.CustomControl.ConnectPage"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       d:DesignWidth="1280" d:DesignHeight="924"
       DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
 	Title="ConnectPage">
-
-    <Page.Resources>
-        <profileBuilder:InverseBooleanConverter x:Key="B2nB" />
-
-
-    </Page.Resources>
-
     <Grid>
         <TabControl>
             <TabItem>
@@ -30,7 +23,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}"/>
+                    <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}" ConnetToSQLite="ConnectToSQLite"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -40,17 +33,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}"/>
-                </TabItem.Content>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="3">Database server connection</TextBlock>
-                    </StackPanel>
-                </TabItem.Header>
-                <TabItem.Content>
-                    <connectPage:ConnectToSQLite/>
+                    <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}" ConnetToMSSQL="ConnectToMSSQL"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem >
@@ -60,7 +43,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <customControls:AccentAndThemeUserControl/>
+                    <CustomControls:AccentAndThemeUserControl/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

@@ -6,13 +6,6 @@
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              mc:Ignorable="d" 
              d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -22,10 +15,10 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Text="{x:Static res:Resources.AtuPrePulseValue}" />
-        <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2" Text="{Binding PrePulseValue}" />
+        <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPrePulseValue}" />
+        <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2" Content="{Binding PrePulseValue}" />
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Text="{x:Static res:Resources.AtuPowerValueSet}" />
-        <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Grid.ColumnSpan="2" Text="{Binding PowerValue}" />
+        <Label Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPowerValueSet}" />
+        <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Grid.ColumnSpan="2" Content="{Binding PowerValue}" />
     </Grid>
 </UserControl>

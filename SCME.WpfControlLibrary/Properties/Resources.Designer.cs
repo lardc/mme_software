@@ -556,6 +556,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка при чтении конфигурационного файла профилей.
         /// </summary>
         public static string ErrorWhileProfileParsing {
@@ -984,6 +993,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string MinVrrm_V {
             get {
                 return ResourceManager.GetString("MinVrrm_V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отсутствуют MME коды.
+        /// </summary>
+        public static string MissingMMECodes {
+            get {
+                return ResourceManager.GetString("MissingMMECodes", resourceCulture);
             }
         }
         

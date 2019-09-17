@@ -19,16 +19,8 @@ namespace SCME.ProfileBuilder
         public ViewModels.MainWindowVM VM { get; set; } = new ViewModels.MainWindowVM();
         public MainWindow()
         {
-
             DataContext = VM;
-            
-
             InitializeComponent();
-
-            
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.CurrentCulture);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.CurrentCulture);
-            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
             Cache.Main = this;
             Cache.ConnectPage = new ConnectPage();
             MainFrame.Navigate(Cache.ConnectPage);

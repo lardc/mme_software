@@ -3,8 +3,10 @@ using SCME.Types.BaseTestParams;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace SCME.Types.Profiles
@@ -16,16 +18,22 @@ namespace SCME.Types.Profiles
         [DataMember]
         public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives { get; set; } = new ObservableCollection<BaseTestParametersAndNormatives>();
 
+        #region Comutation
         [DataMember]
-        public Commutation.ModuleCommutationType ParametersComm { get; set; }
+        public Commutation.ModuleCommutationType ComutationType { get; set; }
+        #endregion
+        #region Clamping
         [DataMember]
-        public float ParametersClamp { get; set; }
+        public Clamping.ClampingForce ClampingForce { get; set; }
+        [DataMember]
+        public float ParameterClamp { get; set; }
         [DataMember]
         public bool IsHeightMeasureEnabled { get; set; }
         [DataMember]
         public int Height { get; set; }
         [DataMember]
         public int Temperature { get; set; }
+        #endregion
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -48,9 +56,6 @@ namespace SCME.Types.Profiles
         public Guid Key { get; set; }
 
         [DataMember]
-        public Guid NextGenerationKey { get; set; }
-
-        [DataMember]
         public int Version { get; set; }
 
         [DataMember]
@@ -64,9 +69,21 @@ namespace SCME.Types.Profiles
         [DataMember]
         public ProfileDeepData ProfileDeepData { get; set; } = new ProfileDeepData();
 
-        [DataMember]
         public bool IsTop { get; set; }
         public MyProfile Parent { get; set; }
+
+        public MyProfile GenerateNextVersion(ProfileDeepData profileDeepData)
+        {
+            MyProfile newProfile = new MyProfile(Id, Name, Guid.NewGuid(), Version+ 1, DateTime.Now)
+            {
+                ProfileDeepData = profileDeepData,
+                IsTop = true,
+            };
+            newProfile.Childrens.Add(this);
+            foreach (var i in Childrens)
+                newProfile.Childrens.Add(i);
+            return newProfile;
+        }
 
     }
 }

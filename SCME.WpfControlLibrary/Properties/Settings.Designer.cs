@@ -46,5 +46,17 @@ namespace SCME.WpfControlLibrary.Properties {
                 this["AppTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
+        public string LastSelectedMMECode {
+            get {
+                return ((string)(this["LastSelectedMMECode"]));
+            }
+            set {
+                this["LastSelectedMMECode"] = value;
+            }
+        }
     }
 }

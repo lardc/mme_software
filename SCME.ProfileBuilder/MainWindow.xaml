@@ -9,29 +9,6 @@
         Title="SCME.ProfileBuilder" Closing="Window_Closing"
         ResizeMode="CanResize" Loaded="MetroWindow_Loaded"
         WindowStartupLocation="CenterScreen"
-         WindowState="Maximized" Icon="App.ico"
-        >
-    <!--<ControlsEx:MetroWindow.RightWindowCommands>
-        <ControlsEx:WindowCommands>
-            <Button Content="settings" />
-        </ControlsEx:WindowCommands>
-    </ControlsEx:MetroWindow.RightWindowCommands>-->
-    <ControlsEx:MetroWindow.Resources>
-            <Ellipse x:Key="AccentMenuIcon"
-                     Width="16"
-                     Height="16"
-                     x:Shared="False"
-                     Fill="{Binding ColorBrush, Mode=OneWay}" />
-
-            <Style x:Key="AccentColorMenuItemStyle"
-                   TargetType="{x:Type MenuItem}">
-                <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
-                <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
-                <Setter Property="Icon" Value="{DynamicResource AccentMenuIcon}" />
-            </Style>
-        </ControlsEx:MetroWindow.Resources>
-        <Grid Margin="5">
-
+         WindowState="Maximized" Icon="App.ico" >
             <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
-        </Grid>
 </ControlsEx:MetroWindow>

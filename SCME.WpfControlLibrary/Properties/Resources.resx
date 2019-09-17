@@ -723,4 +723,10 @@
   <data name="Edit" xml:space="preserve">
     <value>Изменить</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="MissingMMECodes" xml:space="preserve">
+    <value>Отсутствуют MME коды</value>
+  </data>
 </root>

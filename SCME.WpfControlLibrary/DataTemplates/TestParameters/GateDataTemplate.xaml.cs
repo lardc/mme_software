@@ -24,10 +24,5 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
         {
             InitializeComponent();
         }
-
-        private void Button_OnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

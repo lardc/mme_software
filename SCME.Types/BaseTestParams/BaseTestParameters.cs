@@ -77,11 +77,11 @@ namespace SCME.Types.BaseTestParams
             switch (type)
             {
                 case TestParametersType.Gate:
-                    return new GateTestParameters() { IsEnabled = false };
+                    return new GateTestParameters() { IsEnabled = true };
                 case TestParametersType.Bvt:
-                    return new BvtTestParameters() { IsEnabled = false };
+                    return new BvtTestParameters() { IsEnabled = true };
                 case TestParametersType.StaticLoses:
-                    return new VtmTestParameters() { IsEnabled = false };
+                    return new VtmTestParameters() { IsEnabled = true };
                 case TestParametersType.Dvdt:
                     return new DvDtParameters() { IsEnabled = true };
                 case TestParametersType.ATU:

@@ -6,13 +6,7 @@
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+   
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="84*" />
@@ -29,28 +23,28 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Column="0" Grid.Row="0"  Text="{x:Static res:Resources.QrrTqMode}" />
-                    <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Mode, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.QrrTqMode}" />
+                    <Label Grid.Column="1" Grid.Row="0"  Content="{Binding Mode, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="1"  Text="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" Visibility="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}"/>
+                    <Label Grid.Column="0" Grid.Row="1"  Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" Visibility="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}"/>
                     <Path Grid.Column="1" Grid.Row="1"  Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" Visibility="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}" Stretch="Uniform"   />
 
-                    <TextBlock Grid.Column="0" Grid.Row="2"  Text="{x:Static res:Resources.QrrTqDirectCurrent}" />
-                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding DirectCurrent, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="2"  Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
+                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding DirectCurrent, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="3"  Text="{x:Static res:Resources.QrrTqDCPulseWidth}" />
-                    <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding DCPulseWidth, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="3"  Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
+                    <Label Grid.Column="1" Grid.Row="3"  Content="{Binding DCPulseWidth, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="4"  Text="{x:Static res:Resources.QrrTqDCRiseRate}" />
-                    <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding DCRiseRate, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="4"  Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
+                    <Label Grid.Column="1" Grid.Row="4"  Content="{Binding DCRiseRate, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="5"  Text="{x:Static res:Resources.QrrTqDCFallRate}" />
-                    <TextBlock Grid.Column="1" Grid.Row="5"  Text="{Binding DCFallRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TDcFallRateVFE}}" />
+                    <Label Grid.Column="0" Grid.Row="5"  Content="{x:Static res:Resources.QrrTqDCFallRate}" />
+                    <Label Grid.Column="1" Grid.Row="5"  Content="{Binding DCFallRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TDcFallRateVFE}}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="6"  Text="{x:Static res:Resources.QrrTqOffStateVoltage}" />
-                    <TextBlock Grid.Column="1" Grid.Row="6"  Text="{Binding OffStateVoltage, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Grid.Column="0" Grid.Row="6"  Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
+                    <Label Grid.Column="1" Grid.Row="6"  Content="{Binding OffStateVoltage, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="7"  Text="{x:Static res:Resources.QrrTqOsvRate}" />
-                    <TextBlock Grid.Column="1" Grid.Row="7"  Text="{Binding OsvRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TOsvRateVFE}}" />
+                    <Label Grid.Column="0" Grid.Row="7"  Content="{x:Static res:Resources.QrrTqOsvRate}" />
+                    <Label Grid.Column="1" Grid.Row="7"  Content="{Binding OsvRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TOsvRateVFE}}" />
                 </Grid>
 </UserControl>

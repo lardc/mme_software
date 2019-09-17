@@ -10,14 +10,8 @@
              xmlns:controlsEx="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    <StackPanel>
+
+        <StackPanel>
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderServerName}"/>
         <TextBox Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  TextAlignment="Left" TextWrapping="Wrap" />
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderDBName}" />
