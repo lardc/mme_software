@@ -5,13 +5,19 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-      xmlns:ProfilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents"
-      xmlns:DataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates"
-      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
+      xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents"
+      xmlns:dataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates"
+      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
       mc:Ignorable="d" Loaded="Page_Loaded"
       d:DesignHeight="1024" d:DesignWidth="1280"
       Title="ProfilesPage">
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -28,7 +34,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMMECode}"  SelectedValuePath="Key" DisplayMemberPath="Key" ItemsSource="{Binding MMECodes}" SelectionChanged="ComboBox_SelectionChanged" />
+                <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMMECode}"  SelectedValuePath="Key" DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}" SelectionChanged="ComboBox_SelectionChanged" />
                 <Grid Grid.Column="0" Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -49,15 +55,15 @@
                 <Button Grid.Column="1" Grid.Row="0" Click="CancelEditProfile_Click" Content="{x:Static res:Resources.Cancel}"/>
             </Grid>
             <Grid Grid.Column="0" Grid.Row="2" IsEnabled="{Binding IsEditModeEnabled}">
-                <TreeView Name="ProfilesTreeView" ItemsSource="{Binding Profiles}"  SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <TreeView Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Childrens}">
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                             <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <DataTemplate:ProfileHierarchicalDataTemplate Grid.Column="0" Grid.Row="0" />
+                                <dataTemplate:ProfileHierarchicalDataTemplate Grid.Column="0" Grid.Row="0" />
                                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Visibility="{Binding IsTop, Converter={StaticResource B2V}}">
                                     <Button Click="BeginEditProfile_Click"  Style="{StaticResource ButtonWithIcon}" >
                                         <!--IsEnabled="{Binding Path=VM.IsEditModeEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" >-->
@@ -76,16 +82,16 @@
                 </TreeView>
             </Grid>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsCancelSaveModeEnabled}">
+        <Grid Grid.Column="1" Grid.Row="0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Column="0" Grid.Row="0">
-                <ProfilesPageComponents:AddTestParametrUserControl DataContext="{Binding ProfileDeepData}" AddTestParametersEvent="AddTestParametersEvent_Click" />
+            <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsCancelSaveModeEnabled}">
+                <profilesPageComponents:AddTestParametrUserControl DataContext="{Binding ProfileDeepData}" AddTestParametersEvent="AddTestParametersEvent_Click" />
             </Grid>
             <Grid Grid.Column="0" Grid.Row="1">
-                <ProfilesPageComponents:ListViewTestParametersUserControl ItemSource="{Binding ProfileDeepData.TestParametersAndNormatives}"/>
+                <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="{Binding IsCancelSaveModeEnabled}" ItemSource="{Binding ProfileDeepData.TestParametersAndNormatives}"/>
             </Grid>
         </Grid>
     </Grid>

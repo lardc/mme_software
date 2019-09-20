@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d" 
-              d:DesignWidth="800">
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:rac="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=rac:TestParameters}"
+             d:DesignWidth="800">
    
     <Grid >
         <Grid.ColumnDefinitions>
@@ -17,6 +19,6 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}" />
-        <Label Grid.Column="1" Grid.Row="0"  Content="{Binding ResVoltage, UpdateSourceTrigger=PropertyChanged}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="0"  Value="{Binding ResVoltage}" />
     </Grid>
 </UserControl>

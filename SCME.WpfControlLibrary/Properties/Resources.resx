@@ -729,4 +729,7 @@
   <data name="MissingMMECodes" xml:space="preserve">
     <value>Отсутствуют MME коды</value>
   </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Активен</value>
+  </data>
 </root>

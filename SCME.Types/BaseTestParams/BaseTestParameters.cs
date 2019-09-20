@@ -66,6 +66,8 @@ namespace SCME.Types.BaseTestParams
 
         [DataMember]
         public int Order { get; set; }
+        
+        [DataMember] public bool IsEnabled { get; set; }
 
         [DataMember]
         public long TestTypeId { get; set; }

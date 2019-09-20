@@ -19,39 +19,20 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         private void CheckBox_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Border borderNormal = VisualHelper.FindChild<Border>(this, "normal");
-            borderNormal.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxBorderSize
-            });
-            borderNormal.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxBorderSize
-            });
+            var borderNormal = VisualHelper.FindChild<Border>(this, "normal");
+            borderNormal.SetResourceReference(WidthProperty, "SCME.CheckBoxBorderSize");
+            borderNormal.SetResourceReference(HeightProperty, "SCME.CheckBoxBorderSize");
 
-            Border borderDisabled = VisualHelper.FindChild<Border>(this, "disabled");
-            borderDisabled.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxBorderSize
-            });
-            borderDisabled.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxBorderSize
-            });
+            var borderDisabled = VisualHelper.FindChild<Border>(this, "disabled");
+            borderDisabled.SetResourceReference(WidthProperty, "SCME.CheckBoxBorderSize");
+            borderDisabled.SetResourceReference(HeightProperty, "SCME.CheckBoxBorderSize");
 
-            Path path = VisualHelper.FindChild<Path>(this, "checkBox");
-            path.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxPathWidth
-            });
-            path.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.CheckBoxPathHeight
-            });
+            var path = VisualHelper.FindChild<Path>(this, "checkBox");
+            path.SetResourceReference(WidthProperty, "SCME.CheckBoxPathWidth");
+            path.SetResourceReference(HeightProperty, "SCME.CheckBoxPathHeight");
 
-
-            Grid grid = (borderNormal.Parent as Grid).Parent as Grid;
-            grid.ColumnDefinitions[0].Width = new System.Windows.GridLength();
+            if ((borderNormal.Parent as Grid)?.Parent is Grid grid) 
+                grid.ColumnDefinitions[0].Width = new System.Windows.GridLength();
         }
     }
 }

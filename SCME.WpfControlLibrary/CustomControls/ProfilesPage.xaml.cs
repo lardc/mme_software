@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using MahApps.Metro;
 
 
 namespace SCME.WpfControlLibrary.CustomControls
@@ -17,135 +19,134 @@ namespace SCME.WpfControlLibrary.CustomControls
     /// </summary>
     public partial class ProfilesPage : Page
     {
-        public ProfilesPageVM VM { get; set; } = new ProfilesPageVM();
-        private readonly ILoadProfilesServiceTest _LoadProfilesService;
-        private readonly ISaveProfileServiceTest _SaveProfileServiceTest;
+        public ProfilesPageVM Vm { get; set; } = new ProfilesPageVM();
+        private readonly ILoadProfilesServiceTest _loadProfilesService;
+        private readonly ISaveProfileServiceTest _saveProfileServiceTest;
 
         private HashSet<Guid> _DeepLoadedProfiles = new HashSet<Guid>();
-        private bool IsIgnoreTreeViewSelectionChanged = false;
+        private bool _isIgnoreTreeViewSelectionChanged = false;
         
 
         public ProfilesPage(ILoadProfilesServiceTest loadProfilesService, ISaveProfileServiceTest saveProfileServiceTest, string MMECode = null)
         {
+            
             InitializeComponent();
-            _LoadProfilesService = loadProfilesService;
-            _SaveProfileServiceTest = saveProfileServiceTest;
+            _loadProfilesService = loadProfilesService;
+            _saveProfileServiceTest = saveProfileServiceTest;
             if (MMECode != null)
-                VM.SelectedMMECode = MMECode;
+                Vm.SelectedMMECode = MMECode;
             else
             {
-                VM.MMECodes = _LoadProfilesService.GetMMECodes();
-                if (string.IsNullOrEmpty(VM.SelectedMMECode) && VM.MMECodes.Count != 0)
-                    VM.SelectedMMECode = VM.MMECodes.First().Key;
+                Vm.MmeCodes = _loadProfilesService.GetMMECodes();
+                if (string.IsNullOrEmpty(Vm.SelectedMMECode) && Vm.MmeCodes.Count != 0)
+                    Vm.SelectedMMECode = Vm.MmeCodes.First().Key;
             }
         }
 
         private void LoadTopProfiles()
         {
-            VM.Profiles = new ObservableCollection<MyProfile>(_LoadProfilesService.GetProfilesSuperficially(VM.SelectedMMECode));
-            foreach (var i in VM.Profiles)
+            Vm.Profiles = new ObservableCollection<MyProfile>(_loadProfilesService.GetProfilesSuperficially(Vm.SelectedMMECode));
+            foreach (var i in Vm.Profiles)
                 i.IsTop = true;
         }
 
         
         private void ProfilesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (IsIgnoreTreeViewSelectionChanged)
+            if (_isIgnoreTreeViewSelectionChanged)
                 return;
 
-            VM.SelectedProfile = e.NewValue as MyProfile;
-            if (VM.SelectedProfile == null)
+            Vm.SelectedProfile = e.NewValue as MyProfile;
+            if (Vm.SelectedProfile == null)
                 return;
 
 
-            var selectedKey = VM.SelectedProfile.Key;
+            var selectedKey = Vm.SelectedProfile.Key;
             var findKey = _DeepLoadedProfiles.FirstOrDefault(m => m == selectedKey);
 
             if (findKey == Guid.Empty)
             {
                 _DeepLoadedProfiles.Add(selectedKey);
 
-                var superficiallyProfile = VM.SelectedProfile;
-                VM.SelectedProfile.ProfileDeepData = _LoadProfilesService.LoadProfileDeepData(VM.SelectedProfile);
-                if (VM.SelectedProfile.IsTop)
+                var superficiallyProfile = Vm.SelectedProfile;
+                Vm.SelectedProfile.ProfileDeepData = _loadProfilesService.LoadProfileDeepData(Vm.SelectedProfile);
+                if (Vm.SelectedProfile.IsTop)
                 {
-                    VM.SelectedProfile.Childrens = new ObservableCollection<MyProfile>(_LoadProfilesService.GetProfileChildsSuperficially(VM.SelectedProfile));
-                    foreach (var i in VM.SelectedProfile.Childrens)
+                    Vm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_loadProfilesService.GetProfileChildsSuperficially(Vm.SelectedProfile));
+                    foreach (var i in Vm.SelectedProfile.Children)
                         i.IsTop = false;
                 }
             }
 
-            VM.ProfileDeepData = VM.SelectedProfile.ProfileDeepData;
+            Vm.ProfileDeepData = Vm.SelectedProfile.ProfileDeepData;
         }
 
         private void SearchProfiles_Click(object sender, RoutedEventArgs e)
         {
-            var treeViewItem = (ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(VM.SelectedProfile) as TreeViewItem);
-            if (treeViewItem != null)
+            if (ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(Vm.SelectedProfile) is TreeViewItem treeViewItem)
                 treeViewItem.IsSelected = false;
-            VM.Profiles = new ObservableCollection<MyProfile>(VM.HideProfilesForSearch.Where(m => m.Name.Contains(VM.SearchingName)));
+            Vm.Profiles = new ObservableCollection<MyProfile>(Vm.HideProfilesForSearch.Where(m => m.Name.Contains(Vm.SearchingName)));
         }
 
         private void BeginEditProfile_Click(object sender, RoutedEventArgs e)
         {
-            VM.SelectedProfile = (sender as Button).DataContext as MyProfile;
-            (ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(VM.SelectedProfile) as TreeViewItem).IsSelected = true;
-            VM.ProfileDeepData = VM.SelectedProfile.ProfileDeepData.Copy();
-            VM.IsEditModeEnabled = false;
+            Vm.SelectedProfile = (MyProfile) ((Button) sender).DataContext;
+            ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(Vm.SelectedProfile)).IsSelected = true;
+            Vm.ProfileDeepData = Vm.SelectedProfile.ProfileDeepData.Copy();
+            Vm.IsEditModeEnabled = false;
         }
 
         private void EndEditProfile_Click(object sender, RoutedEventArgs e)
         {
-            VM.IsEditModeEnabled = true;
+            Vm.IsEditModeEnabled = true;
 
-            var oldProfile = VM.SelectedProfile;
-            var newProfile = oldProfile.GenerateNextVersion(VM.ProfileDeepData);
+            var oldProfile = Vm.SelectedProfile;
+            var newProfile = oldProfile.GenerateNextVersion(Vm.ProfileDeepData);
 
-            newProfile.Id =_SaveProfileServiceTest.InsertUpdateProfile(oldProfile, newProfile, VM.SelectedMMECode);
+            newProfile.Id =_saveProfileServiceTest.InsertUpdateProfile(oldProfile, newProfile, Vm.SelectedMMECode);
 
             oldProfile.IsTop = false;
-            oldProfile.Childrens = null;
+            oldProfile.Children = null;
 
-            IsIgnoreTreeViewSelectionChanged = true;
+            _isIgnoreTreeViewSelectionChanged = true;
 
-            VM.Profiles.Insert(VM.Profiles.IndexOf(oldProfile), newProfile);
-            VM.Profiles.Remove(oldProfile);
+            Vm.Profiles.Insert(Vm.Profiles.IndexOf(oldProfile), newProfile);
+            Vm.Profiles.Remove(oldProfile);
 
-            (ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(newProfile) as TreeViewItem).IsSelected = true;
+            ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(newProfile)).IsSelected = true;
 
-            VM.SelectedProfile = newProfile;
-            IsIgnoreTreeViewSelectionChanged = false;
+            Vm.SelectedProfile = newProfile;
+            _isIgnoreTreeViewSelectionChanged = false;
 
             _DeepLoadedProfiles.Add(newProfile.Key);
         }
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
         {
-            VM.IsEditModeEnabled = true;
-            VM.ProfileDeepData = VM.SelectedProfile.ProfileDeepData;
+            Vm.IsEditModeEnabled = true;
+            Vm.ProfileDeepData = Vm.SelectedProfile.ProfileDeepData;
         }
 
         private void AddTestParametersEvent_Click(TestParametersType t)
         {
-            var testParametersAndNormatives = VM.SelectedProfile.ProfileDeepData.TestParametersAndNormatives;
+            var testParametersAndNormatives = Vm.ProfileDeepData.TestParametersAndNormatives;
             var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
             var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(t);
             newTestParameter.Order = maxOrder + 1;
-
-            VM.SelectedProfile.ProfileDeepData.TestParametersAndNormatives.Add(newTestParameter);
+            testParametersAndNormatives.Add(newTestParameter);
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _DeepLoadedProfiles.Clear();
-            VM.SearchingName = string.Empty;
+            Vm.SearchingName = string.Empty;
             LoadTopProfiles();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(VM.MMECodes.Count == 0)
+            if(Vm.MmeCodes.Count == 0)
             {
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
                 return;

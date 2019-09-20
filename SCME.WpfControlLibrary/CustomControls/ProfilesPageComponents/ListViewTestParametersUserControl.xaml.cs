@@ -25,17 +25,26 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
     [AddINotifyPropertyChangedInterface]
     public partial class ListViewTestParametersUserControl : UserControl
     {
+        public bool ContentIsEnabled
+        {
+            get => (bool)GetValue(ContentIsEnabledProperty);
+            set => SetValue(ContentIsEnabledProperty, value);
+        }
 
+        // Using a DependencyProperty as the backing store for ItemSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContentIsEnabledProperty =
+            DependencyProperty.Register(nameof(ContentIsEnabled), typeof(bool), typeof(ListViewTestParametersUserControl), new PropertyMetadata(true));
+        
 
         public ObservableCollection<BaseTestParametersAndNormatives> ItemSource
         {
-            get { return (ObservableCollection<BaseTestParametersAndNormatives>)GetValue(ItemSourceProperty); }
-            set { SetValue(ItemSourceProperty, value); }
+            get => (ObservableCollection<BaseTestParametersAndNormatives>)GetValue(ItemSourceProperty);
+            set => SetValue(ItemSourceProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for ItemSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemSourceProperty =
-            DependencyProperty.Register("ItemSource", typeof(IEnumerable), typeof(ListViewTestParametersUserControl), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(ItemSource), typeof(IEnumerable), typeof(ListViewTestParametersUserControl), new PropertyMetadata(null));
 
 
         public ListViewTestParametersUserControl()
@@ -47,20 +56,6 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
         {
             ItemSource.Remove((sender as Button).DataContext as BaseTestParametersAndNormatives);
         }
-
-        private void Label_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ContentPresenter_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void GateDataTemplate_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

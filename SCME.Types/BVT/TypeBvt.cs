@@ -84,9 +84,6 @@ namespace SCME.Types.BVT
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
-        [DataMember]
         public BVTMeasurementMode MeasurementMode { get; set; }
 
         [DataMember]

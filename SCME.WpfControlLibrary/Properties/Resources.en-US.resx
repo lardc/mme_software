@@ -729,4 +729,7 @@
   <data name="MissingMMECodes" xml:space="preserve">
     <value>MissingMMECodes</value>
   </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>

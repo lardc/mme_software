@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:CustomControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:customControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:local="clr-namespace:SCME.WpfControlLibrary"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              mc:Ignorable="d" d:DesignWidth="800">
@@ -34,7 +34,7 @@
                                       ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
                                       SelectedItem="{Binding SelectedItem.ParametersComm, Converter={StaticResource E2S}, ElementName=treeViewProfiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Force}" />
-            <CustomControl:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding ParameterClamp}" />
+            <customControl:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding ParameterClamp}" />
 
             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.ParameterType}"/>
             <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{x:Static local:TestParametersDictionary.TestParametersList}" DisplayMemberPath="Name" SelectedValuePath="TestParametersType" 
@@ -50,9 +50,9 @@
             </ComboBox>
             <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"/>
             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Height_Prof}" />
-            <CustomControl:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}" />
+            <customControl:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}" />
             <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
-            <CustomControl:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
+            <customControl:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
         </Grid>
     </Grid>
 </UserControl>

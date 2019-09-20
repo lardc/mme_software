@@ -148,9 +148,6 @@ namespace SCME.Types.VTM
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
-        [DataMember]
         public bool IsSelfTest { get; set; }
 
         [DataMember]

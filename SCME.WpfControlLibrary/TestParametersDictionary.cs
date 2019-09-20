@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SCME.WpfControlLibrary
 {
-    public class TestParametrContainer
+    public class TestParametersContainer
     {
-        public TestParametrContainer(string name, TestParametersType testParametersType, Type type)
+        public TestParametersContainer(string name, TestParametersType testParametersType, Type type)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             TestParametersType = testParametersType;
             Type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
-        public TestParametrContainer(TestParametersType testParametersType, Type type)
+        public TestParametersContainer(TestParametersType testParametersType, Type type)
         {
             TestParametersType = testParametersType;
             Type = type ?? throw new ArgumentNullException(nameof(type));
@@ -31,16 +31,16 @@ namespace SCME.WpfControlLibrary
 
     public static class TestParametersDictionary
     {
-        public static List<TestParametrContainer> TestParametersList { get; set; } = new List<TestParametrContainer>()
+        public static List<TestParametersContainer> TestParametersList { get; set; } = new List<TestParametersContainer>()
         {
-            new TestParametrContainer(TestParametersType.Gate, typeof(Types.Gate.TestParameters)),
-            new TestParametrContainer(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters)),
-            new TestParametrContainer(TestParametersType.Bvt, typeof(Types.BVT.TestParameters)),
-            new TestParametrContainer(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters)),
-            new TestParametrContainer(TestParametersType.ATU, typeof(Types.ATU.TestParameters)),
-            new TestParametrContainer(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters)),
-            new TestParametrContainer(TestParametersType.RAC, typeof(Types.RAC.TestParameters)),
-            new TestParametrContainer(TestParametersType.TOU, typeof(Types.TOU.TestParameters)),
+            new TestParametersContainer(TestParametersType.Gate, typeof(Types.Gate.TestParameters)),
+            new TestParametersContainer(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters)),
+            new TestParametersContainer(TestParametersType.Bvt, typeof(Types.BVT.TestParameters)),
+            new TestParametersContainer(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters)),
+            new TestParametersContainer(TestParametersType.ATU, typeof(Types.ATU.TestParameters)),
+            new TestParametersContainer(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters)),
+            new TestParametersContainer(TestParametersType.RAC, typeof(Types.RAC.TestParameters)),
+            new TestParametersContainer(TestParametersType.TOU, typeof(Types.TOU.TestParameters)),
 
             //new TestParametrContainer(TestParametersType.Clamping, typeof(Types.Clamping.TestParameters)),
             //new TestParametrContainer(TestParametersType.Commutation, typeof(Types.Commutation.TestParameters)),

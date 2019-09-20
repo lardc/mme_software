@@ -5,45 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:CustomControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-             xmlns:TestResultDataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
-             xmlns:GateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types" 
-             xmlns:VTMParameters="clr-namespace:SCME.Types.VTM;assembly=SCME.Types" 
-             xmlns:BVTParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types" 
+             xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents"
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:customControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:testResultDataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
+             xmlns:baseTestParametersAndNormatives="clr-namespace:SCME.Types.BaseTestParams;assembly=SCME.Types"
+             xmlns:gateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types" 
+             xmlns:vtmParameters="clr-namespace:SCME.Types.VTM;assembly=SCME.Types" 
+             xmlns:bvtParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types" 
              xmlns:dVdtParameters="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
-             xmlns:ATUParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
-             xmlns:QrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
-             xmlns:RACParameters="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
+             xmlns:atuParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
+             xmlns:qrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
+             xmlns:racParameters="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:TOUParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
+             xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              mc:Ignorable="d" Name="ThisListViewTestParametersUserControl"
              d:DesignHeight="450" d:DesignWidth="800">
-    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <ListView ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}">
         <ListView.Resources>
-            <DataTemplate DataType="{x:Type GateParameters:TestParameters}">
-                <TestResultDataTemplate:GateDataTemplate Loaded="GateDataTemplate_Loaded"/>
+            <DataTemplate DataType="{x:Type gateParameters:TestParameters}">
+                <testResultDataTemplate:GateDataTemplate />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type VTMParameters:TestParameters}" >
-                <TestResultDataTemplate:VTMDataTemplate/>
+            <DataTemplate DataType="{x:Type vtmParameters:TestParameters}" >
+                <testResultDataTemplate:VTMDataTemplate/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type BVTParameters:TestParameters}" >
-                <TestResultDataTemplate:BVTDataTemplate/>
+            <DataTemplate DataType="{x:Type bvtParameters:TestParameters}" >
+                <testResultDataTemplate:BVTDataTemplate/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type dVdtParameters:TestParameters}" >
-                <TestResultDataTemplate:dVdtDataTemplate/>
+                <testResultDataTemplate:dVdtDataTemplate/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type ATUParameters:TestParameters}" >
-                <TestResultDataTemplate:ATUDataTemplate/>
+            <DataTemplate DataType="{x:Type atuParameters:TestParameters}" >
+                <testResultDataTemplate:ATUDataTemplate/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type QrrTqParameters:TestParameters}" >
-                <TestResultDataTemplate:QrrTqDataTemplate/>
+            <DataTemplate DataType="{x:Type qrrTqParameters:TestParameters}" >
+                <testResultDataTemplate:QrrTqDataTemplate/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type RACParameters:TestParameters}" >
-                <TestResultDataTemplate:RACDataTemplate/>
+            <DataTemplate DataType="{x:Type racParameters:TestParameters}" >
+                <testResultDataTemplate:RACDataTemplate/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type TOUParameters:TestParameters}" >
-                <TestResultDataTemplate:TOUDataTemplate/>
+            <DataTemplate DataType="{x:Type touParameters:TestParameters}" >
+                <testResultDataTemplate:TOUDataTemplate/>
             </DataTemplate>
         </ListView.Resources>
         <ListView.ItemContainerStyle>
@@ -51,7 +60,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListViewItem">
-                            <Grid>
+                            <Grid IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -61,12 +70,13 @@
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" Loaded="Label_Loaded"/>
-                                <CustomControl:CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsEnabled}">Активен</CustomControl:CheckBox>
+                                <Label Grid.Column="0" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" />
+                                <customControl:CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}"
+                                                        d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
                                 <Button Grid.Column="2" Grid.Row="0" Style="{StaticResource ButtonWithIcon}" Click="DeleteParameter_Click">
                                     <iconPacks:PackIconMaterial Kind="Delete" />
                                 </Button>
-                                <ContentPresenter DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}" Loaded="ContentPresenter_Loaded" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
+                                <ContentPresenter DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"/>
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>

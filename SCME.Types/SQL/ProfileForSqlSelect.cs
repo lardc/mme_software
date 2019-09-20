@@ -68,8 +68,7 @@ namespace SCME.Types.SQL
             else if (obj.GetType() == GetType())
                 return false;
             else
-                return Key == (obj as ProfileForSqlSelect).Key;
-
+                return Key == ((ProfileForSqlSelect) obj).Key;
         }
 
     }

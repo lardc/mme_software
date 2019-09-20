@@ -1,50 +1,57 @@
 ﻿<UserControl x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.QrrTqDataTemplate"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d" 
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:qrrTq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=qrrTq:TestParameters}"
              d:DesignHeight="450" d:DesignWidth="800">
-   
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="84*" />
-                        <ColumnDefinition Width="14*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="84*" />
+            <ColumnDefinition Width="14*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.QrrTqMode}" />
-                    <Label Grid.Column="1" Grid.Row="0"  Content="{Binding Mode, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.QrrTqMode}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding Mode}" />
 
-                    <Label Grid.Column="0" Grid.Row="1"  Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" Visibility="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}"/>
-                    <Path Grid.Column="1" Grid.Row="1"  Data="M 0 1.5 L 1.5 3 L 3 0" StrokeThickness="1.5" Visibility="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}" Stretch="Uniform"   />
+        <customControls:CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}"/>
 
-                    <Label Grid.Column="0" Grid.Row="2"  Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
-                    <Label Grid.Column="1" Grid.Row="2" Content="{Binding DirectCurrent, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="2" Value="{Binding DirectCurrent}" />
 
-                    <Label Grid.Column="0" Grid.Row="3"  Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
-                    <Label Grid.Column="1" Grid.Row="3"  Content="{Binding DCPulseWidth, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="3" Value="{Binding DCPulseWidth}" />
 
-                    <Label Grid.Column="0" Grid.Row="4"  Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
-                    <Label Grid.Column="1" Grid.Row="4"  Content="{Binding DCRiseRate, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="4" Value="{Binding DCRiseRate}" />
 
-                    <Label Grid.Column="0" Grid.Row="5"  Content="{x:Static res:Resources.QrrTqDCFallRate}" />
-                    <Label Grid.Column="1" Grid.Row="5"  Content="{Binding DCFallRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TDcFallRateVFE}}" />
+        <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.QrrTqDCFallRate}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="5" Value="{Binding DCFallRate, Converter={StaticResource TDcFallRateVFE}}" />
 
-                    <Label Grid.Column="0" Grid.Row="6"  Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
-                    <Label Grid.Column="1" Grid.Row="6"  Content="{Binding OffStateVoltage, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="6" Value="{Binding OffStateVoltage}" />
 
-                    <Label Grid.Column="0" Grid.Row="7"  Content="{x:Static res:Resources.QrrTqOsvRate}" />
-                    <Label Grid.Column="1" Grid.Row="7"  Content="{Binding OsvRate, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TOsvRateVFE}}" />
-                </Grid>
+        <Label Grid.Column="0" Grid.Row="7" Content="{x:Static res:Resources.QrrTqOsvRate}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="7" Value="{Binding OsvRate, Converter={StaticResource TOsvRateVFE}}" />
+    </Grid>
 </UserControl>

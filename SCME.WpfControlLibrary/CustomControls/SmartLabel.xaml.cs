@@ -59,5 +59,10 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             InitializeComponent();
         }
+
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
     }
 }

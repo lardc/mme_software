@@ -102,9 +102,6 @@ namespace SCME.Types.Gate
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
-        [DataMember]
         public bool IsCurrentEnabled { get; set; }
 
         [DataMember]

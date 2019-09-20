@@ -1,47 +1,56 @@
 ﻿<UserControl x:Class="SCME.WpfControlLibrary.CustomControls.AccentAndThemeUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <ListView Grid.Column="0" Grid.Row="0" Name="AccentsListView"  ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AccentColors}" SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAccentWrapper)}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single" >
+    <StackPanel HorizontalAlignment="Stretch">
+        <ListView Name="AccentsListView"
+                  ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AccentColors}"
+                  SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAccentWrapper)}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel  Orientation="Horizontal"></WrapPanel>
+                    <WrapPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Height="{Binding Source={x:Static vm:ResourceBinding.EllipseSize}}" Width="{Binding Source={x:Static vm:ResourceBinding.EllipseSize}}"  Fill="{Binding Color, Mode=OneWay}"></Ellipse>
-                        <TextBlock Text="{Binding Name}"/>
+                        <Ellipse Height="{DynamicResource SCME.EllipseSize}"
+                                 Width="{DynamicResource SCME.EllipseSize}"
+                                 Fill="{Binding Color, Mode=OneWay}" />
+                        <TextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>
-                    
             </ListView.ItemTemplate>
         </ListView>
-        <ListView Grid.Column="0" Grid.Row="1"  ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AppThemes}" SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAppThemesWrapper)}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
+        <ListView ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AppThemes}"
+                  SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAppThemesWrapper)}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel   Orientation="Horizontal" Background="{DynamicResource WindowBackgroundBrush}" ></WrapPanel>
+                    <WrapPanel Orientation="Horizontal" Background="{DynamicResource WindowBackgroundBrush}" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
-                        <Ellipse   Fill="{Binding Color, Mode=OneWay}"></Ellipse>
-                        <TextBlock  Text="{Binding Name}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Fill="{Binding Color, Mode=OneWay}" />
+                        <TextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+
+    <RadioButton Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}"/>
+    <RadioButton Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}"/>
+    <CheckBox>qweqwe</CheckBox>
+
+    </StackPanel>
 </UserControl>

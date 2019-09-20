@@ -5,10 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
       xmlns:profileBuilder="clr-namespace:SCME.ProfileBuilder"
-      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:local="clr-namespace:SCME.WpfControlLibrary;assembly=SCME.WpfControlLibrary"
       mc:Ignorable="d" 
-      xmlns:CustomControls="WpfControlLibrary"
+      xmlns:customControls="WpfControlLibrary"
       xmlns:connectPage="clr-namespace:SCME.ProfileBuilder.CustomControl.ConnectPage"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       d:DesignWidth="1280" d:DesignHeight="924"
@@ -43,7 +42,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <CustomControls:AccentAndThemeUserControl/>
+                    <customControls:AccentAndThemeUserControl/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

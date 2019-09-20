@@ -191,7 +191,7 @@ namespace SCME.InterfaceImplementations
                     trans.Commit();
                     return profileSql;
                 }
-                catch (Exception ex)
+                catch
                 {
                     trans.Rollback();
                     throw;

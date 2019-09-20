@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d" 
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:atu="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=atu:TestParameters}"
              d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -16,9 +18,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPrePulseValue}" />
-        <Label Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Grid.ColumnSpan="2" Content="{Binding PrePulseValue}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="0"  Value="{Binding PrePulseValue}" />
 
         <Label Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPowerValueSet}" />
-        <Label Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Grid.ColumnSpan="2" Content="{Binding PowerValue}" />
+        <customControls:SmartLabel Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" />
     </Grid>
 </UserControl>

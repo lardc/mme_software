@@ -10,9 +10,6 @@ namespace SCME.Types.RCC
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         public TestParameters()
         {
             TestParametersType = TestParametersType.RCC;

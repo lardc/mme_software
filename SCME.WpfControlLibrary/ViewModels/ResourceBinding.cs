@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using MahApps.Metro;
 using Point = System.Drawing.Point;
 
 namespace SCME.WpfControlLibrary.ViewModels
@@ -44,56 +45,32 @@ namespace SCME.WpfControlLibrary.ViewModels
         {
             var (_, DPIY) = GetSystemDpi();
             double cm = DPIY / 2.54;
-
-            TopBottomMargin = new Thickness(0, cm * 0.3, 0, cm * 0.3);
-            BottomMargin = new Thickness(0, 0, 0, cm * 0.3);
-            TopMargin = new Thickness(0, cm * 0.3, 0, 0);
-
-            ScrollBarWidth = cm;
-            SizeButtonWithIcon = cm * 1.5;
-
-
-            RepeatButtonUpSize = cm * 1.5;
-            RepeatButtonUpDownMarginLeft = cm * 0.1;
-            //Изначальное соотношение высоты ширины для минуса в стилях
-            RepeatButtonDownSize = RepeatButtonUpSize / 14 * 3;
-
-            CheckBoxBorderSize = cm;
-            CheckBoxPathWidth = cm / 18 * 12;
-            CheckBoxPathHeight = cm / 18 * 10;
-
-
-            FontSize = cm;
-            EllipseSize = cm * 2;
-
-            MarginLeft05 = new Thickness(0.5 * cm, 0, 0, 0);
         }
 
-        public static double FontSize { get; set; }
-        public static double SizeButtonWithIcon { get; set; }
+        public static void Scaling(double factor = 1)
+        {
+            var (_, DPIY) = GetSystemDpi();
+            double cmFactor = DPIY / 2.54 * factor;
+            
+            Application.Current.Resources["SCME.BaseFontSize"] = cmFactor;
+            Application.Current.Resources["SCME.ScrollBarWidth"] = cmFactor;
+            Application.Current.Resources["SCME.SizeButtonWithIcon"] = 1/.5 * cmFactor;
+            
+            Application.Current.Resources["SCME.CheckBoxBorderSize"] = cmFactor;
+            Application.Current.Resources["SCME.CheckBoxPathWidth"] = cmFactor / 18 * 12;
+            Application.Current.Resources["SCME.CheckBoxPathHeight"] = cmFactor / 18 * 10;
+            
+            Application.Current.Resources["SCME.RepeatButtonUpSize"] = cmFactor * 1.5;
+            Application.Current.Resources["SCME.RepeatButtonUpDownMarginLeft"] = new Thickness(cmFactor * 0.1, 0, 0, 0);
+            Application.Current.Resources["SCME.RepeatButtonDownSize"] = (double)Application.Current.Resources["SCME.RepeatButtonUpSize"] / 14 * 3;
+            
+            Application.Current.Resources["SCME.RadioButtonEllipseNormalSize"] = cmFactor;
+            Application.Current.Resources["SCME.RadioButtonEllipseCheckedSize"] = cmFactor * 10 / 18;
+            
+            Application.Current.Resources["SCME.EllipseSize"] = cmFactor * 2;
+            Application.Current.Resources["SCME.MarginLeftTreeViewItemDataProfile"] = new Thickness(0.5 * cmFactor, 0, 0, 0);
+        }
 
-
-        //CheckBox
-
-
-        //NumericUpDown
-        public static double RepeatButtonUpSize { get; set; }
-        public static double RepeatButtonDownSize { get; set; }
-        public static double RepeatButtonUpDownMarginLeft { get; set; }
-
-        public static double CheckBoxBorderSize { get; set; }
-        public static double CheckBoxPathWidth { get; set; }
-        public static double CheckBoxPathHeight { get; set; }
-
-
-        public static double ScrollBarWidth { get; set; }
-        public static double EllipseSize { get; set; }
-
-        public static Thickness TopBottomMargin { get; set; }
-        public static Thickness BottomMargin { get; set; }
-        public static Thickness TopMargin { get; set; }
-
-        public static Thickness MarginLeft05 { get; set; }
 
 
     }

@@ -53,9 +53,6 @@ namespace SCME.Types.ATU
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
-        [DataMember]
         public ushort PrePulseValue { get; set; }
 
         [DataMember]

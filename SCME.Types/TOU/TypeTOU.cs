@@ -72,9 +72,6 @@ namespace SCME.Types.TOU
         public ushort TGD { get; set; }
         public ushort TGT { get; set; }
 
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         public TestParameters()
         {
             IsEnabled = true;

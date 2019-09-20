@@ -65,7 +65,7 @@ namespace SCME.Types.Profiles
         public int Id { get; set; }
 
         [DataMember]
-        public ObservableCollection<MyProfile> Childrens { get; set; } = new ObservableCollection<MyProfile>();
+        public ObservableCollection<MyProfile> Children { get; set; } = new ObservableCollection<MyProfile>();
         [DataMember]
         public ProfileDeepData ProfileDeepData { get; set; } = new ProfileDeepData();
 
@@ -79,9 +79,9 @@ namespace SCME.Types.Profiles
                 ProfileDeepData = profileDeepData,
                 IsTop = true,
             };
-            newProfile.Childrens.Add(this);
-            foreach (var i in Childrens)
-                newProfile.Childrens.Add(i);
+            newProfile.Children.Add(this);
+            foreach (var i in Children)
+                newProfile.Children.Add(i);
             return newProfile;
         }
 

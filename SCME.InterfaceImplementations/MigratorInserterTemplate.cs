@@ -60,7 +60,7 @@ namespace SCME.InterfaceImplementations
                 }
                 trans.Commit();
             }
-            catch (Exception ex)
+            catch
             {
                 trans?.Rollback();
                 throw;

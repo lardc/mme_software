@@ -55,9 +55,6 @@ namespace SCME.Types.RAC
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         //DC voltage value for resistance measurement (in V) - амплитуда напряжения для измерения (в В)
         [DataMember]
         public ushort ResVoltage { get; set; }

@@ -81,9 +81,6 @@ namespace SCME.Types.dVdt
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
-        [DataMember]
         public ushort Voltage { get; set; }
 
         [DataMember]

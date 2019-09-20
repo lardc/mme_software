@@ -6,7 +6,6 @@ using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using SCME.InterfaceImplementations;
 using SCME.ProfileBuilder.CustomControl;
-using SCME.ProfileBuilder.PagesTech;
 using SCME.Types.DatabaseServer;
 using SCME.WpfControlLibrary.CustomControls;
 

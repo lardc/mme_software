@@ -1,4 +1,4 @@
-﻿using PropertyChanged;
+﻿﻿using PropertyChanged;
 using SCME.Types.Profiles;
 using System;
 using System.Collections.Generic;

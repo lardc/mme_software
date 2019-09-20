@@ -22,64 +22,28 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         private void SetSizeUp()
         {
-            RepeatButton repeatButtonUp = VisualHelper.FindChild<RepeatButton>(this, "PART_NumericUp");
-            Path pathUp = VisualHelper.FindChild<Path>(this, "PolygonUp");
- 
+            var repeatButtonUp = VisualHelper.FindChild<RepeatButton>(this, "PART_NumericUp");
+            repeatButtonUp.SetResourceReference(MarginProperty, "SCME.RepeatButtonUpDownMarginLeft");
+            repeatButtonUp.SetResourceReference(WidthProperty, "SCME.RepeatButtonUpSize");
+            repeatButtonUp.SetResourceReference(HeightProperty, "SCME.RepeatButtonUpSize");
+            
+            var pathUp = VisualHelper.FindChild<Path>(this, "PolygonUp");
             pathUp.Stretch = Stretch.UniformToFill;
-
-            repeatButtonUp.SetBinding(MarginProperty, new Binding()
-            {
-                Source = new Thickness(ResourceBinding.RepeatButtonUpDownMarginLeft, 0, 0, 0)
-            });
-
-            repeatButtonUp.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-            repeatButtonUp.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-
-            pathUp.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-            pathUp.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
+            pathUp.SetResourceReference(WidthProperty, "SCME.RepeatButtonUpSize");
+            pathUp.SetResourceReference(HeightProperty, "SCME.RepeatButtonUpSize");
         }
 
         private void SetSizeDown()
         {
-            RepeatButton repeatButtonUp = VisualHelper.FindChild<RepeatButton>(this, "PART_NumericDown");
-            Path pathUp = VisualHelper.FindChild<Path>(this, "PolygonDown");
-
-            pathUp.Stretch = Stretch.UniformToFill;
-
-            repeatButtonUp.SetBinding(MarginProperty, new Binding()
-            {
-               Source = new Thickness(ResourceBinding.RepeatButtonUpDownMarginLeft, 0, 0, 0)
-            });
-
-            repeatButtonUp.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-            repeatButtonUp.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-
-            pathUp.SetBinding(WidthProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonUpSize
-            });
-            pathUp.SetBinding(HeightProperty, new Binding()
-            {
-                Source = ResourceBinding.RepeatButtonDownSize
-            });
+            var repeatButtonDown = VisualHelper.FindChild<RepeatButton>(this, "PART_NumericDown");
+            repeatButtonDown.SetResourceReference(MarginProperty, "SCME.RepeatButtonUpDownMarginLeft");
+            repeatButtonDown.SetResourceReference(WidthProperty, "SCME.RepeatButtonUpSize");
+            repeatButtonDown.SetResourceReference(HeightProperty, "SCME.RepeatButtonUpSize");
+            
+            var pathDown = VisualHelper.FindChild<Path>(this, "PolygonDown");
+            pathDown.Stretch = Stretch.UniformToFill;
+            pathDown.SetResourceReference(WidthProperty, "SCME.RepeatButtonUpSize");
+            pathDown.SetResourceReference(HeightProperty, "SCME.RepeatButtonDownSize");
         }
 
         private void NumericUpDown_Loaded(object sender, RoutedEventArgs e)

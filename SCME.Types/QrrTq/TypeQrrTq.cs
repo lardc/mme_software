@@ -134,9 +134,6 @@ namespace SCME.Types.QrrTq
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         //Measurement mode - режим измерения
         [DataMember]
         public TMode Mode { get; set; }

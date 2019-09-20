@@ -10,9 +10,6 @@ namespace SCME.Types.IH
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         //Форсирующий ток Itm, А
         [DataMember]
         public ushort Itm { get; set; }

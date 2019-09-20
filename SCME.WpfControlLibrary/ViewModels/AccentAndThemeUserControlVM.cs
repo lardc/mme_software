@@ -16,38 +16,40 @@ namespace SCME.WpfControlLibrary.ViewModels
             SelectAppThemesWrapper = AppThemes.Single(m=> m.Name == Properties.Settings.Default.AppTheme);
         }
 
-        public static List<AccentWrapper> AccentColors { get; set; } = ThemeManager.Accents.Select(m => new AccentWrapper(m)).ToList();
+        public static double FontCmFactor { get; set; } = 1;
+        
+        public static List<AppThemeWrapper> AppThemes { get; set; } = ThemeManager.AppThemes.Select(m=> new AppThemeWrapper(m)).ToList();
 
-        public static List<AppThemeWrapper> AppThemes { get; set; } = ThemeManager.AppThemes.Select(m => new AppThemeWrapper(m)).ToList();
+        public static List<AccentWrapper>  AccentColors{ get; set; } = ThemeManager.Accents.Select(m=> new AccentWrapper(m)).ToList();
 
 
-        private static AccentWrapper _SelectAccentWrapper;
-        private static AppThemeWrapper _SelectAppThemesWrapper;
+        private static AccentWrapper _selectAccentWrapper;
+        private static AppThemeWrapper _selectAppThemesWrapper;
 
         private static void ChangeAppStyle()
         {
-            if(_SelectAccentWrapper != null && _SelectAppThemesWrapper != null)
-                ThemeManager.ChangeAppStyle(Application.Current, _SelectAccentWrapper.Accent, _SelectAppThemesWrapper.AppTheme);
+            if (_selectAccentWrapper != null && _selectAppThemesWrapper != null)
+                ThemeManager.ChangeAppStyle(Application.Current, _selectAccentWrapper.Accent, _selectAppThemesWrapper.AppTheme);
         }
 
         public static AccentWrapper SelectAccentWrapper
         {
-            get => _SelectAccentWrapper;
+            get => _selectAccentWrapper;
             set
             {
-                _SelectAccentWrapper = value;
-                Properties.Settings.Default.Accent = _SelectAccentWrapper.Name;
+                _selectAccentWrapper = value;
+                Properties.Settings.Default.Accent = _selectAccentWrapper.Name;
                 ChangeAppStyle();
             }
         }
 
         public static AppThemeWrapper SelectAppThemesWrapper
         {
-            get => _SelectAppThemesWrapper;
+            get => _selectAppThemesWrapper;
             set
             {
-                _SelectAppThemesWrapper = value;
-                Properties.Settings.Default.AppTheme = _SelectAppThemesWrapper.Name;
+                _selectAppThemesWrapper = value;
+                Properties.Settings.Default.AppTheme = _selectAppThemesWrapper.Name;
                 ChangeAppStyle();
             }
         } 
