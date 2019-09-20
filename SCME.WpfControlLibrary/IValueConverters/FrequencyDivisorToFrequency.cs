@@ -6,14 +6,14 @@ namespace SCME.WpfControlLibrary.IValueConverters
 {
     public class FrequencyDivisorToFrequency : IValueConverter
     {
-        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (50 / (ushort)Value).ToString(CultureInfo.InvariantCulture);
+            return (50 / (ushort)value).ToString(CultureInfo.InvariantCulture);
         }
 
-        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (ushort)(50 / UInt16.Parse((string)Value));
+            return (ushort)(50 / UInt16.Parse((string)value));
         }
     }
 }

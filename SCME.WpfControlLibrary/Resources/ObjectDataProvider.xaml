@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dataProviders="clr-namespace:SCME.WpfControlLibrary.DataProviders"
                     xmlns:bvt="clr-namespace:SCME.Types.BVT;assembly=SCME.Types"
                     xmlns:vtm="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
                     xmlns:commutation="clr-namespace:SCME.Types.Commutation;assembly=SCME.Types"
@@ -8,6 +9,16 @@
                     xmlns:dvdt="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
                     xmlns:qrrtq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
                      xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    
+    <ObjectDataProvider x:Key="VTMTestTypes" MethodName="GetVTMTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="BVTTestTypes" MethodName="GetBVTTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="BVTMeasurementModes" MethodName="GetBVTMeasurementModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="DvdtModes" MethodName="GetDvdtModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VoltageRates" MethodName="GetVoltageRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TModes" MethodName="GetTModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TOsvRates" MethodName="GetTOsvRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TDcFallRates" MethodName="GetTDcFallRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
     <ObjectDataProvider x:Key="DataFromMeasurementModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>

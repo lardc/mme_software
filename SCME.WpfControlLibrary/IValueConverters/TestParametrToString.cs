@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using SCME.WpfControlLibrary.DataProviders;
 
 namespace SCME.WpfControlLibrary.IValueConverters
 {
@@ -12,7 +13,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return TestParametersDictionary.TestParametersList.Single(m => m.Type == value.GetType()).Name;
+            return TestParameterDictionary.TestParametersList.Single(m => m.Type == value.GetType()).Name;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

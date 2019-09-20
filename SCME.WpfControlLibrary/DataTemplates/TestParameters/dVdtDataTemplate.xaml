@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -29,21 +29,22 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Mode}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding Mode, Converter={StaticResource DT2S}}" />
+        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource DvdtModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
 
         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.DvDtVoltage}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="1" Value="{Binding Voltage }" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding Voltage }" />
 
         <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtVoltageRate}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="2" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Value="{Binding VoltageRate }" />
+        <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Source={StaticResource VoltageRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding VoltageRate}"
+                  Visibility="{Binding Mode, Converter={StaticResource DT2V}}" />
 
         <Label Grid.Column="0" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtConfirmationCount}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Value="{Binding ConfirmationCount }" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Value="{Binding ConfirmationCount }" />
 
         <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateOffSet }" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateOffSet }" />
 
         <Label Grid.Column="0" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateLimit}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateLimit }" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateLimit }" />
     </Grid>
 </UserControl>

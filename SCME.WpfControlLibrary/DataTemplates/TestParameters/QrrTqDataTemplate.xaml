@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:qrrTq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=qrrTq:TestParameters}"
@@ -11,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,26 +33,27 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.QrrTqMode}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding Mode}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding Mode}" />
+        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
 
-        <customControls:CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method, Converter={StaticResource B2V}}"/>
+        <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method}"/>
 
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="2" Value="{Binding DirectCurrent}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding DirectCurrent}" />
 
         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="3" Value="{Binding DCPulseWidth}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding DCPulseWidth}" />
 
         <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="4" Value="{Binding DCRiseRate}" />
+        <mahappsControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding DCRiseRate}" />
 
         <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.QrrTqDCFallRate}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="5" Value="{Binding DCFallRate, Converter={StaticResource TDcFallRateVFE}}" />
-
+        <ComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding Source={StaticResource TDcFallRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DCFallRate}" />
+        
         <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="6" Value="{Binding OffStateVoltage}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="6" Value="{Binding OffStateVoltage}" />
 
         <Label Grid.Column="0" Grid.Row="7" Content="{x:Static res:Resources.QrrTqOsvRate}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="7" Value="{Binding OsvRate, Converter={StaticResource TOsvRateVFE}}" />
+        <ComboBox Grid.Column="1" Grid.Row="7" ItemsSource="{Binding Source={StaticResource TOsvRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
     </Grid>
 </UserControl>

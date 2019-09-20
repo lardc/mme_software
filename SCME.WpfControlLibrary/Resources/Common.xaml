@@ -25,6 +25,9 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/RadioButton.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/CheckBox.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/NumericUpDown.xaml" />
+        
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -41,9 +44,9 @@
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 
-    <Style TargetType="customControl:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-    </Style>
+    <!-- <Style TargetType="customControl:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"> -->
+    <!--     <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" /> -->
+    <!-- </Style> -->
     
     
 
@@ -58,10 +61,6 @@
         <Setter Property="Width" Value="{DynamicResource SCME.SizeButtonWithIcon}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-    </Style>
-
-    <Style TargetType="customControl:NumericUpDown">
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 
     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">

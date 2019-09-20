@@ -12,6 +12,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,29 +33,29 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding TestType, Converter={StaticResource BT2S}}" />
+            <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource BVTTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
             <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.CurrentLimit_mA}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="0" Value="{Binding CurrentLimit }" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding CurrentLimit }" />
 
             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitD_V}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="1" Value="{Binding VoltageLimitD }" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding VoltageLimitD }" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
             <Label Grid.Column="2" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitR_V}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="1" Value="{Binding VoltageLimitR}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="1" Value="{Binding VoltageLimitR}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
 
             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.PlateTime_ms}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="2" Value="{Binding PlateTime}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding PlateTime}" />
             <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Rampup_Vms}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="2" Value="{Binding RampUpVoltage}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding RampUpVoltage}" />
 
             <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.StartVoltage_V}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="3" Value="{Binding StartVoltage}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding StartVoltage}" />
             <Label Grid.Column="2" Grid.Row="3" Content="{x:Static res:Resources.Frequency_Hz}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="3" Value="{Binding VoltageFrequency}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="3" Value="{Binding VoltageFrequency}" />
 
             <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="4" Value="{Binding FrequencyDivisor, Converter={StaticResource FD2F}}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding FrequencyDivisor, Converter={StaticResource FD2F}}" />
             <Label Grid.Column="2" Grid.Row="4" Content="{x:Static res:Resources.Mode}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="4" Value="{Binding MeasurementMode}" />
+            <ComboBox Grid.Column="3" Grid.Row="4" ItemsSource="{Binding Source={StaticResource BVTMeasurementModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding MeasurementMode}" />
         </Grid>
 
         <Grid Column="0" Row="1" Visibility="{Binding MeasurementMode, ConverterParameter=1, Converter={StaticResource MM2V}}">
@@ -65,9 +66,9 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.MinVdrm_V}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding VDRM}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding VDRM}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
             <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.MinVrrm_V}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="0" Value="{Binding VRRM}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding VRRM}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
         </Grid>
 
         <Grid Column="0" Row="2" Visibility="{Binding MeasurementMode, ConverterParameter=0, Converter={StaticResource MM2V}}">
@@ -78,9 +79,9 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.MaxIdrm_mA}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding IDRM, ElementName=profilesList}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding IDRM, ElementName=profilesList}" Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource TT2V}}" />
             <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.MaxIrrm_mA}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
-            <customControls:SmartLabel Grid.Column="3" Grid.Row="0" Value="{Binding IRRM, ElementName=profilesList}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding IRRM, ElementName=profilesList}" Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource TT2V}}" />
         </Grid>
 
     </StackPanel>

@@ -60,9 +60,11 @@ namespace SCME.WpfControlLibrary.ViewModels
             Application.Current.Resources["SCME.CheckBoxPathWidth"] = cmFactor / 18 * 12;
             Application.Current.Resources["SCME.CheckBoxPathHeight"] = cmFactor / 18 * 10;
             
-            Application.Current.Resources["SCME.RepeatButtonUpSize"] = cmFactor * 1.5;
-            Application.Current.Resources["SCME.RepeatButtonUpDownMarginLeft"] = new Thickness(cmFactor * 0.1, 0, 0, 0);
-            Application.Current.Resources["SCME.RepeatButtonDownSize"] = (double)Application.Current.Resources["SCME.RepeatButtonUpSize"] / 14 * 3;
+            Application.Current.Resources["SCME.RepeatButtonUpDownSize"] = cmFactor * 1.5;
+            Application.Current.Resources["SCME.PathUpDownWidth"] = (double)Application.Current.Resources["SCME.RepeatButtonUpDownSize"] * 14 / 22;
+            Application.Current.Resources["SCME.PathDownHeight"] = (double)Application.Current.Resources["SCME.RepeatButtonUpDownSize"] * 3 / 22;
+            //Application.Current.Resources["SCME.RepeatButtonUpDownMarginLeft"] = new Thickness(cmFactor * 0.1, 0, 0, 0);
+            //Application.Current.Resources["SCME.RepeatButtonDownSize"] = (double)Application.Current.Resources["SCME.RepeatButtonUpSize"] / 14 * 3;
             
             Application.Current.Resources["SCME.RadioButtonEllipseNormalSize"] = cmFactor;
             Application.Current.Resources["SCME.RadioButtonEllipseCheckedSize"] = cmFactor * 10 / 18;

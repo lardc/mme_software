@@ -17,6 +17,6 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TOUITM}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="0" Value="{Binding CurrentAmplitude}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding CurrentAmplitude}" />
     </Grid>
 </UserControl>

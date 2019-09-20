@@ -4,14 +4,14 @@
 
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <!--  adapted from http://brianlagunas.com/free-metro-light-and-dark-themes-for-wpf-and-silverlight-microsoft-controls/  -->
-    <Style x:Key="MetroCheckBox" TargetType="CheckBox">
+    <Style TargetType="CheckBox">
         <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CheckBoxBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="controls:ControlsHelper.FocusBorderBrush" Value="{DynamicResource HighlightBrush}" />
         <Setter Property="controls:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource CheckBoxMouseOverBrush}" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
-        <Setter Property="FontSize" Value="{DynamicResource ContentFontSize}" />
+        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="Padding" Value="6 0 0 0" />
@@ -21,21 +21,21 @@
                 <ControlTemplate TargetType="CheckBox">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition x:Name="LeftCol" Width="18" />
+                            <ColumnDefinition x:Name="LeftCol" Width="auto" />
                             <ColumnDefinition x:Name="RightCol" Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="PART_CHECKBOX">
                             <Rectangle Margin="-6 0" Fill="{DynamicResource TransparentWhiteBrush}" />
                             <Border x:Name="normal"
-                                    Width="18"
-                                    Height="18"
+                                    Width="{DynamicResource SCME.CheckBoxBorderSize}"
+                                    Height="{DynamicResource SCME.CheckBoxBorderSize}"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             <Path x:Name="checkBox"
-                                  Width="12"
-                                  Height="10"
+                                  Width="{DynamicResource SCME.CheckBoxPathWidth}"
+                                  Height="{DynamicResource SCME.CheckBoxPathHeight}"
                                   Data="M 1145.607177734375,430 C1145.607177734375,430 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1138,434.5538330078125 1138,434.5538330078125 1138,434.5538330078125 1141.482177734375,438 1141.482177734375,438 1141.482177734375,438 1141.96875,437.9375 1141.96875,437.9375 1141.96875,437.9375 1147,431.34619140625 1147,431.34619140625 1147,431.34619140625 1145.607177734375,430 1145.607177734375,430 z"
                                   Fill="{DynamicResource HighlightBrush}"
                                   Opacity="0"
@@ -47,8 +47,8 @@
                                        Fill="{DynamicResource GrayBrush3}"
                                        Opacity="0" />
                             <Border x:Name="disabled"
-                                    Width="18"
-                                    Height="18"
+                                    Width="{DynamicResource SCME.CheckBoxBorderSize}"
+                                    Height="{DynamicResource SCME.CheckBoxBorderSize}"
                                     Background="{DynamicResource SemiTransparentWhiteBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     Opacity="0"

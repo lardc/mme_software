@@ -18,9 +18,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPrePulseValue}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="0"  Value="{Binding PrePulseValue}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"  Value="{Binding PrePulseValue}" />
 
         <Label Grid.Column="0" Grid.Row="1" Margin="0,0,0,0" Content="{x:Static res:Resources.AtuPowerValueSet}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" />
     </Grid>
 </UserControl>

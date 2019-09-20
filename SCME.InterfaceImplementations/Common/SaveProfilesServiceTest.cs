@@ -213,8 +213,7 @@ namespace SCME.InterfaceImplementations.Common
             return ("Gate", gateCondtions, gateParameters);
         }
 
-        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)>
-            parameters) TypeConditionsParameters(Types.VTM.TestParameters sl)
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.VTM.TestParameters sl)
         {
             var slCondition = new Dictionary<string, object>()
             {
@@ -250,11 +249,10 @@ namespace SCME.InterfaceImplementations.Common
                 {"VTM", (DBNull.Value, sl.VTM)}
             };
 
-            return ("BVT", slCondition, slParameters);
+            return ("SL", slCondition, slParameters);
         }
 
-        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)>
-            parameters) TypeConditionsParameters(Types.BVT.TestParameters bvt)
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.BVT.TestParameters bvt)
         {
             var bvtCondition = new Dictionary<string, object>()
             {
@@ -298,7 +296,7 @@ namespace SCME.InterfaceImplementations.Common
                     bvtParameters.Add("IDRM", (DBNull.Value, bvt.IDRM));
             }
 
-            return ("SL", bvtCondition, bvtParameters);
+            return ("BVT", bvtCondition, bvtParameters);
         }
 
         private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)>

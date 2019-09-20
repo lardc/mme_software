@@ -6,6 +6,7 @@
              xmlns:customControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:local="clr-namespace:SCME.WpfControlLibrary"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:dataProviders="clr-namespace:SCME.WpfControlLibrary.DataProviders"
              mc:Ignorable="d" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -37,7 +38,7 @@
             <customControl:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding ParameterClamp}" />
 
             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.ParameterType}"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{x:Static local:TestParametersDictionary.TestParametersList}" DisplayMemberPath="Name" SelectedValuePath="TestParametersType" 
+            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{x:Static dataProviders:TestParameterDictionary.TestParametersList}" DisplayMemberPath="Name" SelectedValuePath="TestParametersType" 
                       SelectedValue="{Binding Path=SelectedParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
                 <!--<ComboBoxItem Content="Gate"></ComboBoxItem>
                 <ComboBoxItem Content="VTM"></ComboBoxItem>

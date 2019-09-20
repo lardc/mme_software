@@ -19,6 +19,6 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}" />
-        <customControls:SmartLabel Grid.Column="1" Grid.Row="0"  Value="{Binding ResVoltage}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"  Value="{Binding ResVoltage}" />
     </Grid>
 </UserControl>

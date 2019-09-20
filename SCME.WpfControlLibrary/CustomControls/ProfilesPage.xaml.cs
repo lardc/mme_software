@@ -133,6 +133,7 @@ namespace SCME.WpfControlLibrary.CustomControls
             var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
             var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(t);
+            newTestParameter.IsEnabled = true;
             newTestParameter.Order = maxOrder + 1;
             testParametersAndNormatives.Add(newTestParameter);
         }
