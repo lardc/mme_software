@@ -14,5 +14,6 @@ namespace SCME.ProfileBuilder.ViewModels.ConnectPage
     {
         public ConnectToMSSQLVM ConnectToMSSQLVM { get; set; } = new ConnectToMSSQLVM();
         public ConnectToSQLiteVM ConnectToSQLiteVM { get; set; } = new ConnectToSQLiteVM();
+        public AccentAndThemeUserControlVM AccentAndThemeUserControlVM { get; set; } = new AccentAndThemeUserControlVM();
     }
 }

@@ -9,6 +9,8 @@ using System;
 using SCME.Types.SQL;
 using SCME.InterfaceImplementations.Common;
 using SCME.Types.Profiles;
+using ILoadProfilesService = SCME.Types.Interfaces.ILoadProfilesService;
+using ISaveProfileService = SCME.Types.Interfaces.ISaveProfileService;
 
 namespace SCME.InterfaceImplementations
 {

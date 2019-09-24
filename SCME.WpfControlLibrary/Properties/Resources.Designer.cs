@@ -592,6 +592,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Размер шрифта.
+        /// </summary>
+        public static string FontSize {
+            get {
+                return ResourceManager.GetString("FonstSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Усилие, кН.
         /// </summary>
         public static string Force {
@@ -804,6 +813,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Irrm_mA {
             get {
                 return ResourceManager.GetString("Irrm_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Активен.
+        /// </summary>
+        public static string IsActive {
+            get {
+                return ResourceManager.GetString("IsActive", resourceCulture);
             }
         }
         
@@ -1893,15 +1911,6 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Yesterday {
             get {
                 return ResourceManager.GetString("Yesterday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        public static string IsActive {
-            get {
-                return ResourceManager.GetString("IsActive", resourceCulture);
             }
         }
     }

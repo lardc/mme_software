@@ -71,7 +71,7 @@
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="contentPresenter"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To=".55"
+                                                         To="1.0"
                                                          Duration="0" />
                                         <DoubleAnimation Storyboard.TargetName="disabled"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"

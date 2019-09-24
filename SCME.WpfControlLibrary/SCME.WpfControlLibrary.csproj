@@ -97,9 +97,9 @@
     <Compile Include="CustomControls\NumericUpDown.cs" />
     <Compile Include="IValueConverters\TestParametrToString.cs" />
     <Compile Include="IValueConverters\TOsvRateValueFromEnum.cs" />
+    <Compile Include="ResourceBinding.cs" />
     <Compile Include="ViewModels\ProfilesPageVM.cs" />
     <Compile Include="ViewModels\ProfilesPage\AddTestParametrUserControlVM.cs" />
-    <Compile Include="ViewModels\ResourceBinding.cs" />
     <Compile Include="Wrappers\AccentWrapper.cs" />
     <Compile Include="CustomControls\AccentAndThemeUserControl.xaml.cs">
       <DependentUpon>AccentAndThemeUserControl.xaml</DependentUpon>
@@ -225,6 +225,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Styles\CheckBox.xaml" />
+    <Page Include="Resources\Styles\CustomThemePurple.xaml" />
     <Page Include="Resources\Styles\NumericUpDown.xaml" />
     <Page Include="Resources\Styles\RadioButton.xaml" />
     <Page Include="Resources\ValueConvertersDictionary.xaml">

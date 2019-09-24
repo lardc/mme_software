@@ -20,24 +20,20 @@ namespace SCME.WpfControlLibrary.CustomControls
     public partial class ProfilesPage : Page
     {
         public ProfilesPageVM Vm { get; set; } = new ProfilesPageVM();
-        private readonly ILoadProfilesServiceTest _loadProfilesService;
-        private readonly ISaveProfileServiceTest _saveProfileServiceTest;
+        private readonly IDbService _dbService;
 
-        private HashSet<Guid> _DeepLoadedProfiles = new HashSet<Guid>();
         private bool _isIgnoreTreeViewSelectionChanged = false;
-        
 
-        public ProfilesPage(ILoadProfilesServiceTest loadProfilesService, ISaveProfileServiceTest saveProfileServiceTest, string MMECode = null)
+
+        public ProfilesPage(IDbService dbService, string mmeCode = null)
         {
-            
             InitializeComponent();
-            _loadProfilesService = loadProfilesService;
-            _saveProfileServiceTest = saveProfileServiceTest;
-            if (MMECode != null)
-                Vm.SelectedMMECode = MMECode;
+            _dbService = dbService;
+            if (mmeCode != null)
+                Vm.SelectedMMECode = mmeCode;
             else
             {
-                Vm.MmeCodes = _loadProfilesService.GetMMECodes();
+                Vm.MmeCodes = _dbService.GetMmeCodes();
                 if (string.IsNullOrEmpty(Vm.SelectedMMECode) && Vm.MmeCodes.Count != 0)
                     Vm.SelectedMMECode = Vm.MmeCodes.First().Key;
             }
@@ -45,12 +41,12 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         private void LoadTopProfiles()
         {
-            Vm.Profiles = new ObservableCollection<MyProfile>(_loadProfilesService.GetProfilesSuperficially(Vm.SelectedMMECode));
+            Vm.Profiles = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(Vm.SelectedMMECode));
             foreach (var i in Vm.Profiles)
                 i.IsTop = true;
         }
 
-        
+
         private void ProfilesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (_isIgnoreTreeViewSelectionChanged)
@@ -62,20 +58,14 @@ namespace SCME.WpfControlLibrary.CustomControls
 
 
             var selectedKey = Vm.SelectedProfile.Key;
-            var findKey = _DeepLoadedProfiles.FirstOrDefault(m => m == selectedKey);
 
-            if (findKey == Guid.Empty)
+            var superficiallyProfile = Vm.SelectedProfile;
+            Vm.SelectedProfile.ProfileDeepData = _dbService.LoadProfileDeepData(Vm.SelectedProfile);
+            if (Vm.SelectedProfile.IsTop)
             {
-                _DeepLoadedProfiles.Add(selectedKey);
-
-                var superficiallyProfile = Vm.SelectedProfile;
-                Vm.SelectedProfile.ProfileDeepData = _loadProfilesService.LoadProfileDeepData(Vm.SelectedProfile);
-                if (Vm.SelectedProfile.IsTop)
-                {
-                    Vm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_loadProfilesService.GetProfileChildsSuperficially(Vm.SelectedProfile));
-                    foreach (var i in Vm.SelectedProfile.Children)
-                        i.IsTop = false;
-                }
+                Vm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_dbService.GetProfileChildSuperficially(Vm.SelectedProfile));
+                foreach (var i in Vm.SelectedProfile.Children)
+                    i.IsTop = false;
             }
 
             Vm.ProfileDeepData = Vm.SelectedProfile.ProfileDeepData;
@@ -103,7 +93,7 @@ namespace SCME.WpfControlLibrary.CustomControls
             var oldProfile = Vm.SelectedProfile;
             var newProfile = oldProfile.GenerateNextVersion(Vm.ProfileDeepData);
 
-            newProfile.Id =_saveProfileServiceTest.InsertUpdateProfile(oldProfile, newProfile, Vm.SelectedMMECode);
+            newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, Vm.SelectedMMECode);
 
             oldProfile.IsTop = false;
             oldProfile.Children = null;
@@ -117,8 +107,6 @@ namespace SCME.WpfControlLibrary.CustomControls
 
             Vm.SelectedProfile = newProfile;
             _isIgnoreTreeViewSelectionChanged = false;
-
-            _DeepLoadedProfiles.Add(newProfile.Key);
         }
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
@@ -140,18 +128,18 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _DeepLoadedProfiles.Clear();
             Vm.SearchingName = string.Empty;
             LoadTopProfiles();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Vm.MmeCodes.Count == 0)
+            if (Vm.MmeCodes.Count == 0)
             {
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
                 return;
             }
+
             LoadTopProfiles();
         }
     }

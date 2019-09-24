@@ -42,7 +42,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <customControls:AccentAndThemeUserControl/>
+                    <customControls:AccentAndThemeUserControl DataContext="{Binding AccentAndThemeUserControlVM}"/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

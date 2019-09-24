@@ -55,7 +55,10 @@
                 <Button Grid.Column="1" Grid.Row="0" Click="CancelEditProfile_Click" Content="{x:Static res:Resources.Cancel}"/>
             </Grid>
             <Grid Grid.Column="0" Grid.Row="2" IsEnabled="{Binding IsEditModeEnabled}">
-                <TreeView Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <TreeView Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                          VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
+                          VirtualizingStackPanel.ScrollUnit="Item">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
                             <Grid >

@@ -481,6 +481,10 @@
       <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
       <Name>SCME.Types</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj">
+      <Project>{75abf5ae-fb9f-42d3-9568-a49833ce61d3}</Project>
+      <Name>SCME.WpfControlLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="App.ico" />

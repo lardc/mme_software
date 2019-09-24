@@ -29,7 +29,7 @@ namespace SCME.ProfileBuilder.CommonPages
             {
                 var vm = VM.ConnectToMSSQLVM;
 
-                System.Data.SqlClient.SqlConnectionStringBuilder connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder();
+                var connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder();
 
                 connectionStringBuilder.DataSource = vm.Server;
                 connectionStringBuilder.InitialCatalog = vm.Database;
@@ -41,11 +41,7 @@ namespace SCME.ProfileBuilder.CommonPages
                 }
 
                 var sqlConnection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString());
-                var loadProfileService = new InterfaceImplementations.NewImplement.MSSQL.MSSQLLoadProfilesServiceTest(sqlConnection);
-                var saveProfileService = new InterfaceImplementations.NewImplement.MSSQL.MSSQLSaveProfileServiceTest(sqlConnection);
-               
-
-                Cache.ProfilesPage = new ProfilesPage(loadProfileService, saveProfileService);
+                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection));
 
                 NavigationService?.Navigate(Cache.ProfilesPage);
             }
@@ -70,10 +66,7 @@ namespace SCME.ProfileBuilder.CommonPages
                 };
 
                 var sqliteConnection = new System.Data.SQLite.SQLiteConnection(connectionStringBuilder.ToString());
-                var loadProfileService = new InterfaceImplementations.NewImplement.SQLite.SQLiteLoadProfilesServiceTest(sqliteConnection);
-                var saveProfileService = new InterfaceImplementations.NewImplement.SQLite.SQLiteSaveProfilesServiceTest(sqliteConnection);
-
-                Cache.ProfilesPage = new ProfilesPage(loadProfileService, saveProfileService);
+                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection));
 
                 NavigationService?.Navigate(Cache.ProfilesPage);
             }
@@ -85,7 +78,7 @@ namespace SCME.ProfileBuilder.CommonPages
 
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
-            (sender as TextBlock).IsEnabled = true;
+            ((TextBlock) sender).IsEnabled = true;
         }
     }
 }

@@ -7,12 +7,18 @@
              xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             mc:Ignorable="d"
+             mc:Ignorable="d" d:DesignSource="{d:DesignInstance vm:AccentAndThemeUserControlVM}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel HorizontalAlignment="Stretch">
-        <ListView Name="AccentsListView"
-                  ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AccentColors}"
-                  SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAccentWrapper)}"
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Column="0" Grid.Row="0" Name="AccentsListView"
+                  ItemsSource="{Binding AccentColors}"
+                  SelectedItem="{Binding SelectAccentWrapper}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionMode="Single">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -30,8 +36,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView ItemsSource="{x:Static vm:AccentAndThemeUserControlVM.AppThemes}"
-                  SelectedItem="{Binding Path=(vm:AccentAndThemeUserControlVM.SelectAppThemesWrapper)}"
+        <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding AppThemes}"
+                  SelectedItem="{Binding SelectAppThemesWrapper}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -47,10 +53,12 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" VerticalAlignment="Bottom">
+            <Label Content="{x:Static res:Resources.FontSize}"/>
+            <Label Content="{Binding Path=(vm:AccentAndThemeUserControlVM.FontScaling), Mode=TwoWay}"/>
+        </StackPanel>
+        <Slider Grid.Column="0" Grid.Row="3" Minimum="50" Maximum="150" TickFrequency="5" SmallChange="5" LargeChange="5" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding FontScaling}" />
 
-    <RadioButton Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}"/>
-    <RadioButton Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}"/>
-    <CheckBox>qweqwe</CheckBox>
-
-    </StackPanel>
+    </Grid>
 </UserControl>

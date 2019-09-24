@@ -4,10 +4,6 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:converters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro">
 
-    <ResourceDictionary.MergedDictionaries>
-        <!-- <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" /> -->
-    </ResourceDictionary.MergedDictionaries>
-
     <converters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
 
     <Style TargetType="{x:Type myControls:NumericUpDown}">
@@ -136,7 +132,7 @@
                             <Setter TargetName="PART_TextBoxColumn" Property="Width" Value="Auto" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.0" />
                             <Setter TargetName="PART_Buttons" Property="Visibility" Value="Hidden" />
                             <Setter Property="BorderBrush" Value="Transparent"/>
                         </Trigger>

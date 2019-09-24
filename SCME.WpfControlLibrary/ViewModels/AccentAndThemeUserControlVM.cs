@@ -1,38 +1,53 @@
-﻿using MahApps.Metro;
+﻿using System;
+using MahApps.Metro;
 using PropertyChanged;
 using SCME.WpfControlLibrary.Wrappers;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 
 namespace SCME.WpfControlLibrary.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public static class AccentAndThemeUserControlVM
+    public class AccentAndThemeUserControlVM
     {
-        static AccentAndThemeUserControlVM()
+        public AccentAndThemeUserControlVM()
         {
-            SelectAccentWrapper = AccentColors.Single(m => m.Name == Properties.Settings.Default.Accent);
-            SelectAppThemesWrapper = AppThemes.Single(m=> m.Name == Properties.Settings.Default.AppTheme);
+            
+            ThemeManager.AddAppTheme("CustomThemePurple", new Uri("pack://application:,,,/SCME.WpfControlLibrary;component/Resources/Styles/CustomThemePurple.xaml"));
+            AppThemes= ThemeManager.AppThemes.Select(m=> new AppThemeWrapper(m)).ToList();
+            AccentColors = ThemeManager.Accents.Select(m=> new AccentWrapper(m)).ToList();
+            SelectAccentWrapper = AccentColors.SingleOrDefault(m => m.Name == Properties.Settings.Default.Accent) ?? AccentColors.First();
+            SelectAppThemesWrapper = AppThemes.SingleOrDefault(m=> m.Name == Properties.Settings.Default.AppTheme) ?? AppThemes.First();
         }
 
-        public static double FontCmFactor { get; set; } = 1;
         
-        public static List<AppThemeWrapper> AppThemes { get; set; } = ThemeManager.AppThemes.Select(m=> new AppThemeWrapper(m)).ToList();
+        public List<AppThemeWrapper> AppThemes { get; }
 
-        public static List<AccentWrapper>  AccentColors{ get; set; } = ThemeManager.Accents.Select(m=> new AccentWrapper(m)).ToList();
+        public List<AccentWrapper>  AccentColors{ get; }
 
 
-        private static AccentWrapper _selectAccentWrapper;
-        private static AppThemeWrapper _selectAppThemesWrapper;
+        private AccentWrapper _selectAccentWrapper;
+        private AppThemeWrapper _selectAppThemesWrapper;
 
-        private static void ChangeAppStyle()
+        private void ChangeAppStyle()
         {
             if (_selectAccentWrapper != null && _selectAppThemesWrapper != null)
                 ThemeManager.ChangeAppStyle(Application.Current, _selectAccentWrapper.Accent, _selectAppThemesWrapper.AppTheme);
         }
+        
+        public double FontScaling
+        {
+            get => Properties.Settings.Default.FontScaling;
+            set
+            {
+                Properties.Settings.Default.FontScaling = value;
+                ResourceBinding.Scaling(value / 100.0);
+            }
+        }
 
-        public static AccentWrapper SelectAccentWrapper
+        public AccentWrapper SelectAccentWrapper
         {
             get => _selectAccentWrapper;
             set
@@ -43,7 +58,7 @@ namespace SCME.WpfControlLibrary.ViewModels
             }
         }
 
-        public static AppThemeWrapper SelectAppThemesWrapper
+        public AppThemeWrapper SelectAppThemesWrapper
         {
             get => _selectAppThemesWrapper;
             set

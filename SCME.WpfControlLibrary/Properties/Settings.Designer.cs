@@ -58,5 +58,17 @@ namespace SCME.WpfControlLibrary.Properties {
                 this["LastSelectedMMECode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double FontScaling {
+            get {
+                return ((double)(this["FontScaling"]));
+            }
+            set {
+                this["FontScaling"] = value;
+            }
+        }
     }
 }

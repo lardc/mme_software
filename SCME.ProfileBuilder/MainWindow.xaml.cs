@@ -14,6 +14,7 @@ using SCME.ProfileBuilder.CommonPages;
 using SCME.ProfileBuilder.Properties;
 using SCME.Types.DatabaseServer;
 using SCME.Types.TOU;
+using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.ViewModels;
 
 namespace SCME.ProfileBuilder

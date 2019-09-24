@@ -38,18 +38,17 @@
 
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
-
-    <!-- <Style TargetType="customControl:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"> -->
-    <!--     <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" /> -->
-    <!-- </Style> -->
     
-    
-
     <Style TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
         <Setter Property="FontSize" Value="{DynamicResource BaseFontSize}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
