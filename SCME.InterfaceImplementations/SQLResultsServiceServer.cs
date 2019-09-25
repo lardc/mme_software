@@ -247,6 +247,11 @@ namespace SCME.InterfaceImplementations
 
         #region THE ONLY USEFUL CODE
 
+        private object ChangeNull(object value)
+        {
+            return (value == null) ? DBNull.Value : value;
+        }
+
         public bool SaveResults(DeviceLocalItem localDevice)
         {
             var trans = _connection.BeginTransaction();
@@ -288,12 +293,12 @@ namespace SCME.InterfaceImplementations
             _devInsertCommand.Parameters["@GROUP_ID"].Value = groupId;
             _devInsertCommand.Parameters["@PROFILE_ID"].Value = localItem.ProfileKey;
             _devInsertCommand.Parameters["@CODE"].Value = localItem.Code;
-            _devInsertCommand.Parameters["@SIL_N_1"].Value = localItem.StructureOrd;
-            _devInsertCommand.Parameters["@SIL_N_2"].Value = localItem.StructureId;
+            _devInsertCommand.Parameters["@SIL_N_1"].Value = ChangeNull(localItem.StructureOrd);
+            _devInsertCommand.Parameters["@SIL_N_2"].Value = ChangeNull(localItem.StructureId);
             _devInsertCommand.Parameters["@TS"].Value = localItem.Timestamp;
             _devInsertCommand.Parameters["@USR"].Value = localItem.UserName;
             _devInsertCommand.Parameters["@POS"].Value = (localItem.Position == 2);
-            _devInsertCommand.Parameters["@MME_CODE"].Value = localItem.MmeCode;
+            _devInsertCommand.Parameters["@MME_CODE"].Value = ChangeNull(localItem.MmeCode);
             _devInsertCommand.Transaction = trans;
 
             return (int)_devInsertCommand.ExecuteScalar();
@@ -809,9 +814,9 @@ namespace SCME.InterfaceImplementations
         {
             //считывает класс самого свежего изделия, имеющего номер devCode, измеренного по профилю с обозначением profileName
             //возвращает:
-            //            null - по запрошенным devCode и profileName класс RT вычислить не возможо;
-            //              -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
-            //           класс - целое положительное число - успешное вычисление класса.
+            //            null - по запрошенным devCode и profileName класс RT вычислить не возможно;
+            //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
+            //            класс - целое положительное число - успешное вычисление класса.
 
             int? result = null;
 

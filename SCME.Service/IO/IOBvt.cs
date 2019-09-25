@@ -13,8 +13,8 @@ namespace SCME.Service.IO
         private const float EMU_DEFAULT_IDRM = 1.0f;
         private const ushort EMU_DEFAULT_VRRM = 1100;
         private const float EMU_DEFAULT_IRRM = 1.1f;
-        private const float EMU_DEFAULT_IDSM = 110;
-        private const float EMU_DEFAULT_IRSM = 120;
+        private const float EMU_DEFAULT_IDSM = 4;
+        private const float EMU_DEFAULT_IRSM = 49;
         private const int REQUEST_DELAY_MS = 50;
 
         private readonly IOAdapter m_IOAdapter;
@@ -454,6 +454,14 @@ namespace SCME.Service.IO
             }
         }
 
+        private ushort CalcUdsmUrsmVoltage()
+        {
+            //вычисляет значение напряжения, при котором выполняется тест UDSM/URSM
+            ushort result = (m_Parameters.ClassByProfileName == null) ? (ushort)0 : (ushort)(110 + 100 * m_Parameters.ClassByProfileName);
+
+            return result;
+        }
+
         private void MeasurementLogicRoutineUdsmUrsm(Types.Commutation.TestParameters Commutation)
         {
             //реализация теста UDSM/URSM
@@ -500,7 +508,7 @@ namespace SCME.Service.IO
                             return;
                         }
 
-                        ushort VDSM = (ushort)(m_Result.VDRM + 100);
+                        ushort VDSM = CalcUdsmUrsmVoltage();
                         WriteRegister(REG_LIMIT_VOLTAGE, VDSM);
                         WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_D);
 
@@ -543,7 +551,7 @@ namespace SCME.Service.IO
                             return;
                         }
 
-                        ushort VRSM = (ushort)(m_Result.VRRM + 100);
+                        ushort VRSM = CalcUdsmUrsmVoltage();
                         WriteRegister(REG_LIMIT_VOLTAGE, VRSM);
                         WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_R);
 

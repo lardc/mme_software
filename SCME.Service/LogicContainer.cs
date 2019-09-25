@@ -1578,7 +1578,7 @@ namespace SCME.Service
                         res = m_IORAC.ReadRegister(Address);
                         break;
                     case ComplexParts.IH:
-                        //блок IH физичести не существует
+                        //блок IH физически не существует
                         break;
 
                     case ComplexParts.Sctu:
@@ -1637,7 +1637,7 @@ namespace SCME.Service
                         m_IORAC.WriteRegister(Address, Value);
                         break;
                     case ComplexParts.IH:
-                        //блок IH физичести не существует
+                        //блок IH физически не существует
                         break;
                     case ComplexParts.Sctu:
                         _ioSctu.WriteRegister(Address, Value);
@@ -1690,7 +1690,7 @@ namespace SCME.Service
                         m_IORAC.CallAction(Address);
                         break;
                     case ComplexParts.IH:
-                        //блок IH физичести не существует
+                        //блок IH физически не существует
                         break;
 
                     case ComplexParts.Sctu:

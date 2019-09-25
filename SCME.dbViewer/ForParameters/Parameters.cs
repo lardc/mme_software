@@ -11,11 +11,14 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 using System.Globalization;
 using SCME.Types.Profiles;
+using System.Runtime.Serialization;
 
 namespace SCME.dbViewer.ForParameters
 {
     public class DataTableParameters : System.Data.DataTable
     {
+        public DataRow rowFromDataTable { get; set; }
+
         public int DevID { get; set; }
         public string DevType { get; set; }
         public string ProfileID { get; set; }
@@ -47,35 +50,36 @@ namespace SCME.dbViewer.ForParameters
         public string Equipment { get; set; }
         public string User { get; set; }
         public string Status { get; set; }
+        public string CodeOfNonMatch { get; set; }
         public string Reason { get; set; }
 
         public ReportData Data { get; set; }
 
         //здесь будем хранить индексы начального и последнего столбца условий измерения Condition
-        private int FIndexOfFirstColumnBvtCondition;
-        private int FIndexOfLastColumnBvtCondition;
+        private int FIndexOfFirstColumnBvtCondition = -1;
+        private int FIndexOfLastColumnBvtCondition = -1;
 
-        private int FIndexOfFirstColumnDvdtCondition;
-        private int FIndexOfLastColumnDvdtCondition;
+        private int FIndexOfFirstColumnDvdtCondition = -1;
+        private int FIndexOfLastColumnDvdtCondition = -1;
 
-        private int FIndexOfFirstColumnSLCondition;
-        private int FIndexOfLastColumnSLCondition;
+        private int FIndexOfFirstColumnSLCondition = -1;
+        private int FIndexOfLastColumnSLCondition = -1;
 
-        private int FIndexOfFirstColumnGateCondition;
-        private int FIndexOfLastColumnGateCondition;
+        private int FIndexOfFirstColumnGateCondition = -1;
+        private int FIndexOfLastColumnGateCondition = -1;
 
         //здесь будем хранить индексы начального и последнего столбца измеренных параметров
-        private int FIndexOfFirstColumnBvtMeasuredParameters;
-        private int FIndexOfLastColumnBvtMeasuredParameters;
+        private int FIndexOfFirstColumnBvtMeasuredParameters = -1;
+        private int FIndexOfLastColumnBvtMeasuredParameters = -1;
 
-        private int FIndexOfFirstColumnDvdtMeasuredParameters;
-        private int FIndexOfLastColumnDvdtMeasuredParameters;
+        private int FIndexOfFirstColumnDvdtMeasuredParameters = -1;
+        private int FIndexOfLastColumnDvdtMeasuredParameters = -1;
 
-        private int FIndexOfFirstColumnSLMeasuredParameters;
-        private int FIndexOfLastColumnSLMeasuredParameters;
+        private int FIndexOfFirstColumnSLMeasuredParameters = -1;
+        private int FIndexOfLastColumnSLMeasuredParameters = -1;
 
-        private int FIndexOfFirstColumnGateMeasuredParameters;
-        private int FIndexOfLastColumnGateMeasuredParameters;
+        private int FIndexOfFirstColumnGateMeasuredParameters = -1;
+        private int FIndexOfLastColumnGateMeasuredParameters = -1;
 
         private const int RowIndexOfUnitMeasure = 0;
         private const int RowIndexOfNorm = 1;
@@ -87,37 +91,17 @@ namespace SCME.dbViewer.ForParameters
             this.Rows.Add(this.NewRow());
             this.Rows.Add(this.NewRow());
             this.Rows.Add(this.NewRow());
-
-            //до момента загрузки условий индексы столбцов первого и последнего условия не определены
-            this.FIndexOfFirstColumnBvtCondition = -1;
-            this.FIndexOfLastColumnBvtCondition = -1;
-
-            this.FIndexOfFirstColumnDvdtCondition = -1;
-            this.FIndexOfLastColumnDvdtCondition = -1;
-
-            this.FIndexOfFirstColumnSLCondition = -1;
-            this.FIndexOfLastColumnSLCondition = -1;
-
-            this.FIndexOfFirstColumnGateCondition = -1;
-            this.FIndexOfLastColumnGateCondition = -1;
-
-            //до момента загрузки измеренных параметров индексы столбцов первого и последнего измеренного параметра не определены
-            this.FIndexOfFirstColumnBvtMeasuredParameters = -1;
-            this.FIndexOfLastColumnBvtMeasuredParameters = -1;
-
-            this.FIndexOfFirstColumnDvdtMeasuredParameters = -1;
-            this.FIndexOfLastColumnDvdtMeasuredParameters = -1;
-
-            this.FIndexOfFirstColumnSLMeasuredParameters = -1;
-            this.FIndexOfLastColumnSLMeasuredParameters = -1;
-
-            this.FIndexOfFirstColumnGateMeasuredParameters = -1;
-            this.FIndexOfLastColumnGateMeasuredParameters = -1;
         }
 
-        public DataTableParameters(int devID, string deviceType, TemperatureCondition temperatureCondition, string profileID, string profileName, DateTime tsZeroTime, string groupName, string item, string code, string constructive, int? averageCurrent, int? deviceClass, string equipment, string user, string status, string reason) : this()
+        public DataTableParameters(DataRow row, int devID, string deviceType, TemperatureCondition temperatureCondition, string profileID, string profileName, DateTime tsZeroTime, string groupName, string item, string code, string constructive, int? averageCurrent, int? deviceClass, string equipment, string user, string status, string codeOfNonMatch, string reason) : this()
         {
-            this.SetRequisites(devID, deviceType, temperatureCondition, profileID, profileName, tsZeroTime, groupName, item, code, constructive, averageCurrent, deviceClass, equipment, user, status, reason);
+            //запоминаем ссылку на принятый row, чтобы иметь возможность писать в него значения вычисляемых полей
+            this.rowFromDataTable = row;
+
+            //инициализируем значения вычисляемых полей
+            this.InitCalculatedFields();
+
+            this.SetRequisites(devID, deviceType, temperatureCondition, profileID, profileName, tsZeroTime, groupName, item, code, constructive, averageCurrent, deviceClass, equipment, user, status, codeOfNonMatch, reason);
         }
 
         private string TemperatureDelimeter
@@ -132,10 +116,12 @@ namespace SCME.dbViewer.ForParameters
         {
             get
             {
-                string result = string.Empty;
+                string result = this.ProfileName;
 
                 foreach (DataColumn column in this.Columns)
+                {
                     result += column.ColumnName;
+                }
 
                 return result;
             }
@@ -200,7 +186,6 @@ namespace SCME.dbViewer.ForParameters
 
                 case TestParametersType.Dvdt:
                     {
-
                         if (this.FIndexOfFirstColumnDvdtCondition == -1)
                             this.FIndexOfFirstColumnDvdtCondition = result;
 
@@ -219,7 +204,6 @@ namespace SCME.dbViewer.ForParameters
 
                 case TestParametersType.Gate:
                     {
-
                         if (this.FIndexOfFirstColumnGateCondition == -1)
                             this.FIndexOfFirstColumnGateCondition = result;
 
@@ -327,7 +311,7 @@ namespace SCME.dbViewer.ForParameters
             return result;
         }
 
-        public void SetRequisites(int devID, string deviceType, TemperatureCondition temperatureCondition, string profileID, string profileName, DateTime tsZeroTime, string groupName, string item, string code, string constructive, int? averageCurrent, int? deviceClass, string equipment, string user, string status, string reason)
+        public void SetRequisites(int devID, string deviceType, TemperatureCondition temperatureCondition, string profileID, string profileName, DateTime tsZeroTime, string groupName, string item, string code, string constructive, int? averageCurrent, int? deviceClass, string equipment, string user, string status, string codeOfNonMatch, string reason)
         {
             //запоминаем идентификационную информацию
             this.DevID = devID;
@@ -345,36 +329,37 @@ namespace SCME.dbViewer.ForParameters
             this.Equipment = equipment;
             this.User = user;
             this.Status = status;
+            this.CodeOfNonMatch = codeOfNonMatch;
             this.Reason = reason;
         }
 
         public void Load(SqlConnection connection, DataTableParameters sourceDataTableParameters, string profileID, int devID, string devType, TemperatureCondition temperatureCondition)
         {
-            TestParametersType testParametersType=TestParametersType.Bvt;
+            TestParametersType testParametersType = TestParametersType.Bvt;
 
             try
             {
                 //Bvt
                 this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
-                this.LoadMeasuredParameters(connection, testParametersType, devID);
+                this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
                 this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
 
                 //Dvdt
                 testParametersType = TestParametersType.Dvdt;
                 this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
-                this.LoadMeasuredParameters(connection, testParametersType, devID);
+                this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
                 this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
 
                 //SL
                 testParametersType = TestParametersType.StaticLoses;
                 this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
-                this.LoadMeasuredParameters(connection, testParametersType, devID);
+                this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
                 this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
 
                 //Gate
                 testParametersType = TestParametersType.Gate;
                 this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
-                this.LoadMeasuredParameters(connection, testParametersType, devID);
+                this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
                 this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
             }
             catch
@@ -383,55 +368,77 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
+        [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+        private enum EType
+        {
+            [EnumMember]
+            Unknown = 0,
+
+            [EnumMember]
+            Diode = 1,
+
+            [EnumMember]
+            Thyristor = 2
+        }
+
+        private EType ETypeByDeviceType(string deviceType)
+        {
+            EType result = EType.Unknown;
+
+            //тиристорный тип: в deviceType должен присутствовать либо рус либо лат символ T
+            if ((deviceType.IndexOf("Т", StringComparison.InvariantCultureIgnoreCase) != -1) || (deviceType.IndexOf("T", StringComparison.InvariantCultureIgnoreCase) != -1))
+                result = EType.Thyristor;
+
+            //диодный тип
+            if (deviceType.IndexOf("Д", StringComparison.InvariantCultureIgnoreCase) != -1)
+                result = EType.Diode;
+
+            return result;
+        }
+
         private List<string> ConditionNamesByDeviceType(TestParametersType testType, string deviceType, TemperatureCondition temperatureCondition)
         {
+            //возвращает список условий, которые надо показывать пользователю
             List<string> result = null;
 
             if ((deviceType != null) && (deviceType != string.Empty))
             {
                 result = new List<string>();
 
-                string firstSimbol = deviceType.Substring(0, 1).ToUpper();
-
                 switch (testType)
                 {
                     case TestParametersType.StaticLoses:
-                        //тиристор, диод
-                        if ((firstSimbol == "Т") || (firstSimbol == "Д"))
-                        {
-                            if (temperatureCondition == TemperatureCondition.RT)
-                            {
-                                //комнатная температура
-                                result.Add("SL_ITM"); //в БД это же условие используется как IFM
-                            }
-
-                            if (temperatureCondition == TemperatureCondition.TM)
-                            {
-                                //горячее измерение
-                                result.Add("SL_ITM"); //в БД это же условие используется как IFM
-                            }
-                        }
+                        result.Add("SL_ITM"); //в БД это же условие используется как IFM
                         break;
 
                     case TestParametersType.Bvt:
+                        //холодное измерение
                         if (temperatureCondition == TemperatureCondition.RT)
+                        {
                             result.Add("BVT_I");
 
+                            EType eType = ETypeByDeviceType(deviceType);
+
+                            if ((eType == EType.Diode) || (eType == EType.Thyristor))
+                                result.Add("BVT_VR");
+                        }
+
+                        //горячее измерение
                         if (temperatureCondition == TemperatureCondition.TM)
                         {
-                            //тиристор
-                            if (firstSimbol == "Т")
+                            EType eType = ETypeByDeviceType(deviceType);
+
+                            //тиристорный тип
+                            if (eType == EType.Thyristor)
                             {
-                                //горячее измерение
                                 result.Add("BVT_VD");
                                 result.Add("BVT_VR");
                             }
 
-                            //диод
-                            if (firstSimbol == "Д")
+                            //диодный тип
+                            if (eType == EType.Diode)
                                 result.Add("BVT_VR");
                         }
-
                         break;
 
                     case TestParametersType.Gate:
@@ -447,95 +454,12 @@ namespace SCME.dbViewer.ForParameters
                     case TestParametersType.IH:
                     case TestParametersType.RCC:
                     case TestParametersType.Sctu:
-                        break;
-
                     case TestParametersType.QrrTq:
-                        if (firstSimbol == "Т")
-                        {
-                            //тиристор
-                            if (temperatureCondition == TemperatureCondition.RT)
-                            {
-                                //комнатная температура
-                                //измеряется только в TM
-                            }
-
-                            if (temperatureCondition == TemperatureCondition.TM)
-                            {
-                                //горячее измерение
-                                result.Add("QrrTq_DCFallRate"); //скорость спада
-                            }
-                        }
-
-                        if (firstSimbol == "Д")
-                        {
-                            //диод                        
-                            if (temperatureCondition == TemperatureCondition.RT)
-                            {
-                                //комнатная температура
-                                //измеряется только в TM
-                            }
-
-                            if (temperatureCondition == TemperatureCondition.TM)
-                            {
-                                //горячее измерение
-                                result.Add("QrrTq_DCFallRate"); //скорость спада
-                            }
-                        }
-
                         break;
                 }
             }
 
             return result;
-        }
-
-        private string ConditionUnitMeasure(string conditionName)
-        {
-            Dictionary<string, string> ConditionsUnitMeasure = new Dictionary<string, string>
-            {
-                {"SL_ITM", "А"},
-
-                {"BVT_I", "мА"},
-                {"BVT_VD", "В"},
-                {"BVT_VR", "В"},
-
-                {"DVDT_VoltageRate", "В/мкс"},
-
-                {"QrrTq_DCFallRate", "А/мкс"}
-            };
-
-            switch (ConditionsUnitMeasure.ContainsKey(conditionName))
-            {
-                case true:
-                    return ConditionsUnitMeasure[conditionName];
-
-                default:
-                    return string.Empty;
-            }
-        }
-
-        private string ConditionName(string conditionName)
-        {
-            Dictionary<string, string> ConditionsName = new Dictionary<string, string>
-            {
-                {"SL_ITM", "ITM"},
-
-                { "BVT_VD", "BVT_VD"}, //IDRM
-                {"BVT_VR", "BVT_VR"}, //IRRM 
-
-                {"DVDT_VoltageRate", "DvDt"},
-
-                {"QrrTq_DCFallRate", "dIdT"}
-            };
-
-            switch (ConditionsName.ContainsKey(conditionName))
-            {
-                case true:
-                    return ConditionsName[conditionName];
-
-                default:
-                    return conditionName;
-            }
         }
 
         private bool TryParseTestParametersType(string strTestType, out TestParametersType testType)
@@ -551,7 +475,7 @@ namespace SCME.dbViewer.ForParameters
                 default:
                     return Enum.TryParse(strTestType, true, out testType);
             }
-        }        
+        }
 
         private void CopyConditions(DataTableParameters source, TestParametersType testType)
         {
@@ -599,7 +523,7 @@ namespace SCME.dbViewer.ForParameters
                     string conditionName = source.Columns[i].Caption;
                     int id = int.Parse(source.Columns[i].ExtendedProperties["id"].ToString());
 
-                    int columnIndex = this.NewConditionColumn(testType, ConditionName(conditionName), id);
+                    int columnIndex = this.NewConditionColumn(testType, conditionName, id);
 
                     this.Rows[RowIndexOfUnitMeasure][columnIndex] = source.Rows[RowIndexOfUnitMeasure][i];
                     this.Rows[RowIndexOfValue][columnIndex] = source.Rows[RowIndexOfValue][i];
@@ -607,16 +531,95 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        private void LoadConditionsFromDB(SqlConnection connection, TestParametersType testType, string profileID, string deviceType, TemperatureCondition temperatureCondition)
+        private int? TemperatureByProfile(SqlConnection connection, string profileID)
         {
-            //избирательная (в зависимости от типа теста) загрузка значений conditions для принятого profileID
-            string SQLText = "SELECT TT.TEST_TYPE_NAME, C.COND_ID, C.COND_NAME, PC.VALUE" +
+            int? result = null;
+
+            //чтение из базы данных значения температуры проведения измерений
+            string SQLText = "SELECT PC.VALUE" +
                              " FROM PROF_COND AS PC" +
                              "  INNER JOIN PROFILES AS PR ON ((PC.PROF_ID=PR.PROF_ID) AND" +
                              "                                (PR.PROF_GUID=@ProfGuid))" +
                              "  INNER JOIN PROF_TEST_TYPE AS PTT ON (PC.PROF_TESTTYPE_ID=PTT.PTT_ID)" +
                              "  INNER JOIN TEST_TYPE AS TT ON ((PTT.TEST_TYPE_ID=TT.TEST_TYPE_ID) AND" +
-                             "                                 (TT.TEST_TYPE_NAME=@TestTypeName))" +
+                             "                                 (TT.TEST_TYPE_NAME='Clamping'))" +
+                             "  INNER JOIN CONDITIONS C ON ((PC.COND_ID=C.COND_ID) AND" +
+                             "                              (C.COND_NAME='CLAMP_Temperature'))";
+
+            SqlCommand command = new SqlCommand(SQLText, connection);
+
+            SqlParameter profGuid = new SqlParameter("ProfGuid", SqlDbType.UniqueIdentifier);
+            profGuid.Value = new Guid(profileID);
+            command.Parameters.Add(profGuid);
+
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+
+            try
+            {
+                object obj = command.ExecuteScalar();
+
+                if (obj != null)
+                {
+                    int ires;
+                    if (int.TryParse(obj.ToString().TrimEnd(), out ires))
+                        result = ires;
+                }
+            }
+
+            finally
+            {
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        private string TemperatureConditionByProfile(SqlConnection connection, string profileID, out TemperatureCondition temperatureCondition)
+        {
+            string result;
+
+            int? temperature = TemperatureByProfile(connection, profileID);
+
+            if (temperature == null)
+            {
+                //значение температуры не определено
+                temperatureCondition = TemperatureCondition.None;
+                result = string.Empty;
+            }
+            else
+            {
+                switch (temperature > 25)
+                {
+                    case true:
+                        temperatureCondition = TemperatureCondition.TM;
+                        result = temperature.ToString() + "°C";
+                        break;
+
+                    default:
+                        temperatureCondition = TemperatureCondition.RT;
+                        result = "RT";
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+        private void LoadConditionsFromDB(SqlConnection connection, TestParametersType testType, string profileID, string deviceType, TemperatureCondition temperatureCondition)
+        {
+            //избирательная (в зависимости от типа теста) загрузка значений conditions для принятого profileID
+            //читаем температуру, при которой выполняются измерения
+            TemperatureCondition factTemperatureCondition;
+            string tc = TemperatureConditionByProfile(connection, profileID, out factTemperatureCondition);
+
+            string SQLText = "SELECT TT.TEST_TYPE_NAME, C.COND_ID, C.COND_NAME, PC.VALUE" +
+                             " FROM PROF_COND AS PC" +
+                             "  INNER JOIN PROFILES AS PR ON ((PR.PROF_GUID=@ProfGuid) AND" +
+                             "                                (PC.PROF_ID=PR.PROF_ID))" +
+                             "  INNER JOIN PROF_TEST_TYPE AS PTT ON (PC.PROF_TESTTYPE_ID=PTT.PTT_ID)" +
+                             "  INNER JOIN TEST_TYPE AS TT ON ((TT.TEST_TYPE_NAME=@TestTypeName) AND" +
+                             "                                 (PTT.TEST_TYPE_ID=TT.TEST_TYPE_ID))" +
                              "  INNER JOIN CONDITIONS C ON (PC.COND_ID=C.COND_ID)" +
                              " ORDER BY C.COND_ID";
 
@@ -635,6 +638,9 @@ namespace SCME.dbViewer.ForParameters
 
             try
             {
+                //получаем список условий, которые надо показать
+                List<string> conditions = ConditionNamesByDeviceType(testType, deviceType, temperatureCondition);
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -645,9 +651,6 @@ namespace SCME.dbViewer.ForParameters
 
                     if (TryParseTestParametersType(z.ToString(), out testType))
                     {
-                        //получаем список условий, которые надо показать
-                        List<string> conditions = ConditionNamesByDeviceType(testType, deviceType, temperatureCondition);
-
                         if ((conditions != null) && (conditions.Count > 0))
                         {
                             //запоминаем имя условия
@@ -663,10 +666,11 @@ namespace SCME.dbViewer.ForParameters
                                 int id = int.Parse(z.ToString());
 
                                 //формируем столбец, который будет хранить описание условий
-                                int columnIndex = this.NewConditionColumn(testType, ConditionName(conditionName), id);
+                                string columnName = string.Format("{0}{1}{2}", tc, TemperatureDelimeter, Dictionaries.ConditionName(factTemperatureCondition, conditionName));
+                                int columnIndex = this.NewConditionColumn(testType, columnName, id);
 
                                 //ед. измерения у условия в БД нет - используем свой словарь
-                                this.Rows[RowIndexOfUnitMeasure][columnIndex] = ConditionUnitMeasure(conditionName);
+                                this.Rows[RowIndexOfUnitMeasure][columnIndex] = Dictionaries.ConditionUnitMeasure(conditionName);
 
                                 //запоминаем значение условия
                                 index = reader.GetOrdinal("VALUE");
@@ -725,61 +729,9 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        private string ParameterName(string parameterName)
-        {
-            Dictionary<string, string> ParametersName = new Dictionary<string, string>
-            {
-                {"VDRM", "UBO"},
-                {"VRRM", "UBR"}
-            };
-
-            string result;
-
-            switch (ParametersName.ContainsKey(parameterName))
-            {
-                case true:
-                    result = ParametersName[parameterName];
-                    break;
-
-                default:
-                    result = parameterName;
-                    break;
-            }
-
-            //если первый символ параметра начинается на V - заменяем его на U 
-            if (result.Substring(0, 1) == "V")
-                result = 'U' + result.Remove(0, 1);
-
-            return result;
-        }
-
-        private string ParameterFormat(string parameterName)
-        {
-            Dictionary<string, string> ParametersFormat = new Dictionary<string, string>
-            {
-                {"VTM", "0.00"},
-                {"VFM", "0.00"}
-            };
-
-            string result;
-
-            switch (ParametersFormat.ContainsKey(parameterName))
-            {
-                case true:
-                    result = ParametersFormat[parameterName];
-                    break;
-
-                default:
-                    result = string.Empty;
-                    break;
-            }
-
-            return result;
-        }
-
         private string DoubleToString(double value)
         {
-            return (Math.Abs(value % 1) <= (Double.Epsilon * 100)) ? ((int)value).ToString() : value.ToString("0.0");
+            return (Math.Abs(value % 1) <= (Double.Epsilon * 100)) ? ((int)value).ToString() : value.ToString("0.00");
         }
 
         private string ObjectToString(object value)
@@ -793,22 +745,21 @@ namespace SCME.dbViewer.ForParameters
             return result;
         }
 
-        private void LoadMeasuredParameters(SqlConnection connection, TestParametersType testType, int devID)
+        private void LoadMeasuredParameters(SqlConnection connection, TestParametersType testType, string profileID, int devID)
         {
             //построение списка измеренных параметров по принятому devID, с чтением: значения, единицы измерения и температуры при которой было выполнено данное измерение
-            string SQLText = "SELECT PC.VALUE AS TEMPERATURE, P.PARAM_ID, P.PARAM_NAME, P.PARAMUM, DP.VALUE" +
+            //читаем температуру, при которой выполняются измерения
+            TemperatureCondition factTemperatureCondition;
+            string tc = TemperatureConditionByProfile(connection, profileID, out factTemperatureCondition);
+
+            string SQLText = "SELECT P.PARAM_ID, P.PARAM_NAME, P.PARAMUM, DP.VALUE" +
                              " FROM DEV_PARAM DP" +
-                             "  INNER JOIN PROF_TEST_TYPE AS PTT ON(DP.TEST_TYPE_ID=PTT.PTT_ID)" +
-                             "  INNER JOIN TEST_TYPE AS TT ON ((PTT.TEST_TYPE_ID=TT.TEST_TYPE_ID) AND" +
-                             "                                 (TT.TEST_TYPE_NAME=@TestTypeName))" +
+                             "  INNER JOIN PROF_TEST_TYPE AS PTT ON ((DP.DEV_ID=@DevID) AND" +
+                             "                                       (DP.TEST_TYPE_ID=PTT.PTT_ID))" +
+                             "  INNER JOIN TEST_TYPE AS TT ON ((TT.TEST_TYPE_NAME=@TestTypeName) AND" +
+                             "                                 (PTT.TEST_TYPE_ID=TT.TEST_TYPE_ID))" +
                              "  INNER JOIN PARAMS AS P ON ((P.PARAM_ID=DP.PARAM_ID) AND" +
                              "                             NOT(P.PARAM_NAME='K'))" +
-                             "  INNER JOIN DEVICES AS D ON ((DP.DEV_ID=D.DEV_ID) AND" +
-                             "                              (D.DEV_ID=@DevID))" +
-                             "  INNER JOIN PROFILES AS PR ON (D.PROFILE_ID=PR.PROF_GUID)" +
-                             "  LEFT JOIN PROF_COND AS PC ON (PR.PROF_ID=PC.PROF_ID)" +
-                             "  INNER JOIN CONDITIONS C ON ((PC.COND_ID=C.COND_ID) AND" +
-                             "                              (C.COND_NAME='CLAMP_Temperature'))" +
                              " ORDER BY DP.DEV_PARAM_ID";
 
             SqlCommand command = new SqlCommand(SQLText, connection);
@@ -840,14 +791,8 @@ namespace SCME.dbViewer.ForParameters
                     z = reader.GetValue(index);
                     string paramName = z.ToString().TrimEnd();
 
-                    //запоминаем при какой температуре производилось измерение
-                    index = reader.GetOrdinal("TEMPERATURE");
-                    z = reader.GetValue(index);
-                    int t = int.Parse(z.ToString());
-                    string tc = ((t > 25) ? t.ToString() + "°C" : "RT");
-
                     //формируем столбец
-                    int columnIndex = this.NewMeasuredParameterColumn(testType, string.Format("{0}{1}{2}", tc, this.TemperatureDelimeter, ParameterName(paramName)), id);
+                    int columnIndex = this.NewMeasuredParameterColumn(testType, string.Format("{0}{1}{2}", tc, this.TemperatureDelimeter, Dictionaries.ParameterName(paramName)), id);
 
                     //запоминаем единицу измерения параметра
                     index = reader.GetOrdinal("PARAMUM");
@@ -865,9 +810,9 @@ namespace SCME.dbViewer.ForParameters
                     {
                         case true:
                             //проверяем есть ли специальный формат вывода
-                            string format = ParameterFormat(paramName);
+                            string format = Dictionaries.ParameterFormat(paramName);
 
-                            switch (format == string.Empty)
+                            switch (format == null)
                             {
                                 case true:
                                     //для данного параметра не задан специальный формат вывода, выбираем оптимальный
@@ -895,6 +840,53 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
+        private void SetCalculatedFields(string CodeOfNonMatch)
+        {
+            this.rowFromDataTable.BeginEdit();
+
+            try
+            {
+                //пишем вычисленный код НП
+                this.rowFromDataTable["CODEOFNONMATCH"] = CodeOfNonMatch;
+            }
+
+            finally
+            {
+                this.rowFromDataTable.EndEdit();
+            }
+        }
+
+        private void InitCalculatedFields()
+        {
+            SetCalculatedFields(null);
+        }
+
+        private void SetNormative(int indexOfColumnMeasuredParameter, object value)
+        {
+            this.Rows[RowIndexOfNorm][indexOfColumnMeasuredParameter] = value;
+
+            //извлекаем имя параметра - отрезаем от него описание температурного режима
+            string temperatureCondition;
+            string paramName = this.ParseColumnName(this.Columns[indexOfColumnMeasuredParameter].ToString(), out temperatureCondition);
+
+            //вычисляем код НП
+            int? codeOfNonMatch = CalcCodeOfNonMatch(paramName, IsValueInNorm(value.ToString(), this.Rows[RowIndexOfValue][indexOfColumnMeasuredParameter].ToString()));
+
+            if (codeOfNonMatch != null)
+            {
+                string storedCodeOfNonMatch = this.rowFromDataTable["CODEOFNONMATCH"].ToString();
+
+                if (storedCodeOfNonMatch != string.Empty)
+                    storedCodeOfNonMatch += ", ";
+
+                storedCodeOfNonMatch += codeOfNonMatch.ToString();
+
+                //пишем вычисленный код НП
+                SetCalculatedFields(storedCodeOfNonMatch);
+                this.CodeOfNonMatch = storedCodeOfNonMatch;
+            }
+        }
+
         private void CopyNormatives(DataTableParameters source, TestParametersType testType)
         {
             int indexOfLastColumnMeasuredParameters = -1;
@@ -909,7 +901,7 @@ namespace SCME.dbViewer.ForParameters
                 for (int i = indexOfFirstColumnMeasuredParameters; i <= indexOfLastColumnMeasuredParameters; i++)
                 {
                     //столбец, который хранит описание норм уже создан и имеет точно такой же индекс, что и столбец в source
-                    this.Rows[RowIndexOfNorm][i] = source.Rows[RowIndexOfNorm][i];
+                    this.SetNormative(i, source.Rows[RowIndexOfNorm][i]);
                 }
             }
         }
@@ -924,8 +916,8 @@ namespace SCME.dbViewer.ForParameters
             {
                 string SQLText = "SELECT PP.MIN_VAL, PP.MAX_VAL" +
                                  " FROM PROF_PARAM PP" +
-                                 "  INNER JOIN PROFILES P ON((PP.PROF_ID=P.PROF_ID) AND" +
-                                 "                           (P.PROF_GUID=@ProfileID))" +
+                                 "  INNER JOIN PROFILES P ON ((PP.PROF_ID=P.PROF_ID) AND" +
+                                 "                            (P.PROF_GUID=@ProfileID))" +
                                  " WHERE (PP.PARAM_ID=@ParamID)";
 
                 SqlCommand command = new SqlCommand(SQLText, connection);
@@ -966,7 +958,7 @@ namespace SCME.dbViewer.ForParameters
 
                                 string n = string.Empty;
                                 if ((nMin != null) && (nMax != null))
-                                    n = string.Format("({0}, {1})", nMin, nMax);
+                                    n = string.Format("({0}, {1}]", nMin, nMax);
                                 else
                                 {
                                     if (nMin == null)
@@ -977,7 +969,7 @@ namespace SCME.dbViewer.ForParameters
                                     else n = string.Format(">{0}", nMin);
                                 }
 
-                                this.Rows[RowIndexOfNorm][i] = n;
+                                this.SetNormative(i, n);
                             }
                         }
                         finally
@@ -991,6 +983,75 @@ namespace SCME.dbViewer.ForParameters
                     connection.Close();
                 }
             }
+        }
+
+        private int? CalcCodeOfNonMatch(string paramName, bool paramValueInNormatives)
+        {
+            //вычисление кода НП (не соответствующая продукция)
+            int? result = null;
+
+            switch (paramName)
+            {
+                case "UTM":
+                    if (!paramValueInNormatives)
+                        result = 490;
+                    break;
+
+                case "IGT":
+                case "UGT":
+                    if (!paramValueInNormatives)
+                        result = 535;
+                    break;
+
+                case "RG":
+                    if (!paramValueInNormatives)
+                        result = 537;
+                    break;
+
+                case "IH":
+                    if (!paramValueInNormatives)
+                        result = 538;
+                    break;
+
+                case "IDRM":
+                case "IDSM":
+                    if (!paramValueInNormatives)
+                        result = 519;
+                    break;
+
+                case "IRRM":
+                case "IRSM":
+                    if (!paramValueInNormatives)
+                        result = 520;
+                    break;
+
+                case "PRSM":
+                    if (!paramValueInNormatives)
+                        result = 540;
+                    break;
+
+                case "duD/dtcrit":
+                    if (!paramValueInNormatives)
+                        result = 525;
+                    break;
+
+                case "TQ":
+                    if (!paramValueInNormatives)
+                        result = 546;
+                    break;
+
+                case "TRR":
+                    if (!paramValueInNormatives)
+                        result = 547;
+                    break;
+
+                case "QRR":
+                    if (!paramValueInNormatives)
+                        result = 548;
+                    break;
+            }
+
+            return result;
         }
 
         private void LoadNormatives(SqlConnection connection, DataTableParameters sourceDataTableParameters, TestParametersType testType, string profileID)
@@ -1089,7 +1150,7 @@ namespace SCME.dbViewer.ForParameters
 
         public void SetBorders(Excel.Application exelApp, Excel.Worksheet sheet, int rowNumBeg, int rowNumEnd, int columnEnd)
         {
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 const int xlContinuous = 1;
                 const int xlAutomatic = -4105;
@@ -1156,12 +1217,12 @@ namespace SCME.dbViewer.ForParameters
 
         public void QtyReleasedByGroupNameToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, string groupName, int? qtyReleased)
         {
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
                 rng = this.range(exelApp, rowNum, 2);
-                rng.Value2 = "Общее кол-во";
+                rng.Value2 = "Запущено";
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 3);
@@ -1175,18 +1236,33 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void QtyOKFaultToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int statusFaultCounter, int statusOKCounter)
+        public void QtyOKFaultToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int totalCount, int statusUnknownCount, int statusFaultCount, int statusOKCount)
         {
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
+
+                rng = this.range(exelApp, rowNum, 2);
+                rng.Value2 = "Кол-во";
+                rng.HorizontalAlignment = -4108;
+
+                rng = this.range(exelApp, rowNum, 3);
+                rng.Value2 = totalCount;
+                rng.NumberFormat = "0";
+                rng.HorizontalAlignment = -4108;
+
+                rng = this.range(exelApp, rowNum, 4);
+                rng.Value2 = "шт.";
+                rng.HorizontalAlignment = -4108;
+                rowNum++;
 
                 rng = this.range(exelApp, rowNum, 2);
                 rng.Value2 = "Годных";
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 3);
-                rng.Value2 = statusOKCounter.ToString();
+                rng.Value2 = statusOKCount;
+                rng.NumberFormat = "0";
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 4);
@@ -1199,7 +1275,8 @@ namespace SCME.dbViewer.ForParameters
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 3);
-                rng.Value2 = statusFaultCounter.ToString();
+                rng.Value2 = statusFaultCount;
+                rng.NumberFormat = "0";
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 4);
@@ -1208,7 +1285,21 @@ namespace SCME.dbViewer.ForParameters
                 rowNum++;
 
                 rng = this.range(exelApp, rowNum, 2);
-                rng.Value2 = "Сформирован";
+                rng.Value2 = "Неопределённых";
+                rng.HorizontalAlignment = -4108;
+
+                rng = this.range(exelApp, rowNum, 3);
+                rng.Value2 = statusUnknownCount;
+                rng.NumberFormat = "0";
+                rng.HorizontalAlignment = -4108;
+
+                rng = this.range(exelApp, rowNum, 4);
+                rng.Value2 = "шт.";
+                rng.HorizontalAlignment = -4108;
+                rowNum++;
+
+                rng = this.range(exelApp, rowNum, 2);
+                rng.Value2 = "Сформир.";
                 rng.HorizontalAlignment = -4108;
 
                 rng = this.range(exelApp, rowNum, 3);
@@ -1217,13 +1308,14 @@ namespace SCME.dbViewer.ForParameters
 
                 rng = this.range(exelApp, rowNum, 4);
                 rng.Value2 = DateTime.Today.ToString("dd.MM.yyyy");
+                rng.NumberFormat = "dd/mm/yyyy;@";
                 rng.HorizontalAlignment = -4108;
             }
         }
 
         public void Paint(Excel.Application exelApp, Excel.Worksheet sheet, int rowNumBeg, int rowNumEnd, int colunmBeg, int columnEnd, TemperatureCondition temperatureCondition)
         {
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 const int xlSolid = 1;
                 const int xlAutomatic = -4105;
@@ -1283,7 +1375,7 @@ namespace SCME.dbViewer.ForParameters
         public void HeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, ref int column, ref int columnEnd)
         {
             //вывод общего заголовка
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1291,15 +1383,10 @@ namespace SCME.dbViewer.ForParameters
                 rng.Value2 = "Норма";
                 rng.HorizontalAlignment = -4108;
                 rowNum++;
-                column -= 3;
+                column -= 2;
 
                 rng = this.range(exelApp, rowNum, column);
                 rng.Value2 = "№";
-                rng.HorizontalAlignment = -4108;
-                column++;
-
-                rng = this.range(exelApp, rowNum, column);
-                rng.Value2 = "№ ПЗ";
                 rng.HorizontalAlignment = -4108;
                 column++;
 
@@ -1328,7 +1415,7 @@ namespace SCME.dbViewer.ForParameters
         public void StatusHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
         {
             //вывод наименований столбцов статуса и причины
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1340,31 +1427,13 @@ namespace SCME.dbViewer.ForParameters
                 rng = this.range(exelApp, rowNum, column);
                 rng.Value2 = "Код НП";
                 rng.HorizontalAlignment = -4108;
-                column++;
-
-                rng = this.range(exelApp, rowNum, column);
-                rng.Value2 = "Код ТМЦ";
-                rng.HorizontalAlignment = -4108;
-                rowNum -= 4;
-
-                rng = this.range(exelApp, rowNum, column);
-                rng.Value2 = "ПРОТОКОЛ ИСПЫТАНИЙ";
-                rng.HorizontalAlignment = -4108;
-                rng.Font.Bold = true;
-                rowNum++;
-
-                //выводим тело профиля с отрезанной температурной частью (символы с индексами 0, 1), символ 2 это пробел
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
-                rng.Value2 = this.ProfileBody.Substring(3);
-                rng.HorizontalAlignment = -4108;
             }
         }
 
-        public int StatusToExcel(Excel.Application exelApp, Excel.Worksheet sheet, string status, int rowNum, int column)
+        public int StatusToExcel(Excel.Application exelApp, Excel.Worksheet sheet, string status, string codeOfNonMatch, int rowNum, int column)
         {
             //вывод значений столбцов статуса и кода НП
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1378,14 +1447,8 @@ namespace SCME.dbViewer.ForParameters
                 //выводим код НП
                 rng = this.range(exelApp, rowNum, column);
                 rng.NumberFormat = "@";
-                rng.Value2 = 0;
-                rng.HorizontalAlignment = -4108;
-                column++;
 
-                //выводим код ТМЦ
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
-                rng.Value2 = this.Item;
+                rng.Value2 = codeOfNonMatch;
                 rng.HorizontalAlignment = -4108;
             }
 
@@ -1395,43 +1458,79 @@ namespace SCME.dbViewer.ForParameters
         public void CounterToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int counter, int rowNum)
         {
             //вывод значения счётчика counter
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
-                //выводим порядковый номер
+                //выводим порядковый номер в выведенном списке
                 rng = this.range(exelApp, rowNum, 1);
-                rng.NumberFormat = "@";
+                rng.NumberFormat = "0";
                 rng.Value2 = counter;
+            }
+        }
+
+
+        public void ListOfCalculatorsMinMaxToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ListOfCalculatorsMinMax listOfCalculatorsMinMax)
+        {
+            //вывод вычисленных значений min/max из listOfCalculatorMinMax в Excel
+            if ((exelApp != null) && (sheet != null) && (listOfCalculatorsMinMax != null))
+            {
+                Range rng = null;
+
+                foreach (CalculatorMinMax calculator in listOfCalculatorsMinMax)
+                {
+                    int column = calculator.Column;
+
+                    //если из calculator выводить нечего, то ничего не выводим
+                    if (column != -1)
+                    {
+                        rng = this.range(exelApp, rowNum, column);
+                        rng.Value2 = string.Format("{0}\n{1}", "min/max", calculator.Name);
+                        rng.HorizontalAlignment = -4108;
+
+                        //выводим единицу измерения
+                        rng = this.range(exelApp, rowNum + 1, column);
+                        rng.NumberFormat = "@";
+                        rng.Value2 = calculator.Um;
+                        rng.HorizontalAlignment = -4108;
+
+                        //выводим значение минимума
+                        rng = this.range(exelApp, rowNum + 2, column);
+                        rng.NumberFormat = "0.00";
+                        rng.Value2 = calculator.MinValue;
+                        rng.HorizontalAlignment = -4108;
+
+                        //выводим значение максимума
+                        rng = this.range(exelApp, rowNum + 3, column);
+                        rng.NumberFormat = "0.00";
+                        rng.Value2 = calculator.MaxValue;
+                        rng.HorizontalAlignment = -4108;
+                    }
+                }
             }
         }
 
         public void IdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int counter, int rowNum, ref int column)
         {
             //вывод идентификационные данные
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
                 //выводим порядковый номер
                 rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
+                rng.NumberFormat = "0";
                 rng.Value2 = counter;
                 column++;
 
                 //выводим идентификационные данные   
                 rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
-                rng.Value2 = this.GroupName;
-                column++;
-
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
+                rng.NumberFormat = "0";
                 rng.Value2 = this.CodeSimple;
                 column++;
 
                 rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
+                rng.NumberFormat = "0";
                 rng.Value2 = this.DeviceClass;
                 rng.HorizontalAlignment = -4108;
                 column++;
@@ -1441,7 +1540,7 @@ namespace SCME.dbViewer.ForParameters
         public void EndIdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
         {
             //вывод конечных идентификационных данных
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1454,7 +1553,7 @@ namespace SCME.dbViewer.ForParameters
 
                 //выводим дату выполнения измерений
                 rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "d/mm/yyyy";
+                rng.NumberFormat = "dd/mm/yy;@";
                 rng.Value2 = this.TsZeroTime;
                 rng.HorizontalAlignment = -4108;
                 column++;
@@ -1464,14 +1563,63 @@ namespace SCME.dbViewer.ForParameters
         public void PairIdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
         {
             //вывод идентификационных данных Pair
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
                 this.EndIdentityToExcel(exelApp, sheet, rowNum, ref column);
+        }
+
+        public void TopHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum)
+        {
+            //выводим верхнюю часть заголовка
+            if ((exelApp != null) && (sheet != null))
+            {
+                int column = 1;
+                Range rng = null;
+
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng.Merge();
+                rng.Value2 = "ПРОТОКОЛ ИСПЫТАНИЙ";
+                rng.HorizontalAlignment = -4108;
+                column += 3;
+
+                //выводим тело профиля с отрезанной температурной частью (символы с индексами 0, 1), символ 2 это пробел
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
+                rng.Merge();
+                rng.Value2 = this.ProfileBody.Substring(3);
+                rng.HorizontalAlignment = -4108;
+                rowNum++;
+                column = 1;
+
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng.Merge();
+                rng.Value2 = "Код ТМЦ";
+                rng.HorizontalAlignment = -4108;
+                column += 3;
+
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
+                rng.Merge();
+                rng.Value2 = this.Item;
+                rng.HorizontalAlignment = -4108;
+                rowNum++;
+                column = 1;
+
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng.Merge();
+                rng.Value2 = "№ ПЗ";
+                rng.HorizontalAlignment = -4108;
+                column += 3;
+
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
+                rng.Merge();
+                rng.Value2 = this.GroupName;
+                rng.HorizontalAlignment = -4108;
+                rowNum++;
+            }
         }
 
         public void ColumnsHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, ref int column)
         {
             //вывод наименований столбцов условий и параметров изделия
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1512,7 +1660,7 @@ namespace SCME.dbViewer.ForParameters
 
         public void PairHeaderToExcell(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
         {
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
@@ -1532,6 +1680,10 @@ namespace SCME.dbViewer.ForParameters
         {
             //сравнивает принятое значение value с принятым значением нормы norm
             //принятая norm - строка вида: >x, <x. где x есть double значение нормы
+            //если принятая строка norm пуста - ограничения на значение value отсутствуют
+            if (norm == string.Empty)
+                return true;
+
             bool result = false;
 
             double dValue = double.Parse(value);
@@ -1557,22 +1709,50 @@ namespace SCME.dbViewer.ForParameters
             return result;
         }
 
-        public void BodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
+        private bool IsInteger(string value, out bool isDouble)
+        {
+            //если value есть целое число - вернёт true, иначе false
+            //в isDouble вернёт признак того, что принятый value может быть преобразован к типу double
+            double dValue;
+            isDouble = double.TryParse(value, out dValue);
+
+            if (isDouble)
+                return Math.Abs(dValue % 1) <= (double.Epsilon * 100);
+            else
+                return false;
+        }
+
+        public void BodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ListOfCalculatorsMinMax listOfCalculatorsMinMax, int rowNum, ref int column)
         {
             //вывод значений условий и параметров
-            if ((exelApp != null) || (sheet != null))
+            if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
 
                 for (int columnIndex = 0; columnIndex <= this.Columns.Count - 1; columnIndex++)
                 {
                     //выводим значение параметра
-                    string value = this.Rows[RowIndexOfValue][columnIndex].ToString();
+                    string value = this.Rows[RowIndexOfValue][columnIndex].ToString().TrimEnd();
 
                     if (value != string.Empty)
                     {
+                        //вычисляем значения min/max для определённых в listOfCalculatorsMinMax параметров
+                        string name = this.Columns[columnIndex].ColumnName;
+                        string um = this.Rows[RowIndexOfUnitMeasure][columnIndex].ToString();
+                        listOfCalculatorsMinMax.Calc(column + columnIndex, name, um, value);
+
                         rng = this.range(exelApp, rowNum, column + columnIndex);
                         rng.Value2 = value;
+
+                        bool isDouble;
+                        if (IsInteger(value, out isDouble))
+                            rng.NumberFormat = "0";
+                        else
+                        {
+                            if (isDouble)
+                                rng.NumberFormat = "0.00";
+                        }
+
                         rng.HorizontalAlignment = -4108;
 
                         string norm = this.Rows[RowIndexOfNorm][columnIndex].ToString();
@@ -1597,5 +1777,229 @@ namespace SCME.dbViewer.ForParameters
         }
     }
 
+    public class CalculatorMinMax
+    {
+        private string FName = null;
+        private string FUm = null;
+        private int FColumn = -1;
+        private double? FMinValue = null;
+        private double? FMaxValue = null;
 
+        public CalculatorMinMax(string name)
+        {
+            this.FName = name;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return this.FName;
+            }
+        }
+
+        public string Um
+        {
+            get
+            {
+                return this.FUm;
+            }
+        }
+
+        public int Column
+        {
+            get
+            {
+                return this.FColumn;
+            }
+        }
+
+        public double? MinValue
+        {
+            get
+            {
+                return this.FMinValue;
+            }
+        }
+
+        public double? MaxValue
+        {
+            get
+            {
+                return this.FMaxValue;
+            }
+        }
+
+        public void Calc(int column, string name, string um, string value)
+        {
+            if (name.Contains(this.FName))
+            {
+                double dValue;
+                if (double.TryParse(value, out dValue))
+                {
+                    this.FMinValue = (this.FMinValue == null) ? dValue : Math.Min((double)this.FMinValue, dValue);
+                    this.FMaxValue = (this.FMaxValue == null) ? dValue : Math.Max((double)this.FMaxValue, dValue);
+
+                    //запоминаем номер столбца в отчёте Excel чтобы при выводе вычисленных min/max данных знать куда выводить вычисленные данные
+                    if (this.FColumn == -1)
+                        this.FColumn = column;
+
+                    if (this.FUm == null)
+                        this.FUm = um;
+                }
+            }
+        }
+    }
+
+    public class ListOfCalculatorsMinMax : List<CalculatorMinMax>
+    {
+        public ListOfCalculatorsMinMax()
+        {
+            CalculatorMinMax IGTMinMax = new CalculatorMinMax("IGT");
+            this.Add(IGTMinMax);
+
+            CalculatorMinMax UGTMinMax = new CalculatorMinMax("UGT");
+            this.Add(UGTMinMax);
+        }
+
+        public void Calc(int column, string name, string um, string value)
+        {
+            foreach (CalculatorMinMax calculator in this)
+            {
+                calculator.Calc(column, name, um, value);
+            }
+        }
+    }
+
+    public static class Dictionaries
+    {
+        private static readonly Dictionary<string, string> RTConditionsNames;
+        private static readonly Dictionary<string, string> TMConditionsNames;
+        private static readonly Dictionary<string, string> ConditionsUnitMeasure;
+        private static readonly Dictionary<string, string> ParametersName;
+        private static readonly Dictionary<string, string> ParametersFormat;
+
+        static Dictionaries()
+        {
+            //имена условий зависят от температурного режима. здесь хранятся соответсвия имён условий базы данных именам условий RT, которые хочет видеть пользователь приложения
+            RTConditionsNames = new Dictionary<string, string>()
+            {
+                {"SL_ITM", "ITM"},
+
+                {"BVT_VD", "UDRM"},
+                {"BVT_VR", "UBRmax"},
+
+                {"DVDT_VoltageRate", "DVDt"},
+
+                {"QrrTq_DCFallRate", "dIdt"}
+            };
+
+            //имена условий зависят от температурного режима. здесь хранятся соответсвия имён условий базы данных именам условий TM, которые хочет видеть пользователь приложения
+            TMConditionsNames = new Dictionary<string, string>()
+            {
+                {"SL_ITM", "ITM"},
+
+                {"BVT_VD", "UDRM"},
+                {"BVT_VR", "URRM"},
+
+                {"DVDT_VoltageRate", "DVDt"},
+
+                {"QrrTq_DCFallRate", "dIdt"}
+            };
+
+            //здесь храним значения единиц измерения условий
+            ConditionsUnitMeasure = new Dictionary<string, string>()
+            {
+                {"SL_ITM", "А"},
+
+                {"BVT_I", "мА"},
+                {"BVT_VD", "В"},
+                {"BVT_VR", "В"},
+
+                {"DVDT_VoltageRate", "В/мкс"},
+
+                {"QrrTq_DCFallRate", "А/мкс"}
+            };
+
+            //имена параметров не зависят от температурного режима. здесь хранятся соответсвия имён измеряемых параметров базы данных именам измеряемых параметров, которые хочет видеть пользователь приложения
+            ParametersName = new Dictionary<string, string>()
+            {
+                {"VDRM", "UBO"},
+                {"VRRM", "UBR"}
+            };
+
+            //здесь храним форматы отображения измеряемых параметров
+            ParametersFormat = new Dictionary<string, string>()
+            {
+                {"VTM", "0.00"},
+                {"VFM", "0.00"}
+            };
+        }
+
+        public static string ConditionName(TemperatureCondition temperatureCondition, string conditionName)
+        {
+            Dictionary<string, string> dictionary = (temperatureCondition == TemperatureCondition.None) ? null : (temperatureCondition == TemperatureCondition.RT) ? RTConditionsNames : TMConditionsNames;
+
+            switch (dictionary.ContainsKey(conditionName))
+            {
+                case true:
+                    return dictionary[conditionName];
+
+                default:
+                    return conditionName;
+            }
+        }
+
+        public static string ConditionUnitMeasure(string conditionName)
+        {
+            switch (ConditionsUnitMeasure.ContainsKey(conditionName))
+            {
+                case true:
+                    return ConditionsUnitMeasure[conditionName];
+
+                default:
+                    return null;
+            }
+        }
+
+        public static string ParameterName(string parameterName)
+        {
+            string result;
+
+            switch (ParametersName.ContainsKey(parameterName))
+            {
+                case true:
+                    result = ParametersName[parameterName];
+                    break;
+
+                default:
+                    result = parameterName;
+                    break;
+            }
+
+            //если первый символ параметра начинается на V - заменяем его на U 
+            if ((result != null) && (result.Substring(0, 1) == "V"))
+                result = 'U' + result.Remove(0, 1);
+
+            return result;
+        }
+
+        public static string ParameterFormat(string parameterName)
+        {
+            string result;
+
+            switch (ParametersFormat.ContainsKey(parameterName))
+            {
+                case true:
+                    result = ParametersFormat[parameterName];
+                    break;
+
+                default:
+                    result = null;
+                    break;
+            }
+
+            return result;
+        }
+    }
 }

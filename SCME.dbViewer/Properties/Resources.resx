@@ -130,10 +130,10 @@
     <value>Delete all filters</value>
   </data>
   <data name="DeviceClass" xml:space="preserve">
-    <value>Device class</value>
+    <value>Class</value>
   </data>
   <data name="DeviceType" xml:space="preserve">
-    <value>Device type</value>
+    <value>Type</value>
   </data>
   <data name="DevID" xml:space="preserve">
     <value>Device identificator</value>
@@ -178,10 +178,10 @@
     <value>The source data for building a report is empty. Report generation does not make sense.</value>
   </data>
   <data name="SiOmnity" xml:space="preserve">
-    <value>Silicon omnity</value>
+    <value>Omnity</value>
   </data>
   <data name="SiType" xml:space="preserve">
-    <value>Silicon type</value>
+    <value>Silicon</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>
@@ -190,7 +190,7 @@
     <value>To date</value>
   </data>
   <data name="Ts" xml:space="preserve">
-    <value>Measure datetime</value>
+    <value>Date</value>
   </data>
   <data name="TsZeroTime" xml:space="preserve">
     <value>Date measured with zero time</value>
@@ -203,5 +203,8 @@
   </data>
   <data name="Print" xml:space="preserve">
     <value>Print</value>
+  </data>
+  <data name="CodeOfNonMatch" xml:space="preserve">
+    <value>Code of non match</value>
   </data>
 </root>

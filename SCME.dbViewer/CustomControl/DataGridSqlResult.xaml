@@ -60,7 +60,7 @@
         <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderCustom">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -92,7 +92,7 @@
         <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderCustomTM">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Bottom"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -122,7 +122,7 @@
         </Style>
 
         <Style TargetType="DataGridRow" x:Key="DataGridRowParametersStyle">
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="18"/>
         </Style>
 
         <Style BasedOn="{StaticResource DataGridRowParametersStyle}" TargetType="DataGridRow" x:Key="DataGridRowRT">
@@ -144,7 +144,7 @@
 
     <DataGrid.RowStyle>
         <Style TargetType="{x:Type DataGridRow}">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="HorizontalContentAlignment" Value="Right"/>
         </Style>
     </DataGrid.RowStyle>

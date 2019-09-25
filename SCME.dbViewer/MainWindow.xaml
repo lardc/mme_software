@@ -62,7 +62,7 @@
 
             <Button x:Name="btRefresh" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Refresh}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" Click="btRefresh_Click"/>
             <Label x:Name="lbBottomRecordCount" Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
-            <Button x:Name="btReport" Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Report}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Top" Click="btReport_Click"/>
+            <Button x:Name="btReport" Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Report}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReport_Click"/>
             <Button x:Name="btReportPrint" Grid.Row="0" Grid.Column="19" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Print}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReportPrint_Click"/>
 
             <Label x:Name="lbFromDate" Grid.Row="1" Grid.Column="0" Content="{x:Static res:Resources.FromDate}" FontSize="16" HorizontalAlignment="Center"/>

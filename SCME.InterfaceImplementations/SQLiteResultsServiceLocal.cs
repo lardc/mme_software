@@ -130,13 +130,13 @@ namespace SCME.InterfaceImplementations
                         list.Add(new DeviceLocalItem
                         {
                             Id = reader.GetInt64(ordId),
-                            GroupName = reader.GetString(ordGroupName),
+                            GroupName = reader[ordGroupName] as string, //reader.GetString(ordGroupName),
                             ProfileKey = reader.GetGuid(ordProfileGuid),
-                            UserName = reader.GetString(ordUser),
-                            MmeCode = reader.GetString(ordMmeCode),
-                            Code = reader.GetString(ordCode),
-                            StructureOrd = reader.GetString(ordSn1),
-                            StructureId = reader.GetString(ordSn2),
+                            UserName = reader[ordUser] as string,       //reader.GetString(ordUser),
+                            MmeCode = reader[ordMmeCode] as string,     //reader.GetString(ordMmeCode),
+                            Code = reader[ordCode] as string,           //reader.GetString(ordCode),
+                            StructureOrd = reader[ordSn1] as string,    //reader.GetString(ordSn1),
+                            StructureId = reader[ordSn2] as string,     // reader.GetString(ordSn2),
                             Position = reader.GetBoolean(ordPos) ? 2 : 1,
                             Timestamp = DateTime.Parse(reader.GetString(ordTs), CultureInfo.InvariantCulture)
                         });

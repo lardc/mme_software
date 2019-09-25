@@ -33,6 +33,9 @@ namespace SCME.dbViewer.CustomControl
         private Button btFilterClicked = null;
         private ActiveFilters activeFilters;
 
+        public delegate void CreateCalculatedFieldsHandler();
+        public CreateCalculatedFieldsHandler CreateCalculatedFields { get; set; }
+
         public delegate void ReBuildDataHandler();
         public ReBuildDataHandler ReBuildData { get; set; }
 
@@ -115,6 +118,8 @@ namespace SCME.dbViewer.CustomControl
 
                 bool NeedSetFormat = (dataTable == null);
                 dataTable = ds.Tables[0];
+
+                this.CreateCalculatedFields();
 
                 //формат отображения задаётся для столбцов один единственный раз
                 if (NeedSetFormat)
@@ -260,6 +265,7 @@ namespace SCME.dbViewer.CustomControl
             {
                 if (result != string.Empty)
                 {
+                    /*
                     if (f.type == typeof(string))
                     {
                         switch (this.activeFilters.FieldNameStoredMoreThanOnce(f.fieldName))
@@ -281,6 +287,10 @@ namespace SCME.dbViewer.CustomControl
 
                     if (f.type == typeof(int))
                         result += " AND ";
+
+                    */
+
+                    result += " AND ";
                 }
 
                 if (f.type == typeof(string))

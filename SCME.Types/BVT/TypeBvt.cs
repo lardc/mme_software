@@ -93,6 +93,9 @@ namespace SCME.Types.BVT
         public bool UseUdsmUrsm { get; set; }
 
         [DataMember]
+        public int? ClassByProfileName { get; set; }
+
+        [DataMember]
         public ushort VoltageLimitD { get; set; }
 
         [DataMember]
@@ -141,6 +144,7 @@ namespace SCME.Types.BVT
                 return true;
             if (UseUdsmUrsm != oldParameters.UseUdsmUrsm)
                 return true;
+            //не используем реквизит ClassByProfileName в данной реализации т.к. сохранение его в Ѕƒ не нужно, редактирование пользователем тоже не нужно
             if (VoltageLimitD != oldParameters.VoltageLimitD)
                 return true;
             if (VoltageLimitR != oldParameters.VoltageLimitR)
@@ -177,6 +181,7 @@ namespace SCME.Types.BVT
             TestType = BVTTestType.Reverse;
             MeasurementMode = BVTMeasurementMode.ModeV;
             UseUdsmUrsm = false;
+            ClassByProfileName = null;
             VoltageLimitD = 1000;
             VoltageLimitR = 1000;
             CurrentLimit = 5;

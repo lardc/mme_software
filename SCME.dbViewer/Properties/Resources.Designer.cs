@@ -79,6 +79,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code of non match.
+        /// </summary>
+        public static string CodeOfNonMatch {
+            get {
+                return ResourceManager.GetString("CodeOfNonMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Constructive.
         /// </summary>
         public static string Constructive {
@@ -97,7 +106,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Device class.
+        ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string DeviceClass {
             get {
@@ -106,7 +115,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Device type.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string DeviceType {
             get {
@@ -259,7 +268,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silicon omnity.
+        ///   Looks up a localized string similar to Omnity.
         /// </summary>
         public static string SiOmnity {
             get {
@@ -268,7 +277,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silicon type.
+        ///   Looks up a localized string similar to Silicon.
         /// </summary>
         public static string SiType {
             get {
@@ -295,7 +304,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measure datetime.
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Ts {
             get {

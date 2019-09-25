@@ -69,6 +69,21 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
+        public void TopHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum)
+        {
+            switch (this.RTData == null)
+            {
+                case true:
+                    //TMData точно не null
+                    this.TMData.TopHeaderToExcel(exelApp, sheet, ref rowNum);
+                    break;
+
+                default:
+                    this.RTData.TopHeaderToExcel(exelApp, sheet, ref rowNum);
+                    break;
+            }
+        }
+
         public void ColumnsHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, ref int column)
         {
             switch (this.RTData == null)
@@ -137,17 +152,16 @@ namespace SCME.dbViewer.ForParameters
 
             string status = string.Empty;
 
-            if ((rtStatus != null) && (tmStatus != null))
-                //только если оба измерения завершились успешно - возвратим статус "OK"
-                if ((rtStatus == "OK") && (tmStatus == "OK"))
-                    status = "OK";
-                else
-                {
-                    //если хотя-бы одно измерение завершилось не успешно - возвратим статус "Fault"
-                    if ((rtStatus == "Fault") || (tmStatus == "Fault"))
-                        status = "Fault";
-                    else status = string.Empty;
-                }
+            //только если оба измерения завершились успешно - возвратим статус "OK"
+            if ((rtStatus == "OK") && (tmStatus == "OK"))
+                status = "OK";
+            else
+            {
+                //если хотя-бы одно измерение завершилось не успешно - возвратим статус "Fault"
+                if ((rtStatus == "Fault") || (tmStatus == "Fault"))
+                    status = "Fault";
+                else status = string.Empty;
+            }
 
             if (status == "OK")
             {
@@ -162,50 +176,36 @@ namespace SCME.dbViewer.ForParameters
                 else
                     isStatusOK = null;
             }
+
+            string rtCodeOfNonMatch = (this.RTData?.CodeOfNonMatch == null) ? string.Empty : this.RTData?.CodeOfNonMatch;
+            string tmCodeOfNonMatch = (this.TMData?.CodeOfNonMatch == null) ? string.Empty : this.TMData?.CodeOfNonMatch;
+
+            string codeOfNonMatch = rtCodeOfNonMatch;
+
+            if (tmCodeOfNonMatch != string.Empty)
+            {
+                if (codeOfNonMatch != string.Empty)
+                    codeOfNonMatch += ", ";
+
+                codeOfNonMatch += tmCodeOfNonMatch;
+            }
+
             int result;
 
             switch (this.RTData == null)
             {
                 case true:
                     //TMData точно не null
-                    result = this.TMData.StatusToExcel(exelApp, sheet, status, rowNum, column);
+                    result = this.TMData.StatusToExcel(exelApp, sheet, status, codeOfNonMatch, rowNum, column);
                     break;
 
                 default:
-                    result = this.RTData.StatusToExcel(exelApp, sheet, status, rowNum, column);
+                    result = this.RTData.StatusToExcel(exelApp, sheet, status, codeOfNonMatch, rowNum, column);
                     break;
             }
 
             return result;
         }
-
-        /*
-        public void NotPairHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
-        {
-            //вывод всех шапок того, что хранится в NotPairData
-            int rowNumBeg;
-            foreach (DataTableParameters np in this.NotPairData)
-            {
-                rowNumBeg = rowNum;
-                np.ColumnsHeaderToExcel(exelApp, sheet, ref rowNumBeg, column);
-                column += np.Columns.Count;
-            }
-        }
-
-        public void NotPairBodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int row, ref int column)
-        {
-            //вывод всех тел того, что хранится в NotPairData
-            int rowNum = row;
-            int columnNum = column;
-
-            foreach (DataTableParameters np in this.NotPairData)
-            {
-                np.BodyToExcel(exelApp, sheet, ref rowNum, ref columnNum);
-            }
-
-            column = columnNum;
-        }
-        */
 
         public void CounterToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int counter, int rowNum)
         {
@@ -218,6 +218,21 @@ namespace SCME.dbViewer.ForParameters
 
                 default:
                     this.RTData.CounterToExcel(exelApp, sheet, counter, rowNum);
+                    break;
+            }
+        }
+
+        public void ListOfCalculatorsMinMaxToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ListOfCalculatorsMinMax listOfCalculatorsMinMax)
+        {
+            switch (this.RTData == null)
+            {
+                case true:
+                    //TMData точно не null
+                    this.TMData.ListOfCalculatorsMinMaxToExcel(exelApp, sheet, rowNum, listOfCalculatorsMinMax);
+                    break;
+
+                default:
+                    this.RTData.ListOfCalculatorsMinMaxToExcel(exelApp, sheet, rowNum, listOfCalculatorsMinMax);
                     break;
             }
         }
@@ -253,25 +268,25 @@ namespace SCME.dbViewer.ForParameters
 
         }
 
-        public void BodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
+        public void BodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ListOfCalculatorsMinMax listOfCalculatorsMinMax, int rowNum, ref int column)
         {
             switch (this.RTData == null)
             {
                 case true:
                     //TMData точно не null
-                    this.TMData.BodyToExcel(exelApp, sheet, rowNum, ref column);
+                    this.TMData.BodyToExcel(exelApp, sheet, listOfCalculatorsMinMax, rowNum, ref column);
                     break;
 
                 default:
-                    this.RTData.BodyToExcel(exelApp, sheet, rowNum, ref column);
+                    this.RTData.BodyToExcel(exelApp, sheet, listOfCalculatorsMinMax, rowNum, ref column);
                     break;
             }
         }
 
-        public void PairBodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
+        public void PairBodyToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ListOfCalculatorsMinMax listOfCalculatorsMinMax, int rowNum, ref int column)
         {
             if ((this.RTData != null) && (this.TMData != null))
-                this.TMData.BodyToExcel(exelApp, sheet, rowNum, ref column);
+                this.TMData.BodyToExcel(exelApp, sheet, listOfCalculatorsMinMax, rowNum, ref column);
         }
 
         public void PairIdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
@@ -321,18 +336,18 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void QtyOKFaultToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int statusFaultCounter, int statusOKCounter)
+        public void QtyOKFaultToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int totalCount, int statusUnknownCount, int statusFaultCount, int statusOKCount)
         {
             //выводим кол-во годных/не годных
             switch (this.RTData == null)
             {
                 case true:
                     //TMData точно не null
-                    this.TMData.QtyOKFaultToExcel(exelApp, sheet, rowNum, statusFaultCounter, statusOKCounter);
+                    this.TMData.QtyOKFaultToExcel(exelApp, sheet, rowNum, totalCount, statusUnknownCount, statusFaultCount, statusOKCount);
                     break;
 
                 default:
-                    this.RTData.QtyOKFaultToExcel(exelApp, sheet, rowNum, statusFaultCounter, statusOKCounter);
+                    this.RTData.QtyOKFaultToExcel(exelApp, sheet, rowNum, totalCount, statusUnknownCount, statusFaultCount, statusOKCount);
                     break;
             }
         }
@@ -410,22 +425,29 @@ namespace SCME.dbViewer.ForParameters
                 //счётчик выведенных записей
                 int counter = 0;
 
-                //здесь будем хранить флаг о неизменности ЗП во всём выведенном отчёте
+                //здесь будем хранить флаг о неизменности ПЗ во всём выведенном отчёте
                 bool groupNameChanged = false;
 
                 //здесь будем хранить предыдущий просмотренный в цикле GroupName
                 string lastGroupName = null;
 
                 //счётчики успешного и не успешного прохождения тестов
-                int statusOKCounter = 0;
-                int statusFaultCounter = 0;
+                int statusOKCount = 0;
+                int statusFaultCount = 0;
+                int statusUnknownCount = 0;
+                int totalCount = 0;
 
                 int lastUsedColumn = 0;
                 int rowNumBeg;
 
+                //храним здесь сколько шапок было выведено
+                int needHeaderCount = 0;
+
+                ListOfCalculatorsMinMax listOfCalculatorsMinMax = new ListOfCalculatorsMinMax();
+
                 foreach (ReportData p in this)
                 {
-                    string currentGroupName = p.RTData == null ? p.TMData.GroupName : p.RTData.GroupName;
+                    string currentGroupName = (p.RTData == null) ? p.TMData.GroupName : p.RTData.GroupName;
 
                     if ((!groupNameChanged) && (lastGroupName != null))
                         groupNameChanged = (currentGroupName != lastGroupName);
@@ -442,23 +464,27 @@ namespace SCME.dbViewer.ForParameters
 
                     if (needHeader)
                     {
-                        columnEnd = column + 4;
+                        columnEnd = column + 3;
+
+                        //выводим самую верхнюю часть шапки
+                        p.TopHeaderToExcel(this.exelApp, this.sheet, ref rowNum);
 
                         //выводим шапку столбцов условий и измеренных параметров
                         p.ColumnsHeaderToExcel(this.exelApp, this.sheet, ref rowNum, ref columnEnd);
 
                         //выводим шапку идентификационных данных
-                        p.HeaderToExcel(this.exelApp, this.sheet, ref rowNum, column + 3, ref columnEnd);
+                        p.HeaderToExcel(this.exelApp, this.sheet, ref rowNum, column + 2, ref columnEnd);
 
                         //выводим шапку Pair
-                        p.PairColumnsHeaderToExcel(this.exelApp, this.sheet, rowNumBeg, ref columnEnd);
+                        p.PairColumnsHeaderToExcel(this.exelApp, this.sheet, rowNumBeg + 3, ref columnEnd);
 
-                        //выводим шапку идентификационных данные Pair
+                        //выводим шапку идентификационных данных Pair
                         p.PairHeaderToExcel(this.exelApp, this.sheet, rowNum, ref columnEnd);
 
                         //выводим шапку статуса
                         p.StatusHeaderToExcel(this.exelApp, this.sheet, rowNum, columnEnd);
 
+                        needHeaderCount++;
                         rowNum++;
                     }
 
@@ -467,13 +493,13 @@ namespace SCME.dbViewer.ForParameters
                     p.IdentityToExcel(this.exelApp, this.sheet, counter, rowNum, ref column);
 
                     //выводим тело
-                    p.BodyToExcel(this.exelApp, this.sheet, rowNum, ref column);
+                    p.BodyToExcel(this.exelApp, this.sheet, listOfCalculatorsMinMax, rowNum, ref column);
 
                     //выводим конечные идентификационные данные
                     p.EndIdentityToExcel(this.exelApp, this.sheet, rowNum, ref column);
 
                     //выводим тело pair
-                    p.PairBodyToExcel(this.exelApp, this.sheet, rowNum, ref column);
+                    p.PairBodyToExcel(this.exelApp, this.sheet, listOfCalculatorsMinMax, rowNum, ref column);
 
                     //выводим идентификационные данные pair
                     p.PairIdentityToExcel(this.exelApp, this.sheet, rowNum, column);
@@ -482,20 +508,25 @@ namespace SCME.dbViewer.ForParameters
                     bool? isStatusOK = null;
                     lastUsedColumn = p.StatusToExcel(this.exelApp, this.sheet, rowNum, columnEnd, ref isStatusOK);
 
-                    //формируем значения счётчиков успешного/не успешного прохождения тестов
-                    if (isStatusOK != null)
+                    //формируем значения счётчиков неопределённого/успешного/не успешного прохождения тестов
+                    if (isStatusOK == null)
+                        statusUnknownCount++;
+                    else
                     {
                         switch (isStatusOK)
                         {
                             case false:
-                                statusFaultCounter++;
+                                statusFaultCount++;
                                 break;
 
                             default:
-                                statusOKCounter++;
+                                statusOKCount++;
                                 break;
                         }
                     }
+
+                    //считаем сколько всего изделий просмотрено в цикле
+                    totalCount++;
 
                     //обводим границы
                     p.SetBorders(this.exelApp, this.sheet, rowNumBeg, rowNum, lastUsedColumn);
@@ -506,7 +537,7 @@ namespace SCME.dbViewer.ForParameters
                     rowNum++;
                 }
 
-                //получаем количество ТМЦ, запущенных по ЗП
+                //получаем количество ТМЦ, запущенных по ПЗ
                 ReportData rd = this[0];
 
                 //если на протяжении всего цикла не зафиксировано изменение ПЗ - выводим кол-во запущенных ТМЦ по ПЗ. если же изменение ПЗ зафиксировано - в отчёте есть данные по разным ПЗ и запущенное кол-во не имеет смысла
@@ -514,39 +545,23 @@ namespace SCME.dbViewer.ForParameters
                 {
                     int? qtyReleased = rd?.QtyReleasedByGroupName(lastGroupName, connection);
 
-                    if (qtyReleased != null)
-                    {
-                        //если количество выведенных записей меньше, чем qtyReleased - добиваем сформированный отчёт пустыми строками
-                        int emptyRecordsCount = (int)qtyReleased - counter;
-
-                        if (emptyRecordsCount > 0)
-                        {
-                            rowNumBeg = rowNum;
-
-                            for (int i = 0; i <= emptyRecordsCount - 1; i++)
-                            {
-                                counter++;
-                                rd?.CounterToExcel(this.exelApp, this.sheet, counter, rowNum);
-                                rowNum++;
-                            }
-
-                            //обводим границы
-                            rd?.SetBorders(this.exelApp, this.sheet, rowNumBeg, rowNum - 1, lastUsedColumn);
-                        }
-                    }
+                    //выводим значения min/max для определённых в listOfCalculatorsMinMax параметров
+                    if (needHeaderCount == 1)
+                        rd?.ListOfCalculatorsMinMaxToExcel(this.exelApp, this.sheet, rowNum, listOfCalculatorsMinMax);
 
                     //выводим количество ТМЦ, запущенных по ЗП
                     rd?.QtyReleasedByGroupNameToExcel(this.exelApp, this.sheet, ref rowNum, lastGroupName, qtyReleased);
-                }
 
-                //выводим кол-во годных/не годных
-                rd?.QtyOKFaultToExcel(this.exelApp, this.sheet, rowNum, statusFaultCounter, statusOKCounter);
+                    //выводим кол-во годных/не годных
+                    rd?.QtyOKFaultToExcel(this.exelApp, this.sheet, rowNum, totalCount, statusUnknownCount, statusFaultCount, statusOKCount);
+                }
 
                 //создаём нижний колонтитул
                 this.sheet.PageSetup.RightFooter = "Лист &P Листов &N";
 
                 this.sheet.UsedRange.EntireRow.AutoFit();
                 this.sheet.UsedRange.EntireColumn.AutoFit();
+                this.sheet.UsedRange.Font.Name = "Arial Narrow";
 
                 //настраиваем вид печатного отчёта
                 this.sheet.PageSetup.LeftMargin = 0;

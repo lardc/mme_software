@@ -64,7 +64,18 @@ namespace SCME.Types.Profiles
             if (start == -1)
                 return string.Empty;
 
-            result = result.Substring(3, start - 3);
+            //вычисляем индекс 4-го пробела (за которым начинается спецтребование)
+            int specialReqStart = result.IndexOf(" ", start + 1);
+
+            string specialReq = string.Empty;
+
+            if (specialReqStart != -1)
+                specialReq = result.Substring(specialReqStart);
+
+            result = "*" + result.Substring(3, start - 3);
+
+            if (specialReq != string.Empty)
+                result += " *" + specialReq;
 
             return result;
         }
@@ -129,22 +140,23 @@ namespace SCME.Types.Profiles
 
         public static int? DeviceClassByProfileName(string profileName)
         {
-            //извлечение класса из наименования профиля. класс в наименовании профиля записан целым числом начиная с символа, следующего за 3-ым пробелом до 4-го пробела
+            //извлечение класса из наименования профиля. класс в наименовании профиля записан целым числом начиная с символа, следующего за 3-ым пробелом до 4-го пробела при его наличии, если же 4-го пробела нет - то до конца строки
             string profileNameUpper = profileName.ToUpper();
+            const string delimeter = " ";
 
             int start = 0;
             for (int i = 1; i <= 3; i++)
             {
-                start = profileNameUpper.IndexOf(" ", start);
+                start = profileNameUpper.IndexOf(delimeter, start);
 
                 if (start == -1)
                     return null;
                 else start++;
             }
 
-            int end = profileNameUpper.IndexOf(" ", start);
+            int end = profileNameUpper.IndexOf(delimeter, start);
 
-            string cl = profileNameUpper.Substring(start, end - start);
+            string cl = (end == -1) ? profileNameUpper.Substring(start) : profileNameUpper.Substring(start, end - start);
 
             int result;
 

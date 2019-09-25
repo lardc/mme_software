@@ -45,6 +45,7 @@ namespace SCME.dbViewer
         public const int cUser = 15;
         public const int cStatus = 16;
         public const int cReason = 17;
+        public const int cCodeOfNonMatch = 18;
 
         private SqlConnection connection = null;
         private List<DataTableParameters> listOfDeviceParameters = null;
@@ -73,6 +74,7 @@ namespace SCME.dbViewer
             //чтобы скрыть пустые DataGrid сразу после запуска приложения
             this.DataContext = new DataViewModel();
 
+            dgDevices.CreateCalculatedFields = CreateCalculatedFields;
             dgDevices.ReBuildData = ReBuildData;
 
             //применяем стили для раскраски DataGrid
@@ -160,6 +162,11 @@ namespace SCME.dbViewer
         private string Status(object[] itemArray)
         {
             return itemArray?[cStatus].ToString();
+        }
+
+        private string CodeOfNonMatch(object[] itemArray)
+        {
+            return itemArray?[cCodeOfNonMatch].ToString();
         }
 
         private string Reason(object[] itemArray)
@@ -257,12 +264,20 @@ namespace SCME.dbViewer
             dgDevices.NewColumn(Properties.Resources.MmeCode, "MME_CODE");                      //14
             dgDevices.NewColumn(Properties.Resources.Usr, "USR");                               //15
             dgDevices.NewColumn(Properties.Resources.Status, "STATUS");                         //16
-            dgDevices.NewColumn(Properties.Resources.Reason, "REASON");                         //17
+            dgDevices.NewColumn(Properties.Resources.CodeOfNonMatch, "CODEOFNONMATCH");         //17
+            dgDevices.NewColumn(Properties.Resources.Reason, "REASON");                         //18
+        }
+
+        private void CreateCalculatedFields()
+        {
+            //создание вычисляемых полей, т.е. тех полей, значения которых не считываются из базы данных
+            dgDevices?.dataTable?.Columns.Add("CODEOFNONMATCH");
         }
 
         private void ReBuildData()
         {
             //формирование исходных данных для отображения списка условий, параметров и построения протокола испытаний
+            this.RefreshBottomRecordCount();
             this.listOfDeviceParameters = ListOfDeviceParameters();
             this.reportByDevices = GroupData(listOfDeviceParameters);
         }
@@ -497,6 +512,11 @@ namespace SCME.dbViewer
             return result;
         }
 
+        private static String WildCardToRegular(string value)
+        {
+            return "^" + System.Text.RegularExpressions.Regex.Escape(value).Replace("\\*", ".*") + "$";
+        }
+
         private DataTableParameters CalcPairData(List<DataTableParameters> listOfDeviceParameters, string profileBody, string GroupName, string Code)
         {
             //GroupName есть номер ПЗ, Code есть порядковый номер, а их сочетание это серийный номер. это справедливо как для PSE, так и для PSD 
@@ -505,8 +525,8 @@ namespace SCME.dbViewer
                           where (
                                  (dtp.Code == Code) &&
                                  (dtp.GroupName == GroupName) &&
-                                 (dtp.ProfileName.ToUpper().Contains(profileBody)) &&
-                                 (dtp.Data == null)
+                                 (dtp.Data == null) &&
+                                 (System.Text.RegularExpressions.Regex.IsMatch(dtp.ProfileName.ToUpper(), WildCardToRegular(profileBody)))  //(dtp.ProfileName.ToUpper().Contains(profileBody))                                 
                                 )
                           select dtp;
 
@@ -583,17 +603,23 @@ namespace SCME.dbViewer
                             }
                         }
                     }
-
-                    //вычисляем сколько записей стоит ниже текущей выбранной
-                    int selectedRowNum = dgDevices.Items.IndexOf(dgDevices.SelectedItem) + 1;
-                    int bottomRecords = dgDevices.Items.Count - selectedRowNum;
-                    lbBottomRecordCount.Content = string.Format("({0})", bottomRecords.ToString());
                 }
             }
         }
 
+        private void RefreshBottomRecordCount()
+        {
+            //вычисляем сколько записей стоит ниже текущей выбранной
+            int selectedRowNum = dgDevices.Items.IndexOf(dgDevices.SelectedItem) + 1;
+            int bottomRecords = dgDevices.Items.Count - selectedRowNum;
+            lbBottomRecordCount.Content = string.Format("({0})", bottomRecords.ToString());
+        }
+
         private void dgDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //вычисляем сколько записей стоит ниже текущей выбранной
+            this.RefreshBottomRecordCount();
+
             RefreshConditionsAndParameters();
         }
 
@@ -634,12 +660,13 @@ namespace SCME.dbViewer
                     string user = User(itemArray);
                     string status = Status(itemArray);
                     string reason = Reason(itemArray);
+                    string codeOfNonMatch = CodeOfNonMatch(itemArray);
                     TemperatureCondition temperatureCondition = TemperatureConditionByProfileName(profileName);
 
                     //conditions для одного и того же профиля одинаковы, пробуем найти в result запись с профилем profileID, чтобы получить из неё conditions без обращения к базе данных - используем result как кеш
                     DataTableParameters dataTableParameters = FindDataTableParametersByProfileID(result, profileID);
 
-                    DataTableParameters p = new DataTableParameters(devID, deviceType, temperatureCondition, profileID, profileName, tsZeroTime, groupName, item, code, constructive, averageCurrent, deviceClass, equipment, user, status, reason);
+                    DataTableParameters p = new DataTableParameters(drv.Row, devID, deviceType, temperatureCondition, profileID, profileName, tsZeroTime, groupName, item, code, constructive, averageCurrent, deviceClass, equipment, user, status, codeOfNonMatch, reason);
                     result.Add(p);
 
                     p.Load(connection, dataTableParameters, profileID, devID, deviceType, temperatureCondition);
@@ -777,8 +804,8 @@ namespace SCME.dbViewer
             }
 
             //исходные данные, необходимые для построения протокола испытаний всегда в актуальном состоянии, нет никакой необходимости строить их заново            
-            //для того, чтобы в отчёте была обеспечена уникальность шапки (любая шапка в формируемом отчёте должна быть уникальной) выполняем сортировку исходных данных для построения отчёта по наименованию профиля
-            List<ReportData> sortedReportByDevices = this.reportByDevices.OrderBy(x => x.RTData == null ? x.TMData.ProfileName : x.RTData.ProfileName).ToList<ReportData>();
+            //для того, чтобы в отчёте была обеспечена уникальность шапки (любая шапка в формируемом отчёте должна быть уникальной) выполняем сортировку исходных данных для построения отчёта по ColumnsSignature
+            List<ReportData> sortedReportByDevices = this.reportByDevices.OrderByDescending(x => x.ColumnsSignature).ToList<ReportData>();
             ReportByDevices rep = new ReportByDevices(sortedReportByDevices);
 
             //формируем отчёт

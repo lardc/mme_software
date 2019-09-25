@@ -46,7 +46,6 @@ namespace SCME.Service
                             //синхронизация не выполнена потому, что в процессе синхронизации произошла ошибка
                             logMessageType = LogMessageType.Error;
                             break;
-
                     }
 
                     Journal.AppendLog(ComplexParts.Service, logMessageType, string.Format("Local database not synced with a central database. Reason: {0}", notSyncedReason));

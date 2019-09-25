@@ -53,6 +53,7 @@ namespace SCME.UI.PagesUser
         private int m_CurrentPos = 1;
         private MeasureDialog measureDialog;
         private bool wasCurrentMore;
+        private int? m_ClassByProfileName = null;
 
         public UserTestPage()
         {
@@ -626,6 +627,7 @@ namespace SCME.UI.PagesUser
                     HeightMeasureResult = measureDialog.ShowDialog() ?? false;
                 }
 
+                CustomControl.ValidatingTextBox tbNumber = null;
                 bool needSave = false;
 
                 if (this.Profile != null)
@@ -634,14 +636,17 @@ namespace SCME.UI.PagesUser
                     {
                         case SubjectForMeasure.PSD:
                             needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
+                            tbNumber = tbPsdSerialNumber;
                             break;
 
                         case SubjectForMeasure.PSE:
                             needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
+                            tbNumber = tbPseNumber;
                             break;
 
                         default:
                             needSave = false;
+                            tbNumber = null;
                             break;
                     }
                 }
@@ -692,8 +697,8 @@ namespace SCME.UI.PagesUser
                     Cache.Net.WriteResultLocal(DataForSave, errors);
 
                     //вычисляем класс только что измеренного изделия и выводим его на форму
-                    TextBox tb = (tbPsdSerialNumber.Visibility == Visibility.Visible) ? tbPsdSerialNumber : (tbPseNumber.Visibility == Visibility) ? tbPseNumber : null;
-                    CalcDeviceClass(tb);
+                    if (DataForSave.IsSentToServer)
+                        CalcDeviceClass(tbNumber);
                 }
 
                 if (paramsClamp.IsHeightMeasureEnabled)
@@ -712,7 +717,9 @@ namespace SCME.UI.PagesUser
 
                 tbPseNumber.Text = "";
                 tbPsdSerialNumber.Text = "";
-                tbPsdSerialNumber.Focus();
+
+                if (tbNumber.Visibility == Visibility.Visible)
+                    tbNumber.Focus();
             }
         }
 
@@ -2347,103 +2354,108 @@ namespace SCME.UI.PagesUser
             if (label != null) label.Visibility = Visibility.Collapsed;
         }
 
-        private void CalcDeviceClass(TextBox sourceOfdeviceCode)
+        private void CalcDeviceClass(CustomControl.ValidatingTextBox sourceOfdeviceCode)
         {
             //вычисляет класс изделия и выводит его на форме
-            if (sourceOfdeviceCode != null)
+
+            //чтобы исключить зависимость работоспособности приложения от работоспособности данной реализации заворачиваем её в try...catch
+            try
             {
-                //чтобы система смогла вычислить класс изделия надо чтобы обозначение изделия было введено полностью - пример 2/4-00020997
-                //для этого будем проверять количество символов после символа '/' и если оно равно 10 - будем пытаться вычислить класс этого изделия
-                string deviceCode = sourceOfdeviceCode.Text;
-                int jobFirstSimbol = deviceCode.IndexOf("/", 0);
-
-                if (jobFirstSimbol != -1)
+                if (sourceOfdeviceCode != null)
                 {
-                    jobFirstSimbol++;
-                    string job = deviceCode.Substring(jobFirstSimbol);
+                    //чтобы система смогла вычислить класс изделия надо чтобы обозначение изделия было введено полностью - пример 2/4-00020997
+                    //для этого будем проверять количество символов после символа '/' и если оно равно 10 - будем пытаться вычислить класс этого изделия
+                    string deviceCode = sourceOfdeviceCode.Text;
+                    int jobFirstSimbol = deviceCode.IndexOf("/", 0);
 
-                    if (job.Length == 10)
+                    if (jobFirstSimbol != -1)
                     {
-                        string sDeviceRTClass = string.Empty;
-                        int? deviceRTClass = null;
+                        jobFirstSimbol++;
+                        string job = deviceCode.Substring(jobFirstSimbol);
 
-                        //пробуем вычислить значение класса
-                        deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
-
-                        switch (deviceRTClass == null)
+                        if (job.Length == 10)
                         {
-                            case true:
-                                //для вычисления класса при RT нет измерений на основе которых можно его вычислить
-                                sDeviceRTClass = Properties.Resources.NoResults;
-                                break;
+                            string sDeviceRTClass = string.Empty;
+                            int? deviceRTClass = null;
 
-                            default:
-                                {
-                                    //класс не null - какое-то значение получено, разбираемся что получено
-                                    int iDeviceRTClass = (int)deviceRTClass;
+                            //пробуем вычислить значение класса
+                            deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
 
-                                    switch (iDeviceRTClass)
+                            switch (deviceRTClass == null)
+                            {
+                                case true:
+                                    //для вычисления класса при RT нет измерений на основе которых можно его вычислить
+                                    sDeviceRTClass = Properties.Resources.NoResults;
+                                    break;
+
+                                default:
                                     {
-                                        case (-1):
-                                            //случай ошибки в реализации вычисления класса
-                                            sDeviceRTClass = Properties.Resources.ErrorRealisation;
-                                            break;
+                                        //класс не null - какое-то значение получено, разбираемся что получено
+                                        int iDeviceRTClass = (int)deviceRTClass;
 
-                                        default:
-                                            //получено вменяемое значение класса изделия
-                                            sDeviceRTClass = iDeviceRTClass.ToString();
+                                        switch (iDeviceRTClass)
+                                        {
+                                            case (-1):
+                                                //случай ошибки в реализации вычисления класса
+                                                sDeviceRTClass = Properties.Resources.ErrorRealisation;
+                                                break;
 
-                                            //вычисляем значение класса по наименованию профиля
-                                            int? classByProfileName = ProfileRoutines.DeviceClassByProfileName(Profile?.Name);
+                                            default:
+                                                //получено вменяемое значение класса изделия
+                                                sDeviceRTClass = iDeviceRTClass.ToString();
 
-                                            if (classByProfileName == null)
-                                            {
-                                                //по обозначению профиля не удаётся вычислить значение класса
-                                                btnStart.IsEnabled = true;
-                                            }
-                                            else
-                                            {
-                                                //по обозначению профиля значение класса получено, сравниваем его с iDeviceRTClass
-                                                int iclassByProfileName = (int)classByProfileName;
-
-                                                switch (iDeviceRTClass >= iclassByProfileName)
+                                                //смотрим на вычисленное значение класса по выбранному наименованию профиля                                               
+                                                if (m_ClassByProfileName == null)
                                                 {
-                                                    case true:
-                                                        btnStart.IsEnabled = true;
-                                                        lblDeviceClass.Foreground = Brushes.Black;
-                                                        break;
-
-                                                    default:
-                                                        btnStart.IsEnabled = false;
-                                                        lblDeviceClass.Foreground = Brushes.Red;
-                                                        break;
+                                                    //по обозначению профиля значение класса не вычислено
+                                                    btnStart.IsEnabled = true;
                                                 }
-                                            }
-                                            break;
+                                                else
+                                                {
+                                                    //по обозначению профиля вычислено не null значение класса, сравниваем его с iDeviceRTClass
+                                                    int iClassByProfileName = (int)m_ClassByProfileName;
+
+                                                    switch (iDeviceRTClass >= iClassByProfileName)
+                                                    {
+                                                        case true:
+                                                            btnStart.IsEnabled = true;
+                                                            lblDeviceClass.Foreground = Brushes.Black;
+                                                            break;
+
+                                                        default:
+                                                            btnStart.IsEnabled = false;
+                                                            lblDeviceClass.Foreground = Brushes.Red;
+                                                            break;
+                                                    }
+                                                }
+                                                break;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
+
+                            //выводим полученный класс на форму
+                            lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, sDeviceRTClass);
                         }
-
-                        //выводим полученный класс на форму
-                        lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, sDeviceRTClass);
+                        else btnStart.IsEnabled = true;
                     }
-                    else btnStart.IsEnabled = true;
-
                 }
             }
-
+            catch
+            {
+                lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, Properties.Resources.ErrorRealisation);
+            }
         }
 
         private void tbPsdSerialNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
+            CustomControl.ValidatingTextBox tb = sender as CustomControl.ValidatingTextBox;
             CalcDeviceClass(tb);
         }
 
         private void tbPseNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
+            CustomControl.ValidatingTextBox tb = sender as CustomControl.ValidatingTextBox;
             CalcDeviceClass(tb);
         }
 
@@ -2708,6 +2720,10 @@ namespace SCME.UI.PagesUser
                                 parBvt.IsEnabled = false;
                             break;
                     }
+
+                    //запоминаем значение вычисленного класса по наименованию профиля (см. UserTestPage_OnLoaded), чтобы при выполнении теста UDSM/URSM по нему вычислить значение напряжения при котором проводится тест UDSM/URSM
+                    Profile.ParametersBVT.ClassByProfileName = m_ClassByProfileName;
+                    parBvt.ClassByProfileName = m_ClassByProfileName;
                     continue;
                 }
 
@@ -2833,6 +2849,9 @@ namespace SCME.UI.PagesUser
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
         {
+            //вычисляем класс по выбранному пользователем профилю
+            m_ClassByProfileName = ProfileRoutines.DeviceClassByProfileName(Profile?.Name);
+
             tbPsdJob.Text = "";
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
@@ -2879,7 +2898,11 @@ namespace SCME.UI.PagesUser
                             lbPseJob.Visibility = Visibility.Collapsed;
                             tbPseJob.Visibility = Visibility.Collapsed;
 
-                            tbPsdJob.Focus();
+                            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ContextIdle,
+                                                   new Action(delegate ()
+                                                   {
+                                                       tbPsdJob.Focus();
+                                                   }));
 
                             break;
                         }
@@ -2899,7 +2922,11 @@ namespace SCME.UI.PagesUser
                             lbPsdSerialNumber.Visibility = Visibility.Collapsed;
                             tbPsdSerialNumber.Visibility = Visibility.Collapsed;
 
-                            lbPseJob.Focus();
+                            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ContextIdle,
+                                                   new Action(delegate ()
+                                                   {
+                                                       tbPseJob.Focus();
+                                                   }));
 
                             break;
                         }

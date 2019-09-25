@@ -130,10 +130,10 @@
     <value>Удалить все фильтры</value>
   </data>
   <data name="DeviceClass" xml:space="preserve">
-    <value>Класс прибора</value>
+    <value>Класс</value>
   </data>
   <data name="DeviceType" xml:space="preserve">
-    <value>Тип прибора</value>
+    <value>Тип</value>
   </data>
   <data name="DevID" xml:space="preserve">
     <value>Идентификатор изделия</value>
@@ -178,10 +178,10 @@
     <value>Исходные данные для построения отчёта отсутствуют. Формирование отчёта не имеет смысла.</value>
   </data>
   <data name="SiOmnity" xml:space="preserve">
-    <value>УЭС кремния</value>
+    <value>УЭС</value>
   </data>
   <data name="SiType" xml:space="preserve">
-    <value>Тип кремния</value>
+    <value>Кремний</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Статус</value>
@@ -190,7 +190,7 @@
     <value>до даты</value>
   </data>
   <data name="Ts" xml:space="preserve">
-    <value>Дата измерений</value>
+    <value>Дата</value>
   </data>
   <data name="TsZeroTime" xml:space="preserve">
     <value>Дата измерений с нулевым временем</value>
@@ -203,5 +203,8 @@
   </data>
   <data name="Print" xml:space="preserve">
     <value>Печать</value>
+  </data>
+  <data name="CodeOfNonMatch" xml:space="preserve">
+    <value>Код НП</value>
   </data>
 </root>
