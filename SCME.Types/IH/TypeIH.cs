@@ -38,11 +38,11 @@ namespace SCME.Types.IH
             if (this.GetHashCode() == oldParameters.GetHashCode()) return false;
 
             //раз мы сюда добрались - имеем дело с разными экземплярами, необходимо сравнение их содержимого
-            string typeName = oldParameters.GetType().Name;
+            var typeName = oldParameters.GetType().Name;
 
             if (typeName != "TestParameters") throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
 
-            TestParameters IHOldParameters = (TestParameters)oldParameters;
+            var IHOldParameters = (TestParameters)oldParameters;
 
             if (Itm != IHOldParameters.Itm)
                 return true;            

@@ -1,11 +1,7 @@
-﻿using SCME.Types.Profiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SCME.Types.Profiles;
 
-namespace SCME.InterfaceImplementations.Common
+namespace SCME.Types.Database
 {
     public interface ILoadProfilesService
     {

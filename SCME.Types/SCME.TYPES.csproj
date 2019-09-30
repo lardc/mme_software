@@ -79,12 +79,16 @@
     <Compile Include="ControlServerContracts.cs" />
     <Compile Include="BVT\HALTypeBVT.cs" />
     <Compile Include="ControlServerProxy.cs" />
+    <Compile Include="DatabaseProxy.cs" />
     <Compile Include="DatabaseServer\CentralDatabaseServiceClient.cs" />
     <Compile Include="DatabaseServer\ICentralDatabaseService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DatabaseServer\IProfilesConnectionService.cs" />
     <Compile Include="DatabaseServer\IProfilesService.cs" />
+    <Compile Include="Database\IDbService.cs" />
+    <Compile Include="Database\ILoadProfilesService.cs" />
+    <Compile Include="Database\ISaveProfileService.cs" />
     <Compile Include="DataContracts\DeviceLocalItem.cs" />
     <Compile Include="DataContracts\DeviceParameterLocal.cs" />
     <Compile Include="DataContracts\MmeCode.cs" />
@@ -131,7 +135,6 @@
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

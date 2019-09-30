@@ -11,7 +11,7 @@
       xmlns:connectPage="clr-namespace:SCME.ProfileBuilder.CustomControl.ConnectPage"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       d:DesignWidth="1280" d:DesignHeight="924"
-      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
+      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
 	Title="ConnectPage">
     <Grid>
         <TabControl>
@@ -22,7 +22,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}" ConnetToSQLite="ConnectToSQLite"/>
+                    <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}" ConnetToSQLite="ConnectToSqLite"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -32,7 +32,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}" ConnetToMSSQL="ConnectToMSSQL"/>
+                    <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}" ConnetToMSSQL="ConnectToMssql"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem >

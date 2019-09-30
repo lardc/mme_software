@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
+using SCME.Types.Commutation;
 using SCME.Types.dVdt;
 using SCME.Types.QrrTq;
 using SCME.Types.VTM;
@@ -98,13 +100,43 @@ namespace SCME.WpfControlLibrary.DataProviders
             };
         }
 
+        public static Dictionary<string, ModuleCommutationType> GetModuleCommutationTypes()
+        {
+            return new Dictionary<string, ModuleCommutationType>()
+            {
+                {nameof(ModuleCommutationType.Direct), ModuleCommutationType.Direct},
+                {nameof(ModuleCommutationType.Reverse), ModuleCommutationType.Reverse},
+                {nameof(ModuleCommutationType.MD1), ModuleCommutationType.MD1},
+                {nameof(ModuleCommutationType.MD3), ModuleCommutationType.MD3},
+                {nameof(ModuleCommutationType.MD4), ModuleCommutationType.MD4},
+                {nameof(ModuleCommutationType.MD5), ModuleCommutationType.MD5},
+                {nameof(ModuleCommutationType.MT1), ModuleCommutationType.MT1},
+                {nameof(ModuleCommutationType.MT3), ModuleCommutationType.MT3},
+                {nameof(ModuleCommutationType.MT4), ModuleCommutationType.MT4},
+                {nameof(ModuleCommutationType.MT5), ModuleCommutationType.MT5},
+                {nameof(ModuleCommutationType.MDT3), ModuleCommutationType.MDT3},
+                {nameof(ModuleCommutationType.MDT4), ModuleCommutationType.MDT4},
+                {nameof(ModuleCommutationType.MDT5), ModuleCommutationType.MDT5},
+                {nameof(ModuleCommutationType.MTD3), ModuleCommutationType.MTD3},
+                {nameof(ModuleCommutationType.MTD4), ModuleCommutationType.MTD4},
+                {nameof(ModuleCommutationType.MTD5), ModuleCommutationType.MTD5},
+            };
+        }
         
-        
-        
-        
-        
-        
-        
+        public static Dictionary<string, TestParametersType> GetTestParametersTypes()
+        {
+            return new Dictionary<string, TestParametersType>()
+            {
+               {nameof(TestParametersType.Gate), TestParametersType.Gate},
+               {nameof(TestParametersType.StaticLoses), TestParametersType.StaticLoses},
+               {nameof(TestParametersType.Bvt), TestParametersType.Bvt},
+               {nameof(TestParametersType.Dvdt), TestParametersType.Dvdt},
+               {nameof(TestParametersType.ATU), TestParametersType.ATU},
+               {nameof(TestParametersType.QrrTq), TestParametersType.QrrTq},
+               {nameof(TestParametersType.RAC), TestParametersType.RAC},
+               {nameof(TestParametersType.TOU), TestParametersType.TOU},
+            };
+        }
         
     }
 }

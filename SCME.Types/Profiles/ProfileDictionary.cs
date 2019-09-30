@@ -45,7 +45,7 @@ namespace SCME.Types.Profiles
             catch (Exception ex)
             {
                 m_Doc = null;
-                throw new Exception(String.Format("Error while loading document: {0}", ex.Message));
+                throw new Exception(string.Format("Error while loading document: {0}", ex.Message));
             }
 
             Root = LoadFromXml();
@@ -106,7 +106,7 @@ namespace SCME.Types.Profiles
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Error while serializing document: {0}", ex.Message));
+                throw new Exception(string.Format("Error while serializing document: {0}", ex.Message));
             }
 
             try
@@ -115,7 +115,7 @@ namespace SCME.Types.Profiles
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Error while saving document: {0}", ex.Message));
+                throw new Exception(string.Format("Error while saving document: {0}", ex.Message));
             }
         }
 
@@ -127,7 +127,7 @@ namespace SCME.Types.Profiles
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Error while saving profile to database: {0}", ex.Message));
+                throw new Exception(string.Format("Error while saving profile to database: {0}", ex.Message));
             }
           
         }
@@ -185,7 +185,7 @@ namespace SCME.Types.Profiles
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Error while parsing document: {0}", ex.Message));
+                throw new Exception(string.Format("Error while parsing document: {0}", ex.Message));
             }
         }
 
@@ -410,7 +410,7 @@ namespace SCME.Types.Profiles
             }
             catch (NullReferenceException ex)
             {
-                throw new Exception(String.Format("Error during attribute reading: {0}", ex.Message));
+                throw new Exception(string.Format("Error during attribute reading: {0}", ex.Message));
             }
         }
 
@@ -464,7 +464,7 @@ namespace SCME.Types.Profiles
             }
             catch (NullReferenceException ex)
             {
-                throw new Exception(String.Format("Error during attribute serialization: {0}", ex.Message));
+                throw new Exception(string.Format("Error during attribute serialization: {0}", ex.Message));
             }
         }
 
@@ -706,7 +706,7 @@ namespace SCME.Types.Profiles
             }
             catch (NullReferenceException ex)
             {
-                throw new Exception(String.Format("Error during attribute serialization: {0}", ex.Message));
+                throw new Exception(string.Format("Error during attribute serialization: {0}", ex.Message));
             }
 
             return element;

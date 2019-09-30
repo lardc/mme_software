@@ -22,20 +22,22 @@
                     xmlns:mahappsConverters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
                     xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+       
         
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/RadioButton.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/CheckBox.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/Styles/NumericUpDown.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/CheckBox.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBox.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ComboBox.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TreeViewItemProfile.xaml" />
         
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-    </Style>
-
+   
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Style.Triggers>
@@ -49,22 +51,14 @@
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
     
-    <Style TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
-        <Setter Property="FontSize" Value="{DynamicResource BaseFontSize}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-    </Style>
 
-    <Style x:Key="ButtonWithIcon" TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}">
-        <Setter Property="Height" Value="{DynamicResource SCME.SizeButtonWithIcon}" />
-        <Setter Property="Width" Value="{DynamicResource SCME.SizeButtonWithIcon}" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-    </Style>
+   
 
-    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-    </Style>
+    <!-- <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"> -->
+    <!--     <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" /> -->
+    <!-- </Style> -->
+    
+    
 
     <Style TargetType="ScrollBar">
         <Setter Property="Width" Value="{DynamicResource SCME.ScrollBarWidth}" />
@@ -74,6 +68,7 @@
         <Setter Property="Height" Value="auto" />
         <Setter Property="Width" Value="auto" />
     </Style>
+    
 
 
 </ResourceDictionary>

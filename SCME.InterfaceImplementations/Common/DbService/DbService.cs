@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using SCME.Types.Database;
 using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> : IDbService where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-        protected virtual string ChildsSelectString => @"SELECT [PROF_ID], [PROF_NAME], [PROF_GUID], [PROF_VERS], [PROF_TS] FROM [PROFILES] WHERE [PROF_NAME] = @PROF_NAME AND PROF_ID <> @PROF_ID_EXCLUDE ORDER BY [PROF_TS] DESC";
+        protected virtual string GetFreeProfileNameString => @"SELECT TOP(1) PROF_ID FROM PROFILES ORDER BY PROF_ID DESC";
+        protected virtual string ProfileNameExistsString => @"SELECT COUNT(*) FROM PROFILES WHERE PROF_NAME = @PROF_NAME";
+        protected virtual string ChildSelectString => @"SELECT [PROF_ID], [PROF_NAME], [PROF_GUID], [PROF_VERS], [PROF_TS] FROM [PROFILES] WHERE [PROF_NAME] = @PROF_NAME AND PROF_ID <> @PROF_ID_EXCLUDE ORDER BY [PROF_TS] DESC";
         protected virtual string TestTypeSelectString => @"SELECT [PTT_ID], [TEST_TYPE_ID] FROM [PROF_TEST_TYPE] WHERE [PROF_ID] = @PROF_ID";
         protected virtual string ProfilesByMmeSelectString => @"SELECT PROF_ID, PROF_NAME, PROF_GUID, PROF_VERS, PROF_TS FROM PROFILES WHERE PROF_ID IN
 	            (SELECT PROFILE_ID FROM MME_CODES_TO_PROFILES WHERE MME_CODE_ID IN
@@ -26,7 +29,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         protected virtual string ProfileTestTypeInsertString => "INSERT INTO [PROF_TEST_TYPE] (PROF_ID, TEST_TYPE_ID, [ORD]) OUTPUT INSERTED.PTT_ID VALUES (@PROF_ID, @TEST_TYPE_ID, @ORD)";
         protected virtual string MmeCodeToProfileInsertString => "INSERT INTO [MME_CODES_TO_PROFILES] (MME_CODE_ID, PROFILE_ID) VALUES (" +
             "(SELECT MME_CODE_ID FROM MME_CODES WHERE MME_CODE = @MME_CODE), @PROFILE_ID)";
-        protected virtual string MmeCodeToProfileDeleteString => "DELETE FROM MME_CODES_TO_PROFILES WHERE PROFILE_ID = @PROFILE_ID";
+        protected virtual string MmeCodeToProfileDeleteString => @"DELETE FROM MME_CODES_TO_PROFILES WHERE PROFILE_ID = @PROFILE_ID AND MME_CODE_ID = 
+            (SELECT MME_CODE_ID FROM MME_CODES WHERE MME_CODE = @MME_CODE)";
         protected virtual string LoadTestTypesString => "SELECT TEST_TYPE_ID, RTRIM(TEST_TYPE_NAME) FROM TEST_TYPE";
         protected virtual string LoadConditionsString => "SELECT COND_ID, RTRIM(COND_NAME) FROM CONDITIONS";
         protected virtual string LoadParametersString => "SELECT PARAM_ID, RTRIM(PARAM_NAME) FROM PARAMS";
@@ -37,6 +41,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private TDbCommand _profileInsert;
 
+        private TDbCommand _getFreeProfileName;
+        private TDbCommand _profileNameExists;
+        
         private TDbCommand _profileConditionInsert;
         private TDbCommand _profileTestTypeInsert;
         private TDbCommand _profileParameterInsert;
@@ -98,7 +105,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void PrepareQueries()
         {
-            _childSelect = CreateCommand(ChildsSelectString, new List<TDbCommandParametr>()
+            _childSelect = CreateCommand(ChildSelectString, new List<TDbCommandParametr>()
             {
                 new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
                 new TDbCommandParametr("@PROF_ID_EXCLUDE", DbType.String, 32)
@@ -139,6 +146,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             _allMmeCodesSelect = CreateCommand(AllMmeCodesSelectString, new List<TDbCommandParametr>());
 
+            _getFreeProfileName = CreateCommand(GetFreeProfileNameString, new List<TDbCommandParametr>());
+            _profileNameExists = CreateCommand(ProfileNameExistsString, new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
+            });
+            
             _profileInsert = CreateCommand(ProfileInsertString, new List<TDbCommandParametr>()
             {
                 new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
@@ -177,6 +190,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _mmeCodeToProfileDelete = CreateCommand(MmeCodeToProfileDeleteString, new List<TDbCommandParametr>()
             {
                 new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
+                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
             });
 
             _loadTestTypes = CreateCommand(LoadTestTypesString, new List<TDbCommandParametr>());

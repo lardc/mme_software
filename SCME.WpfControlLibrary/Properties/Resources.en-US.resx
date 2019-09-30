@@ -732,7 +732,10 @@
   <data name="IsActive" xml:space="preserve">
     <value>Active</value>
   </data>
-  <data name="FonstSize" xml:space="preserve">
+  <data name="FontSize" xml:space="preserve">
     <value>Font size</value>
+  </data>
+  <data name="ProfileExists" xml:space="preserve">
+    <value>A profile with the same name already exists</value>
   </data>
 </root>

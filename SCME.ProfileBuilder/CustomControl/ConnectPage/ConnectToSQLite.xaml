@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="{Binding SQLiteFileName, UpdateSourceTrigger=PropertyChanged}" x:Name="tbDbPath"   TextWrapping="Wrap"/>
+            <TextBox Grid.Column="0" Grid.Row="0"  Text="{Binding SQLiteFileName, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
             <Button Grid.Column="1" Grid.Row="0" Name="SelectSqlPathButton" Click="SelectSqlPathButton_Click" Style="{StaticResource ButtonWithIcon}">
                 <iconPacks:PackIconMaterial   Kind="Magnify" />
             </Button>

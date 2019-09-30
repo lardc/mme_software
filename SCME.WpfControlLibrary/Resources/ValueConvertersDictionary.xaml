@@ -15,9 +15,10 @@
     <Converters:BvtTypeToStringConverter x:Key="BT2S" />
     <Converters:FrequencyDivisorToFrequency x:Key="FD2F" />
     <Converters:MeasureModeToVisibilityConverter x:Key="MM2V" />
-    <Converters:TestParametrToString x:Key="TP2S" />
     <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
+    <Converters:TypeTestParameterToString x:Key="TP2S" />
+    
 
 
 </ResourceDictionary>

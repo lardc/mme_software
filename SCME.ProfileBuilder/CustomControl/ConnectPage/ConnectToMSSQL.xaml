@@ -17,9 +17,9 @@
         <TextBox Text="{Binding Database, UpdateSourceTrigger=PropertyChanged}"/>
         <CheckBox IsChecked="{Binding IntegratedSecurity, UpdateSourceTrigger=PropertyChanged}"   Content="{x:Static res:Resources.ProfileBuilderIntegratedSecurity}"/>
         <TextBlock  Text="{x:Static res:Resources.ProfileBuilderDBUser}" />
-        <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IntegratedSecurity, Converter={StaticResource B2VI}}" />
+        <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUserPasswordEnabled}" />
         <TextBlock Text="{x:Static res:Resources.ProfileBuilderDBPassword}" />
-        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IntegratedSecurity, Converter={StaticResource B2VI}}" />
+        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUserPasswordEnabled}" />
         <Button Content="{x:Static res:Resources.Connect}" IsEnabled="{Binding ConnectedButtonEnabled}"  HorizontalAlignment="Right" Click="ConnectToMSSQL_Click" />
     </StackPanel>
     

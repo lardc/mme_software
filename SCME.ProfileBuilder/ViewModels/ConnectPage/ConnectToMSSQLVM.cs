@@ -1,9 +1,4 @@
 ﻿using PropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCME.ProfileBuilder.ViewModels.ConnectPage
 {
@@ -13,6 +8,9 @@ namespace SCME.ProfileBuilder.ViewModels.ConnectPage
         public string Server { get => Properties.Settings.Default.MSSQLServer; set => Properties.Settings.Default.MSSQLServer = value; }
         public string Database { get => Properties.Settings.Default.MSSQLDatabase; set => Properties.Settings.Default.MSSQLDatabase = value; }
         public bool IntegratedSecurity { get => Properties.Settings.Default.MSSQLIntegratedSecurity; set => Properties.Settings.Default.MSSQLIntegratedSecurity = value; }
+        [DependsOn(nameof(IntegratedSecurity))]
+        public bool IsUserPasswordEnabled => !IntegratedSecurity;
+
         public string UserId { get => Properties.Settings.Default.MSSQLUserId; set => Properties.Settings.Default.MSSQLUserId = value; }
         public string Password { get; set; }
 

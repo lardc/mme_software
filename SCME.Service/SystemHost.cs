@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Configuration;
+using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.ServiceModel;
+using System.ServiceModel.Configuration;
 using System.Windows.Forms;
 using SCME.InterfaceImplementations;
+using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Logger;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.Types.Database;
 
 namespace SCME.Service
 {
@@ -16,6 +22,7 @@ namespace SCME.Service
         private static ServiceHost ms_ControlServiceHost;
         private static ServiceHost ms_DatabaseServiceHost;
         private static ServiceHost ms_MaintenanceServiceHost;
+        private static ServiceHost _SQLiteDbServiceHost;
         private static BroadcastCommunication m_Communication;
 
         internal static bool? IsSyncedWithServer { get; private set; }
@@ -63,6 +70,28 @@ namespace SCME.Service
             m_Communication = Communication;
         }
 
+        private static void HostDbService()
+        {
+            _SQLiteDbServiceHost = new ServiceHost(new SQLiteDbService(new SQLiteConnection(new SQLiteConnectionStringBuilder()
+            {
+                DataSource = Settings.Default.ResultsDatabasePath,
+                SyncMode = SynchronizationModes.Full,
+                JournalMode = SQLiteJournalModeEnum.Truncate,
+                FailIfMissing = true
+            }.ToString())));
+
+            try
+            {
+                _SQLiteDbServiceHost.Open();
+            }
+            catch (Exception ex)
+            {
+                Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, $"New implement db local service not host: {ex.Message}");
+            }
+            
+            Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, "New implement db local service run");
+        }
+        
         internal static bool Initialize()
         {
             try
@@ -128,6 +157,8 @@ namespace SCME.Service
 
                 ms_DatabaseServiceHost = new ServiceHost(typeof(DatabaseServer));
 
+                HostDbService();
+                
                 try
                 {
                     ms_DatabaseServiceHost.AddServiceEndpoint(typeof(IDatabaseCommunicationService), new NetTcpBinding("DefaultTcpBinding"), Settings.Default.DBServiceExternalEndpoint);

@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
-using SCME.InterfaceImplementations;
-using SCME.ProfileBuilder.CustomControl;
-using SCME.Types.DatabaseServer;
 using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.ProfileBuilder.CommonPages
@@ -14,20 +6,20 @@ namespace SCME.ProfileBuilder.CommonPages
     /// <summary>
     /// Interaction logic for ConnectPage.xaml
     /// </summary>
-    public partial class ConnectPage : Page
+    public partial class ConnectPage
     {
-        public ViewModels.ConnectPage.ConnectPageVM VM { get; set; } = new ViewModels.ConnectPage.ConnectPageVM();
+        public ViewModels.ConnectPage.ConnectPageVM Vm { get; set; } = new ViewModels.ConnectPage.ConnectPageVM();
 
         public ConnectPage()
         {
             InitializeComponent();
         }
 
-        public async void ConnectToMSSQL()
+        public void ConnectToMssql()
         {
             try
             {
-                var vm = VM.ConnectToMSSQLVM;
+                var vm = Vm.ConnectToMSSQLVM;
 
                 var connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder();
 
@@ -47,17 +39,17 @@ namespace SCME.ProfileBuilder.CommonPages
             }
             catch (Exception ex)
             {
-                await Cache.Main.ShowMessageAsync("Error", ex.Message, MessageDialogStyle.Affirmative);
+                new DialogWindow(WpfControlLibrary.Properties.Resources.Error, ex.ToString()).ShowDialog();
             }
         }
 
-        public async void ConnectToSQLite()
+        private void ConnectToSqLite()
         {
             try
             {
-                var vm = VM.ConnectToSQLiteVM;
+                var vm = Vm.ConnectToSQLiteVM;
 
-                System.Data.SQLite.SQLiteConnectionStringBuilder connectionStringBuilder = new System.Data.SQLite.SQLiteConnectionStringBuilder()
+                var connectionStringBuilder = new System.Data.SQLite.SQLiteConnectionStringBuilder()
                 {
                     DataSource = vm.SQLiteFileName,
                     SyncMode = System.Data.SQLite.SynchronizationModes.Full,
@@ -72,13 +64,8 @@ namespace SCME.ProfileBuilder.CommonPages
             }
             catch (Exception ex)
             {
-                await Cache.Main.ShowMessageAsync("Error", ex.Message, MessageDialogStyle.Affirmative);
+                new DialogWindow(WpfControlLibrary.Properties.Resources.Error, ex.ToString()).ShowDialog();
             }
-        }
-
-        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((TextBlock) sender).IsEnabled = true;
         }
     }
 }

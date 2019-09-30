@@ -38,12 +38,6 @@ namespace SCME.WpfControlLibrary.DataProviders
             new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters)),
             new TestParameter(TestParametersType.RAC, typeof(Types.RAC.TestParameters)),
             new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters)),
-
-            //new TestParametrContainer(TestParametersType.Clamping, typeof(Types.Clamping.TestParameters)),
-            //new TestParametrContainer(TestParametersType.Commutation, typeof(Types.Commutation.TestParameters)),
-            //new TestParametrContainer(TestParametersType.IH, typeof(Types.IH.TestParameters)),
-            //new TestParametrContainer(TestParametersType.RCC, typeof(Types.RCC.TestParameters)),
-            //new TestParametrContainer(TestParametersType.Sctu, typeof(Types.SCTU.SctuTestParameters)),
         };
 
     }

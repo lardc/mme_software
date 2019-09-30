@@ -1,11 +1,6 @@
 ﻿using SCME.Types.Profiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SCME.InterfaceImplementations.Common
+namespace SCME.Types.Database
 {
     public interface ISaveProfileService
     {

@@ -1,11 +1,5 @@
-﻿using MahApps.Metro;
-using PropertyChanged;
+﻿using PropertyChanged;
 using SCME.WpfControlLibrary.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCME.ProfileBuilder.ViewModels.ConnectPage
 {

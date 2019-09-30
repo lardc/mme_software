@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
+using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
 using SCME.Types.Commutation;
@@ -119,6 +121,25 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
 
             return cacheProfile.Profile.ProfileDeepData.Copy();
+        }
+
+        public bool ProfileNameExists(string profileName)
+        {
+            _profileNameExists.Parameters["@PROF_NAME"].Value = profileName;
+            return Convert.ToInt32(_profileNameExists.ExecuteScalar()) > 0;
+        }
+
+        public string GetFreeProfileName()
+        {
+            var id = Convert.ToInt32(_getFreeProfileName.ExecuteScalar());
+            string newProfileName;
+            do
+            {
+                id++;
+                newProfileName = $"New Profile{id}";
+            } while (ProfileNameExists(newProfileName));
+
+            return newProfileName;
         }
 
         #region Fill
@@ -359,7 +380,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             FillConditionsResults(testTypeId, results);
 
             foreach (var result in results)
-                data.ComutationType = (ModuleCommutationType)Enum.Parse(typeof(ModuleCommutationType), result.Value.ToString());
+                data.CommutationType = (ModuleCommutationType)Enum.Parse(typeof(ModuleCommutationType), result.Value.ToString());
         }
 
         private void FillClampConditions(ProfileDeepData data, long testTypeId)

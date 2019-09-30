@@ -78,10 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackGround.cs" />
-    <Compile Include="Common\IDbService.cs" />
-    <Compile Include="Common\ILoadProfilesService.cs" />
     <Compile Include="Common\InserterBaseTestParametersAndNormatives.cs" />
-    <Compile Include="Common\ISaveProfileService.cs" />
     <Compile Include="Common\DbService\DbService.cs" />
     <Compile Include="Common\DbService\DbServiceLoad.cs" />
     <Compile Include="Common\DbService\DbServiceSave.cs" />

@@ -11,14 +11,16 @@
                      xmlns:sys="clr-namespace:System;assembly=mscorlib">
     
     
-    <ObjectDataProvider x:Key="VTMTestTypes" MethodName="GetVTMTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
-    <ObjectDataProvider x:Key="BVTTestTypes" MethodName="GetBVTTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
-    <ObjectDataProvider x:Key="BVTMeasurementModes" MethodName="GetBVTMeasurementModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VtmTestTypes" MethodName="GetVTMTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="BvtTestTypes" MethodName="GetBVTTestTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="BvtMeasurementModes" MethodName="GetBVTMeasurementModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="DvdtModes" MethodName="GetDvdtModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VoltageRates" MethodName="GetVoltageRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TModes" MethodName="GetTModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TOsvRates" MethodName="GetTOsvRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TDcFallRates" MethodName="GetTDcFallRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
     <ObjectDataProvider x:Key="DataFromMeasurementModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>

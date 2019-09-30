@@ -173,7 +173,7 @@ namespace SCME.Types.Profiles
 
         public ProfileItem ToProfileItem()
         {
-            ProfileItem profileItem = new ProfileItem()
+            var profileItem = new ProfileItem()
             {
                 ProfileId = Id,
                 ProfileTS = Timestamp,

@@ -117,16 +117,16 @@ namespace SCME.Types.Utils
                         {
                             case LogJournalMessageType.Note:
                             case LogJournalMessageType.Info:
-                                Trace.WriteLine(String.Format("{0} INFORMATION - {1}: {2}", item.Timestamp,
+                                Trace.WriteLine(string.Format("{0} INFORMATION - {1}: {2}", item.Timestamp,
                                                               item.Source, item.Message));
                                 break;
                             case LogJournalMessageType.Warning:
                             case LogJournalMessageType.Problem:
-                                Trace.WriteLine(String.Format("{0} WARNING - {1}: {2}", item.Timestamp,
+                                Trace.WriteLine(string.Format("{0} WARNING - {1}: {2}", item.Timestamp,
                                                               item.Source, item.Message));
                                 break;
                             case LogJournalMessageType.Error:
-                                Trace.WriteLine(String.Format("{0} ERROR - {1}: {2}", item.Timestamp,
+                                Trace.WriteLine(string.Format("{0} ERROR - {1}: {2}", item.Timestamp,
                                                               item.Source, item.Message));
                                 break;
                         }

@@ -144,7 +144,7 @@ namespace SCME.Types.dVdt
     public class TestResults : BaseTestResults
     {
         [DataMember]
-        public Boolean Passed { get; set; }
+        public bool Passed { get; set; }
 
         [DataMember]
         public ushort VoltageRate { get; set; }

@@ -732,7 +732,10 @@
   <data name="IsActive" xml:space="preserve">
     <value>Активен</value>
   </data>
-  <data name="FonstSize" xml:space="preserve">
+  <data name="FontSize" xml:space="preserve">
     <value>Размер шрифта</value>
+  </data>
+  <data name="ProfileExists" xml:space="preserve">
+    <value>Профиль с таким именем уже существует</value>
   </data>
 </root>

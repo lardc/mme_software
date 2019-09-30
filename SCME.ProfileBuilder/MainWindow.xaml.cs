@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Media;
-using MahApps.Metro;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
-using SCME.InterfaceImplementations;
 using SCME.ProfileBuilder.CommonPages;
 using SCME.ProfileBuilder.Properties;
-using SCME.Types.DatabaseServer;
-using SCME.Types.TOU;
 using SCME.WpfControlLibrary;
-using SCME.WpfControlLibrary.ViewModels;
 
 namespace SCME.ProfileBuilder
 {
@@ -51,7 +38,8 @@ namespace SCME.ProfileBuilder
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //Cache.ConnectPage.ConnectToMSSQL();
+            Cache.ConnectPage.ConnectToMssql();
+            ResourceBinding.Scaling(0.75);
         }
     }
 }

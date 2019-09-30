@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SCME.WpfControlLibrary.Commands;
 
 namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
 {
@@ -52,9 +53,11 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
             InitializeComponent();
         }
 
+        public ICommand DeleteRelayCommand => new RelayCommand<BaseTestParametersAndNormatives>(q => ItemSource.Remove(q));
+        
         private void DeleteParameter_Click(object sender, RoutedEventArgs e)
         {
-            ItemSource.Remove((sender as Button).DataContext as BaseTestParametersAndNormatives);
+            ItemSource.Remove(((Button) sender).DataContext as BaseTestParametersAndNormatives);
         }
         
     }

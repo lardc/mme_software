@@ -7,8 +7,7 @@
     <converters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
 
     <Style TargetType="{x:Type myControls:NumericUpDown}">
-        <Setter Property="UpDownButtonsWidth" Value="{DynamicResource SCME.RepeatButtonUpDownSize}"/>
-        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+        <Setter Property="UpDownButtonsWidth" Value="{DynamicResource SCME.RepeatButtonUpDownSize}" />
         <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="controls:ControlsHelper.FocusBorderBrush" Value="{DynamicResource TextBoxFocusBorderBrush}" />
@@ -32,7 +31,6 @@
                 <ControlTemplate TargetType="{x:Type controls:NumericUpDown}">
                     <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Border x:Name="Base"
-                                Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding controls:ControlsHelper.CornerRadius}"
@@ -65,7 +63,6 @@
                                      controls:TextBoxHelper.Watermark="{TemplateBinding controls:TextBoxHelper.Watermark}"
                                      controls:TextBoxHelper.WatermarkAlignment="{TemplateBinding controls:TextBoxHelper.WatermarkAlignment}"
                                      controls:TextBoxHelper.WatermarkTrimming="{TemplateBinding controls:TextBoxHelper.WatermarkTrimming}"
-                                     Background="{x:Null}"
                                      BorderThickness="0"
                                      FocusVisualStyle="{x:Null}"
                                      Focusable="{TemplateBinding Focusable}"
@@ -111,20 +108,12 @@
                                 </RepeatButton>
                             </StackPanel>
                         </Grid>
-                        <Border x:Name="DisabledVisualElement"
-                                Background="{DynamicResource ControlsDisabledBrush}"
-                                BorderBrush="{DynamicResource ControlsDisabledBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding controls:ControlsHelper.CornerRadius}"
-                                IsHitTestVisible="False"
-                                Opacity="0"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.DisabledVisualElementVisibility), Mode=OneWay}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="ButtonsAlignment" Value="Left">
                             <Setter TargetName="PART_Buttons" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_Buttons" Property="Margin" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static converters:ThicknessSideType.Right}}" />
+                            <Setter TargetName="PART_Buttons" Property="Margin"
+                                    Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static converters:ThicknessSideType.Right}}" />
                             <Setter TargetName="PART_ButtonsColumn" Property="Width" Value="*" />
                             <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_TextBox" Property="Margin" Value="-2 0 0 0" />
@@ -132,9 +121,8 @@
                             <Setter TargetName="PART_TextBoxColumn" Property="Width" Value="Auto" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.0" />
                             <Setter TargetName="PART_Buttons" Property="Visibility" Value="Hidden" />
-                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent" />
                         </Trigger>
                         <Trigger Property="IsReadOnly" Value="True">
                             <Setter Property="InterceptArrowKeys" Value="False" />
@@ -182,5 +170,4 @@
         </Setter>
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplate}" />
     </Style>
-    <!-- <Style TargetType="{x:Type myControls:NumericUpDown}" BasedOn="{StaticResource {x:Type controls:NumericUpDown}}"/> -->
 </ResourceDictionary>

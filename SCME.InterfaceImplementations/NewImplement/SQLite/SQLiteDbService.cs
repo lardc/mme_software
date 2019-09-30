@@ -1,8 +1,12 @@
 ﻿using System.Data.SQLite;
+using System.ServiceModel;
 using SCME.InterfaceImplementations.Common;
 
 namespace SCME.InterfaceImplementations.NewImplement.SQLite
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
+        ConcurrencyMode = ConcurrencyMode.Single,
+        Namespace = "http://proton-electrotex.com/SCME")]
     public class SQLiteDbService : Common.DbService.DbService<SQLiteCommand, SQLiteConnection>
     {
         protected override string TestTypeSelectString => @"SELECT [ID], [TEST_TYPE_ID] FROM [PROF_TEST_TYPE] WHERE [PROF_ID] = @PROF_ID";

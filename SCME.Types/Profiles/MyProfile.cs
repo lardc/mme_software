@@ -20,7 +20,7 @@ namespace SCME.Types.Profiles
 
         #region Comutation
         [DataMember]
-        public Commutation.ModuleCommutationType ComutationType { get; set; }
+        public Commutation.ModuleCommutationType CommutationType { get; set; }
         #endregion
         #region Clamping
         [DataMember]
@@ -72,18 +72,15 @@ namespace SCME.Types.Profiles
         public bool IsTop { get; set; }
         public MyProfile Parent { get; set; }
 
-        public MyProfile GenerateNextVersion(ProfileDeepData profileDeepData)
+        public MyProfile GenerateNextVersion(ProfileDeepData profileDeepData, string newName)
         {
-            MyProfile newProfile = new MyProfile(Id, Name, Guid.NewGuid(), Version+ 1, DateTime.Now)
+            var newProfile = new MyProfile(Id, newName, Guid.NewGuid(), Version+ 1, DateTime.Now)
             {
                 ProfileDeepData = profileDeepData,
                 IsTop = true,
             };
-            newProfile.Children.Add(this);
-            foreach (var i in Children)
-                newProfile.Children.Add(i);
+            
             return newProfile;
         }
-
     }
 }

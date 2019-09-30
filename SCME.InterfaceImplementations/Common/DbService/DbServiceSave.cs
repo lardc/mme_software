@@ -47,7 +47,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var clampingCondtions = new Dictionary<string, object>()
             {
-                {"COMM_Type", data.ComutationType},
+                {"COMM_Type", data.CommutationType},
             };
 
             var clampingParameters = new Dictionary<string, (object Min, object Max)>();
@@ -276,9 +276,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("TOU", touCondition, touParameters);
         }
 
-        private void DeleteProfile(MyProfile profile)
+        private void DeleteProfile(MyProfile profile, string mmeCode)
         {
             _mmeCodeToProfileDelete.Parameters["@PROFILE_ID"].Value = profile.Id;
+            _mmeCodeToProfileDelete.Parameters["@MME_CODE"].Value = mmeCode;
             _mmeCodeToProfileDelete.Transaction = _dbTransaction;
             _mmeCodeToProfileDelete.ExecuteScalar();
         }
@@ -350,13 +351,16 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return profile.Id;
         }
 
-        public void RemoveProfile(MyProfile profile)
+        public void RemoveProfile(MyProfile profile, string mmeCode)
         {
             try
             {
                 _dbTransaction = _connection.BeginTransaction();
-                DeleteProfile(profile);
+                DeleteProfile(profile, mmeCode);
                 _dbTransaction.Commit();
+
+//                _cacheProfileByKey.Remove(profile.Key);
+//                _cacheProfilesByMmeCode[mmeCode].Remove(profile);
             }
             catch (Exception)
             {
@@ -370,9 +374,26 @@ namespace SCME.InterfaceImplementations.Common.DbService
             try
             {
                 _dbTransaction = _connection.BeginTransaction();
-                DeleteProfile(oldProfile);
+                if(oldProfile != null)
+                    DeleteProfile(oldProfile, mmeCode);
                 var id = SaveProfile(newProfile, mmeCode);
                 _dbTransaction.Commit();
+
+                //If new version without rename then move children of old profile and old profile to children of new profile
+                if (oldProfile != null)
+                {
+                    if (newProfile.Name.Equals(oldProfile.Name))
+                    {
+                        newProfile.Children.Add(oldProfile);
+                        foreach (var i in oldProfile.Children)
+                            newProfile.Children.Add(i);
+                    }
+
+                    oldProfile.Children.Clear();
+                }
+
+                _cacheProfileByKey[newProfile.Key] = (newProfile, true, true);
+                _cacheProfilesByMmeCode[mmeCode].Add(newProfile);
                 return id;
             }
 

@@ -56,7 +56,7 @@ namespace SCME.Types.SQL
 
         public ProfileItem ToProfileItemWithChild(IEnumerable<ProfileForSqlSelect> profileItems)
         {
-            ProfileItem profile = ToProfileItem();
+            var profile = ToProfileItem();
             profile.ChildProfileItems = profileItems.Select(m=> m.ToProfileItem()).ToList();
             return profile;
         }

@@ -21,21 +21,18 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
     /// <summary>
     /// Логика взаимодействия для AddTestParametrUserControl.xaml
     /// </summary>
-    [AddINotifyPropertyChangedInterface]
-    public partial class AddTestParametrUserControl : UserControl
+    public partial class AddTestParameterUserControl : UserControl
     {
-        public event AddTestParametrDelegate AddTestParametersEvent;
+        public event Action AddTestParametersEvent;
 
-        public TestParametersType SelectedParametersType { get; set; }
-
-        public AddTestParametrUserControl()
+        public AddTestParameterUserControl()
         {
             InitializeComponent();
         }
 
         private void AddTestParameters_Click(object sender, RoutedEventArgs e)
         {
-            AddTestParametersEvent?.Invoke(SelectedParametersType);
+            AddTestParametersEvent?.Invoke();
         }
     }
 }

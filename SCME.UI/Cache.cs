@@ -1,7 +1,9 @@
-﻿using SCME.UI.IO;
+﻿using SCME.Types;
+using SCME.UI.IO;
 using SCME.UI.PagesCommon;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
+using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.UI
 {
@@ -30,8 +32,13 @@ namespace SCME.UI
         private static QrrTqPage ms_QrrTqPage;
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
+        private static ProfilesPage _profilesPage;
+
+
+        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy));
 
         public static MainWindow Main { get; set; }
+        public static DatabaseProxy DatabaseProxy;
 
         internal static ControlLogic Net { get; set; }
 
@@ -182,6 +189,7 @@ namespace SCME.UI
             get { return ms_IHPage ?? (ms_IHPage = new IHPage()); }
             set { ms_IHPage = value; }
         }
+        
         #endregion
 
         #region Flags

@@ -14,7 +14,7 @@ namespace SCME.Types
     public class LogItem
     {
         [DataMember]
-        public Int64 ID { get; set; }
+        public long ID { get; set; }
 
         [DataMember]
         public ComplexParts Source { get; set; }
@@ -358,7 +358,7 @@ namespace SCME.Types
         public float Value { get; set; }
 
         [DataMember]
-        public Boolean IsHide { get; set; }
+        public bool IsHide { get; set; }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -387,7 +387,7 @@ namespace SCME.Types
         public string Value { get; set; }
 
         [DataMember]
-        public Boolean IsTech { get; set; }
+        public bool IsTech { get; set; }
     }
 
     [ServiceContract(Namespace = "http://proton-electrotex.com/SCME", SessionMode = SessionMode.Required)]

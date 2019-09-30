@@ -596,7 +596,7 @@ namespace SCME.WpfControlLibrary.Properties {
         /// </summary>
         public static string FontSize {
             get {
-                return ResourceManager.GetString("FonstSize", resourceCulture);
+                return ResourceManager.GetString("FontSize", resourceCulture);
             }
         }
         
@@ -1272,6 +1272,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string ProfileBuilderTitle {
             get {
                 return ResourceManager.GetString("ProfileBuilderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Профиль с таким именем уже существует.
+        /// </summary>
+        public static string ProfileExists {
+            get {
+                return ResourceManager.GetString("ProfileExists", resourceCulture);
             }
         }
         

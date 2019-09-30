@@ -15,7 +15,6 @@ namespace SCME.WpfControlLibrary.ViewModels
         public AccentAndThemeUserControlVM()
         {
             
-            ThemeManager.AddAppTheme("CustomThemePurple", new Uri("pack://application:,,,/SCME.WpfControlLibrary;component/Resources/Styles/CustomThemePurple.xaml"));
             AppThemes= ThemeManager.AppThemes.Select(m=> new AppThemeWrapper(m)).ToList();
             AccentColors = ThemeManager.Accents.Select(m=> new AccentWrapper(m)).ToList();
             SelectAccentWrapper = AccentColors.SingleOrDefault(m => m.Name == Properties.Settings.Default.Accent) ?? AccentColors.First();

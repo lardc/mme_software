@@ -4,9 +4,11 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Windows.Threading;
+using SCME.InterfaceImplementations.Common;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Clamping;
+using SCME.Types.Database;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
@@ -29,7 +31,7 @@ namespace SCME.UI.IO
         private readonly ExternalControlCallbackHost m_CallbackHost;
         private readonly DispatcherTimer m_NetPingTimer;
         private ControlServerProxy m_ControlClient;
-        private DatabaseCommunicationProxy m_DatabaseClient;
+        public DatabaseCommunicationProxy DatabaseClient { get; set; }
         private TypeCommon.InitParams m_InitParams;
         private volatile bool m_IsServerConnected, m_StopInit;
 
@@ -165,18 +167,20 @@ namespace SCME.UI.IO
                             else
                                 m_ControlClient.Close();
 
-                        if (m_DatabaseClient != null)
-                            if (m_DatabaseClient.State == CommunicationState.Faulted)
-                                m_DatabaseClient.Abort();
+                        if (DatabaseClient != null)
+                            if (DatabaseClient.State == CommunicationState.Faulted)
+                                DatabaseClient.Abort();
                             else
-                                m_DatabaseClient.Close();
+                                DatabaseClient.Close();
 
                         m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        m_DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
+                        var q = new DatabaseProxy();
+                        
                         m_ControlClient.Open();
 
-                        m_DatabaseClient.Open();
+                        DatabaseClient.Open();
 
                         m_NetPingTimer.Start();
 
@@ -276,12 +280,12 @@ namespace SCME.UI.IO
                 {
                     if (m_ControlClient != null)
                     {
-                        if (m_DatabaseClient.State == CommunicationState.Faulted)
-                            m_DatabaseClient.Abort();
+                        if (DatabaseClient.State == CommunicationState.Faulted)
+                            DatabaseClient.Abort();
                         else
-                            m_DatabaseClient.Close();
+                            DatabaseClient.Close();
 
-                        m_DatabaseClient = null;
+                        DatabaseClient = null;
                     }
                 }
                 catch (Exception ex)
@@ -340,17 +344,17 @@ namespace SCME.UI.IO
                             else
                                 m_ControlClient.Close();
 
-                        if (m_DatabaseClient != null)
-                            if (m_DatabaseClient.State == CommunicationState.Faulted)
-                                m_DatabaseClient.Abort();
+                        if (DatabaseClient != null)
+                            if (DatabaseClient.State == CommunicationState.Faulted)
+                                DatabaseClient.Abort();
                             else
-                                m_DatabaseClient.Close();
+                                DatabaseClient.Close();
 
                         m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        m_DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
                         m_ControlClient.Open();
-                        m_DatabaseClient.Open();
+                        DatabaseClient.Open();
                         m_ControlClient.Subscribe();
 
                         break;
@@ -391,7 +395,7 @@ namespace SCME.UI.IO
             try
             {
                 m_ControlClient.Check();
-                m_DatabaseClient.Check();
+                DatabaseClient.Check();
             }
             catch (FaultException<FaultData>)
             {
@@ -1264,7 +1268,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadLogs(tail, count);
+                return DatabaseClient.ReadLogs(tail, count);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1287,7 +1291,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadGroups(@from, to);
+                return DatabaseClient.ReadGroups(@from, to);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1332,7 +1336,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDevices(@group);
+                return DatabaseClient.ReadDevices(@group);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1376,7 +1380,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDeviceParameters(internalId);
+                return DatabaseClient.ReadDeviceParameters(internalId);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1399,7 +1403,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDeviceConditions(internalId);
+                return DatabaseClient.ReadDeviceConditions(internalId);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1458,7 +1462,7 @@ namespace SCME.UI.IO
             var profiles = new List<ProfileItem>();
             try
             {
-                profiles = m_DatabaseClient.GetProfileItemsByMmeCode(mmeCode);
+                profiles = DatabaseClient.GetProfileItemsByMmeCode(mmeCode);
             }
             catch (FaultException<FaultData> ex)
             {
