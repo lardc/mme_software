@@ -7,36 +7,40 @@ namespace SCME.InterfaceImplementations.Common
     public class InserterBaseTestParametersAndNormatives
     {
         public int Order { get; set; }
-        private int _TestTypeId;
-        private int _ProfileId;
+        private int _testTypeId;
+        private readonly int _profileId;
 
-        private DbTransaction _DbTransaction;
+        private readonly DbTransaction _dbTransaction;
 
-        private DbCommand _ProfileTestTypeInsert;
-        private DbCommand _ProfileParameterInsert;
-        private DbCommand _ProfileConditionInsert;
+        private readonly DbCommand _profileTestTypeInsert;
+        private readonly DbCommand _profileParameterInsert;
+        private readonly DbCommand _profileConditionInsert;
 
-        private Dictionary<string, int> _TestTypeIdByName;
-        private Dictionary<string, int> _ConditionIdByName;
-        private Dictionary<string, int> _ParameterIdByName;
+        private readonly Dictionary<string, int> _testTypeIdByName;
+        private readonly Dictionary<string, int> _conditionIdByName;
+        private readonly Dictionary<string, int> _parameterIdByName;
 
-        public InserterBaseTestParametersAndNormatives(int profileId, DbTransaction dbTransaction, DbCommand profileTestTypeInsert, DbCommand profileParameterInsert, DbCommand profileConditionInsert, Dictionary<string, int> testTypeIdByName, Dictionary<string, int> conditionIdByName, Dictionary<string, int> parameterIdByName)
+        private readonly Func<DbCommand, int> _lastInsertRowId;
+
+        public InserterBaseTestParametersAndNormatives(int profileId, DbTransaction dbTransaction, DbCommand profileTestTypeInsert, DbCommand profileParameterInsert, DbCommand profileConditionInsert, Dictionary<string, int> testTypeIdByName,
+            Dictionary<string, int> conditionIdByName, Dictionary<string, int> parameterIdByName, Func<DbCommand, int> lastInsertRowId)
         {
-            _ProfileId = profileId;
-            _DbTransaction = dbTransaction ?? throw new ArgumentNullException(nameof(dbTransaction));
-            _ProfileTestTypeInsert = profileTestTypeInsert ?? throw new ArgumentNullException(nameof(profileTestTypeInsert));
-            _ProfileParameterInsert = profileParameterInsert ?? throw new ArgumentNullException(nameof(profileParameterInsert));
-            _ProfileConditionInsert = profileConditionInsert ?? throw new ArgumentNullException(nameof(profileConditionInsert));
-            _TestTypeIdByName = testTypeIdByName ?? throw new ArgumentNullException(nameof(testTypeIdByName));
-            _ConditionIdByName = conditionIdByName ?? throw new ArgumentNullException(nameof(conditionIdByName));
-            _ParameterIdByName = parameterIdByName ?? throw new ArgumentNullException(nameof(parameterIdByName));
+            _profileId = profileId;
+            _dbTransaction = dbTransaction ?? throw new ArgumentNullException(nameof(dbTransaction));
+            _profileTestTypeInsert = profileTestTypeInsert ?? throw new ArgumentNullException(nameof(profileTestTypeInsert));
+            _profileParameterInsert = profileParameterInsert ?? throw new ArgumentNullException(nameof(profileParameterInsert));
+            _profileConditionInsert = profileConditionInsert ?? throw new ArgumentNullException(nameof(profileConditionInsert));
+            _testTypeIdByName = testTypeIdByName ?? throw new ArgumentNullException(nameof(testTypeIdByName));
+            _conditionIdByName = conditionIdByName ?? throw new ArgumentNullException(nameof(conditionIdByName));
+            _parameterIdByName = parameterIdByName ?? throw new ArgumentNullException(nameof(parameterIdByName));
+            _lastInsertRowId = lastInsertRowId;
         }
 
 
         public void Insert(string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters)
         {
             Order++;
-            _TestTypeId = InsertTestType(_TestTypeIdByName[typeName], _ProfileId);
+            _testTypeId = InsertTestType(_testTypeIdByName[typeName]);
 
             foreach (var i in conditions)
                 InsertCondition(i.Key, i.Value);
@@ -47,42 +51,43 @@ namespace SCME.InterfaceImplementations.Common
 
         public void Insert((string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) data)
         {
-            Insert(data.typeName, data.conditions, data.parameters);
+            var (typeName, conditions, parameters) = data;
+            Insert(typeName, conditions, parameters);
         }
 
-       
 
-        private int InsertTestType(int typeId, int order = 0)
+        private int InsertTestType(int typeId)
         {
-            _ProfileTestTypeInsert.Parameters["@PROF_ID"].Value = _ProfileId;
-            _ProfileTestTypeInsert.Parameters["@TEST_TYPE_ID"].Value = typeId;
-            _ProfileTestTypeInsert.Parameters["@ORD"].Value = Order;
-            _ProfileTestTypeInsert.Transaction = _DbTransaction;
+            _profileTestTypeInsert.Parameters["@PROF_ID"].Value = _profileId;
+            _profileTestTypeInsert.Parameters["@TEST_TYPE_ID"].Value = typeId;
+            _profileTestTypeInsert.Parameters["@ORD"].Value = Order;
+            _profileTestTypeInsert.Transaction = _dbTransaction;
 
-            return Convert.ToInt32(_ProfileTestTypeInsert.ExecuteScalar());
+            return _lastInsertRowId(_profileTestTypeInsert);
+            //return Convert.ToInt32(_ProfileTestTypeInsert.ExecuteScalar());
         }
 
-        protected void InsertParameter(string name, object min, object max)
+        private void InsertParameter(string name, object min, object max)
         {
-            _ProfileParameterInsert.Parameters["@PROF_TESTTYPE_ID"].Value = _TestTypeId;
-            _ProfileParameterInsert.Parameters["@PROF_ID"].Value = _ProfileId;
-            _ProfileParameterInsert.Parameters["@PARAM_ID"].Value = _ParameterIdByName[name];
-            _ProfileParameterInsert.Parameters["@MIN_VAL"].Value = min;
-            _ProfileParameterInsert.Parameters["@MAX_VAL"].Value = max;
-            _ProfileParameterInsert.Transaction = _DbTransaction;
+            _profileParameterInsert.Parameters["@PROF_TESTTYPE_ID"].Value = _testTypeId;
+            _profileParameterInsert.Parameters["@PROF_ID"].Value = _profileId;
+            _profileParameterInsert.Parameters["@PARAM_ID"].Value = _parameterIdByName[name];
+            _profileParameterInsert.Parameters["@MIN_VAL"].Value = min;
+            _profileParameterInsert.Parameters["@MAX_VAL"].Value = max;
+            _profileParameterInsert.Transaction = _dbTransaction;
 
-            _ProfileParameterInsert.ExecuteNonQuery();
+            _profileParameterInsert.ExecuteNonQuery();
         }
 
-        protected void InsertCondition(string name, object value)
+        private void InsertCondition(string name, object value)
         {
-            _ProfileConditionInsert.Parameters["@PROF_TESTTYPE_ID"].Value = _TestTypeId;
-            _ProfileConditionInsert.Parameters["@PROF_ID"].Value = _ProfileId;
-            _ProfileConditionInsert.Parameters["@COND_ID"].Value = _ConditionIdByName[name];
-            _ProfileConditionInsert.Parameters["@VALUE"].Value = value.ToString();
-            _ProfileConditionInsert.Transaction = _DbTransaction;
+            _profileConditionInsert.Parameters["@PROF_TESTTYPE_ID"].Value = _testTypeId;
+            _profileConditionInsert.Parameters["@PROF_ID"].Value = _profileId;
+            _profileConditionInsert.Parameters["@COND_ID"].Value = _conditionIdByName[name];
+            _profileConditionInsert.Parameters["@VALUE"].Value = value.ToString();
+            _profileConditionInsert.Transaction = _dbTransaction;
 
-            _ProfileConditionInsert.ExecuteNonQuery();
+            _profileConditionInsert.ExecuteNonQuery();
         }
     }
 }

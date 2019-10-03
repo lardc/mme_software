@@ -19,25 +19,27 @@ namespace SCME.WpfControlLibrary.CustomControls
     {
         public ProfilesPageVm Vm { get; set; } = new ProfilesPageVm();
         private readonly IDbService _dbService;
+        private readonly bool _isWithoutChild;
 
         private bool _isIgnoreTreeViewSelectionChanged;
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
 
-        public ProfilesPage(IDbService dbService, string mmeCode = null)
+        public event Action PreviewGoBackAction;
+
+        public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false)
         {
+            if (dbService == null) throw new ArgumentNullException(nameof(dbService));
+            if (mmeCode == null) throw new ArgumentNullException (nameof(mmeCode));
+            if (mmeCode.Trim() == "")  throw new ArgumentException (nameof(mmeCode)); 
+
             InitializeComponent();
             _dbService = dbService;
-            if (mmeCode != null)
-                Vm.SelectedMmeCode = mmeCode;
-            else
-            {
-                Vm.MmeCodes = _dbService.GetMmeCodes();
-                if (string.IsNullOrEmpty(Vm.SelectedMmeCode) && Vm.MmeCodes.Count != 0)
-                    Vm.SelectedMmeCode = Vm.MmeCodes.First().Key;
-            }
+            _isWithoutChild = isWithoutChild;
+
+            Vm.MmeCodes = isSingleMmeCode ? _dbService.GetMmeCodes().Where(m=> m.Key == mmeCode).ToDictionary(m=> m.Key, m=> m.Value) : _dbService.GetMmeCodes();
+            Vm.SelectedMmeCode = Vm.MmeCodes.ContainsKey(mmeCode) ? mmeCode : Vm.MmeCodes.First().Key;
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
-
             _dispatcherTimerFindProfile.Interval = new TimeSpan(0, 0, 1);
         }
 
@@ -66,21 +68,21 @@ namespace SCME.WpfControlLibrary.CustomControls
                 return;
 
             Vm.SelectedProfileNameCopy = Vm.SelectedProfile.Name;
-            Vm.SelectedProfile.ProfileDeepData = _dbService.LoadProfileDeepData(Vm.SelectedProfile);
-            if (Vm.SelectedProfile.IsTop)
+            Vm.SelectedProfile.DeepData = _dbService.LoadProfileDeepData(Vm.SelectedProfile);
+            if (Vm.SelectedProfile.IsTop && _isWithoutChild == false)
             {
                 Vm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_dbService.GetProfileChildSuperficially(Vm.SelectedProfile));
                 foreach (var i in Vm.SelectedProfile.Children)
                     i.IsTop = false;
             }
 
-            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.ProfileDeepData;
+            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.DeepData;
         }
 
         private void BeginEditProfile_Click(object sender, RoutedEventArgs e)
         {
             ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(Vm.SelectedProfile)).IsSelected = true;
-            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.ProfileDeepData.Copy();
+            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.DeepData.Copy();
             Vm.SelectedProfileNameCopy = Vm.SelectedProfile.Name.Copy();
             Vm.IsEditModeActive = true;
         }
@@ -122,8 +124,8 @@ namespace SCME.WpfControlLibrary.CustomControls
                 newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, Vm.SelectedMmeCode);
 
                 _isIgnoreTreeViewSelectionChanged = true;
-                Vm.Profiles.Add(newProfile);
-                Vm.LoadedProfiles.Add(newProfile);
+                Vm.Profiles.Insert(0, newProfile);
+                Vm.LoadedProfiles.Insert(0, newProfile);
             }
             else
             {
@@ -146,16 +148,25 @@ namespace SCME.WpfControlLibrary.CustomControls
             ProfilesTreeView.UpdateLayout();
             _isIgnoreTreeViewSelectionChanged = false;
 
-            ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(newProfile)).IsSelected = true;
+            try
+            {
+                ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(newProfile)).IsSelected = true;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+
             Vm.SelectedProfile = newProfile;
         }
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
         {
             Vm.IsEditModeActive = false;
-            if (Vm.SelectedProfile == null) 
+            if (Vm.SelectedProfile == null)
                 return;
-            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.ProfileDeepData;
+            Vm.ProfileDeepDataCopy = Vm.SelectedProfile.DeepData;
             Vm.SelectedProfileNameCopy = Vm.SelectedProfile.Name;
         }
 
@@ -192,6 +203,12 @@ namespace SCME.WpfControlLibrary.CustomControls
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
             _dispatcherTimerFindProfile.Start();
+        }
+        
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            PreviewGoBackAction?.Invoke();
+            NavigationService?.GoBack();            
         }
     }
 }

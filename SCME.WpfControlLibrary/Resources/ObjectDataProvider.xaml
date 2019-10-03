@@ -19,6 +19,7 @@
     <ObjectDataProvider x:Key="TModes" MethodName="GetTModes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TOsvRates" MethodName="GetTOsvRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TDcFallRates" MethodName="GetTDcFallRates" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="ClampingForceTypes" MethodName="GetClampingForceTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     

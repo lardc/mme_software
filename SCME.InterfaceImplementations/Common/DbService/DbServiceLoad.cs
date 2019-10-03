@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.IO;
 using System.Linq;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
@@ -24,6 +24,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     mmeCodes.Add(reader.GetString(0), reader.GetInt32(1));
 
             return mmeCodes;
+        }
+
+        public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
+        {
+            var res = GetProfilesSuperficially(mmeCode).Select(m =>
+            {
+                m.DeepData = LoadProfileDeepData(m);
+                return m;
+            }).ToList();
+
+            _cacheProfilesByMmeCode[mmeCode] = res;
+            foreach (var i in res)
+                _cacheProfileByKey[i.Key] = (i, true, false);
+
+            return res;
         }
 
         public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
@@ -63,7 +78,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             else
                 profiles = _cacheProfilesByMmeCode[mmeCode];
 
-            return profiles.Select(m=> m.Copy()).ToList();
+            return profiles.Select(m => m.Copy()).ToList();
         }
 
 //        public MyProfile GetProfileByKey(Guid key)
@@ -77,7 +92,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<MyProfile> GetProfileChildSuperficially(MyProfile profile)
         {
-
             _childSelect.Parameters["@PROF_NAME"].Value = profile.Name;
             _childSelect.Parameters["@PROF_ID_EXCLUDE"].Value = profile.Id;
 
@@ -95,7 +109,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 cacheProfile.IsChildLoad = true;
                 _cacheProfileByKey[profile.Key] = cacheProfile;
             }
-            
+
             return cacheProfile.Profile.Children.Select((m => m.Copy())).ToList();
         }
 
@@ -114,13 +128,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testTypes.Add(reader.GetInt32(0), reader.GetInt32(1));
 
                 foreach (var testType in testTypes)
-                    FillParameters(cacheProfile.Profile.ProfileDeepData, testType.Key, testType.Value);
+                    FillParameters(cacheProfile.Profile.DeepData, testType.Key, testType.Value);
 
                 cacheProfile.IsDeepLoad = true;
                 _cacheProfileByKey[profile.Key] = cacheProfile;
             }
 
-            return cacheProfile.Profile.ProfileDeepData.Copy();
+            return cacheProfile.Profile.DeepData.Copy();
         }
 
         public bool ProfileNameExists(string profileName)
@@ -146,7 +160,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void FillParameters(ProfileDeepData data, long testTypeId, long testParametersType)
         {
-            switch ((TestParametersType)testParametersType)
+            switch ((TestParametersType) testParametersType)
             {
                 case TestParametersType.Gate:
                     var gatePars = FillGateConditions(testTypeId);
@@ -197,7 +211,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.dVdt.TestParameters FillDvdtConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(3);
-            var testParams = new Types.dVdt.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.dVdt.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -211,13 +225,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.IsEnabled = Boolean.Parse(result.Value.ToString());
                         break;
                     case "DVDT_Mode":
-                        testParams.Mode = (DvdtMode)Enum.Parse(typeof(DvdtMode), result.Value.ToString());
+                        testParams.Mode = (DvdtMode) Enum.Parse(typeof(DvdtMode), result.Value.ToString());
                         break;
                     case "DVDT_Voltage":
                         testParams.Voltage = UInt16.Parse(result.Value.ToString());
                         break;
                     case "DVDT_VoltageRate":
-                        testParams.VoltageRate = (VoltageRate)Enum.Parse(typeof(VoltageRate), result.Value.ToString());
+                        testParams.VoltageRate = (VoltageRate) Enum.Parse(typeof(VoltageRate), result.Value.ToString());
                         break;
                     case "DVDT_ConfirmationCount":
                         testParams.ConfirmationCount = UInt16.Parse(result.Value.ToString());
@@ -237,7 +251,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.ATU.TestParameters FillAtuConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(3);
-            var testParams = new Types.ATU.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.ATU.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -267,7 +281,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.QrrTq.TestParameters FillQrrTqConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(8);
-            var testParams = new Types.QrrTq.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.QrrTq.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -282,7 +296,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "QrrTq_Mode":
-                        testParams.Mode = (Types.QrrTq.TMode)Enum.Parse(typeof(Types.QrrTq.TMode), result.Value.ToString());
+                        testParams.Mode = (Types.QrrTq.TMode) Enum.Parse(typeof(Types.QrrTq.TMode), result.Value.ToString());
                         break;
 
                     case "QrrTq_TrrMeasureBy9050Method":
@@ -302,7 +316,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "QrrTq_DCFallRate":
-                        testParams.DCFallRate = (Types.QrrTq.TDcFallRate)Enum.Parse(typeof(Types.QrrTq.TDcFallRate), result.Value.ToString());
+                        testParams.DCFallRate = (Types.QrrTq.TDcFallRate) Enum.Parse(typeof(Types.QrrTq.TDcFallRate), result.Value.ToString());
                         break;
 
                     case "QrrTq_OffStateVoltage":
@@ -310,7 +324,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "QrrTq_OsvRate":
-                        testParams.OsvRate = (Types.QrrTq.TOsvRate)Enum.Parse(typeof(Types.QrrTq.TOsvRate), result.Value.ToString());
+                        testParams.OsvRate = (Types.QrrTq.TOsvRate) Enum.Parse(typeof(Types.QrrTq.TOsvRate), result.Value.ToString());
                         break;
                 }
             }
@@ -321,7 +335,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.RAC.TestParameters FillRACConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(2);
-            var testParams = new Types.RAC.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.RAC.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -380,7 +394,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             FillConditionsResults(testTypeId, results);
 
             foreach (var result in results)
-                data.CommutationType = (ModuleCommutationType)Enum.Parse(typeof(ModuleCommutationType), result.Value.ToString());
+                data.CommutationType = (ModuleCommutationType) Enum.Parse(typeof(ModuleCommutationType), result.Value.ToString());
         }
 
         private void FillClampConditions(ProfileDeepData data, long testTypeId)
@@ -412,7 +426,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.Gate.TestParameters FillGateConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(3);
-            var testParams = new Types.Gate.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.Gate.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -476,7 +490,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.BVT.TestParameters FillBvtConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(9);
-            var testParams = new Types.BVT.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.BVT.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -487,7 +501,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 switch (result.Key)
                 {
                     case "BVT_Type":
-                        testParams.TestType = (BVTTestType)(Enum.Parse(typeof(BVTTestType), result.Value.ToString()));
+                        testParams.TestType = (BVTTestType) (Enum.Parse(typeof(BVTTestType), result.Value.ToString()));
                         break;
 
                     case "BVT_I":
@@ -512,7 +526,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "BVT_Mode":
                         testParams.MeasurementMode =
-                            (BVTMeasurementMode)(Enum.Parse(typeof(BVTMeasurementMode), result.Value.ToString()));
+                            (BVTMeasurementMode) (Enum.Parse(typeof(BVTMeasurementMode), result.Value.ToString()));
                         break;
 
                     case "BVT_VR":
@@ -523,6 +537,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                                 testParams.VoltageLimitR = UInt16.Parse(result.Value.ToString());
                                 break;
                         }
+
                         break;
 
                     case "BVT_VD":
@@ -533,6 +548,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                                 testParams.VoltageLimitD = UInt16.Parse(result.Value.ToString());
                                 break;
                         }
+
                         break;
 
                     case "BVT_PlateTime":
@@ -576,7 +592,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private Types.VTM.TestParameters FillSlConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(9);
-            var testParams = new Types.VTM.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.VTM.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -589,7 +605,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 switch (result.Key)
                 {
                     case "SL_Type":
-                        testParams.TestType = (Types.VTM.VTMTestType)(Enum.Parse(typeof(Types.VTM.VTMTestType), result.Value.ToString()));
+                        testParams.TestType = (Types.VTM.VTMTestType) (Enum.Parse(typeof(Types.VTM.VTMTestType), result.Value.ToString()));
                         break;
                     case "SL_FS":
                         testParams.UseFullScale = Boolean.Parse(result.Value.ToString());
@@ -610,6 +626,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                                 testParams.CurveCurrent = UInt16.Parse(result.Value.ToString());
                                 break;
                         }
+
                         break;
                     case "SL_Time":
                         switch (testParams.TestType)
@@ -624,6 +641,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                                 testParams.CurveTime = UInt16.Parse(result.Value.ToString());
                                 break;
                         }
+
                         break;
                     case "SL_OpenEn":
                         testParams.IsRampOpeningEnabled = Boolean.Parse(result.Value.ToString());
@@ -641,12 +659,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
                                 testParams.CurveAddTime = UInt16.Parse(result.Value.ToString());
                                 break;
                         }
+
                         break;
                     case "SL_Factor":
                         testParams.CurveFactor = UInt16.Parse(result.Value.ToString());
                         break;
                 }
             }
+
             #endregion
 
             return testParams;
@@ -684,7 +704,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             using (var reader = _conditionSelect.ExecuteReader())
             {
                 while (reader.Read())
-                    results.Add(((string)reader[0]).Trim(), reader[1]);
+                    results.Add(((string) reader[0]).Trim(), reader[1]);
             }
         }
 
@@ -702,7 +722,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     float maxVal;
                     var maxValParsed = float.TryParse(reader[2].ToString(), out maxVal);
 
-                    results.Add(new Tuple<string, float?, float?>(name, minValParsed ? minVal : (float?)null, maxValParsed ? maxVal : (float?)null));
+                    results.Add(new Tuple<string, float?, float?>(name, minValParsed ? minVal : (float?) null, maxValParsed ? maxVal : (float?) null));
                 }
             }
         }

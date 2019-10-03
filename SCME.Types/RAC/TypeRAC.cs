@@ -52,7 +52,8 @@ namespace SCME.Types.RAC
     }
 
     //параметры, задающие режим работы
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Rac.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         //DC voltage value for resistance measurement (in V) - амплитуда напряжения для измерения (в В)

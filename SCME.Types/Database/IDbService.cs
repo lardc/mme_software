@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using SCME.Types.Profiles;
 
@@ -9,6 +10,10 @@ namespace SCME.Types.Database
     {
         [OperationContract]
         Dictionary<string, int> GetMmeCodes();
+
+        [FaultContract(typeof(Exception))]
+        [OperationContract]
+        List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode);
         
         [OperationContract]
         List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null);

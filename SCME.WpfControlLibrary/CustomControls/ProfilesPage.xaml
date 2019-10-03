@@ -7,6 +7,7 @@
       xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
       xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents"
       xmlns:dataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates"
+      xmlns:testParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
       xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
       DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
       mc:Ignorable="d" Loaded="Page_Loaded"
@@ -30,10 +31,11 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
                 <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMmeCode}" SelectedValuePath="Key" DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}" SelectionChanged="ComboBox_SelectionChanged" />
-                <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"/>
-                <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxFind_TextChanged" />
+                <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click" Background="{StaticResource PurpleBrush1}"/>
+                <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxFind_TextChanged"  />
             <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView"  ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                        VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
                        VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
@@ -44,9 +46,11 @@
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
+                <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}" Click="GoBack_Click"/>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Column="1" Grid.Row="0" Grid.IsSharedSizeScope="True">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
@@ -58,7 +62,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}"/>
+                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" IsEnabled="{Binding IsCancelSaveModeEnabled}"/>
                 <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"  Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="Pencil" />
                 </Button>
@@ -72,7 +76,12 @@
             <Grid Grid.Column="0" Grid.Row="1" IsEnabled="{Binding IsCancelSaveModeEnabled}">
                 <profilesPageComponents:AddTestParameterUserControl DataContext="{Binding ProfileDeepDataCopy}" AddTestParametersEvent="AddTestParametersEvent_Click" />
             </Grid>
-            <Grid Grid.Column="0" Grid.Row="2">
+            <Grid Grid.Column="0" Grid.Row="2" >
+                <testParameters:ClampCommutationDataTemplate IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=Vm.IsCancelSaveModeEnabled }"
+                                                             Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=Vm.IsClampingCommutationActive, Converter={StaticResource B2V}}"
+                                                             DataContext="{Binding ProfileDeepDataCopy}" />
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="3">
                 <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="{Binding IsCancelSaveModeEnabled}" ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}" />
             </Grid>
         </Grid>

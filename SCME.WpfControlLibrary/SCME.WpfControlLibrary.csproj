@@ -44,11 +44,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0088\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0213\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MahApps.Metro.IconPacks.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0088\lib\net46\MahApps.Metro.IconPacks.Core.dll</HintPath>
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0213\lib\net46\MahApps.Metro.IconPacks.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -94,6 +94,9 @@
     </Compile>
     <Compile Include="DataProviders\TestParameterDictionary.cs" />
     <Compile Include="DataProviders\TestTypeEnumDictionary.cs" />
+    <Compile Include="DataTemplates\TestParameters\ClampCommutationDataTemplate.xaml.cs">
+      <DependentUpon>ClampCommutationDataTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IValueConverters\BvtTypeToStringConverter.cs" />
     <Compile Include="IValueConverters\FrequencyDivisorToFrequency.cs" />
     <Compile Include="IValueConverters\MeasureModeToVisibilityConverter.cs" />
@@ -107,9 +110,7 @@
     <Compile Include="CustomControls\AccentAndThemeUserControl.xaml.cs">
       <DependentUpon>AccentAndThemeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ScaleFontBehavior.cs" />
     <Compile Include="ViewModels\AccentAndThemeUserControlVM.cs" />
-    <Compile Include="VisualHelper.cs" />
     <Compile Include="Wrappers\AppThemeWrapper.cs" />
     <Page Include="CustomControls\AccentAndThemeUserControl.xaml">
       <SubType>Designer</SubType>
@@ -120,6 +121,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="DataTemplates\TestParameters\ClampCommutationDataTemplate.xaml" />
     <Page Include="DataTemplates\TestParameters\RACDataTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

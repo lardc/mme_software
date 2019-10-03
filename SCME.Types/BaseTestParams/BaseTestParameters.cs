@@ -58,6 +58,14 @@ namespace SCME.Types.BaseTestParams
         TOU = 13
     }
 
+    [KnownType(typeof(ATU.TestParameters))]
+    [KnownType(typeof(BVT.TestParameters))]
+    [KnownType(typeof(dVdt.TestParameters))]
+    [KnownType(typeof(Gate.TestParameters))]
+    [KnownType(typeof(QrrTq.TestParameters))]
+    [KnownType(typeof(RAC.TestParameters))]
+    [KnownType(typeof(TOU.TestParameters))]
+    [KnownType(typeof(VTM.TestParameters))]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public abstract class BaseTestParametersAndNormatives
     {

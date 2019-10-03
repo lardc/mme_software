@@ -33,7 +33,7 @@ namespace SCME.ProfileBuilder.CommonPages
                 }
 
                 var sqlConnection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString());
-                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection));
+                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection), Properties.Settings.Default.LastSelectedMMECode);
 
                 NavigationService?.Navigate(Cache.ProfilesPage);
             }
@@ -58,7 +58,7 @@ namespace SCME.ProfileBuilder.CommonPages
                 };
 
                 var sqliteConnection = new System.Data.SQLite.SQLiteConnection(connectionStringBuilder.ToString());
-                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection));
+                Cache.ProfilesPage = new ProfilesPage(new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection), Properties.Settings.Default.LastSelectedMMECode);
 
                 NavigationService?.Navigate(Cache.ProfilesPage);
             }

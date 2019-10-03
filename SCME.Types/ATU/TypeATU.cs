@@ -49,7 +49,8 @@ namespace SCME.Types.ATU
     };
 
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Atu.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
+//    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]

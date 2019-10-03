@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading;
 using SCME.Types.Database;
 using SCME.Types.Profiles;
 
@@ -7,19 +9,32 @@ namespace SCME.Types
 {
     public class DatabaseProxy : ClientBase<IDbService>, IDbService
     {
-        public DatabaseProxy() : base("SCME.LocalDatabase")
+        public DatabaseProxy() : base("LocalDatabase")
         {
-            
         }
-        
+
         public Dictionary<string, int> GetMmeCodes()
         {
             return Channel.GetMmeCodes();
         }
 
+        public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
+        {
+            try
+            {
+                return Channel.GetProfilesDeepByMmeCode(mmeCode);
+            }
+            catch (Exception e)
+            {
+                Thread.Sleep(50000999);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
         {
-            return Channel.GetProfilesSuperficially(mmeCode,name);
+            return Channel.GetProfilesSuperficially(mmeCode, name);
         }
 
         public List<MyProfile> GetProfileChildSuperficially(MyProfile profile)

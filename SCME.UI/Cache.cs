@@ -35,10 +35,10 @@ namespace SCME.UI
         private static ProfilesPage _profilesPage;
 
 
-        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy));
+        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true));
 
         public static MainWindow Main { get; set; }
-        public static DatabaseProxy DatabaseProxy;
+        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy();
 
         internal static ControlLogic Net { get; set; }
 

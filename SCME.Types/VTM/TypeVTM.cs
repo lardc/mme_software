@@ -143,7 +143,7 @@ namespace SCME.Types.VTM
         Fail = 2
     };
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Vtm.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
     [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {

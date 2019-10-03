@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
+using SCME.Types.Clamping;
 using SCME.Types.Commutation;
 using SCME.Types.dVdt;
 using SCME.Types.QrrTq;
@@ -120,6 +121,15 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {nameof(ModuleCommutationType.MTD3), ModuleCommutationType.MTD3},
                 {nameof(ModuleCommutationType.MTD4), ModuleCommutationType.MTD4},
                 {nameof(ModuleCommutationType.MTD5), ModuleCommutationType.MTD5},
+            };
+        }
+        
+        public static Dictionary<string, ClampingForce> GetClampingForceTypes()
+        {
+            return new Dictionary<string, ClampingForce>()
+            {
+                {nameof(ClampingForce.Contact), ClampingForce.Contact},
+                {nameof(ClampingForce.Custom), ClampingForce.Custom},
             };
         }
         

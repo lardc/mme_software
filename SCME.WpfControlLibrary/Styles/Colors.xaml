@@ -4,7 +4,7 @@
     <Color x:Key="Purple1">#FF8C0095</Color>
     <Color x:Key="Purple2">#FF9F40DE</Color>
     
-    <Color x:Key="Blue1">Blue</Color>
+    <Color x:Key="Blue1">#FF00A7FF</Color>
     
     <SolidColorBrush x:Key="xGray1"         Color="#686868"/>
     <SolidColorBrush x:Key="xGray2"         Color="#EDEDED"/>
@@ -12,6 +12,7 @@
     <SolidColorBrush x:Key="xGray4"         Color="#BCBEC4"/>
     
     <SolidColorBrush x:Key="PurpleBrush1" Color="{StaticResource Purple1}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="PurpleBrush2" Color="{StaticResource Purple1}" ></SolidColorBrush>
     
     <SolidColorBrush x:Key="ListViewTestParametersBrush" Color="{StaticResource Purple1}" ></SolidColorBrush>
     <SolidColorBrush x:Key="ListViewItemTestParametersBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>

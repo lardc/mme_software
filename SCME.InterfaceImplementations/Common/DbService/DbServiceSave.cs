@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations.Common.DbService
@@ -310,12 +311,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
             InserterBaseTestParametersAndNormatives inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
                 _dbTransaction,
                 _profileTestTypeInsert, _profileParameterInsert, _profileConditionInsert,
-                _testTypeIdByName, _conditionIdByName, _parameterIdByName);
+                _testTypeIdByName, _conditionIdByName, _parameterIdByName, ExecuteCommandWithId);
 
             inserter.Order = 0;
-            inserter.Insert(ClampingConditionsParameters(profile.ProfileDeepData));
-            inserter.Insert(ComutationConditionsParameters(profile.ProfileDeepData));
-            foreach (var i in profile.ProfileDeepData.TestParametersAndNormatives)
+            inserter.Insert(ClampingConditionsParameters(profile.DeepData));
+            inserter.Insert(ComutationConditionsParameters(profile.DeepData));
+            foreach (var i in profile.DeepData.TestParametersAndNormatives)
             {
                 switch (i)
                 {
@@ -397,8 +398,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 return id;
             }
 
-            catch
+            catch(Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
                 _dbTransaction.Rollback();
                 throw;
             }

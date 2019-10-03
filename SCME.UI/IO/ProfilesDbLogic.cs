@@ -6,61 +6,68 @@ using SCME.UI.CustomControl;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using System;
+using System.Linq;
 using SCME.Types.SQL;
 
 namespace SCME.UI.IO
 {
     internal class ProfilesDbLogic
     {
-        public static void ImportProfilesFromDb()
+        public static void LoadProfile(List<MyProfile> profiles)
         {
-            bool seviceConnected;
-
-            List<ProfileItem> profileItems;
-
-            profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
-
-            if (profileItems == null || profileItems.Count <= 0 && !seviceConnected)
-                return;
-
-            if (profileItems.Count <= 0)
-            {
-                var dialog = new DialogWindow("Сообщение", "Нет активных профилей");
-                dialog.ButtonConfig(DialogWindow.EbConfig.OK);
-                dialog.ShowDialog();
-            }
-
-            var profiles = new List<Profile>();
-            foreach (var profileItem in profileItems)
-            {
-                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.Version, profileItem.ProfileTS)
-                {
-                    Key = profileItem.ProfileKey,
-                    NextGenerationKey = Guid.NewGuid(),
-                    IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
-                    ParametersClamp = profileItem.ParametersClamp,
-                    Height = profileItem.Height,
-                    Temperature = profileItem.Temperature
-                };
-
-                foreach (var g in profileItem.GateTestParameters) profile.TestParametersAndNormatives.Add(g);
-                foreach (var b in profileItem.BVTTestParameters) profile.TestParametersAndNormatives.Add(b);
-                foreach (var v in profileItem.VTMTestParameters) profile.TestParametersAndNormatives.Add(v);
-                foreach (var d in profileItem.DvDTestParameterses) profile.TestParametersAndNormatives.Add(d);
-                foreach (var a in profileItem.ATUTestParameters) profile.TestParametersAndNormatives.Add(a);
-                foreach (var q in profileItem.QrrTqTestParameters) profile.TestParametersAndNormatives.Add(q);
-                foreach (var r in profileItem.RACTestParameters) profile.TestParametersAndNormatives.Add(r);
-                foreach (var t in profileItem.TOUTestParameters) profile.TestParametersAndNormatives.Add(t);
-
-                profiles.Add(profile);
-            }
-
-            var dictionary = new ProfileDictionary(profiles);
+            var dictionary = new ProfileDictionary(profiles.Select(m => m.ToProfile()));
             Cache.Main.IsProfilesParsed = true;
 
             Cache.ProfileEdit = new ProfilePage(dictionary);
             Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
             Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
+        }
+        public static void ImportProfilesFromDb()
+        {
+//            bool seviceConnected;
+//
+//            
+//            
+//            List<ProfileItem> profileItems;
+//
+//            profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
+//
+//            if (profileItems == null || profileItems.Count <= 0 && !seviceConnected)
+//                return;
+//
+//            if (profileItems.Count <= 0)
+//            {
+//                var dialog = new DialogWindow("Сообщение", "Нет активных профилей");
+//                dialog.ButtonConfig(DialogWindow.EbConfig.OK);
+//                dialog.ShowDialog();
+//            }
+//
+//            var profiles = new List<Profile>();
+//            foreach (var profileItem in profileItems)
+//            {
+//                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.Version, profileItem.ProfileTS)
+//                {
+//                    Key = profileItem.ProfileKey,
+//                    NextGenerationKey = Guid.NewGuid(),
+//                    IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
+//                    ParametersClamp = profileItem.ParametersClamp,
+//                    Height = profileItem.Height,
+//                    Temperature = profileItem.Temperature
+//                };
+//
+//                foreach (var g in profileItem.GateTestParameters) profile.TestParametersAndNormatives.Add(g);
+//                foreach (var b in profileItem.BVTTestParameters) profile.TestParametersAndNormatives.Add(b);
+//                foreach (var v in profileItem.VTMTestParameters) profile.TestParametersAndNormatives.Add(v);
+//                foreach (var d in profileItem.DvDTestParameterses) profile.TestParametersAndNormatives.Add(d);
+//                foreach (var a in profileItem.ATUTestParameters) profile.TestParametersAndNormatives.Add(a);
+//                foreach (var q in profileItem.QrrTqTestParameters) profile.TestParametersAndNormatives.Add(q);
+//                foreach (var r in profileItem.RACTestParameters) profile.TestParametersAndNormatives.Add(r);
+//                foreach (var t in profileItem.TOUTestParameters) profile.TestParametersAndNormatives.Add(t);
+//
+//                profiles.Add(profile);
+//            }
+
+            LoadProfile(Cache.DatabaseProxy.GetProfilesDeepByMmeCode(Cache.Main.MmeCode));
         }
         
         public static List<ProfileForSqlSelect> SaveProfilesToDb(IList<Profile> profiles)

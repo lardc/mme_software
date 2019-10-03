@@ -112,6 +112,8 @@
     <Compile Include="IO\IOGateway.cs" />
     <Compile Include="LogicContainer.cs" />
     <Compile Include="IO\IOStLs.cs" />
+    <Compile Include="MyErrorHandler.cs" />
+    <Compile Include="MyServiceBehavior.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

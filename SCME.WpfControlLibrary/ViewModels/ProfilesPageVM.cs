@@ -17,11 +17,7 @@ namespace SCME.WpfControlLibrary.ViewModels
         public TestParametersType SelectedTestParametersType { get; set; } = TestParametersType.Gate;
         public Dictionary<string, int> MmeCodes { get; set; }
 
-        public string SelectedMmeCode
-        {
-            get => Properties.Settings.Default.LastSelectedMMECode;
-            set => Properties.Settings.Default.LastSelectedMMECode = value;
-        }
+        public string SelectedMmeCode { get; set; }
 
         public string SearchingName { get; set; }
 
@@ -30,8 +26,12 @@ namespace SCME.WpfControlLibrary.ViewModels
         
         [DependsOn(nameof(SelectedProfile), nameof(IsEditModeActive))]
         public bool IsEditModeEnabled => IsEditModeActive == false && SelectedProfile != null;
+        
         public bool IsEditModeActive { get; set; }
+        
         [DependsOn(nameof(IsEditModeActive))] public bool IsEditModeInActive => !IsEditModeActive;
+        
+        [DependsOn(nameof(SelectedProfile))] public bool IsClampingCommutationActive => SelectedProfile != null; 
 
         public ObservableCollection<MyProfile> Profiles { get; set; }
         public ObservableCollection<MyProfile> LoadedProfiles { get; set; }

@@ -176,11 +176,11 @@ namespace SCME.UI.IO
                         m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
                         DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
-                        var q = new DatabaseProxy();
-                        
                         m_ControlClient.Open();
 
                         DatabaseClient.Open();
+                        
+                        Cache.DatabaseProxy.Open();
 
                         m_NetPingTimer.Start();
 

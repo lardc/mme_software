@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/ComboBoxResource.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/ProgressBarResources.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ResourceDictionaries/Constraints.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

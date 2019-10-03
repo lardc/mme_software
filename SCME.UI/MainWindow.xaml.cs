@@ -22,6 +22,7 @@ using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
 using PropertyChanged;
+using SCME.WpfControlLibrary;
 
 namespace SCME.UI
 {
@@ -45,6 +46,7 @@ namespace SCME.UI
 
         public MainWindow()
         {
+            ResourceBinding.Scaling(0.75);
             Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 

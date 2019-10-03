@@ -31,7 +31,7 @@
                                 CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                             <iconPacks:PackIconMaterial Kind="Delete" />
                         </Button>
-                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="{TemplateBinding Background}" >
+                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Background="{TemplateBinding Background}" >
                             <ContentPresenter DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}"  />
                         </Grid>
                     </Grid>

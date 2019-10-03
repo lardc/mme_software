@@ -3,13 +3,27 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using System.Runtime.Serialization;
 using SCME.Types.Database;
 using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations.Common.DbService
 {
+    
+    
     public abstract partial class DbService<TDbCommand, TDbConnection> : IDbService where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
+        public const string FaultAction = "http://my.fault/serializationError";  
+        protected virtual string CheckConditionString => "SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = @WHERE_PARAMETER";
+        protected virtual string CheckParameterString => "SELECT COUNT (*) FROM PARAMS WHERE PARAM_NAME = @WHERE_PARAMETER";
+        protected virtual string CheckTestTypeString => $"SELECT COUNT (*) FROM TEST_TYPE WHERE {DatabaseFieldTestTypeName} = @WHERE_PARAMETER";
+        protected virtual string CheckErrorString => "SELECT COUNT (*) FROM ERRORS WHERE ERR_NAME = @WHERE_PARAMETER";
+        
+        protected virtual string InsertConditionString => "INSERT INTO CONDITIONS(COND_NAME, COND_NAME_LOCAL, COND_IS_TECH) VALUES(@COND_NAME, @COND_NAME_LOCAL, @COND_IS_TECH)";
+        protected virtual string InsertParameterString => "INSERT INTO PARAMS(PARAM_NAME, PARAM_NAME_LOCAL, PARAM_IS_HIDE) VALUES(@PARAM_NAME, @PARAM_NAME_LOCAL, @PARAM_IS_HIDE)";
+        protected virtual string InsertTestTypeString => "INSERT INTO TEST_TYPE(TEST_TYPE_ID, TEST_TYPE_NAME) VALUES(@ID, @NAME)";
+        protected virtual string InsertErrorString => "INSERT INTO ERRORS(ERR_NAME, ERR_NAME_LOCAL, ERR_CODE) VALUES(@ERR_NAME, @ERR_NAME_LOCAL, @ERR_CODE)";
+        
         protected virtual string GetFreeProfileNameString => @"SELECT TOP(1) PROF_ID FROM PROFILES ORDER BY PROF_ID DESC";
         protected virtual string ProfileNameExistsString => @"SELECT COUNT(*) FROM PROFILES WHERE PROF_NAME = @PROF_NAME";
         protected virtual string ChildSelectString => @"SELECT [PROF_ID], [PROF_NAME], [PROF_GUID], [PROF_VERS], [PROF_TS] FROM [PROFILES] WHERE [PROF_NAME] = @PROF_NAME AND PROF_ID <> @PROF_ID_EXCLUDE ORDER BY [PROF_TS] DESC";
@@ -39,6 +53,16 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private readonly Dictionary<string, int> _conditionIdByName = new Dictionary<string, int>();
         private readonly Dictionary<string, int> _parameterIdByName = new Dictionary<string, int>();
 
+        private TDbCommand _checkCondition;
+        private TDbCommand _checkParameter;
+        private TDbCommand _checkTestType;
+        private TDbCommand _checkError;
+        
+        private TDbCommand _insertCondition;
+        private TDbCommand _insertParameter;
+        private TDbCommand _insertTestType;
+        private TDbCommand _insertError;
+        
         private TDbCommand _profileInsert;
 
         private TDbCommand _getFreeProfileName;
@@ -67,7 +91,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         
         private DbTransaction _dbTransaction;
 
-        private readonly TDbConnection _connection;
+        protected readonly TDbConnection _connection;
 
         private readonly ConstructorInfo _commandConstructor = typeof(TDbCommand).GetConstructor(new Type[] {typeof(string), typeof(TDbConnection)});
 
@@ -81,6 +105,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _connection.Open();
 
             PrepareQueries();
+            Migrate();
             LoadDictionary();
             _cacheProfilesByMmeCode = new Dictionary<string, List<MyProfile>>();
             _cacheProfileByKey = new Dictionary<Guid, (MyProfile Profile, bool IsDeepLoad, bool IsChildLoad)>();
@@ -105,6 +130,44 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void PrepareQueries()
         {
+            var checkTDbCommandParameters = new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@WHERE_PARAMETER", DbType.String, 32)
+            };
+            
+            _checkCondition = CreateCommand(CheckConditionString, checkTDbCommandParameters);
+            _checkParameter = CreateCommand(CheckParameterString, checkTDbCommandParameters);
+            _checkError = CreateCommand(CheckErrorString, checkTDbCommandParameters);
+            _checkTestType = CreateCommand(CheckTestTypeString, checkTDbCommandParameters);
+                
+            _insertCondition = CreateCommand(InsertConditionString, new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@COND_NAME", DbType.String, 32),
+                new TDbCommandParametr("@COND_NAME_LOCAL", DbType.String, 64),
+                new TDbCommandParametr("@COND_IS_TECH", DbType.Boolean)
+            });
+            
+            _insertTestType = CreateCommand(InsertTestTypeString, new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@ID", DbType.Int32),
+                new TDbCommandParametr("@NAME", DbType.String, 32),
+            });
+            
+            _insertParameter = CreateCommand(InsertParameterString, new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@PARAM_NAME", DbType.String, 16),
+                new TDbCommandParametr("@PARAM_NAME_LOCAL", DbType.String, 64),
+                new TDbCommandParametr("@PARAM_IS_HIDE", DbType.Boolean)
+            });
+            
+            _insertError = CreateCommand(InsertErrorString, new List<TDbCommandParametr>()
+            {
+                new TDbCommandParametr("@ERR_NAME", DbType.String, 20),
+                new TDbCommandParametr("@ERR_NAME_LOCAL", DbType.String, 32),
+                new TDbCommandParametr("@ERR_CODE", DbType.Int32)
+            });
+            
+            
             _childSelect = CreateCommand(ChildSelectString, new List<TDbCommandParametr>()
             {
                 new TDbCommandParametr("@PROF_NAME", DbType.String, 32),

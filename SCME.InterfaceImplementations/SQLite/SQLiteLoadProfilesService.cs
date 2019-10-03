@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;

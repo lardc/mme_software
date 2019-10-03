@@ -131,7 +131,7 @@ namespace SCME.Types.QrrTq
     }
 
     //параметры, задающие режим работы
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "QrrTq.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         //Measurement mode - режим измерения

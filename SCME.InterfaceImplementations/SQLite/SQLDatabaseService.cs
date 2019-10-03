@@ -2,14 +2,9 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
-using System.Globalization;
-using System.Linq;
-using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
-using SCME.Types.Profiles;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace SCME.InterfaceImplementations
 {

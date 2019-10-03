@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.ClampCommutationDataTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:cc="clr-namespace:SCME.Types.Profiles;assembly=SCME.Types"
+             mc:Ignorable="d" Background="{StaticResource PurpleBrush1}"
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance cc:ProfileDeepData}">
+     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Grid.IsSharedSizeScope="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" SharedSizeGroup="Column0"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto" SharedSizeGroup="Column2"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.CommutationTypeT}"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" 
+                      ItemsSource="{Binding Source={StaticResource ModuleCommutationTypes}}"
+                      SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" />
+            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IsHeightMeasureEnabled}" Content="{x:Static res:Resources.MeasureDialog_Title}"/>
+            </Grid>
+        
+        <Grid Visibility="{Binding IsHeightMeasureEnabled, Converter={StaticResource B2V}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" SharedSizeGroup="Column0"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto" SharedSizeGroup="Column0"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Force}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ParameterClamp}" />
+            <Label Grid.Column="2" Grid.Row="1" Content="{x:Static res:Resources.Force}" />
+            <ComboBox Grid.Column="3" Grid.Row="1" 
+                      ItemsSource="{Binding Source={StaticResource ClampingForceTypes}}" 
+                      SelectedValue="{Binding ClampingForce}" SelectedValuePath="Value" DisplayMemberPath="Key"/>
+
+            <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Height_Prof}" />
+            <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}" />
+            <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
+            <customControls:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
+        </Grid>
+        
+    </StackPanel>
+</UserControl>

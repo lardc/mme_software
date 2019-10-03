@@ -25,9 +25,11 @@
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
-          
         </Setter>
         <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="DarkGray" />
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="DarkGray" />
             </Trigger>
@@ -40,4 +42,10 @@
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
         <Setter Property="Background" Value="{StaticResource BlueBrush}"></Setter>
     </Style>
+    
+    <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
+        <Setter Property="Background" Value="{StaticResource BlueBrush}"/>
+    </Style>
+    
+    
 </ResourceDictionary>

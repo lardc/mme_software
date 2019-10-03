@@ -77,7 +77,8 @@ namespace SCME.Types.dVdt
         Fail = 2
     };
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Dvdt.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]

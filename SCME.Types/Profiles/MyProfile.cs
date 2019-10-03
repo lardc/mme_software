@@ -67,7 +67,7 @@ namespace SCME.Types.Profiles
         [DataMember]
         public ObservableCollection<MyProfile> Children { get; set; } = new ObservableCollection<MyProfile>();
         [DataMember]
-        public ProfileDeepData ProfileDeepData { get; set; } = new ProfileDeepData();
+        public ProfileDeepData DeepData { get; set; } = new ProfileDeepData();
 
         public bool IsTop { get; set; }
         public MyProfile Parent { get; set; }
@@ -76,11 +76,25 @@ namespace SCME.Types.Profiles
         {
             var newProfile = new MyProfile(Id, newName, Guid.NewGuid(), Version+ 1, DateTime.Now)
             {
-                ProfileDeepData = profileDeepData,
+                DeepData = profileDeepData,
                 IsTop = true,
             };
             
             return newProfile;
         }
+
+        public Profile ToProfile() => new Profile()
+        {
+            Name = Name,
+            Key = Key,
+            
+            IsHeightMeasureEnabled = DeepData.IsHeightMeasureEnabled,
+            ParametersClamp = DeepData.ParameterClamp,
+            Height = DeepData.Height,
+            Temperature = DeepData.Temperature,
+            ParametersComm = DeepData.CommutationType,
+            
+            TestParametersAndNormatives = DeepData.TestParametersAndNormatives
+        };
     }
 }
