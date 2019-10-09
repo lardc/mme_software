@@ -279,21 +279,34 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
         {
-            _mmeCodeToProfileDelete.Parameters["@PROFILE_ID"].Value = profileId;
-            _mmeCodeToProfileDelete.Parameters["@MME_CODE"].Value = mmeCode;
-            _mmeCodeToProfileDelete.Transaction = dbTransaction;
-            _mmeCodeToProfileDelete.ExecuteNonQuery();
+            if (mmeCode != string.Empty)
+            {
+                _mmeCodeToProfileDelete.Parameters["@PROFILE_ID"].Value = profileId;
+                _mmeCodeToProfileDelete.Parameters["@MME_CODE"].Value = mmeCode;
+                _mmeCodeToProfileDelete.Transaction = dbTransaction;
+                _mmeCodeToProfileDelete.ExecuteNonQuery();
+            }
+
             _cacheProfileById[profileId].MmeCodes.Remove(mmeCode);
 
+            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+            profiles?.Remove(_cacheProfileById[profileId].Profile);
         }
 
         public void InsertMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
         {
-            _mmeCodeToProfileInsert.Parameters["@PROFILE_ID"].Value = profileId;
-            _mmeCodeToProfileInsert.Parameters["@MME_CODE"].Value = mmeCode;
-            _mmeCodeToProfileInsert.Transaction = dbTransaction;
-            _mmeCodeToProfileInsert.ExecuteNonQuery();
+            if (mmeCode != string.Empty)
+            {
+                _mmeCodeToProfileInsert.Parameters["@PROFILE_ID"].Value = profileId;
+                _mmeCodeToProfileInsert.Parameters["@MME_CODE"].Value = mmeCode;
+                _mmeCodeToProfileInsert.Transaction = dbTransaction;
+                _mmeCodeToProfileInsert.ExecuteNonQuery();   
+            }
+
             _cacheProfileById[profileId].MmeCodes.Add(mmeCode);
+            
+            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+            profiles?.Add(_cacheProfileById[profileId].Profile);
         }
 
         public void InsertMmeCode(string mmeCode)

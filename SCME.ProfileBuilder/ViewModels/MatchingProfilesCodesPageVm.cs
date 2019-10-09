@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using PropertyChanged;
+using SCME.Types;
 using SCME.Types.Database;
 using SCME.Types.Profiles;
 using SCME.WpfControlLibrary.Commands;
@@ -48,20 +49,49 @@ namespace SCME.ProfileBuilder.ViewModels
         }, (s) => string.IsNullOrWhiteSpace((s)) == false && MmeCodes.Contains(s) == false);
 
         public RelayCommand EditMmeCodesToProfile => new RelayCommand(o => { IsEditModeActive = true; }, o => IsEditModeEnabled);
-
+        public RelayCommand DeleteAllMmeCodesToProfile => new RelayCommand(o =>
+        {
+            if (new DialogWindow(WpfControlLibrary.Properties.Resources.Confirmation, WpfControlLibrary.Properties.Resources.ConfirmationOfDeletion, true ).ShowDialogWithResult() == false)
+                return;
+            foreach (var i in MmeCodesByProfile)
+                i.IsCheckedNewValue = false;
+            SaveMmeCodesToProfile.Execute(null);
+        }, o => IsEditModeEnabled && MmeCodesByProfile.Count(m=> m.IsCheckedNewValue) > 0);
+        
+        
         public RelayCommand SaveMmeCodesToProfile => new RelayCommand(o =>
             {
                 IsEditModeActive = false;
-                var changedMmeCodesToProfile = MmeCodesByProfile.Where(m => m.IsCheckedNewValue != m.IsCheckedOldValue).ToList();
-                var deleteMmeCodesToProfile = changedMmeCodesToProfile.Where(m => m.IsCheckedNewValue == false).ToList();
-                foreach (var i in deleteMmeCodesToProfile)
+                var changedMmeCodesToProfile = MmeCodesByProfile.Where(m => m.IsCheckedNewValue != m.IsCheckedOldValue && m.Name != WpfControlLibrary.Properties.Resources.Inactive).ToList().Copy();
+                var deletedMmeCodesToProfile = changedMmeCodesToProfile.Where(m => m.IsCheckedNewValue == false).ToList();
+                
+                foreach (var i in deletedMmeCodesToProfile)
                     _dbService.RemoveMmeCodeToProfile(SelectedProfile.Id, i.Name);
 
                 foreach (var i in changedMmeCodesToProfile.Where(m => m.IsCheckedNewValue))
                     _dbService.InsertMmeCodeToProfile(SelectedProfile.Id, i.Name);
+                
+                //Если нет ни одного привязанного КИП
+                if(MmeCodesByProfile.FirstOrDefault(m=> m.IsCheckedNewValue) == null)
+                    //Добавляем профиль в кэш неактивных
+                    _dbService.InsertMmeCodeToProfile(SelectedProfile.Id, string.Empty);
+                
 
-                if (deleteMmeCodesToProfile.SingleOrDefault(m => m.Name == SelectedMmeCode) != null)
+                //Если среди удалённых привязок КИП есть текущий
+                if (deletedMmeCodesToProfile.SingleOrDefault(m => m.Name == SelectedMmeCode) != null)
+                    //Удаляем его из списка
                     _profiles.Remove(SelectedProfile);
+
+                //Если выбраны неактивные профили
+                else if (SelectedMmeCode == WpfControlLibrary.Properties.Resources.Inactive) 
+                    //Если отмечен хоть один КИП
+                    if(MmeCodesByProfile.FirstOrDefault(m=> m.IsCheckedNewValue) != null)
+                    {
+                        //Сначала удалим профиль из кеша так как удаление сбивает SelectedItem 
+                        _dbService.RemoveMmeCodeToProfile(SelectedProfile.Id, string.Empty);
+                        //То удалим профль из колекции
+                        _profiles.Remove(SelectedProfile);
+                    }
 
 
             }, o => IsEditModeActive 
@@ -89,7 +119,7 @@ namespace SCME.ProfileBuilder.ViewModels
             set
             {
                 _selectedMmeCode = value;
-                MmeCodesByProfile = null;
+                SelectedProfile = null;
                 if (SelectedMmeCode == WpfControlLibrary.Properties.Resources.Inactive)
                     ProfilesSource.Source = _profiles = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(string.Empty));
                 else 
@@ -105,8 +135,6 @@ namespace SCME.ProfileBuilder.ViewModels
             set
             {
                 base.SelectedProfile = value;
-                if(value == null)
-                    return;;
                 SetMmeCodesByProfile();
             }
         }
@@ -115,13 +143,18 @@ namespace SCME.ProfileBuilder.ViewModels
 
         private void SetMmeCodesByProfile()
         {
-            var mmeCodesByProfile = _dbService.GetMmeCodesByProfile(SelectedProfile);
-            MmeCodesByProfile = new ObservableCollection<MmeCodeCheckboxDataTemplateVm>(MmeCodes.Select(m => new MmeCodeCheckboxDataTemplateVm()
+            if (SelectedProfile == null)
+                MmeCodesByProfile = null;
+            else
             {
-                Name = m,
-                IsCheckedOldValue = mmeCodesByProfile.Contains(m),
-                IsCheckedNewValue = mmeCodesByProfile.Contains(m)
-            }));
+                var mmeCodesByProfile = _dbService.GetMmeCodesByProfile(SelectedProfile);
+                MmeCodesByProfile = new ObservableCollection<MmeCodeCheckboxDataTemplateVm>(MmeCodes.Where(m => m != WpfControlLibrary.Properties.Resources.Inactive).Select(m => new MmeCodeCheckboxDataTemplateVm()
+                {
+                    Name = m,
+                    IsCheckedOldValue = mmeCodesByProfile.Contains(m),
+                    IsCheckedNewValue = mmeCodesByProfile.Contains(m)
+                }));
+            }
         }
     }
 }

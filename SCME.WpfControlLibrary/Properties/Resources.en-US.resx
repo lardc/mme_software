@@ -753,4 +753,7 @@
   <data name="EditProfileBindings" xml:space="preserve">
     <value>Edit Profile Binding</value>
   </data>
+  <data name="ConfirmationOfDeletion" xml:space="preserve">
+    <value>Are you sure you want to delete the selected item?</value>
+  </data>
 </root>

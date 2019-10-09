@@ -753,4 +753,7 @@
   <data name="EditProfileBindings" xml:space="preserve">
     <value>Редактировать привязки профилей</value>
   </data>
+  <data name="ConfirmationOfDeletion" xml:space="preserve">
+    <value>Вы действительно хотите удалить выбранный элемент?</value>
+  </data>
 </root>

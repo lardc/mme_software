@@ -17,7 +17,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
     {
         public Dictionary<string, int> GetMmeCodes()
         {
-            Dictionary<string, int> mmeCodes = new Dictionary<string, int>();
+            var mmeCodes = new Dictionary<string, int>();
 
             using (var reader = _allMmeCodesSelect.ExecuteReader())
                 while (reader.Read())
@@ -45,6 +45,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             DbCommand profileSelect;
 
+            if(mmeCode == null)
+                throw new ArgumentNullException(nameof(mmeCode));
             if (string.IsNullOrEmpty(mmeCode))
                 profileSelect = _selectInactiveProfile;
             else if (string.IsNullOrEmpty(name))
@@ -60,22 +62,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 //profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
             }
 
-            List<MyProfile> profiles;
-
-            if (_cacheProfilesByMmeCode.ContainsKey(mmeCode) == false)
+            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+            if (profiles != null) 
+                return profiles.Select(m => m.Copy()).ToList();
+            
+            _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
+                
+            using var reader = profileSelect.ExecuteReader();
+            while (reader.Read())
             {
-                profiles = new List<MyProfile>();
-                _cacheProfilesByMmeCode.Add(mmeCode, profiles);
-                using var reader = profileSelect.ExecuteReader();
-                while (reader.Read())
-                {
-                    var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
-                    profiles.Add(readProfile);
-                    _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
-                }
+                var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+                profiles.Add(readProfile);
+                _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
             }
-            else
-                profiles = _cacheProfilesByMmeCode[mmeCode];
 
             return profiles.Select(m => m.Copy()).ToList();
         }
@@ -169,7 +168,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             using var reader = _mmeCodesByProfile.ExecuteReader();
             while (reader.Read())
                 profileCache.MmeCodes.Add(reader.GetString(0));
-            return profileCache.MmeCodes;
+            return profileCache.MmeCodes.Copy();
 
         }
 

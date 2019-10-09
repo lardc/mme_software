@@ -304,6 +304,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вы действительно хотите удалить выбранный элемент?.
+        /// </summary>
+        public static string ConfirmationOfDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmationOfDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Подключиться.
         /// </summary>
         public static string Connect {

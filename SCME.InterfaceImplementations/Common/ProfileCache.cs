@@ -16,6 +16,8 @@ namespace SCME.InterfaceImplementations.Common
         //public bool IsMmeCodesLoad { get; set; }
         public List<string> MmeCodes { get; set; }
 
+        
+        
         public ProfileCache(MyProfile profile)
         {
             Profile = profile ?? throw new ArgumentNullException();
