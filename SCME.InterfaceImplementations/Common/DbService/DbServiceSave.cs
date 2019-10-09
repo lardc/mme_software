@@ -303,10 +303,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _mmeCodeToProfileInsert.ExecuteNonQuery();   
             }
 
-            _cacheProfileById[profileId].MmeCodes.Add(mmeCode);
+            _cacheProfileById.TryGetValue(profileId, out var profile);
+            if (profile == null) 
+                return;
             
+            profile.MmeCodes.Add(mmeCode);
             _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
-            profiles?.Add(_cacheProfileById[profileId].Profile);
+            profiles?.Add(profile.Profile);
         }
 
         public void InsertMmeCode(string mmeCode)

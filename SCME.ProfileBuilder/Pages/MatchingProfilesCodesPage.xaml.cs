@@ -18,7 +18,7 @@ namespace SCME.ProfileBuilder.Pages
             Vm = new MatchingProfilesCodesPageVm(dbService);
             InitializeComponent();
             _dbService = dbService;
-            Vm.SelectedMmeCode = "MME002";
+            Vm.SelectedMmeCode = Vm.MmeCodes.Last();
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
