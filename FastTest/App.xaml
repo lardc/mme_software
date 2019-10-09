@@ -4,5 +4,6 @@
              xmlns:local="clr-namespace:FastTest"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml"/>
     </Application.Resources>
 </Application>

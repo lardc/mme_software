@@ -9,7 +9,7 @@
       xmlns:dataTemplate="clr-namespace:SCME.WpfControlLibrary.DataTemplates"
       xmlns:testParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
       xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
+      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ProfileVm}"
       mc:Ignorable="d" Loaded="Page_Loaded"
       d:DesignHeight="1024" d:DesignWidth="1280"
       Title="ProfilesPage">
@@ -62,27 +62,27 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" IsEnabled="{Binding IsCancelSaveModeEnabled}"/>
+                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" IsEnabled="{Binding IsEditModeActive}"/>
                 <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"  Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="Pencil" />
                 </Button>
-                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsCancelSaveModeEnabled}"  Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"  Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="Cancel" />
                 </Button>
-                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsCancelSaveModeEnabled}"  Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"  Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="ContentSave" />
                 </Button>
             </Grid>
-            <Grid Grid.Column="0" Grid.Row="1" IsEnabled="{Binding IsCancelSaveModeEnabled}">
+            <Grid Grid.Column="0" Grid.Row="1" IsEnabled="{Binding IsEditModeActive}">
                 <profilesPageComponents:AddTestParameterUserControl DataContext="{Binding ProfileDeepDataCopy}" AddTestParametersEvent="AddTestParametersEvent_Click" />
             </Grid>
             <Grid Grid.Column="0" Grid.Row="2" >
-                <testParameters:ClampCommutationDataTemplate IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=Vm.IsCancelSaveModeEnabled }"
-                                                             Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=Vm.IsClampingCommutationActive, Converter={StaticResource B2V}}"
+                <testParameters:ClampCommutationDataTemplate IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=ProfileVm.IsEditModeActive }"
+                                                             Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:ProfilesPage}, Path=ProfileVm.IsClampingCommutationActive, Converter={StaticResource B2V}}"
                                                              DataContext="{Binding ProfileDeepDataCopy}" />
             </Grid>
             <Grid Grid.Column="0" Grid.Row="3">
-                <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="{Binding IsCancelSaveModeEnabled}" ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}" />
+                <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="{Binding IsEditModeActive}" ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}" />
             </Grid>
         </Grid>
     </Grid>

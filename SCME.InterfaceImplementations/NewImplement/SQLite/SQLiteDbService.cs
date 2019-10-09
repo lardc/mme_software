@@ -19,13 +19,15 @@ namespace SCME.InterfaceImplementations.NewImplement.SQLite
         protected override string ProfileTestTypeInsertString => "INSERT INTO PROF_TEST_TYPE (PROF_ID,TEST_TYPE_ID,[ORDER]) VALUES (@PROF_ID, @TEST_TYPE_ID, @ORD)";
 
         protected override string InsertTestTypeString => "INSERT INTO TEST_TYPE(ID, NAME) VALUES(@ID, @NAME)";
-        
+
+        protected override string MmeCodeInsertString => @"INSERT INTO MME_CODES (MME_CODE_ID, MME_CODE) VALUES (NULL, @MME_CODE)";
+
         protected override string DatabaseFieldTestTypeName => "NAME";
 
         protected override int ExecuteCommandWithId(DbCommand command)
         {
             command.ExecuteNonQuery();
-            return Convert.ToInt32(_connection.LastInsertRowId);
+            return Convert.ToInt32(Connection.LastInsertRowId);
         }
 
         public SQLiteDbService(SQLiteConnection connection) : base(connection)

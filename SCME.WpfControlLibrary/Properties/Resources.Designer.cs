@@ -88,6 +88,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить mme code.
+        /// </summary>
+        public static string AddMmeCode {
+            get {
+                return ResourceManager.GetString("AddMmeCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Адрес.
         /// </summary>
         public static string Address {
@@ -282,6 +291,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string CommutationTypeT {
             get {
                 return ResourceManager.GetString("CommutationTypeT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Подтверждение.
+        /// </summary>
+        public static string Confirmation {
+            get {
+                return ResourceManager.GetString("Confirmation", resourceCulture);
             }
         }
         
@@ -534,6 +552,24 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать привязки профилей.
+        /// </summary>
+        public static string EditProfileBindings {
+            get {
+                return ResourceManager.GetString("EditProfileBindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Редактировать профили.
+        /// </summary>
+        public static string EditProfiles {
+            get {
+                return ResourceManager.GetString("EditProfiles", resourceCulture);
             }
         }
         
@@ -795,6 +831,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Ilatching_mA {
             get {
                 return ResourceManager.GetString("Ilatching_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Неактивные.
+        /// </summary>
+        public static string Inactive {
+            get {
+                return ResourceManager.GetString("Inactive", resourceCulture);
             }
         }
         

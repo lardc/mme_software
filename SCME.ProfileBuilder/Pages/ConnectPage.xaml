@@ -1,0 +1,51 @@
+﻿<Page x:Class="SCME.ProfileBuilder.Pages.ConnectPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
+      xmlns:profileBuilder="clr-namespace:SCME.ProfileBuilder"
+      xmlns:local="clr-namespace:SCME.WpfControlLibrary;assembly=SCME.WpfControlLibrary"
+      mc:Ignorable="d" 
+      xmlns:customControls="WpfControlLibrary"
+      xmlns:connectPage="clr-namespace:SCME.ProfileBuilder.CustomControls.ConnectPage"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      d:DesignWidth="1280" d:DesignHeight="924"
+      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
+	Title="ConnectPage">
+    <Grid>
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3">Direct Connection SQlite</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}" ConnectToSqLiteEditProfiles="ConnectToSqLite" ConnectToSqLiteEditProfileBindings="ConnectToSQLite_OnConnectToSqLiteEditProfileBindings"/>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3">Direct MS SQL DB connection</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}" ConnectToMssqlEditProfiles="ConnectToMssql" ConnectToMssqlEditProfileBindings="ConnectToMsSql_OnConnectToSqLiteEditProfileBindings"/>
+                </TabItem.Content>
+            </TabItem>
+            <!-- <TabItem > -->
+            <!--     <TabItem.Header> -->
+            <!--         <StackPanel Orientation="Horizontal"> -->
+            <!--             <TextBlock Margin="3">Color scheme</TextBlock> -->
+            <!--         </StackPanel> -->
+            <!--     </TabItem.Header> -->
+            <!--     <TabItem.Content> -->
+            <!--         <customControls:AccentAndThemeUserControl DataContext="{Binding AccentAndThemeUserControlVM}"/> -->
+            <!--     </TabItem.Content> -->
+            <!-- </TabItem> -->
+        </TabControl>
+
+    </Grid>
+</Page>

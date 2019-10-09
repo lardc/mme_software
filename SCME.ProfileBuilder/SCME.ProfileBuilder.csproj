@@ -124,11 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomControl\ConnectPage\ConnectToMSSQL.xaml.cs">
+    <Compile Include="CustomControls\ConnectPage\ConnectToMSSQL.xaml.cs">
       <DependentUpon>ConnectToMSSQL.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControl\ConnectPage\ConnectToSQLite.xaml.cs">
+    <Compile Include="CustomControls\ConnectPage\ConnectToSQLite.xaml.cs">
       <DependentUpon>ConnectToSQLite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MatchingProfilesCodesPage.xaml.cs">
+      <DependentUpon>MatchingProfilesCodesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -145,15 +148,16 @@
     <Compile Include="ViewModels\ConnectPage\ConnectToSQLiteVM.cs" />
     <Compile Include="ViewModels\ConnectPage\ConnectToMSSQLVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Page Include="CommonPages\ConnectPage.xaml">
+    <Compile Include="ViewModels\MatchingProfilesCodesPageVm.cs" />
+    <Page Include="Pages\ConnectPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControl\ConnectPage\ConnectToMSSQL.xaml">
+    <Page Include="CustomControls\ConnectPage\ConnectToMSSQL.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControl\ConnectPage\ConnectToSQLite.xaml">
+    <Page Include="CustomControls\ConnectPage\ConnectToSQLite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,7 +170,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Cache.cs" />
-    <Compile Include="CommonPages\ConnectPage.xaml.cs">
+    <Compile Include="Pages\ConnectPage.xaml.cs">
       <DependentUpon>ConnectPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
@@ -174,32 +178,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ResourceDictionaries\Constraints.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\ProgressBarResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\LabelResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\CommonResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\ComboBoxResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\CheckBoxResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\ButtonResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Pages\MatchingProfilesCodesPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Icons.xaml">
@@ -272,9 +251,7 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PagesTech\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

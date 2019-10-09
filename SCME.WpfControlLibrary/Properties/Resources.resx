@@ -738,4 +738,19 @@
   <data name="ProfileExists" xml:space="preserve">
     <value>Профиль с таким именем уже существует</value>
   </data>
+  <data name="AddMmeCode">
+    <value>Добавить mme code</value>
+  </data>
+  <data name="Confirmation">
+    <value>Подтверждение</value>
+  </data>
+  <data name="Inactive">
+    <value>Неактивные</value>
+  </data>
+  <data name="EditProfiles" xml:space="preserve">
+    <value>Редактировать профили</value>
+  </data>
+  <data name="EditProfileBindings" xml:space="preserve">
+    <value>Редактировать привязки профилей</value>
+  </data>
 </root>

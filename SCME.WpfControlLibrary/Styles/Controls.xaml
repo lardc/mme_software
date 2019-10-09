@@ -2,11 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:customControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
                     xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters"
                     xmlns:app="profile"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:SCME.WpfControlLibrary"
                     xmlns:sw="System.Windows.Thickness;assembly=PresentationFramework"
@@ -22,7 +20,7 @@
                     xmlns:mahappsConverters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
                     xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters">
     <ResourceDictionary.MergedDictionaries>
-       
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
         
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
@@ -37,7 +35,8 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml"></ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
-   
+  
+    
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Style.Triggers>
@@ -50,15 +49,6 @@
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
-    
-
-   
-
-    <!-- <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}"> -->
-    <!--     <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" /> -->
-    <!-- </Style> -->
-    
-    
 
     <Style TargetType="ScrollBar">
         <Setter Property="Width" Value="{DynamicResource SCME.ScrollBarWidth}" />

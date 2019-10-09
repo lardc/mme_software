@@ -1,8 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Data.SqlClient;
+using System.Windows;
 using MahApps.Metro.Controls;
-using SCME.ProfileBuilder.CommonPages;
+using SCME.InterfaceImplementations.NewImplement.MSSQL;
+using SCME.ProfileBuilder.Pages;
 using SCME.ProfileBuilder.Properties;
 using SCME.WpfControlLibrary;
+using SCME.WpfControlLibrary.CustomControls;
+using SCME.WpfControlLibrary.IValueConverters;
 
 namespace SCME.ProfileBuilder
 {
@@ -21,11 +26,13 @@ namespace SCME.ProfileBuilder
             Cache.Main = this;
             Cache.ConnectPage = new ConnectPage();
             MainFrame.Navigate(Cache.ConnectPage);
+            //MainFrame.Navigate(new ProfilesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;")), "MME005"));
+            //MainFrame.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Settings.Default.LastSelectedMMECode = Cache.ProfilesPage.Vm.SelectedMmeCode;
+            Settings.Default.LastSelectedMMECode = Cache.ProfilesPage?.ProfileVm.SelectedMmeCode;
             Settings.Default.Save();
             WpfControlLibrary.Properties.Settings.Default.Save();
         }

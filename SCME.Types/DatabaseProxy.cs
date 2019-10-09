@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.ServiceModel;
 using System.Threading;
 using SCME.Types.Database;
@@ -57,6 +58,11 @@ namespace SCME.Types
             return Channel.GetFreeProfileName();
         }
 
+        public List<string> GetMmeCodesByProfile(MyProfile profile)
+        {
+            return Channel.GetMmeCodesByProfile(profile);
+        }
+
         public int InsertUpdateProfile(MyProfile oldProfile, MyProfile newProfile, string mmeCode)
         {
             return Channel.InsertUpdateProfile(oldProfile, newProfile, mmeCode);
@@ -65,6 +71,21 @@ namespace SCME.Types
         public void RemoveProfile(MyProfile profile, string mmeCode)
         {
             Channel.RemoveProfile(profile, mmeCode);
+        }
+
+        public void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertMmeCode(string mmeCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

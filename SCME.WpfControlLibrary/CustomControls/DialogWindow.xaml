@@ -5,17 +5,41 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
         xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+        AllowsTransparency="True"
+        Topmost="True"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource xGray2}"
+        BorderBrush="{StaticResource BlueBrush}" BorderThickness="1"
         DataContext="{Binding RelativeSource={RelativeSource Self}}" Loaded="DialogWindow_OnLoaded"
-        mc:Ignorable="d" WindowStyle="None"  SizeToContent="WidthAndHeight"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight"
         Height="450" Width="800" MaxWidth="1280" MaxHeight="1024" d:DataContext="{d:DesignInstance local:DialogWindow}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition  Height="Auto" />
-            <RowDefinition  Height="*" />
-            <RowDefinition  Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Height="50" Grid.Column="0" Grid.Row="0" Content="{Binding Title}"/>
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Message}" TextWrapping="WrapWithOverflow"/> 
-        <Button Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Ok}" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Title}" BorderBrush="{StaticResource BlueBrush}" BorderThickness="0,0,0,1" />
+
+        <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding Message}" Background="Transparent" TextWrapping="Wrap" />
+        </ScrollViewer>
+
+        <Button Grid.Column="0" Grid.Row="2" IsDefault="True" Command="{Binding OkCommand}" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Ok}" />
+        <Button Grid.Column="1" Grid.Row="2" Visibility="{Binding IsShowCancelButton, Converter={StaticResource B2V}}" IsCancel="True" Command="{Binding CancelCommand}" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Cancel}" />
+
     </Grid>
 </Window>

@@ -277,14 +277,31 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("TOU", touCondition, touParameters);
         }
 
-        private void DeleteProfile(MyProfile profile, string mmeCode)
+        public void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
         {
-            _mmeCodeToProfileDelete.Parameters["@PROFILE_ID"].Value = profile.Id;
+            _mmeCodeToProfileDelete.Parameters["@PROFILE_ID"].Value = profileId;
             _mmeCodeToProfileDelete.Parameters["@MME_CODE"].Value = mmeCode;
-            _mmeCodeToProfileDelete.Transaction = _dbTransaction;
-            _mmeCodeToProfileDelete.ExecuteScalar();
+            _mmeCodeToProfileDelete.Transaction = dbTransaction;
+            _mmeCodeToProfileDelete.ExecuteNonQuery();
+            _cacheProfileById[profileId].MmeCodes.Remove(mmeCode);
+
         }
 
+        public void InsertMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
+        {
+            _mmeCodeToProfileInsert.Parameters["@PROFILE_ID"].Value = profileId;
+            _mmeCodeToProfileInsert.Parameters["@MME_CODE"].Value = mmeCode;
+            _mmeCodeToProfileInsert.Transaction = dbTransaction;
+            _mmeCodeToProfileInsert.ExecuteNonQuery();
+            _cacheProfileById[profileId].MmeCodes.Add(mmeCode);
+        }
+
+        public void InsertMmeCode(string mmeCode)
+        {
+            _mmeCodeInsert.Parameters["@MME_CODE"].Value = mmeCode;
+            _mmeCodeInsert.ExecuteNonQuery();
+        }
+        
         private int InsertProfile(MyProfile profile, string mmeCode)
         {
             _profileInsert.Parameters["@PROF_NAME"].Value = profile.Name;
@@ -293,13 +310,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _profileInsert.Parameters["@PROF_TS"].Value = profile.Timestamp;
 
             _profileInsert.Transaction = _dbTransaction;
-            int id = ExecuteCommandWithId(_profileInsert);
+            var id = ExecuteCommandWithId(_profileInsert);
 
-            _mmeCodeToProfileInsert.Parameters["@PROFILE_ID"].Value = id;
-            _mmeCodeToProfileInsert.Parameters["@MME_CODE"].Value = mmeCode;
-
-            _mmeCodeToProfileInsert.Transaction = _dbTransaction;
-            _mmeCodeToProfileInsert.ExecuteScalar();
+            InsertMmeCodeToProfile(id, mmeCode, _dbTransaction);
 
             return id;
         }
@@ -308,12 +321,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             profile.Id = InsertProfile(profile, mmeCode);
 
-            InserterBaseTestParametersAndNormatives inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
+            var inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
                 _dbTransaction,
                 _profileTestTypeInsert, _profileParameterInsert, _profileConditionInsert,
-                _testTypeIdByName, _conditionIdByName, _parameterIdByName, ExecuteCommandWithId);
+                _testTypeIdByName, _conditionIdByName, _parameterIdByName, ExecuteCommandWithId) {Order = 0};
 
-            inserter.Order = 0;
             inserter.Insert(ClampingConditionsParameters(profile.DeepData));
             inserter.Insert(ComutationConditionsParameters(profile.DeepData));
             foreach (var i in profile.DeepData.TestParametersAndNormatives)
@@ -356,8 +368,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             try
             {
-                _dbTransaction = _connection.BeginTransaction();
-                DeleteProfile(profile, mmeCode);
+                _dbTransaction = Connection.BeginTransaction();
+                RemoveMmeCodeToProfile(profile.Id, mmeCode, _dbTransaction);
                 _dbTransaction.Commit();
 
 //                _cacheProfileByKey.Remove(profile.Key);
@@ -374,9 +386,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             try
             {
-                _dbTransaction = _connection.BeginTransaction();
+                _dbTransaction = Connection.BeginTransaction();
                 if(oldProfile != null)
-                    DeleteProfile(oldProfile, mmeCode);
+                    RemoveMmeCodeToProfile(oldProfile.Id, mmeCode, _dbTransaction);
                 var id = SaveProfile(newProfile, mmeCode);
                 _dbTransaction.Commit();
 
@@ -393,7 +405,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     oldProfile.Children.Clear();
                 }
 
-                _cacheProfileByKey[newProfile.Key] = (newProfile, true, true);
+                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile){IsChildLoad = true, IsDeepLoad = true};
                 _cacheProfilesByMmeCode[mmeCode].Add(newProfile);
                 return id;
             }

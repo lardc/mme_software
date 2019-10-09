@@ -66,6 +66,7 @@ namespace SCME.Types.Profiles
 
         [DataMember]
         public ObservableCollection<MyProfile> Children { get; set; } = new ObservableCollection<MyProfile>();
+
         [DataMember]
         public ProfileDeepData DeepData { get; set; } = new ProfileDeepData();
 

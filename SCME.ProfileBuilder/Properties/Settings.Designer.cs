@@ -25,7 +25,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SinglePositionModuleMode {
             get {
                 return ((bool)(this["SinglePositionModuleMode"]));
@@ -34,7 +33,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CurrentCulture {
             get {
                 return ((string)(this["CurrentCulture"]));
@@ -67,7 +66,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool MSSQLIntegratedSecurity {
             get {
                 return ((bool)(this["MSSQLIntegratedSecurity"]));
@@ -127,7 +125,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsTouch {
             get {
                 return ((bool)(this["IsTouch"]));
@@ -136,7 +133,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LastSelectedMMECode {
             get {
                 return ((string)(this["LastSelectedMMECode"]));

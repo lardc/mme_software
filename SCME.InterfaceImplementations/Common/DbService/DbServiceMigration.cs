@@ -155,7 +155,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         
         private void Migrate()
         {
-            using (_dbTransaction = _connection.BeginTransaction())
+            using (_dbTransaction = Connection.BeginTransaction())
             {
                 _insertCondition.Transaction = _dbTransaction;
                 _insertTestType.Transaction = _dbTransaction;

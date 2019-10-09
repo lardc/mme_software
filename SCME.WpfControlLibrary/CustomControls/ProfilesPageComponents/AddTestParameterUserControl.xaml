@@ -41,7 +41,7 @@
             <ComboBox Grid.Column="1" Grid.Row="1" 
                       ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" 
                       DisplayMemberPath="Key" SelectedValuePath="Value" 
-                      SelectedValue="{Binding Path=Vm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type customControl:ProfilesPage}}}">
+                      SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type customControl:ProfilesPage}}}">
             </ComboBox>
             <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"/>
             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Height_Prof}" />

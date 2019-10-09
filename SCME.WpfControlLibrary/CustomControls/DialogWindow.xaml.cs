@@ -7,16 +7,29 @@ namespace SCME.WpfControlLibrary.CustomControls
 {
     public partial class DialogWindow
     {
+        private bool Result { get; set; }
         public string Message { get; set; }
-        public DialogWindow(string title, string message)
+        public bool IsShowCancelButton  { get; private set; }
+        public DialogWindow(string title, string message, bool isShowCancelButton = false)
         {
             Title = title;
             Message = message;
+            IsShowCancelButton = isShowCancelButton;
             InitializeComponent();
-            
         }
+
+        public RelayCommand OkCommand => new RelayCommand(o =>
+        {
+            Result = true;
+            Close();
+        });
         
-        public static ICommand CloseCommand  => new RelayCommand<Window>(w => w.Close());
+        public  RelayCommand CancelCommand => new RelayCommand(o =>
+        {
+            Result = false;
+            Close();
+        });
+
 
         private void DialogWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -25,6 +38,12 @@ namespace SCME.WpfControlLibrary.CustomControls
             if (mainWindow == null) return;
             Left = mainWindow.Left + (mainWindow.Width - this.ActualWidth) / 2;
             Top = mainWindow.Top + (mainWindow.Height - this.ActualHeight) / 2;
+        }
+
+        public bool ShowDialogWithResult()
+        {
+            ShowDialog();
+            return Result;
         }
     }
 }
