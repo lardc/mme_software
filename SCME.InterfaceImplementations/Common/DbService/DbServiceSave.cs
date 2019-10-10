@@ -423,6 +423,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                 _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile){IsChildLoad = true, IsDeepLoad = true};
                 _cacheProfilesByMmeCode[mmeCode].Add(newProfile);
+                
+                if (oldProfile == null)
+                    _cacheProfileById[newProfile.Id].MmeCodes = new List<string>(){mmeCode};
+                
                 return id;
             }
 
