@@ -211,6 +211,7 @@ namespace SCME.ProfileBuilder.ViewModels
         #endregion
 
 
+
 //
 //        public RelayCommand EditMmeCodesToProfile => new RelayCommand(o => { IsEditModeActive = true; }, o => IsEditModeEnabled);
 //        public RelayCommand DeleteAllMmeCodesToProfile => new RelayCommand(o =>

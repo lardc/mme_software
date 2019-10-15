@@ -61,6 +61,24 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Активные MME коды.
+        /// </summary>
+        public static string ActiveMmeCodes {
+            get {
+                return ResourceManager.GetString("ActiveMmeCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Активные профили.
+        /// </summary>
+        public static string ActiveProfiles {
+            get {
+                return ResourceManager.GetString("ActiveProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Адаптер.
         /// </summary>
         public static string Adapter {
@@ -849,6 +867,24 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Inactive {
             get {
                 return ResourceManager.GetString("Inactive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Нективные MME коды.
+        /// </summary>
+        public static string InactiveMmeCodes {
+            get {
+                return ResourceManager.GetString("InactiveMmeCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Неактивные профили.
+        /// </summary>
+        public static string InactiveProfiles {
+            get {
+                return ResourceManager.GetString("InactiveProfiles", resourceCulture);
             }
         }
         

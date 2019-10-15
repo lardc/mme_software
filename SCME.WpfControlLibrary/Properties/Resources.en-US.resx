@@ -762,4 +762,16 @@
   <data name="RemoveMmeCode">
     <value>Remove mme code</value>
   </data>
+    <data name="ActiveProfiles">
+      <value>Active profiles</value>
+    </data>
+    <data name="InactiveProfiles">
+      <value>Inactive profiles</value>
+    </data>
+    <data name="ActiveMmeCodes">
+      <value>Active MME codes</value>
+    </data>
+    <data name="InactiveMmeCodes">
+      <value>Inactive MME codes</value>
+    </data>
 </root>

@@ -88,6 +88,7 @@
     <Compile Include="CustomControls\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\DragGrid.cs" />
     <Compile Include="CustomControls\NumericUpDown.cs" />
     <Compile Include="CustomControls\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>

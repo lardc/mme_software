@@ -29,7 +29,7 @@ namespace SCME.Service
                 if (endpoint.Contract.ContractType == typeof(IMetadataExchange)) continue;  
                 foreach (OperationDescription operation in endpoint.Contract.Operations)  
                 {  
-                    FaultDescription expectedFault = operation.Faults.Find(DbService<SqlCommand, SqlConnection >.FaultAction);
+                    //FaultDescription expectedFault = operation.Faults.Find(DbService<SqlCommand, SqlConnection >.FaultAction);
 
                 }  
             }  

@@ -762,5 +762,17 @@
   <data name="RemoveMmeCode">
     <value>Удалить mme code</value>
   </data>
+  <data name="ActiveProfiles">
+    <value>Активные профили</value>
+  </data>
+  <data name="InactiveProfiles">
+    <value>Неактивные профили</value>
+  </data>
+  <data name="ActiveMmeCodes">
+    <value>Активные MME коды</value>
+  </data>
+  <data name="InactiveMmeCodes">
+    <value>Нективные MME коды</value>
+  </data>
   
 </root>
