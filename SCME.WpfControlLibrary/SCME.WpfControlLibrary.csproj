@@ -98,9 +98,6 @@
     <Compile Include="DataTemplates\MmeCodeCheckboxDataTemplate.xaml.cs">
       <DependentUpon>MmeCodeCheckboxDataTemplate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataTemplates\ProfileDataTemplate.xaml.cs">
-      <DependentUpon>ProfileDataTemplate.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DataTemplates\TestParameters\ClampCommutationDataTemplate.xaml.cs">
       <DependentUpon>ClampCommutationDataTemplate.xaml</DependentUpon>
     </Compile>
@@ -115,6 +112,9 @@
     <Compile Include="ViewModels\MmeCodeCheckboxDataTemplateVm.cs" />
     <Compile Include="ViewModels\ProfilesPageVM.cs" />
     <Compile Include="ViewModels\ProfilesPage\AddTestParametrUserControlVM.cs" />
+    <Compile Include="Windows\DynamicResourcesCahnger.xaml.cs">
+      <DependentUpon>DynamicResourcesChanger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrappers\AccentWrapper.cs" />
     <Compile Include="CustomControls\AccentAndThemeUserControl.xaml.cs">
       <DependentUpon>AccentAndThemeUserControl.xaml</DependentUpon>
@@ -131,10 +131,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="DataTemplates\MmeCodeCheckboxDataTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DataTemplates\ProfileDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +252,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\Fonts.xaml" />
     <Page Include="Styles\ListViewItemProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -266,6 +263,7 @@
     <Page Include="Styles\Sizes.xaml" />
     <Page Include="Styles\TextBox.xaml" />
     <Page Include="Styles\TreeViewItemProfile.xaml" />
+    <Page Include="Windows\DynamicResourcesChanger.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IValueConverters\VtmTestTypeToStringConverter.cs" />

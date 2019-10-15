@@ -756,4 +756,11 @@
   <data name="ConfirmationOfDeletion" xml:space="preserve">
     <value>Вы действительно хотите удалить выбранный элемент?</value>
   </data>
+  <data name="Profiles" xml:space="preserve">
+    <value>Профили</value>
+  </data>
+  <data name="RemoveMmeCode">
+    <value>Удалить mme code</value>
+  </data>
+  
 </root>

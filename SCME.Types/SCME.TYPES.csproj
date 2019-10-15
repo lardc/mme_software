@@ -76,6 +76,7 @@
     <Compile Include="Clamping\TypeClamping.cs" />
     <Compile Include="Commutation\AttributesHelper.cs" />
     <Compile Include="Commutation\TypeCommutation.cs" />
+    <Compile Include="ConstantsMinMax.cs" />
     <Compile Include="ControlServerContracts.cs" />
     <Compile Include="BVT\HALTypeBVT.cs" />
     <Compile Include="ControlServerProxy.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Interfaces\IResultsService.cs" />
     <Compile Include="Interfaces\ISaveProfileService.cs" />
     <Compile Include="Interfaces\ISyncService.cs" />
+    <Compile Include="LambdaExtension.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="PrintingServiceProxy.cs" />
     <Compile Include="DatabaseMaintenanceContracts.cs" />

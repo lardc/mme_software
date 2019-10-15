@@ -6,6 +6,7 @@
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
              xmlns:tou="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
+             xmlns:types="clr-namespace:SCME.Types;assembly=SCME.Types"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=tou:TestParameters}"
              d:DesignWidth="800">
     <Grid>
@@ -17,6 +18,6 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TOUITM}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding CurrentAmplitude}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding CurrentAmplitude}" MinMaxInterval="{x:Static types:ConstantsMinMax+Tou.CurrentAmplitude}" />
     </Grid>
 </UserControl>

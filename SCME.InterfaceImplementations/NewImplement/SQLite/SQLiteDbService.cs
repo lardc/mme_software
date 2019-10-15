@@ -20,7 +20,7 @@ namespace SCME.InterfaceImplementations.NewImplement.SQLite
 
         protected override string InsertTestTypeString => "INSERT INTO TEST_TYPE(ID, NAME) VALUES(@ID, @NAME)";
 
-        protected override string MmeCodeInsertString => @"INSERT INTO MME_CODES (MME_CODE_ID, MME_CODE) VALUES (NULL, @MME_CODE)";
+        protected override string InsertMmeCodeString => @"INSERT INTO MME_CODES (MME_CODE_ID, MME_CODE) VALUES (NULL, @MME_CODE)";
 
         protected override string DatabaseFieldTestTypeName => "NAME";
 

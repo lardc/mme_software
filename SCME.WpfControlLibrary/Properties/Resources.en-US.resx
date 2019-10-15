@@ -756,4 +756,10 @@
   <data name="ConfirmationOfDeletion" xml:space="preserve">
     <value>Are you sure you want to delete the selected item?</value>
   </data>
+  <data name="Profiles" xml:space="preserve">
+    <value>Profiles</value>
+  </data>
+  <data name="RemoveMmeCode">
+    <value>Remove mme code</value>
+  </data>
 </root>

@@ -1348,6 +1348,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Профили.
+        /// </summary>
+        public static string Profiles {
+            get {
+                return ResourceManager.GetString("Profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Отожмите кнопку Стоп.
         /// </summary>
         public static string PullStopButton {
@@ -1506,6 +1515,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Rejected {
             get {
                 return ResourceManager.GetString("Rejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить mme code.
+        /// </summary>
+        public static string RemoveMmeCode {
+            get {
+                return ResourceManager.GetString("RemoveMmeCode", resourceCulture);
             }
         }
         

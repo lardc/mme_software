@@ -73,6 +73,11 @@ namespace SCME.Types
             Channel.RemoveProfile(profile, mmeCode);
         }
 
+        public void RemoveMmeCode(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
         {
             throw new NotImplementedException();

@@ -23,6 +23,12 @@
     <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
+    <ObjectDataProvider x:Key="MinWidthForListViewMmeCode" MethodName="MeasureString" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}">
+        <ObjectDataProvider.MethodParameters>
+            <sys:String>MME999_</sys:String>
+        </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    
     <ObjectDataProvider x:Key="DataFromMeasurementModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="bvt:BVTMeasurementMode"/>

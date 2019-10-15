@@ -277,6 +277,40 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("TOU", touCondition, touParameters);
         }
 
+        public void RemoveMmeCode(string mmeCode)
+        {
+            _dbTransaction = Connection.BeginTransaction();
+            try
+            {
+                _deleteAllMmeCodeToProfileByMmeCode.Parameters["@MME_CODE"].Value = mmeCode;
+                _deleteMmeCode.Parameters["@MME_CODE"].Value = mmeCode;
+
+                _deleteAllMmeCodeToProfileByMmeCode.Transaction = _dbTransaction;
+                _deleteMmeCode.Transaction = _dbTransaction;
+                
+                _deleteAllMmeCodeToProfileByMmeCode.ExecuteNonQuery();
+                _deleteMmeCode.ExecuteNonQuery();
+                
+                _dbTransaction.Commit();
+
+                
+                //Only mmeCode = empty string 
+                var profiles =_cacheProfilesByMmeCode[string.Empty];
+                foreach (var i in profiles)
+                {
+                    _cacheProfileById.TryGetValue(i.Id, out var profile);
+                    profile?.MmeCodes?.Remove(mmeCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                _dbTransaction.Rollback();
+                Debug.WriteLine(e);
+                throw;
+            }
+        }
+
         public void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null)
         {
             if (mmeCode != string.Empty)
@@ -287,7 +321,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _mmeCodeToProfileDelete.ExecuteNonQuery();
             }
 
-            _cacheProfileById[profileId].MmeCodes.Remove(mmeCode);
+            _cacheProfileById.TryGetValue(profileId, out var profile);
+            if (profile == null) 
+                return;
+            
+            if(profile.MmeCodes == null)
+                profile.MmeCodes = new List<string>();
+            else
+                profile.MmeCodes.Remove(mmeCode);
 
             _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
             profiles?.Remove(_cacheProfileById[profileId].Profile);
@@ -307,15 +348,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
             if (profile == null) 
                 return;
             
+            if(profile.MmeCodes == null)
+                profile.MmeCodes = new List<string>();
             profile.MmeCodes.Add(mmeCode);
+            
             _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
             profiles?.Add(profile.Profile);
         }
 
         public void InsertMmeCode(string mmeCode)
         {
-            _mmeCodeInsert.Parameters["@MME_CODE"].Value = mmeCode;
-            _mmeCodeInsert.ExecuteNonQuery();
+            _insertMmeCode.Parameters["@MME_CODE"].Value = mmeCode;
+            _insertMmeCode.ExecuteNonQuery();
         }
         
         private int InsertProfile(MyProfile profile, string mmeCode)

@@ -8,6 +8,7 @@ using SCME.ProfileBuilder.Properties;
 using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.CustomControls;
 using SCME.WpfControlLibrary.IValueConverters;
+using SCME.WpfControlLibrary.Windows;
 
 namespace SCME.ProfileBuilder
 {
@@ -28,6 +29,7 @@ namespace SCME.ProfileBuilder
             MainFrame.Navigate(Cache.ConnectPage);
             //MainFrame.Navigate(new ProfilesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;")), "MME005"));
             //MainFrame.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
+            
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -39,6 +41,7 @@ namespace SCME.ProfileBuilder
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //new DynamicResourcesChanger().Show();
             //Cache.ConnectPage.ConnectToMssql();
             
         }

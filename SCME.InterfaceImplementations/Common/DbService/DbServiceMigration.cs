@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Resources;
 
 
 namespace SCME.InterfaceImplementations.Common.DbService
@@ -162,6 +164,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _insertParameter.Transaction = _dbTransaction;
                 _insertError.Transaction = _dbTransaction;
 
+                _selectAllTopProfile.Transaction = _dbTransaction;
+                
+                _insertMmeCode.Transaction = _dbTransaction;
+
+                _checkMmeCodeIsActive.Transaction = _dbTransaction;
                 _checkCondition.Transaction = _dbTransaction;
                 _checkParameter.Transaction = _dbTransaction;
                 _checkError.Transaction = _dbTransaction;
@@ -210,6 +217,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         _insertTestType.Parameters["@ID"].Value = id;
                         _insertTestType.Parameters["@NAME"].Value = name;
                         _insertTestType.ExecuteNonQuery();
+                    }
+
+                    if (Convert.ToInt32(_checkMmeCodeIsActive.ExecuteScalar()) == 0)
+                    {
+                        InsertMmeCode(MME_CODE_IS_ACTIVE_NAME);
+
+                        //var q = GetProfilesSuperficially(string.Empty).Count(m => m.Name == "PSDRT T393 3600 36");
+                        foreach (var i in GetProfilesSuperficially(string.Empty))
+                            InsertMmeCodeToProfile(i.Id, MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
                     }
 
                     _dbTransaction.Commit();

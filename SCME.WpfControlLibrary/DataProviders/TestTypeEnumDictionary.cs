@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
 using SCME.Types.Clamping;
@@ -8,6 +12,7 @@ using SCME.Types.dVdt;
 using SCME.Types.QrrTq;
 using SCME.Types.VTM;
 using SCME.WpfControlLibrary.Properties;
+
 // ReSharper disable UnusedMethodReturnValue.Global
 
 namespace SCME.WpfControlLibrary.DataProviders
@@ -23,7 +28,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {Resources.Reverse, BVTTestType.Reverse},
             };
         }
-        
+
         public static Dictionary<string, VTMTestType> GetVTMTestTypes()
         {
             return new Dictionary<string, VTMTestType>()
@@ -33,7 +38,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {Resources.Curve, VTMTestType.Curve},
             };
         }
-        
+
         public static Dictionary<string, BVTMeasurementMode> GetBVTMeasurementModes()
         {
             return new Dictionary<string, BVTMeasurementMode>()
@@ -42,7 +47,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {BVTMeasurementMode.ModeV.ToString(), BVTMeasurementMode.ModeV},
             };
         }
-        
+
         public static Dictionary<string, DvdtMode> GetDvdtModes()
         {
             return new Dictionary<string, DvdtMode>()
@@ -51,7 +56,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {Resources.DvdtDetection, DvdtMode.Detection},
             };
         }
-        
+
         public static Dictionary<string, VoltageRate> GetVoltageRates()
         {
             return new Dictionary<string, VoltageRate>()
@@ -88,8 +93,8 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {nameof(TDcFallRate.r100), TDcFallRate.r100},
             };
         }
-        
-        
+
+
         public static Dictionary<string, TOsvRate> GetTOsvRates()
         {
             return new Dictionary<string, TOsvRate>()
@@ -123,7 +128,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {nameof(ModuleCommutationType.MTD5), ModuleCommutationType.MTD5},
             };
         }
-        
+
         public static Dictionary<string, ClampingForce> GetClampingForceTypes()
         {
             return new Dictionary<string, ClampingForce>()
@@ -132,21 +137,36 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {nameof(ClampingForce.Custom), ClampingForce.Custom},
             };
         }
-        
+
         public static Dictionary<string, TestParametersType> GetTestParametersTypes()
         {
             return new Dictionary<string, TestParametersType>()
             {
-               {nameof(TestParametersType.Gate), TestParametersType.Gate},
-               {nameof(TestParametersType.StaticLoses), TestParametersType.StaticLoses},
-               {nameof(TestParametersType.Bvt), TestParametersType.Bvt},
-               {nameof(TestParametersType.Dvdt), TestParametersType.Dvdt},
-               {nameof(TestParametersType.ATU), TestParametersType.ATU},
-               {nameof(TestParametersType.QrrTq), TestParametersType.QrrTq},
-               {nameof(TestParametersType.RAC), TestParametersType.RAC},
-               {nameof(TestParametersType.TOU), TestParametersType.TOU},
+                {nameof(TestParametersType.Gate), TestParametersType.Gate},
+                {nameof(TestParametersType.StaticLoses), TestParametersType.StaticLoses},
+                {nameof(TestParametersType.Bvt), TestParametersType.Bvt},
+                {nameof(TestParametersType.Dvdt), TestParametersType.Dvdt},
+                {nameof(TestParametersType.ATU), TestParametersType.ATU},
+                {nameof(TestParametersType.QrrTq), TestParametersType.QrrTq},
+                {nameof(TestParametersType.RAC), TestParametersType.RAC},
+                {nameof(TestParametersType.TOU), TestParametersType.TOU},
             };
         }
-        
+
+        public static double MeasureString(string candidate)
+        {
+            var fontFamily = ((FontFamily) Application.Current.Resources["SCME.DefaultFont"]).FamilyNames.First().Value;
+            
+            var formattedText = new FormattedText(
+                candidate,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(fontFamily),
+                (double) Application.Current.Resources["SCME.BaseFontSize"],
+                Brushes.Black,
+                new NumberSubstitution());
+
+            return formattedText.Width;
+        }
     }
 }

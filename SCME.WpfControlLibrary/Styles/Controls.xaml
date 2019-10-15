@@ -38,6 +38,7 @@
   
     
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
@@ -47,6 +48,7 @@
     </Style>
 
     <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 

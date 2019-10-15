@@ -41,6 +41,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return res;
         }
 
+
+        
         public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
         {
             DbCommand profileSelect;
@@ -48,7 +50,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             if(mmeCode == null)
                 throw new ArgumentNullException(nameof(mmeCode));
             if (string.IsNullOrEmpty(mmeCode))
-                profileSelect = _selectInactiveProfile;
+                profileSelect = _selectAllTopProfile;
             else if (string.IsNullOrEmpty(name))
             {
                 profileSelect = _profilesByMmeSelect;

@@ -41,6 +41,9 @@ namespace SCME.Types.Database
         void RemoveProfile(MyProfile profile, string mmeCode);
 
         [OperationContract]
+        void RemoveMmeCode(string mmeCode);
+        
+        [OperationContract]
         void RemoveMmeCodeToProfile(int profileId, string mmeCode, DbTransaction dbTransaction = null);
 
         [OperationContract]

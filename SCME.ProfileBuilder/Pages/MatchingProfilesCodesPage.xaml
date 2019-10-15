@@ -15,69 +15,169 @@
     <Page.Resources>
         <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
     </Page.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding NewMmeCode, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Add}" Style="{DynamicResource PrimaryButton}" Command="{Binding AddMmeCode}" CommandParameter="{Binding NewMmeCode}"/>
-            <ComboBox Grid.Column="0" Grid.Row="2" ItemsSource="{Binding MmeCodes}" SelectedValue="{Binding SelectedMmeCode}"/>
-            <dataTemplates:TextBoxWithTimer Grid.Column="0" Grid.Row="3" Interval="1000" Text="{Binding ProfileFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindProfileOnTick" />
-            <ListView Grid.Column="0" Grid.Row="4" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}" IsEnabled="{Binding IsEditModeInActive}"
-                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
-                      VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
-                      VirtualizingStackPanel.ScrollUnit="Item" SelectionChanged="ListView_SelectionChanged">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type profiles:MyProfile}" >
-                        <dataTemplates:ProfileDataTemplate />
-                    </DataTemplate>
-                </ListView.Resources>
-            </ListView>
-            <Button Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}" Command="{Binding BackCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"/>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <TabControl>
+        <TabItem Header="{x:Static res:Resources.Profiles}">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- <ComboBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding ActiveAndInactiveMmeCodes}" SelectedValue="{Binding SelectedMmeCode}"/> -->
+                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.IsActive}"/>
+                <dataTemplates:TextBoxWithTimer Grid.Column="0" Grid.Row="1" Interval="1000" Text="{Binding ActiveProfileFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindActiveProfileOnTick" /> 
+                <ListView Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ActiveProfiles.View}" SelectionMode="Extended" SelectionChanged="ListViewActiveProfile_SelectionChanged"
+                              VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                              VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
+                              VirtualizingStackPanel.ScrollUnit="Item" >
+                        <ListView.Resources>
+                            <DataTemplate DataType="{x:Type profiles:MyProfile}" >
+                                    <Label Content="{Binding Name}" />
+                            </DataTemplate>
+                        </ListView.Resources>
+                </ListView>
+                
+                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center" >
+                    <Button  Style="{StaticResource ButtonWithIcon}" Command="{Binding MoveToInactive}">
+                        <iconPacks:PackIconMaterial Kind="ArrowRight" />
+                    </Button>
+                    <Button  Style="{StaticResource ButtonWithIcon}" Command="{Binding MoveToActive}">
+                        <iconPacks:PackIconMaterial Kind="ArrowLeft" />
+                    </Button>
+                </StackPanel>
+                
+                <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Inactive}"/>
+                <dataTemplates:TextBoxWithTimer Grid.Column="2" Grid.Row="1" Interval="1000" Text="{Binding InactiveProfileFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindInactiveProfileOnTick" />
+                <ListView Grid.Column="2" Grid.Row="2" ItemsSource="{Binding InactiveProfiles.View}" SelectionChanged="ListViewInactiveProfile_SelectionChanged"
+                          VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
+                          VirtualizingStackPanel.ScrollUnit="Item" >
+                    <ListView.Resources>
+                        <DataTemplate DataType="{x:Type profiles:MyProfile}" >
+                            <Label Content="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListView.Resources>
+                </ListView>
+            </Grid>
+        </TabItem>
+        <TabItem Header="{x:Static res:Resources.MME_Profiles}">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="{Binding Source={StaticResource MinWidthForListViewMmeCode}}"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" MinWidth="{Binding Source={StaticResource MinWidthForListViewMmeCode}}"/>
                 </Grid.ColumnDefinitions>
-                <TextBox/>
-                <Button Grid.Column="0" Grid.Row="0" Command="{Binding DeleteAllMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="Delete" />
-                </Button>
-                <Button Grid.Column="1" Grid.Row="0" Command="{Binding EditMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="Pencil" />
-                </Button>
-                <Button Grid.Column="2" Grid.Row="0" Command="{Binding CancelMmeCodesToProfile}"  Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="Cancel" />
-                </Button>
-                <Button Grid.Column="3" Grid.Row="0" Command="{Binding SaveMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="ContentSave" />
-                </Button>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                    <dataTemplates:TextBoxWithTimer Grid.Column="0" Grid.Row="0" Interval="1000" Text="{Binding ActiveProfilesForMmeCodesFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindActiveProfileForMmeCodesOnTick" />
+                    <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ActiveProfilesForMmeCodes.View}" SelectedValue="{Binding SelectedActiveProfile}"
+                              VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                              VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
+                              VirtualizingStackPanel.ScrollUnit="Item" >
+                        <ListView.Resources>
+                            <DataTemplate DataType="{x:Type profiles:MyProfile}" >
+                                <Label Content="{Binding Name}" />
+                            </DataTemplate>
+                        </ListView.Resources>
+                    </ListView>
+                <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding DisabledMmeCodes}" SelectionChanged="DisabledMmeCode_OnSelectionChanged" />
+                <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center">
+                    <Button  Style="{StaticResource ButtonWithIcon}" Command="{Binding AddMmeCodeToProfile}">
+                        <iconPacks:PackIconMaterial Kind="ArrowRight" />
+                    </Button>
+                    <Button  Style="{StaticResource ButtonWithIcon}" Command="{Binding RemoveMmeCodeToProfile}">
+                        <iconPacks:PackIconMaterial Kind="ArrowLeft" />
+                    </Button>
+                </StackPanel>
+                <ListView Grid.Column="3" Grid.Row="1" ItemsSource="{Binding EnabledMmeCodes}" SelectionChanged="EnabledMmeCode_OnSelectionChanged" />
             </Grid>
-            <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding MmeCodesByProfile}" IsEnabled="{Binding IsEditModeActive}">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type viewModels:MmeCodeCheckboxDataTemplateVm}" >
-                        <dataTemplates:MmeCodeCheckboxDataTemplate />
-                    </DataTemplate>
-                </ListView.Resources>
-            </ListView>
-        </Grid>
-    </Grid>
+        </TabItem>
+        <TabItem Header="{x:Static res:Resources.MME_Code}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding NewMmeCode, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Add}" Command="{Binding AddMmeCode}" Style="{StaticResource PrimaryButton}"/>
+                <ListView Grid.Column="0" Grid.Row="2" ItemsSource="{Binding MmeCodes}" SelectedValue="{Binding SelectedMmeCodeFromRemove}"/>
+                <Button Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.Delete}" Command="{Binding RemoveMmeCode}" Style="{StaticResource PrimaryButton}"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
+    <!-- <Grid> -->
+    <!--     <Grid.ColumnDefinitions> -->
+    <!--         <ColumnDefinition Width="*"/> -->
+    <!--         <ColumnDefinition Width="Auto"/> -->
+    <!--     </Grid.ColumnDefinitions> -->
+    <!--     <Grid Grid.Column="0" Grid.Row="0"> -->
+    <!--         <Grid.RowDefinitions> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--             <RowDefinition Height="*"/> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--         </Grid.RowDefinitions> -->
+    <!--         <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding NewMmeCode, UpdateSourceTrigger=PropertyChanged}"/> -->
+    <!--         <Button Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Add}" Style="{DynamicResource PrimaryButton}" Command="{Binding AddMmeCode}" CommandParameter="{Binding NewMmeCode}"/> -->
+    <!--         <ComboBox Grid.Column="0" Grid.Row="2" ItemsSource="{Binding MmeCodes}" SelectedValue="{Binding SelectedMmeCode}"/> -->
+    <!--         <dataTemplates:TextBoxWithTimer Grid.Column="0" Grid.Row="3" Interval="1000" Text="{Binding ProfileFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindProfileOnTick" /> -->
+    <!--         <ListView Grid.Column="0" Grid.Row="4" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}" IsEnabled="{Binding IsEditModeInActive}" -->
+    <!--                   VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" -->
+    <!--                   VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page" -->
+    <!--                   VirtualizingStackPanel.ScrollUnit="Item" SelectionChanged="ListView_SelectionChanged"> -->
+    <!--             <ListView.Resources> -->
+    <!--                 <DataTemplate DataType="{x:Type profiles:MyProfile}" > -->
+    <!--                     <dataTemplates:ProfileDataTemplate /> -->
+    <!--                 </DataTemplate> -->
+    <!--             </ListView.Resources> -->
+    <!--         </ListView> -->
+    <!--         <Button Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}" Command="{Binding BackCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"/> -->
+    <!--     </Grid> -->
+    <!--     <Grid Grid.Column="1" Grid.Row="0"> -->
+    <!--         <Grid.RowDefinitions> -->
+    <!--             <RowDefinition Height="Auto"/> -->
+    <!--             <RowDefinition Height="*"/> -->
+    <!--         </Grid.RowDefinitions> -->
+    <!--         <Grid> -->
+    <!--             <Grid.ColumnDefinitions> -->
+    <!--                 <ColumnDefinition Width="Auto"/> -->
+    <!--                 <ColumnDefinition Width="Auto"/> -->
+    <!--                 <ColumnDefinition Width="Auto"/> -->
+    <!--                 <ColumnDefinition Width="Auto"/> -->
+    <!--             </Grid.ColumnDefinitions> -->
+    <!--             <TextBox/> -->
+    <!--             <Button Grid.Column="0" Grid.Row="0" Command="{Binding DeleteAllMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}"> -->
+    <!--                 <iconPacks:PackIconMaterial Kind="Delete" /> -->
+    <!--             </Button> -->
+    <!--             <Button Grid.Column="1" Grid.Row="0" Command="{Binding EditMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}"> -->
+    <!--                 <iconPacks:PackIconMaterial Kind="Pencil" /> -->
+    <!--             </Button> -->
+    <!--             <Button Grid.Column="2" Grid.Row="0" Command="{Binding CancelMmeCodesToProfile}"  Style="{StaticResource ButtonWithIcon}"> -->
+    <!--                 <iconPacks:PackIconMaterial Kind="Cancel" /> -->
+    <!--             </Button> -->
+    <!--             <Button Grid.Column="3" Grid.Row="0" Command="{Binding SaveMmeCodesToProfile}" Style="{StaticResource ButtonWithIcon}"> -->
+    <!--                 <iconPacks:PackIconMaterial Kind="ContentSave" /> -->
+    <!--             </Button> -->
+    <!--         </Grid> -->
+    <!--         <ListView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding MmeCodesByProfile}" IsEnabled="{Binding IsEditModeActive}"> -->
+    <!--             <ListView.Resources> -->
+    <!--                 <DataTemplate DataType="{x:Type viewModels:MmeCodeCheckboxDataTemplateVm}" > -->
+    <!--                     <dataTemplates:MmeCodeCheckboxDataTemplate /> -->
+    <!--                 </DataTemplate> -->
+    <!--             </ListView.Resources> -->
+    <!--         </ListView> -->
+    <!--     </Grid> -->
+    <!-- </Grid> -->
 </Page>

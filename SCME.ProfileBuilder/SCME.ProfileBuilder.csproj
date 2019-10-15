@@ -124,6 +124,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\ActiveInactiveProfilesGroup.xaml.cs">
+      <DependentUpon>ActiveInactiveProfilesGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomControls\ConnectPage\ConnectToMSSQL.xaml.cs">
       <DependentUpon>ConnectToMSSQL.xaml</DependentUpon>
     </Compile>
@@ -144,11 +147,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.en-US.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ActiveInactiveProfilesGroup.cs" />
     <Compile Include="ViewModels\ConnectPage\ConnectPageVM.cs" />
     <Compile Include="ViewModels\ConnectPage\ConnectToSQLiteVM.cs" />
     <Compile Include="ViewModels\ConnectPage\ConnectToMSSQLVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\MatchingProfilesCodesPageVm.cs" />
+    <Page Include="CustomControls\ActiveInactiveProfilesGroup.xaml" />
     <Page Include="Pages\ConnectPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
