@@ -4,6 +4,7 @@ using SCME.UI.PagesCommon;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.WpfControlLibrary.CustomControls;
+using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI
 {

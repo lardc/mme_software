@@ -3,6 +3,11 @@ using System.Runtime.Serialization;
 
 namespace SCME.Types
 {
+    public enum TypeDb
+    {
+        MSSQL,
+        SQLite
+    }
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexParts
     {

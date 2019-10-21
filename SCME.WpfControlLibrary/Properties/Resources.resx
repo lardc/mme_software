@@ -772,7 +772,25 @@
     <value>Активные MME коды</value>
   </data>
   <data name="InactiveMmeCodes">
-    <value>Нективные MME коды</value>
+    <value>Неактивные MME коды</value>
+  </data>
+  <data name="UseUdsmUrsm">
+    <value>Использовать Udsm Ursm</value>
+  </data>
+  <data name="Navigation">
+    <value>Навигация</value>
+  </data>
+  <data name="LinkMmeAndProfiles">
+    <value>Связь КИП и Профилей</value>
+  </data>
+  <data name="ProfilesSelectedForMme">
+    <value>Профили выбранные для КИП</value>
+  </data>
+  <data name="AvailableProfiles">
+    <value>Доступные профили</value>
+  </data>
+  <data name="ListMME" xml:space="preserve">
+    <value>Список КИП</value>
   </data>
   
 </root>

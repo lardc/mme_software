@@ -8,12 +8,12 @@ namespace SCME.WpfControlLibrary.IValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (50 / (ushort)value).ToString(CultureInfo.InvariantCulture);
+            return (50 / System.Convert.ToUInt16(value)).ToString(CultureInfo.InvariantCulture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (ushort)(50 / UInt16.Parse((string)value));
+            return (ushort)(50 / System.Convert.ToUInt16(value));
         }
     }
 }

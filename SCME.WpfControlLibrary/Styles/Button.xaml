@@ -43,6 +43,10 @@
         <Setter Property="Background" Value="{StaticResource BlueBrush}"></Setter>
     </Style>
     
+    <Style x:Key="PurpleButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
+    <Setter Property="Background" Value="{StaticResource PurpleBrush1}"></Setter>
+    </Style>
+    
     <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
         <Setter Property="Background" Value="{StaticResource BlueBrush}"/>
     </Style>

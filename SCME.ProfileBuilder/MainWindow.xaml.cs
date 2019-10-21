@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Windows.Navigation;
 using MahApps.Metro.Controls;
 using SCME.InterfaceImplementations.NewImplement.MSSQL;
 using SCME.ProfileBuilder.Pages;
@@ -17,18 +18,19 @@ namespace SCME.ProfileBuilder
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private ViewModels.MainWindowVM VM { get; set; } = new ViewModels.MainWindowVM();
         public MainWindow()
         {
             ResourceBinding.Scaling(0.75);
             
-            DataContext = VM;
             InitializeComponent();
             Cache.Main = this;
-            Cache.ConnectPage = new ConnectPage();
-            MainFrame.Navigate(Cache.ConnectPage);
+            Cache.SelectEditModePage = new SelectEditModePage();
+            
+            var navigationService = NavigationService.GetNavigationService(MainFrame);
+            
+            MainFrame?.Navigate(Cache.SelectEditModePage);
             //MainFrame.Navigate(new ProfilesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;")), "MME005"));
-            //MainFrame.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
+            //MainFrame?.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
             
         }
 

@@ -87,7 +87,7 @@
     <Compile Include="Common\ProfileCache.cs" />
     <Compile Include="NewImplement\MSSQL\MSSQLDbService.cs" />
     <Compile Include="NewImplement\SQLite\SQLiteDbService.cs" />
-    <Compile Include="Common\TDbCommandParametr.cs" />
+    <Compile Include="Common\TDbCommandParameter.cs" />
     <Compile Include="MigratorInserter.cs" />
     <Compile Include="MigratorInserterTemplate.cs" />
     <Compile Include="MSSQL\SQLCentralDatabaseService.cs" />

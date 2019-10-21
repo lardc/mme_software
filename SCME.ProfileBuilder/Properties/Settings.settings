@@ -2,38 +2,38 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.ProfileBuilder.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SinglePositionModuleMode" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="CurrentCulture" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ru-RU</Value>
     </Setting>
-    <Setting Name="MSSQLServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="MSSQLServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">IVAN-PC\SQLEXPRESS01</Value>
     </Setting>
-    <Setting Name="MSSQLDatabase" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="MSSQLDatabase" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SCME_ResultsDB</Value>
     </Setting>
-    <Setting Name="MSSQLIntegratedSecurity" Type="System.Boolean" Scope="User">
+    <Setting Name="MSSQLIntegratedSecurity" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="MSSQLUserId" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="MSSQLUserId" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sa</Value>
     </Setting>
-    <Setting Name="SQLiteFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="SQLiteFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\Ivan\Desktop\Работа\mme_softwareUS03\bin\Db\SCME_ResultsDB_Local.sqlite</Value>
     </Setting>
-    <Setting Name="Accent" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Theme" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="SQLTimeout" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="IsTouch" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LastSelectedMMECode" Type="System.String" Scope="User">
       <Value Profile="(Default)">MME005</Value>
+    </Setting>
+    <Setting Name="TypeDb" Type="SCME.Types.TypeDb" Scope="Application">
+      <Value Profile="(Default)">MSSQL</Value>
+    </Setting>
+    <Setting Name="MSSQLPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">qwerty_123</Value>
     </Setting>
   </Settings>
 </SettingsFile>

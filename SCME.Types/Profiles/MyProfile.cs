@@ -97,5 +97,32 @@ namespace SCME.Types.Profiles
             
             TestParametersAndNormatives = DeepData.TestParametersAndNormatives
         };
+        
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MyProfile profile))
+                return false;
+            return Id == profile.Id;
+        }
+
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
+        public override int GetHashCode() => Id;
+
+//        public class ProfileBuIdEqualityComparer : IEqualityComparer<MyProfile>
+//        {
+//            public bool Equals(MyProfile p1, MyProfile p2)
+//            {
+//                if (p2 == null && p1 == null)
+//                    return true;
+//                if (p1 == null || p2 == null)
+//                    return false;
+//                return p1.Id == p2.Id;
+//            }
+//
+//            public int GetHashCode(MyProfile p)
+//            {
+//                return p.Id;
+//            }
+//        }
     }
 }

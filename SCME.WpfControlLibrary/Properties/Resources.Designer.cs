@@ -178,6 +178,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Доступные профили.
+        /// </summary>
+        public static string AvailableProfiles {
+            get {
+                return ResourceManager.GetString("AvailableProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Назад.
         /// </summary>
         public static string Back {
@@ -871,7 +880,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Нективные MME коды.
+        ///   Looks up a localized string similar to Неактивные MME коды.
         /// </summary>
         public static string InactiveMmeCodes {
             get {
@@ -966,6 +975,24 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string LatchingCurrent {
             get {
                 return ResourceManager.GetString("LatchingCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Связь КИП и Профилей.
+        /// </summary>
+        public static string LinkMmeAndProfiles {
+            get {
+                return ResourceManager.GetString("LinkMmeAndProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список КИП.
+        /// </summary>
+        public static string ListMME {
+            get {
+                return ResourceManager.GetString("ListMME", resourceCulture);
             }
         }
         
@@ -1146,6 +1173,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Mode {
             get {
                 return ResourceManager.GetString("Mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Навигация.
+        /// </summary>
+        public static string Navigation {
+            get {
+                return ResourceManager.GetString("Navigation", resourceCulture);
             }
         }
         
@@ -1389,6 +1425,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Profiles {
             get {
                 return ResourceManager.GetString("Profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Профили выбранные для КИП.
+        /// </summary>
+        public static string ProfilesSelectedForMme {
+            get {
+                return ResourceManager.GetString("ProfilesSelectedForMme", resourceCulture);
             }
         }
         
@@ -1875,6 +1920,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string UserTestPage_Title {
             get {
                 return ResourceManager.GetString("UserTestPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Использовать Udsm Ursm.
+        /// </summary>
+        public static string UseUdsmUrsm {
+            get {
+                return ResourceManager.GetString("UseUdsmUrsm", resourceCulture);
             }
         }
         

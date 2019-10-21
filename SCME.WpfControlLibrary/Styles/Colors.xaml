@@ -6,6 +6,9 @@
     
     <Color x:Key="Blue1">#FF00A7FF</Color>
     
+    <Color x:Key="Red1">#FFFF1F00</Color>
+    <Color x:Key="Green1">#FF0CFF08</Color>
+    
     <SolidColorBrush x:Key="xGray1"         Color="#686868"/>
     <SolidColorBrush x:Key="xGray2"         Color="#EDEDED"/>
     <SolidColorBrush x:Key="xGray3"         Color="#E6E6E6"/>

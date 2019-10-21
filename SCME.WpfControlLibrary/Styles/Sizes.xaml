@@ -2,6 +2,9 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
+    <GridLength x:Key="SCME.DistanceBetweenPanelButton">30</GridLength>
+    <sys:Double x:Key="SCME.WidthHeightPathForPanelButton">80</sys:Double>
+    <Thickness x:Key="SCME.PaddingForPanelButton">10</Thickness>
     <!-- <sys:Double x:Key="cmFactor">28</sys:Double> -->
     <!-- -->
     <!-- <sys:Double x:Key="SCME.BaseFontSize">28</sys:Double> -->

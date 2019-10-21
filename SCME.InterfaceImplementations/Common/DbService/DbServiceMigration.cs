@@ -41,6 +41,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_FD", "BVT_FD", false),
             ("BVT_Mode", "BVT_Mode", false),
             ("BVT_PlateTime", "BVT_PlateTime", true),
+            ("BVT_UseUdsmUrsm", "BVT_UseUdsmUrsm", true),
             ("COMM_Type", "COMM_Type", true),
             ("CLAMP_Type", "CLAMP_Type", true),
             ("CLAMP_Force", "CLAMP_Force", true),
@@ -98,6 +99,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("ResultR", "ResultR, MOhm", false),
             ("TOU_TGD", "TOU_TGD, us", false),
             ("TOU_TGT", "TOU_TGT, us", false),
+            ("BVT_VDSM", "BVT_VDSM, V", false),
+            ("BVT_VRSM", "BVT_VRSM, V", false),
+            ("BVT_IDSM", "BVT_IDSM, A", false),
+            ("BVT_IRSM", "BVT_IRSM, A", false),
         };
 
         private  readonly (string name, string localName, int code)[] _errorsList =
@@ -147,9 +152,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private DbCommand CreateCountCmdCount(string tableName, string columnName)
         {
-            return CreateCommand($@"SELECT COUNT (*) FROM {tableName} WHERE {columnName} = @WHERE_PARAMETER", new List<TDbCommandParametr>()
+            return CreateCommand($@"SELECT COUNT (*) FROM {tableName} WHERE {columnName} = @WHERE_PARAMETER", new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@WHERE_PARAMETER", DbType.String, 32)
+                new DbCommandParameter("@WHERE_PARAMETER", DbType.String, 32)
             });
         }
 
@@ -223,7 +228,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     {
                         InsertMmeCode(MME_CODE_IS_ACTIVE_NAME);
 
-                        //var q = GetProfilesSuperficially(string.Empty).Count(m => m.Name == "PSDRT T393 3600 36");
                         foreach (var i in GetProfilesSuperficially(string.Empty))
                             InsertMmeCodeToProfile(i.Id, MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
                     }

@@ -150,7 +150,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             
         }
 
-        private TDbCommand CreateCommand(string commandString, IEnumerable<TDbCommandParametr> parameters)
+        private TDbCommand CreateCommand(string commandString, IEnumerable<DbCommandParameter> parameters)
         {
             var command = (TDbCommand) _commandConstructor.Invoke(new object[] {commandString, Connection});
             foreach (var i in parameters)
@@ -169,65 +169,65 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void PrepareQueries()
         {
-            _mmeCodesByProfile = CreateCommand(MmeCodesByProfileString, new List<TDbCommandParametr>()
+            _mmeCodesByProfile = CreateCommand(MmeCodesByProfileString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
+                new DbCommandParameter("@PROFILE_ID", DbType.Int32),
             });
 
-            var checkTDbCommandParameters = new List<TDbCommandParametr>()
+            var checkTDbCommandParameters = new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@WHERE_PARAMETER", DbType.String, 32)
+                new DbCommandParameter("@WHERE_PARAMETER", DbType.String, 32)
             };
 
-            _checkMmeCodeIsActive = CreateCommand(CheckMmeCodeIsActiveString, new List<TDbCommandParametr>());
+            _checkMmeCodeIsActive = CreateCommand(CheckMmeCodeIsActiveString, new List<DbCommandParameter>());
             
             _checkCondition = CreateCommand(CheckConditionString, checkTDbCommandParameters);
             _checkParameter = CreateCommand(CheckParameterString, checkTDbCommandParameters);
             _checkError = CreateCommand(CheckErrorString, checkTDbCommandParameters);
             _checkTestType = CreateCommand(CheckTestTypeString, checkTDbCommandParameters);
 
-            _insertCondition = CreateCommand(InsertConditionString, new List<TDbCommandParametr>()
+            _insertCondition = CreateCommand(InsertConditionString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@COND_NAME", DbType.String, 32),
-                new TDbCommandParametr("@COND_NAME_LOCAL", DbType.String, 64),
-                new TDbCommandParametr("@COND_IS_TECH", DbType.Boolean)
+                new DbCommandParameter("@COND_NAME", DbType.String, 32),
+                new DbCommandParameter("@COND_NAME_LOCAL", DbType.String, 64),
+                new DbCommandParameter("@COND_IS_TECH", DbType.Boolean)
             });
 
-            _insertTestType = CreateCommand(InsertTestTypeString, new List<TDbCommandParametr>()
+            _insertTestType = CreateCommand(InsertTestTypeString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@ID", DbType.Int32),
-                new TDbCommandParametr("@NAME", DbType.String, 32),
+                new DbCommandParameter("@ID", DbType.Int32),
+                new DbCommandParameter("@NAME", DbType.String, 32),
             });
 
-            _insertParameter = CreateCommand(InsertParameterString, new List<TDbCommandParametr>()
+            _insertParameter = CreateCommand(InsertParameterString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PARAM_NAME", DbType.String, 16),
-                new TDbCommandParametr("@PARAM_NAME_LOCAL", DbType.String, 64),
-                new TDbCommandParametr("@PARAM_IS_HIDE", DbType.Boolean)
+                new DbCommandParameter("@PARAM_NAME", DbType.String, 16),
+                new DbCommandParameter("@PARAM_NAME_LOCAL", DbType.String, 64),
+                new DbCommandParameter("@PARAM_IS_HIDE", DbType.Boolean)
             });
 
-            _insertError = CreateCommand(InsertErrorString, new List<TDbCommandParametr>()
+            _insertError = CreateCommand(InsertErrorString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@ERR_NAME", DbType.String, 20),
-                new TDbCommandParametr("@ERR_NAME_LOCAL", DbType.String, 32),
-                new TDbCommandParametr("@ERR_CODE", DbType.Int32)
+                new DbCommandParameter("@ERR_NAME", DbType.String, 20),
+                new DbCommandParameter("@ERR_NAME_LOCAL", DbType.String, 32),
+                new DbCommandParameter("@ERR_CODE", DbType.Int32)
             });
 
 
-            _childSelect = CreateCommand(ChildSelectString, new List<TDbCommandParametr>()
+            _childSelect = CreateCommand(ChildSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
-                new TDbCommandParametr("@PROF_ID_EXCLUDE", DbType.String, 32)
+                new DbCommandParameter("@PROF_NAME", DbType.String, 32),
+                new DbCommandParameter("@PROF_ID_EXCLUDE", DbType.String, 32)
             });
-            _testTypeSelect = CreateCommand(TestTypeSelectString, new List<TDbCommandParametr>()
+            _testTypeSelect = CreateCommand(TestTypeSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_ID", DbType.Int32)
+                new DbCommandParameter("@PROF_ID", DbType.Int32)
             });
 
             //_AllTopProfilesSelect = CreateCommand(_AllTopProfilesSelectString, new List<TDbCommandParametr>());
-            _profilesByMmeSelect = CreateCommand(ProfilesByMmeSelectString, new List<TDbCommandParametr>()
+            _profilesByMmeSelect = CreateCommand(ProfilesByMmeSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64)
+                new DbCommandParameter("@MME_CODE", DbType.String, 64)
             });
             //_ProfilesByNameByMMESelect = CreateCommand(_ProfilesByNameByMMESelectString, new List<TDbCommandParametr>()
             //{
@@ -235,93 +235,93 @@ namespace SCME.InterfaceImplementations.Common.DbService
             //    new TDbCommandParametr("@MME_CODE", DbType.String, 64 )
             //});
 
-            _orderSelect = CreateCommand(OrderSelectString, new List<TDbCommandParametr>()
+            _orderSelect = CreateCommand(OrderSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32)
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32)
             });
-            _conditionSelect = CreateCommand(ConditionSelectString, new List<TDbCommandParametr>()
+            _conditionSelect = CreateCommand(ConditionSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32)
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32)
             });
-            _paramSelect = CreateCommand(ParamSelectString, new List<TDbCommandParametr>()
+            _paramSelect = CreateCommand(ParamSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32)
-            });
-
-            _profileByKeySelect = CreateCommand(ProfileByKeySelectString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@PROF_GUID", DbType.Guid)
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32)
             });
 
-            _allMmeCodesSelect = CreateCommand(AllMmeCodesSelectString, new List<TDbCommandParametr>());
+            _profileByKeySelect = CreateCommand(ProfileByKeySelectString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@PROF_GUID", DbType.Guid)
+            });
 
-            _selectAllTopProfile = CreateCommand(SelectAllTopProfileString, new List<TDbCommandParametr>());
+            _allMmeCodesSelect = CreateCommand(AllMmeCodesSelectString, new List<DbCommandParameter>());
+
+            _selectAllTopProfile = CreateCommand(SelectAllTopProfileString, new List<DbCommandParameter>());
             
-            _getFreeProfileName = CreateCommand(GetFreeProfileNameString, new List<TDbCommandParametr>());
-            _profileNameExists = CreateCommand(ProfileNameExistsString, new List<TDbCommandParametr>()
+            _getFreeProfileName = CreateCommand(GetFreeProfileNameString, new List<DbCommandParameter>());
+            _profileNameExists = CreateCommand(ProfileNameExistsString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
+                new DbCommandParameter("@PROF_NAME", DbType.String, 32),
             });
 
-            _profileInsert = CreateCommand(ProfileInsertString, new List<TDbCommandParametr>()
+            _profileInsert = CreateCommand(ProfileInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
-                new TDbCommandParametr("@PROF_GUID", DbType.Guid),
-                new TDbCommandParametr("@PROF_TS", DbType.DateTime, 8),
-                new TDbCommandParametr("@VERSION", DbType.Int32),
+                new DbCommandParameter("@PROF_NAME", DbType.String, 32),
+                new DbCommandParameter("@PROF_GUID", DbType.Guid),
+                new DbCommandParameter("@PROF_TS", DbType.DateTime, 8),
+                new DbCommandParameter("@VERSION", DbType.Int32),
             });
 
-            _profileConditionInsert = CreateCommand(ProfileConditionInsertString, new List<TDbCommandParametr>()
+            _profileConditionInsert = CreateCommand(ProfileConditionInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_TESTTYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@COND_ID", DbType.Int32),
-                new TDbCommandParametr("@VALUE", DbType.String, 16),
+                new DbCommandParameter("@PROF_TESTTYPE_ID", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@COND_ID", DbType.Int32),
+                new DbCommandParameter("@VALUE", DbType.String, 16),
             });
-            _profileTestTypeInsert = CreateCommand(ProfileTestTypeInsertString, new List<TDbCommandParametr>()
+            _profileTestTypeInsert = CreateCommand(ProfileTestTypeInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@ORD", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32),
+                new DbCommandParameter("@ORD", DbType.Int32),
             });
-            _profileParameterInsert = CreateCommand(ProfileParameterInsertString, new List<TDbCommandParametr>()
+            _profileParameterInsert = CreateCommand(ProfileParameterInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_TESTTYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@PARAM_ID", DbType.Int32),
-                new TDbCommandParametr("@MIN_VAL", DbType.Single),
-                new TDbCommandParametr("@MAX_VAL", DbType.Single),
-            });
-
-            _deleteMmeCode = CreateCommand(DeleteMmeCodeString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
-            });
-            _insertMmeCode = CreateCommand(InsertMmeCodeString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
+                new DbCommandParameter("@PROF_TESTTYPE_ID", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@PARAM_ID", DbType.Int32),
+                new DbCommandParameter("@MIN_VAL", DbType.Single),
+                new DbCommandParameter("@MAX_VAL", DbType.Single),
             });
 
-            _deleteAllMmeCodeToProfileByMmeCode = CreateCommand(DeleteAllMmeCodeToProfileByMmeCodeString, new List<TDbCommandParametr>()
+            _deleteMmeCode = CreateCommand(DeleteMmeCodeString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
             });
-            _mmeCodeToProfileInsert = CreateCommand(MmeCodeToProfileInsertString, new List<TDbCommandParametr>()
+            _insertMmeCode = CreateCommand(InsertMmeCodeString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
-                new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
             });
-            _mmeCodeToProfileDelete = CreateCommand(MmeCodeToProfileDeleteString, new List<TDbCommandParametr>()
+
+            _deleteAllMmeCodeToProfileByMmeCode = CreateCommand(DeleteAllMmeCodeToProfileByMmeCodeString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
-                new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
+            });
+            _mmeCodeToProfileInsert = CreateCommand(MmeCodeToProfileInsertString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
+                new DbCommandParameter("@PROFILE_ID", DbType.Int32),
+            });
+            _mmeCodeToProfileDelete = CreateCommand(MmeCodeToProfileDeleteString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
+                new DbCommandParameter("@PROFILE_ID", DbType.Int32),
             });
             
             
 
-            _loadTestTypes = CreateCommand(LoadTestTypesString, new List<TDbCommandParametr>());
-            _loadConditions = CreateCommand(LoadConditionsString, new List<TDbCommandParametr>());
-            _loadParameters = CreateCommand(LoadParametersString, new List<TDbCommandParametr>());
+            _loadTestTypes = CreateCommand(LoadTestTypesString, new List<DbCommandParameter>());
+            _loadConditions = CreateCommand(LoadConditionsString, new List<DbCommandParameter>());
+            _loadParameters = CreateCommand(LoadParametersString, new List<DbCommandParameter>());
         }
     }
 }

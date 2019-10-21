@@ -12,7 +12,7 @@ namespace SCME.ProfileBuilder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,106 +25,70 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool SinglePositionModuleMode {
-            get {
-                return ((bool)(this["SinglePositionModuleMode"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
         public string CurrentCulture {
             get {
                 return ((string)(this["CurrentCulture"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("IVAN-PC\\SQLEXPRESS01")]
         public string MSSQLServer {
             get {
                 return ((string)(this["MSSQLServer"]));
-            }
-            set {
-                this["MSSQLServer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string MSSQLDatabase {
-            get {
-                return ((string)(this["MSSQLDatabase"]));
-            }
-            set {
-                this["MSSQLDatabase"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public bool MSSQLIntegratedSecurity {
-            get {
-                return ((bool)(this["MSSQLIntegratedSecurity"]));
-            }
-            set {
-                this["MSSQLIntegratedSecurity"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string MSSQLUserId {
-            get {
-                return ((string)(this["MSSQLUserId"]));
-            }
-            set {
-                this["MSSQLUserId"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SQLiteFileName {
-            get {
-                return ((string)(this["SQLiteFileName"]));
-            }
-            set {
-                this["SQLiteFileName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Accent {
-            get {
-                return ((string)(this["Accent"]));
-            }
-            set {
-                this["Accent"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Theme {
-            get {
-                return ((string)(this["Theme"]));
-            }
-            set {
-                this["Theme"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDB")]
+        public string MSSQLDatabase {
+            get {
+                return ((string)(this["MSSQLDatabase"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MSSQLIntegratedSecurity {
+            get {
+                return ((bool)(this["MSSQLIntegratedSecurity"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("sa")]
+        public string MSSQLUserId {
+            get {
+                return ((string)(this["MSSQLUserId"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\Работа\\mme_softwareUS03\\bin\\Db\\SCME_ResultsDB_Local.sqlite")]
+        public string SQLiteFileName {
+            get {
+                return ((string)(this["SQLiteFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int SQLTimeout {
+            get {
+                return ((int)(this["SQLTimeout"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsTouch {
             get {
                 return ((bool)(this["IsTouch"]));
@@ -133,13 +97,31 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
         public string LastSelectedMMECode {
             get {
                 return ((string)(this["LastSelectedMMECode"]));
             }
             set {
                 this["LastSelectedMMECode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
+        public global::SCME.Types.TypeDb TypeDb {
+            get {
+                return ((global::SCME.Types.TypeDb)(this["TypeDb"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("qwerty_123")]
+        public string MSSQLPassword {
+            get {
+                return ((string)(this["MSSQLPassword"]));
             }
         }
     }

@@ -127,12 +127,6 @@
     <Compile Include="CustomControls\ActiveInactiveProfilesGroup.xaml.cs">
       <DependentUpon>ActiveInactiveProfilesGroup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\ConnectPage\ConnectToMSSQL.xaml.cs">
-      <DependentUpon>ConnectToMSSQL.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\ConnectPage\ConnectToSQLite.xaml.cs">
-      <DependentUpon>ConnectToSQLite.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\MatchingProfilesCodesPage.xaml.cs">
       <DependentUpon>MatchingProfilesCodesPage.xaml</DependentUpon>
     </Compile>
@@ -149,20 +143,9 @@
     </Compile>
     <Compile Include="ViewModels\ActiveInactiveProfilesGroup.cs" />
     <Compile Include="ViewModels\ConnectPage\ConnectPageVM.cs" />
-    <Compile Include="ViewModels\ConnectPage\ConnectToSQLiteVM.cs" />
-    <Compile Include="ViewModels\ConnectPage\ConnectToMSSQLVM.cs" />
-    <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\MatchingProfilesCodesPageVm.cs" />
     <Page Include="CustomControls\ActiveInactiveProfilesGroup.xaml" />
-    <Page Include="Pages\ConnectPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\ConnectPage\ConnectToMSSQL.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControls\ConnectPage\ConnectToSQLite.xaml">
+    <Page Include="Pages\SelectEditModePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -176,7 +159,7 @@
     </Compile>
     <Compile Include="Cache.cs" />
     <Compile Include="Pages\ConnectPage.xaml.cs">
-      <DependentUpon>ConnectPage.xaml</DependentUpon>
+      <DependentUpon>SelectEditModePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -256,7 +239,6 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

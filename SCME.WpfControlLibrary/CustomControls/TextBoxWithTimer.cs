@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
 
 namespace SCME.WpfControlLibrary.CustomControls
@@ -7,8 +9,20 @@ namespace SCME.WpfControlLibrary.CustomControls
     public class TextBoxWithTimer : TextBox
     {
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
-        public EventHandler Tick { get; set; }
-        
+
+        public event EventHandler Tick
+        {
+            add =>
+                _dispatcherTimerFindProfile.Tick += (sender, args) =>
+                {
+                    _dispatcherTimerFindProfile.Stop();
+                    value(sender, args);
+                };
+
+            remove => _dispatcherTimerFindProfile.Tick -= value;
+        }
+
+
         public double Interval
         {
             get => _dispatcherTimerFindProfile.Interval.TotalMilliseconds;
@@ -17,14 +31,7 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         public TextBoxWithTimer() : base()
         {
-            _dispatcherTimerFindProfile.Tick += OnDispatcherTimerOnTick;
             TextChanged += (sender, args) => _dispatcherTimerFindProfile.Start();
-        }
-
-        private void OnDispatcherTimerOnTick(object sender, EventArgs e)
-        {
-            _dispatcherTimerFindProfile.Stop();
-            Tick?.Invoke(sender, e);
         }
     }
 }

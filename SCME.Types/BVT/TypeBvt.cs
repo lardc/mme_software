@@ -84,6 +84,11 @@ namespace SCME.Types.BVT
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
+        public bool UseUdsmUrsm { get; set; }
+        [DataMember]
+        public int? ClassByProfileName { get; set; }
+        
+        [DataMember]
         public BVTMeasurementMode MeasurementMode { get; set; }
 
         [DataMember]
@@ -216,6 +221,18 @@ namespace SCME.Types.BVT
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
+        [DataMember]
+        public ushort VDSM { get; set; }
+        
+        [DataMember]
+        public ushort VRSM { get; set; }
+        
+        [DataMember]
+        public float IDSM { get; set; }
+        
+        [DataMember]
+        public float IRSM { get; set; }
+        
         [DataMember]
         public ushort VDRM { get; set; }
 

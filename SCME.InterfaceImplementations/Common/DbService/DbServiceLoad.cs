@@ -304,7 +304,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             FillOrder(testTypeId, testParams);
 
             FillConditionsResults(testTypeId, results);
-
+            
             foreach (var result in results)
             {
                 switch (result.Key)

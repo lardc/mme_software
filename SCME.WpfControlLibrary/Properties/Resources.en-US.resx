@@ -774,4 +774,22 @@
     <data name="InactiveMmeCodes">
       <value>Inactive MME codes</value>
     </data>
+    <data name="UseUdsmUrsm">
+      <value>Use Udsm Ursm</value>
+    </data>
+    <data name="Navigation">
+      <value>Navigation</value>
+    </data>
+    <data name="LinkMmeAndProfiles">
+      <value>Link MME and profiles</value>
+    </data>
+    <data name="ProfilesSelectedForMme">
+      <value>Profiles selected for MME</value>
+    </data>
+    <data name="AvailableProfiles">
+      <value>Available profiles</value>
+    </data>
+  <data name="ListMME" xml:space="preserve">
+    <value>List MME</value>
+  </data>
 </root>
