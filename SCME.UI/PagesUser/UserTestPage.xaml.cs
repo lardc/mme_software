@@ -698,7 +698,7 @@ namespace SCME.UI.PagesUser
 
                     //вычисляем класс только что измеренного изделия и выводим его на форму
                     if (DataForSave.IsSentToServer)
-                        CalcDeviceClass(tbNumber);
+                        CalcDeviceClass(tbNumber, true);
                 }
 
                 if (paramsClamp.IsHeightMeasureEnabled)
@@ -2354,7 +2354,7 @@ namespace SCME.UI.PagesUser
             if (label != null) label.Visibility = Visibility.Collapsed;
         }
 
-        private void CalcDeviceClass(CustomControl.ValidatingTextBox sourceOfdeviceCode)
+        private void CalcDeviceClass(CustomControl.ValidatingTextBox sourceOfdeviceCode, bool factClass)
         {
             //вычисляет класс изделия и выводит его на форме
 
@@ -2379,7 +2379,16 @@ namespace SCME.UI.PagesUser
                             int? deviceRTClass = null;
 
                             //пробуем вычислить значение класса
+                            switch (factClass)
+                            {
+                                case true:
+                                    Cache.Net.ReadDeviceClass(deviceCode, Profile.Name);
+                                    break;
+
+                                default:
                             deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
+                                    break;
+                        }
 
                             switch (deviceRTClass == null)
                             {
@@ -2450,13 +2459,13 @@ namespace SCME.UI.PagesUser
         private void tbPsdSerialNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomControl.ValidatingTextBox tb = sender as CustomControl.ValidatingTextBox;
-            CalcDeviceClass(tb);
+            CalcDeviceClass(tb, false);
         }
 
         private void tbPseNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
             CustomControl.ValidatingTextBox tb = sender as CustomControl.ValidatingTextBox;
-            CalcDeviceClass(tb);
+            CalcDeviceClass(tb, false);
         }
 
         private void ClearResultsQrrTq(DependencyObject element)

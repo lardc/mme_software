@@ -81,9 +81,15 @@ namespace SCME.dbViewer.ForParameters
         private int FIndexOfFirstColumnGateMeasuredParameters = -1;
         private int FIndexOfLastColumnGateMeasuredParameters = -1;
 
+        private int FIndexOfFirstColumnAtuMeasuredParameters = -1;
+        private int FIndexOfLastColumnAtuMeasuredParameters = -1;
+
         private const int RowIndexOfUnitMeasure = 0;
         private const int RowIndexOfNorm = 1;
         private const int RowIndexOfValue = 2;
+
+        private object FNrmIDRM;
+        private object FNrmIRRM;
 
         public DataTableParameters()
         {
@@ -249,6 +255,11 @@ namespace SCME.dbViewer.ForParameters
                         break;
                     }
 
+                case TestParametersType.ATU:
+                    result = this.FIndexOfFirstColumnAtuMeasuredParameters;
+                    indexOfLastColumnMeasuredParameters = this.FIndexOfLastColumnAtuMeasuredParameters;
+                    break;
+
                 default:
                     throw new Exception(string.Format("Для типа теста {0} обработка не предусмотрена.", testType.ToString()));
             }
@@ -288,6 +299,13 @@ namespace SCME.dbViewer.ForParameters
                         break;
                     }
 
+                case TestParametersType.ATU:
+                    {
+                        this.FIndexOfFirstColumnAtuMeasuredParameters = indexOfFirstColumnMeasuredParameters;
+                        this.FIndexOfLastColumnAtuMeasuredParameters = indexOfLastColumnMeasuredParameters;
+                        break;
+                    }
+
                 default:
                     throw new Exception(string.Format("Для типа теста {0} обработка не предусмотрена.", testType.ToString()));
             }
@@ -305,7 +323,7 @@ namespace SCME.dbViewer.ForParameters
             if (indexOfFirstColumnMeasuredParameters == -1)
                 indexOfFirstColumnMeasuredParameters = result;
 
-            //запоминаем индексы первого и последнего оспользованного столбца 
+            //запоминаем индексы первого и последнего использованных столбцов 
             this.SetIndexOfMeasuredParametersByTestType(testType, indexOfFirstColumnMeasuredParameters, result);
 
             return result;
@@ -361,10 +379,16 @@ namespace SCME.dbViewer.ForParameters
                 this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
                 this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
                 this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
+
+                //Atu
+                testParametersType = TestParametersType.ATU;
+                this.LoadConditions(connection, sourceDataTableParameters, testParametersType, profileID, devType, temperatureCondition);
+                this.LoadMeasuredParameters(connection, testParametersType, profileID, devID);
+                this.LoadNormatives(connection, sourceDataTableParameters, testParametersType, profileID);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception(string.Format("Тип теста {0},  profileID='{1}', devType={2}, temperatureCondition={3}", testParametersType.ToString(), profileID, devType, temperatureCondition.ToString()));
+                throw new Exception(string.Format("Тип теста {0},  profileID='{1}', devType={2}, temperatureCondition={3}.\n{4}", testParametersType.ToString(), profileID, devType, temperatureCondition.ToString(), ex.Message));
             }
         }
 
@@ -450,6 +474,9 @@ namespace SCME.dbViewer.ForParameters
                         break;
 
                     case TestParametersType.ATU:
+                        result.Add("ATU_PowerValue");
+                        break;
+
                     case TestParametersType.RAC:
                     case TestParametersType.IH:
                     case TestParametersType.RCC:
@@ -457,6 +484,36 @@ namespace SCME.dbViewer.ForParameters
                     case TestParametersType.QrrTq:
                         break;
                 }
+            }
+
+            return result;
+        }
+
+        private List<string> MeasuredParametersByDeviceType(TestParametersType testType)
+        {
+            //возвращает список имён измеряемых параметров, которые надо показывать пользователю
+            //если данная реализация возвращает null - значит никаких ограничений на имена измеряемых параметров для отображения пользователю нет - их надо показывать все
+            List<string> result = null;
+
+            switch (testType)
+            {
+                case TestParametersType.ATU:
+                    result = new List<string>();
+                    result.Add("PRSM");
+                    break;
+
+                case TestParametersType.StaticLoses:
+                case TestParametersType.Bvt:
+                case TestParametersType.Gate:
+                case TestParametersType.Commutation:
+                case TestParametersType.Clamping:
+                case TestParametersType.Dvdt:
+                case TestParametersType.RAC:
+                case TestParametersType.IH:
+                case TestParametersType.RCC:
+                case TestParametersType.Sctu:
+                case TestParametersType.QrrTq:
+                    break;
             }
 
             return result;
@@ -779,6 +836,9 @@ namespace SCME.dbViewer.ForParameters
             {
                 SqlDataReader reader = command.ExecuteReader();
 
+                //получаем список условий, которые надо показать
+                List<string> measuredParameters = MeasuredParametersByDeviceType(testType);
+
                 while (reader.Read())
                 {
                     //запоминаем идентификатор параметра
@@ -791,45 +851,49 @@ namespace SCME.dbViewer.ForParameters
                     z = reader.GetValue(index);
                     string paramName = z.ToString().TrimEnd();
 
-                    //формируем столбец
-                    int columnIndex = this.NewMeasuredParameterColumn(testType, string.Format("{0}{1}{2}", tc, this.TemperatureDelimeter, Dictionaries.ParameterName(paramName)), id);
-
-                    //запоминаем единицу измерения параметра
-                    index = reader.GetOrdinal("PARAMUM");
-                    z = reader.GetValue(index);
-                    string um = z.ToString();
-                    this.Rows[RowIndexOfUnitMeasure][columnIndex] = um;
-
-                    //запоминаем значение параметра
-                    index = reader.GetOrdinal("VALUE");
-                    z = reader.GetValue(index);
-                    string v = z.ToString();
-
-                    double d;
-                    switch (double.TryParse(v, out d))
+                    //проверяем вхождение имени текущего измеренного параметра в список измеренных параметров, которые требуется показать для текущего типа теста. если measuredParameters=null - значит надо показать их все
+                    if ((measuredParameters == null) || (measuredParameters.IndexOf(paramName) != -1))
                     {
-                        case true:
-                            //проверяем есть ли специальный формат вывода
-                            string format = Dictionaries.ParameterFormat(paramName);
+                        //формируем столбец
+                        int columnIndex = this.NewMeasuredParameterColumn(testType, string.Format("{0}{1}{2}", tc, this.TemperatureDelimeter, Dictionaries.ParameterName(paramName)), id);
 
-                            switch (format == null)
-                            {
-                                case true:
-                                    //для данного параметра не задан специальный формат вывода, выбираем оптимальный
-                                    string s = DoubleToString(d);
-                                    this.Rows[RowIndexOfValue][columnIndex] = s;
-                                    break;
+                        //запоминаем единицу измерения параметра
+                        index = reader.GetOrdinal("PARAMUM");
+                        z = reader.GetValue(index);
+                        string um = z.ToString();
+                        this.Rows[RowIndexOfUnitMeasure][columnIndex] = um;
 
-                                default:
-                                    //выводим значение параметра в специальном формате вывода
-                                    this.Rows[RowIndexOfValue][columnIndex] = d.ToString(format);
-                                    break;
-                            }
-                            break;
+                        //запоминаем значение параметра
+                        index = reader.GetOrdinal("VALUE");
+                        z = reader.GetValue(index);
+                        string v = z.ToString();
 
-                        default:
-                            this.Rows[RowIndexOfValue][columnIndex] = v;
-                            break;
+                        double d;
+                        switch (double.TryParse(v, out d))
+                        {
+                            case true:
+                                //проверяем есть ли специальный формат вывода
+                                string format = Dictionaries.ParameterFormat(paramName);
+
+                                switch (format == null)
+                                {
+                                    case true:
+                                        //для данного параметра не задан специальный формат вывода, выбираем оптимальный
+                                        string s = DoubleToString(d);
+                                        this.Rows[RowIndexOfValue][columnIndex] = s;
+                                        break;
+
+                                    default:
+                                        //выводим значение параметра в специальном формате вывода
+                                        this.Rows[RowIndexOfValue][columnIndex] = d.ToString(format);
+                                        break;
+                                }
+                                break;
+
+                            default:
+                                this.Rows[RowIndexOfValue][columnIndex] = v;
+                                break;
+                        }
                     }
                 }
             }
@@ -863,11 +927,42 @@ namespace SCME.dbViewer.ForParameters
 
         private void SetNormative(int indexOfColumnMeasuredParameter, object value)
         {
-            this.Rows[RowIndexOfNorm][indexOfColumnMeasuredParameter] = value;
-
             //извлекаем имя параметра - отрезаем от него описание температурного режима
             string temperatureCondition;
             string paramName = this.ParseColumnName(this.Columns[indexOfColumnMeasuredParameter].ToString(), out temperatureCondition);
+
+            object nrm;
+
+            switch (paramName)
+            {
+                //запоминаем норму на параметр IDRM
+                case "IDRM":
+                    nrm = value;
+                    this.FNrmIDRM = nrm;
+                    break;
+
+                //запоминаем норму на параметр IRRM
+                case "IRRM":
+                    nrm = value;
+                    this.FNrmIRRM = nrm;
+                    break;
+
+                //норма на параметр IDSM точно как у IDRM
+                case "IDSM":
+                    nrm = this.FNrmIDRM;
+                    break;
+
+                //норма на параметр IRSM точно как у IRRM
+                case "IRSM":
+                    nrm = this.FNrmIRRM;
+                    break;
+
+                default:
+                    nrm = value;
+                    break;
+            }
+
+            this.Rows[RowIndexOfNorm][indexOfColumnMeasuredParameter] = nrm;
 
             //вычисляем код НП
             int? codeOfNonMatch = CalcCodeOfNonMatch(paramName, IsValueInNorm(value.ToString(), this.Rows[RowIndexOfValue][indexOfColumnMeasuredParameter].ToString()));
@@ -945,6 +1040,8 @@ namespace SCME.dbViewer.ForParameters
 
                         try
                         {
+                            string n = string.Empty;
+
                             while (reader.Read())
                             {
                                 //запоминаем описание норм на параметр
@@ -956,7 +1053,6 @@ namespace SCME.dbViewer.ForParameters
                                 z = reader.GetValue(index);
                                 string nMax = (z == DBNull.Value ? null : ObjectToString(z));
 
-                                string n = string.Empty;
                                 if ((nMin != null) && (nMax != null))
                                     n = string.Format("({0}, {1}]", nMin, nMax);
                                 else
@@ -968,9 +1064,9 @@ namespace SCME.dbViewer.ForParameters
                                     }
                                     else n = string.Format(">{0}", nMin);
                                 }
-
-                                this.SetNormative(i, n);
                             }
+
+                            this.SetNormative(i, n);
                         }
                         finally
                         {

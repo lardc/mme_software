@@ -155,5 +155,13 @@ namespace SCME.Types.DatabaseServer
         [OperationContract]
         [FaultContract(typeof(FaultData))]
         int? ReadDeviceRTClass(string devCode, string profileName);
+
+        /// <summary>
+        /// Read Device fact Class
+        /// </summary>
+        /// <returns>RT Class</returns>
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        int? ReadDeviceClass(string devCode, string profileName);
     }
 }

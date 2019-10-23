@@ -520,6 +520,9 @@ namespace SCME.dbViewer
         private DataTableParameters CalcPairData(List<DataTableParameters> listOfDeviceParameters, string profileBody, string GroupName, string Code)
         {
             //GroupName есть номер ПЗ, Code есть порядковый номер, а их сочетание это серийный номер. это справедливо как для PSE, так и для PSD 
+            //извлекаем из profileBody обозначение спецтребования (его может и не быть вовсе)
+
+
             //ищем в listOfDeviceParameters первую попавшуюся не использованную запись с Data == null по вычисленному телу профиля profileName, номеру ПЗ GroupName и номеру ГП (ППЭ) Code
             var results = from DataTableParameters dtp in listOfDeviceParameters
                           where (

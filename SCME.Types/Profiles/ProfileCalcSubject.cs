@@ -72,22 +72,46 @@ namespace SCME.Types.Profiles
             if (specialReqStart != -1)
                 specialReq = result.Substring(specialReqStart);
 
-            result = "*" + result.Substring(3, start - 3);
+            result = "*" + result.Substring(3, start - 3) + " *";
 
             if (specialReq != string.Empty)
-                result += " *" + specialReq;
+                result += specialReq;
 
             return result;
         }
 
-        public static string MakeRT(string ProfileName)
+        public static string SpecialMarkByProfileBody(string profileBody)
         {
-            return System.Text.RegularExpressions.Regex.Replace(ProfileName, "TM", "RT", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //извлекает обозначение спецмаркировки из обозначения тела профиля profileBody - оно располагается сразу за второй * в profileBody
+            int start = profileBody.IndexOf("*", 0);
+            if (start == -1)
+                return string.Empty;
+
+            start = profileBody.IndexOf("*", start + 1);
+            if (start == -1)
+            {
+                return string.Empty;
+            }
+            else return profileBody.Substring(start);
+
         }
 
-        public static string MakeTM(string ProfileName)
+        public static string SpecialMarkByProfileName(string profileName)
         {
-            return System.Text.RegularExpressions.Regex.Replace(ProfileName, "RT", "TM", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //извлекает обозначение спецмаркировки из обозначения профиля ProfileName. она начинается после 4-го пробела
+            //PSETm Т253 1390 24 GvA 03 08
+            return string.Empty;
+
+        }
+
+        public static string MakeRT(string profileName)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(profileName, "TM", "RT", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        }
+
+        public static string MakeTM(string profileName)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(profileName, "RT", "TM", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
         public static string ProfileRTBodyByProfileName(string profileName)

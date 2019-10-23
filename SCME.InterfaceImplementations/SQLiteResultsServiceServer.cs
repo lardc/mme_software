@@ -557,6 +557,12 @@ namespace SCME.InterfaceImplementations
 
         public int? ReadDeviceRTClass(string devCode, string profName)
         {
+            //нет смысла вычислять RT класс по данным одной локально расположенной базы данных
+            return null;
+        }
+
+        public int? ReadDeviceClass(string devCode, string profName)
+        {
             //нет смысла вычислять класс по данным одной локально расположенной базы данных
             return null;
         }

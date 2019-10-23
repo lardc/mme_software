@@ -1193,6 +1193,29 @@ namespace SCME.UI.IO
             return result;
         }
 
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            int? result = null;
+
+            using (var centralDbClient = new CentralDatabaseServiceClient())
+            {
+                try
+                {
+                    result = centralDbClient.ReadDeviceClass(devCode, profileName);
+                }
+                catch (FaultException<FaultData> ex)
+                {
+                    ShowFaultError("Read device class error", ex);
+                }
+                catch (CommunicationException ex)
+                {
+                    ProcessCommunicationException(ex);
+                }
+            }
+
+            return result;
+        }
+
         public void SaveProfilesToLocal(List<ProfileItem> profileItems)
         {
             try

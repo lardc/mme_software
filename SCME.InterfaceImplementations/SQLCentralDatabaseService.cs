@@ -164,6 +164,11 @@ namespace SCME.InterfaceImplementations
             return _resultsService.ReadDeviceRTClass(devCode, profName);
         }
 
+        public int? ReadDeviceClass(string devCode, string profName)
+        {
+            return _resultsService.ReadDeviceClass(devCode, profName);
+        }
+
         public bool SendResultToServer(DeviceLocalItem localDevice)
         {
             return _resultsService.SaveResults(localDevice);

@@ -108,5 +108,10 @@ namespace SCME.Types.DatabaseServer
         {
             return Channel.ReadDeviceRTClass(devCode, profileName);
         }
+
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            return Channel.ReadDeviceClass(devCode, profileName);
+        }
     }
 }

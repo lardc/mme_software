@@ -33,6 +33,7 @@ namespace SCME.InterfaceImplementations
         private SqlCommand _selectDevCondsCommand;
         private SqlCommand _selectDevNormCommand;
         private SqlCommand _selectDevRTClassCommand;
+        private SqlCommand _selectDevClassCommand;
         private SqlCommand _devLookupPTTSelectCommand;
         private SqlCommand _devLookupProfileIdSelectCommand;
 
@@ -182,6 +183,25 @@ namespace SCME.InterfaceImplementations
             _selectDevRTClassCommand.Parameters.Add("@ProfBody", SqlDbType.NVarChar, 32);
             _selectDevRTClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
             _selectDevRTClassCommand.Prepare();
+
+            _selectDevClassCommand =
+                new SqlCommand(
+                               "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @ProfName) AS DEVICECLASS" +
+                               " FROM" +
+                               " (" +
+                                  "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                                  " FROM DEVICES D" +
+                                  "  INNER JOIN PROFILES P ON (" +
+                                  "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
+                                  "                            (P.PROF_NAME=@ProfName)" +
+                                  "                           )" +
+                                  " WHERE (D.CODE=@DevCode)" +
+                                  " GROUP BY P.PROF_ID" +
+                               " ) AS z", _connection);
+
+            _selectDevClassCommand.Parameters.Add("@ProfName", SqlDbType.NVarChar, 32);
+            _selectDevClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
+            _selectDevClassCommand.Prepare();
 
             _devLookupPTTSelectCommand =
                 new SqlCommand(
@@ -816,7 +836,7 @@ namespace SCME.InterfaceImplementations
             //возвращает:
             //            null - по запрошенным devCode и profileName класс RT вычислить не возможно;
             //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
-            //            класс - целое положительное число - успешное вычисление класса.
+            //            класс - целое положительное число - успешное вычисление класса
 
             int? result = null;
 
@@ -827,7 +847,7 @@ namespace SCME.InterfaceImplementations
 
                 _selectDevRTClassCommand.Parameters["@ProfName"].Value = profileName;
                 _selectDevRTClassCommand.Parameters["@RTProfName"].Value = SCME.Types.Profiles.ProfileRoutines.MakeRT(profileName);
-                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
+                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName).Replace('*', '%');  //string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
                 _selectDevRTClassCommand.Parameters["@DevCode"].Value = devCode;
 
                 using (var reader = _selectDevRTClassCommand.ExecuteReader())
@@ -852,6 +872,45 @@ namespace SCME.InterfaceImplementations
             return result;
         }
 
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            //чтение фактического класса изделия по принятым devCode, profileName
+            //возвращает:
+            //            null - по запрошенным devCode и profileName класс изделия вычислить не возможно;
+            //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
+            //            класс - целое положительное число - успешное вычисление класса
+
+            int? result = null;
+
+            lock (MsLocker)
+            {
+                if (_connection == null || _connection.State != ConnectionState.Open)
+                    return null;
+
+                _selectDevClassCommand.Parameters["@ProfName"].Value = profileName;
+                _selectDevClassCommand.Parameters["@DevCode"].Value = devCode;
+
+                using (var reader = _selectDevClassCommand.ExecuteReader())
+                {
+                    int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
+
+                    int recordCount = 0;
+                    while (reader.Read())
+                    {
+                        object res = reader.GetInt32(deviceClassFieldID);
+                        result = (res == DBNull.Value) ? null : (int?)res;
+
+                        recordCount++;
+                    }
+
+                    //может быть считана либо одна запись, либо ни одной
+                    if (recordCount > 1)
+                        result = -1;
+                }
+            }
+
+            return result;
+        }
         #endregion
     }
 }

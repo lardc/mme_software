@@ -38,6 +38,8 @@ namespace SCME.Types.Interfaces
 
         int? ReadDeviceRTClass(string devCode, string profName);
 
+        int? ReadDeviceClass(string devCode, string profName);
+
         List<DeviceLocalItem> GetUnsendedDevices();
 
         /// <summary>
