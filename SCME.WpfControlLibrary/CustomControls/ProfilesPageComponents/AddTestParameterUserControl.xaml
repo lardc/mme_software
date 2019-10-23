@@ -29,6 +29,7 @@
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.CommutationTypeT}"/>
@@ -45,10 +46,13 @@
                       SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}">
             </ComboBox>
             <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"/>
-            <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Height_Prof}" />
-            <customControl:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}" />
+            
+            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding IsHeightMeasureEnabled}" Content="{x:Static res:Resources.MeasureDialog_Title}" />
             <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
             <customControl:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
+            
+            <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.Height_Prof}" Visibility="{Binding IsHeightMeasureEnabled, Converter={StaticResource B2V}}" />
+            <customControl:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Height}" Visibility="{Binding IsHeightMeasureEnabled, Converter={StaticResource B2V}}" />
         </Grid>
     </Grid>
 </UserControl>

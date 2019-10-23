@@ -10,31 +10,33 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="ListViewItem" x:Key="ListViewItemTestParameter">
-        <Setter Property="Background" Value="{StaticResource ListViewItemTestParametersBrush}"/>
+        <Setter Property="Background" Value="{StaticResource ListViewItemTestParametersBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Grid IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" />
-                        <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
-                        <Button Grid.Column="2" Grid.Row="0" Style="{StaticResource ButtonWithIcon}"
-                                Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=DeleteRelayCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
-                            <iconPacks:PackIconMaterial Kind="Delete" />
-                        </Button>
-                        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Background="{TemplateBinding Background}" >
-                            <ContentPresenter DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}"  />
+                        <Grid Margin="10" IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" />
+                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
+                            <Button Grid.Column="3" Grid.Row="0" Style="{StaticResource ButtonWithIcon}" HorizontalAlignment="Right" 
+                                    Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2V}}"
+                                    Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=DeleteRelayCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                                <iconPacks:PackIconMaterial Kind="Delete" />
+                            </Button>
+                            <ContentPresenter Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Margin="10" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}" />
+
+                            <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Grid.RowSpan="2" BorderThickness="1" BorderBrush="AliceBlue"/>
                         </Grid>
-                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

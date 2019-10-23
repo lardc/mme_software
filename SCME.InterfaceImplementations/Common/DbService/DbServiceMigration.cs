@@ -42,6 +42,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_Mode", "BVT_Mode", false),
             ("BVT_PlateTime", "BVT_PlateTime", true),
             ("BVT_UseUdsmUrsm", "BVT_UseUdsmUrsm", true),
+            ("BVT_PulseFrequency", "BVT_PulseFrequency", true),
             ("COMM_Type", "COMM_Type", true),
             ("CLAMP_Type", "CLAMP_Type", true),
             ("CLAMP_Force", "CLAMP_Force", true),

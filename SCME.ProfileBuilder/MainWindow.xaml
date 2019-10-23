@@ -5,10 +5,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
-        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924" Width="1500" Height="924"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924" Width="1280" Height="1024"
         Title="SCME.ProfileBuilder" Closing="Window_Closing"
         ResizeMode="CanResize" Loaded="MetroWindow_Loaded"
         WindowStartupLocation="CenterScreen" 
-         WindowState="Maximized" Icon="App.ico" >
+         WindowState="Normal" Icon="App.ico" >
             <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
 </ControlsEx:MetroWindow>

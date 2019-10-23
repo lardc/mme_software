@@ -4,6 +4,25 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
+    <Style TargetType="Border" x:Key="BorderComboBox">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True"> 
+                <Setter  Property="Background" Value="{StaticResource xGray4}"/> 
+            </Trigger> 
+            <Trigger Property="IsEnabled" Value="False"> 
+                <Setter  Property="Background" Value="Transparent"/> 
+            </Trigger> 
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Path" x:Key="PathComboBox">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False"> 
+                <Setter  Property="Visibility" Value="Hidden"/> 
+            </Trigger> 
+        </Style.Triggers>
+    </Style>
+
     <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -11,11 +30,11 @@
                 <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
                 
-            <Border x:Name="border" Grid.ColumnSpan="2" Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+            <Border x:Name="border" Grid.ColumnSpan="2" Style="{StaticResource BorderComboBox}"
+                    BorderBrush="{TemplateBinding BorderBrush}"  />
                 
             <Border  Grid.Column="1" Background="Transparent">
-                <Path Name="arrow" Margin="10" Stretch="Uniform" StrokeThickness="2"
+                <Path Name="arrow" Margin="10" Stretch="Uniform" StrokeThickness="2" Style="{StaticResource PathComboBox}"
                       Stroke="{TemplateBinding Foreground}"  Data="M 0 0 L 1 1 L 2 0" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
                         <RotateTransform x:Name="rotateTransform" Angle="0" />
@@ -48,7 +67,7 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-        <Setter Property="BorderBrush" Value="{StaticResource xGray4}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}"/>
         <Setter Property="ItemContainerStyle" >
@@ -61,12 +80,7 @@
                                     <ContentPresenter IsHitTestVisible="False" Margin="5,0,5,0"
                                                       VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="border" Property="Background" Value="{StaticResource xGray4}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
+    </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
@@ -76,7 +90,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <ToggleButton Name="ToggleButton" Template="{StaticResource ComboBoxToggleButton}" Focusable="false"
+                        <ToggleButton BorderThickness="0" Name="ToggleButton" Template="{StaticResource ComboBoxToggleButton}" Focusable="false"
                                       IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                       ClickMode="Press"/>
 
@@ -85,7 +99,7 @@
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
                             <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" Background="White" BorderThickness="1" BorderBrush="{StaticResource xGray1}"/>
+                                <Border x:Name="DropDownBorder" Background="White"  BorderBrush="{StaticResource xGray1}"/>
                                 <ScrollViewer Margin="4,6,4,6" UseLayoutRounding="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                 </ScrollViewer>

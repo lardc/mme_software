@@ -18,7 +18,7 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
     /// <summary>
     /// Логика взаимодействия для GateDataTemplate.xaml
     /// </summary>
-    public partial class ATUDataTemplate : UserControl
+    public partial class ATUDataTemplate : Grid
     {
         public ATUDataTemplate()
         {

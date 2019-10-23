@@ -102,6 +102,7 @@
     <Compile Include="DataTemplates\TestParameters\ClampCommutationDataTemplate.xaml.cs">
       <DependentUpon>ClampCommutationDataTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IValueConverters\VtmConverters.cs" />
     <Compile Include="IValueConverters\BvtTypeToStringConverter.cs" />
     <Compile Include="IValueConverters\FrequencyDivisorToFrequency.cs" />
     <Compile Include="IValueConverters\MeasureModeToVisibilityConverter.cs" />
@@ -112,6 +113,7 @@
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResourceBinding.cs" />
+    <Compile Include="RowDefinitionWithVisibility.cs" />
     <Compile Include="ViewModels\EditProfileVm.cs" />
     <Compile Include="ViewModels\MmeCodeCheckboxDataTemplateVm.cs" />
     <Compile Include="ViewModels\ProfilesPageVM.cs" />

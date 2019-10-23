@@ -18,7 +18,7 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
     /// <summary>
     /// Логика взаимодействия для GateDataTemplate.xaml
     /// </summary>
-    public partial class dVdtDataTemplate : UserControl
+    public partial class dVdtDataTemplate : Grid
     {
         public dVdtDataTemplate()
         {

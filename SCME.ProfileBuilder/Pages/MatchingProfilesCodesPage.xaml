@@ -44,6 +44,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.ActiveProfiles}" />
@@ -51,7 +52,7 @@
                 <ListView Grid.Column="0" Grid.Row="2" ItemsSource="{Binding ActiveProfiles.View}" Style="{StaticResource ListViewProfile}" ItemContainerStyle="{StaticResource DragDropListViewItem}"
                           Drop="ActiveProfiles_Drop" SelectionChanged="ListViewActiveProfile_SelectionChanged" />
 
-                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center">
+                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" VerticalAlignment="Center">
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding MoveToInactive}">
                         <iconPacks:PackIconMaterial Kind="ArrowRight" />
                     </Button>
@@ -62,8 +63,10 @@
 
                 <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.InactiveProfiles}" />
                 <dataTemplates:TextBoxWithTimer Grid.Column="2" Grid.Row="1" Interval="1000" Text="{Binding InactiveProfileFilterName, UpdateSourceTrigger=PropertyChanged}" Tick="OnDispatcherTimerFindInactiveProfileOnTick" />
-                <ListView Grid.Column="2" Grid.Row="2" ItemsSource="{Binding InactiveProfiles.View}" Style="{StaticResource ListViewProfile}" ItemContainerStyle="{StaticResource DragDropListViewItem}" 
+                <ListView Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" ItemsSource="{Binding InactiveProfiles.View}" Style="{StaticResource ListViewProfile}" ItemContainerStyle="{StaticResource DragDropListViewItem}" 
                           Drop="InactiveProfiles_Drop" SelectionChanged="ListViewInactiveProfile_SelectionChanged" />
+                
+                <Button Grid.Column="0" Grid.Row="3" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Back}" Click="NavigateBack_OnClick"/>
             </Grid>
         </TabItem>
         <TabItem Header="{x:Static res:Resources.LinkMmeAndProfiles}">
@@ -86,7 +89,7 @@
                            Drop="ProfilesFromMmeCode_Drop" SelectionChanged="ListViewProfilesFromMmeCode_SelectionChanged" />
                 
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.ProfilesSelectedForMme}"/>
-                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center">
+                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" VerticalAlignment="Center">
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding RemoveProfileFromMmeCode}">
                         <iconPacks:PackIconMaterial Kind="ArrowRight" />
                     </Button>
@@ -115,13 +118,6 @@
                 <ListView Grid.Column="0" Grid.Row="2" ItemsSource="{Binding MmeCodes}" SelectedValue="{Binding SelectedMmeCodeFromRemove}" />
                 <Button Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.Delete}" Command="{Binding RemoveMmeCode}" Style="{StaticResource PrimaryButton}" />
             </Grid>
-        </TabItem>
-        <TabItem Header="{x:Static res:Resources.Navigation}">
-            <TabItem.HeaderTemplate>
-                <DataTemplate>
-                    <Button Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Back}" Click="NavigateBack_OnClick"/>
-                </DataTemplate>
-            </TabItem.HeaderTemplate>
         </TabItem>
     </TabControl>
 </Page>

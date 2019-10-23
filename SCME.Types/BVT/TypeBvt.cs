@@ -89,6 +89,9 @@ namespace SCME.Types.BVT
         public int? ClassByProfileName { get; set; }
         
         [DataMember]
+        public ushort PulseFrequency { get; set; }
+        
+        [DataMember]
         public BVTMeasurementMode MeasurementMode { get; set; }
 
         [DataMember]

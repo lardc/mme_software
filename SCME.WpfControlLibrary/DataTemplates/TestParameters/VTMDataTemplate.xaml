@@ -1,118 +1,78 @@
-﻿<UserControl x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.VTMDataTemplate"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-             xmlns:vtm="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=vtm:TestParameters}"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+﻿<Grid x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.VTMDataTemplate"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+      xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+      xmlns:vtm="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
+      xmlns:wpfControlLibrary="clr-namespace:SCME.WpfControlLibrary"
+      mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=vtm:TestParameters}"
+      d:DesignHeight="450" d:DesignWidth="800">
+    <Grid.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </UserControl.Resources>
-    <StackPanel Grid.IsSharedSizeScope="True" HorizontalAlignment="Stretch">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Type}" />
-            <ComboBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" ItemsSource="{Binding Source={StaticResource VtmTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
-        </Grid>
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
+        <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType,  ConverterParameter=0, Converter={StaticResource VT2V}}" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType, ConverterParameter=0, Converter={StaticResource VT2V}}" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType, ConverterParameter=0, Converter={StaticResource VT2V}}" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource VT2V}}" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource VT2V}}" />
+        <wpfControlLibrary:RowDefinitionWithVisibility Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource VT2V}}" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <Grid Visibility="{Binding TestType, ConverterParameter=0, Converter={StaticResource VT2V}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
+    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Type}" />
+    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource VtmTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
 
-            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-            <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding RampCurrent}" />
-            <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Time_us}" />
-            <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding RampTime}" />
 
-            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding IsRampOpeningEnabled}" Content="{x:Static res:Resources.IsHeatEnabled}" />
+    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Current_A}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding RampCurrent}" />
+    <Label Grid.Column="2" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="1" Value="{Binding RampTime}" />
 
-            <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.HeatCurrent_A}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
-            <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding RampOpeningCurrent }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
-            <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.HeatTime_us}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
-            <customControls:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding RampOpeningTime }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
-        </Grid>
+    <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding IsRampOpeningEnabled}" Content="{x:Static res:Resources.IsHeatEnabled}" />
 
-        <Grid Visibility="{Binding TestType, ConverterParameter=1, Converter={StaticResource VT2V}}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+    <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.HeatCurrent_A}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding RampOpeningCurrent }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
+    <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.HeatTime_us}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="3" Value="{Binding RampOpeningTime }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
 
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding SinusCurrent}" />
-                <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Time_us}" />
-                <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding SinusTime }" />
-            </Grid>
-        </Grid>
+    
+    <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Current_A}" /> 
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding SinusCurrent}" />
+    <Label Grid.Column="2" Grid.Row="4" Content="{x:Static res:Resources.Time_us}" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="4" Value="{Binding SinusTime }" />
+    
+    
+    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.Current_A}" /> 
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5" Value="{Binding CurveCurrent }" />
+    <Label Grid.Column="2" Grid.Row="5" Content="{x:Static res:Resources.Time_us}" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="5" Value="{Binding CurveTime }" />
+    
+    <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.CurveFactor}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6" Value="{Binding CurveFactor }" />
+    <Label Grid.Column="2" Grid.Row="6" Content="{x:Static res:Resources.AdditionalTime_us}" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="6" Value="{Binding CurveAddTime }" />
 
-        <Grid Visibility="{Binding TestType, ConverterParameter=2, Converter={StaticResource VT2V}}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                <customControls:NumericUpDown Grid.Column="1" Grid.Row="0" Value="{Binding CurveCurrent }" />
-                <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Time_us}" />
-                <customControls:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding CurveTime }" />
-
-                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.CurveFactor}" />
-                <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding CurveFactor }" />
-                <Label Grid.Column="2" Grid.Row="1" Content="{x:Static res:Resources.AdditionalTime_us}" />
-                <customControls:NumericUpDown Grid.Column="3" Grid.Row="1" Value="{Binding CurveAddTime }" />
-            </Grid>
-        </Grid>
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-
-            <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding UseFullScale}" Content="{x:Static res:Resources.UseFullScale}" />
-
-            <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Count}" />
-            <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding Count }" />
-            <Label Grid.Column="2" Grid.Row="1" Content="{x:Static res:Resources.MaxVtm_V}" />
-            <customControls:NumericUpDown Grid.Column="3" Grid.Row="1" Value="{Binding VTM }" />
-        </Grid>
-    </StackPanel>
-</UserControl>
+    <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding UseFullScale}" Content="{x:Static res:Resources.UseFullScale}" /> 
+    
+    <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.Count}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="8" Value="{Binding Count }" />
+    <Label Grid.Column="2" Grid.Row="8" Content="{x:Static res:Resources.MaxVtm_V}" />
+    <customControls:NumericUpDown Grid.Column="3" Grid.Row="8" Value="{Binding VTM }" />
+    
+</Grid>

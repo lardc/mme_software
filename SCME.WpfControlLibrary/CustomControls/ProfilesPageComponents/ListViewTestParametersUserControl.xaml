@@ -28,7 +28,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ListView BorderThickness="0" ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="{StaticResource ListViewTestParametersBrush}" >
+    <ListView BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
+              ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="{StaticResource ListViewTestParametersBrush}" >
+        <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Grid.IsSharedSizeScope="True" />
+            </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
         <ListView.Resources>
             <DataTemplate DataType="{x:Type gateParameters:TestParameters}" >
                 <testResultDataTemplate:GateDataTemplate/>

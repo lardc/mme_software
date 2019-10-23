@@ -18,7 +18,7 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
     /// <summary>
     /// Логика взаимодействия для TOUDataTemplate.xaml
     /// </summary>
-    public partial class TOUDataTemplate : UserControl
+    public partial class TOUDataTemplate : Grid
     {
         public TOUDataTemplate()
         {

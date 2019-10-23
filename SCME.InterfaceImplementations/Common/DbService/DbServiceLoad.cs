@@ -518,6 +518,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "BVT_UseUdsmUrsm":
+                        testParams.UseUdsmUrsm = Convert.ToBoolean(result.Value);
+                        break;
+                    
+                    case "BVT_PulseFrequency":
+                        testParams.PulseFrequency = Convert.ToUInt16(result.Value);
+                        break;
+                    
                     case "BVT_Type":
                         testParams.TestType = (BVTTestType)(Enum.Parse(typeof(BVTTestType), result.Value.ToString()));
                         break;

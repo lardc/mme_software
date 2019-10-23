@@ -20,7 +20,7 @@ namespace SCME.ProfileBuilder
     {
         public MainWindow()
         {
-            ResourceBinding.Scaling(0.75);
+            ResourceBinding.Scaling(0.60);
             
             InitializeComponent();
             Cache.Main = this;
@@ -29,6 +29,7 @@ namespace SCME.ProfileBuilder
             var navigationService = NavigationService.GetNavigationService(MainFrame);
             
             MainFrame?.Navigate(Cache.SelectEditModePage);
+            
             //MainFrame.Navigate(new ProfilesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;")), "MME005"));
             //MainFrame?.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
             

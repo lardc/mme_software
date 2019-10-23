@@ -134,6 +134,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"BVT_FD", bvt.FrequencyDivisor},
                 {"BVT_Mode", bvt.MeasurementMode},
                 {"BVT_PlateTime", bvt.PlateTime},
+                {"BVT_UseUdsmUrsm", bvt.UseUdsmUrsm},
+                {"BVT_PulseFrequency", bvt.PulseFrequency},
             };
             switch (bvt.TestType)
             {
