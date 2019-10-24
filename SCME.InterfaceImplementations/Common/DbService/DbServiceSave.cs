@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using SCME.Types;
 using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations.Common.DbService
@@ -449,9 +450,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
             try
             {
                 _dbTransaction = Connection.BeginTransaction();
-                if(oldProfile != null)
+                if (oldProfile != null)
+                {
                     RemoveMmeCodeToProfile(oldProfile.Id, mmeCode, _dbTransaction);
+                    RemoveMmeCodeToProfile(oldProfile.Id, Constants.MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
+                }
+
                 var id = SaveProfile(newProfile, mmeCode);
+                InsertMmeCodeToProfile(id, Constants.MME_CODE_IS_ACTIVE_NAME,_dbTransaction);
                 _dbTransaction.Commit();
 
                 //If new version without rename then move children of old profile and old profile to children of new profile

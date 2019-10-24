@@ -28,11 +28,11 @@ namespace SCME.ProfileBuilder.ViewModels
         public MatchingProfilesCodesPageVm(IDbService dbService)
         {
             _dbService = dbService;
-            MmeCodes = new ObservableCollection<string>(_dbService.GetMmeCodes().Select(m => m.Key).Except(new string[] {SQLiteDbService.MME_CODE_IS_ACTIVE_NAME}));
+            MmeCodes = new ObservableCollection<string>(_dbService.GetMmeCodes().Select(m => m.Key).Except(new string[] {Constants.MME_CODE_IS_ACTIVE_NAME}));
 
             ActiveProfiles = new CollectionViewSource()
             {
-                Source = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(SQLiteDbService.MME_CODE_IS_ACTIVE_NAME)),
+                Source = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(Constants.MME_CODE_IS_ACTIVE_NAME)),
                 SortDescriptions = {new SortDescription(nameof(MyProfile.Name), ListSortDirection.Ascending)}
             };
             
@@ -111,9 +111,9 @@ namespace SCME.ProfileBuilder.ViewModels
                 
                 ActiveProfilesSource.Remove(i);
                 InactiveProfilesSource.Add(i);
-
-                ProfilesForMmeCodeSource.Remove(i);
-                ProfilesFromMmeCodeSource.Remove(i);
+                
+                ProfilesFromMmeCodeSource?.Remove(i);
+                ProfilesForMmeCodeSource?.Remove(i);
             }
         }, o => SelectedActiveProfiles.Count > 0);
 
@@ -121,13 +121,13 @@ namespace SCME.ProfileBuilder.ViewModels
         {
             foreach (var i in SelectedInactiveProfiles.ToList())
             {
-                _dbService.InsertMmeCodeToProfile(i.Id, SQLiteDbService.MME_CODE_IS_ACTIVE_NAME);
+                _dbService.InsertMmeCodeToProfile(i.Id, Constants.MME_CODE_IS_ACTIVE_NAME);
                 
                 InactiveProfilesSource.Remove(i);
                 ActiveProfilesSource.Add(i);
                 
-                if(ProfilesFromMmeCodeSource.Contains(i) == false)
-                    ProfilesForMmeCodeSource.Add(i);
+                if(ProfilesFromMmeCodeSource?.Contains(i) == false)
+                    ProfilesForMmeCodeSource?.Add(i);
             }
         }, o => SelectedInactiveProfiles.Count > 0);
 

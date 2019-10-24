@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Database;
@@ -37,7 +38,7 @@ namespace SCME.WpfControlLibrary.Pages
             _dbService = dbService;
             _isWithoutChild = isWithoutChild;
 
-            ProfileVm.MmeCodes = isSingleMmeCode ? _dbService.GetMmeCodes().Where(m=> m.Key == mmeCode).ToDictionary(m=> m.Key, m=> m.Value) : _dbService.GetMmeCodes();
+            ProfileVm.MmeCodes = isSingleMmeCode ? _dbService.GetMmeCodes().Where(m=> m.Key == mmeCode).ToDictionary(m=> m.Key, m=> m.Value) : _dbService.GetMmeCodes().Where(m=> m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m=> m.Key, m=> m.Value);
             ProfileVm.SelectedMmeCode = ProfileVm.MmeCodes.ContainsKey(mmeCode) ? mmeCode : ProfileVm.MmeCodes.First().Key;
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
@@ -131,7 +132,6 @@ namespace SCME.WpfControlLibrary.Pages
             else
             {
                 newProfile = oldProfile.GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
-
                 newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
                 oldProfile.IsTop = false;

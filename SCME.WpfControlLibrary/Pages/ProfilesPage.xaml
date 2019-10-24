@@ -43,7 +43,7 @@
                       VirtualizingStackPanel.ScrollUnit="Item">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
-                        <dataTemplate:ProfileHierarchicalDataTemplate />
+                        <dataTemplate:ProfileHierarchicalDataTemplate Margin="0" Padding="0" />
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>

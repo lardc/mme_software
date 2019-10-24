@@ -5,6 +5,10 @@
     <GridLength x:Key="SCME.DistanceBetweenPanelButton">30</GridLength>
     <sys:Double x:Key="SCME.WidthHeightPathForPanelButton">80</sys:Double>
     <Thickness x:Key="SCME.PaddingForPanelButton">10</Thickness>
+
+    <Thickness x:Key="SCME.MarginLeftTreeViewItemDataProfile">10,0,0,0</Thickness>
+    <Thickness x:Key="SCME.MarginLeftChildTreeViewItemDataProfile">10,0,0,0</Thickness>
+
     <!-- <sys:Double x:Key="cmFactor">28</sys:Double> -->
     <!-- -->
     <!-- <sys:Double x:Key="SCME.BaseFontSize">28</sys:Double> -->

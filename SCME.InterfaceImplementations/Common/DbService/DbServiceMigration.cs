@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Resources;
+using SCME.Types;
 
 
 namespace SCME.InterfaceImplementations.Common.DbService
@@ -227,10 +228,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     if (Convert.ToInt32(_checkMmeCodeIsActive.ExecuteScalar()) == 0)
                     {
-                        InsertMmeCode(MME_CODE_IS_ACTIVE_NAME);
+                        InsertMmeCode(Constants.MME_CODE_IS_ACTIVE_NAME);
 
                         foreach (var i in GetProfilesSuperficially(string.Empty))
-                            InsertMmeCodeToProfile(i.Id, MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
+                            InsertMmeCodeToProfile(i.Id, Constants.MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
                     }
 
                     _dbTransaction.Commit();

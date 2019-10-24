@@ -8,8 +8,8 @@
                     <StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"
-                                                  MinWidth="19" />
+                                <ColumnDefinition Name="firstColumn"  Width="20"
+                                                   />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -70,9 +70,6 @@
                                     Value="Hidden" />
                         </Trigger>
                         <Trigger Property="TreeViewItem.IsSelected" Value="True">
-                            <!-- <Setter TargetName="Bd" -->
-                            <!--         Property="Panel.Background" -->
-                            <!--         Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" /> -->
                             <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
                         </Trigger>
                         <MultiTrigger>
@@ -81,16 +78,9 @@
                                 <Condition Property="Selector.IsSelectionActive" Value="False" />
                             </MultiTrigger.Conditions>
                             <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                            <!-- <Setter TargetName="Bd" -->
-                            <!--         Property="Panel.Background" -->
-                            <!--         Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" /> -->
-                            <!-- <Setter Property="TextElement.Foreground" -->
-                            <!--         Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" /> -->
                         </MultiTrigger>
                         <Trigger Property="UIElement.IsEnabled"
                                  Value="False">
-                            <!-- <Setter Property="TextElement.Foreground" -->
-                            <!--         Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" /> -->
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

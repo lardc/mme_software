@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using System.Runtime.Serialization;
+using SCME.Types;
 using SCME.Types.Database;
 using SCME.Types.Profiles;
 
@@ -12,13 +13,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> : IDbService where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-        public const string MME_CODE_IS_ACTIVE_NAME = "IsActive";
+       
         protected virtual string SelectAllTopProfileString => @"SELECT PROFILES.PROF_ID, PROFILES.PROF_NAME, PROFILES.PROF_GUID, LATEST_ORDERS.VERS, PROFILES.PROF_TS FROM
                                                                 (SELECT PROF_NAME, MAX(PROF_VERS) AS VERS FROM PROFILES GROUP BY PROF_NAME) AS LATEST_ORDERS 
                                                                 INNER JOIN PROFILES 
                                                                 ON PROFILES.PROF_NAME = LATEST_ORDERS.PROF_NAME AND PROFILES.PROF_VERS = LATEST_ORDERS.VERS";
         
-        protected virtual string CheckMmeCodeIsActiveString => $"SELECT COUNT (*) FROM MME_CODES WHERE MME_CODE = '{MME_CODE_IS_ACTIVE_NAME}'";
+        protected virtual string CheckMmeCodeIsActiveString => $"SELECT COUNT (*) FROM MME_CODES WHERE MME_CODE = '{Constants.MME_CODE_IS_ACTIVE_NAME}'";
         
 //        ALTER TABLE MME_CODES_TO_PROFILES 
 //            ADD CONSTRAINT FK_MME_CODES_TO_PROFILES_MME_CODES

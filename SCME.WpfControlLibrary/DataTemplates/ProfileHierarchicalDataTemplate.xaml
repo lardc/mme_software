@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:convertes="clr-namespace:SCME.WpfControlLibrary.IValueConverters"
-             xmlns:VM="clr-namespace:SCME.WpfControlLibrary.ViewModels"
+             xmlns:VM="clr-namespace:SCME.WpfControlLibrary.ViewModels" 
+             Margin="{DynamicResource SCME.MarginLeftTreeViewItemDataProfile}"
              mc:Ignorable="d" d:DesignHeight="50" d:DesignWidth="200">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -13,7 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="-20,0,0,0" >
         <!-- <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" HorizontalAlignment="Stretch"  /> -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0" />
