@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using PropertyChanged;
 using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.BVT
@@ -80,6 +81,7 @@ namespace SCME.Types.BVT
     };
     
     [DataContract(Name = "Bvt.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [AddINotifyPropertyChangedInterface]
 //    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {

@@ -15,7 +15,7 @@
     <SolidColorBrush x:Key="xGray4"         Color="#BCBEC4"/>
     
     <SolidColorBrush x:Key="PurpleBrush1" Color="{StaticResource Purple1}" ></SolidColorBrush>
-    <SolidColorBrush x:Key="PurpleBrush2" Color="{StaticResource Purple1}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="PurpleBrush2" Color="{StaticResource Purple2}" ></SolidColorBrush>
     
     <SolidColorBrush x:Key="ListViewTestParametersBrush" Color="{StaticResource Purple1}" ></SolidColorBrush>
     <SolidColorBrush x:Key="ListViewItemTestParametersBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>

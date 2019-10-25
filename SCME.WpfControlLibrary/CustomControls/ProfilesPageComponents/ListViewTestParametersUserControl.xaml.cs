@@ -55,6 +55,34 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
 
         public ICommand DeleteRelayCommand => new RelayCommand<BaseTestParametersAndNormatives>(q => ItemSource.Remove(q));
         
+        public ICommand MoveUp => new RelayCommand<BaseTestParametersAndNormatives>((o) =>
+        {
+            var index = ItemSource.IndexOf(o);
+            var upItem = ItemSource[index - 1];
+
+            int tmp = o.Order;
+            o.Order = upItem.Order;
+            upItem.Order = tmp;
+            
+            ItemSource.Move(index, index-1);
+
+        }, (o) => ItemSource.IndexOf(o) > 0);
+        
+        public ICommand MoveDown => new RelayCommand<BaseTestParametersAndNormatives>((o) =>
+        {
+            var index = ItemSource.IndexOf(o);
+            var downItem = ItemSource[index + 1];
+
+            int tmp = o.Order;
+            o.Order = downItem.Order;
+            downItem.Order = tmp;
+            
+            ItemSource.Move(index, index+1);
+
+        }, (o) => ItemSource.IndexOf(o) < ItemSource.Count - 1);
+        
+        
+        
         private void DeleteParameter_Click(object sender, RoutedEventArgs e)
         {
             ItemSource.Remove(((Button) sender).DataContext as BaseTestParametersAndNormatives);

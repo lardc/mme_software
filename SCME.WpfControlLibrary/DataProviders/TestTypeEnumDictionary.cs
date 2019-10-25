@@ -156,7 +156,7 @@ namespace SCME.WpfControlLibrary.DataProviders
         public static double MeasureString(string candidate)
         {
             var fontFamily = ((FontFamily) Application.Current.Resources["SCME.DefaultFont"]).FamilyNames.First().Value;
-            
+
             var formattedText = new FormattedText(
                 candidate,
                 CultureInfo.CurrentCulture,
@@ -167,6 +167,19 @@ namespace SCME.WpfControlLibrary.DataProviders
                 new NumberSubstitution());
 
             return formattedText.Width;
+        }
+
+        public static Dictionary<ushort, ushort> GetFrequencyDivisors()
+        {
+            return new Dictionary<ushort, ushort>()
+            {
+                {50, 1},
+                {25, 2},
+                {10, 5},
+                {5, 10},
+                {2, 25},
+                {1, 50},
+            };
         }
     }
 }

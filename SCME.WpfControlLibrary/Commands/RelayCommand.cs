@@ -18,6 +18,8 @@ namespace SCME.WpfControlLibrary.Commands
         {
             if (parameter == null)
                 return true;
+            if (!(parameter is T))
+                return true;
             return _canExecute == null || _canExecute((T)parameter);
         }
 

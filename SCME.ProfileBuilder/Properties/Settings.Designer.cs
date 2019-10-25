@@ -43,7 +43,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDB")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDBTest")]
         public string MSSQLDatabase {
             get {
                 return ((string)(this["MSSQLDatabase"]));

@@ -45,7 +45,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         protected virtual string GetFreeProfileNameString => @"SELECT TOP(1) PROF_ID FROM PROFILES ORDER BY PROF_ID DESC";
         protected virtual string ProfileNameExistsString => @"SELECT COUNT(*) FROM PROFILES WHERE PROF_NAME = @PROF_NAME";
         protected virtual string ChildSelectString => @"SELECT [PROF_ID], [PROF_NAME], [PROF_GUID], [PROF_VERS], [PROF_TS] FROM [PROFILES] WHERE [PROF_NAME] = @PROF_NAME AND PROF_ID <> @PROF_ID_EXCLUDE ORDER BY [PROF_TS] DESC";
-        protected virtual string TestTypeSelectString => @"SELECT [PTT_ID], [TEST_TYPE_ID] FROM [PROF_TEST_TYPE] WHERE [PROF_ID] = @PROF_ID";
+        protected virtual string TestTypeSelectString => @"SELECT [PTT_ID], [TEST_TYPE_ID] FROM [PROF_TEST_TYPE] WHERE [PROF_ID] = @PROF_ID ORDER BY ORD";
 
         protected virtual string ProfilesByMmeSelectString => @"SELECT PROF_ID, PROF_NAME, PROF_GUID, PROF_VERS, PROF_TS FROM PROFILES WHERE PROF_ID IN
 	            (SELECT PROFILE_ID FROM MME_CODES_TO_PROFILES WHERE MME_CODE_ID IN
