@@ -178,6 +178,24 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PRSM max, kW.
+        /// </summary>
+        public static string AtuPrsmMax {
+            get {
+                return ResourceManager.GetString("AtuPrsmMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PRSM min, kW.
+        /// </summary>
+        public static string AtuPrsmMin {
+            get {
+                return ResourceManager.GetString("AtuPrsmMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Доступные профили.
         /// </summary>
         public static string AvailableProfiles {

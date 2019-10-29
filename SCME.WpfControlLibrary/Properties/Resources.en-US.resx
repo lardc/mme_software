@@ -792,4 +792,10 @@
   <data name="ListMME" xml:space="preserve">
     <value>List MME</value>
   </data>
+    <data name="AtuPrsmMin">
+      <value>PRSM min, kW</value>
+    </data>
+    <data name="AtuPrsmMax">
+      <value>PRSM max, kW</value>
+    </data>
 </root>

@@ -54,7 +54,7 @@ namespace SCME.UI.PagesUser
         private int m_CurrentPos = 1;
         private MeasureDialog measureDialog;
         private bool wasCurrentMore;
-        
+
         public UserTestPage()
         {
             this.DataContext = new UserTestPageViewModel();
@@ -90,9 +90,9 @@ namespace SCME.UI.PagesUser
 
             InitializeComponent();
 
-            m_XRed = (SolidColorBrush)FindResource("xRed1");
-            m_XGreen = (SolidColorBrush)FindResource("xGreen1");
-            m_XOrange = (SolidColorBrush)FindResource("xOrange1");
+            m_XRed = (SolidColorBrush) FindResource("xRed1");
+            m_XGreen = (SolidColorBrush) FindResource("xGreen1");
+            m_XOrange = (SolidColorBrush) FindResource("xOrange1");
 
             m_TbBrush = tbPsdJob.BorderBrush;
 
@@ -112,7 +112,7 @@ namespace SCME.UI.PagesUser
                 Grid.SetRowSpan(chartPlotter1, 2);
             }
 
-            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);                      
+            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);
         }
 
         private void SetChartPlotterSettings(bool SinglePositionModuleMode)
@@ -137,7 +137,7 @@ namespace SCME.UI.PagesUser
                 else
                 {
                     //для стенда без блока QrrTq требуется установка ограничения по оси Y
-                    ViewportAxesRangeRestriction restr = new ViewportAxesRangeRestriction { YRange = new DisplayRange(-7, 7) };
+                    ViewportAxesRangeRestriction restr = new ViewportAxesRangeRestriction {YRange = new DisplayRange(-7, 7)};
                     ChartPlotter cp = FindChild<ChartPlotter>(this.MainGrid, "chartPlotter" + i.ToString());
                     if (cp != null)
                         cp.Viewport.Restrictions.Add(restr);
@@ -192,11 +192,11 @@ namespace SCME.UI.PagesUser
         }
 
         public void InitTemp()
-        { 
+        {
             if (Profile.Temperature >= 60)
             {
                 lblTitleTop.Visibility =
-                   lblTitleBot.Visibility = BotTempLabel.Visibility = TopTempLabel.Visibility = Visibility.Visible;
+                    lblTitleBot.Visibility = BotTempLabel.Visibility = TopTempLabel.Visibility = Visibility.Visible;
                 Cache.Net.StartHeating(Profile.Temperature);
             }
             else
@@ -206,13 +206,14 @@ namespace SCME.UI.PagesUser
         }
 
         #region Bounded properties
+
         public Types.Profiles.Profile Profile
         {
             get { return m_Profile; }
             set
             {
                 m_Profile = value;
-                ((UserTestPageViewModel)this.DataContext).Profile = value;
+                ((UserTestPageViewModel) this.DataContext).Profile = value;
                 OnPropertyChanged("Profile");
             }
         }
@@ -223,7 +224,7 @@ namespace SCME.UI.PagesUser
             set
             {
                 m_SpecialMeasureMode = value;
-                ((UserTestPageViewModel)this.DataContext).SpecialMeasureMode = value;
+                ((UserTestPageViewModel) this.DataContext).SpecialMeasureMode = value;
                 OnPropertyChanged("SpecialMeasureMode");
             }
         }
@@ -748,6 +749,7 @@ namespace SCME.UI.PagesUser
             {
                 _gateCounter++;
             }
+
             m_StateGate = state;
 
             var gateResults = GetGateItemContainer();
@@ -780,8 +782,8 @@ namespace SCME.UI.PagesUser
             var labelRgResult = FindChild<Label>(presenter, "labelRgResult1");
             if (labelRgResult != null)
                 SetLabel(labelRgResult, state,
-                     resistance <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].Resistance,
-                     string.Format("{0}", resistance));
+                    resistance <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].Resistance,
+                    string.Format("{0}", resistance));
 
             if (state != DeviceState.InProcess)
             {
@@ -793,7 +795,7 @@ namespace SCME.UI.PagesUser
         }
 
         internal void SetResultGateGate(DeviceState state, float igt, float vgt, IList<short> arrayI,
-                                        IList<short> arrayV, long testTypeId)
+            IList<short> arrayV, long testTypeId)
         {
             m_StateGate = state;
 
@@ -803,18 +805,18 @@ namespace SCME.UI.PagesUser
 
             ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IGT = igt;
             ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT =
-                (float)Math.Round((decimal)(vgt / 1000.0), 2, MidpointRounding.ToEven);
+                (float) Math.Round((decimal) (vgt / 1000.0), 2, MidpointRounding.ToEven);
 
             var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult1");
             if (labelIgtResult != null)
                 SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT,
-                     string.Format("{0}", igt));
+                    string.Format("{0}", igt));
 
             var labelVgtResult = FindChild<Label>(presenter, "labelVgtResult1");
             if (labelVgtResult != null)
                 SetLabel(labelVgtResult, state,
-                        ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].VGT,
-                        string.Format("{0}", ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT));
+                    ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].VGT,
+                    string.Format("{0}", ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT));
 
             if (state != DeviceState.InProcess)
             {
@@ -842,7 +844,7 @@ namespace SCME.UI.PagesUser
             var labelIhResult = FindChild<Label>(presenter, "labelIhResult1");
             if (labelIhResult != null)
                 SetLabel(labelIhResult, state, ih <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IH,
-                     string.Format("{0}", ih));
+                    string.Format("{0}", ih));
 
             if (state != DeviceState.InProcess)
             {
@@ -1003,7 +1005,7 @@ namespace SCME.UI.PagesUser
                 ResultsVTM2[slCounter] = result;
 
             ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage =
-                (float)Math.Round((decimal)(result.Voltage / 1000.0), 2, MidpointRounding.ToEven);
+                (float) Math.Round((decimal) (result.Voltage / 1000.0), 2, MidpointRounding.ToEven);
 
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
@@ -1011,8 +1013,8 @@ namespace SCME.UI.PagesUser
             var labelVtmResult = FindChild<Label>(presenter, "labelVtmResult1");
             if (labelVtmResult != null)
                 SetLabel(labelVtmResult, state,
-                     ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM,
-                     string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage));
+                    ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM,
+                    string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage));
 
             if (state != DeviceState.InProcess)
                 if (((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage > (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM)
@@ -1182,6 +1184,7 @@ namespace SCME.UI.PagesUser
                     if (result.VDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VDRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VDRM");
             }
+
             if ((Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].MeasurementMode == Types.BVT.BVTMeasurementMode.ModeI)
             {
                 var labelBvtVdrmResult = FindChild<Label>(presenter, "labelBvtVdrmResult1");
@@ -1191,7 +1194,7 @@ namespace SCME.UI.PagesUser
                 var labelBvtIdrmResult = FindChild<Label>(presenter, "labelBvtIdrmResult1");
                 if (labelBvtIdrmResult != null)
                     SetLabel(labelBvtIdrmResult, state, result.IDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM,
-                         result.IDRM.ToString(CultureInfo.InvariantCulture));
+                        result.IDRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
                     if (result.IDRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
@@ -1230,12 +1233,13 @@ namespace SCME.UI.PagesUser
                 var labelBvtVrrmResult = FindChild<Label>(presenter, "labelBvtVrrmResult1");
                 if (labelBvtVrrmResult != null)
                     SetLabel(labelBvtVrrmResult, state, result.VRRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VRRM,
-                         result.VRRM.ToString(CultureInfo.InvariantCulture));
+                        result.VRRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
                     if (result.VRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VRRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VRRM");
             }
+
             if ((Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].MeasurementMode == Types.BVT.BVTMeasurementMode.ModeI)
             {
                 var labelBvtVrrmResult = FindChild<Label>(presenter, "labelBvtVrrmResult1");
@@ -1245,7 +1249,7 @@ namespace SCME.UI.PagesUser
                 var labelBvtIrrmResult = FindChild<Label>(presenter, "labelBvtIrrmResult1");
                 if (labelBvtIrrmResult != null)
                     SetLabel(labelBvtIrrmResult, state, result.IRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM,
-                         result.IRRM.ToString(CultureInfo.InvariantCulture));
+                        result.IRRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
                     if (result.IRRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
@@ -1294,6 +1298,7 @@ namespace SCME.UI.PagesUser
                 labelBvtFault.Content = Fault.ToString();
                 labelBvtFault.Visibility = Visibility.Visible;
             }
+
             switch (Fault)
             {
                 case Types.BVT.HWFaultReason.BridgeOverload:
@@ -1413,6 +1418,7 @@ namespace SCME.UI.PagesUser
                 labelDvdtFault.Content = Fault.ToString();
                 labelDvdtFault.Visibility = Visibility.Visible;
             }
+
             switch (Fault)
             {
                 case Types.dVdt.HWFaultReason.LinkCell1:
@@ -1523,10 +1529,12 @@ namespace SCME.UI.PagesUser
 
                 labelMeasure = FindChild<Label>(presenter, "lbAtuPRSM");
 
+
                 if (labelMeasure != null)
-                {
-                    SetLabel(labelMeasure, state, true, result.PRSM.ToString());
-                }
+                    SetLabel(labelMeasure, state,
+                        result.PRSM >= Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray()[ATUCounter].PRSM_Min &&
+                        result.PRSM <= Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray()[ATUCounter].PRSM_Max,
+                        result.PRSM.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -1539,7 +1547,7 @@ namespace SCME.UI.PagesUser
 
             if (labelATUWarning != null && labelATUWarning.Visibility != Visibility.Visible)
             {
-                Types.ATU.HWWarningReason WarningReason = (Types.ATU.HWWarningReason)Warning;
+                Types.ATU.HWWarningReason WarningReason = (Types.ATU.HWWarningReason) Warning;
                 labelATUWarning.Content = WarningReason.ToString();
 
                 labelATUWarning.Visibility = Visibility.Visible;
@@ -1557,7 +1565,7 @@ namespace SCME.UI.PagesUser
 
             if (labelATUFault != null && labelATUFault.Visibility != Visibility.Visible)
             {
-                Types.ATU.HWFaultReason FaultReason = (Types.ATU.HWFaultReason)Fault;
+                Types.ATU.HWFaultReason FaultReason = (Types.ATU.HWFaultReason) Fault;
                 labelATUFault.Content = FaultReason.ToString();
 
                 labelATUFault.Visibility = Visibility.Visible;
@@ -1716,7 +1724,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.QrrTq.HWProblemReason ProblemReason = (Types.QrrTq.HWProblemReason)Problem;
+                Types.QrrTq.HWProblemReason ProblemReason = (Types.QrrTq.HWProblemReason) Problem;
                 label.Content = ProblemReason.ToString();
 
                 label.Visibility = Visibility.Visible;
@@ -1737,7 +1745,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.QrrTq.HWWarningReason WarningReason = (Types.QrrTq.HWWarningReason)Warning;
+                Types.QrrTq.HWWarningReason WarningReason = (Types.QrrTq.HWWarningReason) Warning;
 
                 label.Content = WarningReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -1758,7 +1766,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.QrrTq.HWFaultReason FaultReason = (Types.QrrTq.HWFaultReason)Fault;
+                Types.QrrTq.HWFaultReason FaultReason = (Types.QrrTq.HWFaultReason) Fault;
 
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -1851,7 +1859,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.RAC.HWProblemReason ProblemReason = (Types.RAC.HWProblemReason)Problem;
+                Types.RAC.HWProblemReason ProblemReason = (Types.RAC.HWProblemReason) Problem;
                 label.Content = ProblemReason.ToString();
 
                 label.Visibility = Visibility.Visible;
@@ -1872,7 +1880,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.RAC.HWWarningReason WarningReason = (Types.RAC.HWWarningReason)Warning;
+                Types.RAC.HWWarningReason WarningReason = (Types.RAC.HWWarningReason) Warning;
 
                 label.Content = WarningReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -1893,7 +1901,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.RAC.HWFaultReason FaultReason = (Types.RAC.HWFaultReason)Fault;
+                Types.RAC.HWFaultReason FaultReason = (Types.RAC.HWFaultReason) Fault;
 
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -1984,7 +1992,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.TOU.HWProblemReason ProblemReason = (Types.TOU.HWProblemReason)Problem;
+                Types.TOU.HWProblemReason ProblemReason = (Types.TOU.HWProblemReason) Problem;
                 label.Content = ProblemReason.ToString();
 
                 label.Visibility = Visibility.Visible;
@@ -2005,7 +2013,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.TOU.HWWarningReason WarningReason = (Types.TOU.HWWarningReason)Warning;
+                Types.TOU.HWWarningReason WarningReason = (Types.TOU.HWWarningReason) Warning;
 
                 label.Content = WarningReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -2026,7 +2034,7 @@ namespace SCME.UI.PagesUser
 
             if (label != null && label.Visibility != Visibility.Visible)
             {
-                Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason)fault;
+                Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason) fault;
 
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
@@ -2036,7 +2044,7 @@ namespace SCME.UI.PagesUser
             }
 
             List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
-            switch ((Types.TOU.HWFaultReason)fault)
+            switch ((Types.TOU.HWFaultReason) fault)
             {
                 case Types.TOU.HWFaultReason.NoControlNoPower:
                     errors.Add("ERR_NO_CTRL_NO_PWR");
@@ -2139,11 +2147,12 @@ namespace SCME.UI.PagesUser
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
                 if (child != null && child is childItem)
-                    return (childItem)child;
+                    return (childItem) child;
                 childItem childOfChild = FindVisualChild<childItem>(child);
                 if (childOfChild != null)
                     return childOfChild;
             }
+
             return null;
         }
 
@@ -2157,7 +2166,7 @@ namespace SCME.UI.PagesUser
         /// If not matching item can be found, 
         /// a null parent is being returned.</returns>
         public T FindChild<T>(DependencyObject parent, string childName)
-           where T : DependencyObject
+            where T : DependencyObject
         {
             // Confirm parent and childName are valid. 
             if (parent == null) return null;
@@ -2185,14 +2194,14 @@ namespace SCME.UI.PagesUser
                     if (frameworkElement != null && frameworkElement.Name == childName)
                     {
                         // if the child's name is of the request name
-                        foundChild = (T)child;
+                        foundChild = (T) child;
                         break;
                     }
                 }
                 else
                 {
                     // child element found.
-                    foundChild = (T)child;
+                    foundChild = (T) child;
                     break;
                 }
             }
@@ -2272,15 +2281,18 @@ namespace SCME.UI.PagesUser
                             ClearResultsGate(element);
                             continue;
                         }
+
                         if (ListViewResults2.Items[i] is Types.VTM.TestParameters)
                         {
                             ClearVtmResults(element);
                             continue;
                         }
+
                         if (ListViewResults2.Items[i] is Types.BVT.TestParameters)
                         {
                             ClearBvtResults(element);
                         }
+
                         if (ListViewResults2.Items[i] is Types.dVdt.TestParameters)
                         {
                             ClearResultsDvDt(element);
@@ -2398,7 +2410,6 @@ namespace SCME.UI.PagesUser
             var labelIlResult1 = FindChild<Label>(presenter, "labelIlResult1");
             if (labelIlResult1 != null)
                 ResetLabel(labelIlResult1);
-
         }
 
         private void ClearResultsDvDt(DependencyObject element)
@@ -2416,7 +2427,6 @@ namespace SCME.UI.PagesUser
             var labelResult = FindChild<Label>(presenter, "labelResult");
             if (labelResult != null)
                 ResetLabel(labelResult);
-
         }
 
         private void ClearResultsATU(DependencyObject element)
@@ -2515,7 +2525,7 @@ namespace SCME.UI.PagesUser
 
             //чистим результаты измерений
             var label = FindChild<Label>(presenter, "lbTOUITM");
-            if (label != null) 
+            if (label != null)
                 ResetLabel(label);
 
             label = FindChild<Label>(presenter, "lbTOUTGD");
@@ -2571,11 +2581,11 @@ namespace SCME.UI.PagesUser
         }
 
         private void PlotYX(int Position, string LineName, Color LineColor, ICollection<short> UxPoints,
-                            IEnumerable<short> UyPoints)
+            IEnumerable<short> UyPoints)
         {
             var crop = UxPoints.Count - DATA_LENGTH;
 
-            var dataI = UxPoints.Skip(crop).Select(I => (Math.Abs(I) <= 2 ? (short)0 : I));
+            var dataI = UxPoints.Skip(crop).Select(I => (Math.Abs(I) <= 2 ? (short) 0 : I));
             var dataV = UyPoints.Skip(crop);
 
             if (dataI.Any() && (dataI.Min() < -7 * 10 || dataI.Max() > 7 * 10) || wasCurrentMore)
@@ -2586,13 +2596,13 @@ namespace SCME.UI.PagesUser
             else
             {
                 chartPlotter1.Viewport.Restrictions.Clear();
-                var restr = new ViewportAxesRangeRestriction { YRange = new DisplayRange(-7, 7) };
+                var restr = new ViewportAxesRangeRestriction {YRange = new DisplayRange(-7, 7)};
                 chartPlotter1.Viewport.Restrictions.Add(restr);
             }
 
             var points =
                 dataI.Zip(dataV, (I, V) => new PointF(V, I / 10.0f))
-                     .Select((P => (Math.Abs(P.X) < 200 ? new PointF(P.X, 0) : P)));
+                    .Select((P => (Math.Abs(P.X) < 200 ? new PointF(P.X, 0) : P)));
 
             var dataSource = new EnumerableDataSource<PointF>(points);
             dataSource.SetXMapping(P => P.X);
@@ -2600,7 +2610,7 @@ namespace SCME.UI.PagesUser
 
             ((Position == 1) ? chartPlotter1 : chartPlotter2).AddLineGraph(dataSource, LineColor, 3);
 
-            var scalerSource = new EnumerableDataSource<PointF>(new[] { new PointF(0, 5), new PointF(0, -5) });
+            var scalerSource = new EnumerableDataSource<PointF>(new[] {new PointF(0, 5), new PointF(0, -5)});
             scalerSource.SetXMapping(P => P.X);
             scalerSource.SetYMapping(P => P.Y);
 
@@ -2611,8 +2621,9 @@ namespace SCME.UI.PagesUser
         }
 
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
-                                   Types.VTM.TestParameters ParamsVTM,
-                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
+            Types.VTM.TestParameters ParamsVTM,
+            Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm,
+            Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
         {
             if (this.Profile != null)
             {
@@ -2715,8 +2726,8 @@ namespace SCME.UI.PagesUser
                 var parGate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
                 if (parGate != null)
                 {
-                    m_ResultsGate1.Add(new TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsGate2.Add(new TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsGate1.Add(new TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsGate2.Add(new TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     parGate.IsEnabled &= options.Item3;
                     continue;
                 }
@@ -2724,8 +2735,8 @@ namespace SCME.UI.PagesUser
                 var parVtm = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                 if (parVtm != null)
                 {
-                    m_ResultsVTM1.Add(new Types.VTM.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsVTM2.Add(new Types.VTM.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsVTM1.Add(new Types.VTM.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsVTM2.Add(new Types.VTM.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     parVtm.UseLsqMethod = Settings.Default.UseVTMPostProcessing;
                     continue;
                 }
@@ -2733,8 +2744,8 @@ namespace SCME.UI.PagesUser
                 var parBvt = baseTestParametersAndNormativese as Types.BVT.TestParameters;
                 if (parBvt != null)
                 {
-                    m_ResultsBVT1.Add(new Types.BVT.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsBVT2.Add(new Types.BVT.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsBVT1.Add(new Types.BVT.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsBVT2.Add(new Types.BVT.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     switch (parBvt.TestType)
                     {
                         case Types.BVT.BVTTestType.Both:
@@ -2745,46 +2756,47 @@ namespace SCME.UI.PagesUser
                                 parBvt.IsEnabled = false;
                             break;
                     }
+
                     continue;
                 }
 
                 var parDvDt = baseTestParametersAndNormativese as Types.dVdt.TestParameters;
                 if (parDvDt != null)
                 {
-                    _dvdTestResults1.Add(new Types.dVdt.TestResults() { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    _dvdTestResults2.Add(new Types.dVdt.TestResults() { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    _dvdTestResults1.Add(new Types.dVdt.TestResults() {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    _dvdTestResults2.Add(new Types.dVdt.TestResults() {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     continue;
                 }
 
                 var parATU = baseTestParametersAndNormativese as Types.ATU.TestParameters;
                 if (parATU != null)
                 {
-                    m_ResultsATU1.Add(new Types.ATU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsATU2.Add(new Types.ATU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsATU1.Add(new Types.ATU.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsATU2.Add(new Types.ATU.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     continue;
                 }
 
                 var parQrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                 if (parQrrTq != null)
                 {
-                    m_ResultsQrrTq1.Add(new Types.QrrTq.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsQrrTq2.Add(new Types.QrrTq.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsQrrTq1.Add(new Types.QrrTq.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsQrrTq2.Add(new Types.QrrTq.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     continue;
                 }
 
                 var parRAC = baseTestParametersAndNormativese as Types.RAC.TestParameters;
                 if (parRAC != null)
                 {
-                    m_ResultsRAC1.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsRAC2.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    m_ResultsRAC1.Add(new Types.RAC.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    m_ResultsRAC2.Add(new Types.RAC.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     continue;
                 }
 
                 var parTOU = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                 if (parTOU != null)
                 {
-                    _ResultsTOU1.Add(new Types.TOU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    _ResultsTOU2.Add(new Types.TOU.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
+                    _ResultsTOU1.Add(new Types.TOU.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
+                    _ResultsTOU2.Add(new Types.TOU.TestResults {TestTypeId = baseTestParametersAndNormativese.TestTypeId});
                     continue;
                 }
             }
@@ -2797,16 +2809,16 @@ namespace SCME.UI.PagesUser
                 CommutationType = ConverterUtil.MapCommutationType(Profile.ParametersComm),
 
                 Position =
-                        (Position == 1)
-                            ? Types.Commutation.HWModulePosition.Position1
-                            : Types.Commutation.HWModulePosition.Position2
+                    (Position == 1)
+                        ? Types.Commutation.HWModulePosition.Position1
+                        : Types.Commutation.HWModulePosition.Position2
             };
 
             var paramsClamp = new Types.Clamping.TestParameters
             {
                 StandardForce = Types.Clamping.ClampingForceInternal.Custom,
                 CustomForce = Profile.ParametersClamp,
-                Height = (ushort)Profile.Height,
+                Height = (ushort) Profile.Height,
                 IsHeightMeasureEnabled = Profile.IsHeightMeasureEnabled,
                 SkipClamping = false
             };
@@ -2879,7 +2891,7 @@ namespace SCME.UI.PagesUser
         }
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
-        {          
+        {
             tbPsdJob.Text = "";
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
@@ -2911,45 +2923,45 @@ namespace SCME.UI.PagesUser
                 switch (subjectForMeasure)
                 {
                     case Types.SubjectForMeasure.PSD:
-                        {
-                            //видны
-                            lbPsdJob.Visibility = Visibility.Visible;
-                            tbPsdJob.Visibility = Visibility.Visible;
+                    {
+                        //видны
+                        lbPsdJob.Visibility = Visibility.Visible;
+                        tbPsdJob.Visibility = Visibility.Visible;
 
-                            lbPsdSerialNumber.Visibility = Visibility.Visible;
-                            tbPsdSerialNumber.Visibility = Visibility.Visible;
+                        lbPsdSerialNumber.Visibility = Visibility.Visible;
+                        tbPsdSerialNumber.Visibility = Visibility.Visible;
 
-                            //не видны
-                            lbPseNumber.Visibility = Visibility.Collapsed;
-                            tbPseNumber.Visibility = Visibility.Collapsed;
+                        //не видны
+                        lbPseNumber.Visibility = Visibility.Collapsed;
+                        tbPseNumber.Visibility = Visibility.Collapsed;
 
-                            lbPseJob.Visibility = Visibility.Collapsed;
-                            tbPseJob.Visibility = Visibility.Collapsed;
+                        lbPseJob.Visibility = Visibility.Collapsed;
+                        tbPseJob.Visibility = Visibility.Collapsed;
 
-                            tbPsdJob.Focus();
+                        tbPsdJob.Focus();
 
-                            break;
-                        }
+                        break;
+                    }
 
                     case Types.SubjectForMeasure.PSE:
-                        {
-                            lbPseNumber.Visibility = Visibility.Visible;
-                            tbPseNumber.Visibility = Visibility.Visible;
+                    {
+                        lbPseNumber.Visibility = Visibility.Visible;
+                        tbPseNumber.Visibility = Visibility.Visible;
 
-                            lbPseJob.Visibility = Visibility.Visible;
-                            tbPseJob.Visibility = Visibility.Visible;
+                        lbPseJob.Visibility = Visibility.Visible;
+                        tbPseJob.Visibility = Visibility.Visible;
 
-                            //не видны
-                            lbPsdJob.Visibility = Visibility.Collapsed;
-                            tbPsdJob.Visibility = Visibility.Collapsed;
+                        //не видны
+                        lbPsdJob.Visibility = Visibility.Collapsed;
+                        tbPsdJob.Visibility = Visibility.Collapsed;
 
-                            lbPsdSerialNumber.Visibility = Visibility.Collapsed;
-                            tbPsdSerialNumber.Visibility = Visibility.Collapsed;
+                        lbPsdSerialNumber.Visibility = Visibility.Collapsed;
+                        tbPsdSerialNumber.Visibility = Visibility.Collapsed;
 
-                            lbPseJob.Focus();
+                        lbPseJob.Focus();
 
-                            break;
-                        }
+                        break;
+                    }
                 }
             }
 
@@ -2996,7 +3008,7 @@ namespace SCME.UI.PagesUser
             string psdSerialNumber = values[2] as string;
             string pseJob = values[3] as string;
             string pseNumber = values[4] as string;
-            bool specialMeasureMode = (bool)values[5];
+            bool specialMeasureMode = (bool) values[5];
 
             ProfileCalcSubject profileCalcSubject = new ProfileCalcSubject();
             SubjectForMeasure subjectForMeasure = profileCalcSubject.CalcSubjectForMeasure(profileName);

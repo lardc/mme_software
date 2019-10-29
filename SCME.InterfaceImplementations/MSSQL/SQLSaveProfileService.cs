@@ -728,7 +728,7 @@ namespace SCME.InterfaceImplementations
             InsertParameter(testTypeId, profileId, "UBR", atuTestParameters.UBR, DBNull.Value, trans);
             InsertParameter(testTypeId, profileId, "UPRSM", atuTestParameters.UPRSM, DBNull.Value, trans);
             InsertParameter(testTypeId, profileId, "IPRSM", atuTestParameters.IPRSM, DBNull.Value, trans);
-            InsertParameter(testTypeId, profileId, "PRSM", atuTestParameters.PRSM, DBNull.Value, trans);
+//            InsertParameter(testTypeId, profileId, "PRSM", atuTestParameters.PRSM, DBNull.Value, trans);
         }
 
         private void InsertQrrTqParameters(Types.QrrTq.TestParameters qrrTqTestParameters, long testTypeId, long profileId, SqlTransaction trans)

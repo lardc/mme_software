@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.SERVICE", "SCME.Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.DatabaseServer", "SCME.DatabaseServer\SCME.DatabaseServer.csproj", "{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastTest", "FastTest\FastTest.csproj", "{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,14 @@ Global
 		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|x86.ActiveCfg = Release|x86
 		{BE84DBF0-940B-4F96-B4AE-D1744FB5032E}.Release|x86.Build.0 = Release|x86
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{33F4F3D9-FFA6-4CD9-9E77-7E44E23229C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

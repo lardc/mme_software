@@ -7,6 +7,7 @@
         xmlns:custom="clr-namespace:SCME.UI.CustomControl"
         xmlns:props="clr-namespace:SCME.UI.Properties"
         xmlns:ui="clr-namespace:SCME.UI"
+        xmlns:customControls="WpfControlLibrary"
         Name="mainWindow" Title="SCME.UI"
         WindowStyle="None"
         Focusable="False"
@@ -21,46 +22,53 @@
 
     <Window.Resources>
 
-        <ui:BooleanToVisibilityConverter x:Key="B2V" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Common.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}" >
-            <Style.Triggers>
-                <Trigger Property="Content" Value="offline">
-                    <Setter Property="Foreground" Value="{StaticResource xRed1}" />
-                </Trigger>
-                <Trigger Property="Content" Value="online">
-                    <Setter Property="Foreground" Value="DarkSeaGreen" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <ui:BooleanToVisibilityConverter x:Key="B2V" />
 
-        <Style x:Key="ButtonPath" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{StaticResource xBlue1}" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="30,20" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Name="border" Background="{TemplateBinding Background}">
-                            <Path Margin="{TemplateBinding Padding}" Stretch="Uniform" StrokeThickness="5"
-                                  Stroke="{TemplateBinding Foreground}"
-                                  Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" Value="{StaticResource DisableOpacity}" />
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Opacity" Value="0.7" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
+                <Style.Triggers>
+                    <Trigger Property="Content" Value="offline">
+                        <Setter Property="Foreground" Value="{StaticResource xRed1}" />
+                    </Trigger>
+                    <Trigger Property="Content" Value="online">
+                        <Setter Property="Foreground" Value="DarkSeaGreen" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
+            <Style x:Key="ButtonPath" TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource xBlue1}" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Padding" Value="30,20" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="border" Background="{TemplateBinding Background}">
+                                <Path Margin="{TemplateBinding Padding}" Stretch="Uniform" StrokeThickness="5"
+                                      Stroke="{TemplateBinding Foreground}"
+                                      Data="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="{StaticResource DisableOpacity}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Opacity" Value="0.7" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
+        </ResourceDictionary>
 
     </Window.Resources>
 
@@ -80,9 +88,9 @@
                 <Label Grid.Column="0" Grid.Row="0"
                        Name="titleLabel" Content="{Binding ElementName=mainWindow, Path=TopTitle}"
                        FontSize="28" Margin="40,0,0,0"
-                       HorizontalAlignment="Left" Width="auto" 
-                       VerticalContentAlignment="Center"/>
-                
+                       HorizontalAlignment="Left" Width="auto"
+                       VerticalContentAlignment="Center" />
+
                 <Label Grid.Column="0" Grid.Row="0"
                        Name="deviceLable" Content="MME005"
                        FontSize="28" Margin="0,0,800,0"
@@ -99,17 +107,17 @@
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                             <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
                                   StrokeThickness="5" VerticalAlignment="Center"
-                                  Stretch="UniformToFill" Margin="0, 5, 20, 10"/>
+                                  Stretch="UniformToFill" Margin="0, 5, 20, 10" />
                             <Label x:Name="clampLabel" Content="{x:Static props:Resources.Clamp}" FontSize="28" HorizontalAlignment="Right"
-                               VerticalContentAlignment="Center" />
+                                   VerticalContentAlignment="Center" />
                         </StackPanel>
                     </Border>
                     <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
-                           VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed"/>
+                           VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed" />
                     <Path Data="{StaticResource CircutBrakePath}"
                           Stroke="{StaticResource xRed1}"
                           StrokeThickness="4" VerticalAlignment="Center"
-                          Stretch="UniformToFill" Margin="0, 10, 30, 10" 
+                          Stretch="UniformToFill" Margin="0, 10, 30, 10"
                           Visibility="{Binding ElementName=mainWindow, Path=IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
                     <Label x:Name="accountLabel" Content="User Account" FontSize="24" HorizontalAlignment="Left"
                            Visibility="{Binding ElementName=mainWindow, Path=AccountButtonVisibility}"
@@ -119,10 +127,11 @@
                             Style="{StaticResource ButtonPath}" Margin="0, 10, 30, 10" Padding="5" />
                     <Button Content="{StaticResource Tech2Path}" Click="Tech_Click"
                             Visibility="{Binding ElementName=mainWindow, Path=GoTechButtonVisibility}"
-                            Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10"/>
+                            Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10" />
                     <Button Content="{StaticResource ClosePath}" Click="BtnExit_Click"
                             Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10"
                             Visibility="{Binding Source={x:Static props:Settings.Default}, Path=ExitButtonIsVisible, Converter={StaticResource B2V}}" />
+                    <customControls:NumericUpDown Value="123" />
                 </StackPanel>
 
                 <Frame x:Name="mainFrame" Grid.Column="0" Grid.Row="1"
@@ -141,7 +150,7 @@
                        StaysOpen="True"
                        IsHitTestVisible="True">
                     <custom:VirtualKeyboard x:Name="defaultKeyboard" EnterPressed="Keyboard_EnterPressed"
-                                      Width="{Binding ElementName=mainWindow, Path=ActualWidth}" />
+                                            Width="{Binding ElementName=mainWindow, Path=ActualWidth}" />
                 </Popup>
             </Border>
 

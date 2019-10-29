@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SCME.WpfControlLibrary;
 
 namespace FastTest
 {
@@ -24,6 +25,7 @@ namespace FastTest
        
         public MainWindow()
         {
+            ResourceBinding.Scaling(0.75);
             //Entities DB = new Entities();
 
             try

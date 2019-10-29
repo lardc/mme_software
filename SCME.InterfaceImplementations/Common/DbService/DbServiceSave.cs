@@ -212,7 +212,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"UBR", (atu.UBR, DBNull.Value)},
                 {"UPRSM", (atu.UPRSM, DBNull.Value)},
                 {"IPRSM", (atu.IPRSM, DBNull.Value)},
-                {"PRSM", (atu.PRSM, DBNull.Value)},
+                {"PRSM", (atu.PRSM_Min, atu.PRSM_Max)},
             };
 
             return ("ATU", atuCondition, atuParameters);

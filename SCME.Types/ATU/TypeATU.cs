@@ -68,8 +68,11 @@ namespace SCME.Types.ATU
         [DataMember]
         public float IPRSM { get; set; }
 
+        [DataMember] 
+        public float PRSM_Min { get; set; } = 0;
+        
         [DataMember]
-        public float PRSM { get; set; }
+        public float PRSM_Max { get; set; } = 70;
 
         public TestParameters()
         {

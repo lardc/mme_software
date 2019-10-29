@@ -17,10 +17,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.AtuPrePulseValue}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"  Value="{Binding PrePulseValue}" />
 
         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" />
+        
+        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}"></Label>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" />
+        <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"></Label>
+        <customControls:NumericUpDown Grid.Column="3" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}"/>
+        
 </Grid>
