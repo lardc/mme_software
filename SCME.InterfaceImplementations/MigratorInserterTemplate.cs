@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -37,7 +37,19 @@ namespace SCME.InterfaceImplementations
                         foreach (var i in DataSet)
                         {
                             SetCountParametersValue(countCmd.Parameters as TDbParametr, i);
-                            long count = (long)countCmd.ExecuteScalar();
+                            object countObject = countCmd.ExecuteScalar();
+                            int count;
+                            switch (Type.GetTypeCode(countObject.GetType()))
+                            {
+                                case TypeCode.Int32:
+                                    count = (int)countObject;
+                                    break;
+                                case TypeCode.Int64:
+                                    count = Convert.ToInt32(countObject);
+                                    break;
+                                default:
+                                    throw new Exception("Migrate switch cast error");
+                            }
                             if (count == 0)
                             {
                                 SetInsertParametersValue(insertCmd.Parameters as TDbParametr, i);
@@ -48,7 +60,7 @@ namespace SCME.InterfaceImplementations
                 }
                 trans.Commit();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 trans?.Rollback();
                 throw;

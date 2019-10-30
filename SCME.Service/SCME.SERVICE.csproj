@@ -141,6 +141,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
+      <Project>{41fad811-1a7a-4ac2-95e8-6195f905e1c6}</Project>
+      <Name>SCME.InterfaceImplementations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SCME.LOGGER\SCME.Logger.csproj">
       <Project>{cdee465e-8961-4d91-92fc-da2615683951}</Project>
       <Name>SCME.Logger</Name>

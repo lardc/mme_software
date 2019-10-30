@@ -43,7 +43,7 @@ namespace SCME.InterfaceImplementations
                 "ERRORS", "MME_CODES", "DEV_PARAM"
             };
 
-        private readonly Tuple<string, string, bool>[] _mConditionsList =
+       public static readonly Tuple<string, string, bool>[] ConditionsList =
             {
                 new Tuple<string, string, bool>("Gate_En", "Gate_En", true),
                 new Tuple<string, string, bool>("Gate_EnableCurrent", "Gate_EnableCurrent", false),
@@ -73,8 +73,6 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("BVT_F", "BVT_F", false),
                 new Tuple<string, string, bool>("BVT_FD", "BVT_FD", false),
                 new Tuple<string, string, bool>("BVT_Mode", "BVT_Mode", false),
-                new Tuple<string, string, bool>("BVT_PlateTime", "BVT_PlateTime", false),
-                new Tuple<string, string, bool>("BVT_UseUdsmUrsm", "BVT_UseUdsmUrsm", false),
                 new Tuple<string, string, bool>("COMM_Type", "COMM_Type", true),
                 new Tuple<string, string, bool>("CLAMP_Type", "CLAMP_Type", true),
                 new Tuple<string, string, bool>("CLAMP_Force", "CLAMP_Force", true),
@@ -101,9 +99,11 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("QrrTq_OsvRate", "QrrTq_OsvRate", true),
                 new Tuple<string, string, bool>("RAC_En", "RAC_En", true),
                 new Tuple<string, string, bool>("RAC_ResVoltage", "RAC_ResVoltage", true),
+                new Tuple<string, string, bool>("TOU_En", "TOU_En", true),
+                new Tuple<string, string, bool>("TOU_ITM", "TOU_ITM", true),
             };
 
-        private readonly Tuple<string, string, bool>[] _mParamsList =
+        public static readonly Tuple<string, string, bool>[] ParamsList =
             {
                 new Tuple<string, string, bool>("K", "K", true),
                 new Tuple<string, string, bool>("RG", "RG, Ohm", false),
@@ -116,10 +116,6 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("VRRM", "VRRM, V", false),
                 new Tuple<string, string, bool>("IDRM", "IDRM, mA", false),
                 new Tuple<string, string, bool>("IRRM", "IRRM, mA", false),
-                new Tuple<string, string, bool>("VDSM", "VDSM, V", false),
-                new Tuple<string, string, bool>("VRSM", "VRSM, V", false),
-                new Tuple<string, string, bool>("IDSM", "IDSM, mA", false),
-                new Tuple<string, string, bool>("IRSM", "IRSM, mA", false),
                 new Tuple<string, string, bool>("IsHeightOk", "IsHeightOk", false),
                 new Tuple<string, string, bool>("UBR", "UBR, V", false),
                 new Tuple<string, string, bool>("UPRSM", "UPRSM, V", false),
@@ -131,10 +127,14 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("TRR", "TRR, us", false),
                 new Tuple<string, string, bool>("DCFactFallRate", "dIDC/dt, A/us", false),
                 new Tuple<string, string, bool>("TQ", "TQ, us", false),
-                new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false)
+                new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false),
+                new Tuple<string, string, bool>("TOU_TGD", "TOU_TGD, us", false),
+                new Tuple<string, string, bool>("TOU_TGT", "TOU_TGT, us", false),
+                new Tuple<string, string, bool>("DVDT_OK", "DVDT_OK", false),
+
             };
 
-        private readonly Tuple<string, string, int>[] _mDefectCodes =
+        public static readonly Tuple<string, string, int>[] DefectCodes =
             {
                 new Tuple<string, string, int>("ERR_KELVIN", "Error connection", 11),
                 new Tuple<string, string, int>("ERR_RG", "RG out of range", 12),
@@ -155,10 +155,18 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, int>("ERR_UBR", "UBR out of range", 36),
                 new Tuple<string, string, int>("ERR_UPRSM", "UPRSM out of range", 37),
                 new Tuple<string, string, int>("ERR_IPRSM", "IPRSM out of range", 38),
-                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39)
+                new Tuple<string, string, int>("ERR_PRSM", "PRSM out of range", 39),
+                new Tuple<string, string, int>("ERR_NO_CTRL_NO_PWR", "Lack of control current and power current", 40),
+                new Tuple<string, string, int>("ERR_NO_PWR", "Lack of power current", 41),
+                new Tuple<string, string, int>("ERR_SHORT", "Short circuit on output", 42),
+                new Tuple<string, string, int>("ERR_NO_POT_SIGNAL", "There is no signal from the potential line", 43),
+                new Tuple<string, string, int>("ERR_OVERFLOW90", "90% Level Counter Overflow", 44),
+                new Tuple<string, string, int>("ERR_OVERFLOW10", "Overflow level counter 10%", 45),
+
+
             };
 
-        private readonly Tuple<int, string>[] m_TestTypes =
+        public static readonly Tuple<int, string>[] TestTypes =
             {
                 new Tuple<int, string>(1, "Gate"),
                 new Tuple<int, string>(2, "SL"),
@@ -169,7 +177,8 @@ namespace SCME.InterfaceImplementations
                 new Tuple<int, string>(7, "SCTU"),
                 new Tuple<int, string>(8, "ATU"),
                 new Tuple<int, string>(9, "QrrTq"),
-                new Tuple<int, string>(10, "RAC")
+                new Tuple<int, string>(10, "RAC"),
+                new Tuple<int, string>(13, "TOU")
             };
 
         private readonly string[] _mmeCodes = { };
@@ -665,7 +674,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var condition in _mConditionsList)
+                        foreach (var condition in ConditionsList)
                         {
                             insertCmd.Parameters["@COND_NAME"].Value = condition.Item1;
                             insertCmd.Parameters["@COND_NAME_LOCAL"].Value = condition.Item2;
@@ -683,7 +692,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var testType in m_TestTypes)
+                        foreach (var testType in TestTypes)
                         {
                             insertCmd.Parameters["@ID"].Value = testType.Item1;
                             insertCmd.Parameters["@NAME"].Value = testType.Item2;
@@ -701,7 +710,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var param in _mParamsList)
+                        foreach (var param in ParamsList)
                         {
                             insertCmd.Parameters["@PARAM_NAME"].Value = param.Item1;
                             insertCmd.Parameters["@PARAM_NAME_LOCAL"].Value = param.Item2;
@@ -720,7 +729,7 @@ namespace SCME.InterfaceImplementations
                         insertCmd.Transaction = trans;
                         insertCmd.Prepare();
 
-                        foreach (var err in _mDefectCodes)
+                        foreach (var err in DefectCodes)
                         {
                             insertCmd.Parameters["@ERR_NAME"].Value = err.Item1;
                             insertCmd.Parameters["@ERR_NAME_LOCAL"].Value = err.Item2;
@@ -753,5 +762,101 @@ namespace SCME.InterfaceImplementations
                 }
             }
         }
+         public static readonly MigratorInserter[] MigrationSet =
+    {
+            new MigratorInserterTemplate<Tuple<int,string>, SqlParameterCollection>("TEST_TYPE", "TEST_TYPE_NAME", InsertTestTypeCmdTemplate, TestTypes,
+                (c, i) =>
+                {
+
+                    i.Add("@ID", SqlDbType.Int);
+                    i.Add("@NAME", SqlDbType.NVarChar, 32);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.NVarChar  , 32);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item2;
+                },
+                (i, o) =>
+                {
+                    i["@ID"].Value = o.Item1;
+                    i["@NAME"].Value = o.Item2;
+                }),
+
+             new MigratorInserterTemplate<Tuple<string,string, bool>, SqlParameterCollection>("PARAMS", "PARAM_NAME", InsertParamCmdTemplate, ParamsList,
+                (c, i) =>
+                {
+
+                    i.Add("@PARAM_NAME", SqlDbType.NVarChar, 16);
+                    i.Add("@PARAM_NAME_LOCAL", SqlDbType.NVarChar, 64);
+                    i.Add("@PARAM_IS_HIDE", SqlDbType.Bit);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.NVarChar, 16);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@PARAM_NAME"].Value = o.Item1;
+                    i["@PARAM_NAME_LOCAL"].Value = o.Item2;
+                    i["@PARAM_IS_HIDE"].Value = o.Item3;
+                }),
+             
+              new MigratorInserterTemplate<Tuple<string,string, bool>, SqlParameterCollection>("CONDITIONS", "COND_NAME", InsertConditionCmdTemplate, ConditionsList,
+                (c, i) =>
+                {
+
+                    i.Add("@COND_NAME", SqlDbType.Char, 32);
+                    i.Add("@COND_NAME_LOCAL", SqlDbType.NVarChar, 64);
+                    i.Add("@COND_IS_TECH", SqlDbType.Bit);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.Char, 32);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@COND_NAME"].Value = o.Item1;
+                    i["@COND_NAME_LOCAL"].Value = o.Item2;
+                    i["@COND_IS_TECH"].Value = o.Item3;
+                }),
+
+
+              new MigratorInserterTemplate<Tuple<string,string, int>, SqlParameterCollection>("ERRORS", "ERR_NAME", InsertErrorCmdTemplate, DefectCodes,
+                (c, i) =>
+                {
+
+                    i.Add("@ERR_NAME", SqlDbType.Char, 20);
+                    i.Add("@ERR_NAME_LOCAL", SqlDbType.NVarChar, 32);
+                    i.Add("@ERR_CODE", SqlDbType.Int);
+
+                    c.Add("@WHERE_PARAMETR", SqlDbType.Char, 20);
+                },
+                (c, o) =>
+                {
+                    c["@WHERE_PARAMETR"].Value = o.Item1;
+                },
+                (i, o) =>
+                {
+                    i["@ERR_NAME"].Value = o.Item1;
+                    i["@ERR_NAME_LOCAL"].Value = o.Item2;
+                    i["@ERR_CODE"].Value = o.Item3;
+                }),
+
+        };
+
+        public void Migrate()
+        {
+            if (State == ConnectionState.Open)
+            {
+                foreach (var i in MigrationSet)
+                    i.Migrate(_mConnection);
+            }
+        }
+        
     }
 }

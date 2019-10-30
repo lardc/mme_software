@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackGround.cs" />
+    <Compile Include="MigratorInserter.cs" />
+    <Compile Include="MigratorInserterTemplate.cs" />
     <Compile Include="SQLDatabaseService.cs" />
     <Compile Include="SQLCentralDatabaseService.cs" />
     <Compile Include="DatabaseService.cs" />

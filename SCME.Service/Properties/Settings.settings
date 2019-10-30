@@ -146,9 +146,6 @@
     <Setting Name="NeedSCTUInitialization" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MMECode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">MME002</Value>
-    </Setting>
     <Setting Name="QrrTqNode" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">10</Value>
     </Setting>
@@ -169,6 +166,9 @@
     </Setting>
     <Setting Name="RCCEmulation" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MMECode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">A</Value>
     </Setting>
   </Settings>
 </SettingsFile>

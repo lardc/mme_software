@@ -3,4 +3,5 @@
   &lt;Assembly Path="D:\Work\PROTON_SW\version_PROGRESS_AP\Lib\System.Data.SQLite.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\mscorlib.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files (x86)\FastReports\FastReport.Net Trial\Framework 4.0\FastReport.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/EntityFrameworkOptions/IsAlreadyNotifiedAboutEntityFramework/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>

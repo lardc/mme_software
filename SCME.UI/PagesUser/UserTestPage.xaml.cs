@@ -226,6 +226,26 @@ namespace SCME.UI.PagesUser
             }
         }
 
+        public List<Types.dVdt.TestResults> ResultsDVDT1
+        {
+            get { return _dvdTestResults1; }
+            set
+            {
+                _dvdTestResults1 = value;
+                OnPropertyChanged("ResultsDVDT1");
+            }
+        }
+
+        public List<Types.dVdt.TestResults> ResultsDVDT2
+        {
+            get { return _dvdTestResults2; }
+            set
+            {
+                _dvdTestResults2 = value;
+                OnPropertyChanged("ResultsDVDT2");
+            }
+        }
+        
         public List<Types.Gate.TestResults> ResultsGate1
         {
             get { return m_ResultsGate1; }
@@ -669,6 +689,8 @@ namespace SCME.UI.PagesUser
                         ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                         QrrTq = (m_CurrentPos == 1) ? ResultsQrrTq1.ToArray() : ResultsQrrTq2.ToArray(),
                         RAC = (m_CurrentPos == 1) ? ResultsRAC1.ToArray() : ResultsRAC2.ToArray(),
+                        DVDT = (m_CurrentPos == 1) ? ResultsDVDT1.ToArray() : ResultsDVDT2.ToArray(),
+                        DvdTestParameterses = Profile.TestParametersAndNormatives.OfType<Types.dVdt.TestParameters>().ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
                         VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
@@ -1173,7 +1195,8 @@ namespace SCME.UI.PagesUser
 
                 var labelBvtIdrmResult = FindChild<Label>(presenter, "labelBvtIdrmResult1");
                 if (labelBvtIdrmResult != null)
-                    SetLabel(labelBvtIdrmResult, state, result.IDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM,
+                    SetLabel(labelBvtIdrmResult, state, result.IDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM &&
+                                                        result.IRRM > 0,
                          result.IDRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
@@ -1227,7 +1250,8 @@ namespace SCME.UI.PagesUser
 
                 var labelBvtIrrmResult = FindChild<Label>(presenter, "labelBvtIrrmResult1");
                 if (labelBvtIrrmResult != null)
-                    SetLabel(labelBvtIrrmResult, state, result.IRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM,
+                    SetLabel(labelBvtIrrmResult, state, result.IRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM
+                        && result.IRRM > 0,
                          result.IRRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
@@ -1416,11 +1440,11 @@ namespace SCME.UI.PagesUser
 
             if (m_CurrentPos == 1)
             {
-                _dvdTestResults1[dvdtCounter] = Result;
+                ResultsDVDT1[dvdtCounter] = Result;
             }
             else
             {
-                _dvdTestResults2[dvdtCounter] = Result;
+                ResultsDVDT2[dvdtCounter] = Result;
             }
 
             var dvDtItemContainer = GetDvDtItemContainer();
@@ -1579,7 +1603,10 @@ namespace SCME.UI.PagesUser
 
                 if (labelMeasure != null)
                 {
-                    SetLabel(labelMeasure, state, true, result.PRSM.ToString());
+                    SetLabel(labelMeasure, state, 
+                        (Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray())[ATUCounter].PRSM_Min < result.PRSM && 
+                        result.PRSM < (Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray())[ATUCounter].PRSM_Max, 
+                        result.PRSM.ToString());
                 }
             }
         }

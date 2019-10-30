@@ -31,6 +31,10 @@ namespace SCME.InterfaceImplementations
         private SqlCommand _codesInsertCommand;
         private SqlCommand _codesDeleteCommand;
 
+        public static string GetConnectionStringFromSettings(ApplicationSettingsBase Settings) => Convert.ToBoolean(Settings["DBIntegratedSecurity"])
+            ? $"Server={Settings["DbPath"]}; Database={Settings["DBName"]}; Integrated Security=true;"
+            : $"Server={Settings["DbPath"]}; Database={Settings["DBName"]}; User Id={Settings["DBUser"]}; Password={Settings["DBPassword"]};";
+        
         public SQLCentralDatabaseService(ApplicationSettingsBase Settings)
         {
             var connectionString = Convert.ToBoolean(Settings["DBIntegratedSecurity"])
