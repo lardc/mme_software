@@ -29,7 +29,7 @@ namespace SCME.UI.IO
         private readonly ExternalControlCallbackHost m_CallbackHost;
         private readonly DispatcherTimer m_NetPingTimer;
         private ControlServerProxy m_ControlClient;
-        private DatabaseCommunicationProxy m_DatabaseClient;
+        private DatabaseCommunicationProxy DatabaseClient;
         private TypeCommon.InitParams m_InitParams;
         private volatile bool m_IsServerConnected, m_StopInit;
 
@@ -50,35 +50,26 @@ namespace SCME.UI.IO
             private set { m_IsServerConnected = value; }
         }
 
+        public InitializationResponce GetStateService => m_ControlClient.IsInitialized();
+        
         public bool IsDBSync
         {
             get
             {
                 var initState = m_ControlClient.IsInitialized();
 
-                return (initState & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
+                return (initState.InitializationResult & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
             }
         }
 
-        public bool IsDBSyncInProgress
-        {
-            get
-            {
-                //отвечает на вопрос: процесс синхронизации ещё выполняется или уже завершился
-                //true - процесс синхронизации ещё выполняется
-                //false - процесс синхронизации завершился
-                InitializationResult initState = m_ControlClient.IsInitialized();
-
-                return (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
-            }
-        }
+        public bool IsDBSyncInProgress(InitializationResult initState) => (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
 
         public bool IsModulesInitialized
         {
             get
             {
                 //отвечает на вопрос: инициализация модулей (аппаратных, например BVT) выполнена?
-                InitializationResult initState = m_ControlClient.IsInitialized();
+                InitializationResult initState = m_ControlClient.IsInitialized().InitializationResult;
 
                 return (initState & InitializationResult.ModulesInitialized) == InitializationResult.ModulesInitialized;
             }
@@ -167,18 +158,18 @@ namespace SCME.UI.IO
                             else
                                 m_ControlClient.Close();
 
-                        if (m_DatabaseClient != null)
-                            if (m_DatabaseClient.State == CommunicationState.Faulted)
-                                m_DatabaseClient.Abort();
+                        if (DatabaseClient != null)
+                            if (DatabaseClient.State == CommunicationState.Faulted)
+                                DatabaseClient.Abort();
                             else
-                                m_DatabaseClient.Close();
+                                DatabaseClient.Close();
 
                         m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        m_DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
                         m_ControlClient.Open();
 
-                        m_DatabaseClient.Open();
+                        DatabaseClient.Open();
 
                         m_NetPingTimer.Start();
 
@@ -278,12 +269,12 @@ namespace SCME.UI.IO
                 {
                     if (m_ControlClient != null)
                     {
-                        if (m_DatabaseClient.State == CommunicationState.Faulted)
-                            m_DatabaseClient.Abort();
+                        if (DatabaseClient.State == CommunicationState.Faulted)
+                            DatabaseClient.Abort();
                         else
-                            m_DatabaseClient.Close();
+                            DatabaseClient.Close();
 
-                        m_DatabaseClient = null;
+                        DatabaseClient = null;
                     }
                 }
                 catch (Exception ex)
@@ -342,17 +333,17 @@ namespace SCME.UI.IO
                             else
                                 m_ControlClient.Close();
 
-                        if (m_DatabaseClient != null)
-                            if (m_DatabaseClient.State == CommunicationState.Faulted)
-                                m_DatabaseClient.Abort();
+                        if (DatabaseClient != null)
+                            if (DatabaseClient.State == CommunicationState.Faulted)
+                                DatabaseClient.Abort();
                             else
-                                m_DatabaseClient.Close();
+                                DatabaseClient.Close();
 
                         m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        m_DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
                         m_ControlClient.Open();
-                        m_DatabaseClient.Open();
+                        DatabaseClient.Open();
                         m_ControlClient.Subscribe();
 
                         break;
@@ -373,7 +364,7 @@ namespace SCME.UI.IO
                 {
                     var initState = m_ControlClient.IsInitialized();
 
-                    if ((initState & InitializationResult.ModulesInitialized) == InitializationResult.None)
+                    if ((initState.InitializationResult & InitializationResult.ModulesInitialized) == InitializationResult.None)
                         Cache.Main.RestartRoutine(null, null);
                     else
                         m_NetPingTimer.Start();
@@ -393,7 +384,7 @@ namespace SCME.UI.IO
             try
             {
                 m_ControlClient.Check();
-                m_DatabaseClient.Check();
+                DatabaseClient.Check();
             }
             catch (FaultException<FaultData>)
             {
@@ -1306,7 +1297,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadLogs(tail, count);
+                return DatabaseClient.ReadLogs(tail, count);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1329,7 +1320,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadGroups(@from, to);
+                return DatabaseClient.ReadGroups(@from, to);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1374,7 +1365,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDevices(@group);
+                return DatabaseClient.ReadDevices(@group);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1418,7 +1409,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDeviceParameters(internalId);
+                return DatabaseClient.ReadDeviceParameters(internalId);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1441,7 +1432,7 @@ namespace SCME.UI.IO
         {
             try
             {
-                return m_DatabaseClient.ReadDeviceConditions(internalId);
+                return DatabaseClient.ReadDeviceConditions(internalId);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1500,7 +1491,7 @@ namespace SCME.UI.IO
             var profiles = new List<ProfileItem>();
             try
             {
-                profiles = m_DatabaseClient.GetProfileItemsByMmeCode(mmeCode);
+                profiles = DatabaseClient.GetProfileItemsByMmeCode(mmeCode);
             }
             catch (FaultException<FaultData> ex)
             {
@@ -1542,6 +1533,13 @@ namespace SCME.UI.IO
             }
 
             return Result;
+        }
+
+        public void GetState()
+        {
+            if(m_ControlClient == null)
+                return;
+            var q = m_ControlClient.IsInitialized();
         }
     }
 

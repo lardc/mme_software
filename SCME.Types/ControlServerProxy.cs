@@ -40,7 +40,7 @@ namespace SCME.Types
             Channel.Deinitialize();
         }
 
-        public InitializationResult IsInitialized()
+        public InitializationResponce IsInitialized()
         {
             return Channel.IsInitialized();
         }

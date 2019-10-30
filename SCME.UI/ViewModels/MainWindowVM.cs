@@ -26,6 +26,8 @@ namespace SCME.UI.ViewModels
         public string SyncState { get; set; }
 
         public string TopTitle { get; set; }
+        
+        public bool IsLocal { get; set; }
 
     }
 }

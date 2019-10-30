@@ -475,7 +475,13 @@ namespace SCME.Service.IO
 
             Result.CurrentData =
                 Result.CurrentData.Select(
-                    Value => IsDirect ? (Value < 0 ? Math.Abs(Value) : (short)0) : (Value > 0 ? (short)0 : Value)).ToList();
+                    Value =>
+                    {
+                        if (IsDirect)
+                            return Value < 0 ? Math.Abs(Value) : (short) 0;
+                        else
+                            return Value > 0 ? (short) 0 : Value;
+                    }).ToList();
             Result.VoltageData =
                 Result.VoltageData.Select(
                     Value => IsDirect ? (Value < 0 ? Math.Abs(Value) : (short)0) : (Value > 0 ? (short)0 : Value)).ToList();

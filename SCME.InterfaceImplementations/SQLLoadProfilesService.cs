@@ -165,7 +165,7 @@ namespace SCME.InterfaceImplementations
                     using (var reader = _childsCmd.ExecuteReader())
                     {
                         while (reader.Read())
-                            profilesChildsDict.Add(new ProfileForSqlSelect((int)reader[0],(string)reader[1],(Guid)reader[2],(int)reader[3],(DateTime)reader[4]));
+                            profilesChildsDict.Add(new ProfileForSqlSelect((int)reader[0],(string)reader[1],(Guid)reader[2],(int)reader[4],(DateTime)reader[3]));
                     }
 
                     var profileItem = new ProfileItem
@@ -548,6 +548,7 @@ namespace SCME.InterfaceImplementations
 
             foreach (var result in results)
             {
+                
                 switch (result.Key)
                 {
                     case "QrrTq_En":
@@ -571,7 +572,7 @@ namespace SCME.InterfaceImplementations
                         break;
 
                     case "QrrTq_DCRiseRate":
-                        testParams.DCRiseRate = float.Parse(result.Value.ToString());
+                        testParams.DCRiseRate = float.Parse(result.Value.ToString().Trim().Replace('.', ','));
                         break;
 
                     case "QrrTq_DCFallRate":

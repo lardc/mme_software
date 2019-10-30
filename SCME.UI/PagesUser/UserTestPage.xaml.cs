@@ -709,6 +709,7 @@ namespace SCME.UI.PagesUser
                         QrrTq = (m_CurrentPos == 1) ? ResultsQrrTq1.ToArray() : ResultsQrrTq2.ToArray(),
                         RAC = (m_CurrentPos == 1) ? ResultsRAC1.ToArray() : ResultsRAC2.ToArray(),
                         TOU = (m_CurrentPos == 1) ? ResultsTOU1.ToArray() : ResultsTOU2.ToArray(),
+                        DVDT = (m_CurrentPos == 1) ? _dvdTestResults1.ToArray() : _dvdTestResults2.ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
                         VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.SL.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
@@ -716,11 +717,13 @@ namespace SCME.UI.PagesUser
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
                         RACTestParameters = Profile.TestParametersAndNormatives.OfType<Types.RAC.TestParameters>().ToArray(),
                         TOUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.TOU.TestParameters>().ToArray(),
+                        DvdTestParameterses =  Profile.TestParametersAndNormatives.OfType<Types.dVdt.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
                         IsHeightMeasureEnabled = paramsClamp.IsHeightMeasureEnabled,
                         IsHeightOk = HeightMeasureResult
                     };
 
+                    
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
                     try
@@ -1211,7 +1214,8 @@ namespace SCME.UI.PagesUser
 
                 var labelBvtIdrmResult = FindChild<Label>(presenter, "labelBvtIdrmResult1");
                 if (labelBvtIdrmResult != null)
-                    SetLabel(labelBvtIdrmResult, state, result.IDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM,
+                    SetLabel(labelBvtIdrmResult, state, result.IDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM &&
+                                                        result.IDRM > 0,
                          result.IDRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
@@ -1265,7 +1269,8 @@ namespace SCME.UI.PagesUser
 
                 var labelBvtIrrmResult = FindChild<Label>(presenter, "labelBvtIrrmResult1");
                 if (labelBvtIrrmResult != null)
-                    SetLabel(labelBvtIrrmResult, state, result.IRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM,
+                    SetLabel(labelBvtIrrmResult, state, result.IRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM &&
+                                                        result.IRRM > 0,
                          result.IRRM.ToString(CultureInfo.InvariantCulture));
 
                 if (state != DeviceState.InProcess)
@@ -1279,6 +1284,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetBvtWarning(Types.BVT.HWWarningReason Warning)
         {
+            return;
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
 
@@ -1293,6 +1299,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetBvtProblem(Types.BVT.HWProblemReason Problem)
         {
+            return;
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
             var labelBvtWarning = FindChild<Label>(presenter, "labelBvtWarning1");
@@ -1306,6 +1313,7 @@ namespace SCME.UI.PagesUser
 
         internal void SetBvtFault(Types.BVT.HWFaultReason Fault)
         {
+            return;
             _HasFault = true;
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);

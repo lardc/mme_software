@@ -58,7 +58,7 @@ namespace SCME.ProfileBuilder.PagesTech
             var profiles = new List<Profile>();
             foreach (var profileItem in profileItems)
             {
-                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.ProfileTS)
+                var profile = new Profile(profileItem.ProfileName, profileItem.ProfileKey, profileItem.Version, profileItem.ProfileTS)
                 {
                     IsHeightMeasureEnabled = profileItem.IsHeightMeasureEnabled,
                     ParametersClamp = profileItem.ParametersClamp,
@@ -79,8 +79,7 @@ namespace SCME.ProfileBuilder.PagesTech
 
                 foreach (var childProfileItem in profileItem.ChildProfileItems)
                 {
-                    var childProfile = new Profile(childProfileItem.ProfileName, childProfileItem.ProfileKey,
-                        childProfileItem.ProfileTS)
+                    var childProfile = new Profile(childProfileItem.ProfileName, childProfileItem.ProfileKey, childProfileItem.Version, childProfileItem.ProfileTS)
                     {
                         IsHeightMeasureEnabled = childProfileItem.IsHeightMeasureEnabled,
                         ParametersClamp = childProfileItem.ParametersClamp,

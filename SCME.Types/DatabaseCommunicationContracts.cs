@@ -78,6 +78,8 @@ namespace SCME.Types
 
         [DataMember]
         public TOU.TestResults[] TOU { get; set; }
+        [DataMember]
+        public dVdt.TestResults[] DVDT { get; set; }
 
         [DataMember]
         public TestParameters[] GateTestParameters { get; set; }

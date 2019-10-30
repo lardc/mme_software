@@ -131,6 +131,7 @@ namespace SCME.InterfaceImplementations
                 new Tuple<string, string, bool>("ResultR", "ResultR, MOhm", false),
                 new Tuple<string, string, bool>("TOU_TGD", "TOU_TGD, us", false),
                 new Tuple<string, string, bool>("TOU_TGT", "TOU_TGT, us", false),
+                new Tuple<string, string, bool>("DVDT_OK", "DVDT_OK", false),
 
             };
 

@@ -469,6 +469,7 @@ namespace SCME.InterfaceImplementations
             if (result.IsHeightMeasureEnabled)
                 InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, result.ProfileKey, "Height", trans);
 
+            InsertDvdtParameterValues(result, devId, trans);
             InsertGateParameterValues(result, devId, trans);
             InsertVtmParameterValues(result, devId, trans);
             InsertBvtParameterValues(result, devId, trans);
@@ -491,6 +492,14 @@ namespace SCME.InterfaceImplementations
                     InsertParameterValue(devId, "IH", result.Gate[i].IH, result.ProfileKey, "Gate", trans);
                 if (result.GateTestParameters[i].IsIlEnabled)
                     InsertParameterValue(devId, "IL", result.Gate[i].IL, result.ProfileKey, "Gate", trans);
+            }
+        }
+        
+        private void InsertDvdtParameterValues(ResultItem result, long devId, SqlTransaction trans)
+        {
+            for (var i = 0; i < result.DvdTestParameterses.Length; i++)
+            {
+                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.ProfileKey, "Dvdt", trans);
             }
         }
 

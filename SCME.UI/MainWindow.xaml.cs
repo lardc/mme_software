@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.UI.CustomControl;
@@ -122,6 +123,8 @@ namespace SCME.UI
                 Application.Current.Shutdown(1);
             }
         }
+
+   
 
         private static void CurrentDomainOnUnhandledException(object Sender, UnhandledExceptionEventArgs Args)
         {

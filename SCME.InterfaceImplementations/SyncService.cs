@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.ServiceModel;
+using System.Threading;
 using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;

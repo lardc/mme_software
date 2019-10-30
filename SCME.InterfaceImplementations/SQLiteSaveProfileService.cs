@@ -331,7 +331,7 @@ namespace SCME.InterfaceImplementations
 
                 var profileInsertCommand = new SQLiteCommand("INSERT INTO PROFILES(PROF_ID, PROF_NAME, PROF_GUID, PROF_TS,PROF_VERS) VALUES (NULL, @PROF_NAME, @PROF_GUID, @PROF_TS,@VERSION)", _connection);
 
-                profileInsertCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+                
                 profileInsertCommand.Parameters.Add("@VERSION", DbType.Int64);
                 profileInsertCommand.Parameters.Add("@PROF_TS", DbType.String);
                 profileInsertCommand.Parameters.Add("@PROF_NAME", DbType.String);
@@ -340,7 +340,7 @@ namespace SCME.InterfaceImplementations
                 ProfileForSqlSelect profileSql = new ProfileForSqlSelect(0, profile.ProfileName, profile.NextGenerationKey, Convert.ToInt32(newVersion), DateTime.Now);
 
                 //profileInsertCommand.Parameters["@PROF_GUID"].Value = profile.ProfileKey; //Guid.NewGuid(); нельзя генерировать новое значение
-                profileInsertCommand.Parameters["@PROF_GUID"].Value = profileSql.Key; //Guid.NewGuid(); нельзя генерировать новое значение
+                profileInsertCommand.Parameters.AddWithValue("@PROF_GUID", profileSql.Key.ToString());
                 profileInsertCommand.Parameters["@VERSION"].Value = profileSql.Version;
                 profileInsertCommand.Parameters["@PROF_TS"].Value = profileSql.TS.ToString(@"yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
                 profileInsertCommand.Parameters["@PROF_NAME"].Value = profileSql.Name;

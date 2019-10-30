@@ -61,19 +61,24 @@ namespace SCME.Service
             m_IOMain.Deinitialize();
         }
 
-        InitializationResult IExternalControl.IsInitialized()
+        InitializationResponce IExternalControl.IsInitialized()
         {
             /*return (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None)
                    | (SystemHost.IsSyncedWithServer ? InitializationResult.SyncedWithServer : InitializationResult.None);
             */
 
-            InitializationResult ResBySyncedWithServer;
+
+            InitializationResponce initializationResponce = new InitializationResponce()
+            {
+                IsLocal = Properties.Settings.Default.IsLocal,
+                MMECode = Properties.Settings.Default.MMECode
+            };
 
             //в switch нельзя проверять это условие в default - компилятор успешно откомпилирует, но работать будет с ошибкой
             if (SystemHost.IsSyncedWithServer == null)
             {
                 //синхронизация данных в данный момент выполняется
-                ResBySyncedWithServer = InitializationResult.SyncInProgress;
+                initializationResponce.InitializationResult = InitializationResult.SyncInProgress;
             }
             else
             {
@@ -81,17 +86,20 @@ namespace SCME.Service
                 {
                     case (true):
                         //синхронизация данных завершена, данные синхронизированы
-                        ResBySyncedWithServer = InitializationResult.SyncedWithServer;
+                        initializationResponce.InitializationResult = InitializationResult.SyncedWithServer;
                         break;
 
                     default:
                         //синхронизация данных завершена, данные не синхронизированы
-                        ResBySyncedWithServer = InitializationResult.None;
+                        initializationResponce.InitializationResult = InitializationResult.None;
                         break;
                 }
             }
 
-            return (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None) | ResBySyncedWithServer;
+            //Ужасное выражение, которое я оставляю потому что работает.
+            initializationResponce.InitializationResult = (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None) | initializationResponce.InitializationResult;
+            
+            return initializationResponce;
         }
 
         bool IExternalControl.GetButtonState(ComplexButtons Button)
