@@ -32,7 +32,7 @@ namespace SCME.Types.Database
         string GetFreeProfileName();
 
         [OperationContract]
-        List<string> GetMmeCodesByProfile(MyProfile profile);
+        List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null);
         
         [OperationContract]
         int InsertUpdateProfile(MyProfile oldProfile, MyProfile newProfile, string mmeCode);

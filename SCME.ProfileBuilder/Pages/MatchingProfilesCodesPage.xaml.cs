@@ -86,12 +86,12 @@ namespace SCME.ProfileBuilder.Pages
         
         private void OnDispatcherTimerFindProfileFromMmeCodeOnTick(object sender, EventArgs e)
         {
-            Vm.ProfilesFromMmeCode.View.Refresh();
+            Vm.ProfilesFromMmeCode?.View.Refresh();
         }
         
         private void OnDispatcherTimerFindProfileForMmeCodeOnTick(object sender, EventArgs e)
         {
-            Vm.ProfilesForMmeCode.View.Refresh();
+            Vm.ProfilesForMmeCode?.View.Refresh();
         }
         
         #endregion

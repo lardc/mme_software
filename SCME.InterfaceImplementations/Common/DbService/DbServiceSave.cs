@@ -325,13 +325,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
 
             _cacheProfileById.TryGetValue(profileId, out var profile);
-            if (profile == null) 
-                return;
-            
-            if(profile.MmeCodes == null)
-                profile.MmeCodes = new List<string>();
-            else
-                profile.MmeCodes.Remove(mmeCode);
+            profile?.MmeCodes?.Remove(mmeCode);
 
             _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
             profiles?.Remove(_cacheProfileById[profileId].Profile);
@@ -348,15 +342,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
 
             _cacheProfileById.TryGetValue(profileId, out var profile);
-            if (profile == null) 
-                return;
-            
-            if(profile.MmeCodes == null)
-                profile.MmeCodes = new List<string>();
-            profile.MmeCodes.Add(mmeCode);
-            
-            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
-            profiles?.Add(profile.Profile);
+            profile?.MmeCodes?.Add(mmeCode);
+
+            // ReSharper disable once InvertIf
+            if (profile != null)
+            {
+                _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+                profiles?.Add(profile.Profile);
+            }
         }
 
         public void InsertMmeCode(string mmeCode)
@@ -365,7 +358,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _insertMmeCode.ExecuteNonQuery();
         }
         
-        private int InsertProfile(MyProfile profile, string mmeCode)
+        private int InsertProfile(MyProfile profile)
         {
             _profileInsert.Parameters["@PROF_NAME"].Value = profile.Name;
             _profileInsert.Parameters["@PROF_GUID"].Value = profile.Key;
@@ -375,14 +368,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _profileInsert.Transaction = _dbTransaction;
             var id = ExecuteCommandWithId(_profileInsert);
 
-            InsertMmeCodeToProfile(id, mmeCode, _dbTransaction);
-
             return id;
         }
 
-        private int SaveProfile(MyProfile profile, string mmeCode)
+        private int SaveProfile(MyProfile profile)
         {
-            profile.Id = InsertProfile(profile, mmeCode);
+            profile.Id = InsertProfile(profile);
 
             var inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
                 _dbTransaction,
@@ -450,19 +441,40 @@ namespace SCME.InterfaceImplementations.Common.DbService
             try
             {
                 _dbTransaction = Connection.BeginTransaction();
+
+                List<string> mmeCodes;
+                
                 if (oldProfile != null)
                 {
-                    RemoveMmeCodeToProfile(oldProfile.Id, mmeCode, _dbTransaction);
-                    RemoveMmeCodeToProfile(oldProfile.Id, Constants.MME_CODE_IS_ACTIVE_NAME, _dbTransaction);
+                    mmeCodes = GetMmeCodesByProfile(oldProfile,_dbTransaction);
+                    foreach (var i in mmeCodes)
+                        RemoveMmeCodeToProfile(oldProfile.Id, i, _dbTransaction);
                 }
+                else
+                    mmeCodes = new List<string>() {mmeCode, Constants.MME_CODE_IS_ACTIVE_NAME};
 
-                var id = SaveProfile(newProfile, mmeCode);
-                InsertMmeCodeToProfile(id, Constants.MME_CODE_IS_ACTIVE_NAME,_dbTransaction);
+                var id = SaveProfile(newProfile);
+                foreach (var i in mmeCodes)
+                    InsertMmeCodeToProfile(id, i,_dbTransaction);    
+                
+                
                 _dbTransaction.Commit();
 
-                //If new version without rename then move children of old profile and old profile to children of new profile
+                
+                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile){IsChildLoad = true, IsDeepLoad = true};
+                foreach (var i in mmeCodes)
+                    if(_cacheProfilesByMmeCode.ContainsKey(i))
+                        _cacheProfilesByMmeCode[i]?.Add(newProfile);
+                
+                // ReSharper disable once InvertIf
                 if (oldProfile != null)
                 {
+                    _cacheProfileById.Remove(oldProfile.Id);
+                    foreach (var i in mmeCodes)
+                        if(_cacheProfilesByMmeCode.ContainsKey(i))
+                        _cacheProfilesByMmeCode[mmeCode]?.Remove(oldProfile);    
+                    
+                    
                     if (newProfile.Name.Equals(oldProfile.Name))
                     {
                         newProfile.Children.Add(oldProfile);
@@ -473,12 +485,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     oldProfile.Children.Clear();
                 }
 
-                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile){IsChildLoad = true, IsDeepLoad = true};
-                _cacheProfilesByMmeCode[mmeCode].Add(newProfile);
-                
-                if (oldProfile == null)
-                    _cacheProfileById[newProfile.Id].MmeCodes = new List<string>(){mmeCode};
-                
                 return id;
             }
 

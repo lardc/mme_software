@@ -43,15 +43,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDBTest")]
-        public string MSSQLDatabase {
-            get {
-                return ((string)(this["MSSQLDatabase"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool MSSQLIntegratedSecurity {
             get {
@@ -122,6 +113,15 @@ namespace SCME.ProfileBuilder.Properties {
         public string MSSQLPassword {
             get {
                 return ((string)(this["MSSQLPassword"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDBTest")]
+        public string MSSQLDatabase {
+            get {
+                return ((string)(this["MSSQLDatabase"]));
             }
         }
     }

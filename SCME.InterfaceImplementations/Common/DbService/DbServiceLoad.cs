@@ -155,7 +155,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return newProfileName;
         }
 
-        public List<string> GetMmeCodesByProfile(MyProfile profile)
+        public List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null)
         {
             _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
             if (profileCache == null) throw new NotImplementedException("GetMmeCodesByProfile bad logic");
@@ -166,6 +166,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             profileCache.MmeCodes = new List<string>();
 
             _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profile.Id;
+            _mmeCodesByProfile.Transaction = dbTransaction;
             using var reader = _mmeCodesByProfile.ExecuteReader();
             while (reader.Read())
                 profileCache.MmeCodes.Add(reader.GetString(0));
