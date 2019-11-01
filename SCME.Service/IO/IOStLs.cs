@@ -19,9 +19,9 @@ namespace SCME.Service.IO
         private readonly bool m_ReadGraph;
         private IOCommutation m_IOCommutation;
         private bool m_IsSLEmulation;
-        private Types.SL.TestParameters m_Parameter;
+        private Types.VTM.TestParameters m_Parameter;
         private DeviceConnectionState m_ConnectionState;
-        private volatile Types.SL.TestResults m_Result;
+        private volatile Types.VTM.TestResults m_Result;
         private volatile DeviceState m_State;
         private volatile bool m_Stop;
 
@@ -36,10 +36,10 @@ namespace SCME.Service.IO
             m_ReadGraph = Settings.Default.SLReadGraph;
 
             m_Node = (ushort)Settings.Default.SLNode;
-            m_Result = new Types.SL.TestResults();
+            m_Result = new Types.VTM.TestResults();
 
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info,
-                                         String.Format("SL created. Emulation mode: {0}", m_IsSLEmulation));
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info,
+                                         String.Format("VTM created. Emulation mode: {0}", m_IsSLEmulation));
         }
 
         internal IOCommutation ActiveCommutation
@@ -54,13 +54,13 @@ namespace SCME.Service.IO
             m_IsSLEmulation = m_IsSLEmulationHard || !Enable;
 
             m_ConnectionState = DeviceConnectionState.ConnectionInProcess;
-            FireConnectionEvent(m_ConnectionState, "SL initializing");
+            FireConnectionEvent(m_ConnectionState, "VTM initializing");
 
             if (m_IsSLEmulation)
             {
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
-                FireConnectionEvent(m_ConnectionState, "SL initialized");
+                FireConnectionEvent(m_ConnectionState, "VTM initialized");
 
                 return m_ConnectionState;
             }
@@ -71,24 +71,24 @@ namespace SCME.Service.IO
 
                 ClearWarning();
 
-                var devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-                if (devState != Types.SL.HWDeviceState.PowerReady)
+                var devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                if (devState != Types.VTM.HWDeviceState.PowerReady)
                 {
-                    if (devState == Types.SL.HWDeviceState.Fault)
+                    if (devState == Types.VTM.HWDeviceState.Fault)
                     {
                         ClearFault();
                         Thread.Sleep(100);
 
-                        devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                        devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                        if (devState == Types.SL.HWDeviceState.Fault)
-                            throw new Exception(string.Format("SL is in fault state, reason: {0}",
-                                (Types.SL.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                        if (devState == Types.VTM.HWDeviceState.Fault)
+                            throw new Exception(string.Format("VTM is in fault state, reason: {0}",
+                                (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
                     }
 
-                    if (devState == Types.SL.HWDeviceState.Disabled)
-                        throw new Exception(string.Format("SL is in disabled state, reason: {0}",
-                            (Types.SL.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+                    if (devState == Types.VTM.HWDeviceState.Disabled)
+                        throw new Exception(string.Format("VTM is in disabled state, reason: {0}",
+                            (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
 
                     CallAction(ACT_ENABLE_POWER);
                 }
@@ -97,17 +97,17 @@ namespace SCME.Service.IO
                 {
                     Thread.Sleep(100);
 
-                    devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                    devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
 
-                    if (devState == Types.SL.HWDeviceState.PowerReady)
+                    if (devState == Types.VTM.HWDeviceState.PowerReady)
                         break;
 
-                    if (devState == Types.SL.HWDeviceState.Fault)
-                        throw new Exception(string.Format("SL is in fault state, reason: {0}",
-                            (Types.SL.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    if (devState == Types.SL.HWDeviceState.Disabled)
-                        throw new Exception(string.Format("SL is in disabled state, reason: {0}",
-                            (Types.SL.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
+                    if (devState == Types.VTM.HWDeviceState.Fault)
+                        throw new Exception(string.Format("VTM is in fault state, reason: {0}",
+                            (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
+                    if (devState == Types.VTM.HWDeviceState.Disabled)
+                        throw new Exception(string.Format("VTM is in disabled state, reason: {0}",
+                            (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
 
                 if (Environment.TickCount > timeStamp)
@@ -115,12 +115,12 @@ namespace SCME.Service.IO
 
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
-                FireConnectionEvent(DeviceConnectionState.ConnectionSuccess, "SL initialized");
+                FireConnectionEvent(DeviceConnectionState.ConnectionSuccess, "VTM initialized");
             }
             catch (Exception ex)
             {
                 m_ConnectionState = DeviceConnectionState.ConnectionFailed;
-                FireConnectionEvent(m_ConnectionState, String.Format("SL initialization error: {0}", ex.Message));
+                FireConnectionEvent(m_ConnectionState, String.Format("VTM initialization error: {0}", ex.Message));
             }
 
             return m_ConnectionState;
@@ -131,7 +131,7 @@ namespace SCME.Service.IO
             var oldState = m_ConnectionState;
 
             m_ConnectionState = DeviceConnectionState.DisconnectionInProcess;
-            FireConnectionEvent(DeviceConnectionState.DisconnectionInProcess, "SL disconnecting");
+            FireConnectionEvent(DeviceConnectionState.DisconnectionInProcess, "VTM disconnecting");
 
             try
             {
@@ -142,46 +142,46 @@ namespace SCME.Service.IO
                 }
 
                 m_ConnectionState = DeviceConnectionState.DisconnectionSuccess;
-                FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "SL disconnected");
+                FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "VTM disconnected");
             }
             catch (Exception)
             {
                 m_ConnectionState = DeviceConnectionState.DisconnectionError;
-                FireConnectionEvent(DeviceConnectionState.DisconnectionError, "SL disconnection error");
+                FireConnectionEvent(DeviceConnectionState.DisconnectionError, "VTM disconnection error");
             }
         }
 
-        internal DeviceState Start(Types.SL.TestParameters parameters, Types.Commutation.TestParameters commParameters)
+        internal DeviceState Start(Types.VTM.TestParameters parameters, Types.Commutation.TestParameters commParameters)
         {
             m_Parameter = parameters;
 
             if (m_State == DeviceState.InProcess)
-                throw new Exception("SL test is already started");
+                throw new Exception("VTM test is already started");
 
-            m_Result = new Types.SL.TestResults { TestTypeId = parameters.TestTypeId };
+            m_Result = new Types.VTM.TestResults { TestTypeId = parameters.TestTypeId };
             m_Stop = false;
 
             ClearWarning();
 
             if (!m_IsSLEmulation)
             {
-                var devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-                if (devState == Types.SL.HWDeviceState.Fault)
+                var devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                if (devState == Types.VTM.HWDeviceState.Fault)
                 {
-                    var faultReason = (Types.SL.HWFaultReason)ReadRegister(REG_FAULT_REASON);
-                    FireNotificationEvent(Types.SL.HWProblemReason.None, Types.SL.HWWarningReason.None, faultReason,
-                                          Types.SL.HWDisableReason.None);
+                    var faultReason = (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON);
+                    FireNotificationEvent(Types.VTM.HWProblemReason.None, Types.VTM.HWWarningReason.None, faultReason,
+                                          Types.VTM.HWDisableReason.None);
 
-                    throw new Exception(string.Format("SL is in fault state, reason: {0}", faultReason));
+                    throw new Exception(string.Format("VTM is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == Types.SL.HWDeviceState.Disabled)
+                if (devState == Types.VTM.HWDeviceState.Disabled)
                 {
-                    var disableReason = (Types.SL.HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-                    FireNotificationEvent(Types.SL.HWProblemReason.None, Types.SL.HWWarningReason.None,
-                                          Types.SL.HWFaultReason.None, disableReason);
+                    var disableReason = (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON);
+                    FireNotificationEvent(Types.VTM.HWProblemReason.None, Types.VTM.HWWarningReason.None,
+                                          Types.VTM.HWFaultReason.None, disableReason);
 
-                    throw new Exception(string.Format("SL is in disabled state, reason: {0}", disableReason));
+                    throw new Exception(string.Format("VTM is in disabled state, reason: {0}", disableReason));
                 }
             }
 
@@ -199,23 +199,23 @@ namespace SCME.Service.IO
 
         internal bool IsReadyToStart()
         {
-            var devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+            var devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
 
-            return !((devState == Types.SL.HWDeviceState.Fault) || (devState == Types.SL.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
+            return !((devState == Types.VTM.HWDeviceState.Fault) || (devState == Types.VTM.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
         }
 
         #region Standart API
 
         internal void ClearFault()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL fault cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM fault cleared");
 
             CallAction(ACT_CLEAR_FAULT);
         }
 
         internal void ClearWarning()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL warning cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM warning cleared");
 
             CallAction(ACT_CLEAR_WARNING);
         }
@@ -228,7 +228,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @ReadRegister, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadRegister, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -241,7 +241,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16S(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @ReadRegisterS, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadRegisterS, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -279,7 +279,7 @@ namespace SCME.Service.IO
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @WriteRegister, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @WriteRegister, address {0}, value {1}", Address, Value));
 
             if (m_IsSLEmulation)
                 return;
@@ -290,7 +290,7 @@ namespace SCME.Service.IO
         internal void WriteRegisterS(ushort Address, short Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @WriteRegisterS, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @WriteRegisterS, address {0}, value {1}", Address, Value));
 
             if (m_IsSLEmulation)
                 return;
@@ -300,7 +300,7 @@ namespace SCME.Service.IO
 
         internal void CallAction(ushort Action)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @Call, action {0}", Action));
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @Call, action {0}", Action));
 
             if (m_IsSLEmulation)
                 return;
@@ -317,7 +317,7 @@ namespace SCME.Service.IO
 
         internal IList<ushort> ReadArrayFast(ushort Address)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @ReadArrayFast, endpoint {0}", Address));
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadArrayFast, endpoint {0}", Address));
 
             if (m_IsSLEmulation)
                 return new List<ushort>();
@@ -327,7 +327,7 @@ namespace SCME.Service.IO
 
         internal IList<short> ReadArrayFastS(ushort Address)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("SL @ReadArrayFastS, endpoint {0}", Address));
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadArrayFastS, endpoint {0}", Address));
 
             if (m_IsSLEmulation)
                 return new List<short>();
@@ -337,9 +337,9 @@ namespace SCME.Service.IO
 
         #endregion
 
-        internal void WriteCalibrationParams(Types.SL.CalibrationParameters Parameters)
+        internal void WriteCalibrationParams(Types.VTM.CalibrationParameters Parameters)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL @WriteCalibrationParams begin");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @WriteCalibrationParams begin");
 
             WriteRegisterS(REG_VTM_OFFSET, Parameters.VtmOffset, true);
 
@@ -355,15 +355,15 @@ namespace SCME.Service.IO
             if (!m_IsSLEmulation)
                 m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
 
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL @WriteCalibrationParams end");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @WriteCalibrationParams end");
 
         }
 
-        internal Types.SL.CalibrationParameters ReadCalibrationParams()
+        internal Types.VTM.CalibrationParameters ReadCalibrationParams()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL @ReadCalibrationParams begin");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @ReadCalibrationParams begin");
 
-            var parameters = new Types.SL.CalibrationParameters
+            var parameters = new Types.VTM.CalibrationParameters
             {
                 VtmOffset = ReadRegisterS(REG_VTM_OFFSET, true),
 
@@ -377,7 +377,7 @@ namespace SCME.Service.IO
                 VtmFine2D = ReadRegister(REG_VTM_FINE2_D, true)
             };
 
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "SL @ReadCalibrationParams end");
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @ReadCalibrationParams end");
 
             return parameters;
         }
@@ -395,8 +395,8 @@ namespace SCME.Service.IO
                 {
                     while (Environment.TickCount < timeStamp)
                     {
-                        var devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
-                        if (devState == Types.SL.HWDeviceState.PowerReady)
+                        var devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                        if (devState == Types.VTM.HWDeviceState.PowerReady)
                             break;
 
                         Thread.Sleep(50);
@@ -410,7 +410,7 @@ namespace SCME.Service.IO
                 }
 
                 if (!m_Parameter.IsSelfTest)
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.SL, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.VTM, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
                     {
                         m_State = DeviceState.Fault;
                         FireVTMEvent(m_State, m_Result, 0);
@@ -447,7 +447,7 @@ namespace SCME.Service.IO
                     {
                         switch (m_Parameter.TestType)
                         {
-                            case Types.SL.VTMTestType.Ramp:
+                            case Types.VTM.VTMTestType.Ramp:
                                 {
                                     WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_RAMP);
                                     WriteRegister(REG_RAMP_DESIRED_CURRENT, m_Parameter.RampCurrent);
@@ -464,7 +464,7 @@ namespace SCME.Service.IO
                                 }
                                 break;
 
-                            case Types.SL.VTMTestType.Sinus:
+                            case Types.VTM.VTMTestType.Sinus:
                                 {
                                     WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_SIN);
                                     WriteRegister(REG_SIN_DESIRED_CURRENT, m_Parameter.SinusCurrent);
@@ -474,7 +474,7 @@ namespace SCME.Service.IO
                                 }
                                 break;
 
-                            case Types.SL.VTMTestType.Curve:
+                            case Types.VTM.VTMTestType.Curve:
                                 {
                                     WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_S_CURVE);
                                     WriteRegister(REG_SCURVE_DESIRED_CURRENT, m_Parameter.CurveCurrent);
@@ -558,48 +558,48 @@ namespace SCME.Service.IO
                     return DeviceState.Stopped;
                 }
 
-                var devState = (Types.SL.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
-                var opResult = (Types.SL.HWOperationResult)ReadRegister(REG_TEST_FINISHED, true);
-                var stResult = (Types.SL.HWOperationResult)ReadRegister(REG_SELF_TEST_RESULT, true);
+                var devState = (Types.VTM.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                var opResult = (Types.VTM.HWOperationResult)ReadRegister(REG_TEST_FINISHED, true);
+                var stResult = (Types.VTM.HWOperationResult)ReadRegister(REG_SELF_TEST_RESULT, true);
 
-                if (devState == Types.SL.HWDeviceState.Fault)
+                if (devState == Types.VTM.HWDeviceState.Fault)
                 {
-                    var faultReason = (Types.SL.HWFaultReason)ReadRegister(REG_FAULT_REASON);
+                    var faultReason = (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON);
 
-                    FireNotificationEvent(Types.SL.HWProblemReason.None, Types.SL.HWWarningReason.None, faultReason,
-                                          Types.SL.HWDisableReason.None);
+                    FireNotificationEvent(Types.VTM.HWProblemReason.None, Types.VTM.HWWarningReason.None, faultReason,
+                                          Types.VTM.HWDisableReason.None);
 
-                    throw new Exception(string.Format("SL device is in fault state, reason: {0}", faultReason));
+                    throw new Exception(string.Format("VTM device is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == Types.SL.HWDeviceState.Disabled)
+                if (devState == Types.VTM.HWDeviceState.Disabled)
                 {
-                    var disableReason = (Types.SL.HWDisableReason)ReadRegister(REG_DISABLE_REASON);
+                    var disableReason = (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON);
 
-                    FireNotificationEvent(Types.SL.HWProblemReason.None, Types.SL.HWWarningReason.None,
-                                          Types.SL.HWFaultReason.None, disableReason);
+                    FireNotificationEvent(Types.VTM.HWProblemReason.None, Types.VTM.HWWarningReason.None,
+                                          Types.VTM.HWFaultReason.None, disableReason);
 
-                    throw new Exception(string.Format("SL device is in disabled state, reason: {0}", disableReason));
+                    throw new Exception(string.Format("VTM device is in disabled state, reason: {0}", disableReason));
                 }
 
-                if (m_Parameter.IsSelfTest && stResult != Types.SL.HWOperationResult.InProcess)
+                if (m_Parameter.IsSelfTest && stResult != Types.VTM.HWOperationResult.InProcess)
                     break;
 
-                if (!m_Parameter.IsSelfTest && opResult != Types.SL.HWOperationResult.InProcess)
+                if (!m_Parameter.IsSelfTest && opResult != Types.VTM.HWOperationResult.InProcess)
                 {
-                    var warning = (Types.SL.HWWarningReason)ReadRegister(REG_WARNING);
-                    var problem = (Types.SL.HWProblemReason)ReadRegister(REG_PROBLEM);
+                    var warning = (Types.VTM.HWWarningReason)ReadRegister(REG_WARNING);
+                    var problem = (Types.VTM.HWProblemReason)ReadRegister(REG_PROBLEM);
 
-                    if (problem != Types.SL.HWProblemReason.None)
+                    if (problem != Types.VTM.HWProblemReason.None)
                     {
-                        FireNotificationEvent(problem, Types.SL.HWWarningReason.None, Types.SL.HWFaultReason.None,
-                                              Types.SL.HWDisableReason.None);
+                        FireNotificationEvent(problem, Types.VTM.HWWarningReason.None, Types.VTM.HWFaultReason.None,
+                                              Types.VTM.HWDisableReason.None);
                     }
 
-                    if (warning != Types.SL.HWWarningReason.None)
+                    if (warning != Types.VTM.HWWarningReason.None)
                     {
-                        FireNotificationEvent(Types.SL.HWProblemReason.None, warning, Types.SL.HWFaultReason.None,
-                                              Types.SL.HWDisableReason.None);
+                        FireNotificationEvent(Types.VTM.HWProblemReason.None, warning, Types.VTM.HWFaultReason.None,
+                                              Types.VTM.HWDisableReason.None);
 
                         ClearWarning();
                     }
@@ -612,8 +612,8 @@ namespace SCME.Service.IO
 
             if (Environment.TickCount > timeStamp)
             {
-                FireExceptionEvent("Timeout while waiting for SL test to end");
-                throw new Exception("Timeout while waiting for SL test to end");
+                FireExceptionEvent("Timeout while waiting for VTM test to end");
+                throw new Exception("Timeout while waiting for VTM test to end");
             }
 
             return DeviceState.Success;
@@ -623,13 +623,13 @@ namespace SCME.Service.IO
 
         private void FireConnectionEvent(DeviceConnectionState State, string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info, Message);
-            m_Communication.PostDeviceConnectionEvent(ComplexParts.SL, State, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info, Message);
+            m_Communication.PostDeviceConnectionEvent(ComplexParts.VTM, State, Message);
         }
 
-        private void FireVTMEvent(DeviceState State, Types.SL.TestResults Result, int ITM)
+        private void FireVTMEvent(DeviceState State, Types.VTM.TestResults Result, int ITM)
         {
-            var message = string.Format("{0} state {1}", !m_Parameter.IsSelfTest ? "SL test" : "SL self-test", State);
+            var message = string.Format("{0} state {1}", !m_Parameter.IsSelfTest ? "VTM test" : "VTM self-test", State);
 
             if (State == DeviceState.Success)
             {
@@ -638,16 +638,16 @@ namespace SCME.Service.IO
                               : "Self-test OK";
             }
 
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info, message);
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info, message);
             m_Communication.PostSLEvent(State, Result);
         }
 
-        private void FireNotificationEvent(Types.SL.HWProblemReason Problem, Types.SL.HWWarningReason Warning,
-                                           Types.SL.HWFaultReason Fault, Types.SL.HWDisableReason Disable)
+        private void FireNotificationEvent(Types.VTM.HWProblemReason Problem, Types.VTM.HWWarningReason Warning,
+                                           Types.VTM.HWFaultReason Fault, Types.VTM.HWDisableReason Disable)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Warning,
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Warning,
                                          String.Format(
-                                             "SL device notification: problem {0}, warning {1}, fault {2}, disable {3}",
+                                             "VTM device notification: problem {0}, warning {1}, fault {2}, disable {3}",
                                              Problem, Warning, Fault, Disable));
 
             m_Communication.PostSLNotificationEvent(Problem, Warning, Fault, Disable);
@@ -655,8 +655,8 @@ namespace SCME.Service.IO
 
         private void FireExceptionEvent(string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Error, Message);
-            m_Communication.PostExceptionEvent(ComplexParts.SL, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Error, Message);
+            m_Communication.PostExceptionEvent(ComplexParts.VTM, Message);
         }
 
         #endregion

@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents.AddTestParameterUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:customControl="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:local="clr-namespace:SCME.WpfControlLibrary"
+             xmlns:profile="clr-namespace:SCME.Types.Profiles;assembly=SCME.Types"
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:dataProviders="clr-namespace:SCME.WpfControlLibrary.DataProviders"
+             xmlns:pages="clr-namespace:SCME.WpfControlLibrary.Pages"
+             mc:Ignorable="d" d:DesignWidth="800" d:DataContext="{d:DesignInstance profile:ProfileDeepData}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.CommutationTypeT}"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" 
+                                      ItemsSource="{Binding Source={StaticResource ModuleCommutationTypes}}"
+                                      SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" />
+            <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Force}" />
+            <customControl:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding ParameterClamp}" />
+
+            <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.ParameterType}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" 
+                      ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" 
+                      DisplayMemberPath="Key" SelectedValuePath="Value" 
+                      SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}">
+            </ComboBox>
+            <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"/>
+            
+            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding IsHeightMeasureEnabled}" Content="{x:Static res:Resources.MeasureDialog_Title}" />
+            <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
+            <customControl:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
+            
+            <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.Height_Prof}" Visibility="{Binding IsHeightMeasureEnabled, Converter={StaticResource B2V}}" />
+            <customControl:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Height}" Visibility="{Binding IsHeightMeasureEnabled, Converter={StaticResource B2V}}" />
+        </Grid>
+    </Grid>
+</UserControl>

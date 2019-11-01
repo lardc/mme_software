@@ -116,7 +116,7 @@ namespace SCME.UI.PagesTech
                     device = ComplexParts.Gate;
                     break;
                 case 4:
-                    device = ComplexParts.SL;
+                    device = ComplexParts.VTM;
                     break;
                 case 5:
                     device = ComplexParts.BVT;

@@ -52,12 +52,10 @@ namespace SCME.Types.RAC
     }
 
     //параметры, задающие режим работы
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Rac.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         //DC voltage value for resistance measurement (in V) - амплитуда напряжения для измерения (в В)
         [DataMember]
         public ushort ResVoltage { get; set; }
@@ -86,11 +84,11 @@ namespace SCME.Types.RAC
             if (this.GetHashCode() == oldParameters.GetHashCode()) return false;
 
             //раз мы сюда добрались - имеем дело с разными экземплярами, необходимо сравнение их содержимого
-            string typeName = oldParameters.GetType().Name;
+            var typeName = oldParameters.GetType().Name;
 
             if (typeName != "TestParameters") throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
 
-            TestParameters RACOldParameters = (TestParameters)oldParameters;
+            var RACOldParameters = (TestParameters)oldParameters;
 
             if (ResVoltage != RACOldParameters.ResVoltage)
                 return true;

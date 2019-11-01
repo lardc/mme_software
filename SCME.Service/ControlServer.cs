@@ -117,14 +117,14 @@ namespace SCME.Service
             return m_IOMain.GetSafetyType();
         }
 
-        bool IExternalControl.Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL,
+        bool IExternalControl.Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL,
                                     Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC,
                                     Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             return m_IOMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
         }
 
-        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
             return m_IOMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
         }
@@ -234,12 +234,12 @@ namespace SCME.Service
             return m_IOMain.GateReadCalibrationParams();
         }
 
-        void IExternalControl.SLWriteCalibrationParameters(Types.SL.CalibrationParameters Parameters)
+        void IExternalControl.SLWriteCalibrationParameters(Types.VTM.CalibrationParameters Parameters)
         {
             m_IOMain.SLWriteCalibrationParams(Parameters);
         }
 
-        Types.SL.CalibrationParameters IExternalControl.SLReadCalibrationParameters()
+        Types.VTM.CalibrationParameters IExternalControl.SLReadCalibrationParameters()
         {
             return m_IOMain.SLReadCalibrationParams();
         }

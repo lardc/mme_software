@@ -1,8 +1,15 @@
-﻿using System.Globalization;
-using System.Threading;
+﻿using System;
+using System.Data.SqlClient;
 using System.Windows;
-using System.Windows.Markup;
+using System.Windows.Navigation;
+using MahApps.Metro.Controls;
+using SCME.InterfaceImplementations.NewImplement.MSSQL;
+using SCME.ProfileBuilder.Pages;
 using SCME.ProfileBuilder.Properties;
+using SCME.WpfControlLibrary;
+using SCME.WpfControlLibrary.CustomControls;
+using SCME.WpfControlLibrary.IValueConverters;
+using SCME.WpfControlLibrary.Windows;
 
 namespace SCME.ProfileBuilder
 {
@@ -12,15 +19,34 @@ namespace SCME.ProfileBuilder
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {           
-            InitializeComponent();           
-
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.CurrentCulture);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.CurrentCulture);
-            LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+        {
+            ResourceBinding.Scaling(0.60);
+            
+            InitializeComponent();
             Cache.Main = this;
-            Cache.ConnectPage = new ConnectPage();
-            mainFrame.Navigate(Cache.ConnectPage);
+            Cache.SelectEditModePage = new SelectEditModePage();
+            
+            var navigationService = NavigationService.GetNavigationService(MainFrame);
+            
+            MainFrame?.Navigate(Cache.SelectEditModePage);
+            
+            //MainFrame.Navigate(new ProfilesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;")), "MME005"));
+            //MainFrame?.Navigate(new MatchingProfilesCodesPage(new MSSQLDbService(new SqlConnection(@"Data Source=IVAN-PC\SQLEXPRESS01;Initial Catalog=SCME_ResultsDBTest;Integrated Security=true;"))));
+            
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.Default.LastSelectedMMECode = Cache.ProfilesPage?.ProfileVm.SelectedMmeCode;
+            Settings.Default.Save();
+            WpfControlLibrary.Properties.Settings.Default.Save();
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            //new DynamicResourcesChanger().Show();
+            //Cache.ConnectPage.ConnectToMssql();
+            
         }
     }
 }

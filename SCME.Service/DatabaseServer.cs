@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.ServiceModel;
 using SCME.Types;
+using SCME.Types.Profiles;
 
 namespace SCME.Service
 {
@@ -185,5 +186,35 @@ namespace SCME.Service
         }
 
         #endregion
+
+        public Dictionary<string, int> GetMmeCodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MyProfile> GetProfileChildSuperficially(MyProfile profile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProfileDeepData LoadProfileDeepData(MyProfile profile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertUpdateProfile(MyProfile oldProfile, MyProfile newProfile, string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveProfile(MyProfile profile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

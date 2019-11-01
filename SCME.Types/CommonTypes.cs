@@ -3,6 +3,11 @@ using System.Runtime.Serialization;
 
 namespace SCME.Types
 {
+    public enum TypeDb
+    {
+        MSSQL,
+        SQLite
+    }
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum DUTType
     {
@@ -47,7 +52,7 @@ namespace SCME.Types
         [EnumMember]
         Gate = 7,
         [EnumMember]
-        SL = 8,
+        VTM = 8,
         [EnumMember]
         BVT = 9,
         [EnumMember]
@@ -87,6 +92,18 @@ namespace SCME.Types
         [EnumMember]
         ModulesInitialized = 4
     }
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public class InitializationResponce
+    {
+        [DataMember]
+        public InitializationResult InitializationResult { get; set; }
+        [DataMember]
+        public bool IsLocal { get; set; }
+        [DataMember]
+        public string MMECode { get; set; }
+    }
+
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexButtons

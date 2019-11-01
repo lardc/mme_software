@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using PropertyChanged;
 using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.BVT
@@ -78,14 +79,20 @@ namespace SCME.Types.BVT
         [EnumMember]
         Fail = 2
     };
-
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    [KnownType(typeof(BaseTestParametersAndNormatives))]
+    
+    [DataContract(Name = "Bvt.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [AddINotifyPropertyChangedInterface]
+//    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DataMember]
-        public bool IsEnabled { get; set; }
-
+        public bool UseUdsmUrsm { get; set; }
+        [DataMember]
+        public int? ClassByProfileName { get; set; }
+        
+        [DataMember]
+        public ushort PulseFrequency { get; set; }
+        
         [DataMember]
         public BVTMeasurementMode MeasurementMode { get; set; }
 
@@ -219,6 +226,18 @@ namespace SCME.Types.BVT
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
+        [DataMember]
+        public ushort VDSM { get; set; }
+        
+        [DataMember]
+        public ushort VRSM { get; set; }
+        
+        [DataMember]
+        public float IDSM { get; set; }
+        
+        [DataMember]
+        public float IRSM { get; set; }
+        
         [DataMember]
         public ushort VDRM { get; set; }
 

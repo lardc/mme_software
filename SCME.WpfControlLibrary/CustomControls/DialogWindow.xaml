@@ -1,0 +1,45 @@
+﻿<Window x:Class="SCME.WpfControlLibrary.CustomControls.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+        xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+        AllowsTransparency="True"
+        Topmost="True"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource xGray2}"
+        BorderBrush="{StaticResource BlueBrush}" BorderThickness="1"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}" Loaded="DialogWindow_OnLoaded"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight"
+        Height="450" Width="800" MaxWidth="1280" MaxHeight="1024" d:DataContext="{d:DesignInstance local:DialogWindow}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Title}" BorderBrush="{StaticResource BlueBrush}" BorderThickness="0,0,0,1" />
+
+        <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding Message}" Background="Transparent" TextWrapping="Wrap" />
+        </ScrollViewer>
+
+        <Button Grid.Column="0" Grid.Row="2" IsDefault="True" Command="{Binding OkCommand}" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Ok}" />
+        <Button Grid.Column="1" Grid.Row="2" Visibility="{Binding IsShowCancelButton, Converter={StaticResource B2V}}" IsCancel="True" Command="{Binding CancelCommand}" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Cancel}" />
+
+    </Grid>
+</Window>

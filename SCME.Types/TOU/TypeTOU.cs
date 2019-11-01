@@ -44,7 +44,8 @@ namespace SCME.Types.TOU
         }
     }
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Tou.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         public static ushort CurrentAmplitudeMin { get; private set; } = 160;
@@ -71,9 +72,6 @@ namespace SCME.Types.TOU
         public ushort ITM { get; set; }
         public ushort TGD { get; set; }
         public ushort TGT { get; set; }
-
-        [DataMember]
-        public bool IsEnabled { get; set; }
 
         public TestParameters()
         {

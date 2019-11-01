@@ -15,7 +15,7 @@ namespace SCME.UI.PagesTech
     public partial class CalibrationPage : INotifyPropertyChanged
     {
         private Types.Gate.CalibrationParameters m_ParamsGate;
-        private Types.SL.CalibrationParameters m_ParamsVtm;
+        private Types.VTM.CalibrationParameters m_ParamsVtm;
         private Types.BVT.CalibrationParams m_ParamsBvt;
         private Types.Clamping.CalibrationParams m_ParamsClamping;
         private Types.dVdt.CalibrationParams m_ParamsdVdt;
@@ -46,7 +46,7 @@ namespace SCME.UI.PagesTech
         }
 
 
-        public Types.SL.CalibrationParameters ParamsVtm
+        public Types.VTM.CalibrationParameters ParamsVtm
         {
             get { return m_ParamsVtm; }
             set
@@ -100,7 +100,7 @@ namespace SCME.UI.PagesTech
             InitializeComponent();
 
             ParamsGate = new Types.Gate.CalibrationParameters();
-            ParamsVtm = new Types.SL.CalibrationParameters();
+            ParamsVtm = new Types.VTM.CalibrationParameters();
             ParamsBvt = new Types.BVT.CalibrationParams();
             ParamsClamping = new Types.Clamping.CalibrationParams();
 
@@ -127,7 +127,7 @@ namespace SCME.UI.PagesTech
                     device = ComplexParts.Gate;
                     break;
                 case 2:
-                    device = ComplexParts.SL;
+                    device = ComplexParts.VTM;
                     break;
                 case 3:
                     device = ComplexParts.BVT;
@@ -175,7 +175,7 @@ namespace SCME.UI.PagesTech
                 case ComplexParts.Gate:
                     ErrorGate = Error;
                     break;
-                case ComplexParts.SL:
+                case ComplexParts.VTM:
                     ErrorVtm = Error;
                     break;
                 case ComplexParts.BVT:
@@ -200,7 +200,7 @@ namespace SCME.UI.PagesTech
                         ParamsGate = Cache.Net.GateReadCalibrationParameters();
                         ErrorGate = string.Empty;
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         ParamsVtm = Cache.Net.SLReadCalibrationParameters();
                         ErrorVtm = string.Empty;
                         break;
@@ -235,7 +235,7 @@ namespace SCME.UI.PagesTech
                     case ComplexParts.Gate:
                         Cache.Net.GateWriteCalibrationParameters(ParamsGate);
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         Cache.Net.SLWriteCalibrationParameters(ParamsVtm);
                         break;
                     case ComplexParts.BVT:
@@ -273,7 +273,7 @@ namespace SCME.UI.PagesTech
                     NavigationService.Navigate(Cache.Gate);
                     break;
                 case 2:
-                    NavigationService.Navigate(Cache.SL);
+                    NavigationService.Navigate(Cache.VTM);
                     break;
                 case 3:
                     NavigationService.Navigate(Cache.Bvt);

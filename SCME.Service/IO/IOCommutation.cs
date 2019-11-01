@@ -529,7 +529,7 @@ namespace SCME.Service.IO
                     case Types.Commutation.CommutationMode.Gate:
                         CallAction(m_Type6 ? ACT_COMM6_GATE : ACT_COMM2_GATE);
                         break;
-                    case Types.Commutation.CommutationMode.SL:
+                    case Types.Commutation.CommutationMode.VTM:
                         CallAction(m_Type6 ? ACT_COMM6_SL : ACT_COMM2_SL);
                         break;
                     case Types.Commutation.CommutationMode.BVTD:

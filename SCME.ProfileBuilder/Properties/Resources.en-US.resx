@@ -717,4 +717,13 @@
   <data name="QrrTqTrrMeasureBy9050Method" xml:space="preserve">
     <value>Measure Trr by 90%-50% method</value>
   </data>
+  <data name="TOUITM" xml:space="preserve">
+    <value>Amperage (ITM), A</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MMECodesEmpty" xml:space="preserve">
+    <value>Missing MME codes in the database, no further work possible</value>
+  </data>
 </root>

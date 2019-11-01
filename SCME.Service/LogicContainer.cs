@@ -38,7 +38,7 @@ namespace SCME.Service
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
-        private Types.SL.TestParameters m_ParametersSL;
+        private Types.VTM.TestParameters m_ParametersSL;
         private Types.BVT.TestParameters m_ParametersBvt;
         private Types.dVdt.TestParameters m_ParametersdVdt;
         private Types.ATU.TestParameters m_ParametersAtu;
@@ -49,7 +49,7 @@ namespace SCME.Service
         private Types.TOU.TestParameters m_ParametersTOU;
 
         private Types.Gate.TestParameters[] m_ParametersGateDyn;
-        private Types.SL.TestParameters[] m_ParametersSLDyn;
+        private Types.VTM.TestParameters[] m_ParametersSLDyn;
         private Types.BVT.TestParameters[] m_ParametersBvtDyn;
         private Types.dVdt.TestParameters[] m_ParametersdVdtDyn;
         private Types.ATU.TestParameters[] m_ParametersAtuDyn;
@@ -78,7 +78,7 @@ namespace SCME.Service
             m_Thread.FinishedHandler += Thread_FinishedHandler;
 
             m_ParametersGate = new Types.Gate.TestParameters { IsEnabled = false };
-            m_ParametersSL = new Types.SL.TestParameters { IsEnabled = false };
+            m_ParametersSL = new Types.VTM.TestParameters { IsEnabled = false };
             m_ParametersBvt = new Types.BVT.TestParameters { IsEnabled = false };
             m_ParametersdVdt = new Types.dVdt.TestParameters { IsEnabled = false };
             m_ParametersAtu = new Types.ATU.TestParameters { IsEnabled = false };
@@ -547,7 +547,7 @@ namespace SCME.Service
                     if (res != "")
                         res = res + ", ";
 
-                    res = res + "SL";
+                    res = res + "VTM";
                 }
             }
 
@@ -652,14 +652,14 @@ namespace SCME.Service
                     if (!m_IOGate.IsReadyToStart())
                         res = "Gate";
 
-                var slParameters = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                var slParameters = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                 if (!ReferenceEquals(slParameters, null))
                     if (!m_IOStls.IsReadyToStart())
                     {
                         if (res != "")
                             res = res + ", ";
 
-                        res = res + "SL";
+                        res = res + "VTM";
                     }
 
                 var bvtParameters = baseTestParametersAndNormativese as Types.BVT.TestParameters;
@@ -855,7 +855,7 @@ namespace SCME.Service
 
         #region Test sequence
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
+        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             m_Stop = false;
 
@@ -894,7 +894,7 @@ namespace SCME.Service
 
             m_State = DeviceState.InProcess;
 
-            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, SL, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}, TOU - {9}",
+            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, VTM, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}, TOU - {9}",
                                         m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, message);
 
@@ -912,7 +912,7 @@ namespace SCME.Service
             return true;
         }
 
-        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.SL.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
             m_Stop = false;
 
@@ -1121,7 +1121,7 @@ namespace SCME.Service
                                     ThrowFaultException(ComplexParts.Gate, ex.Message, "Start Gate test");
                                 }
 
-                            var slParameters = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                            var slParameters = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                             if (!ReferenceEquals(slParameters, null))
                                 try
                                 {
@@ -1132,7 +1132,7 @@ namespace SCME.Service
                                 }
                                 catch (Exception ex)
                                 {
-                                    ThrowFaultException(ComplexParts.SL, ex.Message, "Start SL test");
+                                    ThrowFaultException(ComplexParts.VTM, ex.Message, "Start VTM test");
                                 }
 
                             var bvtParameters = baseTestParametersAndNormativese as Types.BVT.TestParameters;
@@ -1390,7 +1390,7 @@ namespace SCME.Service
                                 }
                                 catch (Exception ex)
                                 {
-                                    ThrowFaultException(ComplexParts.SL, ex.Message, "Start SL test");
+                                    ThrowFaultException(ComplexParts.VTM, ex.Message, "Start VTM test");
                                 }
                             }
 
@@ -1674,7 +1674,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         res = m_IOGate.ReadRegister(Address);
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         res = m_IOStls.ReadRegister(Address);
                         break;
                     case ComplexParts.BVT:
@@ -1735,7 +1735,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.WriteRegister(Address, Value);
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         m_IOStls.WriteRegister(Address, Value);
                         break;
                     case ComplexParts.BVT:
@@ -1791,7 +1791,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.CallAction(Address);
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         m_IOStls.CallAction(Address);
                         break;
                     case ComplexParts.BVT:
@@ -1850,7 +1850,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.ClearFault();
                         break;
-                    case ComplexParts.SL:
+                    case ComplexParts.VTM:
                         m_IOStls.ClearFault();
                         break;
                     case ComplexParts.BVT:
@@ -1960,7 +1960,7 @@ namespace SCME.Service
         }
 
 
-        internal void SLWriteCalibrationParams(Types.SL.CalibrationParameters Parameters)
+        internal void SLWriteCalibrationParams(Types.VTM.CalibrationParameters Parameters)
         {
             try
             {
@@ -1968,14 +1968,14 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
-                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                ThrowFaultException(ComplexParts.VTM, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
 
-        internal Types.SL.CalibrationParameters SLReadCalibrationParams()
+        internal Types.VTM.CalibrationParameters SLReadCalibrationParams()
         {
-            var parameters = new Types.SL.CalibrationParameters();
+            var parameters = new Types.VTM.CalibrationParameters();
 
             try
             {
@@ -1983,7 +1983,7 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
-                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                ThrowFaultException(ComplexParts.VTM, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
 
             return parameters;

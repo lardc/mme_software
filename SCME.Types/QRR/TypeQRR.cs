@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.QRR
 {
@@ -35,6 +36,7 @@ namespace SCME.Types.QRR
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : ICloneable
     {
         [DataMember]

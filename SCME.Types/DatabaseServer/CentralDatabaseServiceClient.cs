@@ -4,6 +4,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using SCME.Types.DataContracts;
+using SCME.Types.Profiles;
 using SCME.Types.SQL;
 
 namespace SCME.Types.DatabaseServer
@@ -105,5 +106,24 @@ namespace SCME.Types.DatabaseServer
             Channel.SaveConnections(mmeCodes);
         }
 
+        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        {
+            return Channel.GetProfileItemsSuperficially(mmeCode);
+        }
+
+        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
+        {
+            return Channel.GetProfileItemsDeep(mmeCode);
+        }
+
+        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
+        {
+            return Channel.GetProfileItemsWithChildSuperficially(mmeCode);
+        }
+
+        public Profile GetProfileDeep(Guid key)
+        {
+            return Channel.GetProfileDeep(key);
+        }
     }
 }

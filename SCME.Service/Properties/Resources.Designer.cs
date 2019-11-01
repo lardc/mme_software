@@ -160,7 +160,7 @@ namespace SCME.Service.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Requested block modes: Gate - {0}, SL - {1}, BVT - {2}, Clamp - {3}, dVdt - {4}, ATU - {5}, QrrTq - {6}, RAC - {7}, IH - {8}, TOU - {8}.
+        ///   Ищет локализованную строку, похожую на Requested block modes: Gate - {0}, VTM - {1}, BVT - {2}, Clamp - {3}, dVdt - {4}, ATU - {5}, QrrTq - {6}, RAC - {7}, IH - {8}, TOU - {8}.
         /// </summary>
         internal static string Log_LogicContainer_Requested_block_modes {
             get {

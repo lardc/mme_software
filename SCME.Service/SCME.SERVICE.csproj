@@ -76,7 +76,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.89.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139">
+      <HintPath>..\Lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Drawing" />
@@ -107,6 +112,8 @@
     <Compile Include="IO\IOGateway.cs" />
     <Compile Include="LogicContainer.cs" />
     <Compile Include="IO\IOStLs.cs" />
+    <Compile Include="MyErrorHandler.cs" />
+    <Compile Include="MyServiceBehavior.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

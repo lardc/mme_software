@@ -127,15 +127,15 @@ namespace SCME.Service.IO
 
                 switch (State)
                 {
-                    case (ushort)Types.SL.HWDeviceState.Fault:
+                    case (ushort)Types.VTM.HWDeviceState.Fault:
                         ushort faultReason = m_IOStLs.ReadFaultReason();
-                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
                         break;
 
-                    case (ushort)Types.SL.HWDeviceState.Disabled:
+                    case (ushort)Types.VTM.HWDeviceState.Disabled:
                         ushort disableReason = m_IOStLs.ReadDisableReason();
-                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
+                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
                         break;
                 }
@@ -161,40 +161,40 @@ namespace SCME.Service.IO
                     return DeviceState.Stopped;
                 }
 
-                var devState = (Types.SL.HWDeviceState)m_IOStLs.ReadDeviceState(true);
-                var opResult = (Types.SL.HWOperationResult)m_IOStLs.ReadFinished(true);
+                var devState = (Types.VTM.HWDeviceState)m_IOStLs.ReadDeviceState(true);
+                var opResult = (Types.VTM.HWOperationResult)m_IOStLs.ReadFinished(true);
 
-                if (devState == Types.SL.HWDeviceState.Fault)
+                if (devState == Types.VTM.HWDeviceState.Fault)
                 {
                     ushort faultReason = m_IOStLs.ReadFaultReason();
 
-                    FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
+                    FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
-                    throw new Exception(string.Format("IH virtual device. SL device is in fault state, reason: {0}", faultReason));
+                    throw new Exception(string.Format("IH virtual device. VTM device is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == Types.SL.HWDeviceState.Disabled)
+                if (devState == Types.VTM.HWDeviceState.Disabled)
                 {
                     ushort disableReason = m_IOStLs.ReadDisableReason();
 
-                    FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
+                    FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
-                    throw new Exception(string.Format("IH virtual device. SL device is in disabled state, reason: {0}", disableReason));
+                    throw new Exception(string.Format("IH virtual device. VTM device is in disabled state, reason: {0}", disableReason));
                 }
 
-                if (opResult != Types.SL.HWOperationResult.InProcess)
+                if (opResult != Types.VTM.HWOperationResult.InProcess)
                 {
                     ushort warning = m_IOStLs.ReadWarning();
                     ushort problem = m_IOStLs.ReadProblem();
 
-                    if (problem != (ushort)Types.SL.HWProblemReason.None)
+                    if (problem != (ushort)Types.VTM.HWProblemReason.None)
                     {
-                        FireNotificationEvent(ComplexParts.SL, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.VTM, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
                     }
 
                     if (warning != (ushort)HWWarningReason.None)
                     {
-                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
 
                         m_IOStLs.ClearWarning();
                     }
@@ -207,8 +207,8 @@ namespace SCME.Service.IO
 
             if (Environment.TickCount > timeStamp)
             {
-                FireExceptionEvent("IH virtual device. Timeout while waiting for SL test to end");
-                throw new Exception("IH virtual device. Timeout while waiting for SL test to end");
+                FireExceptionEvent("IH virtual device. Timeout while waiting for VTM test to end");
+                throw new Exception("IH virtual device. Timeout while waiting for VTM test to end");
             }
 
             return DeviceState.Success;

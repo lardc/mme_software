@@ -77,12 +77,10 @@ namespace SCME.Types.dVdt
         Fail = 2
     };
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Dvdt.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         [DataMember]
         public ushort Voltage { get; set; }
 
@@ -147,7 +145,7 @@ namespace SCME.Types.dVdt
     public class TestResults : BaseTestResults
     {
         [DataMember]
-        public Boolean Passed { get; set; }
+        public bool Passed { get; set; }
 
         [DataMember]
         public ushort VoltageRate { get; set; }

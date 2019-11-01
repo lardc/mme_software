@@ -19,7 +19,7 @@ using SCME.UI.PagesUser;
 using SCME.UI.Properties;
 using GateTestParameters = SCME.Types.Gate.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
-using VtmTestParameters = SCME.Types.SL.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
 using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;

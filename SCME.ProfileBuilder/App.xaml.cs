@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using SCME.ProfileBuilder.Properties;
+using System.Globalization;
+using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
+using Application = System.Windows.Application;
 
 namespace SCME.ProfileBuilder
 {
@@ -13,5 +12,11 @@ namespace SCME.ProfileBuilder
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.CurrentCulture);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.CurrentCulture);
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.IetfLanguageTag)));
+        }
     }
 }

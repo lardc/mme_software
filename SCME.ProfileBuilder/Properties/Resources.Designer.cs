@@ -529,6 +529,15 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изменить.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Подключить.
         /// </summary>
         public static string Enable {
@@ -1002,6 +1011,15 @@ namespace SCME.ProfileBuilder.Properties {
         public static string MME_ProfilesLabel {
             get {
                 return ResourceManager.GetString("MME_ProfilesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отсутствуют MME коды в базе данных, дальнейшая работа невозможна.
+        /// </summary>
+        public static string MMECodesEmpty {
+            get {
+                return ResourceManager.GetString("MMECodesEmpty", resourceCulture);
             }
         }
         
@@ -1632,6 +1650,15 @@ namespace SCME.ProfileBuilder.Properties {
         public static string Today {
             get {
                 return ResourceManager.GetString("Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сила тока (ITM),  А.
+        /// </summary>
+        public static string TOUITM {
+            get {
+                return ResourceManager.GetString("TOUITM", resourceCulture);
             }
         }
         

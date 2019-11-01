@@ -717,4 +717,13 @@
   <data name="QrrTqTrrMeasureBy9050Method" xml:space="preserve">
     <value>Измерение Trr по методу 90%-50%</value>
   </data>
+  <data name="TOUITM" xml:space="preserve">
+    <value>Сила тока (ITM),  А</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="MMECodesEmpty" xml:space="preserve">
+    <value>Отсутствуют MME коды в базе данных, дальнейшая работа невозможна</value>
+  </data>
 </root>

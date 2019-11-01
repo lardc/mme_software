@@ -49,12 +49,10 @@ namespace SCME.Types.ATU
     };
 
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Atu.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
+//    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         [DataMember]
         public ushort PrePulseValue { get; set; }
 
@@ -70,8 +68,11 @@ namespace SCME.Types.ATU
         [DataMember]
         public float IPRSM { get; set; }
 
+        [DataMember] 
+        public float PRSM_Min { get; set; } = 0;
+        
         [DataMember]
-        public float PRSM { get; set; }
+        public float PRSM_Max { get; set; } = 70;
 
         public TestParameters()
         {
@@ -96,11 +97,11 @@ namespace SCME.Types.ATU
             if (this.GetHashCode() == oldParameters.GetHashCode()) return false;
 
             //раз мы сюда добрались - имеем дело с разными экземплярами, необходимо сравнение их содержимого
-            string typeName = oldParameters.GetType().Name;
+            var typeName = oldParameters.GetType().Name;
 
             if (typeName != "TestParameters") throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
 
-            TestParameters aTUOldParameters = (TestParameters)oldParameters;
+            var aTUOldParameters = (TestParameters)oldParameters;
 
             if (PrePulseValue != aTUOldParameters.PrePulseValue)
                 return true;

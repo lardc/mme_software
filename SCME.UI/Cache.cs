@@ -3,6 +3,8 @@ using SCME.UI.IO;
 using SCME.UI.PagesCommon;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
+using SCME.WpfControlLibrary.CustomControls;
+using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI
 {
@@ -15,7 +17,7 @@ namespace SCME.UI
         private static UserTestPage ms_UserTestPage;
         private static TechnicianPage ms_TechnicianPage;
         private static CalibrationPage ms_CalibrationPage;
-        private static SLPage ms_SLPage;
+        private static VTMPage ms_SLPage;
         private static GatePage ms_GatePage;
         private static BvtPage ms_BVTPage;
         private static SelftestPage ms_SelftestPage;
@@ -29,8 +31,13 @@ namespace SCME.UI
         private static QrrTqPage ms_QrrTqPage;
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
+        private static ProfilesPage _profilesPage;
 
-        internal static MainWindow Main { get; set; }
+
+        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true));
+
+        public static MainWindow Main { get; set; }
+        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy();
 
         internal static ControlLogic Net { get; set; }
 
@@ -98,9 +105,9 @@ namespace SCME.UI
             set { ms_CalibrationPage = value; }
         }
 
-        internal static SLPage SL
+        internal static VTMPage VTM
         {
-            get { return ms_SLPage ?? (ms_SLPage = new SLPage()); }
+            get { return ms_SLPage ?? (ms_SLPage = new VTMPage()); }
             set { ms_SLPage = value; }
         }
 
@@ -181,6 +188,7 @@ namespace SCME.UI
             get { return ms_IHPage ?? (ms_IHPage = new IHPage()); }
             set { ms_IHPage = value; }
         }
+        
         #endregion
 
         #region Flags

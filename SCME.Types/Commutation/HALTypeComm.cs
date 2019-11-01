@@ -10,7 +10,7 @@ namespace SCME.Types.Commutation
         [EnumMember]
         Gate,
         [EnumMember]
-        SL,
+        VTM,
         [EnumMember]
         BVTD,
         [EnumMember]

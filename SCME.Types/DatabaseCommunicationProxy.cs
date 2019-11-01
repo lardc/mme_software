@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using SCME.Types.Profiles;
 
 namespace SCME.Types
 {
@@ -75,6 +76,5 @@ namespace SCME.Types
         {
             return Channel.GetProfileByProfName(profName, mmmeCode, ref Found);
         }
-
     }
 }

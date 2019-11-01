@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:bvt="clr-namespace:SCME.Types.BVT;assembly=SCME.Types"
-                    xmlns:vtm="clr-namespace:SCME.Types.SL;assembly=SCME.Types"
+                    xmlns:vtm="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
                     xmlns:commutation="clr-namespace:SCME.Types.Commutation;assembly=SCME.Types"
                     xmlns:clamping="clr-namespace:SCME.Types.Clamping;assembly=SCME.Types"
                     xmlns:profiles="clr-namespace:SCME.Types.BaseTestParams;assembly=SCME.Types"

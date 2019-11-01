@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SCME.Types;
@@ -16,6 +17,7 @@ namespace SCME.UI.PagesTech
         public TechnicianPage()
         {
             InitializeComponent();
+            
         }
 
         internal void AreButtonsEnabled(TypeCommon.InitParams Param)
@@ -45,8 +47,8 @@ namespace SCME.UI.PagesTech
                     page = Cache.Gate;
                     break;
                 case 2:
-                    Cache.SL = new SLPage();
-                    page = Cache.SL;
+                    Cache.VTM = new VTMPage();
+                    page = Cache.VTM;
                     break;
                 case 3:
                     Cache.Bvt = new BvtPage();
@@ -62,9 +64,10 @@ namespace SCME.UI.PagesTech
                     page = Cache.Console;
                     break;
                 case 7:
-                    Cache.ProfileSelection.ClearFilter();
-                    Cache.ProfileEdit.InitFilter();
-                    page = Cache.ProfileEdit;
+                    page = Cache.ProfilesPage;
+//                    Cache.ProfileSelection.ClearFilter();
+//                    Cache.ProfileEdit.InitFilter();
+//                    page = Cache.ProfileEdit;
                     break;
                 case 8:
                     page = Cache.Logs;
@@ -128,6 +131,11 @@ namespace SCME.UI.PagesTech
 
                 NavigationService.Navigate(PreviousPage);
             }
+        }
+
+        private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Cache.ProfilesPage.PreviewGoBackAction += () => { ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.LoadedProfiles.ToList());};
         }
     }
 }

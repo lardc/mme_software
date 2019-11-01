@@ -26,15 +26,15 @@ namespace SCME.Types.Commutation
         //возвращает значение применимости теста RCC к данному типу коммутации
         public static bool GetRCCUseAttributeValue(Enum value)
         {
-            bool result = false;
+            var result = false;
 
-            Type type = value.GetType();
-            System.Reflection.FieldInfo fieldInfo = type.GetField(value.ToString());
+            var type = value.GetType();
+            var fieldInfo = type.GetField(value.ToString());
 
             if (!ReferenceEquals(fieldInfo, null))
             {
                 //Get the stringvalue attributes  
-                EnumUseRCC[] attributes = fieldInfo.GetCustomAttributes(typeof(EnumUseRCC), false) as EnumUseRCC[];
+                var attributes = fieldInfo.GetCustomAttributes(typeof(EnumUseRCC), false) as EnumUseRCC[];
 
                 if (!ReferenceEquals(attributes, null))
                 {

@@ -62,11 +62,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool Start(Gate.TestParameters ParametersGate, SL.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
+        bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, SL.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
+        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -134,11 +134,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void SLWriteCalibrationParameters(SL.CalibrationParameters Parameters);
+        void SLWriteCalibrationParameters(VTM.CalibrationParameters Parameters);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        SL.CalibrationParameters SLReadCalibrationParameters();
+        VTM.CalibrationParameters SLReadCalibrationParameters();
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -270,11 +270,11 @@ namespace SCME.Types
                                      Gate.HWFaultReason Fault, Gate.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
-        void SLHandler(DeviceState state, SL.TestResults result);
+        void SLHandler(DeviceState state, VTM.TestResults result);
 
         [OperationContract(IsOneWay = true)]
-        void SLNotificationHandler(SL.HWProblemReason Problem, SL.HWWarningReason Warning, SL.HWFaultReason Fault,
-                                    SL.HWDisableReason Disable);
+        void SLNotificationHandler(VTM.HWProblemReason Problem, VTM.HWWarningReason Warning, VTM.HWFaultReason Fault,
+                                    VTM.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
         void BVTAllHandler(DeviceState State);

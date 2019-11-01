@@ -94,6 +94,10 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\DynamicDataDisplay.dll</HintPath>
@@ -102,12 +106,28 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\FTD2XX_NET.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0223\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0223\lib\net46\MahApps.Metro.IconPacks.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PropertyChanged, Version=3.0.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.0.1\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -200,8 +220,8 @@
     <Compile Include="PagesTech\GatePage.xaml.cs">
       <DependentUpon>GatePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PagesTech\SLPage.xaml.cs">
-      <DependentUpon>SLPage.xaml</DependentUpon>
+    <Compile Include="PagesTech\VTMPage.xaml.cs">
+      <DependentUpon>VTMPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesCommon\ResultsPage.xaml.cs">
       <DependentUpon>ResultsPage.xaml</DependentUpon>
@@ -352,7 +372,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PagesTech\SLPage.xaml">
+    <Page Include="PagesTech\VTMPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -479,9 +499,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
+      <Project>{41fad811-1a7a-4ac2-95e8-6195f905e1c6}</Project>
+      <Name>SCME.InterfaceImplementations</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
       <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
       <Name>SCME.Types</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj">
+      <Project>{75abf5ae-fb9f-42d3-9568-a49833ce61d3}</Project>
+      <Name>SCME.WpfControlLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

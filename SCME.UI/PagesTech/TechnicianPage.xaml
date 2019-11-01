@@ -5,12 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:my="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
-      mc:Ignorable="d"
+      mc:Ignorable="d" Loaded="TechnicianPage_OnLoaded"
       d:DesignWidth="1280" d:DesignHeight="924"
       Name="technicianPage" Title="{x:Static res:Resources.Technitian}">
 
     <Page.Resources>
         <my:BooleanToVisibilityConverter x:Key="B2V" />
+        <my:TryBooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+        <x:StaticExtension Member="my:Cache.Main" x:Key="Main"/>
+
 
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Foreground" Value="{StaticResource xWhite1}" />
@@ -114,8 +117,8 @@
                     </Grid>
                 </Button>
 
-                <Button CommandParameter="7"
-                    Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ReadOnlyProfiles, Converter={StaticResource B2V}, ConverterParameter=!}">
+                <Button CommandParameter="7" ToolTipService.ShowOnDisabled="True" ToolTipService.ToolTip="{Binding ProfilePageToolTip, Source={StaticResource Main}}"
+                    IsEnabled="{Binding IsLocal, Source={StaticResource Main}}">
                     <Grid Background="{StaticResource xPurple1}">
                         <Path Data="{StaticResource EditPath}" />
                         <Label Content="{x:Static res:Resources.Profiles}" />

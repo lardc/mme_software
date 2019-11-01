@@ -9,7 +9,7 @@ using SCME.Types.BaseTestParams;
 using SCME.UI.Annotations;
 using GateTestParameters = SCME.Types.Gate.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
-using VtmTestParameters = SCME.Types.SL.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
 
 namespace SCME.UI.CustomControl
 {

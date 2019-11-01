@@ -97,7 +97,7 @@ namespace SCME.Types.QrrTq
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class TDcFallRateHelper : Object
+    public class TDcFallRateHelper : object
     {
         public static Array EnumValues()
         {
@@ -122,7 +122,7 @@ namespace SCME.Types.QrrTq
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class TOsvRateHelper : Object
+    public class TOsvRateHelper : object
     {
         public static Array EnumValues()
         {
@@ -131,12 +131,9 @@ namespace SCME.Types.QrrTq
     }
 
     //параметры, задающие режим работы
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "QrrTq.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public bool IsEnabled { get; set; }
-
         //Measurement mode - режим измерения
         [DataMember]
         public TMode Mode { get; set; }
@@ -221,11 +218,11 @@ namespace SCME.Types.QrrTq
             if (this.GetHashCode() == oldParameters.GetHashCode()) return false;
 
             //раз мы сюда добрались - имеем дело с разными экземплярами, необходимо сравнение их содержимого
-            string typeName = oldParameters.GetType().Name;
+            var typeName = oldParameters.GetType().Name;
 
             if (typeName != "TestParameters") throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
 
-            TestParameters QrrTqOldParameters = (TestParameters)oldParameters;
+            var QrrTqOldParameters = (TestParameters)oldParameters;
 
             if (Mode != QrrTqOldParameters.Mode)
                 return true;

@@ -4,6 +4,15 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
+using GateTestParameters = SCME.Types.Gate.TestParameters;
+using BvtTestParameters = SCME.Types.BVT.TestParameters;
+using VtmTestParameters = SCME.Types.VTM.TestParameters;
+using DvDtParameters = SCME.Types.dVdt.TestParameters;
+using AtuParameters = SCME.Types.ATU.TestParameters;
+using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
+using RacParameters = SCME.Types.RAC.TestParameters;
+using TOUParameters = SCME.Types.TOU.TestParameters;
+
 namespace SCME.Types.BaseTestParams
 {
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -49,6 +58,14 @@ namespace SCME.Types.BaseTestParams
         TOU = 13
     }
 
+    [KnownType(typeof(ATU.TestParameters))]
+    [KnownType(typeof(BVT.TestParameters))]
+    [KnownType(typeof(dVdt.TestParameters))]
+    [KnownType(typeof(Gate.TestParameters))]
+    [KnownType(typeof(QrrTq.TestParameters))]
+    [KnownType(typeof(RAC.TestParameters))]
+    [KnownType(typeof(TOU.TestParameters))]
+    [KnownType(typeof(VTM.TestParameters))]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public abstract class BaseTestParametersAndNormatives
     {
@@ -57,11 +74,38 @@ namespace SCME.Types.BaseTestParams
 
         [DataMember]
         public int Order { get; set; }
+        
+        [DataMember] public bool IsEnabled { get; set; }
 
         [DataMember]
         public long TestTypeId { get; set; }
 
         public abstract bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase);
+
+        public static BaseTestParametersAndNormatives CreateParametersByType(TestParametersType type)
+        {
+            switch (type)
+            {
+                case TestParametersType.Gate:
+                    return new GateTestParameters();
+                case TestParametersType.Bvt:
+                    return new BvtTestParameters();
+                case TestParametersType.StaticLoses:
+                    return new VtmTestParameters();
+                case TestParametersType.Dvdt:
+                    return new DvDtParameters();
+                case TestParametersType.ATU:
+                    return new AtuParameters();
+                case TestParametersType.QrrTq:
+                    return new QrrTqParameters();
+                case TestParametersType.RAC:
+                    return new RacParameters();
+                case TestParametersType.TOU:
+                    return new TOUParameters();
+                default:
+                    throw new NotImplementedException("CreateParametersByType");
+            }
+        }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

@@ -18,7 +18,7 @@ namespace SCME.Types.Profiles
 
                 if (profileName != string.Empty)
                 {
-                    string subjectForMeasure = profileName.Substring(0, 3);
+                    var subjectForMeasure = profileName.Substring(0, 3);
                     Enum.TryParse(subjectForMeasure, true, out result);
                 }
             }
