@@ -125,7 +125,7 @@ namespace SCME.UI.IO
                     else
                     {
                         Cache.Gate.SetResultAll(State);
-                        Cache.SL.SetResultAll(State);
+                        Cache.Sl.SetResultAll(State);
                         Cache.Bvt.SetResultAll(State);
                         Cache.ATU.SetResultAll(State);
                         Cache.QrrTq.SetResultAll(State);
@@ -169,7 +169,7 @@ namespace SCME.UI.IO
                     else
                     {
                         Cache.Gate.SetResultAll(DeviceState.Fault);
-                        Cache.SL.SetResultAll(DeviceState.Fault);
+                        Cache.Sl.SetResultAll(DeviceState.Fault);
                         Cache.Bvt.SetResultAll(DeviceState.Fault);
                         Cache.ATU.SetResultAll(DeviceState.Fault);
                         Cache.QrrTq.SetResultAll(DeviceState.Fault);
@@ -430,8 +430,8 @@ namespace SCME.UI.IO
                             Cache.UserTest.StartFirst();
                         else if (Equals(Cache.Main.mainFrame.Content, Cache.Gate))
                             Cache.Gate.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.SL))
-                            Cache.SL.Start();
+                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Sl))
+                            Cache.Sl.Start();
                         else if (Equals(Cache.Main.mainFrame.Content, Cache.Bvt))
                             Cache.Bvt.Start();
                         else if (Equals(Cache.Main.mainFrame.Content, Cache.ATU))
@@ -557,7 +557,7 @@ namespace SCME.UI.IO
                 });
         }
 
-        public void AddSLEvent(DeviceState state, Types.SL.TestResults result)
+        public void AddSLEvent(DeviceState state, Types.VTM.TestResults result)
         {
             m_ActionQueue.Enqueue(delegate
                 {
@@ -566,14 +566,14 @@ namespace SCME.UI.IO
                         if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
                             Cache.UserTest.SetResultSl(state, result);
                         else
-                            Cache.SL.SetResultVtm(state, result);
+                            Cache.Sl.SetResultVtm(state, result);
                     }
                     else
                         Cache.Selftest.SetResult(state, result);
                 });
         }
 
-        public void AddSLWarningEvent(Types.SL.HWWarningReason Warning)
+        public void AddSLWarningEvent(Types.VTM.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
                 {
@@ -582,11 +582,11 @@ namespace SCME.UI.IO
                     else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
                         Cache.Selftest.SetWarning(Warning);
                     else
-                        Cache.SL.SetWarning(Warning);
+                        Cache.Sl.SetWarning(Warning);
                 });
         }
 
-        public void AddSLFaultEvent(Types.SL.HWFaultReason Fault)
+        public void AddSLFaultEvent(Types.VTM.HWFaultReason Fault)
         {
             m_ActionQueue.Enqueue(delegate
                 {
@@ -595,11 +595,11 @@ namespace SCME.UI.IO
                     else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
                         Cache.Selftest.SetFault(Fault);
                     else
-                        Cache.SL.SetFault(Fault);
+                        Cache.Sl.SetFault(Fault);
                 });
         }
 
-        public void AddSLProblemEvent(Types.SL.HWProblemReason Problem)
+        public void AddSLProblemEvent(Types.VTM.HWProblemReason Problem)
         {
             m_ActionQueue.Enqueue(delegate
                 {
@@ -608,7 +608,7 @@ namespace SCME.UI.IO
                     else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
                         Cache.Selftest.SetProblem(Problem);
                     else
-                        Cache.SL.SetProblem(Problem);
+                        Cache.Sl.SetProblem(Problem);
                 });
         }
 
@@ -949,8 +949,8 @@ namespace SCME.UI.IO
                     Cache.DVdt.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Bvt))
                     Cache.Bvt.SetTopTemp(temperature);
-                else if (Cache.Main.mainFrame.Content.Equals(Cache.SL))
-                    Cache.SL.SetTopTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.Sl))
+                    Cache.Sl.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Gate))
                     Cache.Gate.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.ATU))
@@ -976,8 +976,8 @@ namespace SCME.UI.IO
                     Cache.DVdt.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Bvt))
                     Cache.Bvt.SetBottomTemp(temperature);
-                else if (Cache.Main.mainFrame.Content.Equals(Cache.SL))
-                    Cache.SL.SetBottomTemp(temperature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.Sl))
+                    Cache.Sl.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.Gate))
                     Cache.Gate.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.ATU))

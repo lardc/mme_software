@@ -316,7 +316,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16S(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note,
+                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note,
                                              string.Format("Clamping @ReadRegisterS, address {0}, value {1}", Address, value));
 
             return value;

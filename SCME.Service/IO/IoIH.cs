@@ -129,13 +129,13 @@ namespace SCME.Service.IO
                 {
                     case (ushort)Types.VTM.HWDeviceState.Fault:
                         ushort faultReason = m_IOStLs.ReadFaultReason();
-                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
                         break;
 
                     case (ushort)Types.VTM.HWDeviceState.Disabled:
                         ushort disableReason = m_IOStLs.ReadDisableReason();
-                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
+                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
                         break;
                 }
@@ -168,7 +168,7 @@ namespace SCME.Service.IO
                 {
                     ushort faultReason = m_IOStLs.ReadFaultReason();
 
-                    FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
+                    FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
                     throw new Exception(string.Format("IH virtual device. VTM device is in fault state, reason: {0}", faultReason));
                 }
@@ -177,7 +177,7 @@ namespace SCME.Service.IO
                 {
                     ushort disableReason = m_IOStLs.ReadDisableReason();
 
-                    FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
+                    FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
                     throw new Exception(string.Format("IH virtual device. VTM device is in disabled state, reason: {0}", disableReason));
                 }
@@ -189,12 +189,12 @@ namespace SCME.Service.IO
 
                     if (problem != (ushort)Types.VTM.HWProblemReason.None)
                     {
-                        FireNotificationEvent(ComplexParts.VTM, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.SL, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
                     }
 
                     if (warning != (ushort)HWWarningReason.None)
                     {
-                        FireNotificationEvent(ComplexParts.VTM, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
+                        FireNotificationEvent(ComplexParts.SL, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
 
                         m_IOStLs.ClearWarning();
                     }

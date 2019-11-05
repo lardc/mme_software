@@ -23,6 +23,7 @@ using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
 using SCME.UI.ViewModels;
+using SCME.WpfControlLibrary;
 
 namespace SCME.UI
 {
@@ -66,6 +67,8 @@ namespace SCME.UI
                                         : Path.Combine(
                                             Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase),
                                             Settings.Default.KeyboardsPath));
+            
+            ResourceBinding.Scaling(0.60);
 
             InitializeComponent();
 

@@ -6,12 +6,23 @@ using SCME.UI.CustomControl;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using System;
+using System.Linq;
 using SCME.Types.SQL;
 
 namespace SCME.UI.IO
 {
     internal class ProfilesDbLogic
     {
+        public static void LoadProfile(List<MyProfile> profiles)
+        {
+            var dictionary = new ProfileDictionary(profiles.Select(m => m.ToProfile()));
+            Cache.Main.IsProfilesParsed = true;
+
+            Cache.ProfileEdit = new ProfilePage(dictionary);
+            Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
+            Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
+        }
+        
         public static void ImportProfilesFromDb()
         {
             bool seviceConnected;
@@ -76,7 +87,7 @@ namespace SCME.UI.IO
                     Version = profile.Version,
                     NextGenerationKey = profile.NextGenerationKey,
                     GateTestParameters = new List<TestParameters>(),
-                    VTMTestParameters = new List<Types.SL.TestParameters>(),
+                    VTMTestParameters = new List<Types.VTM.TestParameters>(),
                     BVTTestParameters = new List<Types.BVT.TestParameters>(),
                     DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                     ATUTestParameters = new List<Types.ATU.TestParameters>(),
@@ -98,7 +109,7 @@ namespace SCME.UI.IO
                         profileItem.GateTestParameters.Add(gate);
                         continue;
                     }
-                    var sl = baseTestParametersAndNormativese as Types.SL.TestParameters;
+                    var sl = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                     if (sl != null)
                     {
                         profileItem.VTMTestParameters.Add(sl);

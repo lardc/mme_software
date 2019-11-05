@@ -127,7 +127,7 @@ namespace SCME.UI.PagesTech
                     device = ComplexParts.Gate;
                     break;
                 case 2:
-                    device = ComplexParts.VTM;
+                    device = ComplexParts.SL;
                     break;
                 case 3:
                     device = ComplexParts.BVT;
@@ -175,7 +175,7 @@ namespace SCME.UI.PagesTech
                 case ComplexParts.Gate:
                     ErrorGate = Error;
                     break;
-                case ComplexParts.VTM:
+                case ComplexParts.SL:
                     ErrorVtm = Error;
                     break;
                 case ComplexParts.BVT:
@@ -200,7 +200,7 @@ namespace SCME.UI.PagesTech
                         ParamsGate = Cache.Net.GateReadCalibrationParameters();
                         ErrorGate = string.Empty;
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         ParamsVtm = Cache.Net.SLReadCalibrationParameters();
                         ErrorVtm = string.Empty;
                         break;
@@ -235,7 +235,7 @@ namespace SCME.UI.PagesTech
                     case ComplexParts.Gate:
                         Cache.Net.GateWriteCalibrationParameters(ParamsGate);
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         Cache.Net.SLWriteCalibrationParameters(ParamsVtm);
                         break;
                     case ComplexParts.BVT:
@@ -273,7 +273,7 @@ namespace SCME.UI.PagesTech
                     NavigationService.Navigate(Cache.Gate);
                     break;
                 case 2:
-                    NavigationService.Navigate(Cache.VTM);
+                    NavigationService.Navigate(Cache.Sl);
                     break;
                 case 3:
                     NavigationService.Navigate(Cache.Bvt);

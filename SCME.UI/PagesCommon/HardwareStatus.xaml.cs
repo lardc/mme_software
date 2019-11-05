@@ -64,7 +64,7 @@ namespace SCME.UI.PagesCommon
                 case ComplexParts.Gate:
                     gateControl.SetConnectionStatus(ConnectionState, Message);
                     break;
-                case ComplexParts.VTM:
+                case ComplexParts.SL:
                     vtmControl.SetConnectionStatus(ConnectionState, Message);
                     break;
                 case ComplexParts.BVT:
@@ -113,7 +113,7 @@ namespace SCME.UI.PagesCommon
                     return !commutationControl.IsDisabled;
                 case ComplexParts.Gate:
                     return !gateControl.IsDisabled;
-                case ComplexParts.VTM:
+                case ComplexParts.SL:
                     return !vtmControl.IsDisabled;
                 case ComplexParts.BVT:
                     return !bvtControl.IsDisabled;
@@ -156,7 +156,7 @@ namespace SCME.UI.PagesCommon
                     return gatewayControl.OperationTimeout;
                 case ComplexParts.Gate:
                     return gateControl.OperationTimeout;
-                case ComplexParts.VTM:
+                case ComplexParts.SL:
                     return vtmControl.OperationTimeout;
                 case ComplexParts.BVT:
                     return bvtControl.OperationTimeout;

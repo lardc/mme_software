@@ -1132,7 +1132,7 @@ namespace SCME.Service
                                 }
                                 catch (Exception ex)
                                 {
-                                    ThrowFaultException(ComplexParts.VTM, ex.Message, "Start VTM test");
+                                    ThrowFaultException(ComplexParts.SL, ex.Message, "Start VTM test");
                                 }
 
                             var bvtParameters = baseTestParametersAndNormativese as Types.BVT.TestParameters;
@@ -1390,7 +1390,7 @@ namespace SCME.Service
                                 }
                                 catch (Exception ex)
                                 {
-                                    ThrowFaultException(ComplexParts.VTM, ex.Message, "Start VTM test");
+                                    ThrowFaultException(ComplexParts.SL, ex.Message, "Start VTM test");
                                 }
                             }
 
@@ -1674,7 +1674,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         res = m_IOGate.ReadRegister(Address);
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         res = m_IOStls.ReadRegister(Address);
                         break;
                     case ComplexParts.BVT:
@@ -1735,7 +1735,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.WriteRegister(Address, Value);
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         m_IOStls.WriteRegister(Address, Value);
                         break;
                     case ComplexParts.BVT:
@@ -1791,7 +1791,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.CallAction(Address);
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         m_IOStls.CallAction(Address);
                         break;
                     case ComplexParts.BVT:
@@ -1850,7 +1850,7 @@ namespace SCME.Service
                     case ComplexParts.Gate:
                         m_IOGate.ClearFault();
                         break;
-                    case ComplexParts.VTM:
+                    case ComplexParts.SL:
                         m_IOStls.ClearFault();
                         break;
                     case ComplexParts.BVT:
@@ -1968,7 +1968,7 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
-                ThrowFaultException(ComplexParts.VTM, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
@@ -1983,7 +1983,7 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
-                ThrowFaultException(ComplexParts.VTM, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
 
             return parameters;

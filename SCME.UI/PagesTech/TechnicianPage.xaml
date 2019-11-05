@@ -117,8 +117,10 @@
                     </Grid>
                 </Button>
 
-                <Button CommandParameter="7" ToolTipService.ShowOnDisabled="True" ToolTipService.ToolTip="{Binding ProfilePageToolTip, Source={StaticResource Main}}"
-                    IsEnabled="{Binding IsLocal, Source={StaticResource Main}}">
+                <Button CommandParameter="7" ToolTipService.ShowOnDisabled="{Binding Source={StaticResource Main}, Path=VM.IsCentral}"
+                        IsEnabled="{Binding Source={StaticResource Main}, Path=VM.IsLocal}"
+                        ToolTipService.ToolTip="{x:Static res:Resources.ProfilePageToolTip}"
+                    >
                     <Grid Background="{StaticResource xPurple1}">
                         <Path Data="{StaticResource EditPath}" />
                         <Label Content="{x:Static res:Resources.Profiles}" />

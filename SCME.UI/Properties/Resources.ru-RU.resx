@@ -780,4 +780,7 @@
   <data name="MessageErrorSaveTestFault" xml:space="preserve">
     <value>Произошла ошибка изменения не будут сохранены</value>
   </data>
+  <data name="ProfilePageToolTip" xml:space="preserve">
+    <value>Профили не доступны для редактирования в режиме синхронизации с центральным сервером</value>
+  </data>
 </root>

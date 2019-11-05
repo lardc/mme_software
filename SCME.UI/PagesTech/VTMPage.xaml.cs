@@ -16,7 +16,7 @@ namespace SCME.UI.PagesTech
     /// <summary>
     /// Interaction logic for GraphicPage.xaml
     /// </summary>
-    public partial class VTMPage
+    public partial class SLPage
     {
         private const int TIME_STEP = 50;
 
@@ -31,7 +31,7 @@ namespace SCME.UI.PagesTech
         private const int RoomTemp = 25;
         public int Temperature { get; set; }
 
-        internal VTMPage()
+        internal SLPage()
         {
             Parameters = new Types.VTM.TestParameters { IsEnabled = true, UseLsqMethod = Settings.Default.UseVTMPostProcessing };
             ClampParameters = new Types.Clamping.TestParameters

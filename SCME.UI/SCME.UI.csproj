@@ -175,6 +175,7 @@
     <Compile Include="IO\QueueWorker.cs" />
     <Compile Include="KeyboardLayouts.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
+    <Compile Include="ViewModels\TechnicianPageVm.cs" />
     <Compile Include="ViewModels\TOUPageVM.cs" />
     <Compile Include="ViewModels\UserWorkModePageVM.cs" />
     <Compile Include="PagesTech\TOUPage.xaml.cs">
@@ -221,7 +222,7 @@
       <DependentUpon>GatePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesTech\VTMPage.xaml.cs">
-      <DependentUpon>VTMPage.xaml</DependentUpon>
+      <DependentUpon>SLPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesCommon\ResultsPage.xaml.cs">
       <DependentUpon>ResultsPage.xaml</DependentUpon>
@@ -372,7 +373,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PagesTech\VTMPage.xaml">
+    <Page Include="PagesTech\SLPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

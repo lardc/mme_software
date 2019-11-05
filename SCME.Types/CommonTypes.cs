@@ -52,7 +52,7 @@ namespace SCME.Types
         [EnumMember]
         Gate = 7,
         [EnumMember]
-        VTM = 8,
+        SL = 8,
         [EnumMember]
         BVT = 9,
         [EnumMember]
@@ -135,16 +135,6 @@ namespace SCME.Types
         Stop
     };
     
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class InitializationResponce
-    {
-        [DataMember]
-        public InitializationResult InitializationResult { get; set; }
-        [DataMember]
-        public bool IsLocal { get; set; }
-        [DataMember]
-        public string MMECode { get; set; }
-    }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexSafety

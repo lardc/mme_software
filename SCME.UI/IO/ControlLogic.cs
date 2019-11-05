@@ -403,7 +403,7 @@ namespace SCME.UI.IO
         #region ExternalControl members
 
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.SL.TestParameters ParametersVtm,
+        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
                           Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
             if (!IsServerConnected)
@@ -515,7 +515,7 @@ namespace SCME.UI.IO
                     return false;
                 }
 
-                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.SL.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.RAC.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
+                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.RAC.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
 
                 return result;
             }
@@ -930,7 +930,7 @@ namespace SCME.UI.IO
             return parameters;
         }
 
-        public void SLWriteCalibrationParameters(Types.SL.CalibrationParameters Parameters)
+        public void SLWriteCalibrationParameters(Types.VTM.CalibrationParameters Parameters)
         {
             try
             {
@@ -950,9 +950,9 @@ namespace SCME.UI.IO
             }
         }
 
-        public Types.SL.CalibrationParameters SLReadCalibrationParameters()
+        public Types.VTM.CalibrationParameters SLReadCalibrationParameters()
         {
-            var parameters = new Types.SL.CalibrationParameters();
+            var parameters = new Types.VTM.CalibrationParameters();
             try
             {
                 parameters = m_ControlClient.SLReadCalibrationParameters();
@@ -1705,22 +1705,22 @@ namespace SCME.UI.IO
             //      m_QueueWorker.AddVtmFaultEvent(Disable);
         }
 
-        public void SLHandler(DeviceState state, Types.SL.TestResults result)
+        public void SLHandler(DeviceState state, Types.VTM.TestResults result)
         {
             m_QueueWorker.AddSLEvent(state, result);
         }
 
-        public void SLNotificationHandler(Types.SL.HWProblemReason Problem, Types.SL.HWWarningReason Warning,
-                                           Types.SL.HWFaultReason Fault,
-                                           Types.SL.HWDisableReason Disable)
+        public void SLNotificationHandler(Types.VTM.HWProblemReason Problem, Types.VTM.HWWarningReason Warning,
+                                           Types.VTM.HWFaultReason Fault,
+                                           Types.VTM.HWDisableReason Disable)
         {
-            if (Warning != Types.SL.HWWarningReason.None)
+            if (Warning != Types.VTM.HWWarningReason.None)
                 m_QueueWorker.AddSLWarningEvent(Warning);
 
-            if (Problem != Types.SL.HWProblemReason.None)
+            if (Problem != Types.VTM.HWProblemReason.None)
                 m_QueueWorker.AddSLProblemEvent(Problem);
 
-            if (Fault != Types.SL.HWFaultReason.None)
+            if (Fault != Types.VTM.HWFaultReason.None)
                 m_QueueWorker.AddSLFaultEvent(Fault);
 
             // if (Disable != Types.VTM.HWDisableReason.None)

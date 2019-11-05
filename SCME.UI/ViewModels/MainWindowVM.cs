@@ -28,6 +28,8 @@ namespace SCME.UI.ViewModels
         public string TopTitle { get; set; }
         
         public bool IsLocal { get; set; }
+        [DependsOn(nameof(IsLocal))] public bool IsCentral => !IsLocal;
+
 
     }
 }

@@ -38,7 +38,7 @@ namespace SCME.Service.IO
             m_Node = (ushort)Settings.Default.SLNode;
             m_Result = new Types.VTM.TestResults();
 
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info,
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info,
                                          String.Format("VTM created. Emulation mode: {0}", m_IsSLEmulation));
         }
 
@@ -208,14 +208,14 @@ namespace SCME.Service.IO
 
         internal void ClearFault()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM fault cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM fault cleared");
 
             CallAction(ACT_CLEAR_FAULT);
         }
 
         internal void ClearWarning()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM warning cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM warning cleared");
 
             CallAction(ACT_CLEAR_WARNING);
         }
@@ -228,7 +228,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadRegister, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @ReadRegister, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -241,7 +241,7 @@ namespace SCME.Service.IO
                 value = m_IOAdapter.Read16S(m_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadRegisterS, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @ReadRegisterS, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -279,7 +279,7 @@ namespace SCME.Service.IO
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @WriteRegister, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @WriteRegister, address {0}, value {1}", Address, Value));
 
             if (m_IsSLEmulation)
                 return;
@@ -290,7 +290,7 @@ namespace SCME.Service.IO
         internal void WriteRegisterS(ushort Address, short Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @WriteRegisterS, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @WriteRegisterS, address {0}, value {1}", Address, Value));
 
             if (m_IsSLEmulation)
                 return;
@@ -300,7 +300,7 @@ namespace SCME.Service.IO
 
         internal void CallAction(ushort Action)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @Call, action {0}", Action));
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @Call, action {0}", Action));
 
             if (m_IsSLEmulation)
                 return;
@@ -317,7 +317,7 @@ namespace SCME.Service.IO
 
         internal IList<ushort> ReadArrayFast(ushort Address)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadArrayFast, endpoint {0}", Address));
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @ReadArrayFast, endpoint {0}", Address));
 
             if (m_IsSLEmulation)
                 return new List<ushort>();
@@ -327,7 +327,7 @@ namespace SCME.Service.IO
 
         internal IList<short> ReadArrayFastS(ushort Address)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, string.Format("VTM @ReadArrayFastS, endpoint {0}", Address));
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, string.Format("VTM @ReadArrayFastS, endpoint {0}", Address));
 
             if (m_IsSLEmulation)
                 return new List<short>();
@@ -339,7 +339,7 @@ namespace SCME.Service.IO
 
         internal void WriteCalibrationParams(Types.VTM.CalibrationParameters Parameters)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @WriteCalibrationParams begin");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @WriteCalibrationParams begin");
 
             WriteRegisterS(REG_VTM_OFFSET, Parameters.VtmOffset, true);
 
@@ -355,13 +355,13 @@ namespace SCME.Service.IO
             if (!m_IsSLEmulation)
                 m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
 
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @WriteCalibrationParams end");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @WriteCalibrationParams end");
 
         }
 
         internal Types.VTM.CalibrationParameters ReadCalibrationParams()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @ReadCalibrationParams begin");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @ReadCalibrationParams begin");
 
             var parameters = new Types.VTM.CalibrationParameters
             {
@@ -377,7 +377,7 @@ namespace SCME.Service.IO
                 VtmFine2D = ReadRegister(REG_VTM_FINE2_D, true)
             };
 
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Note, "VTM @ReadCalibrationParams end");
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @ReadCalibrationParams end");
 
             return parameters;
         }
@@ -623,8 +623,8 @@ namespace SCME.Service.IO
 
         private void FireConnectionEvent(DeviceConnectionState State, string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info, Message);
-            m_Communication.PostDeviceConnectionEvent(ComplexParts.VTM, State, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info, Message);
+            m_Communication.PostDeviceConnectionEvent(ComplexParts.SL, State, Message);
         }
 
         private void FireVTMEvent(DeviceState State, Types.VTM.TestResults Result, int ITM)
@@ -638,14 +638,14 @@ namespace SCME.Service.IO
                               : "Self-test OK";
             }
 
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Info, message);
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Info, message);
             m_Communication.PostSLEvent(State, Result);
         }
 
         private void FireNotificationEvent(Types.VTM.HWProblemReason Problem, Types.VTM.HWWarningReason Warning,
                                            Types.VTM.HWFaultReason Fault, Types.VTM.HWDisableReason Disable)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Warning,
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Warning,
                                          String.Format(
                                              "VTM device notification: problem {0}, warning {1}, fault {2}, disable {3}",
                                              Problem, Warning, Fault, Disable));
@@ -655,8 +655,8 @@ namespace SCME.Service.IO
 
         private void FireExceptionEvent(string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.VTM, LogMessageType.Error, Message);
-            m_Communication.PostExceptionEvent(ComplexParts.VTM, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Error, Message);
+            m_Communication.PostExceptionEvent(ComplexParts.SL, Message);
         }
 
         #endregion
