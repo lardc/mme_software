@@ -719,7 +719,7 @@ namespace SCME.UI.PagesUser
                     Cache.Net.WriteResultLocal(DataForSave, errors);
 
                     //вычисляем класс только что измеренного изделия и выводим его на форму
-                    if (DataForSave.IsSentToServer)
+                    if (DataForSave.IsSentToServer && tbNumber != null)
                         CalcDeviceClass(tbNumber, true);
                 }
 
@@ -741,7 +741,7 @@ namespace SCME.UI.PagesUser
                 tbPsdSerialNumber.Text = "";
 
                 if (tbNumber.Visibility == Visibility.Visible)
-                    tbNumber.Focus();
+                    tbNumber?.Focus();
             }
         }
 
