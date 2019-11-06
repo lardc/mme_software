@@ -740,7 +740,7 @@ namespace SCME.UI.PagesUser
                 tbPseNumber.Text = "";
                 tbPsdSerialNumber.Text = "";
 
-                if (tbNumber.Visibility == Visibility.Visible)
+                if (tbNumber?.Visibility == Visibility.Visible)
                     tbNumber?.Focus();
             }
         }
