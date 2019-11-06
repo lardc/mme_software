@@ -15,6 +15,41 @@ using TestParameters = SCME.Types.VTM.TestParameters;
 
 namespace SCME.UI
 {
+    public class MultiBvtRSMTestTypeToVisibilityConverter : IMultiValueConverter
+    {
+        public object Convert(object[] Values, Type TargetType, object Parameter, CultureInfo culture)
+        {
+            BVTTestType testType;
+            bool parseResult = Enum.TryParse(Values[0]?.ToString(), out testType);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            bool useUdsmUrsm;
+            parseResult = bool.TryParse(Values[1]?.ToString(), out useUdsmUrsm);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            int indexInEnum;
+            parseResult = int.TryParse(Values[2]?.ToString(), out indexInEnum);
+            if (!parseResult)
+                return Visibility.Collapsed;
+
+            bool result = (useUdsmUrsm) &&
+                          (
+                              testType == BVTTestType.Both ||
+                              (testType == BVTTestType.Direct && indexInEnum == (int)BVTTestType.Direct) ||
+                              (testType == BVTTestType.Reverse && indexInEnum == (int)BVTTestType.Reverse)
+                          );
+
+            return result ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object[] ConvertBack(object Value, Type[] TargetTypes, object Parameter, CultureInfo Culture)
+        {
+            throw new InvalidOperationException("ConvertBack method is not implemented in MultiBvtRSMTestTypeToVisibilityConverter");
+        }
+    }   
+    
     public class BvtTestTypeToVisibilityConverter : IValueConverter
     {
         public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)

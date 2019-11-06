@@ -32,8 +32,10 @@ namespace SCME.InterfaceImplementations
         private SqlCommand _selectDevParamsCommand;
         private SqlCommand _selectDevCondsCommand;
         private SqlCommand _selectDevNormCommand;
+        private SqlCommand _selectDevClassCommand;
         private SqlCommand _devLookupPTTSelectCommand;
         private SqlCommand _devLookupProfileIdSelectCommand;
+        private SqlCommand _selectDevRTClassCommand;
 
         public SQLResultsServiceServer(string databasePath)
         {
@@ -154,6 +156,47 @@ namespace SCME.InterfaceImplementations
             _selectDevCondsCommand.Parameters.Add("@DEV_ID", SqlDbType.Int);
             _selectDevCondsCommand.Prepare();
 
+            _selectDevRTClassCommand =
+                new SqlCommand(
+                    "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @RTProfName) AS DEVICECLASS" +
+                    " FROM" +
+                    " (" +
+                    "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                    " FROM DEVICES D" +
+                    "  INNER JOIN PROFILES P ON (" +
+                    "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
+                    "                            (P.PROF_NAME LIKE @ProfBody)" +
+                    "                           )" +
+                    " WHERE (D.CODE=@DevCode)" +
+                    " GROUP BY P.PROF_ID" +
+                    " ) AS z", _connection);
+            
+            _selectDevClassCommand =
+                new SqlCommand(
+                    "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @ProfName) AS DEVICECLASS" +
+                    " FROM" +
+                    " (" +
+                    "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                    " FROM DEVICES D" +
+                    "  INNER JOIN PROFILES P ON (" +
+                    "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
+                    "                            (P.PROF_NAME=@ProfName)" +
+                    "                           )" +
+                    " WHERE (D.CODE=@DevCode)" +
+                    " GROUP BY P.PROF_ID" +
+                    " ) AS z", _connection);
+
+            _selectDevClassCommand.Parameters.Add("@ProfName", SqlDbType.NVarChar, 32);
+            _selectDevClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
+            _selectDevClassCommand.Prepare();
+
+
+            _selectDevRTClassCommand.Parameters.Add("@ProfName", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@RTProfName", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@ProfBody", SqlDbType.NVarChar, 32);
+            _selectDevRTClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
+            _selectDevRTClassCommand.Prepare();
+            
             _selectDevNormCommand =
                 new SqlCommand(
                     "SELECT P.[PARAM_NAME] AS P_NID, PP.[MIN_VAL] AS P_MIN, PP.[MAX_VAL] AS P_MAX FROM [dbo].[PARAMS] P, [dbo].[PROF_PARAM] PP, [dbo].[DEVICES] D, [dbo].[PROFILES] PR WHERE PP.[PARAM_ID] = P.[PARAM_ID] AND PP.[PROF_ID] = PR.[PROF_ID] AND PR.[PROF_GUID] = D.[PROFILE_ID] AND D.[DEV_ID] = @DEV_ID",
@@ -386,6 +429,88 @@ namespace SCME.InterfaceImplementations
             return (int)possibleProfileId;
         }
 
+        public int? ReadDeviceRTClass(string devCode, string profileName)
+        {
+            //считывает класс самого свежего изделия, имеющего номер devCode, измеренного по профилю с обозначением profileName
+            //возвращает:
+            //            null - по запрошенным devCode и profileName класс RT вычислить не возможно;
+            //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
+            //            класс - целое положительное число - успешное вычисление класса
+
+            int? result = null;
+
+            lock (MsLocker)
+            {
+                if (_connection == null || _connection.State != ConnectionState.Open)
+                    return null;
+
+                _selectDevRTClassCommand.Parameters["@ProfName"].Value = profileName;
+                _selectDevRTClassCommand.Parameters["@RTProfName"].Value = SCME.Types.Profiles.ProfileRoutines.MakeRT(profileName);
+                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName).Replace('*', '%');  //string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
+                _selectDevRTClassCommand.Parameters["@DevCode"].Value = devCode;
+
+                using (var reader = _selectDevRTClassCommand.ExecuteReader())
+                {
+                    int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
+
+                    int recordCount = 0;
+                    while (reader.Read())
+                    {
+                        object res = reader.GetInt32(deviceClassFieldID);
+                        result = (res == DBNull.Value) ? null : (int?)res;
+
+                        recordCount++;
+                    }
+
+                    //может быть считана либо одна запись, либо ни одной
+                    if (recordCount > 1)
+                        result = -1;
+                }
+            }
+
+            return result;
+        }
+        
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            //чтение фактического класса изделия по принятым devCode, profileName
+            //возвращает:
+            //            null - по запрошенным devCode и profileName класс изделия вычислить не возможно;
+            //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
+            //            класс - целое положительное число - успешное вычисление класса
+
+            int? result = null;
+
+            lock (MsLocker)
+            {
+                if (_connection == null || _connection.State != ConnectionState.Open)
+                    return null;
+
+                _selectDevClassCommand.Parameters["@ProfName"].Value = profileName;
+                _selectDevClassCommand.Parameters["@DevCode"].Value = devCode;
+
+                using (var reader = _selectDevClassCommand.ExecuteReader())
+                {
+                    int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
+
+                    int recordCount = 0;
+                    while (reader.Read())
+                    {
+                        object res = reader.GetInt32(deviceClassFieldID);
+                        result = (res == DBNull.Value) ? null : (int?)res;
+
+                        recordCount++;
+                    }
+
+                    //может быть считана либо одна запись, либо ни одной
+                    if (recordCount > 1)
+                        result = -1;
+                }
+            }
+
+            return result;
+        }
+        
         private long GetOrMakeGroupId(string groupName, SqlTransaction trans)
         {
             long groupId;

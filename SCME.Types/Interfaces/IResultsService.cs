@@ -37,6 +37,10 @@ namespace SCME.Types.Interfaces
         List<ParameterNormativeItem> ReadDeviceNormatives(long internalId);
 
         List<DeviceLocalItem> GetUnsendedDevices();
+        
+        int? ReadDeviceRTClass(string devCode, string profName);
+
+        int? ReadDeviceClass(string devCode, string profName);
 
         /// <summary>
         /// Sets IsSendedToServer=1 to device

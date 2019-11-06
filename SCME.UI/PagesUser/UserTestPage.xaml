@@ -20,6 +20,8 @@
         <ui:VtmTestTypeToCurrentConverter x:Key="TT2C" />
         <ui:BvtTestTypeToVisibilityConverter x:Key="TT2V" />
 
+        <ui:MultiBvtRSMTestTypeToVisibilityConverter x:Key="MIF2T" />
+
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Height" Value="45" />
             <Setter Property="Padding" Value="10,0" />
@@ -72,6 +74,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -80,10 +83,10 @@
             </Grid.ColumnDefinitions>
 
             <customControl:ValidatingTextBox x:Name="tbPseJob" Grid.Column="0" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="3" Text="{Binding PseJob, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <customControl:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <customControl:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
             <TextBlock x:Name="tblIdentificationWarning" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="13" Foreground="{StaticResource xRed1}">
                 <TextBlock.Text>
-                    <MultiBinding Converter="{StaticResource MIF2V}">
+                    <MultiBinding Converter="{StaticResource MIF2T}">
                         <Binding Path="Profile.Name"/>
                         <Binding Path="PsdJob"/>
                         <Binding Path="PsdSerialNumber"/>
@@ -93,6 +96,8 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
+
+            <Label x:Name="lblDeviceClass" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" Content="{x:Static res:Resources.DeviceRTClass}" FontSize="24" FontWeight="Bold" Height="Auto"/>
         </Grid>
 
         <Label Grid.Column="0" x:Name="lblSettingTemperature" Grid.Row="4" HorizontalAlignment="Center" Content="{x:Static res:Resources.SettingTemperatureName}" FontSize="25" Height="Auto" />

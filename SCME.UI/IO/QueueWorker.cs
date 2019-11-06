@@ -309,6 +309,28 @@ namespace SCME.UI.IO
                 
             });
         }
+        
+        public void AddBvtUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultBvtUdsmUrsmDirect(State, Result);
+                else
+                    Cache.Bvt.SetResultBvtUdsmUrsmDirect(State, Result);
+            });
+        }
+
+        public void AddBvtUdsmUrsmReverseEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultBvtUdsmUrsmReverse(State, Result);
+                else
+                    Cache.Bvt.SetResultBvtUdsmUrsmReverse(State, Result);
+            });
+        }
 
         public void AddSafetyHandlerEvent(bool Alarm, ComplexSafety SafetyType, ComplexButtons Button)
         {

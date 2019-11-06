@@ -783,4 +783,28 @@
   <data name="ProfilePageToolTip" xml:space="preserve">
     <value>Профили не доступны для редактирования в режиме синхронизации с центральным сервером</value>
   </data>
+  <data name="IDSM_mA" xml:space="preserve">
+    <value>IDSM, мА</value>
+  </data>
+  <data name="IRSM_mA" xml:space="preserve">
+    <value>IRSM, мА</value>
+  </data>
+  <data name="VDSM_V" xml:space="preserve">
+    <value>UDSM, В</value>
+  </data>
+  <data name="VRSM_V" xml:space="preserve">
+    <value>URSM, В</value>
+  </data>
+  <data name="UseUdsmUrsm" xml:space="preserve">
+    <value>UDSM/URSM</value>
+  </data>
+  <data name="DeviceRTClass" xml:space="preserve">
+    <value>Класс при RT</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>Нет результатов</value>
+  </data>
+  <data name="ErrorRealisation" xml:space="preserve">
+    <value>Ошибка реализации</value>
+  </data>
 </root>

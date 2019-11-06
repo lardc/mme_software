@@ -17,6 +17,11 @@ namespace SCME.Types
         {
         }
 
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            return Channel.ReadDeviceRTClass(devCode, profName);
+        }
+        
         public void Check()
         {
             Channel.Check();

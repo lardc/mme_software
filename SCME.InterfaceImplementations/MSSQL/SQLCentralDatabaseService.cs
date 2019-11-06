@@ -102,6 +102,11 @@ namespace SCME.InterfaceImplementations
         public void Check()
         {
         }
+        
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            return _resultsService.ReadDeviceRTClass(devCode, profName);
+        }
 
         public void SaveResults(ResultItem results, List<string> errors)
         {
@@ -111,6 +116,11 @@ namespace SCME.InterfaceImplementations
         public List<ProfileItem> GetProfileItems()
         {
             return _profilesService.GetProfileItems();
+        }
+        
+            public int? ReadDeviceClass(string devCode, string profName)
+        {
+            return _resultsService.ReadDeviceClass(devCode, profName);
         }
 
         public List<ProfileItem> GetProfileItemsByMme(string mmeCode)

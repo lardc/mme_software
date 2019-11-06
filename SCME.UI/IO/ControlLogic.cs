@@ -310,6 +310,52 @@ namespace SCME.UI.IO
                                             string.Format("Exception - {0}", Ex.Message));
         }
 
+        public int? ReadDeviceRTClass(string devCode, string profileName)
+        {
+            int? result = null;
+
+            using (var centralDbClient = new CentralDatabaseServiceClient())
+            {
+                try
+                {
+                    result = centralDbClient.ReadDeviceRTClass(devCode, profileName);
+                }
+                catch (FaultException<FaultData> ex)
+                {
+                    ShowFaultError("Read device RT class error", ex);
+                }
+                catch (CommunicationException ex)
+                {
+                    ProcessCommunicationException(ex);
+                }
+            }
+
+            return result;
+        }
+
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            int? result = null;
+
+            using (var centralDbClient = new CentralDatabaseServiceClient())
+            {
+                try
+                {
+                    result = centralDbClient.ReadDeviceClass(devCode, profileName);
+                }
+                catch (FaultException<FaultData> ex)
+                {
+                    ShowFaultError("Read device class error", ex);
+                }
+                catch (CommunicationException ex)
+                {
+                    ProcessCommunicationException(ex);
+                }
+            }
+
+            return result;
+        }
+        
         private void ProcessCommunicationException(CommunicationException Ex)
         {
             Cache.Main.ConnectionLabelVisible = true;
@@ -401,7 +447,6 @@ namespace SCME.UI.IO
 
 
         #region ExternalControl members
-
 
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
                           Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
@@ -1554,6 +1599,16 @@ namespace SCME.UI.IO
             m_QueueWorker.Start();
         }
 
+        public void BVTUdsmUrsmDirectHandler(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_QueueWorker.AddBvtUdsmUrsmDirectEvent(State, Result);
+        }
+
+        public void BVTUdsmUrsmReverseHandler(DeviceState State, Types.BVT.TestResults Result)
+        {
+            m_QueueWorker.AddBvtUdsmUrsmReverseEvent(State, Result);
+        }
+        
         internal void AddCommonConnectionEvent(DeviceConnectionState State, string Message)
         {
             m_QueueWorker.AddCommonConnectionEvent(State, Message);

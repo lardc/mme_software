@@ -808,5 +808,28 @@
   <data name="ProfilePageToolTip" xml:space="preserve">
     <value>Profiles not editable in sync with central server</value>
   </data>
-  
+  <data name="IDSM_mA" xml:space="preserve">
+    <value>IDSM, mA</value>
+  </data>
+  <data name="IRSM_mA" xml:space="preserve">
+    <value>IRSM, mA</value>
+  </data>
+  <data name="VDSM_V" xml:space="preserve">
+    <value>VDSM, V</value>
+  </data>
+  <data name="VRSM_V" xml:space="preserve">
+    <value>VRSM, V</value>
+  </data>
+  <data name="UseUdsmUrsm" xml:space="preserve">
+    <value>UDSM/URSM</value>
+  </data>
+  <data name="DeviceRTClass" xml:space="preserve">
+    <value>Class by RT</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="ErrorRealisation" xml:space="preserve">
+    <value>Error realisation</value>
+  </data>
 </root>

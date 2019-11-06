@@ -11,6 +11,16 @@ namespace SCME.Types.DatabaseServer
 {
     public class CentralDatabaseServiceClient : ClientBase<ICentralDatabaseService>, ICentralDatabaseService, IErrorHandler
     {
+        public int? ReadDeviceRTClass(string devCode, string profileName)
+        {
+            return Channel.ReadDeviceRTClass(devCode, profileName);
+        }
+
+        public int? ReadDeviceClass(string devCode, string profileName)
+        {
+            return Channel.ReadDeviceClass(devCode, profileName);
+        }
+        
         public void Check()
         {
             Channel.Check();

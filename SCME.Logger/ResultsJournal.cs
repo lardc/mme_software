@@ -499,6 +499,12 @@ namespace SCME.Logger
                 throw ex;
             }
         }
+        
+        public int? ReadDeviceRTClass(string devCode, string profName)
+        {
+            //нет смысла вычислять класс по данным одной локально расположенной базы данных
+            return null;
+        }
 
     }
 }

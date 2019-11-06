@@ -216,5 +216,19 @@ namespace SCME.Service
         {
             throw new NotImplementedException();
         }
+        
+        int? IDatabaseCommunicationService.ReadDeviceRTClass(string devCode, string profName)
+        {
+            try
+            {
+                return SystemHost.Results.ReadDeviceRTClass(devCode, profName);
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException<FaultData>(
+                    new FaultData { Device = ComplexParts.Database, Message = ex.Message, TimeStamp = DateTime.Now },
+                    String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+        }
     }
 }

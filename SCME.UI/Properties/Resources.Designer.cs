@@ -412,6 +412,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class by RT.
+        /// </summary>
+        public static string DeviceRTClass {
+            get {
+                return ResourceManager.GetString("DeviceRTClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direct.
         /// </summary>
         public static string Direct {
@@ -561,6 +570,15 @@ namespace SCME.UI.Properties {
         public static string EnterPassword {
             get {
                 return ResourceManager.GetString("EnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error realisation.
+        /// </summary>
+        public static string ErrorRealisation {
+            get {
+                return ResourceManager.GetString("ErrorRealisation", resourceCulture);
             }
         }
         
@@ -772,6 +790,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IDSM, mA.
+        /// </summary>
+        public static string IDSM_mA {
+            get {
+                return ResourceManager.GetString("IDSM_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IGT, mA.
         /// </summary>
         public static string Igt_mA {
@@ -840,6 +867,15 @@ namespace SCME.UI.Properties {
         public static string Irrm_mA {
             get {
                 return ResourceManager.GetString("Irrm_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IRSM, mA.
+        /// </summary>
+        public static string IRSM_mA {
+            get {
+                return ResourceManager.GetString("IRSM_mA", resourceCulture);
             }
         }
         
@@ -1074,6 +1110,15 @@ namespace SCME.UI.Properties {
         public static string NonCorrect {
             get {
                 return ResourceManager.GetString("NonCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No results.
+        /// </summary>
+        public static string NoResults {
+            get {
+                return ResourceManager.GetString("NoResults", resourceCulture);
             }
         }
         
@@ -1979,6 +2024,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UDSM/URSM.
+        /// </summary>
+        public static string UseUdsmUrsm {
+            get {
+                return ResourceManager.GetString("UseUdsmUrsm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to V.
         /// </summary>
         public static string V {
@@ -2002,6 +2056,15 @@ namespace SCME.UI.Properties {
         public static string VdrmV {
             get {
                 return ResourceManager.GetString("VdrmV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VDSM, V.
+        /// </summary>
+        public static string VDSM_V {
+            get {
+                return ResourceManager.GetString("VDSM_V", resourceCulture);
             }
         }
         
@@ -2065,6 +2128,15 @@ namespace SCME.UI.Properties {
         public static string VrrmV {
             get {
                 return ResourceManager.GetString("VrrmV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VRSM, V.
+        /// </summary>
+        public static string VRSM_V {
+            get {
+                return ResourceManager.GetString("VRSM_V", resourceCulture);
             }
         }
         

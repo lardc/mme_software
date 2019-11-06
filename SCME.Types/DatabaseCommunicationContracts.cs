@@ -442,5 +442,9 @@ namespace SCME.Types
         [OperationContract]
         [FaultContract(typeof(FaultData))]
         ProfileItem GetProfileByProfName(string profName, string mmmeCode, ref bool Found);
+        
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        int? ReadDeviceRTClass(string devCode, string profName);
     }
 }
