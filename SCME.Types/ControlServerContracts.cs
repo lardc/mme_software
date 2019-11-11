@@ -349,6 +349,9 @@ namespace SCME.Types
 
         [OperationContract(IsOneWay = true)]
         void SctuHandler(SctuHwState state, SctuTestResults results);
+
+        [OperationContract(IsOneWay = true)]
+        void DbSyncState(DeviceConnectionState state, string message);
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

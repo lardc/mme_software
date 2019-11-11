@@ -19,7 +19,7 @@ namespace SCME.InterfaceImplementations
 
         private AfterSyncResultsRoutine FAfterSyncResultsRoutine;
         private AfterSyncProfilesRoutine FAfterSyncProfilesRoutine;
-        
+
         public SyncService(string databasePath, string mmeCode)
         {
             _mmeCode = mmeCode;
@@ -77,6 +77,9 @@ namespace SCME.InterfaceImplementations
             {
                 using (var centralDbClient = new CentralDatabaseServiceClient())
                 {
+                    Thread.Sleep(5000);
+//                    throw new Exception();
+                    
                     var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
                     serverProfiles.ForEach(m => m.NextGenerationKey = m.ProfileKey);
 

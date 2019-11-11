@@ -1668,6 +1668,11 @@ namespace SCME.UI.IO
         {
         }
 
+        public void DbSyncState(DeviceConnectionState state, string message)
+        {
+            m_QueueWorker.DbSyncState(state, message);
+        }
+
         public void GatewayButtonPressHandler(ComplexButtons Button, bool State)
         {
             m_QueueWorker.AddButtonPressedEvent(Button, State);

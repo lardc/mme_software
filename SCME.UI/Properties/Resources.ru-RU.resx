@@ -807,4 +807,7 @@
   <data name="ErrorRealisation" xml:space="preserve">
     <value>Ошибка реализации</value>
   </data>
+  <data name="Sync" xml:space="preserve">
+    <value>Синхронизация</value>
+  </data>
 </root>

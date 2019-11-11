@@ -25,7 +25,7 @@ namespace SCME.Service
         private static ServiceHost _SQLiteDbServiceHost;
         private static BroadcastCommunication m_Communication;
 
-        internal static bool? IsSyncedWithServer { get; private set; }
+        internal static bool? IsSyncedWithServer { get; set; }
 
         private static void AfterSyncWithServerRoutineHandler(string notSyncedReason)
         {
@@ -138,19 +138,19 @@ _SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());
                 //нам ещё не известно как завершится процесс синхронизации данных, поэтому
                 IsSyncedWithServer = null;
 
-                switch (Settings.Default.IsLocal)
-                {
-                    case true:
-                        //синхронизация отключена, уведомляем UI, что стадия синхронизации баз данных пройдена
-                        AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
-                        break;
-
-                    default:
-                        //запускаем в потоке синхронизацию результатов измерений и профилей 
-                        Results.SyncWithServer(AfterSyncWithServerRoutineHandler);
-                        break;
-                }
-
+//                switch (Settings.Default.IsLocal)
+//                {
+//                    case true:
+//                        //синхронизация отключена, уведомляем UI, что стадия синхронизации баз данных пройдена
+//                        AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
+//                        break;
+//
+//                    default:
+//                        //запускаем в потоке синхронизацию результатов измерений и профилей 
+//                        Results.SyncWithServer(AfterSyncWithServerRoutineHandler);
+//                        break;
+//                }
+                    
                 ms_ControlService = new ExternalControlServer();
                 ms_ControlServiceHost = new ServiceHost(ms_ControlService);
                 ms_ControlServiceHost.Open();

@@ -35,6 +35,7 @@ namespace SCME.Service
         private readonly IoSctu _ioSctu;
         private readonly ThreadService m_Thread;
         private readonly IOTOU m_IOTOU;
+        private readonly IoDbSync _ioDbSync;
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
@@ -108,6 +109,7 @@ namespace SCME.Service
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
+            _ioDbSync = new IoDbSync(m_Communication);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -150,8 +152,10 @@ namespace SCME.Service
 
             try
             {
+                //
+                
                 state = m_IOAdapter.Initialize(m_Param.TimeoutAdapter);
-
+                
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOGateway.Initialize();
 
@@ -199,7 +203,8 @@ namespace SCME.Service
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
-
+                
+                _ioDbSync.Initialize(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
                 //при инициализации оборудования необходимо включить зеленый светодиод (запись 1 в регистр 128 gateway)
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     m_IOGateway.SetGreenLed(true);

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using SCME.Types;
 using SCME.UI.IO;
 
@@ -51,6 +52,9 @@ namespace SCME.UI.PagesCommon
                     break;
                 case ComplexParts.Service:
                     serviceControl.SetConnectionStatus(ConnectionState, Message);
+                    break;
+                case ComplexParts.Sync:
+                    syncControl.SetConnectionStatus(ConnectionState, Message);
                     break;
                 case ComplexParts.Adapter:
                     adapterControl.SetConnectionStatus(ConnectionState, Message);
@@ -105,6 +109,8 @@ namespace SCME.UI.PagesCommon
                     return !internalControl.IsDisabled;
                 case ComplexParts.Service:
                     return !serviceControl.IsDisabled;
+                case ComplexParts.Sync:
+                    return !syncControl.IsDisabled;
                 case ComplexParts.Adapter:
                     return !adapterControl.IsDisabled;
                 case ComplexParts.Gateway:
@@ -146,6 +152,8 @@ namespace SCME.UI.PagesCommon
                     return internalControl.OperationTimeout;
                 case ComplexParts.Service:
                     return serviceControl.OperationTimeout;
+                case ComplexParts.Sync:
+                    return syncControl.OperationTimeout;
                 case ComplexParts.Commutation:
                     return commutationControl.OperationTimeout;
                 case ComplexParts.CommutationEx:

@@ -42,6 +42,13 @@
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xBlue2}"
                                               Logo="{StaticResource ServicePath}" />
+            
+            <customControls:HardwareItem x:Name="syncControl"
+                                         Title="{x:Static res:Resources.Sync}"
+                                         InitializeTimeout="25000" OperationTimeout="25000"
+                                         DisableAvailable="False"
+                                         Backcolor="{StaticResource xBlue2}"
+                                         Logo="{StaticResource SyncPath}" />
 
             <customControls:HardwareItem x:Name="adapterControl"
                                               Title="{x:Static res:Resources.Adapter}" Margin="10"

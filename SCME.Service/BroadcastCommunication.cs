@@ -22,6 +22,11 @@ namespace SCME.Service
             get { return m_Subscribers; }
         }
 
+        public void PostDbSyncState(DeviceConnectionState state, string message)
+        {
+            EnumerateClients(Client => Client.DbSyncState(state, message));
+        }
+        
         public void PostCommonConnectionEvent(DeviceConnectionState State, string Message)
         {
             EnumerateClients(Client => Client.CommonConnectionHandler(State, Message));

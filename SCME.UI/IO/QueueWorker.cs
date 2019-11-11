@@ -424,7 +424,12 @@ namespace SCME.UI.IO
         {
             //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
             Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
-
+            
+//            if(Cache.Net.IsDBSync)
+//                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
+//            else
+//                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionFailed, "Sync error");
+        
             if (Cache.Net.IsModulesInitialized)
                 Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
 
@@ -1011,6 +1016,11 @@ namespace SCME.UI.IO
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
                     Cache.TOU.SetBottomTemp(temperature);
             });
+        }
+
+        public void DbSyncState(DeviceConnectionState state, string message)
+        {
+            m_ActionQueue.Enqueue(delegate { Cache.Welcome.State(ComplexParts.Sync, state, message); });
         }
     }
 }

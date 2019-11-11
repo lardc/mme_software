@@ -832,4 +832,7 @@
   <data name="ErrorRealisation" xml:space="preserve">
     <value>Error realisation</value>
   </data>
+  <data name="Sync" xml:space="preserve">
+    <value>Synchronization</value>
+  </data>
 </root>

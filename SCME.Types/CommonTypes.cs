@@ -76,7 +76,8 @@ namespace SCME.Types
         [EnumMember]
         TOU = 19,
         [EnumMember]
-        Database = 255
+        Database = 255,
+        Sync = 20,
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -322,7 +323,7 @@ namespace SCME.Types
 
             [DataMember]
             public int TimeoutTOU { get; set; }
-
+            
             [DataMember]
             public bool IsATUEnabled { get; set; }
 

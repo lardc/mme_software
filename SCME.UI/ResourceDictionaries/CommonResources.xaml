@@ -51,7 +51,8 @@
     <StreamGeometry x:Key="QrrTqPath">M 0 0 M 0 5 H 10 M 0 0 H 1 L 5 8 L 5.4 7 L 6.8 5.7 L 7.5 5.6 L 10 5.6 </StreamGeometry>
     <StreamGeometry x:Key="RACPath">M 0 20 H 4 V 17.5 H 14 V 22.5 H 4 V 20 M 14 20 H 18 M 7 13 L 8 7.3 M 7.7 7.7 H 9.6 C 9.6,7.7 11.4,8.7 9.5,10.6 H 7.1 M 8.9 10.5 L 10.5 13</StreamGeometry>
     <StreamGeometry x:Key="TOUPath">M 0 0 H 5 L 35 30 H 45 M 0 30 H 15 L 40 0 H 45 </StreamGeometry>
-
+    <StreamGeometry x:Key="SyncPath">M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z</StreamGeometry>
+    
     <sys:Double   x:Key="PathThickness">6</sys:Double>
 
     <FontFamily         x:Key="DefaultFontFamily"       >Helvetica Neue LT Std</FontFamily>
