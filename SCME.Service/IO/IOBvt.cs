@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.Types.BVT;
 
 namespace SCME.Service.IO
 {
@@ -13,6 +14,8 @@ namespace SCME.Service.IO
         private const float EMU_DEFAULT_IDRM = 1.0f;
         private const ushort EMU_DEFAULT_VRRM = 1100;
         private const float EMU_DEFAULT_IRRM = 1.1f;
+        private const float EMU_DEFAULT_IDSM = 4;
+        private const float EMU_DEFAULT_IRSM = 49;
         private const int REQUEST_DELAY_MS = 50;
 
         private readonly IOAdapter m_IOAdapter;
@@ -188,14 +191,25 @@ namespace SCME.Service.IO
                 }
             }
 
+            m_State = DeviceState.InProcess;
+            FireBvtAllEvent(m_State);
+            
             MeasurementLogicRoutine(commParameters);
+            
+            if(m_State != DeviceState.Success)
+                FireBvtAllEvent(m_State);
+            
+            MeasurementLogicRoutineUdsmUrsm(commParameters);
+            
+            m_State = DeviceState.Success;
+            FireBvtAllEvent(m_State);
 
             return m_State;
         }
 
         internal void Stop()
         {
-            CallAction(ACT_STOP);           
+            CallAction(ACT_STOP);
             m_Stop = true;
             m_State = DeviceState.Stopped;
         }
@@ -304,16 +318,16 @@ namespace SCME.Service.IO
                                          "BVT @ReadCalibrationParams begin");
 
             var parameters = new Types.BVT.CalibrationParams
-                {
-                    S1Current1FineN = ReadRegister(REG_S1_CURRENT1_FINE_N, true),
-                    S1Current1FineD = ReadRegister(REG_S1_CURRENT1_FINE_D, true),
-                    S1Current2FineN = ReadRegister(REG_S1_CURRENT2_FINE_N, true),
-                    S1Current2FineD = ReadRegister(REG_S1_CURRENT2_FINE_D, true),
-                    S1Voltage1FineN = ReadRegister(REG_S1_VOLTAGE1_FINE_N, true),
-                    S1Voltage1FineD = ReadRegister(REG_S1_VOLTAGE1_FINE_D, true),
-                    S1Voltage2FineN = ReadRegister(REG_S1_VOLTAGE2_FINE_N, true),
-                    S1Voltage2FineD = ReadRegister(REG_S1_VOLTAGE2_FINE_D, true),
-                };
+            {
+                S1Current1FineN = ReadRegister(REG_S1_CURRENT1_FINE_N, true),
+                S1Current1FineD = ReadRegister(REG_S1_CURRENT1_FINE_D, true),
+                S1Current2FineN = ReadRegister(REG_S1_CURRENT2_FINE_N, true),
+                S1Current2FineD = ReadRegister(REG_S1_CURRENT2_FINE_D, true),
+                S1Voltage1FineN = ReadRegister(REG_S1_VOLTAGE1_FINE_N, true),
+                S1Voltage1FineD = ReadRegister(REG_S1_VOLTAGE1_FINE_D, true),
+                S1Voltage2FineN = ReadRegister(REG_S1_VOLTAGE2_FINE_N, true),
+                S1Voltage2FineD = ReadRegister(REG_S1_VOLTAGE2_FINE_D, true),
+            };
 
             SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Note,
                                          "BVT @ReadCalibrationParams end");
@@ -327,8 +341,7 @@ namespace SCME.Service.IO
 
             try
             {
-                m_State = DeviceState.InProcess;
-                FireBvtAllEvent(m_State);
+                
 
                 WriteRegister(REG_LIMIT_CURRENT, (ushort)(m_Parameters.CurrentLimit * 10));
                 WriteRegister(REG_PLATE_TIME, m_Parameters.PlateTime);
@@ -437,7 +450,6 @@ namespace SCME.Service.IO
                 }
 
                 m_State = internalState;
-                FireBvtAllEvent(m_State);
             }
             catch (Exception ex)
             {
@@ -448,6 +460,147 @@ namespace SCME.Service.IO
                 FireExceptionEvent(ex.Message);
 
                 throw;
+            }
+        }
+
+
+
+        private ushort CalcUdsmUrsmVoltage()
+        {
+            //вычисляет значение напряжения, при котором выполняется тест UDSM/URSM
+            ushort result = (m_Parameters.ClassByProfileName == null) ? (ushort)0 : (ushort)(110 + 100 * m_Parameters.ClassByProfileName);
+
+            return result;
+        }
+
+        private void MeasurementLogicRoutineUdsmUrsm(Types.Commutation.TestParameters Commutation)
+        {
+            //реализация теста UDSM/URSM
+            //это часть группы тестов BVT, он может быть исполнен только после теста BVT MeasurementLogicRoutine. предшедствующий данному тесту UDSM/URSM тест BVT поставляет исходные данные для данного теста
+            //если профиль измерения не предполагает исполнение теста BVT, то и тест UDSM/URSM никогда не будет исполнен
+
+            //проверяем состояние флага UDSM/URSM, исполняем тест UDSM/URSM только если он установлен
+            if (m_Parameters.UseUdsmUrsm)
+            {
+                //для исполнения данного теста блок должен находится в состоянии DS_Powered
+                if (!m_IsBVTEmulation)
+                {
+                    var devState = (Types.BVT.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+
+                    if (devState != Types.BVT.HWDeviceState.PowerReady)
+                        throw new Exception("BVT is not in 'PowerReady' state, UDSM/URSM test is not possible");
+                }
+
+                var internalState = DeviceState.InProcess;
+
+                try
+                {
+                    m_State = DeviceState.InProcess;
+                    
+                    WriteRegister(REG_LIMIT_CURRENT, (ushort)(m_Parameters.UdsmUrsmCurrentLimit * 10));
+                    WriteRegister(REG_PLATE_TIME, m_Parameters.UdsmUrsmPlateTime);
+                    WriteRegister(REG_RAMPUP_RATE, (ushort)(m_Parameters.UdsmUrsmRampUpVoltage * 10));
+                    WriteRegister(REG_START_VOLTAGE, m_Parameters.UdsmUrsmStartVoltage);
+                    WriteRegister(REG_VOLTAGE_FREQUENCY, m_Parameters.UdsmUrsmVoltageFrequency);
+                    WriteRegister(REG_FREQUENCY_DIVISOR, m_Parameters.UdsmUrsmFrequencyDivisor);
+                    WriteRegister(REG_MEASUREMENT_MODE, MEASURE_MODE_I );
+                    
+
+                    if (m_Parameters.UdsmUrsmTestType == Types.BVT.BVTTestType.Both || m_Parameters.UdsmUrsmTestType == Types.BVT.BVTTestType.Direct)
+                    {
+                        FireBvtUdsmUrsmDirectEvent(internalState, m_Result);
+
+                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTD, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                        {
+                            m_State = DeviceState.Fault;
+                            FireBvtAllEvent(m_State);
+                            return;
+                        }
+
+                        ushort VDSM = CalcUdsmUrsmVoltage();
+                        WriteRegister(REG_LIMIT_VOLTAGE, VDSM);
+                        WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_D);
+
+                        CallAction(ACT_START_TEST);
+
+                        m_Result.VDSM = VDSM;
+
+                        if (m_IsBVTEmulation)
+                        {
+                            internalState = DeviceState.Success;
+                            m_Result.IDSM = EMU_DEFAULT_IDSM;
+                        }
+                        else
+                        {
+                            internalState = WaitForEndOfTest();
+                            m_Result.IDSM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                        }
+
+                        FireBvtUdsmUrsmDirectEvent(internalState, m_Result);
+
+                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                        {
+                            m_State = DeviceState.Fault;
+                            FireBvtAllEvent(m_State);
+                            return;
+                        }
+                    }
+                    else
+                        internalState = DeviceState.Success;
+
+                    if ((internalState == DeviceState.Success) && (m_Parameters.UdsmUrsmTestType == Types.BVT.BVTTestType.Both || m_Parameters.UdsmUrsmTestType == Types.BVT.BVTTestType.Reverse))
+                    {
+                        internalState = DeviceState.InProcess;
+                        FireBvtUdsmUrsmReverseEvent(internalState, m_Result);
+
+                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTR, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                        {
+                            m_State = DeviceState.Fault;
+                            FireBvtAllEvent(m_State);
+                            return;
+                        }
+
+                        ushort VRSM = CalcUdsmUrsmVoltage();
+                        WriteRegister(REG_LIMIT_VOLTAGE, VRSM);
+                        WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_R);
+
+                        CallAction(ACT_START_TEST);
+
+                        m_Result.VRSM = VRSM;
+
+                        if (m_IsBVTEmulation)
+                        {
+                            internalState = DeviceState.Success;
+                            m_Result.IRSM = EMU_DEFAULT_IRSM;
+                        }
+                        else
+                        {
+                            internalState = WaitForEndOfTest();
+                            m_Result.IRSM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                        }
+
+                        FireBvtUdsmUrsmReverseEvent(internalState, m_Result);
+                    }
+
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    {
+                        m_State = DeviceState.Fault;
+                        FireBvtAllEvent(m_State);
+                        return;
+                    }
+
+                    m_State = internalState;
+                }
+                catch (Exception ex)
+                {
+                    m_IOCommutation.Switch(Types.Commutation.CommutationMode.None);
+
+                    m_State = DeviceState.Fault;
+                    FireBvtAllEvent(m_State);
+                    FireExceptionEvent(ex.Message);
+
+                    throw;
+                }
             }
         }
 
@@ -475,13 +628,7 @@ namespace SCME.Service.IO
 
             Result.CurrentData =
                 Result.CurrentData.Select(
-                    Value =>
-                    {
-                        if (IsDirect)
-                            return Value < 0 ? Math.Abs(Value) : (short) 0;
-                        else
-                            return Value > 0 ? (short) 0 : Value;
-                    }).ToList();
+                    Value => IsDirect ? (Value < 0 ? Math.Abs(Value) : (short)0) : (Value > 0 ? (short)0 : Value)).ToList();
             Result.VoltageData =
                 Result.VoltageData.Select(
                     Value => IsDirect ? (Value < 0 ? Math.Abs(Value) : (short)0) : (Value > 0 ? (short)0 : Value)).ToList();
@@ -606,6 +753,28 @@ namespace SCME.Service.IO
             m_Communication.PostBVTNotificationEvent(Problem, Warning, Fault, Disable);
         }
 
+        private void FireBvtUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            var message = string.Format("BVT UdsmUrsm direct test state {0}", State);
+
+            if (State == DeviceState.Success)
+                message = string.Format("BVT UdsmUrsm direct test result VDSM={0}, IDSM={1}, ", Result.VDSM, Result.IDRM);
+
+            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Info, message);
+            m_Communication.PostBVTUdsmUrsmDirectEvent(State, Result);
+        }
+
+        private void FireBvtUdsmUrsmReverseEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            var message = string.Format("BVT UdsmUrsm reverse test state {0}", State);
+
+            if (State == DeviceState.Success)
+                message = string.Format("BVT UdsmUrsm reverse test result VRSM={0}, IRSM={1}", Result.VRSM, Result.IRRM);
+
+            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Info, message);
+            m_Communication.PostBVTUdsmUrsmReverseEvent(State, Result);
+        }
+
         private void FireExceptionEvent(string Message)
         {
             SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Error, Message);
@@ -661,3 +830,189 @@ namespace SCME.Service.IO
         #endregion
     }
 }
+
+//        struct BvtInputParameters
+//        {
+//            public BVTTestType TestType { get; set; }
+//            public float CurrentLimit { get; set; }
+//            public ushort PlateTime { get; set; }
+//            public float RampUpVoltage { get; set; }
+//            public ushort StartVoltage { get; set; }
+//            public ushort VoltageFrequency { get; set; }
+//            public ushort FrequencyDivisor { get; set; }
+//            public ushort VoltageLimitD { get; set; }
+//            public ushort VoltageLimitR { get; set;}
+//            public BVTMeasurementMode MeasurementMode { get; set; }
+//
+//            public bool IsUdsmUrsm { get; set; }
+//            
+//        }
+        
+//        private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
+//        {
+//            var internalState = DeviceState.InProcess;
+//            var data = new List<BvtInputParameters>()
+//            {
+//                new BvtInputParameters
+//                {
+//                    TestType = m_Parameters.TestType,
+//                    CurrentLimit = m_Parameters.CurrentLimit,
+//                    PlateTime = m_Parameters.PlateTime,
+//                    RampUpVoltage = m_Parameters.RampUpVoltage,
+//                    StartVoltage = m_Parameters.StartVoltage,
+//                    VoltageFrequency = m_Parameters.VoltageFrequency,
+//                    FrequencyDivisor = m_Parameters.FrequencyDivisor,
+//                    VoltageLimitD = m_Parameters.VoltageLimitD,
+//                    VoltageLimitR = m_Parameters.VoltageLimitR,
+//                    MeasurementMode = m_Parameters.MeasurementMode,
+//                    IsUdsmUrsm = false
+//                }
+//            };
+//            
+//            if(m_Parameters.UseUdsmUrsm)
+//                data.Add(new BvtInputParameters()
+//                {
+//                    TestType = m_Parameters.UdsmUrsmTestType,
+//                    CurrentLimit = m_Parameters.UdsmUrsmCurrentLimit,
+//                    PlateTime = m_Parameters.UdsmUrsmPlateTime,
+//                    RampUpVoltage = m_Parameters.UdsmUrsmRampUpVoltage,
+//                    StartVoltage = m_Parameters.UdsmUrsmStartVoltage,
+//                    VoltageFrequency = m_Parameters.UdsmUrsmVoltageFrequency,
+//                    FrequencyDivisor = m_Parameters.UdsmUrsmFrequencyDivisor,
+//                    VoltageLimitD = m_Parameters.UdsmUrsmVoltageLimitD,
+//                    VoltageLimitR = m_Parameters.UdsmUrsmVoltageLimitR,
+//                    MeasurementMode = BVTMeasurementMode.ModeI,
+//                    IsUdsmUrsm = true
+//                });
+//            
+//
+//            try
+//            {
+//                m_State = DeviceState.InProcess;
+//                FireBvtAllEvent(m_State);
+//
+//                foreach (var i in data)
+//                {
+//                    WriteRegister(REG_LIMIT_CURRENT, (ushort) (i.CurrentLimit * 10));
+//                    WriteRegister(REG_PLATE_TIME, i.PlateTime);
+//                    WriteRegister(REG_RAMPUP_RATE, (ushort) (i.RampUpVoltage * 10));
+//                    WriteRegister(REG_START_VOLTAGE, i.StartVoltage);
+//                    WriteRegister(REG_VOLTAGE_FREQUENCY, i.VoltageFrequency);
+//                    WriteRegister(REG_FREQUENCY_DIVISOR, i.FrequencyDivisor);
+//                    WriteRegister(REG_MEASUREMENT_MODE,
+//                        m_Parameters.MeasurementMode == Types.BVT.BVTMeasurementMode.ModeI
+//                            ? MEASURE_MODE_I
+//                            : MEASURE_MODE_V);
+//
+//                    if (i.TestType == Types.BVT.BVTTestType.Both ||
+//                        i.TestType == Types.BVT.BVTTestType.Direct)
+//                    {
+//                        FireBvtDirectEvent(internalState, m_Result);
+//
+//                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTD, Commutation.CommutationType, Commutation.Position) ==
+//                            DeviceState.Fault)
+//                        {
+//                            m_State = DeviceState.Fault;
+//                            FireBvtAllEvent(m_State);
+//                            return;
+//                        }
+//
+//                        var limitVoltage = i.IsUdsmUrsm ? CalcUdsmUrsmVoltage() : i.VoltageLimitD;
+//                                
+//                        WriteRegister(REG_LIMIT_VOLTAGE, limitVoltage);
+//                        WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_D);
+//
+//                        CallAction(ACT_START_TEST);
+//
+//                        if (!m_IsBVTEmulation)
+//                        {
+//                            internalState = WaitForEndOfTest();
+//
+//                            m_Result.VDRM = (ushort) Math.Abs(ReadRegisterS(REG_RESULT_V));
+//                            m_Result.IDRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+//
+//                            if (m_ReadGraph)
+//                                ReadArrays(m_Result, true);
+//                        }
+//                        else
+//                        {
+//                            internalState = DeviceState.Success;
+//
+//                            m_Result.VDRM = EMU_DEFAULT_VDRM;
+//                            m_Result.IDRM = EMU_DEFAULT_IDRM;
+//                        }
+//
+//                        FireBvtDirectEvent(internalState, m_Result);
+//
+//                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+//                        {
+//                            m_State = DeviceState.Fault;
+//                            FireBvtAllEvent(m_State);
+//                            return;
+//                        }
+//                    }
+//                    else
+//                        internalState = DeviceState.Success;
+//
+//                    if ((internalState == DeviceState.Success)
+//                        && (i.TestType == Types.BVT.BVTTestType.Both ||
+//                            i.TestType == Types.BVT.BVTTestType.Reverse))
+//                    {
+//                        internalState = DeviceState.InProcess;
+//                        FireBvtReverseEvent(internalState, m_Result);
+//
+//                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTR, Commutation.CommutationType, Commutation.Position) ==
+//                            DeviceState.Fault)
+//                        {
+//                            m_State = DeviceState.Fault;
+//                            FireBvtAllEvent(m_State);
+//                            return;
+//                        }
+//
+//                        WriteRegister(REG_LIMIT_VOLTAGE, i.VoltageLimitR);
+//                        WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_TYPE_AC_R);
+//                        CallAction(ACT_START_TEST);
+//
+//                        if (!m_IsBVTEmulation)
+//                        {
+//                            internalState = WaitForEndOfTest();
+//
+//                            m_Result.VRRM = (ushort) Math.Abs(ReadRegisterS(REG_RESULT_V));
+//                            m_Result.IRRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+//
+//                            if (m_ReadGraph)
+//                                ReadArrays(m_Result, false);
+//                        }
+//                        else
+//                        {
+//                            internalState = DeviceState.Success;
+//
+//                            m_Result.VRRM = EMU_DEFAULT_VRRM;
+//                            m_Result.IRRM = EMU_DEFAULT_IRRM;
+//                        }
+//
+//                        FireBvtReverseEvent(internalState, m_Result);
+//                    }
+//
+//                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+//                    {
+//                        m_State = DeviceState.Fault;
+//                        FireBvtAllEvent(m_State);
+//                        return;
+//                    }
+//
+//                    m_State = internalState;
+//                    FireBvtAllEvent(m_State);
+//                }
+//            }
+//            catch (Exception ex)
+//            {
+//                m_IOCommutation.Switch(Types.Commutation.CommutationMode.None);
+//
+//                m_State = DeviceState.Fault;
+//                FireBvtAllEvent(m_State);
+//                FireExceptionEvent(ex.Message);
+//
+//                throw;
+//            }
+//        }

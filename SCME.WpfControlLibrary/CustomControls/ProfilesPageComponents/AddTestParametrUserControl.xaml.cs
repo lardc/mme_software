@@ -23,6 +23,8 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
     /// </summary>
     public partial class AddTestParameterUserControl : UserControl
     {
+        public bool IsReadOnly { get; set; }
+        
         public event Action AddTestParametersEvent;
 
         public AddTestParameterUserControl()

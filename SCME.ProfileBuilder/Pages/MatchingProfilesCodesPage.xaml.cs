@@ -96,13 +96,7 @@ namespace SCME.ProfileBuilder.Pages
         
         #endregion
         
-        private void NavigateToConnectPage_OnClick(object sender, RoutedEventArgs e)
-        {
-            if(Cache.ProfilesPage == null)
-                Cache.ProfilesPage = new ProfilesPage(_dbService, Properties.Settings.Default.LastSelectedMMECode);
-            NavigationService?.Navigate(Cache.ProfilesPage);
-        }
-        
+       
         private void NavigateBack_OnClick(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();

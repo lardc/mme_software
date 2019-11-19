@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using SCME.Types.BaseTestParams;
+using SCME.Types.BVT;
 using SCME.Types.Clamping;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
@@ -352,6 +353,11 @@ namespace SCME.Types
 
         [OperationContract(IsOneWay = true)]
         void DbSyncState(DeviceConnectionState state, string message);
+
+        [OperationContract(IsOneWay = true)]
+        void BVTUdsmUrsmDirectHandler(DeviceState state, TestResults result);
+        [OperationContract(IsOneWay = true)]
+        void BVTUdsmUrsmReverseHandler(DeviceState state, TestResults result);
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

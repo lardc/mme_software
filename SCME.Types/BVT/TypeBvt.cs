@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Windows;
 using PropertyChanged;
 using SCME.Types.BaseTestParams;
 
@@ -85,8 +86,48 @@ namespace SCME.Types.BVT
 //    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
+     
+        [DataMember]
+        public BVTTestType UdsmUrsmTestType { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmPulseFrequency{ get; set; }
+        
+        [DataMember]
+        public float UdsmUrsmCurrentLimit{ get; set; }
+        
+        [DataMember]
+        public float UdsmUrsmRampUpVoltage{ get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmStartVoltage { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmVoltageFrequency { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmFrequencyDivisor { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmVoltageLimitR { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmVoltageLimitD { get; set; }
+        
+        [DataMember]
+        public ushort UdsmUrsmPlateTime { get; set; }
+        
+        
+        [DataMember]
+        public float UdsmUrsmIDRM { get; set; }
+
+        [DataMember]
+        public float UdsmUrsmIRRM { get; set; }
+        
+
         [DataMember]
         public bool UseUdsmUrsm { get; set; }
+        
         [DataMember]
         public int? ClassByProfileName { get; set; }
         
@@ -141,6 +182,10 @@ namespace SCME.Types.BVT
             if (oldParameters == null)
                 throw new InvalidCastException("oldParametersBase must be bvtOldParameters");
 
+            if (UseUdsmUrsm != oldParameters.UseUdsmUrsm)
+                return true;
+            if (PulseFrequency != oldParameters.PulseFrequency)
+                return true;
             if (MeasurementMode != oldParameters.MeasurementMode)
                 return true;
             if (VoltageLimitD != oldParameters.VoltageLimitD)
@@ -169,6 +214,31 @@ namespace SCME.Types.BVT
                 return true;
             if (IRRM.CompareTo(oldParameters.IRRM) != 0)
                 return true;
+            
+            if (UdsmUrsmPulseFrequency != oldParameters.UdsmUrsmPulseFrequency)
+                return true;    
+            if (UdsmUrsmVoltageLimitD != oldParameters.VoltageLimitD)
+                return true;
+            if (UdsmUrsmVoltageLimitR != oldParameters.VoltageLimitR)
+                return true;
+            if (UdsmUrsmCurrentLimit.CompareTo(oldParameters.CurrentLimit) != 0)
+                return true;
+            if (UdsmUrsmPlateTime != oldParameters.PlateTime)
+                return true;
+            if (UdsmUrsmRampUpVoltage.CompareTo(oldParameters.RampUpVoltage) != 0)
+                return true;
+            if (UdsmUrsmStartVoltage != oldParameters.StartVoltage)
+                return true;
+            if (UdsmUrsmVoltageFrequency != oldParameters.VoltageFrequency)
+                return true;
+            if (UdsmUrsmFrequencyDivisor != oldParameters.FrequencyDivisor)
+                return true;
+            if (UdsmUrsmTestType != oldParameters.TestType)
+                return true;
+            if (UdsmUrsmIDRM.CompareTo(oldParameters.IDRM) != 0)
+                return true;
+            if (UdsmUrsmIRRM.CompareTo(oldParameters.IRRM) != 0)
+                return true;
 
             return false;
         }
@@ -176,21 +246,26 @@ namespace SCME.Types.BVT
         public TestParameters()
         {
             IsEnabled = false;
-            TestType = BVTTestType.Reverse;
+            UdsmUrsmTestType = TestType = BVTTestType.Reverse;
             MeasurementMode = BVTMeasurementMode.ModeV;
-            VoltageLimitD = 1000;
-            VoltageLimitR = 1000;
-            CurrentLimit = 5;
-            PlateTime = 1000;
-            RampUpVoltage = 2;
-            StartVoltage = 500;
-            VoltageFrequency = 50;
-            FrequencyDivisor = 1;
+            UdsmUrsmVoltageLimitD =VoltageLimitD = 1000;
+            UdsmUrsmVoltageLimitR =VoltageLimitR = 1000;
+            UdsmUrsmCurrentLimit =CurrentLimit = 5;
+            UdsmUrsmPlateTime =PlateTime = 1000;
+            UdsmUrsmRampUpVoltage =RampUpVoltage = 2;
+            UdsmUrsmStartVoltage =StartVoltage = 500;
+            UdsmUrsmVoltageFrequency =VoltageFrequency = 50;
+            UdsmUrsmFrequencyDivisor = FrequencyDivisor = 1;
             VDRM = 1400;
             VRRM = 1400;
-            IDRM = 5;
-            IRRM = 5;
+            UdsmUrsmIDRM =IDRM = 5;
+            UdsmUrsmIRRM = IRRM = 5;
+            
+
             TestParametersType = TestParametersType.Bvt;
+
+
+
         }
 
         public object Clone()
@@ -214,12 +289,20 @@ namespace SCME.Types.BVT
         [DataMember]
         public float IRRM { get; set; }
 
+        
+        [DataMember]
+        public float UdsmUrsmIDRM { get; set; }
+
+        [DataMember]
+        public float UdsmUrsmIRRM { get; set; }
+        
+        
         public ResultNormatives()
         {
             VDRM = 1400;
             VRRM = 1400;
-            IDRM = 5;
-            IRRM = 5;
+            UdsmUrsmIDRM = IDRM = 5;
+            UdsmUrsmIRRM = IRRM = 5;
         }
     }
 

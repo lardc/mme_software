@@ -28,13 +28,17 @@ namespace SCME.WpfControlLibrary.Pages
 
         public event Action PreviewGoBackAction;
 
-        public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false)
+        public ProfilesPage(IDbService dbService, string mmeCode , bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false)
         {
             if (dbService == null) throw new ArgumentNullException(nameof(dbService));
             if (mmeCode == null) throw new ArgumentNullException (nameof(mmeCode));
 //            if (mmeCode.Trim() == "")  throw new ArgumentException (nameof(mmeCode)); 
 
+            ProfileVm.IsSingleMmeCode = isSingleMmeCode;
             InitializeComponent();
+            
+            AddTestParameterUserControl.IsReadOnly =ProfileVm.ReadOnlyMode = readOnlyMode;
+            
             _dbService = dbService;
             _isWithoutChild = isWithoutChild;
 
@@ -208,6 +212,8 @@ namespace SCME.WpfControlLibrary.Pages
         
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
+            ProfileVm.SelectedProfile = null;
+            ProfileVm.ProfileDeepDataCopy = null;
             PreviewGoBackAction?.Invoke();
             NavigationService?.GoBack();            
         }

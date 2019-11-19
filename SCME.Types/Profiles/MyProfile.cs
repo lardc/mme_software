@@ -26,7 +26,7 @@ namespace SCME.Types.Profiles
         [DataMember]
         public Clamping.ClampingForce ClampingForce { get; set; }
         [DataMember]
-        public float ParameterClamp { get; set; }
+        public float ParameterClamp { get; set; } = 5;
         [DataMember]
         public bool IsHeightMeasureEnabled { get; set; }
         [DataMember]
@@ -108,21 +108,38 @@ namespace SCME.Types.Profiles
         // ReSharper disable once NonReadonlyMemberInGetHashCode
         public override int GetHashCode() => Id;
 
-//        public class ProfileBuIdEqualityComparer : IEqualityComparer<MyProfile>
-//        {
-//            public bool Equals(MyProfile p1, MyProfile p2)
-//            {
-//                if (p2 == null && p1 == null)
-//                    return true;
-//                if (p1 == null || p2 == null)
-//                    return false;
-//                return p1.Id == p2.Id;
-//            }
-//
-//            public int GetHashCode(MyProfile p)
-//            {
-//                return p.Id;
-//            }
-//        }
+        public class ProfileByKeyEqualityComparer : IEqualityComparer<MyProfile>
+        {
+            public bool Equals(MyProfile p1, MyProfile p2)
+            {
+                if (p2 == null && p1 == null)
+                    return false;
+                if (p1 == null || p2 == null)
+                    return false;
+                return p1.Key == p2.Key;
+            }
+
+            public int GetHashCode(MyProfile p)
+            {
+                return p.Key.GetHashCode();
+            }
+        }
+        
+        public class ProfileByVersionTimeEqualityComparer : IEqualityComparer<MyProfile>
+        {
+            public bool Equals(MyProfile p1, MyProfile p2)
+            {
+                if (p2 == null && p1 == null)
+                    return false;
+                if (p1 == null || p2 == null)
+                    return false;
+                return p1.Name == p2.Name && p1.Version == p2.Version && p1.Timestamp == p2.Timestamp;
+            }
+
+            public int GetHashCode(MyProfile p)
+            {
+                return p.Key.GetHashCode();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -50,7 +51,25 @@ namespace SCME.UI.PagesUser
                 Cache.ProfileEdit.ClearFilter();
                 Cache.ProfileSelection.InitFilter();
                 Cache.ProfileSelection.InitSorting();
-                NavigationService.Navigate(Cache.ProfileSelection);
+                //NavigationService.Navigate(Cache.ProfileSelection);
+                Cache.ProfilesPageSelectForTest.ProfileVm.NextAction = () =>
+                {
+                    Cache.UserTest.Profile = Cache.ProfilesPageSelectForTest.ProfileVm.SelectedProfile.ToProfile();
+
+                    //запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
+                    Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
+
+                    if (NavigationService != null)
+                    {
+                        Cache.UserTest.InitSorting();
+                        Cache.UserTest.InitTemp();
+                        NavigationService.Navigate(Cache.UserTest);
+                    }
+
+                    Debug.Assert(Cache.ProfilesPageSelectForTest.NavigationService != null, "Cache.ProfilesPageSelectForTest.NavigationService != null");
+                    Cache.ProfilesPageSelectForTest.NavigationService.Navigate(Cache.UserTest);
+                };
+                NavigationService.Navigate(Cache.ProfilesPageSelectForTest);
             }
             else
                 lblIncorrect.Content = Properties.Resources.PasswordIncorrect;

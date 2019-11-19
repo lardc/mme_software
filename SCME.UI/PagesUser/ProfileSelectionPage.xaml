@@ -6,6 +6,7 @@
       xmlns:ui="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:profilesPageComponents="WpfControlLibrary"
       mc:Ignorable="d"
       d:DesignWidth="1280" d:DesignHeight="924"
       Name="MyUserPage" Title="{x:Static res:Resources.UserPage_Title}"
@@ -244,6 +245,10 @@
                 </Grid>
             </Border>
 
+            
+            <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="False" ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
+            VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.ScrollUnit="Pixel" />
+            
             <customControl:ListViewTestParametersSelection Margin="50,10,15,10"  IsButtonDeleteVisible="False"
                 x:Name="TestParameters" ItemsSource="{Binding SelectedItem.TestParametersAndNormatives, ElementName=profilesList}" MaxHeight="500"/>
             <Border x:Name="borderHeight" BorderBrush="{StaticResource xWhite1}"

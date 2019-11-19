@@ -31,6 +31,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("SL_HeatEn", "SL_HeatEn", false),
             ("SL_RampHeatCurrent", "SL_RampHeatCurrent", false),
             ("SL_RampHeatTime", "SL_RampHeatTime", false),
+            
             ("BVT_En", "BVT_En", true),
             ("BVT_Type", "BVT_Type", false),
             ("BVT_I", "BVT_I", false),
@@ -44,6 +45,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_PlateTime", "BVT_PlateTime", true),
             ("BVT_UseUdsmUrsm", "BVT_UseUdsmUrsm", true),
             ("BVT_PulseFrequency", "BVT_PulseFrequency", true),
+            
+            ("BVT_UdsmUrsm_Type", "BVT_UdsmUrsm_Type", false),
+            ("BVT_UdsmUrsm_I", "BVT_UdsmUrsm_I", false),
+            ("BVT_UdsmUrsm_VD", "BVT_UdsmUrsm_VD", false),
+            ("BVT_UdsmUrsm_VR", "BVT_UdsmUrsm_VR", false),
+            ("BVT_UdsmUrsm_RumpUp", "BVT_UdsmUrsm_RumpUp", true),
+            ("BVT_UdsmUrsm_StartV", "BVT_UdsmUrsm_StartV", true),
+            ("BVT_UdsmUrsm_F", "BVT_UdsmUrsm_F", false),
+            ("BVT_UdsmUrsm_FD", "BVT_UdsmUrsm_FD", false),
+            ("BVT_UdsmUrsm_PlateTime", "BVT_UdsmUrsm_PlateTime", true),
+            ("BVT_UdsmUrsm_PulseFrequency", "BVT_UdsmUrsm_PulseFrequency", true),
+            
             ("COMM_Type", "COMM_Type", true),
             ("CLAMP_Type", "CLAMP_Type", true),
             ("CLAMP_Force", "CLAMP_Force", true),
@@ -87,6 +100,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("VRRM", "VRRM, V", false),
             ("IDRM", "IDRM, mA", false),
             ("IRRM", "IRRM, mA", false),
+            
+            ("UdsmUrsm_IDRM", "UdsmUrsm_IDRM, A", false),
+            ("UdsmUrsm_IRRM", "UdsmUrsm_IRRM, A", false),
+            
             ("IsHeightOk", "IsHeightOk", false),
             ("UBR", "UBR, V", false),
             ("UPRSM", "UPRSM, V", false),

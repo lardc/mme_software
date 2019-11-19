@@ -597,6 +597,62 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "BVT_PlateTime":
                         testParams.PlateTime = UInt16.Parse(result.Value.ToString());
                         break;
+                    
+                    
+                    
+                    case "BVT_UdsmUrsm_PulseFrequency":
+                        testParams.UdsmUrsmPulseFrequency = Convert.ToUInt16(result.Value);
+                        break;
+
+                    case "BVT_UdsmUrsm_Type":
+                        testParams.UdsmUrsmTestType = (BVTTestType) (Enum.Parse(typeof(BVTTestType), result.Value.ToString()));
+                        break;
+
+                    case "BVT_UdsmUrsm_I":
+                        testParams.UdsmUrsmCurrentLimit = float.Parse(result.Value.ToString());
+                        break;
+
+                    case "BVT_UdsmUrsm_RumpUp":
+                        testParams.UdsmUrsmRampUpVoltage = float.Parse(result.Value.ToString());
+                        break;
+
+                    case "BVT_UdsmUrsm_StartV":
+                        testParams.UdsmUrsmStartVoltage = UInt16.Parse(result.Value.ToString());
+                        break;
+
+                    case "BVT_UdsmUrsm_F":
+                        testParams.UdsmUrsmVoltageFrequency = UInt16.Parse(result.Value.ToString());
+                        break;
+
+                    case "BVT_UdsmUrsm_FD":
+                        testParams.UdsmUrsmFrequencyDivisor = UInt16.Parse(result.Value.ToString());
+                        break;
+
+                    case "BVT_UdsmUrsm_VR":
+                        switch (testParams.TestType)
+                        {
+                            case BVTTestType.Both:
+                            case BVTTestType.Reverse:
+                                testParams.UdsmUrsmVoltageLimitR = UInt16.Parse(result.Value.ToString());
+                                break;
+                        }
+
+                        break;
+
+                    case "BVT_UdsmUrsm_VD":
+                        switch (testParams.TestType)
+                        {
+                            case BVTTestType.Both:
+                            case BVTTestType.Direct:
+                                testParams.UdsmUrsmVoltageLimitD = UInt16.Parse(result.Value.ToString());
+                                break;
+                        }
+
+                        break;
+
+                    case "BVT_UdsmUrsm_PlateTime":
+                        testParams.UdsmUrsmPlateTime = UInt16.Parse(result.Value.ToString());
+                        break;
                 }
             }
 
@@ -627,6 +683,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "IDRM":
                         if (result.Item3.HasValue)
                             parameters.IDRM = Convert.ToUInt16(result.Item3.Value);
+                        break;
+                    
+                    case "UdsmUrsm_IRRM":
+                        if (result.Item3.HasValue)
+                            parameters.UdsmUrsmIRRM = Convert.ToUInt16(result.Item3.Value);
+                        break;
+                    case "UdsmUrsm_IDRM":
+                        if (result.Item3.HasValue)
+                            parameters.UdsmUrsmIDRM = Convert.ToUInt16(result.Item3.Value);
                         break;
                 }
             }

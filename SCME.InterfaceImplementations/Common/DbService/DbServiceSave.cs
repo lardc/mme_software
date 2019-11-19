@@ -168,6 +168,41 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     bvtParameters.Add("IDRM", (DBNull.Value, bvt.IDRM));
             }
 
+            if (bvt.UseUdsmUrsm)
+            {
+                foreach (var i in new Dictionary<string, object>()
+                {
+                    {"BVT_UdsmUrsm_Type", bvt.UdsmUrsmTestType},
+                    {"BVT_UdsmUrsm_I", bvt.UdsmUrsmCurrentLimit},
+                    {"BVT_UdsmUrsm_RumpUp", bvt.UdsmUrsmRampUpVoltage},
+                    {"BVT_UdsmUrsm_StartV", bvt.UdsmUrsmStartVoltage},
+                    {"BVT_UdsmUrsm_F", bvt.UdsmUrsmVoltageFrequency},
+                    {"BVT_UdsmUrsm_FD", bvt.UdsmUrsmFrequencyDivisor},
+                    {"BVT_UdsmUrsm_PlateTime", bvt.UdsmUrsmPlateTime},
+                    {"BVT_UdsmUrsm_PulseFrequency", bvt.UdsmUrsmPulseFrequency},
+                })
+                    bvtCondition.Add(i.Key, i.Value);
+
+                switch (bvt.UdsmUrsmTestType)
+                {
+                    case Types.BVT.BVTTestType.Both:
+                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        break;
+                    case Types.BVT.BVTTestType.Direct:
+                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        break;
+                    case Types.BVT.BVTTestType.Reverse:
+                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        break;
+                }
+
+                bvtParameters.Add("UdsmUrsm_IRRM", (DBNull.Value, bvt.UdsmUrsmIRRM));
+
+                if (bvt.UdsmUrsmTestType != Types.BVT.BVTTestType.Reverse)
+                    bvtParameters.Add("UdsmUrsm_IDRM", (DBNull.Value, bvt.UdsmUrsmIDRM));
+            }
+
             return ("BVT", bvtCondition, bvtParameters);
         }
 
@@ -290,21 +325,20 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                 _deleteAllMmeCodeToProfileByMmeCode.Transaction = _dbTransaction;
                 _deleteMmeCode.Transaction = _dbTransaction;
-                
+
                 _deleteAllMmeCodeToProfileByMmeCode.ExecuteNonQuery();
                 _deleteMmeCode.ExecuteNonQuery();
-                
+
                 _dbTransaction.Commit();
 
-                
+
                 //Only mmeCode = empty string 
-                var profiles =_cacheProfilesByMmeCode[string.Empty];
+                var profiles = _cacheProfilesByMmeCode[string.Empty];
                 foreach (var i in profiles)
                 {
                     _cacheProfileById.TryGetValue(i.Id, out var profile);
                     profile?.MmeCodes?.Remove(mmeCode);
                 }
-
             }
             catch (Exception e)
             {
@@ -338,7 +372,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _mmeCodeToProfileInsert.Parameters["@PROFILE_ID"].Value = profileId;
                 _mmeCodeToProfileInsert.Parameters["@MME_CODE"].Value = mmeCode;
                 _mmeCodeToProfileInsert.Transaction = dbTransaction;
-                _mmeCodeToProfileInsert.ExecuteNonQuery();   
+                _mmeCodeToProfileInsert.ExecuteNonQuery();
             }
 
             _cacheProfileById.TryGetValue(profileId, out var profile);
@@ -357,7 +391,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _insertMmeCode.Parameters["@MME_CODE"].Value = mmeCode;
             _insertMmeCode.ExecuteNonQuery();
         }
-        
+
         private int InsertProfile(MyProfile profile)
         {
             _profileInsert.Parameters["@PROF_NAME"].Value = profile.Name;
@@ -443,10 +477,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _dbTransaction = Connection.BeginTransaction();
 
                 List<string> mmeCodes;
-                
+
                 if (oldProfile != null)
                 {
-                    mmeCodes = GetMmeCodesByProfile(oldProfile,_dbTransaction);
+                    mmeCodes = GetMmeCodesByProfile(oldProfile, _dbTransaction);
                     foreach (var i in mmeCodes)
                         RemoveMmeCodeToProfile(oldProfile.Id, i, _dbTransaction);
                 }
@@ -455,26 +489,26 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                 var id = SaveProfile(newProfile);
                 foreach (var i in mmeCodes)
-                    InsertMmeCodeToProfile(id, i,_dbTransaction);    
-                
-                
+                    InsertMmeCodeToProfile(id, i, _dbTransaction);
+
+
                 _dbTransaction.Commit();
 
-                
-                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile){IsChildLoad = true, IsDeepLoad = true};
+
+                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile) {IsChildLoad = true, IsDeepLoad = true};
                 foreach (var i in mmeCodes)
-                    if(_cacheProfilesByMmeCode.ContainsKey(i))
+                    if (_cacheProfilesByMmeCode.ContainsKey(i))
                         _cacheProfilesByMmeCode[i]?.Add(newProfile);
-                
+
                 // ReSharper disable once InvertIf
                 if (oldProfile != null)
                 {
                     _cacheProfileById.Remove(oldProfile.Id);
                     foreach (var i in mmeCodes)
-                        if(_cacheProfilesByMmeCode.ContainsKey(i))
-                        _cacheProfilesByMmeCode[mmeCode]?.Remove(oldProfile);    
-                    
-                    
+                        if (_cacheProfilesByMmeCode.ContainsKey(i))
+                            _cacheProfilesByMmeCode[mmeCode]?.Remove(oldProfile);
+
+
                     if (newProfile.Name.Equals(oldProfile.Name))
                     {
                         newProfile.Children.Add(oldProfile);
@@ -488,7 +522,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 return id;
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
                 _dbTransaction.Rollback();

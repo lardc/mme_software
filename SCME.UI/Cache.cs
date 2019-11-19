@@ -32,12 +32,16 @@ namespace SCME.UI
         private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
         private static ProfilesPage _profilesPage;
+        private static ProfilesPage _profilesPageSelectForTest;
 
 
         internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true));
 
+        internal static ProfilesPage ProfilesPageSelectForTest => _profilesPageSelectForTest ?? (_profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true, true));
+                                                                      
+
         public static MainWindow Main { get; set; }
-        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy();
+        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy("LocalDatabase");
 
         internal static ControlLogic Net { get; set; }
 

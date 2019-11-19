@@ -10,7 +10,9 @@ namespace SCME.Types
 {
     public class DatabaseProxy : ClientBase<IDbService>, IDbService
     {
-        public DatabaseProxy() : base("LocalDatabase")
+  
+        
+        public DatabaseProxy(string name) : base(name)
         {
         }
 
@@ -27,7 +29,6 @@ namespace SCME.Types
             }
             catch (Exception e)
             {
-                Thread.Sleep(50000999);
                 Console.WriteLine(e);
                 throw;
             }

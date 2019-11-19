@@ -19,6 +19,11 @@
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
     <Converters:TypeTestParameterToString x:Key="TP2S" />
     
+    <Converters:BvtVrrmToVisibilityConverter x:Key="Vrrm2V" />
+    <Converters:BvtVdrmToVisibilityConverter x:Key="Vdrm2V" />
+    <Converters:BvtIrrmToVisibilityConverter x:Key="Irrm2V" />
+    <Converters:BvtIdrmToVisibilityConverter x:Key="Idrm2V" />
+    <Converters:BvtUdsmUrsmIdrmToVisibilityConverter x:Key="IdrmUdsmUrsm2V" />
 
 
 </ResourceDictionary>

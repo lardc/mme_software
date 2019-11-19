@@ -22,6 +22,8 @@
     <ObjectDataProvider x:Key="ClampingForceTypes" MethodName="GetClampingForceTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    
+    
     <ObjectDataProvider x:Key="FrequencyDivisors" MethodName="GetFrequencyDivisors" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
     

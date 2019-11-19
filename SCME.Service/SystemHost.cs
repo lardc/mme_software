@@ -79,7 +79,7 @@ namespace SCME.Service
                 JournalMode = SQLiteJournalModeEnum.Truncate,
                 FailIfMissing = true
             }.ToString())));
-_SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());
+            _SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());
     
             try
             {

@@ -657,6 +657,31 @@ namespace SCME.InterfaceImplementations
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
                             InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", trans);
                     }
+                    
+                    if (result.BVTTestParameters[i].UseUdsmUrsm)
+                    {
+                        //результаты теста UDSM/URSM
+                        switch (result.BVTTestParameters[i].TestType)
+                        {
+                            case BVTTestType.Both:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", trans);
+
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", trans);
+                                break;
+
+                            case BVTTestType.Direct:
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", trans);
+                                break;
+
+                            case BVTTestType.Reverse:
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", trans);
+                                break;
+                        }
+                    }
                 }
             }
         }

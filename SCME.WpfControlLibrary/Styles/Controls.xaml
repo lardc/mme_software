@@ -21,8 +21,9 @@
                     xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
 
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Label.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/CheckBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml" />
@@ -32,20 +33,11 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TreeViewItemProfile.xaml" />
 
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
+        
     </ResourceDictionary.MergedDictionaries>
 
 
-    <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
+   
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />

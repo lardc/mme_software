@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SCME.Types;
+using SCME.Types.BVT;
 
 namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
 {
@@ -24,10 +26,6 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
         {
             InitializeComponent();
         }
-
-        private void Button_OnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using SCME.DatabaseServer.Properties;
 using SCME.InterfaceImplementations;
+using SCME.InterfaceImplementations.NewImplement.MSSQL;
 using SCME.Types.Utils;
 
 namespace SCME.DatabaseServer
@@ -12,6 +14,8 @@ namespace SCME.DatabaseServer
     internal static class SystemHost
     {
         private static ServiceHost ms_ServiceHost;
+        
+        private static ServiceHost _databaseServiceHost;
 
         internal static LogJournal Journal { get; private set; }
 
@@ -35,18 +39,18 @@ namespace SCME.DatabaseServer
                 return;
             }
 
-            try
-            {
-                SQLDatabaseService dbForMigration = new SQLDatabaseService(SQLCentralDatabaseService.GetConnectionStringFromSettings(Settings.Default));
-                dbForMigration.Open();
-                dbForMigration.Migrate();
-                dbForMigration.Close();
-            }
-            catch (Exception ex)
-            {
-                Journal.AppendLog("Central DB SQL SERVER migration", LogJournalMessageType.Error, String.Format("Migrate database error: {0}", ex.Message));
-                return;
-            }
+//            try
+//            {
+//                SQLDatabaseService dbForMigration = new SQLDatabaseService(SQLCentralDatabaseService.GetConnectionStringFromSettings(Settings.Default));
+//                dbForMigration.Open();
+//                dbForMigration.Migrate();
+//                dbForMigration.Close();
+//            }
+//            catch (Exception ex)
+//            {
+//                Journal.AppendLog("Central DB SQL SERVER migration", LogJournalMessageType.Error, String.Format("Migrate database error: {0}", ex.Message));
+//                return;
+//            }
 
             try
             {
@@ -60,9 +64,29 @@ namespace SCME.DatabaseServer
                     $"Error starting database service: {ex.Message}");
                 return;
             }
+            
+            try
+            {
+                _databaseServiceHost = new ServiceHost( new MSSQLDbService(new  SqlConnection(new SqlConnectionStringBuilder()
+                {
+                    DataSource = Settings.Default.DbPath,
+                    InitialCatalog = Settings.Default.DBName,
+                    IntegratedSecurity = Settings.Default.DBIntegratedSecurity,
+                    UserID = Settings.Default.DBUser,
+                    Password = Settings.Default.DBPassword,
+                    ConnectTimeout = 5
+                }.ToString())));
+                _databaseServiceHost.Open();
+            }
+            catch (Exception ex)
+            {
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Error,
+                    $"Error starting database service: {ex.Message}");
+                return;
+            }
 
             Journal.AppendLog("SystemHost", LogJournalMessageType.Info,
-                $"SCME database service started on {ms_ServiceHost.BaseAddresses.FirstOrDefault()}");
+                $"SCME database service started on {_databaseServiceHost.BaseAddresses.FirstOrDefault()}");
         }
 
         internal static void StopService()
@@ -77,6 +101,16 @@ namespace SCME.DatabaseServer
                         ms_ServiceHost.Close();
 
                     ms_ServiceHost = null;
+                }
+                
+                if (_databaseServiceHost != null)
+                {
+                    if (_databaseServiceHost.State != CommunicationState.Opened)
+                        _databaseServiceHost.Abort();
+                    else
+                        _databaseServiceHost.Close();
+
+                    _databaseServiceHost = null;
                 }
             }
             catch (Exception ex)

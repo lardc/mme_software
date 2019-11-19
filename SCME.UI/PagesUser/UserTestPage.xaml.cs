@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -20,6 +21,7 @@ using SCME.Types.Profiles;
 using SCME.UI.Annotations;
 using SCME.UI.CustomControl;
 using SCME.UI.Properties;
+using SCME.WpfControlLibrary.Commands;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
@@ -3080,6 +3082,9 @@ namespace SCME.UI.PagesUser
             {
                 OnLeaveNotify();
 
+                Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
+                NavigationService.GoBack();
+                return;
                 switch (Cache.WorkMode)
                 {
                     //в режиме наладчика и в режиме специальных измерений возвращаемся к редактированию профиля, иначе к выбору профиля без возможности редактирования

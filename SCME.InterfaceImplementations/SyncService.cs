@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading;
+using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
+using SCME.Types.Profiles;
 
 namespace SCME.InterfaceImplementations
 {
@@ -19,9 +22,11 @@ namespace SCME.InterfaceImplementations
 
         private AfterSyncResultsRoutine FAfterSyncResultsRoutine;
         private AfterSyncProfilesRoutine FAfterSyncProfilesRoutine;
-
+        private SQLiteDbService _sqLiteDbService;
+        
         public SyncService(string databasePath, string mmeCode)
         {
+            _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(databasePath));
             _mmeCode = mmeCode;
             _connection = new SQLiteConnection(databasePath, false);
             _connection.Open();
@@ -75,9 +80,28 @@ namespace SCME.InterfaceImplementations
         {
             try
             {
+                using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
+                {
+                    var localProfiles = _sqLiteDbService.GetProfilesDeepByMmeCode(_mmeCode);
+                    var centralProfiles = msSqlDbService.GetProfilesDeepByMmeCode(_mmeCode);
+                    
+                    var deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+                    var addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+                    
+                    foreach (var i in deletingProfiles)
+                        _sqLiteDbService.RemoveProfile(i, _mmeCode);
+
+                    if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
+                        _sqLiteDbService.InsertMmeCode(_mmeCode);
+                    
+                    foreach (var i in addingProfiles)
+                        _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
+                        
+                    return;
+                }
                 using (var centralDbClient = new CentralDatabaseServiceClient())
                 {
-                    Thread.Sleep(5000);
+//                    Thread.Sleep(5000);
 //                    throw new Exception();
                     
                     var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);

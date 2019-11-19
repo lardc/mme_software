@@ -226,6 +226,20 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="1" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
@@ -380,6 +394,10 @@
                             </MultiBinding>
                         </Label.Visibility>
                     </Label>
+                    
+                    <CheckBox Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />
+                    
+                    
 
                     <Label Name="labelFault" Grid.Row="21" Grid.ColumnSpan="2" Grid.Column="1" Content="Fault" Padding="10" Height="Auto" Background="Tomato" />
                     <Label Name="labelWarning" Grid.Row="22" Grid.ColumnSpan="2" Grid.Column="1" Content="Warning" Padding="10" Height="Auto" Background="Gold" />

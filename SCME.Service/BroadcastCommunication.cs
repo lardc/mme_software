@@ -152,6 +152,16 @@ namespace SCME.Service
         {
             EnumerateClients(Client => Client.BVTNotificationHandler(Problem, Warning, Fault, Disable));
         }
+        
+        public void PostBVTUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            EnumerateClients(Client => Client.BVTUdsmUrsmDirectHandler(State, Result));
+        }
+
+        public void PostBVTUdsmUrsmReverseEvent(DeviceState State, Types.BVT.TestResults Result)
+        {
+            EnumerateClients(Client => Client.BVTUdsmUrsmReverseHandler(State, Result));
+        }
 
         public void PostClampingSwitchEvent(Types.Clamping.SqueezingState SQState, IList<float> ArrayF, IList<float> ArrayFd)
         {
