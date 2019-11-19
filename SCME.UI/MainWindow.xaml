@@ -92,7 +92,7 @@
                        VerticalContentAlignment="Center"/>
 
                     <Label Grid.Column="1" Grid.Row="0"
-                       Name="deviceLable" Content="MME005"
+                       Name="deviceLable" Content="{Binding MmeCode}"
                        FontSize="28" Margin="0,0,15,0"
                        HorizontalAlignment="Right" />
 

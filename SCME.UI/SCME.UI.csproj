@@ -547,7 +547,6 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>powershell New-Item -ItemType Directory -Path "../bin/Logs" -Force
-powershell Compress-Archive -Path "../bin" -DestinationPath "../bin.zip" -Force
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

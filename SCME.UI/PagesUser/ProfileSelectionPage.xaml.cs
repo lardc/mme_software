@@ -127,7 +127,7 @@ namespace SCME.UI.PagesUser
                 {
                     bool? Found = null;
 
-                    ProfileItem ActualProfileItem = GetProfileItemFromServerDb(null, profile.Name, Cache.Main.MmeCode, ref Found);
+                    ProfileItem ActualProfileItem = GetProfileItemFromServerDb(null, profile.Name, Cache.Main.VM.MmeCode, ref Found);
 
                     switch (Found)
                     {
@@ -671,7 +671,7 @@ namespace SCME.UI.PagesUser
                 bool? Found = false;
 
                 //UI имеет возможность работы с сервером CentralDatabaseService без использования Service.exe. если связь с сервером установлена и профиль успешно получен, то синхронизируем выбранный профиль
-                ProfileItem ActualProfileItem = GetProfileItemFromServerDb(sender, profile.Name, Cache.Main.MmeCode, ref Found);
+                ProfileItem ActualProfileItem = GetProfileItemFromServerDb(sender, profile.Name, Cache.Main.VM.MmeCode, ref Found);
 
                 switch (Found)
                 {

@@ -29,7 +29,7 @@ namespace SCME.UI.IO
 
             List<ProfileItem> profileItems;
 
-            profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.MmeCode, out seviceConnected);
+            profileItems = Cache.Net.GetProfilesFromLocalDb(Cache.Main.VM.MmeCode, out seviceConnected);
 
             if (profileItems == null || profileItems.Count <= 0 && !seviceConnected)
                 return;

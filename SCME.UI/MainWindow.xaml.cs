@@ -111,7 +111,6 @@ namespace SCME.UI
 
                 Cache.Storage = new LocalStorage(Settings.Default.StoragePath);
                 Cache.Net = new ControlLogic();
-                MmeCode = Settings.Default.MMECode;
 
                 VM.IsSafetyBreakIconVisible = false;
 
@@ -152,11 +151,7 @@ namespace SCME.UI
         }
 
 
-        internal string MmeCode
-        {
-            get { return deviceLable.Content.ToString(); }
-            set { deviceLable.Content = value; }
-        }
+     
 
         internal bool IsNeedToRestart { get; private set; }
 

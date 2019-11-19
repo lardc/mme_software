@@ -705,7 +705,7 @@ namespace SCME.UI.PagesUser
                     {
                         Timestamp = DateTime.Now,
                         User = Cache.Main.AccountName,
-                        MmeCode = Cache.Main.MmeCode,
+                        MmeCode = Cache.Main.VM.MmeCode,
                         ProfileKey = Profile.Key,
                         PsdJob = tbPsdJob.Text,
                         PsdSerialNumber = tbPsdSerialNumber.Text,

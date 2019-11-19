@@ -65,7 +65,7 @@ namespace SCME.UI.IO
                                     Cache.Main.VM.SyncState = "RunSync";
                                 else
                                 {
-                                    Cache.Main.MmeCode = stateService.MMECode;
+                                    Cache.Main.VM.MmeCode = stateService.MMECode;
                                     Cache.Main.VM.IsLocal = stateService.IsLocal;
                                     AfterEndOfSincedProcessDBRoutine();
                                 }
@@ -430,6 +430,10 @@ namespace SCME.UI.IO
 //            else
 //                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionFailed, "Sync error");
         
+            var stateService = Cache.Net.GetStateService;
+            Cache.Main.VM.MmeCode = stateService.MMECode;
+            Cache.Main.VM.IsLocal = stateService.IsLocal;
+
             if (Cache.Net.IsModulesInitialized)
                 Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
 

@@ -35,9 +35,9 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSelectForTest;
 
 
-        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true));
+        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true));
 
-        internal static ProfilesPage ProfilesPageSelectForTest => _profilesPageSelectForTest ?? (_profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.MmeCode, true, true, true));
+        internal static ProfilesPage ProfilesPageSelectForTest => _profilesPageSelectForTest ?? (_profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, true));
                                                                       
 
         public static MainWindow Main { get; set; }

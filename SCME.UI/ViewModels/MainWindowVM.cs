@@ -30,6 +30,8 @@ namespace SCME.UI.ViewModels
         public bool IsLocal { get; set; }
         [DependsOn(nameof(IsLocal))] public bool IsCentral => !IsLocal;
 
+        public string  MmeCode { get; set; }
+
 
     }
 }

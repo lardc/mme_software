@@ -1235,7 +1235,7 @@ namespace SCME.UI.IO
             {
                 try
                 {
-                    return centralDbClient.SaveProfilesFromMme(profileItems, Cache.Main.MmeCode);
+                    return centralDbClient.SaveProfilesFromMme(profileItems, Cache.Main.VM.MmeCode);
                 }
                 catch (FaultException<FaultData> ex)
                 {
