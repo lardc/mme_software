@@ -798,4 +798,7 @@
     <data name="AtuPrsmMax">
       <value>PRSM max, kW</value>
     </data>
+    <data name="MinIgt_mA" xml:space="preserve">
+    <value>MinMax. IGT, mA</value>
+  </data>
 </root>

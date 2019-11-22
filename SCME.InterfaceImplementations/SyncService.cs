@@ -82,8 +82,8 @@ namespace SCME.InterfaceImplementations
             {
                 using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
                 {
-                    var localProfiles = _sqLiteDbService.GetProfilesDeepByMmeCode(_mmeCode);
-                    var centralProfiles = msSqlDbService.GetProfilesDeepByMmeCode(_mmeCode);
+                    var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
+                    var centralProfiles = msSqlDbService.GetProfilesSuperficially(_mmeCode);
                     
                     var deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
                     var addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
@@ -93,10 +93,13 @@ namespace SCME.InterfaceImplementations
 
                     if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
                         _sqLiteDbService.InsertMmeCode(_mmeCode);
-                    
+
                     foreach (var i in addingProfiles)
+                    {
+                        i.DeepData = msSqlDbService.LoadProfileDeepData(i);
                         _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
-                        
+                    }
+
                     return;
                 }
                 using (var centralDbClient = new CentralDatabaseServiceClient())

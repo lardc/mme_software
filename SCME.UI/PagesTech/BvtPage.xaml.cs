@@ -212,14 +212,14 @@ namespace SCME.UI.PagesTech
         
         internal void SetResultBvtUdsmUrsmDirect(DeviceState State, Types.BVT.TestResults Result)
         {
-            SetLabel(labelDirectSM, State,
-                $"{Result.VDSM}{Properties.Resources.V} : {Result.IDSM}{Properties.Resources.mA}");
+//            SetLabel(labelDirectSM, State,
+//                $"{Result.VDSM}{Properties.Resources.V} : {Result.IDSM}{Properties.Resources.mA}");
         }
 
         internal void SetResultBvtUdsmUrsmReverse(DeviceState State, Types.BVT.TestResults Result)
         {
-            SetLabel(labelReverseSM, State,
-                $"{Result.VRSM}{Properties.Resources.V} : {Result.IRSM}{Properties.Resources.mA}");
+//            SetLabel(labelReverseSM, State,
+//                $"{Result.VRSM}{Properties.Resources.V} : {Result.IRSM}{Properties.Resources.mA}");
         }
 
         private static void SetLabel(ContentControl Target, DeviceState State, string Message)

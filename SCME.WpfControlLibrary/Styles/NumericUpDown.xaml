@@ -80,6 +80,7 @@
                                         Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding, Converter={StaticResource ThicknessBindingConverter}, ConverterParameter={x:Static converters:ThicknessSideType.Left}}"
                                         Orientation="Horizontal">
                                 <RepeatButton x:Name="PART_NumericUp"
+                                              Margin="5,0,0,0"
                                               Width="{TemplateBinding UpDownButtonsWidth}"
                                               Delay="{TemplateBinding Delay}"
                                               Foreground="{TemplateBinding Foreground}"
@@ -92,7 +93,7 @@
                                           Fill="Black"
                                           Stretch="Fill" />
                                 </RepeatButton>
-                                <RepeatButton x:Name="PART_NumericDown"
+                                <RepeatButton x:Name="PART_NumericDown" Margin="5,0,-2,0"
                                               Width="{TemplateBinding UpDownButtonsWidth}"
                                               VerticalContentAlignment="Center"
                                               Delay="{TemplateBinding Delay}"

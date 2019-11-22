@@ -44,7 +44,7 @@
                 <testResultDataTemplate:VTMDataTemplate/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type bvtParameters:TestParameters}" >
-                <testResultDataTemplate:BVTDataTemplate/>
+                <testResultDataTemplate:BvtDataTemplate/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type dVdtParameters:TestParameters}" >
                 <testResultDataTemplate:dVdtDataTemplate/>

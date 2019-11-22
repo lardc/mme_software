@@ -845,7 +845,8 @@ namespace SCME.UI.PagesUser
 
             var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult1");
             if (labelIgtResult != null)
-                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT,
+                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT && 
+                                                igt >= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].MinIGT,
                      string.Format("{0}", igt));
 
             var labelVgtResult = FindChild<Label>(presenter, "labelVgtResult1");
@@ -856,7 +857,7 @@ namespace SCME.UI.PagesUser
 
             if (state != DeviceState.InProcess)
             {
-                if (igt > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT)
+                if (igt > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT || igt < (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].MinIGT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGT");
                 if (((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].VGT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGT");

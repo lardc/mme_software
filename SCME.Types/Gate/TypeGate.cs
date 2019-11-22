@@ -118,6 +118,9 @@ namespace SCME.Types.Gate
 
         [DataMember]
         public float IGT { get; set; }
+        
+        [DataMember]
+        public float MinIGT { get; set; }
 
         [DataMember]
         public float VGT { get; set; }

@@ -77,7 +77,8 @@ namespace SCME.Types
         TOU = 19,
         [EnumMember]
         Database = 255,
-        Sync = 20,
+        [EnumMember]
+        Sync = 254,
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

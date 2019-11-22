@@ -14,17 +14,19 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SCME.Types;
 using SCME.Types.BVT;
+using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
 {
     /// <summary>
     /// Логика взаимодействия для GateDataTemplate.xaml
     /// </summary>
-    public partial class BVTDataTemplate : Grid
+    public partial class BvtDataTemplate : Grid
     {
-        public BVTDataTemplate()
+        public BvtDataTemplate()
         {
             InitializeComponent();
+            //Transform4T2();
         }
         
     }

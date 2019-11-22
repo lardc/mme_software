@@ -502,6 +502,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         if (result.Item3.HasValue)
                             parameters.Resistance = result.Item3.Value;
                         break;
+                    case "MIM_IGT":
+                        if (result.Item3.HasValue)
+                            parameters.MinIGT = result.Item3.Value;
+                        break;
                     case "IGT":
                         if (result.Item3.HasValue)
                             parameters.IGT = result.Item3.Value;

@@ -66,7 +66,7 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
             
             ItemSource.Move(index, index-1);
 
-        }, (o) => ItemSource.IndexOf(o) > 0);
+        }, (o) => ItemSource?.IndexOf(o) > 0);
         
         public ICommand MoveDown => new RelayCommand<BaseTestParametersAndNormatives>((o) =>
         {
@@ -79,7 +79,7 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
             
             ItemSource.Move(index, index+1);
 
-        }, (o) => ItemSource.IndexOf(o) < ItemSource.Count - 1);
+        }, (o) => ItemSource?.IndexOf(o) < ItemSource?.Count - 1);
         
         
         

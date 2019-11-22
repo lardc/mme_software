@@ -92,6 +92,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("K", "K", true),
             ("RG", "RG, Ohm", false),
             ("IGT", "IGT, mA", false),
+            ("MIM_IGT", "MIM_IGT, mA", false),
             ("VGT", "VGT, V", false),
             ("IH", "IH, mA", false),
             ("IL", "IL, mA", false),

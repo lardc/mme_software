@@ -345,6 +345,9 @@
   <data name="MaxIdrm_mA" xml:space="preserve">
     <value>Макс. IDRM, мА</value>
   </data>
+  <data name="MinIgt_mA" xml:space="preserve">
+    <value>Мин. IGT, мА</value>
+  </data>
   <data name="MaxIgt_mA" xml:space="preserve">
     <value>Макс. IGT, мА</value>
   </data>

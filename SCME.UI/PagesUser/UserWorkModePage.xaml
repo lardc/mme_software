@@ -76,6 +76,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="90" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="30*" />
             <RowDefinition Height="94" />
         </Grid.RowDefinitions>
@@ -100,7 +102,7 @@
             </Grid>
         </Button>
 
-        <Button x:Name="SpecialMeasureButton" Visibility="{Binding SpecialMeasureVisibility}" CommandParameter="{x:Static types:UserWorkMode.SpecialMeasure}" Grid.Column="0" Grid.Row="5" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
+        <Button x:Name="SpecialMeasureButton" Visibility="{Binding SpecialMeasureVisibility}" CommandParameter="{x:Static types:UserWorkMode.SpecialMeasure}" Grid.Column="2" Grid.Row="7" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
             <Grid Background="{StaticResource xRed2}">
                 <Path Data="{StaticResource SpecialMeasurePath}" />
                 <Label Content="{x:Static res:Resources.SpecialMeasureMode}" Style="{StaticResource LabelIconButton}"  />

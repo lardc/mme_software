@@ -72,6 +72,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 {"RG", (DBNull.Value, gate.Resistance)},
                 {"IGT", (DBNull.Value, gate.IGT)},
+                {"MIM_IGT", (DBNull.Value, gate.MinIGT)},
                 {"VGT", (DBNull.Value, gate.VGT)},
             };
 

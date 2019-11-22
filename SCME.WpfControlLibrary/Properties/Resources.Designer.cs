@@ -1132,6 +1132,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Мин. IGT, мА.
+        /// </summary>
+        public static string MinIgt_mA {
+            get {
+                return ResourceManager.GetString("MinIgt_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Мин. UDRM, В.
         /// </summary>
         public static string MinVdrm_V {

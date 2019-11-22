@@ -223,23 +223,6 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="1" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
@@ -342,65 +325,8 @@
                        Style="{StaticResource StLblStyle}" Content="{x:Static res:Resources.Reverse}"
                        Visibility="{Binding ElementName=bvtPage, Path=Parameters.TestType, Converter={StaticResource TT2V}, ConverterParameter=2, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Label Grid.Column="1" Grid.Row="18" Content="{x:Static res:Resources.UseUdsmUrsm}"/>
-                    <CheckBox Grid.Column="2" Grid.Row="18" IsChecked="{Binding ElementName=bvtPage, Path=Parameters.UseUdsmUrsm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content=""/>
-
-                    <Label Name="labelDirectSM" x:FieldModifier="private" Grid.Row="19" Grid.Column="2" HorizontalContentAlignment="Right" Height="Auto" FontSize="26" Margin="5" Style="{StaticResource StLblStyle}" Content="0V : 0mA">
-                        <Label.Resources>
-                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
-                        </Label.Resources>
-                        <Label.Visibility>
-                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
-                                <Binding ElementName="bvtPage" Path="Parameters.TestType"/>
-                                <Binding ElementName="bvtPage" Path="Parameters.UseUdsmUrsm"/>
-                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
-                            </MultiBinding>
-                        </Label.Visibility>
-                    </Label>
-                    <Label Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" Height="Auto" Style="{StaticResource StLblStyle}" Content="{x:Static res:Resources.Direct}">
-                        <Label.Resources>
-                            <sys:Int32 x:Key="IndexOfDirectInEnum">1</sys:Int32>
-                        </Label.Resources>
-                        <Label.Visibility>
-                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
-                                <Binding ElementName="bvtPage" Path="Parameters.TestType"/>
-                                <Binding ElementName="bvtPage" Path="Parameters.UseUdsmUrsm"/>
-                                <Binding Source="{StaticResource IndexOfDirectInEnum}"/>
-                            </MultiBinding>
-                        </Label.Visibility>
-                    </Label>
-
-                    <Label Name="labelReverseSM" x:FieldModifier="private" Grid.Row="20" Grid.Column="2" HorizontalContentAlignment="Right" Height="Auto" FontSize="24" Margin="5" Style="{StaticResource StLblStyle}" Content="0V : 0mA">
-                        <Label.Resources>
-                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
-                        </Label.Resources>
-                        <Label.Visibility>
-                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
-                                <Binding ElementName="bvtPage" Path="Parameters.TestType"/>
-                                <Binding ElementName="bvtPage" Path="Parameters.UseUdsmUrsm"/>
-                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
-                            </MultiBinding>
-                        </Label.Visibility>
-                    </Label>
-                    <Label Grid.Row="20" Grid.Column="1" HorizontalAlignment="Left" Height="Auto" Style="{StaticResource StLblStyle}" Content="{x:Static res:Resources.Reverse}">
-                        <Label.Resources>
-                            <sys:Int32 x:Key="IndexOfReverseInEnum">2</sys:Int32>
-                        </Label.Resources>
-                        <Label.Visibility>
-                            <MultiBinding Converter="{StaticResource MBvtRSMTT2V}">
-                                <Binding ElementName="bvtPage" Path="Parameters.TestType"/>
-                                <Binding ElementName="bvtPage" Path="Parameters.UseUdsmUrsm"/>
-                                <Binding Source="{StaticResource IndexOfReverseInEnum}"/>
-                            </MultiBinding>
-                        </Label.Visibility>
-                    </Label>
-                    
-                    <CheckBox Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />
-                    
-                    
-
-                    <Label Name="labelFault" Grid.Row="21" Grid.ColumnSpan="2" Grid.Column="1" Content="Fault" Padding="10" Height="Auto" Background="Tomato" />
-                    <Label Name="labelWarning" Grid.Row="22" Grid.ColumnSpan="2" Grid.Column="1" Content="Warning" Padding="10" Height="Auto" Background="Gold" />
+                    <Label Name="labelFault" Grid.Row="18" Grid.ColumnSpan="2" Grid.Column="1" Content="Fault" Padding="10" Height="Auto" Background="Tomato" />
+                    <Label Name="labelWarning" Grid.Row="19" Grid.ColumnSpan="2" Grid.Column="1" Content="Warning" Padding="10" Height="Auto" Background="Gold" />
                 </Grid>
             </Border>
         </ScrollViewer>
