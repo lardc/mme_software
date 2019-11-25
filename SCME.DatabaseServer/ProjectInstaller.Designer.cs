@@ -42,8 +42,8 @@
             // 
             this.serviceInstaller.DelayedAutoStart = true;
             this.serviceInstaller.Description = "Provides functionality of central DB hub for MME infrastucture";
-            this.serviceInstaller.DisplayName = "MME central server";
-            this.serviceInstaller.ServiceName = "SCME.DatabaseService";
+            this.serviceInstaller.DisplayName = "MME central server new";
+            this.serviceInstaller.ServiceName = "SCME.DatabaseServiceNew";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

@@ -17,13 +17,7 @@
             <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
                 <Setter Property="FlowDirection" Value="RightToLeft"></Setter>
             </Style>
-            <Style TargetType="Label"  BasedOn="{StaticResource {x:Type Label}}">
-                <Style.Triggers>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Foreground" Value="Black"></Setter>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+            
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>

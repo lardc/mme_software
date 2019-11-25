@@ -189,6 +189,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ProfileVm.ProfileDeepDataCopy = null;
             ProfileVm.SearchingName = string.Empty;
             LoadTopProfiles();
         }

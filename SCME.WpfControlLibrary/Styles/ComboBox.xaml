@@ -108,12 +108,17 @@
                         <Border BorderThickness="1" Name="MainBorder"  BorderBrush="Gray"></Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
+                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
+                        </DataTrigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                        </Trigger>
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
                         <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
-                            
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"></Setter>

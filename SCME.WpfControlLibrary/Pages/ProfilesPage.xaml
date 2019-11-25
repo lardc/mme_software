@@ -36,7 +36,7 @@
             </Grid.RowDefinitions>
             <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMmeCode}" SelectedValuePath="Key" DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}" SelectionChanged="ComboBox_SelectionChanged"
                       Visibility="{Binding IsSingleMmeCode, Converter={StaticResource B2VI}}"/>
-            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
+            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
             <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxFind_TextChanged" />
             <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"

@@ -6,6 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
+            <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     
@@ -88,6 +89,9 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
+                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
+                        </DataTrigger>
                         <!-- <Trigger Property="IsMouseOver" Value="True"> -->
                         <!--     <Setter TargetName="normal" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.MouseOverBorderBrush)}" /> -->
                         <!-- </Trigger> -->
