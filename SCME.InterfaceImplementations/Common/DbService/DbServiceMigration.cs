@@ -69,6 +69,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("DVDT_VoltageRate", "DVDT_VoltageRate", true),
             ("DVDT_ConfirmationCount", "DVDT_ConfirmationCount", true),
             ("DVDT_VoltageRateLimit", "DVDT_VoltageRateLimit", true),
+            ("DVDT_VoltageRateOffSet", "DVDT_VoltageRateOffSet", true),
+            
             ("ATU_En", "ATU_En", true),
             ("ATU_PrePulseValue", "ATU_PrePulseValue", true),
             ("ATU_PowerValue", "ATU_PowerValue", true),

@@ -83,7 +83,16 @@ namespace SCME.InterfaceImplementations.Common
         {
             _profileConditionInsert.Parameters["@PROF_TESTTYPE_ID"].Value = _testTypeId;
             _profileConditionInsert.Parameters["@PROF_ID"].Value = _profileId;
-            _profileConditionInsert.Parameters["@COND_ID"].Value = _conditionIdByName[name];
+            try
+            {
+                _profileConditionInsert.Parameters["@COND_ID"].Value = _conditionIdByName[name];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
             _profileConditionInsert.Parameters["@VALUE"].Value = value.ToString();
             _profileConditionInsert.Transaction = _dbTransaction;
 

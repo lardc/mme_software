@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
@@ -19,30 +21,33 @@ namespace SCME.WpfControlLibrary.Pages
     /// </summary>
     public partial class ProfilesPage
     {
-        public ProfilesPageProfileVm ProfileVm { get; set; } = new ProfilesPageProfileVm();
+        public ProfilesPageProfileVm ProfileVm { get; set; }
         private readonly IDbService _dbService;
         private readonly bool _isWithoutChild;
 
-        private bool _isIgnoreTreeViewSelectionChanged;
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
 
         public event Action PreviewGoBackAction;
 
-        public ProfilesPage(IDbService dbService, string mmeCode , bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false)
+        public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false)
         {
+            ProfileVm = new ProfilesPageProfileVm(dbService);
+
             if (dbService == null) throw new ArgumentNullException(nameof(dbService));
-            if (mmeCode == null) throw new ArgumentNullException (nameof(mmeCode));
+            if (mmeCode == null) throw new ArgumentNullException(nameof(mmeCode));
 //            if (mmeCode.Trim() == "")  throw new ArgumentException (nameof(mmeCode)); 
 
             ProfileVm.IsSingleMmeCode = isSingleMmeCode;
             InitializeComponent();
-            
-            AddTestParameterUserControl.IsReadOnly =ProfileVm.ReadOnlyMode = readOnlyMode;
-            
+
+            AddTestParameterUserControl.IsReadOnly = ProfileVm.ReadOnlyMode = readOnlyMode;
+
             _dbService = dbService;
             _isWithoutChild = isWithoutChild;
 
-            ProfileVm.MmeCodes = isSingleMmeCode ? _dbService.GetMmeCodes().Where(m=> m.Key == mmeCode).ToDictionary(m=> m.Key, m=> m.Value) : _dbService.GetMmeCodes().Where(m=> m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m=> m.Key, m=> m.Value);
+            ProfileVm.MmeCodes = isSingleMmeCode
+                ? _dbService.GetMmeCodes().Where(m => m.Key == mmeCode).ToDictionary(m => m.Key, m => m.Value)
+                : _dbService.GetMmeCodes().Where(m => m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m => m.Key, m => m.Value);
             ProfileVm.SelectedMmeCode = ProfileVm.MmeCodes.ContainsKey(mmeCode) ? mmeCode : ProfileVm.MmeCodes.First().Key;
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
@@ -52,42 +57,39 @@ namespace SCME.WpfControlLibrary.Pages
         private void OnDispatcherTimerFindProfileOnTick(object o1, EventArgs args1)
         {
             _dispatcherTimerFindProfile.Stop();
-            if (ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile) is TreeViewItem treeViewItem) treeViewItem.IsSelected = false;
-            ProfileVm.Profiles = new ObservableCollection<MyProfile>(ProfileVm.LoadedProfiles.Where(m => m.Name.ToUpper().Contains(ProfileVm.SearchingName.ToUpper())));
+            ProfileVm.ProfilesSource.View.Refresh();
         }
 
-        private void LoadTopProfiles()
-        {
-            ProfileVm.LoadedProfiles = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(ProfileVm.SelectedMmeCode));
-            foreach (var i in ProfileVm.LoadedProfiles)
-                i.IsTop = true;
-            ProfileVm.Profiles = new ObservableCollection<MyProfile>(ProfileVm.LoadedProfiles);
-        }
 
-        private void ProfilesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (_isIgnoreTreeViewSelectionChanged)
-                return;
+        private void LoadTopProfiles() =>
+            ProfileVm.ProfilesSource.Source = ProfileVm.Profiles = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(ProfileVm.SelectedMmeCode));
 
-            ProfileVm.SelectedProfile = e.NewValue as MyProfile;
-            if (ProfileVm.SelectedProfile == null)
-                return;
 
-            ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
-            ProfileVm.SelectedProfile.DeepData = _dbService.LoadProfileDeepData(ProfileVm.SelectedProfile);
-            if (ProfileVm.SelectedProfile.IsTop && _isWithoutChild == false)
-            {
-                ProfileVm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_dbService.GetProfileChildSuperficially(ProfileVm.SelectedProfile));
-                foreach (var i in ProfileVm.SelectedProfile.Children)
-                    i.IsTop = false;
-            }
+//        private void ProfilesTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+//        {
+//            if (_isIgnoreTreeViewSelectionChanged)
+//                return;
+//
+//            ProfileVm.SelectedProfile = e.NewValue as MyProfile;
+//            if (ProfileVm.SelectedProfile == null)
+//                return;
+//
+//            ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
+//            ProfileVm.SelectedProfile.DeepData = _dbService.LoadProfileDeepData(ProfileVm.SelectedProfile);
+//            if (ProfileVm.SelectedProfile.IsTop && _isWithoutChild == false)
+//            {
+//                ProfileVm.SelectedProfile.Children = new ObservableCollection<MyProfile>(_dbService.GetProfileChildSuperficially(ProfileVm.SelectedProfile));
+//                foreach (var i in ProfileVm.SelectedProfile.Children)
+//                    i.IsTop = false;
+//            }
+//
+//            ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData;
+//        }
 
-            ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData;
-        }
 
         private void BeginEditProfile_Click(object sender, RoutedEventArgs e)
         {
-            ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile)).IsSelected = true;
+            //((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile)).IsSelected = true;
             ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData.Copy();
             ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name.Copy();
             ProfileVm.IsEditModeActive = true;
@@ -95,8 +97,8 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void CreateNewProfile_Click(object sender, RoutedEventArgs e)
         {
-            if (ProfileVm.SelectedProfile != null)
-                ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile)).IsSelected = false;
+//            if (ProfileVm.SelectedProfile != null)
+//                ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile)).IsSelected = false;
             ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = new ProfileDeepData();
             ProfileVm.SelectedProfileNameCopy = _dbService.GetFreeProfileName();
@@ -129,38 +131,15 @@ namespace SCME.WpfControlLibrary.Pages
                 newProfile = new MyProfile(0, ProfileVm.SelectedProfileNameCopy, Guid.NewGuid(), 0, DateTime.Now).GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
                 newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
-                _isIgnoreTreeViewSelectionChanged = true;
                 ProfileVm.Profiles.Insert(0, newProfile);
-                ProfileVm.LoadedProfiles.Insert(0, newProfile);
             }
             else
             {
                 newProfile = oldProfile.GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
                 newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
-                oldProfile.IsTop = false;
-                oldProfile.Children = null;
-
-                _isIgnoreTreeViewSelectionChanged = true;
-
                 ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(oldProfile), newProfile);
                 ProfileVm.Profiles.Remove(oldProfile);
-                ProfileVm.LoadedProfiles.Insert(ProfileVm.LoadedProfiles.IndexOf(oldProfile), newProfile);
-                ProfileVm.LoadedProfiles.Remove(oldProfile);
-            }
-
-            //If VirtualizingStackPanel.IsVirtualizing="True" and UpdateLayout not call then ContainerFromItem return null;
-            ProfilesTreeView.UpdateLayout();
-            _isIgnoreTreeViewSelectionChanged = false;
-
-            try
-            {
-                ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(newProfile)).IsSelected = true;
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-                throw;
             }
 
             ProfileVm.SelectedProfile = newProfile;
@@ -210,13 +189,13 @@ namespace SCME.WpfControlLibrary.Pages
         {
             _dispatcherTimerFindProfile.Start();
         }
-        
+
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = null;
             PreviewGoBackAction?.Invoke();
-            NavigationService?.GoBack();            
+            NavigationService?.GoBack();
         }
     }
 }

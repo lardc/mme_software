@@ -45,7 +45,7 @@
             
             <customControls:HardwareItem x:Name="syncControl"
                                          Title="{x:Static res:Resources.Sync}"
-                                         InitializeTimeout="25000" OperationTimeout="25000"
+                                         InitializeTimeout="60000" OperationTimeout="60000"
                                          DisableAvailable="False"
                                          Backcolor="{StaticResource xBlue2}"
                                          Logo="{StaticResource SyncPath}" />

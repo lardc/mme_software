@@ -35,8 +35,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }).ToList();
 
             _cacheProfilesByMmeCode[mmeCode] = res;
-            foreach (var i in res.Where(i => _cacheProfileById.ContainsKey(i.Id)))
-                _cacheProfileById[i.Id] = new ProfileCache(i) {IsChildLoad = true};
+//            foreach (var i in res.Where(i => _cacheProfileById.ContainsKey(i.Id)))
+//                _cacheProfileById[i.Id] = new ProfileCache(i) {IsChildLoad = true};
 
             return res;
         }

@@ -10,6 +10,7 @@
       xmlns:testParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
       xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
       xmlns:pages="clr-namespace:SCME.WpfControlLibrary.Pages"
+      xmlns:profiles="clr-namespace:SCME.Types.Profiles;assembly=SCME.Types"
       DataContext="{Binding RelativeSource={RelativeSource Self}, Path=ProfileVm}"
       mc:Ignorable="d" Loaded="Page_Loaded" Name="MainPage"
       d:DesignHeight="1024" d:DesignWidth="1280"
@@ -39,17 +40,23 @@
             <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
             <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxFind_TextChanged" />
-            <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
-                      VirtualizingStackPanel.CacheLength="1" VirtualizingStackPanel.CacheLengthUnit="Page"
-                      VirtualizingStackPanel.ScrollUnit="Item" >
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate>
-                        <dataTemplate:ProfileHierarchicalDataTemplate/>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-                
-            </TreeView>
+            <!-- <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" -->
+            <!--           VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" -->
+            <!--           VirtualizingStackPanel.CacheLength="50" VirtualizingStackPanel.CacheLengthUnit="Item" -->
+            <!--           VirtualizingStackPanel.ScrollUnit="Item" > -->
+            <!--     <TreeView.ItemTemplate> -->
+            <!--         <HierarchicalDataTemplate> -->
+            <!--             <dataTemplate:ProfileHierarchicalDataTemplate/> -->
+            <!--         </HierarchicalDataTemplate> -->
+            <!--     </TreeView.ItemTemplate> -->
+            <!-- </TreeView> -->
+            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}">
+                <ListView.ItemTemplate >
+                    <DataTemplate >
+                        <Label d:DataContext="{d:DesignInstance profiles:MyProfile}" Content="{Binding Name}"></Label>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}" Click="GoBack_Click" />
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0" Grid.IsSharedSizeScope="True">
