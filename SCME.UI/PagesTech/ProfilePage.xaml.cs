@@ -211,7 +211,7 @@ namespace SCME.UI.PagesTech
 
             if (NavigationService != null)
             {
-                Cache.ProfileSelection = new ProfileSelectionPage(m_ProfileEngine);
+//                Cache.ProfileSelection = new ProfileSelectionPage(m_ProfileEngine);
                 ClearFilter();
 
                 switch (Cache.WorkMode)

@@ -71,7 +71,7 @@ namespace SCME.UI
             set { ms_LoginPage = value; }
         }
 
-        internal static ProfileSelectionPage ProfileSelection { get; set; }
+        //internal static ProfileSelectionPage ProfileSelection { get; set; }
         //{
         //    get { return _ProfileSelection ?? (_ProfileSelection = new ProfileSelectionPage()); }
         //    set { _ProfileSelection = value; }
@@ -101,7 +101,7 @@ namespace SCME.UI
             set { ms_PasswordPage = value; }
         }
 
-        internal static ProfilePage ProfileEdit { get; set; }
+        //internal static ProfilePage ProfileEdit { get; set; }
 
         internal static CalibrationPage Calibration
         {

@@ -29,7 +29,7 @@ namespace SCME.UI.IO
         private readonly ExternalControlCallbackHost m_CallbackHost;
         private readonly DispatcherTimer m_NetPingTimer;
         private ControlServerProxy m_ControlClient;
-        private DatabaseCommunicationProxy DatabaseClient;
+        public DatabaseCommunicationProxy DatabaseClient;
         private TypeCommon.InitParams m_InitParams;
         private volatile bool m_IsServerConnected, m_StopInit;
 
@@ -1690,7 +1690,7 @@ namespace SCME.UI.IO
 
         public void SyncDBAreProcessedHandler()
         {
-            m_QueueWorker.AddSyncDBAreProcessedEvent();
+            m_QueueWorker.AddSyncDbAreProcessedEvent();
         }
 
         public void GatewayNotificationHandler(Types.Gateway.HWWarningReason Warning, Types.Gateway.HWFaultReason Fault,

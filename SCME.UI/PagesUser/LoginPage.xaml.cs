@@ -41,16 +41,16 @@ namespace SCME.UI.PagesUser
 
         private void ButtonNext_OnClick(object Sender, RoutedEventArgs E)
         {
-            if (!Cache.Main.IsProfilesParsed)
-                ProfilesDbLogic.ImportProfilesFromDb();
+//            if (!Cache.Main.IsProfilesParsed)
+//                ProfilesDbLogic.ImportProfilesFromDb();
             
             if (tbPassword.Text == CurrentAccount.Password && NavigationService != null)
             {
                 lblIncorrect.Content = "";
                 Cache.Main.AccountName = CurrentAccount.Name;
-                Cache.ProfileEdit.ClearFilter();
-                Cache.ProfileSelection.InitFilter();
-                Cache.ProfileSelection.InitSorting();
+//                Cache.ProfileEdit.ClearFilter();
+//                Cache.ProfileSelection.InitFilter();
+//                Cache.ProfileSelection.InitSorting();
                 //NavigationService.Navigate(Cache.ProfileSelection);
                 Cache.ProfilesPageSelectForTest.ProfileVm.NextAction = () =>
                 {

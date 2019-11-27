@@ -180,8 +180,6 @@ namespace SCME.WpfControlLibrary.Pages
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
                 return;
             }
-
-            LoadTopProfiles();
         }
 
 

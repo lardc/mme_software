@@ -45,8 +45,8 @@ namespace SCME.UI.PagesUser
                     throw new NotImplementedException();
             }
             //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
-            if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
-                ProfilesDbLogic.ImportProfilesFromDb();
+//            if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
+//                ProfilesDbLogic.ImportProfilesFromDb();
 
             //запоминаем выбранный пользователем режим работы
             Cache.WorkMode = UserWorkMode.Operator;
@@ -73,8 +73,8 @@ namespace SCME.UI.PagesUser
 
                     case UserWorkMode.ServiceMan:
                         //если мы были в режиме специальных измерений - надо перечитать содержимое профилей из базы данных чтобы откатить все изменения, сделанные в профилях в режиме специальных имерений
-                        if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
-                            ProfilesDbLogic.ImportProfilesFromDb();
+//                        if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
+//                            ProfilesDbLogic.ImportProfilesFromDb();
 
                         //запоминаем выбранный пользователем режим работы
                         Cache.WorkMode = UserWorkMode.ServiceMan;
@@ -112,10 +112,10 @@ namespace SCME.UI.PagesUser
             //запоминаем выбранный пользователем режим работы
             Cache.WorkMode = UserWorkMode.SpecialMeasure;
 
-            Cache.ProfileSelection.ClearFilter();
-            Cache.ProfileEdit.InitFilter();
-
-            ns?.Navigate(Cache.ProfileEdit);
+//            Cache.ProfileSelection.ClearFilter();
+//            Cache.ProfileEdit.InitFilter();
+//
+//            ns?.Navigate(Cache.ProfileEdit);
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

@@ -3086,18 +3086,18 @@ namespace SCME.UI.PagesUser
                 Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
                 NavigationService.GoBack();
                 return;
-                switch (Cache.WorkMode)
-                {
-                    //в режиме наладчика и в режиме специальных измерений возвращаемся к редактированию профиля, иначе к выбору профиля без возможности редактирования
-                    case (UserWorkMode.ServiceMan):
-                    case (UserWorkMode.SpecialMeasure):
-                        NavigationService.Navigate(Cache.ProfileEdit);
-                        break;
-
-                    default:
-                        NavigationService.Navigate(Cache.ProfileSelection);
-                        break;
-                }
+//                switch (Cache.WorkMode)
+//                {
+//                    //в режиме наладчика и в режиме специальных измерений возвращаемся к редактированию профиля, иначе к выбору профиля без возможности редактирования
+//                    case (UserWorkMode.ServiceMan):
+//                    case (UserWorkMode.SpecialMeasure):
+//                        NavigationService.Navigate(Cache.ProfileEdit);
+//                        break;
+//
+//                    default:
+//                        NavigationService.Navigate(Cache.ProfileSelection);
+//                        break;
+//                }
             }
         }
 

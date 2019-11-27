@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -52,7 +53,12 @@ namespace SCME.UI
 
             try
             {
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Localization);
+                //Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Localization);
+//                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(Settings.Default.Localization);
+//                Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.Localization);
+//                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Localization);
+//                LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
+//                    XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
             }
             catch (Exception ex)
             {
@@ -291,16 +297,16 @@ namespace SCME.UI
 
         private void Frame_Navigated(object Sender, NavigationEventArgs E)
         {
-            VM.TopTitle = ((Page)mainFrame.Content).Title;
-            VM.GoTechButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
-                                     Equals(mainFrame.Content, Cache.UserTest) ||
-                                     Equals(mainFrame.Content, Cache.Login)
-                                         ? Visibility.Visible
-                                         : Visibility.Collapsed;
-            VM.AccountButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
-                                      Equals(mainFrame.Content, Cache.UserTest)
-                                          ? Visibility.Visible
-                                          : Visibility.Collapsed;
+//            VM.TopTitle = ((Page)mainFrame.Content).Title;
+//            VM.GoTechButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
+//                                     Equals(mainFrame.Content, Cache.UserTest) ||
+//                                     Equals(mainFrame.Content, Cache.Login)
+//                                         ? Visibility.Visible
+//                                         : Visibility.Collapsed;
+//            VM.AccountButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
+//                                      Equals(mainFrame.Content, Cache.UserTest)
+//                                          ? Visibility.Visible
+//                                          : Visibility.Collapsed;
 
             if (Equals(mainFrame.Content, Cache.Password) && Settings.Default.IsTechPasswordEnabled)
                 Cache.Technician.PreviousPage = m_PrevPage;
@@ -323,8 +329,8 @@ namespace SCME.UI
             if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
                 Cache.UserTest.OnLeaveNotify();
 
-            if (!Cache.Main.IsProfilesParsed)
-                ProfilesDbLogic.ImportProfilesFromDb();
+//            if (!Cache.Main.IsProfilesParsed)
+//                ProfilesDbLogic.ImportProfilesFromDb();
 
             if (Settings.Default.IsTechPasswordEnabled)
             {

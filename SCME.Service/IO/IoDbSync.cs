@@ -58,7 +58,8 @@ namespace SCME.Service.IO
             {
                 SystemHost.IsSyncedWithServer = true;
                 SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, "Local database was successfully synced with a central database");
-                _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+                //Включим в процесс синхронизации загрузку профилей, UI пошлёт сообщение для ползунка об окончании синхронизации 
+                //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
             }
             else
             {
@@ -68,7 +69,7 @@ namespace SCME.Service.IO
                 if (Settings.Default.IsLocal)
                 {
                     logMessageType = LogMessageType.Info;
-                    _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+                        //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
                 }
                 else
                 {

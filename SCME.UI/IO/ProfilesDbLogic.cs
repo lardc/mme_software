@@ -6,6 +6,7 @@ using SCME.UI.CustomControl;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using SCME.Types.SQL;
 
@@ -18,9 +19,9 @@ namespace SCME.UI.IO
             var dictionary = new ProfileDictionary(profiles.Select(m => m.ToProfile()));
             Cache.Main.IsProfilesParsed = true;
 
-            Cache.ProfileEdit = new ProfilePage(dictionary);
-            Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
-            Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
+//            Cache.ProfileEdit = new ProfilePage(dictionary);
+//            Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
+//            Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
         }
         
         public static void ImportProfilesFromDb()
@@ -67,11 +68,17 @@ namespace SCME.UI.IO
             }
 
             var dictionary = new ProfileDictionary(profiles);
-            Cache.Main.IsProfilesParsed = true;
 
-            Cache.ProfileEdit = new ProfilePage(dictionary);
-            Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
-            Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
+            Debug.Assert(Cache.Main.Dispatcher != null, "Cache.Main.Dispatcher != null");
+//            Cache.Main.Dispatcher.BeginInvoke(new Action(() => 
+//            {
+//                Cache.Main.IsProfilesParsed = true;
+//            
+//                Cache.ProfileEdit = new ProfilePage(dictionary);
+//                Cache.ProfileSelection = new ProfileSelectionPage(dictionary);
+//                Cache.ProfileSelection.SetNextButtonVisibility(Cache.Main.Param);
+//            }));
+          
         }
         
         public static List<ProfileForSqlSelect> SaveProfilesToDb(IList<Profile> profiles)

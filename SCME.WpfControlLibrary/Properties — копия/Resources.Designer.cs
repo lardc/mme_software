@@ -61,7 +61,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active MME codes.
+        ///   Looks up a localized string similar to Активные MME коды.
         /// </summary>
         public static string ActiveMmeCodes {
             get {
@@ -70,7 +70,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active profiles.
+        ///   Looks up a localized string similar to Активные профили.
         /// </summary>
         public static string ActiveProfiles {
             get {
@@ -79,7 +79,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adapter.
+        ///   Looks up a localized string similar to Адаптер.
         /// </summary>
         public static string Adapter {
             get {
@@ -88,7 +88,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
+        ///   Looks up a localized string similar to Добавить.
         /// </summary>
         public static string Add {
             get {
@@ -97,7 +97,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Additional time, us.
+        ///   Looks up a localized string similar to Доп. время, мкс.
         /// </summary>
         public static string AdditionalTime_us {
             get {
@@ -106,7 +106,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add mme code.
+        ///   Looks up a localized string similar to Добавить mme code.
         /// </summary>
         public static string AddMmeCode {
             get {
@@ -115,7 +115,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address.
+        ///   Looks up a localized string similar to Адрес.
         /// </summary>
         public static string Address {
             get {
@@ -124,7 +124,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All.
+        ///   Looks up a localized string similar to Все.
         /// </summary>
         public static string All {
             get {
@@ -133,7 +133,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All units are disabled.
+        ///   Looks up a localized string similar to Все модули отключены.
         /// </summary>
         public static string AllUnitsAreDisabled {
             get {
@@ -142,7 +142,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application start error.
+        ///   Looks up a localized string similar to Ошибка при запуске приложения.
         /// </summary>
         public static string ApplicationStartError {
             get {
@@ -151,7 +151,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ATU.
+        ///   Looks up a localized string similar to Лавина.
         /// </summary>
         public static string Atu {
             get {
@@ -160,7 +160,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Power, kW.
+        ///   Looks up a localized string similar to Мощность, кВт.
         /// </summary>
         public static string AtuPowerValueSet {
             get {
@@ -169,7 +169,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AmplitudePrePulseCurrent, mA.
+        ///   Looks up a localized string similar to Амплитуда предв. импульса тока, мА.
         /// </summary>
         public static string AtuPrePulseValue {
             get {
@@ -196,7 +196,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Available profiles.
+        ///   Looks up a localized string similar to Доступные профили.
         /// </summary>
         public static string AvailableProfiles {
             get {
@@ -205,7 +205,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back.
+        ///   Looks up a localized string similar to Назад.
         /// </summary>
         public static string Back {
             get {
@@ -214,7 +214,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full.
+        ///   Looks up a localized string similar to Полный.
         /// </summary>
         public static string Both {
             get {
@@ -223,7 +223,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browse.
+        ///   Looks up a localized string similar to Обзор.
         /// </summary>
         public static string Browse {
             get {
@@ -232,7 +232,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BVT.
+        ///   Looks up a localized string similar to Классификатор.
         /// </summary>
         public static string Bvt {
             get {
@@ -241,7 +241,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibration.
+        ///   Looks up a localized string similar to Калибровка.
         /// </summary>
         public static string Calibration {
             get {
@@ -250,7 +250,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Call.
+        ///   Looks up a localized string similar to Вызвать.
         /// </summary>
         public static string Call {
             get {
@@ -259,7 +259,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Отмена.
         /// </summary>
         public static string Cancel {
             get {
@@ -268,7 +268,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not start test.
+        ///   Looks up a localized string similar to Невозможно начать тест.
         /// </summary>
         public static string CanNotStartTest {
             get {
@@ -277,7 +277,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check All.
+        ///   Looks up a localized string similar to Отметить все.
         /// </summary>
         public static string CheckAll {
             get {
@@ -286,7 +286,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clamp.
+        ///   Looks up a localized string similar to Пресс.
         /// </summary>
         public static string Clamp {
             get {
@@ -295,7 +295,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close safety hood.
+        ///   Looks up a localized string similar to Закройте защитную заслонку.
         /// </summary>
         public static string CloseSafetyHood {
             get {
@@ -304,7 +304,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code.
+        ///   Looks up a localized string similar to Код.
         /// </summary>
         public static string Code {
             get {
@@ -313,7 +313,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commutation.
+        ///   Looks up a localized string similar to Блок коммутации.
         /// </summary>
         public static string Commutation {
             get {
@@ -322,7 +322,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commutation.
+        ///   Looks up a localized string similar to Коммутация.
         /// </summary>
         public static string CommutationType {
             get {
@@ -331,7 +331,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commutation type.
+        ///   Looks up a localized string similar to Тип коммутации.
         /// </summary>
         public static string CommutationTypeT {
             get {
@@ -340,7 +340,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmation.
+        ///   Looks up a localized string similar to Подтверждение.
         /// </summary>
         public static string Confirmation {
             get {
@@ -349,7 +349,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete the selected item?.
+        ///   Looks up a localized string similar to Вы действительно хотите удалить выбранный элемент?.
         /// </summary>
         public static string ConfirmationOfDeletion {
             get {
@@ -358,7 +358,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connect.
+        ///   Looks up a localized string similar to Подключиться.
         /// </summary>
         public static string Connect {
             get {
@@ -367,7 +367,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Console.
+        ///   Looks up a localized string similar to Консоль.
         /// </summary>
         public static string Console {
             get {
@@ -376,7 +376,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correct.
+        ///   Looks up a localized string similar to Верно.
         /// </summary>
         public static string Correct {
             get {
@@ -385,7 +385,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Count.
+        ///   Looks up a localized string similar to Кол-во.
         /// </summary>
         public static string Count {
             get {
@@ -394,7 +394,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current, A.
+        ///   Looks up a localized string similar to Ток, А.
         /// </summary>
         public static string Current_A {
             get {
@@ -403,7 +403,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current limit, mA.
+        ///   Looks up a localized string similar to Ток, мА.
         /// </summary>
         public static string CurrentLimit_mA {
             get {
@@ -412,7 +412,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Curve.
+        ///   Looks up a localized string similar to S-кривая.
         /// </summary>
         public static string Curve {
             get {
@@ -421,7 +421,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Factor.
+        ///   Looks up a localized string similar to Коэффициент.
         /// </summary>
         public static string CurveFactor {
             get {
@@ -430,7 +430,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer:.
+        ///   Looks up a localized string similar to Заказчик:.
         /// </summary>
         public static string Customer {
             get {
@@ -439,7 +439,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Удалить.
         /// </summary>
         public static string Delete {
             get {
@@ -448,7 +448,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Device:.
+        ///   Looks up a localized string similar to Тип п-ра:.
         /// </summary>
         public static string Device {
             get {
@@ -457,7 +457,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Device name.
+        ///   Looks up a localized string similar to Сер. номер прибора.
         /// </summary>
         public static string DeviceName {
             get {
@@ -466,7 +466,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct.
+        ///   Looks up a localized string similar to Прямой.
         /// </summary>
         public static string Direct {
             get {
@@ -475,7 +475,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disable.
+        ///   Looks up a localized string similar to Отключить.
         /// </summary>
         public static string Disable {
             get {
@@ -484,7 +484,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disabled.
+        ///   Looks up a localized string similar to Отключен.
         /// </summary>
         public static string Disabled {
             get {
@@ -493,7 +493,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display.
+        ///   Looks up a localized string similar to Дисплей.
         /// </summary>
         public static string Display {
             get {
@@ -502,7 +502,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Display timeout.
+        ///   Looks up a localized string similar to Таймаут дисплея.
         /// </summary>
         public static string DisplayTimeout {
             get {
@@ -511,7 +511,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clamp.
+        ///   Looks up a localized string similar to Зажать.
         /// </summary>
         public static string DoClamp {
             get {
@@ -520,7 +520,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unclamp.
+        ///   Looks up a localized string similar to Разжать.
         /// </summary>
         public static string DoUnclamp {
             get {
@@ -538,7 +538,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirmation.
+        ///   Looks up a localized string similar to Подтверджение.
         /// </summary>
         public static string DvdtConfirmation {
             get {
@@ -547,7 +547,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DvdtConfirmationCount.
+        ///   Looks up a localized string similar to Число подтверждений.
         /// </summary>
         public static string DvdtConfirmationCount {
             get {
@@ -556,7 +556,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Detection.
+        ///   Looks up a localized string similar to Определение.
         /// </summary>
         public static string DvdtDetection {
             get {
@@ -565,7 +565,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Voltage, V.
+        ///   Looks up a localized string similar to Напряжение, В.
         /// </summary>
         public static string DvDtVoltage {
             get {
@@ -574,7 +574,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Voltage Rate, V/msc.
+        ///   Looks up a localized string similar to Скор. роста, В/мкс.
         /// </summary>
         public static string DvdtVoltageRate {
             get {
@@ -583,7 +583,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VoltageRateLimit, V/mcs.
+        ///   Looks up a localized string similar to Огр. скор. роста, В/мкс.
         /// </summary>
         public static string DvdtVoltageRateLimit {
             get {
@@ -592,7 +592,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DvdtVoltageRateOffSet, V/mcs.
+        ///   Looks up a localized string similar to (+) к скор. роста, В/мкс.
         /// </summary>
         public static string DvdtVoltageRateOffSet {
             get {
@@ -601,7 +601,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Изменить.
         /// </summary>
         public static string Edit {
             get {
@@ -610,7 +610,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Profile Binding.
+        ///   Looks up a localized string similar to Редактировать привязки профилей.
         /// </summary>
         public static string EditProfileBindings {
             get {
@@ -619,7 +619,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit profiles.
+        ///   Looks up a localized string similar to Редактировать профили.
         /// </summary>
         public static string EditProfiles {
             get {
@@ -628,7 +628,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable.
+        ///   Looks up a localized string similar to Подключить.
         /// </summary>
         public static string Enable {
             get {
@@ -637,7 +637,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter password.
+        ///   Looks up a localized string similar to Введите пароль.
         /// </summary>
         public static string EnterPassword {
             get {
@@ -646,7 +646,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error.
+        ///   Looks up a localized string similar to Ошибка.
         /// </summary>
         public static string Error {
             get {
@@ -655,7 +655,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while parsing Profile config file.
+        ///   Looks up a localized string similar to Ошибка при чтении конфигурационного файла профилей.
         /// </summary>
         public static string ErrorWhileProfileParsing {
             get {
@@ -664,7 +664,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to send.
+        ///   Looks up a localized string similar to Ошибка отправки.
         /// </summary>
         public static string Failed {
             get {
@@ -673,7 +673,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fault.
+        ///   Looks up a localized string similar to Ошибка.
         /// </summary>
         public static string Fault {
             get {
@@ -682,7 +682,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Font size.
+        ///   Looks up a localized string similar to Размер шрифта.
         /// </summary>
         public static string FontSize {
             get {
@@ -691,7 +691,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Force, kN.
+        ///   Looks up a localized string similar to Усилие, кН.
         /// </summary>
         public static string Force {
             get {
@@ -700,7 +700,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Freq rate, Hz.
+        ///   Looks up a localized string similar to Частота имп., Гц.
         /// </summary>
         public static string FreqRate_Hz {
             get {
@@ -709,7 +709,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frequency, Hz.
+        ///   Looks up a localized string similar to Частота, Гц.
         /// </summary>
         public static string Frequency_Hz {
             get {
@@ -718,7 +718,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate.
+        ///   Looks up a localized string similar to Управление.
         /// </summary>
         public static string Gate {
             get {
@@ -727,7 +727,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gateway.
+        ///   Looks up a localized string similar to Шлюз.
         /// </summary>
         public static string Gateway {
             get {
@@ -736,7 +736,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I, mA.
+        ///   Looks up a localized string similar to I, мА.
         /// </summary>
         public static string Graph_ImA {
             get {
@@ -745,7 +745,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time, ms.
+        ///   Looks up a localized string similar to Время, мс.
         /// </summary>
         public static string Graph_TimeMs {
             get {
@@ -754,7 +754,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time, us.
+        ///   Looks up a localized string similar to Время, мкс.
         /// </summary>
         public static string Graph_TimeUs {
             get {
@@ -763,7 +763,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V.
+        ///   Looks up a localized string similar to U.
         /// </summary>
         public static string Graph_V {
             get {
@@ -772,7 +772,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V, I.
+        ///   Looks up a localized string similar to U, I.
         /// </summary>
         public static string Graph_VI {
             get {
@@ -781,7 +781,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group list.
+        ///   Looks up a localized string similar to Список партий.
         /// </summary>
         public static string GroupList {
             get {
@@ -790,7 +790,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hardware.
+        ///   Looks up a localized string similar to Аппаратная часть.
         /// </summary>
         public static string Hardware {
             get {
@@ -799,7 +799,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opening current, A.
+        ///   Looks up a localized string similar to Ток откр., А.
         /// </summary>
         public static string HeatCurrent_A {
             get {
@@ -808,7 +808,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opening time, us.
+        ///   Looks up a localized string similar to Время откр., мкс.
         /// </summary>
         public static string HeatTime_us {
             get {
@@ -817,7 +817,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height.
+        ///   Looks up a localized string similar to Высота.
         /// </summary>
         public static string Height {
             get {
@@ -826,7 +826,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height, mm.
+        ///   Looks up a localized string similar to Высота, мм.
         /// </summary>
         public static string Height_Prof {
             get {
@@ -835,7 +835,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Holding current.
+        ///   Looks up a localized string similar to Ток удержания.
         /// </summary>
         public static string HoldingCurrent {
             get {
@@ -844,7 +844,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Holding strike current.
+        ///   Looks up a localized string similar to Доп. импульс.
         /// </summary>
         public static string HoldingStrikeCurrent {
             get {
@@ -853,7 +853,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IDRM, mA.
+        ///   Looks up a localized string similar to IDRM, мА.
         /// </summary>
         public static string Idrm_mA {
             get {
@@ -862,7 +862,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IGT, mA.
+        ///   Looks up a localized string similar to IGT, мА.
         /// </summary>
         public static string Igt_mA {
             get {
@@ -871,7 +871,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ih, mA.
+        ///   Looks up a localized string similar to Ih, мА.
         /// </summary>
         public static string Iholding_mA {
             get {
@@ -880,7 +880,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il, mA.
+        ///   Looks up a localized string similar to Il, мА.
         /// </summary>
         public static string Ilatching_mA {
             get {
@@ -889,7 +889,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive.
+        ///   Looks up a localized string similar to Неактивные.
         /// </summary>
         public static string Inactive {
             get {
@@ -898,7 +898,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive MME codes.
+        ///   Looks up a localized string similar to Неактивные MME коды.
         /// </summary>
         public static string InactiveMmeCodes {
             get {
@@ -907,7 +907,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inactive profiles.
+        ///   Looks up a localized string similar to Неактивные профили.
         /// </summary>
         public static string InactiveProfiles {
             get {
@@ -916,7 +916,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Information.
+        ///   Looks up a localized string similar to Информация.
         /// </summary>
         public static string Information {
             get {
@@ -925,7 +925,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IRRM, mA.
+        ///   Looks up a localized string similar to IRRM, мА.
         /// </summary>
         public static string Irrm_mA {
             get {
@@ -934,7 +934,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
+        ///   Looks up a localized string similar to Активен.
         /// </summary>
         public static string IsActive {
             get {
@@ -943,7 +943,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opening.
+        ///   Looks up a localized string similar to Открытие.
         /// </summary>
         public static string IsHeatEnabled {
             get {
@@ -961,7 +961,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kelvin.
+        ///   Looks up a localized string similar to Прозвонка.
         /// </summary>
         public static string Kelvin {
             get {
@@ -970,7 +970,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last 7 days.
+        ///   Looks up a localized string similar to За 7 дней.
         /// </summary>
         public static string Last7Days {
             get {
@@ -979,7 +979,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last month.
+        ///   Looks up a localized string similar to За месяц.
         /// </summary>
         public static string LastMonth {
             get {
@@ -988,7 +988,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Latching current.
+        ///   Looks up a localized string similar to Ток включения.
         /// </summary>
         public static string LatchingCurrent {
             get {
@@ -997,7 +997,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link MME and profiles.
+        ///   Looks up a localized string similar to Связь КИП и Профилей.
         /// </summary>
         public static string LinkMmeAndProfiles {
             get {
@@ -1006,7 +1006,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List MME.
+        ///   Looks up a localized string similar to Список КИП.
         /// </summary>
         public static string ListMME {
             get {
@@ -1015,7 +1015,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to Авторизация.
         /// </summary>
         public static string LoginPage_Title {
             get {
@@ -1024,7 +1024,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logs.
+        ///   Looks up a localized string similar to Логи.
         /// </summary>
         public static string Logs {
             get {
@@ -1033,7 +1033,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mA.
+        ///   Looks up a localized string similar to мА.
         /// </summary>
         public static string mA {
             get {
@@ -1042,7 +1042,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. IDRM, mA.
+        ///   Looks up a localized string similar to Макс. IDRM, мА.
         /// </summary>
         public static string MaxIdrm_mA {
             get {
@@ -1051,7 +1051,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. IGT, mA.
+        ///   Looks up a localized string similar to Макс. IGT, мА.
         /// </summary>
         public static string MaxIgt_mA {
             get {
@@ -1060,7 +1060,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. IH, mA.
+        ///   Looks up a localized string similar to Макс. IH, мА.
         /// </summary>
         public static string MaxIh_mA {
             get {
@@ -1069,7 +1069,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. IL, mA.
+        ///   Looks up a localized string similar to Макс. IL, мА.
         /// </summary>
         public static string MaxIl_mA {
             get {
@@ -1078,7 +1078,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. IRRM, mA.
+        ///   Looks up a localized string similar to Макс. IRRM, мА.
         /// </summary>
         public static string MaxIrrm_mA {
             get {
@@ -1087,7 +1087,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. Rg, Ohm.
+        ///   Looks up a localized string similar to Макс. Rg, Ом.
         /// </summary>
         public static string MaxResistance_Ohm {
             get {
@@ -1096,7 +1096,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. VGT, V.
+        ///   Looks up a localized string similar to Макс. UGT, В.
         /// </summary>
         public static string MaxVgt_V {
             get {
@@ -1105,7 +1105,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max. VTM, V.
+        ///   Looks up a localized string similar to Макс. UTM, В.
         /// </summary>
         public static string MaxVtm_V {
             get {
@@ -1114,7 +1114,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height measuring.
+        ///   Looks up a localized string similar to Измерение высоты.
         /// </summary>
         public static string MeasureDialog_Title {
             get {
@@ -1123,7 +1123,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Message.
+        ///   Looks up a localized string similar to Сообщение.
         /// </summary>
         public static string Message {
             get {
@@ -1132,7 +1132,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MinMax. IGT, mA.
+        ///   Looks up a localized string similar to Мин. IGT, мА.
         /// </summary>
         public static string MinIgt_mA {
             get {
@@ -1141,7 +1141,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min. VDRM, V.
+        ///   Looks up a localized string similar to Мин. UDRM, В.
         /// </summary>
         public static string MinVdrm_V {
             get {
@@ -1150,7 +1150,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min. VRRM, V.
+        ///   Looks up a localized string similar to Мин. URRM, В.
         /// </summary>
         public static string MinVrrm_V {
             get {
@@ -1159,7 +1159,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MissingMMECodes.
+        ///   Looks up a localized string similar to Отсутствуют MME коды.
         /// </summary>
         public static string MissingMMECodes {
             get {
@@ -1168,7 +1168,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MME Codes.
+        ///   Looks up a localized string similar to Код КИП.
         /// </summary>
         public static string MME_Code {
             get {
@@ -1177,7 +1177,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MME to Profiles.
+        ///   Looks up a localized string similar to Связь КИП и Профилей.
         /// </summary>
         public static string MME_Profiles {
             get {
@@ -1186,7 +1186,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile names.
+        ///   Looks up a localized string similar to Профили.
         /// </summary>
         public static string MME_ProfilesLabel {
             get {
@@ -1195,7 +1195,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mode.
+        ///   Looks up a localized string similar to Режим.
         /// </summary>
         public static string Mode {
             get {
@@ -1204,7 +1204,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Navigation.
+        ///   Looks up a localized string similar to Навигация.
         /// </summary>
         public static string Navigation {
             get {
@@ -1213,7 +1213,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next.
+        ///   Looks up a localized string similar to Далее.
         /// </summary>
         public static string Next {
             get {
@@ -1222,7 +1222,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not correct.
+        ///   Looks up a localized string similar to Не верно.
         /// </summary>
         public static string NonCorrect {
             get {
@@ -1231,7 +1231,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OK.
+        ///   Looks up a localized string similar to ОК.
         /// </summary>
         public static string Ok {
             get {
@@ -1240,7 +1240,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameter type.
+        ///   Looks up a localized string similar to Параметр.
         /// </summary>
         public static string ParameterType {
             get {
@@ -1249,7 +1249,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Order number.
+        ///   Looks up a localized string similar to Номер ЗНП.
         /// </summary>
         public static string PartyNumber {
             get {
@@ -1258,7 +1258,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Passed.
+        ///   Looks up a localized string similar to Годные.
         /// </summary>
         public static string Passed {
             get {
@@ -1267,7 +1267,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password incorrect.
+        ///   Looks up a localized string similar to Пароль неверен.
         /// </summary>
         public static string PasswordIncorrect {
             get {
@@ -1276,7 +1276,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pending.
+        ///   Looks up a localized string similar to В очереди.
         /// </summary>
         public static string Pending {
             get {
@@ -1285,7 +1285,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Period:.
+        ///   Looks up a localized string similar to Период:.
         /// </summary>
         public static string Period {
             get {
@@ -1294,7 +1294,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plate time, ms.
+        ///   Looks up a localized string similar to Время, мс.
         /// </summary>
         public static string PlateTime_ms {
             get {
@@ -1303,7 +1303,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position.
+        ///   Looks up a localized string similar to Позиция.
         /// </summary>
         public static string Position {
             get {
@@ -1312,7 +1312,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Позиция 1.
         /// </summary>
         public static string Position_1 {
             get {
@@ -1321,7 +1321,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 2.
+        ///   Looks up a localized string similar to Позиция 2.
         /// </summary>
         public static string Position_2 {
             get {
@@ -1330,7 +1330,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Print.
+        ///   Looks up a localized string similar to Печать.
         /// </summary>
         public static string Print {
             get {
@@ -1339,7 +1339,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Printing options:.
+        ///   Looks up a localized string similar to Настройки печати:.
         /// </summary>
         public static string PrintingOptions {
             get {
@@ -1348,7 +1348,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile.
+        ///   Looks up a localized string similar to Профили.
         /// </summary>
         public static string Profile {
             get {
@@ -1357,7 +1357,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile load error.
+        ///   Looks up a localized string similar to Ошибка загрузки профилей.
         /// </summary>
         public static string Profile_load_error {
             get {
@@ -1366,7 +1366,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load profiles from company server. Local copy is used temporary. Error {0}.
+        ///   Looks up a localized string similar to Не могу загрузить профили с сервера компании. Временно используется локальная копия. Ошибка {0}.
         /// </summary>
         public static string Profile_load_error_ex {
             get {
@@ -1375,7 +1375,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database name.
+        ///   Looks up a localized string similar to Путь к базе данных.
         /// </summary>
         public static string ProfileBuilderDBName {
             get {
@@ -1384,7 +1384,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zauberwort.
+        ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string ProfileBuilderDBPassword {
             get {
@@ -1393,7 +1393,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User.
+        ///   Looks up a localized string similar to Пользователь.
         /// </summary>
         public static string ProfileBuilderDBUser {
             get {
@@ -1402,7 +1402,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use SSPI authentification.
+        ///   Looks up a localized string similar to Использовать интегрированную аутентификацию.
         /// </summary>
         public static string ProfileBuilderIntegratedSecurity {
             get {
@@ -1411,7 +1411,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Server name.
+        ///   Looks up a localized string similar to Укажите путь к серверу.
         /// </summary>
         public static string ProfileBuilderServerName {
             get {
@@ -1420,7 +1420,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DB path.
+        ///   Looks up a localized string similar to Путь к БД.
         /// </summary>
         public static string ProfileBuilderTitle {
             get {
@@ -1429,7 +1429,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A profile with the same name already exists.
+        ///   Looks up a localized string similar to Профиль с таким именем уже существует.
         /// </summary>
         public static string ProfileExists {
             get {
@@ -1438,7 +1438,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile name.
+        ///   Looks up a localized string similar to Имя профиля.
         /// </summary>
         public static string ProfileName {
             get {
@@ -1447,7 +1447,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profiles.
+        ///   Looks up a localized string similar to Профили.
         /// </summary>
         public static string Profiles {
             get {
@@ -1456,7 +1456,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profiles selected for MME.
+        ///   Looks up a localized string similar to Профили выбранные для КИП.
         /// </summary>
         public static string ProfilesSelectedForMme {
             get {
@@ -1465,7 +1465,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pull stop button.
+        ///   Looks up a localized string similar to Отожмите кнопку Стоп.
         /// </summary>
         public static string PullStopButton {
             get {
@@ -1474,7 +1474,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anode current.
+        ///   Looks up a localized string similar to Анодный ток.
         /// </summary>
         public static string PureVgt {
             get {
@@ -1492,7 +1492,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct current fall rate, A/us.
+        ///   Looks up a localized string similar to Скорость спада тока, А/мкс.
         /// </summary>
         public static string QrrTqDCFallRate {
             get {
@@ -1501,7 +1501,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct current pulse duration, us.
+        ///   Looks up a localized string similar to Длительность импульса прямого тока, в мкс.
         /// </summary>
         public static string QrrTqDCPulseWidth {
             get {
@@ -1510,7 +1510,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct current rise rate, A/us.
+        ///   Looks up a localized string similar to Скорость нарастания прямого тока, А/мкс.
         /// </summary>
         public static string QrrTqDCRiseRate {
             get {
@@ -1519,7 +1519,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Direct current amplitude, A.
+        ///   Looks up a localized string similar to Амплитуда прямого тока, А.
         /// </summary>
         public static string QrrTqDirectCurrent {
             get {
@@ -1528,7 +1528,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mode.
+        ///   Looks up a localized string similar to Режим.
         /// </summary>
         public static string QrrTqMode {
             get {
@@ -1537,7 +1537,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Off-state voltage, V.
+        ///   Looks up a localized string similar to Прямое повторное напряжение, В.
         /// </summary>
         public static string QrrTqOffStateVoltage {
             get {
@@ -1546,7 +1546,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Off-state voltage rise rate, V/us.
+        ///   Looks up a localized string similar to Скорость нарастания прямого повторного напр., В/мкс.
         /// </summary>
         public static string QrrTqOsvRate {
             get {
@@ -1555,7 +1555,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measure Trr by 90%-50% method.
+        ///   Looks up a localized string similar to Измерение Trr по методу 90%-50%.
         /// </summary>
         public static string QrrTqTrrMeasureBy9050Method {
             get {
@@ -1573,7 +1573,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DC voltage value for resistance measurement, V.
+        ///   Looks up a localized string similar to Амплитуда напряжения для измерения, В.
         /// </summary>
         public static string RACResVoltage {
             get {
@@ -1582,7 +1582,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ramp.
+        ///   Looks up a localized string similar to Трапеция.
         /// </summary>
         public static string Ramp {
             get {
@@ -1591,7 +1591,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ramp up, V/ms.
+        ///   Looks up a localized string similar to Наклон, В/мс.
         /// </summary>
         public static string Rampup_Vms {
             get {
@@ -1600,7 +1600,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Read.
+        ///   Looks up a localized string similar to Чтение.
         /// </summary>
         public static string Read {
             get {
@@ -1609,7 +1609,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  - Read only.
+        ///   Looks up a localized string similar to  - Только чтение.
         /// </summary>
         public static string ReadOnly {
             get {
@@ -1618,7 +1618,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rejected.
+        ///   Looks up a localized string similar to Брак.
         /// </summary>
         public static string Rejected {
             get {
@@ -1627,7 +1627,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove mme code.
+        ///   Looks up a localized string similar to Удалить mme code.
         /// </summary>
         public static string RemoveMmeCode {
             get {
@@ -1636,7 +1636,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rg, Ohm.
+        ///   Looks up a localized string similar to Rg, Ом.
         /// </summary>
         public static string Resistance_Ohm {
             get {
@@ -1645,7 +1645,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Restart.
+        ///   Looks up a localized string similar to Перезапуск.
         /// </summary>
         public static string Restart {
             get {
@@ -1654,7 +1654,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Results.
+        ///   Looks up a localized string similar to Результаты.
         /// </summary>
         public static string Results {
             get {
@@ -1663,7 +1663,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reverse.
+        ///   Looks up a localized string similar to Обратный.
         /// </summary>
         public static string Reverse {
             get {
@@ -1672,7 +1672,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Safety circuit is open.
+        ///   Looks up a localized string similar to Защитная цепь разомкнута.
         /// </summary>
         public static string SafetyCircuitIsOpen {
             get {
@@ -1681,7 +1681,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Сохранить.
         /// </summary>
         public static string Save {
             get {
@@ -1690,7 +1690,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selftest.
+        ///   Looks up a localized string similar to Проверка.
         /// </summary>
         public static string Selftest {
             get {
@@ -1699,7 +1699,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Service.
+        ///   Looks up a localized string similar to Сервис.
         /// </summary>
         public static string Service {
             get {
@@ -1708,7 +1708,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sinus.
+        ///   Looks up a localized string similar to Полусинус.
         /// </summary>
         public static string Sinus {
             get {
@@ -1717,7 +1717,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Source.
+        ///   Looks up a localized string similar to Источник.
         /// </summary>
         public static string Source {
             get {
@@ -1726,7 +1726,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
+        ///   Looks up a localized string similar to Старт.
         /// </summary>
         public static string Start {
             get {
@@ -1735,7 +1735,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start voltage, V.
+        ///   Looks up a localized string similar to Стартовое, В.
         /// </summary>
         public static string StartVoltage_V {
             get {
@@ -1744,7 +1744,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop.
+        ///   Looks up a localized string similar to Стоп.
         /// </summary>
         public static string Stop {
             get {
@@ -1753,7 +1753,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop button is pressed.
+        ///   Looks up a localized string similar to Нажата кнопка Стоп.
         /// </summary>
         public static string StopButtonIsPressed {
             get {
@@ -1762,7 +1762,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopped.
+        ///   Looks up a localized string similar to Останов.
         /// </summary>
         public static string Stopped {
             get {
@@ -1771,7 +1771,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (SCI number).
+        ///   Looks up a localized string similar to (Номер ППЭ).
         /// </summary>
         public static string StructureName {
             get {
@@ -1780,7 +1780,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (SCI order).
+        ///   Looks up a localized string similar to (Партия ППЭ).
         /// </summary>
         public static string StructureOrder {
             get {
@@ -1789,7 +1789,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully sent.
+        ///   Looks up a localized string similar to Запрос отправлен.
         /// </summary>
         public static string Successful {
             get {
@@ -1798,7 +1798,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Technitian.
+        ///   Looks up a localized string similar to Наладчик.
         /// </summary>
         public static string Technitian {
             get {
@@ -1816,7 +1816,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to Тест.
         /// </summary>
         public static string Test {
             get {
@@ -1825,7 +1825,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test type.
+        ///   Looks up a localized string similar to Тип теста.
         /// </summary>
         public static string TestType {
             get {
@@ -1834,7 +1834,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time, us.
+        ///   Looks up a localized string similar to Время, мкс.
         /// </summary>
         public static string Time_us {
             get {
@@ -1852,7 +1852,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timestamp.
+        ///   Looks up a localized string similar to Время.
         /// </summary>
         public static string Timestamp {
             get {
@@ -1861,7 +1861,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Today.
+        ///   Looks up a localized string similar to Сегодня.
         /// </summary>
         public static string Today {
             get {
@@ -1870,7 +1870,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amperage (ITM), A.
+        ///   Looks up a localized string similar to Сила тока (ITM),  А.
         /// </summary>
         public static string TOUITM {
             get {
@@ -1879,7 +1879,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Try to connect.
+        ///   Looks up a localized string similar to Подключиться.
         /// </summary>
         public static string TryConnect {
             get {
@@ -1888,7 +1888,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
+        ///   Looks up a localized string similar to Тип.
         /// </summary>
         public static string Type {
             get {
@@ -1897,7 +1897,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uncheck All.
+        ///   Looks up a localized string similar to Снять все.
         /// </summary>
         public static string UnCheckAll {
             get {
@@ -1906,7 +1906,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Full scale.
+        ///   Looks up a localized string similar to Полный диапазон.
         /// </summary>
         public static string UseFullScale {
             get {
@@ -1915,7 +1915,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LSQ method.
+        ///   Looks up a localized string similar to LSQ метод.
         /// </summary>
         public static string UseLsqMethod {
             get {
@@ -1924,7 +1924,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User.
+        ///   Looks up a localized string similar to Оператор.
         /// </summary>
         public static string User {
             get {
@@ -1933,7 +1933,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select profile.
+        ///   Looks up a localized string similar to Выберите профиль.
         /// </summary>
         public static string UserPage_Title {
             get {
@@ -1942,7 +1942,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test.
+        ///   Looks up a localized string similar to Тестирование.
         /// </summary>
         public static string UserTestPage_Title {
             get {
@@ -1951,7 +1951,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use Udsm Ursm.
+        ///   Looks up a localized string similar to Использовать Udsm Ursm.
         /// </summary>
         public static string UseUdsmUrsm {
             get {
@@ -1960,7 +1960,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V.
+        ///   Looks up a localized string similar to В.
         /// </summary>
         public static string V {
             get {
@@ -1969,7 +1969,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value.
+        ///   Looks up a localized string similar to Значение.
         /// </summary>
         public static string Value {
             get {
@@ -1978,7 +1978,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VDRM, V.
+        ///   Looks up a localized string similar to UDRM, В.
         /// </summary>
         public static string VdrmV {
             get {
@@ -1987,7 +1987,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VGT.
+        ///   Looks up a localized string similar to UGT.
         /// </summary>
         public static string Vgt {
             get {
@@ -1996,7 +1996,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VGT, mV.
+        ///   Looks up a localized string similar to UGT, мВ.
         /// </summary>
         public static string VgtmV {
             get {
@@ -2005,7 +2005,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VGT, V.
+        ///   Looks up a localized string similar to UGT, В.
         /// </summary>
         public static string VgtV {
             get {
@@ -2014,7 +2014,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V / ms.
+        ///   Looks up a localized string similar to В / мс.
         /// </summary>
         public static string Vms {
             get {
@@ -2023,7 +2023,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Voltage D, V.
+        ///   Looks up a localized string similar to Напр. прям., В.
         /// </summary>
         public static string VoltageLimitD_V {
             get {
@@ -2032,7 +2032,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Voltage R, V.
+        ///   Looks up a localized string similar to Напр. обрат., В.
         /// </summary>
         public static string VoltageLimitR_V {
             get {
@@ -2041,7 +2041,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VRRM, V.
+        ///   Looks up a localized string similar to URRM, В.
         /// </summary>
         public static string VrrmV {
             get {
@@ -2050,7 +2050,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Static losses.
+        ///   Looks up a localized string similar to Стат. потери.
         /// </summary>
         public static string Vtm {
             get {
@@ -2059,7 +2059,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VTM, V.
+        ///   Looks up a localized string similar to UTM, В.
         /// </summary>
         public static string VtmV {
             get {
@@ -2068,7 +2068,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ready.
+        ///   Looks up a localized string similar to Готов.
         /// </summary>
         public static string Waiting {
             get {
@@ -2077,7 +2077,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning.
+        ///   Looks up a localized string similar to Предупреждение.
         /// </summary>
         public static string Warning {
             get {
@@ -2086,7 +2086,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connecting.
+        ///   Looks up a localized string similar to Подключение.
         /// </summary>
         public static string WelcomePage_Title {
             get {
@@ -2095,7 +2095,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Write.
+        ///   Looks up a localized string similar to Запись.
         /// </summary>
         public static string Write {
             get {
@@ -2104,7 +2104,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yesterday.
+        ///   Looks up a localized string similar to Вчера.
         /// </summary>
         public static string Yesterday {
             get {

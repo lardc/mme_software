@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using SCME.Types;
 using SCME.UI.Properties;
@@ -19,7 +23,7 @@ namespace SCME.UI.IO
         {
             m_Net = Net;
             m_ActionQueue = new ConcurrentQueue<Action>();
-            m_Timer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 0, 0, 50) };
+            m_Timer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 0, 0, 50)};
             m_Timer.Tick += Timer_Tick;
         }
 
@@ -27,7 +31,9 @@ namespace SCME.UI.IO
         {
             Action action;
 
-            while (m_ActionQueue.TryDequeue(out action)) { }
+            while (m_ActionQueue.TryDequeue(out action))
+            {
+            }
 
             m_Stop = false;
             m_Timer.Start();
@@ -50,62 +56,60 @@ namespace SCME.UI.IO
         public void AddCommonConnectionEvent(DeviceConnectionState State, string Message)
         {
             m_ActionQueue.Enqueue(delegate
+            {
+                switch (State)
                 {
-                    switch (State)
+                    case DeviceConnectionState.ConnectionSuccess:
                     {
-                        case DeviceConnectionState.ConnectionSuccess:
-                            {
-                                //Cache.Calibration.PatchClamp();
-                                //выполнена инициализация аппаратных модулей, вполне возможно, что при наступлении данного события синхронизация баз данных уже будет завершена процессом Service.exe, поэтому проверяем это и если синхронизация уже действительно завершилась - выполняем то, что надо выполнять после её завершения 
+                        //Cache.Calibration.PatchClamp();
+                        //выполнена инициализация аппаратных модулей, вполне возможно, что при наступлении данного события синхронизация баз данных уже будет завершена процессом Service.exe, поэтому проверяем это и если синхронизация уже действительно завершилась - выполняем то, что надо выполнять после её завершения 
 
-                                var stateService = Cache.Net.GetStateService;
+                        var stateService = Cache.Net.GetStateService;
 
 
-                                if (Cache.Net.IsDBSyncInProgress(stateService.InitializationResult))
-                                    Cache.Main.VM.SyncState = "RunSync";
-                                else
-                                {
-                                    Cache.Main.VM.MmeCode = stateService.MMECode;
-                                    Cache.Main.VM.IsLocal = stateService.IsLocal;
-                                    AfterEndOfSincedProcessDBRoutine();
-                                }
+                        if (Cache.Net.IsDBSyncInProgress(stateService.InitializationResult))
+                            Cache.Main.VM.SyncState = "RunSync";
+//                        else
+//                        {
+//                            AfterEndOfSincedProcessDBRoutine();
+//                        }
 
-                                if (Settings.Default.FTDIPresent)
-                                {
-                                    Cache.FTDI.LedRedSwitch(false);
-                                    Cache.FTDI.LedGreenSwitch(false);
-                                }
+                        if (Settings.Default.FTDIPresent)
+                        {
+                            Cache.FTDI.LedRedSwitch(false);
+                            Cache.FTDI.LedGreenSwitch(false);
+                        }
 
-                                Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
-                            }
-                            break;
-
-                        case DeviceConnectionState.ConnectionFailed:
-                            {
-                                Cache.Welcome.IsRestartEnable = true;
-
-                                if (Settings.Default.FTDIPresent)
-                                {
-                                    Cache.FTDI.LedGreenSwitch(false);
-                                    Cache.FTDI.LedRedBlinkStart();
-                                }
-                            }
-                            break;
-                        case DeviceConnectionState.DisconnectionError:
-                        case DeviceConnectionState.DisconnectionSuccess:
-                            {
-                                if (Cache.Main.IsNeedToRestart)
-                                    m_Net.Initialize(Cache.Main.Param);
-
-                                if (Settings.Default.FTDIPresent)
-                                {
-                                    Cache.FTDI.LedRedSwitch(false);
-                                    Cache.FTDI.LedGreenSwitch(false);
-                                }
-                            }
-                            break;
+                        Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
                     }
-                });
+                        break;
+
+                    case DeviceConnectionState.ConnectionFailed:
+                    {
+                        Cache.Welcome.IsRestartEnable = true;
+
+                        if (Settings.Default.FTDIPresent)
+                        {
+                            Cache.FTDI.LedGreenSwitch(false);
+                            Cache.FTDI.LedRedBlinkStart();
+                        }
+                    }
+                        break;
+                    case DeviceConnectionState.DisconnectionError:
+                    case DeviceConnectionState.DisconnectionSuccess:
+                    {
+                        if (Cache.Main.IsNeedToRestart)
+                            m_Net.Initialize(Cache.Main.Param);
+
+                        if (Settings.Default.FTDIPresent)
+                        {
+                            Cache.FTDI.LedRedSwitch(false);
+                            Cache.FTDI.LedGreenSwitch(false);
+                        }
+                    }
+                        break;
+                }
+            });
         }
 
 
@@ -117,74 +121,74 @@ namespace SCME.UI.IO
         public void AddTestAllEvent(DeviceState State, string Message)
         {
             m_ActionQueue.Enqueue(delegate
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
                 {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultAll(State);
+                }
+                else
+                {
+                    Cache.Gate.SetResultAll(State);
+                    Cache.Sl.SetResultAll(State);
+                    Cache.Bvt.SetResultAll(State);
+                    Cache.ATU.SetResultAll(State);
+                    Cache.QrrTq.SetResultAll(State);
+                    Cache.RAC.SetResultAll(State);
+                    Cache.IH.SetResultAll(State);
+                }
+
+                if (Settings.Default.FTDIPresent)
+                {
+                    if (State == DeviceState.InProcess)
                     {
-                        Cache.UserTest.SetResultAll(State);
+                        Cache.FTDI.LedRedSwitch(false);
+                        Cache.FTDI.LedGreenBlinkStart();
+                    }
+                    else if (State == DeviceState.Fault)
+                    {
+                        Cache.FTDI.LedGreenSwitch(false);
+                        Cache.FTDI.LedRedBlinkStart();
                     }
                     else
                     {
-                        Cache.Gate.SetResultAll(State);
-                        Cache.Sl.SetResultAll(State);
-                        Cache.Bvt.SetResultAll(State);
-                        Cache.ATU.SetResultAll(State);
-                        Cache.QrrTq.SetResultAll(State);
-                        Cache.RAC.SetResultAll(State);
-                        Cache.IH.SetResultAll(State);
+                        Cache.FTDI.LedRedSwitch(false);
+                        Cache.FTDI.LedGreenSwitch(false);
                     }
-
-                    if (Settings.Default.FTDIPresent)
-                    {
-                        if (State == DeviceState.InProcess)
-                        {
-                            Cache.FTDI.LedRedSwitch(false);
-                            Cache.FTDI.LedGreenBlinkStart();
-                        }
-                        else if (State == DeviceState.Fault)
-                        {
-                            Cache.FTDI.LedGreenSwitch(false);
-                            Cache.FTDI.LedRedBlinkStart();
-                        }
-                        else
-                        {
-                            Cache.FTDI.LedRedSwitch(false);
-                            Cache.FTDI.LedGreenSwitch(false);
-                        }
-                    }
-                });
+                }
+            });
         }
 
         public void AddExceptionEvent(ComplexParts Device, string Message)
         {
             m_ActionQueue.Enqueue(delegate
+            {
+                Cache.Welcome.IsBackEnable = false;
+                Cache.Welcome.IsRestartEnable = true;
+                Cache.Welcome.State(Device, DeviceConnectionState.ConnectionFailed, Message);
+
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
                 {
-                    Cache.Welcome.IsBackEnable = false;
-                    Cache.Welcome.IsRestartEnable = true;
-                    Cache.Welcome.State(Device, DeviceConnectionState.ConnectionFailed, Message);
+                    Cache.UserTest.SetResultAll(DeviceState.Fault);
+                }
+                else
+                {
+                    Cache.Gate.SetResultAll(DeviceState.Fault);
+                    Cache.Sl.SetResultAll(DeviceState.Fault);
+                    Cache.Bvt.SetResultAll(DeviceState.Fault);
+                    Cache.ATU.SetResultAll(DeviceState.Fault);
+                    Cache.QrrTq.SetResultAll(DeviceState.Fault);
+                    Cache.RAC.SetResultAll(DeviceState.Fault);
+                    Cache.IH.SetResultAll(DeviceState.Fault);
+                }
 
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    {
-                        Cache.UserTest.SetResultAll(DeviceState.Fault);
-                    }
-                    else
-                    {
-                        Cache.Gate.SetResultAll(DeviceState.Fault);
-                        Cache.Sl.SetResultAll(DeviceState.Fault);
-                        Cache.Bvt.SetResultAll(DeviceState.Fault);
-                        Cache.ATU.SetResultAll(DeviceState.Fault);
-                        Cache.QrrTq.SetResultAll(DeviceState.Fault);
-                        Cache.RAC.SetResultAll(DeviceState.Fault);
-                        Cache.IH.SetResultAll(DeviceState.Fault);
-                    }
+                Cache.Main.mainFrame.Navigate(Cache.Welcome);
 
-                    Cache.Main.mainFrame.Navigate(Cache.Welcome);
-
-                    if (Settings.Default.FTDIPresent)
-                    {
-                        Cache.FTDI.LedGreenSwitch(false);
-                        Cache.FTDI.LedRedBlinkStart();
-                    }
-                });
+                if (Settings.Default.FTDIPresent)
+                {
+                    Cache.FTDI.LedGreenSwitch(false);
+                    Cache.FTDI.LedRedBlinkStart();
+                }
+            });
         }
 
         //public void AddStopEvent()
@@ -252,14 +256,13 @@ namespace SCME.UI.IO
         {
             m_ActionQueue.Enqueue(delegate
             {
-                    Cache.Net.Stop();
+                Cache.Net.Stop();
 
 
+                var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
 
-                    var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
-
-                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                    dw.ShowDialog();
+                dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                dw.ShowDialog();
 
                 if (dw.DialogResult ?? false)
                 {
@@ -306,10 +309,9 @@ namespace SCME.UI.IO
                         dw.ShowDialog();
                     }
                 }
-                
             });
         }
-        
+
         public void AddBvtUdsmUrsmDirectEvent(DeviceState State, Types.BVT.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
@@ -424,286 +426,310 @@ namespace SCME.UI.IO
         {
             //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
             Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
-            
+
 //            if(Cache.Net.IsDBSync)
 //                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
 //            else
 //                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionFailed, "Sync error");
-        
+
             var stateService = Cache.Net.GetStateService;
             Cache.Main.VM.MmeCode = stateService.MMECode;
             Cache.Main.VM.IsLocal = stateService.IsLocal;
 
-            if (Cache.Net.IsModulesInitialized)
-                Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += (sender, args) =>
+            {
+                try
+                {
+                    Cache.DatabaseProxy.GetProfilesDeepByMmeCode(stateService.MMECode);
+                }
+                catch (Exception e)
+                {
+                    args.Result = e;
+                }
+            };
+            worker.RunWorkerCompleted += (sender, args) =>
+            {
+                Cache.Welcome.IsRestartEnable = true;
+                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
+                
+                if (args.Result is Exception ex) new DialogWindow("Error", ex.ToString()).ShowDialog();
 
-            ProfilesDbLogic.ImportProfilesFromDb();
-            Cache.Welcome.IsRestartEnable = true;
-            Cache.Welcome.IsBackEnable = true;
+                Cache.Welcome.IsBackEnable = true;
+                if (Cache.Net.IsModulesInitialized)
+                    Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
+            };
+            worker.RunWorkerAsync();
         }
 
-        public void AddSyncDBAreProcessedEvent()
+        public void AddSyncDbAreProcessedEvent()
         {
             //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
-            m_ActionQueue.Enqueue(delegate
-            {
-                AfterEndOfSincedProcessDBRoutine();
-            });
+            m_ActionQueue.Enqueue(AfterEndOfSincedProcessDBRoutine);
         }
 
         public void AddButtonPressedEvent(ComplexButtons Button, bool State)
         {
             m_ActionQueue.Enqueue(delegate
+            {
+                if (State && (Button == ComplexButtons.ButtonStartFTDI || Button == ComplexButtons.ButtonStart))
                 {
-                    if (State && (Button == ComplexButtons.ButtonStartFTDI || Button == ComplexButtons.ButtonStart))
-                    {
-                        if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
-                            Cache.UserTest.StartFirst();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Gate))
-                            Cache.Gate.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Sl))
-                            Cache.Sl.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.Bvt))
-                            Cache.Bvt.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.ATU))
-                            Cache.ATU.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.QrrTq))
-                            Cache.QrrTq.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.RAC))
-                            Cache.RAC.Start();
-                        else if (Equals(Cache.Main.mainFrame.Content, Cache.IH))
-                            Cache.IH.Start();
-                    }
+                    if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
+                        Cache.UserTest.StartFirst();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.Gate))
+                        Cache.Gate.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.Sl))
+                        Cache.Sl.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.Bvt))
+                        Cache.Bvt.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.ATU))
+                        Cache.ATU.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.QrrTq))
+                        Cache.QrrTq.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.RAC))
+                        Cache.RAC.Start();
+                    else if (Equals(Cache.Main.mainFrame.Content, Cache.IH))
+                        Cache.IH.Start();
+                }
 
-                    if (State && (Button == ComplexButtons.ButtonStopFTDI || Button == ComplexButtons.ButtonStop))
-                        Cache.Net.StopByButtonStop();
+                if (State && (Button == ComplexButtons.ButtonStopFTDI || Button == ComplexButtons.ButtonStop))
+                    Cache.Net.StopByButtonStop();
 
-                    if (Button == ComplexButtons.ButtonSC1)
-                    {
-                        Cache.Main.VM.IsSafetyBreakIconVisible = !State;
+                if (Button == ComplexButtons.ButtonSC1)
+                {
+                    Cache.Main.VM.IsSafetyBreakIconVisible = !State;
 
-                        //if (!State) 
-                        //    Cache.Net.Stop();
-                    }
-                });
+                    //if (!State) 
+                    //    Cache.Net.Stop();
+                }
+            });
         }
 
-        public void AddGatewayWarningEvent(Types.Gateway.HWWarningReason Warning) { }
+        public void AddGatewayWarningEvent(Types.Gateway.HWWarningReason Warning)
+        {
+        }
 
-        public void AddGatewayFaultEvent(Types.Gateway.HWFaultReason Fault) { }
+        public void AddGatewayFaultEvent(Types.Gateway.HWFaultReason Fault)
+        {
+        }
 
-        public void AddCommutationSwitchEvent(Types.Commutation.CommutationMode ComSwitch) { }
+        public void AddCommutationSwitchEvent(Types.Commutation.CommutationMode ComSwitch)
+        {
+        }
 
-        public void AddCommutationWarningEvent(Types.Commutation.HWWarningReason Warning) { }
+        public void AddCommutationWarningEvent(Types.Commutation.HWWarningReason Warning)
+        {
+        }
 
-        public void AddCommutationFaultEvent(Types.Commutation.HWFaultReason Fault) { }
+        public void AddCommutationFaultEvent(Types.Commutation.HWFaultReason Fault)
+        {
+        }
 
-        public void AddGateAllEvent(DeviceState State) { }
+        public void AddGateAllEvent(DeviceState State)
+        {
+        }
 
         public void AddGateKelvinEvent(DeviceState state, bool isKelvinOk, IList<short> Array, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultGateKelvin(state, isKelvinOk, testTypeId);
-                    else
-                        Cache.Gate.SetResultKelvin(state, isKelvinOk);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultGateKelvin(state, isKelvinOk, testTypeId);
+                else
+                    Cache.Gate.SetResultKelvin(state, isKelvinOk);
+            });
         }
 
         public void AddGateResistanceEvent(DeviceState state, float resistance, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultGateResistance(state, resistance, testTypeId);
-                    else
-                        Cache.Gate.SetResultResistance(state, resistance);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultGateResistance(state, resistance, testTypeId);
+                else
+                    Cache.Gate.SetResultResistance(state, resistance);
+            });
         }
 
         public void AddGateGateEvent(DeviceState state, float igt, float vgt, IList<short> arrayI, IList<short> arrayV, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultGateGate(state, igt, vgt, arrayI, arrayV, testTypeId);
-                    else
-                        Cache.Gate.SetResultGT(state, igt, vgt, arrayI, arrayV);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultGateGate(state, igt, vgt, arrayI, arrayV, testTypeId);
+                else
+                    Cache.Gate.SetResultGT(state, igt, vgt, arrayI, arrayV);
+            });
         }
 
         public void AddGateIhEvent(DeviceState state, float ih, IList<short> array, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultGateIh(state, ih, array, testTypeId);
-                    else
-                        Cache.Gate.SetResultIh(state, ih, array);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultGateIh(state, ih, array, testTypeId);
+                else
+                    Cache.Gate.SetResultIh(state, ih, array);
+            });
         }
 
         public void AddGateIlEvent(DeviceState state, float il, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultGateIl(state, il, testTypeId);
-                    else
-                        Cache.Gate.SetResultIl(state, il);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultGateIl(state, il, testTypeId);
+                else
+                    Cache.Gate.SetResultIl(state, il);
+            });
         }
 
         public void AddGateWarningEvent(Types.Gate.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetGateWarning(Warning);
-                    else
-                        Cache.Gate.SetWarning(Warning);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetGateWarning(Warning);
+                else
+                    Cache.Gate.SetWarning(Warning);
+            });
         }
 
         public void AddGateFaultEvent(Types.Gate.HWFaultReason Fault)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetGateFault(Fault);
-                    else
-                        Cache.Gate.SetFault(Fault);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetGateFault(Fault);
+                else
+                    Cache.Gate.SetFault(Fault);
+            });
         }
 
         public void AddGateProblemEvent(Types.Gate.HWProblemReason Problem)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetGateProblem(Problem);
-                    else
-                        Cache.Gate.SetProblem(Problem);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetGateProblem(Problem);
+                else
+                    Cache.Gate.SetProblem(Problem);
+            });
         }
 
         public void AddSLEvent(DeviceState state, Types.VTM.TestResults result)
         {
             m_ActionQueue.Enqueue(delegate
+            {
+                if (!result.IsSelftest)
                 {
-                    if (!result.IsSelftest)
-                    {
-                        if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                            Cache.UserTest.SetResultSl(state, result);
-                        else
-                            Cache.Sl.SetResultVtm(state, result);
-                    }
+                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                        Cache.UserTest.SetResultSl(state, result);
                     else
-                        Cache.Selftest.SetResult(state, result);
-                });
+                        Cache.Sl.SetResultVtm(state, result);
+                }
+                else
+                    Cache.Selftest.SetResult(state, result);
+            });
         }
 
         public void AddSLWarningEvent(Types.VTM.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetSLWarning(Warning);
-                    else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
-                        Cache.Selftest.SetWarning(Warning);
-                    else
-                        Cache.Sl.SetWarning(Warning);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetSLWarning(Warning);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
+                    Cache.Selftest.SetWarning(Warning);
+                else
+                    Cache.Sl.SetWarning(Warning);
+            });
         }
 
         public void AddSLFaultEvent(Types.VTM.HWFaultReason Fault)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetSLFault(Fault);
-                    else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
-                        Cache.Selftest.SetFault(Fault);
-                    else
-                        Cache.Sl.SetFault(Fault);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetSLFault(Fault);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
+                    Cache.Selftest.SetFault(Fault);
+                else
+                    Cache.Sl.SetFault(Fault);
+            });
         }
 
         public void AddSLProblemEvent(Types.VTM.HWProblemReason Problem)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetSLProblem(Problem);
-                    else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
-                        Cache.Selftest.SetProblem(Problem);
-                    else
-                        Cache.Sl.SetProblem(Problem);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetSLProblem(Problem);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.Selftest))
+                    Cache.Selftest.SetProblem(Problem);
+                else
+                    Cache.Sl.SetProblem(Problem);
+            });
         }
 
         public void AddBvtAllEvent(DeviceState State)
         {
-            m_ActionQueue.Enqueue(delegate
-            {
-                Cache.UserTest.SetResultBvtAll(State);
-            });
+            m_ActionQueue.Enqueue(delegate { Cache.UserTest.SetResultBvtAll(State); });
         }
 
         public void AddBvtDirectEvent(DeviceState State, Types.BVT.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultBvtDirect(State, Result);
-                    else
-                        Cache.Bvt.SetResultBvtDirect(State, Result);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultBvtDirect(State, Result);
+                else
+                    Cache.Bvt.SetResultBvtDirect(State, Result);
+            });
         }
 
         public void AddBvtReverseEvent(DeviceState State, Types.BVT.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetResultReverseBvt(State, Result);
-                    else
-                        Cache.Bvt.SetResultReverseBvt(State, Result);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetResultReverseBvt(State, Result);
+                else
+                    Cache.Bvt.SetResultReverseBvt(State, Result);
+            });
         }
 
         public void AddBvtWarningEvent(Types.BVT.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetBvtWarning(Warning);
-                    else
-                        Cache.Bvt.SetWarning(Warning);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetBvtWarning(Warning);
+                else
+                    Cache.Bvt.SetWarning(Warning);
+            });
         }
 
         public void AddBvtFaultEvent(Types.BVT.HWFaultReason Fault)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetBvtFault(Fault);
-                    else
-                        Cache.Bvt.SetFault(Fault);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetBvtFault(Fault);
+                else
+                    Cache.Bvt.SetFault(Fault);
+            });
         }
 
         public void AddBvtProblemEvent(Types.BVT.HWProblemReason Problem)
         {
             m_ActionQueue.Enqueue(delegate
-                {
-                    if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                        Cache.UserTest.SetBvtProblem(Problem);
-                    else
-                        Cache.Bvt.SetProblem(Problem);
-                });
+            {
+                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
+                    Cache.UserTest.SetBvtProblem(Problem);
+                else
+                    Cache.Bvt.SetProblem(Problem);
+            });
         }
 
         public void AddClampingSwitchEvent(Types.Clamping.SqueezingState State, IList<float> ArrayF, IList<float> ArrayFd)
@@ -816,7 +842,6 @@ namespace SCME.UI.IO
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetResultQrrTq(State, Result);
                 else Cache.QrrTq.SetResult(State, Result);
             });
-
         }
 
         public void AddQrrTqProblemEvent(ushort Problem)
@@ -891,7 +916,7 @@ namespace SCME.UI.IO
             });
         }
 
-          public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
+        public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
             {
@@ -929,34 +954,22 @@ namespace SCME.UI.IO
 
         public void AddIHEvent(DeviceState State, Types.IH.TestResults Result)
         {
-            m_ActionQueue.Enqueue(delegate
-            {
-                Cache.IH.SetResult(State, Result);
-            });
+            m_ActionQueue.Enqueue(delegate { Cache.IH.SetResult(State, Result); });
         }
 
         public void AddIHProblemEvent(ushort Problem)
         {
-            m_ActionQueue.Enqueue(delegate
-            {
-                Cache.IH.SetProblem(Problem);
-            });
+            m_ActionQueue.Enqueue(delegate { Cache.IH.SetProblem(Problem); });
         }
 
         public void AddIHWarningEvent(ushort Warning)
         {
-            m_ActionQueue.Enqueue(delegate
-            {
-                Cache.IH.SetWarning(Warning);
-            });
+            m_ActionQueue.Enqueue(delegate { Cache.IH.SetWarning(Warning); });
         }
 
         public void AddIHFaultEvent(ushort Fault)
         {
-            m_ActionQueue.Enqueue(delegate
-            {
-                Cache.IH.SetFault(Fault);
-            });
+            m_ActionQueue.Enqueue(delegate { Cache.IH.SetFault(Fault); });
         }
 
         public void AddClampingSettingTemperatureEvent(int temeprature)

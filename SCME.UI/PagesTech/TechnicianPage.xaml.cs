@@ -120,12 +120,12 @@ namespace SCME.UI.PagesTech
                 if (PreviousPage == null)
                     PreviousPage = Cache.Login;
 
-                Cache.ProfileEdit.ClearFilter();
-                Cache.ProfileSelection.InitFilter();
-                Cache.ProfileSelection.InitSorting();
+//                Cache.ProfileEdit.ClearFilter();
+//                Cache.ProfileSelection.InitFilter();
+//                Cache.ProfileSelection.InitSorting();
                 if (PreviousPage is PagesUser.ProfileSelectionPage)
                 {
-                    NavigationService.Navigate(Cache.ProfileSelection);
+//                    NavigationService.Navigate(Cache.ProfileSelection);
                     return;
                 }
 
