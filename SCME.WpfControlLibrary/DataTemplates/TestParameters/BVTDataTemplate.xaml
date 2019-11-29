@@ -14,10 +14,6 @@
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
-                <Setter Property="FlowDirection" Value="RightToLeft"></Setter>
-            </Style>
-            
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>

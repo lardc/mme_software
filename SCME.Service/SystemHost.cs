@@ -24,7 +24,7 @@ namespace SCME.Service
         private static ServiceHost ms_MaintenanceServiceHost;
         private static ServiceHost _SQLiteDbServiceHost;
         private static BroadcastCommunication m_Communication;
-
+        private static IDbService _dbService;
         internal static bool? IsSyncedWithServer { get; set; }
 
         private static void AfterSyncWithServerRoutineHandler(string notSyncedReason)
@@ -72,7 +72,7 @@ namespace SCME.Service
 
         private static void HostDbService()
         {
-            _SQLiteDbServiceHost = new ServiceHost(new SQLiteDbService(new SQLiteConnection(new SQLiteConnectionStringBuilder()
+            _SQLiteDbServiceHost = new ServiceHost( _dbService = new SQLiteDbService(new SQLiteConnection(new SQLiteConnectionStringBuilder()
             {
                 DataSource = Settings.Default.ResultsDatabasePath,
                 SyncMode = SynchronizationModes.Full,
@@ -112,18 +112,18 @@ namespace SCME.Service
                 return false;
             }
 
-            try
-            {
-                SQLiteDatabaseService dbForMigration = new SQLiteDatabaseService(Settings.Default.ResultsDatabasePath);
-                dbForMigration.Open();
-                dbForMigration.Migrate();
-                dbForMigration.Close();
-            }
-            catch (Exception ex)
-            {
-                Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, String.Format("Migrate database error: {0}", ex.Message));
-                return false;
-            }
+//            try
+//            {
+//                SQLiteDatabaseService dbForMigration = new SQLiteDatabaseService(Settings.Default.ResultsDatabasePath);
+//                dbForMigration.Open();
+//                dbForMigration.Migrate();
+//                dbForMigration.Close();
+//            }
+//            catch (Exception ex)
+//            {
+//                Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, String.Format("Migrate database error: {0}", ex.Message));
+//                return false;
+//            }
 
             try
             {
@@ -150,15 +150,24 @@ namespace SCME.Service
 //                        Results.SyncWithServer(AfterSyncWithServerRoutineHandler);
 //                        break;
 //                }
-                    
-                ms_ControlService = new ExternalControlServer();
-                ms_ControlServiceHost = new ServiceHost(ms_ControlService);
-                ms_ControlServiceHost.Open();
-                Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, String.Format(Resources.Log_SystemHost_Control_service_is_listening));
+                   
+                try
+                {
+                    ms_ControlService = new ExternalControlServer();
+                    ms_ControlServiceHost = new ServiceHost(ms_ControlService);
+                    ms_ControlServiceHost.Open();
+                    Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, String.Format(Resources.Log_SystemHost_Control_service_is_listening));
 
-                ms_DatabaseServiceHost = new ServiceHost(typeof(DatabaseServer));
+                    ms_DatabaseServiceHost = new ServiceHost(typeof(DatabaseServer));
 
-                HostDbService();
+                    HostDbService();
+                }
+                catch (Exception ex)
+                {
+                    Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, $"SQLite database error: {ex?.InnerException?.ToString() ?? ex.ToString()}");
+                    return false;
+                }
+               
                 
                 try
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.Threading;
 using SCME.InterfaceImplementations.NewImplement.SQLite;
@@ -85,15 +86,25 @@ namespace SCME.InterfaceImplementations
                 {
                     var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
                     var centralProfiles = msSqlDbService.GetProfilesDeepByMmeCode(_mmeCode);
+                    if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
+                        _sqLiteDbService.InsertMmeCode(_mmeCode);
+
+                    List<MyProfile> deletingProfiles;
+                    List<MyProfile> addingProfiles;
                     
-                    var deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
-                    var addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+                    if (_sqLiteDbService.Migrate())
+                    {
+                        deletingProfiles = localProfiles;
+                        addingProfiles = centralProfiles;
+                    }
+                    else
+                    {
+                        deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();;
+                        addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+                    }
                     
                     foreach (var i in deletingProfiles)
                         _sqLiteDbService.RemoveProfile(i, _mmeCode);
-
-                    if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
-                        _sqLiteDbService.InsertMmeCode(_mmeCode);
 
                     foreach (var i in addingProfiles)
                         _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);

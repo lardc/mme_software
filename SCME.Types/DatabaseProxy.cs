@@ -93,5 +93,10 @@ namespace SCME.Types
         {
             throw new NotImplementedException();
         }
+
+        public bool Migrate()
+        {
+            return Channel.Migrate();
+        }
     }
 }

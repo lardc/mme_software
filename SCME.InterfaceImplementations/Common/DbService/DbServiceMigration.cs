@@ -11,7 +11,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public partial class DbService<TDbCommand, TDbConnection>
     {
-        private  readonly (string name, string localName, bool isTech)[] _conditionsList =
+        private readonly (string name, string localName, bool isTech)[] _conditionsList =
         {
             ("Gate_En", "Gate_En", true),
             ("Gate_EnableCurrent", "Gate_EnableCurrent", false),
@@ -31,7 +31,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("SL_HeatEn", "SL_HeatEn", false),
             ("SL_RampHeatCurrent", "SL_RampHeatCurrent", false),
             ("SL_RampHeatTime", "SL_RampHeatTime", false),
-            
+
             ("BVT_En", "BVT_En", true),
             ("BVT_Type", "BVT_Type", false),
             ("BVT_I", "BVT_I", false),
@@ -42,10 +42,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_F", "BVT_F", false),
             ("BVT_FD", "BVT_FD", false),
             ("BVT_Mode", "BVT_Mode", false),
-            ("BVT_PlateTime", "BVT_PlateTime", true),
+            (@"BVT_PlateTime", @"BVT_PlateTime", true),
             ("BVT_UseUdsmUrsm", "BVT_UseUdsmUrsm", true),
             ("BVT_PulseFrequency", "BVT_PulseFrequency", true),
-            
+
             ("BVT_UdsmUrsm_Type", "BVT_UdsmUrsm_Type", false),
             ("BVT_UdsmUrsm_I", "BVT_UdsmUrsm_I", false),
             ("BVT_UdsmUrsm_VD", "BVT_UdsmUrsm_VD", false),
@@ -56,7 +56,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_UdsmUrsm_FD", "BVT_UdsmUrsm_FD", false),
             ("BVT_UdsmUrsm_PlateTime", "BVT_UdsmUrsm_PlateTime", true),
             ("BVT_UdsmUrsm_PulseFrequency", "BVT_UdsmUrsm_PulseFrequency", true),
-            
+
             ("COMM_Type", "COMM_Type", true),
             ("CLAMP_Type", "CLAMP_Type", true),
             ("CLAMP_Force", "CLAMP_Force", true),
@@ -70,7 +70,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("DVDT_ConfirmationCount", "DVDT_ConfirmationCount", true),
             ("DVDT_VoltageRateLimit", "DVDT_VoltageRateLimit", true),
             ("DVDT_VoltageRateOffSet", "DVDT_VoltageRateOffSet", true),
-            
+
             ("ATU_En", "ATU_En", true),
             ("ATU_PrePulseValue", "ATU_PrePulseValue", true),
             ("ATU_PowerValue", "ATU_PowerValue", true),
@@ -89,7 +89,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("TOU_ITM", "TOU_ITM", true),
         };
 
-        private  readonly (string name, string localName, bool isTech)[] _paramsList =
+        private readonly (string name, string localName, bool isTech)[] _paramsList =
         {
             ("K", "K", true),
             ("RG", "RG, Ohm", false),
@@ -103,10 +103,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("VRRM", "VRRM, V", false),
             ("IDRM", "IDRM, mA", false),
             ("IRRM", "IRRM, mA", false),
-            
+
             ("UdsmUrsm_IDRM", "UdsmUrsm_IDRM, A", false),
             ("UdsmUrsm_IRRM", "UdsmUrsm_IRRM, A", false),
-            
+
             ("IsHeightOk", "IsHeightOk", false),
             ("UBR", "UBR, V", false),
             ("UPRSM", "UPRSM, V", false),
@@ -127,7 +127,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_IRSM", "BVT_IRSM, A", false),
         };
 
-        private  readonly (string name, string localName, int code)[] _errorsList =
+        private readonly (string name, string localName, int code)[] _errorsList =
         {
             ("ERR_KELVIN", "Error connection", 11),
             ("ERR_RG", "RG out of range", 12),
@@ -180,10 +180,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
             });
         }
 
-        protected virtual string DatabaseFieldTestTypeName => "TEST_TYPE_NAME"; 
-        
-        private void Migrate()
+        protected virtual string DatabaseFieldTestTypeName => "TEST_TYPE_NAME";
+
+        public bool Migrate()
         {
+            var isMigrate = false;
             using (_dbTransaction = Connection.BeginTransaction())
             {
                 _insertCondition.Transaction = _dbTransaction;
@@ -192,7 +193,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _insertError.Transaction = _dbTransaction;
 
                 _selectAllTopProfile.Transaction = _dbTransaction;
-                
+
                 _insertMmeCode.Transaction = _dbTransaction;
 
                 _checkMmeCodeIsActive.Transaction = _dbTransaction;
@@ -212,6 +213,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         _insertCondition.Parameters["@COND_NAME_LOCAL"].Value = localName;
                         _insertCondition.Parameters["@COND_IS_TECH"].Value = isTech;
                         _insertCondition.ExecuteNonQuery();
+                        isMigrate = true;
                     }
 
                     foreach (var (name, localName, isTech) in _paramsList)
@@ -223,6 +225,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         _insertParameter.Parameters["@PARAM_NAME_LOCAL"].Value = localName;
                         _insertParameter.Parameters["@PARAM_IS_HIDE"].Value = isTech;
                         _insertParameter.ExecuteNonQuery();
+                        isMigrate = true;
                     }
 
                     foreach (var (name, localName, code) in _errorsList)
@@ -234,6 +237,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         _insertError.Parameters["@ERR_NAME_LOCAL"].Value = localName;
                         _insertError.Parameters["@ERR_CODE"].Value = code;
                         _insertError.ExecuteNonQuery();
+                        isMigrate = true;
                     }
 
                     foreach (var (id, name) in _testTypes)
@@ -244,6 +248,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         _insertTestType.Parameters["@ID"].Value = id;
                         _insertTestType.Parameters["@NAME"].Value = name;
                         _insertTestType.ExecuteNonQuery();
+                        isMigrate = true;
                     }
 
                     if (Convert.ToInt32(_checkMmeCodeIsActive.ExecuteScalar()) == 0)
@@ -261,6 +266,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     _dbTransaction.Rollback();
                     throw;
                 }
+
+                if (isMigrate)
+                    LoadDictionary();
+
+
+                return isMigrate;
             }
         }
     }

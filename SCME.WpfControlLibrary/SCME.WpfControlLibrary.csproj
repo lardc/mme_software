@@ -257,6 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\DataTemplateForTestParameters.xaml" />
     <Page Include="Styles\Fonts.xaml" />
     <Page Include="Styles\Label.xaml" />
     <Page Include="Styles\ListViewItemTestParameter.xaml" />

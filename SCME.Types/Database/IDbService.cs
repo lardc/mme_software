@@ -51,5 +51,8 @@ namespace SCME.Types.Database
 
         [OperationContract]
         void InsertMmeCode(string mmeCode);
+
+        [OperationContract]
+        bool Migrate();
     }
 }

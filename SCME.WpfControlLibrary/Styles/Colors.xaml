@@ -4,6 +4,8 @@
     <Color x:Key="Purple1">#FF8C0095</Color>
     <Color x:Key="Purple2">#FF9F40DE</Color>
     <Color x:Key="Purple3">#FFB100BA</Color>
+    
+    <Color x:Key="SelectEditModePageButtonColor">#FF8000FF</Color>
 
     <Color x:Key="ListViewTestParametersColor">#FF8C0095</Color>
     <Color x:Key="WhiteColor">White</Color>
@@ -30,4 +32,6 @@
     <SolidColorBrush x:Key="ButtonWithIconBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>
     
     <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource Blue1}" ></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="SelectEditModePageButtonBrush" Color="{StaticResource SelectEditModePageButtonColor}"/>
 </ResourceDictionary>

@@ -6,18 +6,11 @@ namespace SCME.WpfControlLibrary.DataProviders
 {
     public class TestParameter
     {
-        public TestParameter(string name, TestParametersType testParametersType, Type type)
-        {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            TestParametersType = testParametersType;
-            Type = type ?? throw new ArgumentNullException(nameof(type));
-        }
-
-        public TestParameter(TestParametersType testParametersType, Type type)
+        public TestParameter(TestParametersType testParametersType, Type type, string name = null)
         {
             TestParametersType = testParametersType;
             Type = type ?? throw new ArgumentNullException(nameof(type));
-            Name = TestParametersType.ToString();
+            Name = name ?? TestParametersType.ToString();
         }
 
         public string Name { get; set; }
@@ -25,20 +18,5 @@ namespace SCME.WpfControlLibrary.DataProviders
         public Type Type { get; set; }
 
     }
-
-    public static class TestParameterDictionary
-    {
-        public static List<TestParameter> TestParametersList { get; set; } = new List<TestParameter>()
-        {
-            new TestParameter(TestParametersType.Gate, typeof(Types.Gate.TestParameters)),
-            new TestParameter(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters)),
-            new TestParameter(TestParametersType.Bvt, typeof(Types.BVT.TestParameters)),
-            new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters)),
-            new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters)),
-            new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters)),
-            new TestParameter(TestParametersType.RAC, typeof(Types.RAC.TestParameters)),
-            new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters)),
-        };
-
-    }
+  
 }

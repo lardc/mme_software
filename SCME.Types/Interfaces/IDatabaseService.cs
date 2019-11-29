@@ -6,7 +6,7 @@ namespace SCME.Types.Interfaces
     {
         void ImportProfiles(string filePath);
 
-        void Migrate();
+        bool Migrate();
 
         void Open();
         void Close();

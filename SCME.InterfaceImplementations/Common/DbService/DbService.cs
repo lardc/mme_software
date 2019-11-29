@@ -136,6 +136,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private readonly Dictionary<string, List<MyProfile>> _cacheProfilesByMmeCode;
         private readonly Dictionary<int, ProfileCache> _cacheProfileById;
 
+        private InserterBaseTestParametersAndNormatives _inserter;
+            
         protected DbService(TDbConnection connection)
         {
             _cacheProfilesByMmeCode = new Dictionary<string, List<MyProfile>>();
@@ -146,7 +148,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 Connection.Open();
 
             PrepareQueries();
-            Migrate();
             LoadDictionary();
             
         }

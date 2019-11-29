@@ -26,8 +26,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml"/>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/DataTemplateForTestParameters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
         </ResourceDictionary>
     </UserControl.Resources>
     <ListView BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"

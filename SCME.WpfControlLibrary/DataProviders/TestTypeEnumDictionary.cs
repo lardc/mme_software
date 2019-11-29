@@ -138,18 +138,18 @@ namespace SCME.WpfControlLibrary.DataProviders
             };
         }
 
-        public static Dictionary<string, TestParametersType> GetTestParametersTypes()
+        public static List<TestParameter> GetTestParametersTypes()
         {
-            return new Dictionary<string, TestParametersType>()
+            return new List<TestParameter>()
             {
-                {nameof(TestParametersType.Gate), TestParametersType.Gate},
-                {nameof(TestParametersType.StaticLoses), TestParametersType.StaticLoses},
-                {nameof(TestParametersType.Bvt), TestParametersType.Bvt},
-                {nameof(TestParametersType.Dvdt), TestParametersType.Dvdt},
-                {nameof(TestParametersType.ATU), TestParametersType.ATU},
-                {nameof(TestParametersType.QrrTq), TestParametersType.QrrTq},
-                {nameof(TestParametersType.RAC), TestParametersType.RAC},
-                {nameof(TestParametersType.TOU), TestParametersType.TOU},
+                new TestParameter(TestParametersType.Gate, typeof(Types.Gate.TestParameters), "GTU"),
+                new TestParameter(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters), "SL"),
+                new TestParameter(TestParametersType.Bvt, typeof(Types.BVT.TestParameters), "BVT"),
+                new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters), "dVdt"),
+                new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
+                new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
+                new TestParameter(TestParametersType.RAC, typeof(Types.RAC.TestParameters), "RAC"),
+                new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
             };
         }
 

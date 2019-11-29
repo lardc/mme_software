@@ -9,7 +9,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
 {
     public class TypeTestParameterToString : IValueConverter
     {
-        private static readonly Dictionary<Type, string> TypesToString = TestParameterDictionary.TestParametersList.ToDictionary(m => m.Type, m => m.Name);
+        private static readonly Dictionary<Type, string> TypesToString = TestTypeEnumDictionary.GetTestParametersTypes().ToDictionary(m => m.Type, m => m.Name);
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

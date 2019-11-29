@@ -16,6 +16,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void LoadDictionary()
         {
+            _testTypeIdByName.Clear();
+            _conditionIdByName.Clear();
+            _parameterIdByName.Clear();
             using (var reader = _loadTestTypes.ExecuteReader())
                 foreach (DbDataRecord i in reader)
                     _testTypeIdByName.Add(i.GetString(1), Convert.ToInt32((object) reader[0]));
@@ -405,45 +408,45 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             return id;
         }
-
+        
         private int SaveProfile(MyProfile profile)
         {
             profile.Id = InsertProfile(profile);
 
-            var inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
+            _inserter = new InserterBaseTestParametersAndNormatives(profile.Id,
                 _dbTransaction,
                 _profileTestTypeInsert, _profileParameterInsert, _profileConditionInsert,
                 _testTypeIdByName, _conditionIdByName, _parameterIdByName, ExecuteCommandWithId) {Order = 0};
 
-            inserter.Insert(ClampingConditionsParameters(profile.DeepData));
-            inserter.Insert(ComutationConditionsParameters(profile.DeepData));
+            _inserter.Insert(ClampingConditionsParameters(profile.DeepData));
+            _inserter.Insert(ComutationConditionsParameters(profile.DeepData));
             foreach (var i in profile.DeepData.TestParametersAndNormatives)
             {
                 switch (i)
                 {
                     case Types.Gate.TestParameters gate:
-                        inserter.Insert(TypeConditionsParameters(gate));
+                        _inserter.Insert(TypeConditionsParameters(gate));
                         break;
                     case Types.VTM.TestParameters sl:
-                        inserter.Insert(TypeConditionsParameters(sl));
+                        _inserter.Insert(TypeConditionsParameters(sl));
                         break;
                     case Types.BVT.TestParameters bvt:
-                        inserter.Insert(TypeConditionsParameters(bvt));
+                        _inserter.Insert(TypeConditionsParameters(bvt));
                         break;
                     case Types.dVdt.TestParameters dvdt:
-                        inserter.Insert(TypeConditionsParameters(dvdt));
+                        _inserter.Insert(TypeConditionsParameters(dvdt));
                         break;
                     case Types.ATU.TestParameters atu:
-                        inserter.Insert(TypeConditionsParameters(atu));
+                        _inserter.Insert(TypeConditionsParameters(atu));
                         break;
                     case Types.QrrTq.TestParameters qrrTq:
-                        inserter.Insert(TypeConditionsParameters(qrrTq));
+                        _inserter.Insert(TypeConditionsParameters(qrrTq));
                         break;
                     case Types.RAC.TestParameters rac:
-                        inserter.Insert(TypeConditionsParameters(rac));
+                        _inserter.Insert(TypeConditionsParameters(rac));
                         break;
                     case Types.TOU.TestParameters tou:
-                        inserter.Insert(TypeConditionsParameters(tou));
+                        _inserter.Insert(TypeConditionsParameters(tou));
                         break;
                     default:
                         throw new NotImplementedException("SaveProfile switch");

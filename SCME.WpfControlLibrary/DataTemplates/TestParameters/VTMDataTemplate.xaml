@@ -19,9 +19,9 @@
     </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />

@@ -142,8 +142,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram.cd" />
-    <None Include="Db\SCME_LogsDB.sqlite" />
-    <None Include="Db\SCME_ResultsDB_Local.sqlite" />
+    <None Include="Db\SCME_LogsDB.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Db\SCME_ResultsDB_Local.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

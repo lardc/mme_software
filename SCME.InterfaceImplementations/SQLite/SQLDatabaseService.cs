@@ -854,13 +854,15 @@ namespace SCME.InterfaceImplementations
 
         };
 
-        public void Migrate()
+        public bool Migrate()
         {
+            throw new NotImplementedException("Old logic, need remove");
             if (State == ConnectionState.Open)
             {
                 foreach (var i in MigrationSet)
                     i.Migrate(_Connection);
             }
+            
         }
     }
 }
