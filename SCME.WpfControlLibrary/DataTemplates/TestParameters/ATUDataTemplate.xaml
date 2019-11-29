@@ -10,9 +10,10 @@
              d:DesignWidth="800">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -27,7 +28,7 @@
         
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}"></Label>
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" />
-        <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"></Label>
-        <customControls:NumericUpDown Grid.Column="3" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}"/>
+        <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"></Label>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}"/>
         
 </Grid>

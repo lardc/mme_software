@@ -18,12 +18,12 @@
     <Style TargetType="Path" x:Key="PathComboBox">
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False"> 
-                <Setter  Property="Visibility" Value="Hidden"/> 
+                <Setter  Property="Visibility" Value="Collapsed"/> 
             </Trigger> 
         </Style.Triggers>
     </Style>
 
-    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton" x:Shared="True">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -33,7 +33,7 @@
             <Border x:Name="border" Grid.ColumnSpan="2" Style="{StaticResource BorderComboBox}"
                     BorderBrush="{TemplateBinding BorderBrush}"  />
                 
-            <Border  Grid.Column="1" Background="Transparent">
+            <Border  Grid.Column="1" Background="Transparent" Name="BorderArrow" >
                 <Path Name="arrow" Margin="10" Stretch="Uniform" StrokeThickness="2" Style="{StaticResource PathComboBox}"
                       Stroke="{TemplateBinding Foreground}"  Data="M 0 0 L 1 1 L 2 0" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
@@ -50,6 +50,10 @@
                         <RotateTransform Angle="180"/>
                     </Setter.Value>
                 </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="BorderArrow" Property="Visibility" Value="Collapsed" ></Setter>
+                <Setter TargetName="arrow" Property="Visibility" Value="Collapsed" ></Setter>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -90,12 +94,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <ToggleButton BorderThickness="0" Name="ToggleButton" Template="{StaticResource ComboBoxToggleButton}" Focusable="false"
+                        <ToggleButton BorderThickness="0" Name="ToggleButton"  Template="{StaticResource ComboBoxToggleButton}" Focusable="false"
                                       IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                       ClickMode="Press"/>
 
                         <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,40,3" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Right" />
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
                             <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -121,7 +125,10 @@
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"></Setter>
+                            <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
                         </Trigger>
 
                     </ControlTemplate.Triggers>

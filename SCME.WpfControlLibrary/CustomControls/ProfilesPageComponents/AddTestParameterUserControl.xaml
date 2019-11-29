@@ -20,10 +20,11 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"  />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="auto"  />
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -36,24 +37,24 @@
             <ComboBox Grid.Column="1" Grid.Row="0" 
                                       ItemsSource="{Binding Source={StaticResource ModuleCommutationTypes}}"
                                       SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" />
-            <Label Grid.Column="2" Grid.Row="0" Content="{x:Static res:Resources.Force}" />
-            <customControl:NumericUpDown Grid.Column="3" Grid.Row="0" Value="{Binding ParameterClamp}" />
+            <Label Grid.Column="3" Grid.Row="0" Content="{x:Static res:Resources.Force}" />
+            <customControl:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ParameterClamp}" />
 
             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.ParameterType}" 
                    Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource B2VI}}"/>
             <ComboBox Grid.Column="1" Grid.Row="1" Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource B2VI}}"
                       ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" 
-                      DisplayMemberPath="Key" SelectedValuePath="Value" 
+                      DisplayMemberPath="Name" SelectedValuePath="TestParametersType" 
                       SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}">
             </ComboBox>
-            <Button Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"
+            <Button Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"
                     Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource B2VI}}"/>
             
             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Height_Prof}"  />
             <customControl:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Height}"  />
             
-            <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
-            <customControl:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding Temperature}"/>
+            <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.Temp}" />
+            <customControl:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding Temperature}"/>
             
             <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding IsHeightMeasureEnabled}" Content="{x:Static res:Resources.MeasureDialog_Title}" 
                       Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource B2VI}}"/>

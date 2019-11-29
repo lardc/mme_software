@@ -130,7 +130,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Opacity" Value="1"></Setter>
-                            <Setter TargetName="PART_Buttons" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="PART_Buttons" Property="Visibility" Value="Collapsed" />
                             <!--<Setter Property="BorderBrush" Value="Transparent" />-->
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">

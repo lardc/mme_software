@@ -9,10 +9,11 @@
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=gate:TestParameters}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column0"/>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column2"/>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+        <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+        <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+        <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -23,23 +24,23 @@
         </Grid.RowDefinitions>
 
         <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding IsCurrentEnabled}" Content="{x:Static res:Resources.PureVgt}"/>
-        <CheckBox Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingCurrent}"  IsChecked="{Binding IsIhEnabled}"/>
+        <CheckBox Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingCurrent}"  IsChecked="{Binding IsIhEnabled}"/>
 
         <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding IsIhStrikeCurrentEnabled}" />
-        <CheckBox Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}"  />
+        <CheckBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}"  />
 
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.MaxResistance_Ohm}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Resistance}" />
-        <Label Grid.Column="2" Grid.Row="2" Content="{x:Static res:Resources.MaxVgt_V}" />
-        <customControls:NumericUpDown Grid.Column="3" Grid.Row="2" Value="{Binding VGT }" />
+        <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.MaxVgt_V}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding VGT }" />
 
         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.MinIgt_mA}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}"/>
-        <Label Grid.Column="2" Grid.Row="3" Content="{x:Static res:Resources.MaxIgt_mA}" />
-        <customControls:NumericUpDown Grid.Column="3" Grid.Row="3" Value="{Binding IGT}"/>
+        <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.MaxIgt_mA}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding IGT}"/>
         
         <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MaxIh_mA}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding IH }" />
-        <Label Grid.Column="2" Grid.Row="4" Content="{x:Static res:Resources.MaxIl_mA}" />
-        <customControls:NumericUpDown Grid.Column="3" Grid.Row="4" Value="{Binding IL}" />
+        <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.MaxIl_mA}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IL}" />
 </Grid>

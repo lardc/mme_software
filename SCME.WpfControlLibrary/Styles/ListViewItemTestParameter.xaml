@@ -29,15 +29,16 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-                                <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
-                                <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-                                <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
+                                <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+                                <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+                                <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+                                <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
                             </Grid.ColumnDefinitions>
 
                             <Label  Grid.Column="0" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" />
                             <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" HorizontalAlignment="Right" FlowDirection="RightToLeft"
                                       d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
-                            <StackPanel Grid.Column="3" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" >
 
                                 <Button Style="{StaticResource ButtonWithIcon}"
                                         Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2V}}"

@@ -12,9 +12,10 @@
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column2" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column13"/>
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
