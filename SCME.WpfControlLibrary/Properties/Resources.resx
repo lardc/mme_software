@@ -801,4 +801,7 @@
     <data name="MinIgt_mA" xml:space="preserve">
     <value>MinMax. IGT, mA</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

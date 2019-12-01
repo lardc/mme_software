@@ -8,6 +8,7 @@
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:ui="clr-namespace:SCME.UI"
       xmlns:dynamicDataDisplay="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="bvtPage" Title="{x:Static res:Resources.Bvt}">
 
@@ -232,36 +233,36 @@
                           Style="{StaticResource CComboboxStyle}" />
 
                     <Label Grid.Column="1" Grid.Row="1" Content="{x:Static res:Resources.CurrentLimit_mA}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="1" Maximum="{StaticResource MaxIxRM}" Minimum="{StaticResource MinIxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="1" Maximum="{StaticResource MaxIxRM}" Minimum="{StaticResource MinIxRM}"
                                         IsNumeric="True" IsFloat="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.CurrentLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="2" Content="{x:Static res:Resources.VoltageLimitD_V}"
                        Visibility="{Binding ElementName=bvtPage, Path=Parameters.TestType, Converter={StaticResource TT2V}, ConverterParameter=1, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="2" Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="2" Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                         IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.VoltageLimitD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Visibility="{Binding ElementName=bvtPage, Path=Parameters.TestType, Converter={StaticResource TT2V}, ConverterParameter=1, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="3" Content="{x:Static res:Resources.VoltageLimitR_V}"
                        Visibility="{Binding ElementName=bvtPage, Path=Parameters.TestType, Converter={StaticResource TT2V}, ConverterParameter=2, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="3" Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="3" Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                         IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.VoltageLimitR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Visibility="{Binding ElementName=bvtPage, Path=Parameters.TestType, Converter={StaticResource TT2V}, ConverterParameter=2, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="4" Content="{x:Static res:Resources.PlateTime_ms}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="4" Maximum="{StaticResource MaxPlateVxRM}" Minimum="{StaticResource MinPlateVxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="4" Maximum="{StaticResource MaxPlateVxRM}" Minimum="{StaticResource MinPlateVxRM}"
                                         IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.PlateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="5" Content="{x:Static res:Resources.Rampup_Vms}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="5" Maximum="{StaticResource MaxRampVxRM}" Minimum="{StaticResource MinRampVxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="5" Maximum="{StaticResource MaxRampVxRM}" Minimum="{StaticResource MinRampVxRM}"
                                         IsNumeric="True" IsFloat="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.RampUpVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="6" Content="{x:Static res:Resources.StartVoltage_V}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="6" Maximum="{StaticResource MaxStartVxRM}" Minimum="{StaticResource MinStartVxRM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="6" Maximum="{StaticResource MaxStartVxRM}" Minimum="{StaticResource MinStartVxRM}"
                                         IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=bvtPage, Path=Parameters.StartVoltage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -288,18 +289,18 @@
                           Style="{StaticResource CComboboxStyle}" />
                     
                     <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="1" Grid.Row="11" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="11" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="11" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding ClampParameters.Height, ElementName=bvtPage}" />
 
                     <Label Grid.Column="1" Grid.Row="12" Content="{x:Static res:Resources.Force}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="12" Margin="8" Padding="2" Height="Auto"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="12" Margin="8" Padding="2" Height="Auto"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=bvtPage, Path=ClampParameters.CustomForce}" />
 
                     <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="1"  Grid.Row="13" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="13"  Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="13"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=bvtPage}" />
 

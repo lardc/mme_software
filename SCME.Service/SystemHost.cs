@@ -79,6 +79,8 @@ namespace SCME.Service
                 JournalMode = SQLiteJournalModeEnum.Truncate,
                 FailIfMissing = true
             }.ToString())));
+            if (Properties.Settings.Default.IsLocal)
+                _dbService.Migrate();
             _SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());
     
             try

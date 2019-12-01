@@ -70,5 +70,17 @@ namespace SCME.WpfControlLibrary.Properties {
                 this["FontScaling"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsTouchUI {
+            get {
+                return ((bool)(this["IsTouchUI"]));
+            }
+            set {
+                this["IsTouchUI"] = value;
+            }
+        }
     }
 }

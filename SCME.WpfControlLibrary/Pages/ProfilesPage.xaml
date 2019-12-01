@@ -39,7 +39,10 @@
                       Visibility="{Binding IsSingleMmeCode, Converter={StaticResource B2VI}}"/>
             <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
-            <TextBox Grid.Column="0" Grid.Row="2" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxFind_TextChanged" />
+            
+            <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlaceholderTextBox}" TextChanged="TextBoxFind_TextChanged" />
+
+
             <!-- <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" -->
             <!--           VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" -->
             <!--           VirtualizingStackPanel.CacheLength="50" VirtualizingStackPanel.CacheLengthUnit="Item" -->

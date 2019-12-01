@@ -801,4 +801,7 @@
   <data name="AtuPrsmMax">
     <value>PRSM max, kW</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
 </root>

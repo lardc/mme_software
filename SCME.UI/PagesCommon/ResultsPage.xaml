@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
       xmlns:res="clr-namespace:SCME.UI.Properties"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1458.178" d:DesignHeight="894.93"
       Name="resultsPage" Title="{x:Static res:Resources.Results}"
       Loaded="ResultsPage_OnLoaded">
@@ -20,12 +21,12 @@
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}"/>
 
-        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type customControl:ValidatingTextBox}">
+                    <ControlTemplate TargetType="{x:Type customControls:ValidatingTextBox}">
                         <Grid>
-                            <customControl:ValidatingTextBox
+                            <customControls:ValidatingTextBox
                                 Text="{Binding Path=Text,
                                                 RelativeSource={RelativeSource TemplatedParent}, 
                                                 Mode=TwoWay,
@@ -150,10 +151,10 @@
                     <Label Grid.Row="1" Grid.Column="1" Content="{x:Static res:Resources.Customer}" FontSize="28" Margin="23, 10" Foreground="{StaticResource xBlue2}" HorizontalAlignment="Left"/>
                     <Label Grid.Row="2" Grid.Column="1" Content="{x:Static res:Resources.Device}" FontSize="28" Margin="23, 10" Foreground="{StaticResource xBlue2}" HorizontalAlignment="Left"/>
 
-                    <customControl:ValidatingTextBox Grid.Row="1" Grid.Column="2" Margin="10, 8"
+                    <customControls:ValidatingTextBox Grid.Row="1" Grid.Column="2" Margin="10, 8"
                          FontSize="32" Style="{StaticResource PlaceholderTextBox}" Tag="Proton" IsNumeric="False" 
                          Text="{Binding ElementName=resultsPage, Path=FieldCustomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <customControl:ValidatingTextBox Grid.Row="2" Grid.Column="2" Margin="10, 8"
+                    <customControls:ValidatingTextBox Grid.Row="2" Grid.Column="2" Margin="10, 8"
                          FontSize="32" Style="{StaticResource PlaceholderTextBox}" Tag="MTT-X" IsNumeric="False"
                          Text="{Binding ElementName=resultsPage, Path=FieldDeviceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>

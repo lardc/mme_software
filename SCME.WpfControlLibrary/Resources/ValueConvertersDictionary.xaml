@@ -3,6 +3,8 @@
                     xmlns:Converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters">
 
     
+    
+    <Converters:TryBooleanToVisibilityHiddenConverter x:Key="B2VC" />
     <Converters:TryBooleanToVisibilityConverter x:Key="B2V" />
     <Converters:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
     <Converters:EnumValueToString x:Key="E2S" />

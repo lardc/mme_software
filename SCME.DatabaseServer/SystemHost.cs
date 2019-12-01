@@ -67,7 +67,8 @@ namespace SCME.DatabaseServer
             
             try
             {
-                _databaseServiceHost = new ServiceHost( new MSSQLDbService(new  SqlConnection(new SqlConnectionStringBuilder()
+                MSSQLDbService mssqlDbService;
+                _databaseServiceHost = new ServiceHost( mssqlDbService = new MSSQLDbService(new  SqlConnection(new SqlConnectionStringBuilder()
                 {
                     DataSource = Settings.Default.DbPath,
                     InitialCatalog = Settings.Default.DBName,
@@ -76,12 +77,13 @@ namespace SCME.DatabaseServer
                     Password = Settings.Default.DBPassword,
                     ConnectTimeout = 5
                 }.ToString())));
+                mssqlDbService.Migrate();
                 _databaseServiceHost.Open();
             }
             catch (Exception ex)
             {
                 Journal.AppendLog("SystemHost", LogJournalMessageType.Error,
-                    $"Error starting database service: {ex.Message}");
+                    $"Error starting database service: {ex?.InnerException?.ToString() ?? ex.ToString()}");
                 return;
             }
 

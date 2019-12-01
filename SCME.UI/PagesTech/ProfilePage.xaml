@@ -7,6 +7,7 @@
       xmlns:TOUTypes="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="profilePage" Title="{x:Static res:Resources.Profiles}" Loaded="ProfilePage_Loaded" Unloaded="profilePage_Unloaded">
 
@@ -28,12 +29,12 @@
             <Setter Property="Foreground" Value="{StaticResource xWhite1}" />
         </Style>
 
-        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type customControl:ValidatingTextBox}">
+                    <ControlTemplate TargetType="{x:Type customControls:ValidatingTextBox}">
                         <Grid>
-                            <customControl:ValidatingTextBox
+                            <customControls:ValidatingTextBox
                                 Text="{Binding Path=Text,
                                                 RelativeSource={RelativeSource TemplatedParent}, 
                                                 Mode=TwoWay,
@@ -64,7 +65,7 @@
         </Style>
 
 
-        <Style TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="FontSize" Value="{StaticResource FontSize20}" />
         </Style>
 
@@ -165,12 +166,12 @@
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="80*" />
             </Grid.RowDefinitions>
-            <customControl:ValidatingTextBox Grid.Row="1"  
+            <customControls:ValidatingTextBox Grid.Row="1"  
                                              IsNumeric="False" 
                                              IsFloat="False" 
                                              Text="" x:Name="FilterTextBox" 
                                              TextChanged="FilterTextBox_OnTextChanged" Style="{StaticResource PlaceholderTextBox}" Tag="Поиск"
-                                             ></customControl:ValidatingTextBox>
+                                             ></customControls:ValidatingTextBox>
             <customControl:ListBoxProfiles x:Name="profilesList" 
                                     Grid.Column="0" Grid.Row="2"
                                     Margin="0,0,0,0"
@@ -194,7 +195,7 @@
                FontSize="36" Margin="20,0,0,0"
                Content="{x:Static res:Resources.ProfileName}" />
 
-        <customControl:ValidatingTextBox x:Name="tbProfileName" Grid.Column="1" Grid.Row="0"
+        <customControls:ValidatingTextBox x:Name="tbProfileName" Grid.Column="1" Grid.Row="0"
                                 FontSize="36" Margin="300,16,100,16"
                                 KeyUp="TbProfileName_OnKeyUp"
                                 Visibility="{Binding SelectedIndex, Converter={StaticResource LBSI2V}, ElementName=profilesList}"
@@ -225,7 +226,7 @@
                                   Style="{StaticResource CComboboxStyle}" HorizontalContentAlignment="Right"/>
 
                         <Label Grid.Column="3" Grid.Row="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Force}" Height="Auto" />
-                        <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5"
+                        <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5"
                                        TextBlock.TextAlignment="Right" Maximum="100" Minimum="5"
                                        IsNumeric="True" IsFloat="True"
                                        Text="{Binding SelectedItem.ParametersClamp, ElementName=profilesList}" />
@@ -264,12 +265,12 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Height_Prof}" Height="Auto" />
-                        <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10,10,10,10" Padding="5"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10,10,10,10" Padding="5"
                                        TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="100000" Minimum="0"
                                        Text="{Binding SelectedItem.Height, ElementName=profilesList}" />
 
                         <Label Grid.Column="3" FontSize="30" Margin="10, 10, 0, 10" Content="{x:Static res:Resources.Temp}" Height="Auto" />
-                        <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5"
+                        <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="0" Margin="10,10,90,10" Padding="5"
                                        TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0"
                                        Text="{Binding SelectedItem.Temperature, ElementName=profilesList}" />
                     </Grid>
@@ -329,7 +330,7 @@
                     <Label Grid.Column="0" Grid.Row="5" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxResistance_Ohm}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="5" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="5" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxResGate}" Minimum="{StaticResource MinResGate}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.Resistance, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -338,7 +339,7 @@
                     <Label Grid.Column="0" Grid.Row="6" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxIgt_mA}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="6" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="6" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIgtGate}" Minimum="{StaticResource MinIgtGate}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.IGT, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -346,7 +347,7 @@
                     <Label Grid.Column="0" Grid.Row="7" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxVgt_V}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="7" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="7" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxVgtGate}" Minimum="{StaticResource MinVgtGate}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VGT, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -355,7 +356,7 @@
                     <Label Grid.Column="0" Grid.Row="8" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxIh_mA}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIhGate}" Minimum="{StaticResource MinIhGate}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.IH, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -363,7 +364,7 @@
                     <Label Grid.Column="0" Grid.Row="9" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxIl_mA}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIlGate}" Minimum="{StaticResource MinIlGate}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.IL, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -419,7 +420,7 @@
                         <Label Grid.Column="0" Grid.Row="0" Margin="10"
                                Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                Content="{x:Static res:Resources.Current_A}" />
-                        <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.RampCurrent, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
@@ -427,7 +428,7 @@
                         <Label Grid.Column="0" Grid.Row="1" Margin="10"
                                Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                Content="{x:Static res:Resources.Time_us}" />
-                        <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxTimeITM}" Minimum="{StaticResource MinTimeITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.RampTime, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
@@ -441,7 +442,7 @@
                                Content="{x:Static res:Resources.HeatCurrent_A}"
                                IsEnabled="{Binding IsChecked, ElementName=cbIsHeatEnabled}"
                                Visibility="{Binding SelectedItem.IsRampOpeningEnabled, Converter={StaticResource B2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                        <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="3" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="3" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="1000" Minimum="100"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.RampOpeningCurrent, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"
@@ -452,7 +453,7 @@
                                Content="{x:Static res:Resources.HeatTime_us}"
                                IsEnabled="{Binding IsChecked, ElementName=cbIsHeatEnabled}"
                                Visibility="{Binding SelectedItem.IsRampOpeningEnabled, Converter={StaticResource B2V}, ElementName=TestParameters}" />
-                        <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="4" Margin="12"
+                        <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="4" Margin="12"
                                                 TextBlock.TextAlignment="Right" Maximum="1000" Minimum="100"
                                                 IsNumeric="True"
                                                 Visibility="{Binding SelectedItem.IsRampOpeningEnabled, Converter={StaticResource B2V}, ElementName=TestParameters}"
@@ -479,7 +480,7 @@
                             <Label Grid.Column="0" Grid.Row="0" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.Current_A}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.SinusCurrent, ElementName=TestParameters}" />
@@ -487,7 +488,7 @@
                             <Label Grid.Column="0" Grid.Row="1" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.Time_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxTimeITM}" Minimum="{StaticResource MinTimeITM}"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.SinusTime, ElementName=TestParameters}" />
@@ -513,7 +514,7 @@
                             <Label Grid.Column="0" Grid.Row="0" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.Current_A}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="0" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.ParametersVTM.CurveCurrent, ElementName=profilesList}" />
@@ -521,7 +522,7 @@
                             <Label Grid.Column="0" Grid.Row="1" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.Time_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="1" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxTimeITM}" Minimum="{StaticResource MinTimeITM}"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.ParametersVTM.CurveTime, ElementName=profilesList}" />
@@ -530,7 +531,7 @@
                             <Label Grid.Column="0" Grid.Row="3" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.CurveFactor}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="3" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="3" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.ParametersVTM.CurveFactor, ElementName=profilesList}" />
@@ -538,7 +539,7 @@
                             <Label Grid.Column="0" Grid.Row="4" Margin="10"
                                    Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                    Content="{x:Static res:Resources.AdditionalTime_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="4" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="4" Margin="10"
                                                     TextBlock.TextAlignment="Right" Maximum="5000" Minimum="0"
                                                     IsNumeric="True"
                                                     Text="{Binding SelectedItem.ParametersVTM.CurveAddTime, ElementName=profilesList}" />
@@ -557,7 +558,7 @@
                     <Label Grid.Column="0" Grid.Row="8" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxVtm_V}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="5" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VTM, ElementName=TestParameters}"
@@ -566,7 +567,7 @@
                     <Label Grid.Column="0" Grid.Row="9" Margin="10"
                            Grid.ColumnSpan="2" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.Count}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="100" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.Count, ElementName=TestParameters}" />
@@ -606,14 +607,14 @@
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.CurrentLimit_mA}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIxRM}" Minimum="{StaticResource MinIxRM}" IsFloat="True"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.CurrentLimit, ElementName=TestParameters}" />
 
                     <Label Grid.Column="2" Grid.Row="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.PlateTime_ms}" />
-                    <customControl:ValidatingTextBox Grid.Column="3" Grid.Row="2" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="3" Grid.Row="2" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxPlateVxRM}" Minimum="{StaticResource MinPlateVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.PlateTime, ElementName=TestParameters}" />
@@ -621,7 +622,7 @@
                     <Label Grid.Column="0" Grid.Row="3" Margin="10" HorizontalAlignment="Right"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=1, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"
                            Content="{x:Static res:Resources.VoltageLimitD_V}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VoltageLimitD, ElementName=TestParameters}"
@@ -630,7 +631,7 @@
                     <Label Grid.Column="2" Grid.Row="3" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.VoltageLimitR_V}"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=2, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="3" Grid.Row="3" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="3" Grid.Row="3" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VoltageLimitR, ElementName=TestParameters}"
@@ -638,7 +639,7 @@
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.Rampup_Vms}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxRampVxRM}" Minimum="{StaticResource MinRampVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.RampUpVoltage, ElementName=TestParameters}"
@@ -646,14 +647,14 @@
 
                     <Label Grid.Column="2" Grid.Row="4" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.StartVoltage_V}" />
-                    <customControl:ValidatingTextBox Grid.Column="3" Grid.Row="4" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="3" Grid.Row="4" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxStartVxRM}" Minimum="{StaticResource MinStartVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.StartVoltage, ElementName=TestParameters}" />
 
                     <Label Grid.Column="0" Grid.Row="5" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.PowerLineFrequency_Hz}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="60" Minimum="40"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VoltageFrequency, ElementName=TestParameters}" />
@@ -676,7 +677,7 @@
                     <Label Grid.Column="0" Grid.Row="8" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MinVdrm_V}"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=1, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VDRM, ElementName=TestParameters}"
@@ -685,7 +686,7 @@
                     <Label Grid.Column="2" Grid.Row="8" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MinVrrm_V}"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=2, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="3" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="3" Grid.Row="8" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxVxRM}" Minimum="{StaticResource MinVxRM}"
                                             IsNumeric="True"
                                             Text="{Binding SelectedItem.VRRM, ElementName=TestParameters}"
@@ -694,7 +695,7 @@
                     <Label Grid.Column="0" Grid.Row="9" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxIdrm_mA}"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=1, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIxRM}" Minimum="{StaticResource MinIxRM}"
                                             IsNumeric="True" IsFloat="True"
                                             Text="{Binding SelectedItem.IDRM, ElementName=TestParameters}"
@@ -703,7 +704,7 @@
                     <Label Grid.Column="2" Grid.Row="9" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.MaxIrrm_mA}"
                            Visibility="{Binding SelectedItem.TestType, ConverterParameter=2, Converter={StaticResource TT2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="3" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
+                    <customControls:ValidatingTextBox Grid.Column="3" Grid.Row="9" Margin="10" TextBlock.TextAlignment="Right"
                                             Maximum="{StaticResource MaxIxRM}" Minimum="{StaticResource MinIxRM}"
                                             IsNumeric="True" IsFloat="True"
                                             Text="{Binding SelectedItem.IRRM, ElementName=TestParameters}"
@@ -745,7 +746,7 @@
 
                     <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.DvDtVoltage}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="2" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="2" Padding="5" Margin="10"
                                    TextBlock.TextAlignment="Right" Maximum="10000" Minimum="0"
                                    IsNumeric="True"
                                    Text="{Binding SelectedItem.Voltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
@@ -762,7 +763,7 @@
                     <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.DvdtConfirmationCount}" 
                            Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2V}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.ConfirmationCount, ElementName=TestParameters}" 
@@ -771,7 +772,7 @@
                     <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.DvdtVoltageRateLimit}" 
                            Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="3" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="3" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="2500" Minimum="500"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.VoltageRateLimit, ElementName=TestParameters}" 
@@ -780,7 +781,7 @@
                     <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Right"
                            Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" 
                            Visibility="{Binding SelectedItem.Mode, Converter={StaticResource DT2VB}, ElementName=TestParameters, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="4" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="2000" Minimum="50"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.VoltageRateOffSet, ElementName=TestParameters}" 
@@ -813,13 +814,13 @@
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.ATU}" />
 
                     <Label Grid.Column="1" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.AtuPrePulseValue}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="1" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="1" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Minimum="15" Maximum="250"
                                                 IsNumeric="True"
                                                 Text="{Binding SelectedItem.PrePulseValue, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="2" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.AtuPowerValueSet}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="2" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="2" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Minimum="2" Maximum="30"
                                                 IsFloat="True"
                                                 Text="{Binding SelectedItem.PowerValue, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" />
@@ -858,13 +859,13 @@
                     <CheckBox Grid.Column="1" Grid.Row="2" Content="" IsChecked="{Binding SelectedItem.TrrMeasureBy9050Method, ElementName=TestParameters}" Padding="0" Visibility="{Binding SelectedItem.Mode, ConverterParameter=TrrMeasureBy9050Method, Converter={StaticResource QrrTqM2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqDirectCurrent}"/>
-                    <customControl:ValidatingTextBox x:Name="lbDirectCurrent" Grid.Column="1" Grid.Row="3" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="50" Maximum="500" Text="{Binding SelectedItem.DirectCurrent, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+                    <customControls:ValidatingTextBox x:Name="lbDirectCurrent" Grid.Column="1" Grid.Row="3" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="50" Maximum="500" Text="{Binding SelectedItem.DirectCurrent, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqDCPulseWidth}"/>
-                    <customControl:ValidatingTextBox x:Name="lbDCPulseWidth" Grid.Column="1" Grid.Row="4" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="500" Maximum="5000" Text="{Binding SelectedItem.DCPulseWidth, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+                    <customControls:ValidatingTextBox x:Name="lbDCPulseWidth" Grid.Column="1" Grid.Row="4" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="500" Maximum="5000" Text="{Binding SelectedItem.DCPulseWidth, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="0" Grid.Row="5" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqDCRiseRate}"/>
-                    <customControl:ValidatingTextBox x:Name="lbDCRiseRate" Grid.Column="1" Grid.Row="5" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" IsFloat="True" Minimum="0.2" Maximum="5" Text="{Binding SelectedItem.DCRiseRate, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+                    <customControls:ValidatingTextBox x:Name="lbDCRiseRate" Grid.Column="1" Grid.Row="5" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" IsFloat="True" Minimum="0.2" Maximum="5" Text="{Binding SelectedItem.DCRiseRate, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="0" Grid.Row="6" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqDCFallRate}"/>
                     <ComboBox Grid.Column="1" Grid.Row="6" Padding="5" Margin="10"
@@ -873,7 +874,7 @@
                               Style="{StaticResource CComboboxStyle}"/>
 
                     <Label Grid.Column="0" Grid.Row="7" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" Visibility="{Binding SelectedItem.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
-                    <customControl:ValidatingTextBox x:Name="lbOffStateVoltage" Grid.Column="1" Grid.Row="7" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="400" Maximum="1900" Text="{Binding SelectedItem.OffStateVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding SelectedItem.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+                    <customControls:ValidatingTextBox x:Name="lbOffStateVoltage" Grid.Column="1" Grid.Row="7" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="400" Maximum="1900" Text="{Binding SelectedItem.OffStateVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding SelectedItem.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="0" Grid.Row="8" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.QrrTqOsvRate}" Visibility="{Binding SelectedItem.Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
                     <ComboBox Grid.Column="1" Grid.Row="8" Padding="5" Margin="10"
@@ -906,7 +907,7 @@
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.RAC}" />
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.RACResVoltage}"/>
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding SelectedItem.ResVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding SelectedItem.ResVoltage, ElementName=TestParameters, UpdateSourceTrigger=PropertyChanged}"/>
 
                 </Grid>
             </TabItem>
@@ -933,7 +934,7 @@
                     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="32" HorizontalAlignment="Center" Content="{x:Static res:Resources.TOU}" />
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}"/>
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" 
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                     Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                     Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}"
                                                     Text="{Binding SelectedItem.CurrentAmplitude, ElementName=TestParameters, UpdateSourceTrigger=LostFocus}"/>

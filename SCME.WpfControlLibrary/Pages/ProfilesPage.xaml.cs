@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -24,11 +25,15 @@ namespace SCME.WpfControlLibrary.Pages
         public ProfilesPageProfileVm ProfileVm { get; set; }
         private readonly IDbService _dbService;
         private readonly bool _isWithoutChild;
-
+        
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
 
         public event Action PreviewGoBackAction;
 
+        private Dictionary<string, int> GetMMeCodes => ProfileVm.IsSingleMmeCode
+            ? _dbService.GetMmeCodes().Where(m => m.Key == ProfileVm.SelectedMmeCode).ToDictionary(m => m.Key, m => m.Value)
+            : _dbService.GetMmeCodes().Where(m => m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m => m.Key, m => m.Value);
+        
         public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false)
         {
             ProfileVm = new ProfilesPageProfileVm(dbService);
@@ -45,10 +50,17 @@ namespace SCME.WpfControlLibrary.Pages
             _dbService = dbService;
             _isWithoutChild = isWithoutChild;
 
-            ProfileVm.MmeCodes = isSingleMmeCode
-                ? _dbService.GetMmeCodes().Where(m => m.Key == mmeCode).ToDictionary(m => m.Key, m => m.Value)
-                : _dbService.GetMmeCodes().Where(m => m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m => m.Key, m => m.Value);
-            ProfileVm.SelectedMmeCode = ProfileVm.MmeCodes.ContainsKey(mmeCode) ? mmeCode : ProfileVm.MmeCodes.First().Key;
+            ProfileVm.SelectedMmeCode = mmeCode;
+
+            ProfileVm.MmeCodes = GetMMeCodes;
+
+            if (!ProfileVm.MmeCodes.ContainsKey(mmeCode))
+            {
+                _dbService.InsertMmeCode(mmeCode);
+                ProfileVm.MmeCodes = GetMMeCodes;
+            }
+
+            
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
             _dispatcherTimerFindProfile.Interval = new TimeSpan(0, 0, 1);
@@ -61,7 +73,7 @@ namespace SCME.WpfControlLibrary.Pages
         }
 
 
-        private void LoadTopProfiles() =>
+        public void LoadTopProfiles() =>
             ProfileVm.ProfilesSource.Source = ProfileVm.Profiles = new ObservableCollection<MyProfile>(_dbService.GetProfilesSuperficially(ProfileVm.SelectedMmeCode));
 
 

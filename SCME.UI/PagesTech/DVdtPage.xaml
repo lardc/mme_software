@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl" xmlns:ui="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" x:Name="dVdtPage" 
       d:DesignWidth="1280" d:DesignHeight="924"
       Title="{x:Static res:Resources.dVdt}">
@@ -83,7 +84,7 @@
                               Style="{StaticResource CComboboxStyle}" />
                 
                 <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.DvDtVoltage}" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Padding="5" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="10000" Minimum="0"
                                                 IsNumeric="True"
                                                 Text="{Binding Parameters.Voltage, ElementName=dVdtPage, UpdateSourceTrigger=PropertyChanged}" />
@@ -102,7 +103,7 @@
                 <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" 
                         Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Padding="5" Margin="10"
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 TextBlock.TextAlignment="Right" Maximum="2000" Minimum="50"
                                                 IsNumeric="True"
@@ -110,7 +111,7 @@
                        
                 <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.DvdtConfirmationCount}" 
                         Visibility="{Binding ElementName=dVdtPage,Path=Parameters.Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Padding="5" Margin="10"
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
                                                 IsNumeric="True"
@@ -118,7 +119,7 @@
 
                 <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.DvdtVoltageRateLimit}" 
                         Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="5" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="5" Padding="5" Margin="10"
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 TextBlock.TextAlignment="Right" Maximum="2500" Minimum="500"
                                                 IsNumeric="True"
@@ -129,17 +130,17 @@
 
 
                 <Label Content="{x:Static res:Resources.Height_Prof}"   Grid.Column="0"  Grid.Row="6" />
-                <customControl:ValidatingTextBox Grid.Column="1"  Grid.Row="6" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="6" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="100000" Minimum="0"
                           Text="{Binding ClampParameters.Height, ElementName=dVdtPage}" />
                 
                 <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="7" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="7"  Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="5"
                           Text="{Binding Temperature, ElementName=dVdtPage}" />
 
                 <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="8"  Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0"
                           Text="{Binding ClampParameters.CustomForce, ElementName=dVdtPage}" />
 

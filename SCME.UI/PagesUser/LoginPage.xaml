@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944"
       x:Name="loginPage"
       Title="{x:Static res:Resources.LoginPage_Title}" Loaded="LoginPage_Loaded">
@@ -47,7 +48,7 @@
                Content="{x:Static res:Resources.EnterPassword}"
                FontSize="36" Margin="120,0,0,0" />
 
-        <customControl:ValidatingTextBox x:Name="tbPassword"
+        <customControls:ValidatingTextBox x:Name="tbPassword"
                                 Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
                                 FontSize="36" Margin="400,0,150,0"
                                 Text="" TextAlignment="Center" />

@@ -6,6 +6,7 @@
       xmlns:my="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="calibrationPage" Title="{x:Static res:Resources.Calibration}">
 
@@ -22,7 +23,7 @@
 
         <Thickness x:Key="TbMargin">10,5</Thickness>
 
-        <Style TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="Margin" Value="10" />
             <Setter Property="TextBlock.TextAlignment" Value="Right" />
             <Setter Property="Text" Value="0" />
@@ -169,61 +170,61 @@
                            Name="lblGate" Content="{x:Static res:Resources.Gate}" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" Content="IGT offset" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="-32767"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateIGTOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" Content="VGT offset" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="-32767"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateVGTOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Row="2" Margin="{StaticResource TbMargin}" Content="RG current" Grid.Column="3" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.RgCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10" Content="VGT fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineVGT_N, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="5" Margin="10" Content="VGT fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineVGT_D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="4" Margin="10" Content="IGT fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineIGT_N, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="5" Margin="10" Content="IGT fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineIGT_D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="1" Margin="{StaticResource TbMargin}" Content="IH offset" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="1" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="1" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="-32767"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage, Path=ParamsGate.GateIHLOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="7" Margin="10" Content="IH fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="7" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineIHL_N, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="8" Margin="10" Content="IH fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="8" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsGate.GateFineIHL_D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -241,7 +242,7 @@
                     <Button Grid.Column="4" Grid.Row="10" Margin="10" Content="Pulse main" Click="Pulse_Main_Click"
                             Background="#FFD68A56" />
 
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="7" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="7" Margin="{StaticResource TbMargin}"
                                             x:Name="calibrationCurrent" x:FieldModifier="private"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True" />
@@ -284,55 +285,55 @@
                            Content="{x:Static res:Resources.Vtm}" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" Content="ITM fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.ItmFineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" Content="ITM fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.ItmFineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="1" Margin="10" Content="VTM fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="1" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="1" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.VtmFineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="2" Margin="10" Content="VTM fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.VtmFineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="4" Margin="10" Content="VTM fine FS (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.VtmFine2N, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="5" Margin="10" Content="VTM fine FS (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.VtmFine2D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="7" Margin="10" Content="Predict param K1" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="7" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="7" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.PredictParamK1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="8" Margin="10" Content="Predict param K2" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="8" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="8" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.PredictParamK2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10,10,10,9" Content="VTM offset" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10,4,10,5"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10,4,10,5"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="-32767"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsVtm.VtmOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -374,25 +375,25 @@
                            Content="Sampler 1 Voltage" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" Content="Range1N" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Voltage1FineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="10" Content="Range1D" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Voltage1FineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10" Content="Range2N" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Voltage2FineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="5" Margin="10" Content="Range2D" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Voltage2FineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -402,25 +403,25 @@
                            Content="Sampler 1 Current" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="3" Grid.Row="2" Margin="10,10,10,10" Content="Range1N" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Current1FineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="3" Margin="10,10,10,10" Content="Range1D" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="3" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="3" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Current1FineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="4" Margin="10,10,10,10" Content="Range2N" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Current2FineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="5" Margin="10,10,10,10" Content="Range2D" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsBvt.S1Current2FineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -463,19 +464,19 @@
                            Content="{x:Static res:Resources.Clamp}" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="0" Grid.Row="1" Margin="10" Content="Force fine (N)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsClamping.ForceFineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" Content="Force fine (D)" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsClamping.ForceFineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="10,10,10,9" Content="Force offset" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10,4,10,5"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10,4,10,5"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="-32767"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsClamping.ForceOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -525,13 +526,13 @@
                            Content="Voltage Amplitude" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="10" Content="VFineN" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.VFineN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="10" Content="VFineD" />
-                    <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.VFineD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -540,32 +541,32 @@
                            Content="Voltage Rate" HorizontalContentAlignment="Center" />
 
                     <Label Grid.Column="3" Grid.Row="2" Margin="10" Content="G500" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="2" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.V500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="3" Margin="10" Content="G1000" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="3" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="3" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.V1000, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                     <Label Grid.Column="3" Grid.Row="4" Margin="10" Content="G1500" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="4" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.V1500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="5" Margin="10" Content="G2000" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="5" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="1"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.V2000, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="3" Grid.Row="6" Margin="10" Content="G2500" />
-                    <customControl:ValidatingTextBox Grid.Column="4" Grid.Row="6" Margin="{StaticResource TbMargin}"
+                    <customControls:ValidatingTextBox Grid.Column="4" Grid.Row="6" Margin="{StaticResource TbMargin}"
                                             TextBlock.TextAlignment="Right" Maximum="65535" Minimum="0"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=calibrationPage,Path=ParamsdVdt.V2500, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

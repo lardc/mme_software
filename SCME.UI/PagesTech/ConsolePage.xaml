@@ -6,6 +6,7 @@
       xmlns:my="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="consolePage" Title="{x:Static res:Resources.Console}"
       >
@@ -20,7 +21,7 @@
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
 
-        <Style TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="TextBlock.TextAlignment" Value="Right" />
             <Setter Property="Text" Value="0" />
         </Style>
@@ -189,11 +190,11 @@
                            VerticalContentAlignment="Bottom" Content="{x:Static res:Resources.Value}" />
 
                     <Label Grid.Column="0" Grid.Row="2" Margin="40,5,0,5" Content="{x:Static res:Resources.Write}" />
-                    <customControl:ValidatingTextBox x:Name="tbWriteAddress" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbWriteAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="2" Maximum="65535" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
-                    <customControl:ValidatingTextBox x:Name="tbWriteValue" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbWriteValue" x:FieldModifier="private"
                                             Grid.Column="2" Grid.Row="2" Maximum="65535" Minimum="-32767" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
@@ -201,7 +202,7 @@
                             Click="Write_Click" />
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="40,5,0,5" Content="{x:Static res:Resources.Read}" />
-                    <customControl:ValidatingTextBox x:Name="tbReadAddress" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbReadAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="3" Maximum="99999" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
@@ -213,7 +214,7 @@
                             Click="Read_Click" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="40,5,0,5" Content="{x:Static res:Resources.Call}" />
-                    <customControl:ValidatingTextBox x:Name="tbCallAddress" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbCallAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="4" Maximum="65535" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />

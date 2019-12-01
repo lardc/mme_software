@@ -7,6 +7,7 @@
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:dynamicDataDisplay="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       x:Name="gatePage" Title="{x:Static res:Resources.Gate}">
 
@@ -251,18 +252,18 @@
                           />
 
                     <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="1" Grid.Row="7" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="7" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="7" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding ClampParameters.Height, ElementName=gatePage}" />
 
                     <Label Grid.Column="1" Grid.Row="8" Content="{x:Static res:Resources.Force}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" Padding="5"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="8" Margin="10" Padding="5"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=gatePage, Path=ClampParameters.CustomForce}" />
 
                     <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="1"  Grid.Row="9" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="9"  Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="9"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=gatePage}" />
 

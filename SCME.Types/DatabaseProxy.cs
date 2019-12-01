@@ -91,7 +91,7 @@ namespace SCME.Types
 
         public void InsertMmeCode(string mmeCode)
         {
-            throw new NotImplementedException();
+            Channel.InsertMmeCode(mmeCode);
         }
 
         public bool Migrate()

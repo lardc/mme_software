@@ -79,7 +79,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -161,9 +161,6 @@
     <Compile Include="CustomControl\GridListBoxLogs.xaml.cs">
       <DependentUpon>GridListBoxLogs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControl\ValidatingTextBox.xaml.cs">
-      <DependentUpon>ValidatingTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CustomControl\VirtualKeyboard.xaml.cs">
       <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
     </Compile>
@@ -173,7 +170,6 @@
     <Compile Include="IO\ControlLogic.cs" />
     <Compile Include="IO\FtdiLibrary.cs" />
     <Compile Include="IO\QueueWorker.cs" />
-    <Compile Include="KeyboardLayouts.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\TechnicianPageVm.cs" />
     <Compile Include="ViewModels\TOUPageVM.cs" />
@@ -278,10 +274,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CustomControl\GridListBoxLogs.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\ValidatingTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

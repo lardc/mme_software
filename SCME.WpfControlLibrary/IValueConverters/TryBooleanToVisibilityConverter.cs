@@ -5,6 +5,21 @@ using System.Windows.Data;
 
 namespace SCME.WpfControlLibrary.IValueConverters
 {
+    public class TryBooleanToVisibilityHiddenConverter : IValueConverter
+    {
+        private TryBooleanToVisibilityConverter _converter = new TryBooleanToVisibilityConverter();
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            _converter.ConvertCheck(value);
+            return (Visibility)_converter.ConvertWithoutCheckValue(value) == Visibility.Collapsed ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class TryBooleanToVisibilityConverter : IValueConverter
     {
         /// <summary>

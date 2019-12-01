@@ -7,6 +7,7 @@
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:dynamicDataDisplay="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="stlsPage" Title="{x:Static res:Resources.Vtm}">
 
@@ -25,7 +26,7 @@
             <Setter Property="Margin" Value="10,0" />
         </Style>
 
-        <Style TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="Margin" Value="0,10" />
             <Setter Property="FontSize" Value="{StaticResource FontSize22}" />
         </Style>
@@ -252,13 +253,13 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                        <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
-                        <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="10000" Minimum="200"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -271,7 +272,7 @@
                         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.HeatCurrent_A}"
                            IsEnabled="{Binding ElementName=cbIsHeatEnabled, Path=IsChecked}"
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
-                        <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="1000" Minimum="100"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampOpeningCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -280,7 +281,7 @@
                         <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.HeatTime_us}"
                            IsEnabled="{Binding ElementName=cbIsHeatEnabled, Path=IsChecked}"
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
-                        <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="5000" Minimum="50"
                                             IsNumeric="True"
                                             Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}"
@@ -302,13 +303,13 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.SinusCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="15000" Minimum="4000"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.SinusTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -330,26 +331,26 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxTimeITM}" Minimum="{StaticResource MinTimeITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.CurveFactor}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.AdditionalTime_us}" />
-                            <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="5000" Minimum="0"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveAddTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -360,7 +361,7 @@
                           IsChecked="{Binding ElementName=stlsPage, Path=Parameters.UseFullScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Content="{x:Static res:Resources.Count}" Grid.Column="1" Grid.Row="7" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="7" Maximum="{StaticResource MaxPulsesITM}" Minimum="{StaticResource MinPulsesITM}"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="7" Maximum="{StaticResource MaxPulsesITM}" Minimum="{StaticResource MinPulsesITM}"
                                         IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
                                         Text="{Binding ElementName=stlsPage, Path=Parameters.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -379,18 +380,18 @@
                           Style="{StaticResource CComboboxStyle}" />
 
                     <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="1" Grid.Row="10" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="10" Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="10" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding ClampParameters.Height, ElementName=stlsPage}" />
 
                     <Label Grid.Column="1" Grid.Row="11" Content="{x:Static res:Resources.Force}" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="11" Margin="10" Padding="5"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="11" Margin="10" Padding="5"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=stlsPage, Path=ClampParameters.CustomForce}" />
 
                     <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="1"  Grid.Row="12" />
-                    <customControl:ValidatingTextBox Grid.Column="2" Grid.Row="12"  Padding="5" Margin="10"
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="12"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=stlsPage}" />
 

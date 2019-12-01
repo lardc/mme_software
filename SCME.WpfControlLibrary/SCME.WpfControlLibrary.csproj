@@ -95,6 +95,9 @@
       <DependentUpon>PanelButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CustomControls\TextBoxWithTimer.cs" />
+    <Compile Include="CustomControls\ValidatingTextBox.xaml.cs">
+      <DependentUpon>ValidatingTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataProviders\TestParameterDictionary.cs" />
     <Compile Include="DataProviders\TestTypeEnumDictionary.cs" />
     <Compile Include="DataTemplates\MmeCodeCheckboxDataTemplate.xaml.cs">
@@ -108,6 +111,8 @@
     <Compile Include="IValueConverters\TDcFallRateValueFromEnum.cs" />
     <Compile Include="IValueConverters\TOsvRateValueFromEnum.cs" />
     <Compile Include="IValueConverters\TypeTestParameterToString.cs" />
+    <Compile Include="KeyboardLayouts.cs" />
+    <Compile Include="MainWindow.cs" />
     <Compile Include="Pages\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
@@ -132,6 +137,10 @@
     </Page>
     <Page Include="CustomControls\DialogWindow.xaml" />
     <Page Include="CustomControls\PanelButton.xaml" />
+    <Page Include="CustomControls\ValidatingTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DataTemplates\MmeCodeCheckboxDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -160,10 +169,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CustomControls\ValidatingTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="DataTemplates\ProfileHierarchicalDataTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -174,9 +179,6 @@
     </Compile>
     <Compile Include="CustomControls\ProfilesPageComponents\AddTestParametrUserControl.xaml.cs">
       <DependentUpon>AddTestParameterUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControls\ValidatingTextBox.xaml.cs">
-      <DependentUpon>ValidatingTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataTemplates\ProfileHierarchicalDataTemplate.xaml.cs">
       <DependentUpon>ProfileHierarchicalDataTemplate.xaml</DependentUpon>
@@ -262,6 +264,10 @@
     <Page Include="Styles\Label.xaml" />
     <Page Include="Styles\ListViewItemTestParameter.xaml" />
     <Page Include="Styles\NumericUpDown.xaml" />
+    <Page Include="Styles\PlaceHolderValidatingTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\RadioButton.xaml" />
     <Page Include="Styles\Sizes.xaml" />
     <Page Include="Styles\TextBox.xaml" />

@@ -28,6 +28,8 @@ using TOUParameters = SCME.Types.TOU.TestParameters;
 using System.Collections.Concurrent;
 using System.Windows.Threading;
 using SCME.Types.SQL;
+using SCME.WpfControlLibrary.CustomControls;
+using DialogWindow = SCME.UI.CustomControl.DialogWindow;
 
 namespace SCME.UI.PagesTech
 {

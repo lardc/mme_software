@@ -288,7 +288,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "ATU_PowerValue":
-                        testParams.PowerValue = float.Parse(result.Value.ToString());
+                        testParams.PowerValue = Float.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }
@@ -347,7 +347,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "QrrTq_DCRiseRate":
-                        testParams.DCRiseRate = float.Parse(result.Value.ToString());
+                        testParams.DCRiseRate = Float.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "QrrTq_DCFallRate":
@@ -552,11 +552,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_I":
-                        testParams.CurrentLimit = float.Parse(result.Value.ToString());
+                        testParams.CurrentLimit = Float.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "BVT_RumpUp":
-                        testParams.RampUpVoltage = float.Parse(result.Value.ToString());
+                        testParams.RampUpVoltage = Float.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "BVT_StartV":
@@ -613,11 +613,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_UdsmUrsm_I":
-                        testParams.UdsmUrsmCurrentLimit = float.Parse(result.Value.ToString());
+                        testParams.UdsmUrsmCurrentLimit = Float.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "BVT_UdsmUrsm_RumpUp":
-                        testParams.UdsmUrsmRampUpVoltage = float.Parse(result.Value.ToString());
+                        testParams.UdsmUrsmRampUpVoltage = Float.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "BVT_UdsmUrsm_StartV":

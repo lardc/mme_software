@@ -32,14 +32,18 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TreeViewItemProfile.xaml" />
-        
-
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/PlaceHolderValidatingTextBox.xaml" />
         
     </ResourceDictionary.MergedDictionaries>
 
 
    
     <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
+    </Style>
+    
+    <Style TargetType="customControl:ValidatingTextBox">
         <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>

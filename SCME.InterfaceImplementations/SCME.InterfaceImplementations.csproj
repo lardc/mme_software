@@ -85,6 +85,7 @@
     <Compile Include="Common\DbService\DbServiceLoad.cs" />
     <Compile Include="Common\DbService\DbServiceSave.cs" />
     <Compile Include="Common\ProfileCache.cs" />
+    <Compile Include="Float.cs" />
     <Compile Include="NewImplement\MSSQL\MSSQLDbService.cs" />
     <Compile Include="NewImplement\SQLite\SQLiteDbService.cs" />
     <Compile Include="Common\TDbCommandParameter.cs" />

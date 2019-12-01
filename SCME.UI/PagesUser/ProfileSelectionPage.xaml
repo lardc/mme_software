@@ -16,12 +16,12 @@
         <ui:ListBoxSelectedItemToVisibleConverter x:Key="LBSI2V" />
         <ui:IsGreaterThanConverter x:Key="GreaterThan" />
 
-        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type customControl:ValidatingTextBox}">
+        <Style x:Key="PlaceholderTextBox" TargetType="{x:Type profilesPageComponents:ValidatingTextBox}">
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type customControl:ValidatingTextBox}">
+                    <ControlTemplate TargetType="{x:Type profilesPageComponents:ValidatingTextBox}">
                         <Grid>
-                            <customControl:ValidatingTextBox
+                            <profilesPageComponents:ValidatingTextBox
                                 Text="{Binding Path=Text,
                                                 RelativeSource={RelativeSource TemplatedParent}, 
                                                 Mode=TwoWay,
@@ -195,7 +195,7 @@
                 Background="{StaticResource xPurple1}"
                 Margin="0,0,0,0" />
 
-        <customControl:ValidatingTextBox Grid.Row="0" Grid.Column="0" IsNumeric="False" IsFloat="False" Text="" x:Name="FilterTextBox" Style="{StaticResource PlaceholderTextBox}" Tag="Поиск"></customControl:ValidatingTextBox>
+        <profilesPageComponents:ValidatingTextBox Grid.Row="0" Grid.Column="0" IsNumeric="False" IsFloat="False" Text="" x:Name="FilterTextBox" Style="{StaticResource PlaceholderTextBox}" Tag="Поиск"></profilesPageComponents:ValidatingTextBox>
         <customControl:ListBoxProfiles x:Name="profilesList" SelectionChanged="ProfilesList_OnSelectionChanged"
                                 Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
                                 Margin="0,0,0,0"

@@ -392,8 +392,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public void InsertMmeCode(string mmeCode)
         {
-            _insertMmeCode.Parameters["@MME_CODE"].Value = mmeCode;
+            _insertMmeCode.Parameters["@MME_CODE"].Value = mmeCode; 
             _insertMmeCode.ExecuteNonQuery();
+            
         }
 
         private int InsertProfile(MyProfile profile)

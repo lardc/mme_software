@@ -7,6 +7,7 @@
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:TOUTypes="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
+      xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" x:Name="dVdtPage" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
       d:DesignWidth="1280" d:DesignHeight="924"
       Title="{x:Static res:Resources.TOU}">
@@ -78,7 +79,7 @@
                 </Grid.RowDefinitions>
 
                 <Label Content="{x:Static res:Resources.Amperage}"   Grid.Column="0"  Grid.Row="0" />
-                <customControl:ValidatingTextBox Grid.Column="1"  Grid.Row="0" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="0" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
@@ -115,18 +116,18 @@
                           Style="{StaticResource CComboboxStyle}" />
 
                 <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="10" Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding Clamping.Height}" />
 
                 <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="11" Margin="10" Padding="5"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11" Margin="10" Padding="5"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding Clamping.CustomForce}" />
 
                 <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="12" />
-                <customControl:ValidatingTextBox Grid.Column="1" Grid.Row="12"  Padding="5" Margin="10"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="12"  Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}" 
                           Text="{Binding Temperature}" />
 

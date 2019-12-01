@@ -18,20 +18,21 @@ using System.Windows.Navigation;
 using System.Windows.Threading;
 using SCME.Types;
 using SCME.Types.Profiles;
-using SCME.UI.CustomControl;
 using SCME.UI.IO;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
 using SCME.UI.ViewModels;
 using SCME.WpfControlLibrary;
+using SCME.WpfControlLibrary.CustomControls;
+using DialogWindow = SCME.UI.CustomControl.DialogWindow;
 
 namespace SCME.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : IMainWindow
     {
         private const string PROFILE_ENDPOINT_NAME = "SCME.ProfileService";
 

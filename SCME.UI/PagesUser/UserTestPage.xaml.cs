@@ -19,12 +19,13 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
-using SCME.UI.CustomControl;
 using SCME.UI.Properties;
 using SCME.WpfControlLibrary.Commands;
+using SCME.WpfControlLibrary.CustomControls;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
+using DialogWindow = SCME.UI.CustomControl.DialogWindow;
 using HWFaultReason = SCME.Types.Gate.HWFaultReason;
 using HWWarningReason = SCME.Types.Gate.HWWarningReason;
 using TestParameters = SCME.Types.Commutation.TestParameters;
@@ -653,7 +654,7 @@ namespace SCME.UI.PagesUser
                     HeightMeasureResult = measureDialog.ShowDialog() ?? false;
                 }
 
-                CustomControl.ValidatingTextBox tbNumber = null;
+                ValidatingTextBox tbNumber = null;
                 bool needSave = false;
 
                 if (this.Profile != null)
@@ -2674,7 +2675,7 @@ namespace SCME.UI.PagesUser
 
         private void tbPseNumber_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CustomControl.ValidatingTextBox tb = sender as CustomControl.ValidatingTextBox;
+            ValidatingTextBox tb = sender as ValidatingTextBox;
             CalcDeviceClass(tb, false);
         }
         
@@ -2730,7 +2731,7 @@ namespace SCME.UI.PagesUser
             ((Position == 1) ? chartPlotter1 : chartPlotter2).FitToView();
         }
 
-          private void CalcDeviceClass(CustomControl.ValidatingTextBox sourceOfdeviceCode, bool factClass)
+          private void CalcDeviceClass(ValidatingTextBox sourceOfdeviceCode, bool factClass)
         {
             //вычисляет класс изделия и выводит его на форме
 

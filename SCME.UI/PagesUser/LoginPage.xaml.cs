@@ -52,6 +52,8 @@ namespace SCME.UI.PagesUser
 //                Cache.ProfileSelection.InitFilter();
 //                Cache.ProfileSelection.InitSorting();
                 //NavigationService.Navigate(Cache.ProfileSelection);
+                Cache.ProfilesPageSelectForTest.LoadTopProfiles();
+                Cache.Main.VM.TopTitle = $"{SCME.UI.Properties.Resources.Total} {SCME.UI.Properties.Resources.Profiles}: {Cache.ProfilesPageSelectForTest.ProfileVm.Profiles.Count}";
                 Cache.ProfilesPageSelectForTest.ProfileVm.NextAction = () =>
                 {
                     Cache.UserTest.Profile = Cache.ProfilesPageSelectForTest.ProfileVm.SelectedProfile.ToProfile();
