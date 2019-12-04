@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -111,7 +112,10 @@ namespace SCME.UI.PagesUser
         {
             //запоминаем выбранный пользователем режим работы
             Cache.WorkMode = UserWorkMode.SpecialMeasure;
-
+            Cache.Login.PrepareMoveToSelectProfilePage();
+            Debug.Assert(ns != null, nameof(ns) + " != null");
+            ns.Navigate(Cache.ProfilesPageSelectForTest);
+            
 //            Cache.ProfileSelection.ClearFilter();
 //            Cache.ProfileEdit.InitFilter();
 //

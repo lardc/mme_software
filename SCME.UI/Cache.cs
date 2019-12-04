@@ -48,7 +48,6 @@ namespace SCME.UI
 
         internal static KeyboardLayouts Keyboards { get; set; }
 
-        internal static FtdiLibrary FTDI { get; set; }
 
         internal static LocalStorage Storage { get; set; }
 

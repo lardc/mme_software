@@ -367,6 +367,9 @@
   <data name="LoginPage_Title" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="SelectWorkModePageTitle" xml:space="preserve">
+    <value>Work mode</value>
+  </data>
   <data name="CurrentLimit_mA" xml:space="preserve">
     <value>Current limit, mA</value>
   </data>

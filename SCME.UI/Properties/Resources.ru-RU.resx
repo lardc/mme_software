@@ -810,4 +810,7 @@
   <data name="Sync" xml:space="preserve">
     <value>Синхронизация</value>
   </data>
+  <data name="SelectWorkModePageTitle" xml:space="preserve">
+    <value>Режим работы</value>
+  </data>
 </root>

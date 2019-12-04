@@ -85,7 +85,7 @@ namespace SCME.InterfaceImplementations
                 using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
                 {
                     var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
-                    var centralProfiles = msSqlDbService.GetProfilesDeepByMmeCode(_mmeCode);
+                    var centralProfiles = msSqlDbService.GetProfilesSuperficially(_mmeCode);
                     if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
                         _sqLiteDbService.InsertMmeCode(_mmeCode);
 
@@ -107,7 +107,10 @@ namespace SCME.InterfaceImplementations
                         _sqLiteDbService.RemoveProfile(i, _mmeCode);
 
                     foreach (var i in addingProfiles)
+                    {
+                        i.DeepData = msSqlDbService.LoadProfileDeepData(i);
                         _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
+                    }
 
                     return;
                 }

@@ -8,7 +8,7 @@ namespace SCME.InterfaceImplementations.NewImplement.MSSQL
         Namespace = "http://proton-electrotex.com/SCME")]
     public class MSSQLDbService : Common.DbService.DbService<SqlCommand, SqlConnection>  
     {
-        public MSSQLDbService(SqlConnection connection) : base(connection)
+        public MSSQLDbService(SqlConnection connection, bool enabledCache = true) : base(connection, enabledCache)
         {
         }
     }

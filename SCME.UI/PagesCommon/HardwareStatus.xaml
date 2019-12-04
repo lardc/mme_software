@@ -29,12 +29,6 @@
 
         <UniformGrid Grid.Column="0" Grid.Row="0" Columns="2">
 
-            <customControls:HardwareItem x:Name="internalControl"
-                                              Title="{x:Static res:Resources.Display}"
-                                              InitializeTimeout="1000" OperationTimeout="0"
-                                              DisableAvailable="True"
-                                              Backcolor="{StaticResource xPurple1}"
-                                              Logo="{StaticResource DisplayPath}" />
 
             <customControls:HardwareItem x:Name="serviceControl"
                                               Title="{x:Static res:Resources.Service}"

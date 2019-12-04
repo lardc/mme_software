@@ -30,17 +30,17 @@
         <CheckBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}"  />
 
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.MaxResistance_Ohm}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Resistance}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Resistance}" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.MaxVgt_V}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding VGT }" />
 
         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.MinIgt_mA}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}"/>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.MaxIgt_mA}" />
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding IGT}"/>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding IGT}" StringFormat="{}{0:N0}"/>
         
         <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MaxIh_mA}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding IH }" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding IH }" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.MaxIl_mA}" />
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IL}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IL}" StringFormat="{}{0:N0}"/>
 </Grid>

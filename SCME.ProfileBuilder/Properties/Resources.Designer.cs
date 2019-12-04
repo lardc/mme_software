@@ -61,7 +61,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Адаптер.
+        ///   Looks up a localized string similar to Adapter.
         /// </summary>
         public static string Adapter {
             get {
@@ -70,7 +70,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Add {
             get {
@@ -79,7 +79,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Доп. время, мкс.
+        ///   Looks up a localized string similar to Additional time, us.
         /// </summary>
         public static string AdditionalTime_us {
             get {
@@ -88,7 +88,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Адрес.
+        ///   Looks up a localized string similar to Address.
         /// </summary>
         public static string Address {
             get {
@@ -97,7 +97,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Все.
+        ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
             get {
@@ -106,7 +106,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Все модули отключены.
+        ///   Looks up a localized string similar to All units are disabled.
         /// </summary>
         public static string AllUnitsAreDisabled {
             get {
@@ -115,7 +115,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ошибка при запуске приложения.
+        ///   Looks up a localized string similar to Application start error.
         /// </summary>
         public static string ApplicationStartError {
             get {
@@ -124,7 +124,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Лавина.
+        ///   Looks up a localized string similar to ATU.
         /// </summary>
         public static string Atu {
             get {
@@ -133,7 +133,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Мощность, кВт.
+        ///   Looks up a localized string similar to Power, kW.
         /// </summary>
         public static string AtuPowerValueSet {
             get {
@@ -142,7 +142,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Амплитуда предв. импульса тока, мА.
+        ///   Looks up a localized string similar to AmplitudePrePulseCurrent, mA.
         /// </summary>
         public static string AtuPrePulseValue {
             get {
@@ -151,7 +151,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Назад.
+        ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
             get {
@@ -160,7 +160,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Полный.
+        ///   Looks up a localized string similar to Full.
         /// </summary>
         public static string Both {
             get {
@@ -169,7 +169,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Обзор.
+        ///   Looks up a localized string similar to Browse.
         /// </summary>
         public static string Browse {
             get {
@@ -178,7 +178,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Классификатор.
+        ///   Looks up a localized string similar to BVT.
         /// </summary>
         public static string Bvt {
             get {
@@ -187,7 +187,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Калибровка.
+        ///   Looks up a localized string similar to Calibration.
         /// </summary>
         public static string Calibration {
             get {
@@ -196,7 +196,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вызвать.
+        ///   Looks up a localized string similar to Call.
         /// </summary>
         public static string Call {
             get {
@@ -205,7 +205,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отмена.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
             get {
@@ -214,7 +214,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Невозможно начать тест.
+        ///   Looks up a localized string similar to Can not start test.
         /// </summary>
         public static string CanNotStartTest {
             get {
@@ -223,7 +223,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отметить все.
+        ///   Looks up a localized string similar to Check All.
         /// </summary>
         public static string CheckAll {
             get {
@@ -232,7 +232,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пресс.
+        ///   Looks up a localized string similar to Clamp.
         /// </summary>
         public static string Clamp {
             get {
@@ -241,7 +241,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Закройте защитную заслонку.
+        ///   Looks up a localized string similar to Close safety hood.
         /// </summary>
         public static string CloseSafetyHood {
             get {
@@ -250,7 +250,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Код.
+        ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string Code {
             get {
@@ -259,7 +259,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Блок коммутации.
+        ///   Looks up a localized string similar to Commutation.
         /// </summary>
         public static string Commutation {
             get {
@@ -268,7 +268,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Коммутация.
+        ///   Looks up a localized string similar to Commutation.
         /// </summary>
         public static string CommutationType {
             get {
@@ -277,7 +277,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тип коммутации.
+        ///   Looks up a localized string similar to Commutation type.
         /// </summary>
         public static string CommutationTypeT {
             get {
@@ -286,7 +286,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подключиться.
+        ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string Connect {
             get {
@@ -295,7 +295,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Консоль.
+        ///   Looks up a localized string similar to Console.
         /// </summary>
         public static string Console {
             get {
@@ -304,7 +304,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Верно.
+        ///   Looks up a localized string similar to Correct.
         /// </summary>
         public static string Correct {
             get {
@@ -313,7 +313,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Кол-во.
+        ///   Looks up a localized string similar to Count.
         /// </summary>
         public static string Count {
             get {
@@ -322,7 +322,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ток, А.
+        ///   Looks up a localized string similar to Current, A.
         /// </summary>
         public static string Current_A {
             get {
@@ -331,7 +331,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ток, мА.
+        ///   Looks up a localized string similar to Current limit, mA.
         /// </summary>
         public static string CurrentLimit_mA {
             get {
@@ -340,7 +340,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to S-кривая.
+        ///   Looks up a localized string similar to Curve.
         /// </summary>
         public static string Curve {
             get {
@@ -349,7 +349,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Коэффициент.
+        ///   Looks up a localized string similar to Factor.
         /// </summary>
         public static string CurveFactor {
             get {
@@ -358,7 +358,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Заказчик:.
+        ///   Looks up a localized string similar to Customer:.
         /// </summary>
         public static string Customer {
             get {
@@ -367,7 +367,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -376,7 +376,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тип п-ра:.
+        ///   Looks up a localized string similar to Device:.
         /// </summary>
         public static string Device {
             get {
@@ -385,7 +385,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сер. номер прибора.
+        ///   Looks up a localized string similar to Device name.
         /// </summary>
         public static string DeviceName {
             get {
@@ -394,7 +394,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Прямой.
+        ///   Looks up a localized string similar to Direct.
         /// </summary>
         public static string Direct {
             get {
@@ -403,7 +403,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отключить.
+        ///   Looks up a localized string similar to Disable.
         /// </summary>
         public static string Disable {
             get {
@@ -412,7 +412,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отключен.
+        ///   Looks up a localized string similar to Disabled.
         /// </summary>
         public static string Disabled {
             get {
@@ -421,7 +421,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дисплей.
+        ///   Looks up a localized string similar to Display.
         /// </summary>
         public static string Display {
             get {
@@ -430,7 +430,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Таймаут дисплея.
+        ///   Looks up a localized string similar to Display timeout.
         /// </summary>
         public static string DisplayTimeout {
             get {
@@ -439,7 +439,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Зажать.
+        ///   Looks up a localized string similar to Clamp.
         /// </summary>
         public static string DoClamp {
             get {
@@ -448,7 +448,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Разжать.
+        ///   Looks up a localized string similar to Unclamp.
         /// </summary>
         public static string DoUnclamp {
             get {
@@ -466,7 +466,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подтверджение.
+        ///   Looks up a localized string similar to Confirmation.
         /// </summary>
         public static string DvdtConfirmation {
             get {
@@ -475,7 +475,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Число подтверждений.
+        ///   Looks up a localized string similar to DvdtConfirmationCount.
         /// </summary>
         public static string DvdtConfirmationCount {
             get {
@@ -484,7 +484,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Определение.
+        ///   Looks up a localized string similar to Detection.
         /// </summary>
         public static string DvdtDetection {
             get {
@@ -493,7 +493,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Напряжение, В.
+        ///   Looks up a localized string similar to Voltage, V.
         /// </summary>
         public static string DvDtVoltage {
             get {
@@ -502,7 +502,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Скор. роста, В/мкс.
+        ///   Looks up a localized string similar to Voltage Rate, V/msc.
         /// </summary>
         public static string DvdtVoltageRate {
             get {
@@ -511,7 +511,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Огр. скор. роста, В/мкс.
+        ///   Looks up a localized string similar to VoltageRateLimit, V/mcs.
         /// </summary>
         public static string DvdtVoltageRateLimit {
             get {
@@ -520,7 +520,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (+) к скор. роста, В/мкс.
+        ///   Looks up a localized string similar to DvdtVoltageRateOffSet, V/mcs.
         /// </summary>
         public static string DvdtVoltageRateOffSet {
             get {
@@ -529,7 +529,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Изменить.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -538,7 +538,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подключить.
+        ///   Looks up a localized string similar to Enable.
         /// </summary>
         public static string Enable {
             get {
@@ -547,7 +547,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Введите пароль.
+        ///   Looks up a localized string similar to Enter password.
         /// </summary>
         public static string EnterPassword {
             get {
@@ -556,7 +556,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ошибка при чтении конфигурационного файла профилей.
+        ///   Looks up a localized string similar to Error while parsing Profile config file.
         /// </summary>
         public static string ErrorWhileProfileParsing {
             get {
@@ -565,7 +565,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ошибка отправки.
+        ///   Looks up a localized string similar to Failed to send.
         /// </summary>
         public static string Failed {
             get {
@@ -574,7 +574,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ошибка.
+        ///   Looks up a localized string similar to Fault.
         /// </summary>
         public static string Fault {
             get {
@@ -583,7 +583,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Усилие, кН.
+        ///   Looks up a localized string similar to Force, kN.
         /// </summary>
         public static string Force {
             get {
@@ -592,7 +592,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Частота имп., Гц.
+        ///   Looks up a localized string similar to Freq rate, Hz.
         /// </summary>
         public static string FreqRate_Hz {
             get {
@@ -601,7 +601,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Частота, Гц.
+        ///   Looks up a localized string similar to Frequency, Hz.
         /// </summary>
         public static string Frequency_Hz {
             get {
@@ -610,7 +610,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Управление.
+        ///   Looks up a localized string similar to Gate.
         /// </summary>
         public static string Gate {
             get {
@@ -619,7 +619,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Шлюз.
+        ///   Looks up a localized string similar to Gateway.
         /// </summary>
         public static string Gateway {
             get {
@@ -628,7 +628,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I, мА.
+        ///   Looks up a localized string similar to I, mA.
         /// </summary>
         public static string Graph_ImA {
             get {
@@ -637,7 +637,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время, мс.
+        ///   Looks up a localized string similar to Time, ms.
         /// </summary>
         public static string Graph_TimeMs {
             get {
@@ -646,7 +646,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время, мкс.
+        ///   Looks up a localized string similar to Time, us.
         /// </summary>
         public static string Graph_TimeUs {
             get {
@@ -655,7 +655,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to U.
+        ///   Looks up a localized string similar to V.
         /// </summary>
         public static string Graph_V {
             get {
@@ -664,7 +664,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to U, I.
+        ///   Looks up a localized string similar to V, I.
         /// </summary>
         public static string Graph_VI {
             get {
@@ -673,7 +673,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Список партий.
+        ///   Looks up a localized string similar to Group list.
         /// </summary>
         public static string GroupList {
             get {
@@ -682,7 +682,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Аппаратная часть.
+        ///   Looks up a localized string similar to Hardware.
         /// </summary>
         public static string Hardware {
             get {
@@ -691,7 +691,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ток откр., А.
+        ///   Looks up a localized string similar to Opening current, A.
         /// </summary>
         public static string HeatCurrent_A {
             get {
@@ -700,7 +700,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время откр., мкс.
+        ///   Looks up a localized string similar to Opening time, us.
         /// </summary>
         public static string HeatTime_us {
             get {
@@ -709,7 +709,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Высота.
+        ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Height {
             get {
@@ -718,7 +718,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Высота, мм.
+        ///   Looks up a localized string similar to Height, mm.
         /// </summary>
         public static string Height_Prof {
             get {
@@ -727,7 +727,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ток удержания.
+        ///   Looks up a localized string similar to Holding current.
         /// </summary>
         public static string HoldingCurrent {
             get {
@@ -736,7 +736,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Доп. импульс.
+        ///   Looks up a localized string similar to Holding strike current.
         /// </summary>
         public static string HoldingStrikeCurrent {
             get {
@@ -745,7 +745,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IDRM, мА.
+        ///   Looks up a localized string similar to IDRM, mA.
         /// </summary>
         public static string Idrm_mA {
             get {
@@ -754,7 +754,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IGT, мА.
+        ///   Looks up a localized string similar to IGT, mA.
         /// </summary>
         public static string Igt_mA {
             get {
@@ -763,7 +763,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ih, мА.
+        ///   Looks up a localized string similar to Ih, mA.
         /// </summary>
         public static string Iholding_mA {
             get {
@@ -772,7 +772,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il, мА.
+        ///   Looks up a localized string similar to Il, mA.
         /// </summary>
         public static string Ilatching_mA {
             get {
@@ -781,7 +781,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Информация.
+        ///   Looks up a localized string similar to Information.
         /// </summary>
         public static string Information {
             get {
@@ -790,7 +790,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IRRM, мА.
+        ///   Looks up a localized string similar to IRRM, mA.
         /// </summary>
         public static string Irrm_mA {
             get {
@@ -799,7 +799,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Открытие.
+        ///   Looks up a localized string similar to Opening.
         /// </summary>
         public static string IsHeatEnabled {
             get {
@@ -817,7 +817,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Прозвонка.
+        ///   Looks up a localized string similar to Kelvin.
         /// </summary>
         public static string Kelvin {
             get {
@@ -826,7 +826,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to За 7 дней.
+        ///   Looks up a localized string similar to Last 7 days.
         /// </summary>
         public static string Last7Days {
             get {
@@ -835,7 +835,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to За месяц.
+        ///   Looks up a localized string similar to Last month.
         /// </summary>
         public static string LastMonth {
             get {
@@ -844,7 +844,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ток включения.
+        ///   Looks up a localized string similar to Latching current.
         /// </summary>
         public static string LatchingCurrent {
             get {
@@ -853,7 +853,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Авторизация.
+        ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string LoginPage_Title {
             get {
@@ -862,7 +862,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Логи.
+        ///   Looks up a localized string similar to Logs.
         /// </summary>
         public static string Logs {
             get {
@@ -871,7 +871,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to мА.
+        ///   Looks up a localized string similar to mA.
         /// </summary>
         public static string mA {
             get {
@@ -880,7 +880,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. IDRM, мА.
+        ///   Looks up a localized string similar to Max. IDRM, mA.
         /// </summary>
         public static string MaxIdrm_mA {
             get {
@@ -889,7 +889,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. IGT, мА.
+        ///   Looks up a localized string similar to Max. IGT, mA.
         /// </summary>
         public static string MaxIgt_mA {
             get {
@@ -898,7 +898,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. IH, мА.
+        ///   Looks up a localized string similar to Max. IH, mA.
         /// </summary>
         public static string MaxIh_mA {
             get {
@@ -907,7 +907,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. IL, мА.
+        ///   Looks up a localized string similar to Max. IL, mA.
         /// </summary>
         public static string MaxIl_mA {
             get {
@@ -916,7 +916,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. IRRM, мА.
+        ///   Looks up a localized string similar to Max. IRRM, mA.
         /// </summary>
         public static string MaxIrrm_mA {
             get {
@@ -925,7 +925,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. Rg, Ом.
+        ///   Looks up a localized string similar to Max. Rg, Ohm.
         /// </summary>
         public static string MaxResistance_Ohm {
             get {
@@ -934,7 +934,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. UGT, В.
+        ///   Looks up a localized string similar to Max. VGT, V.
         /// </summary>
         public static string MaxVgt_V {
             get {
@@ -943,7 +943,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Макс. UTM, В.
+        ///   Looks up a localized string similar to Max. VTM, V.
         /// </summary>
         public static string MaxVtm_V {
             get {
@@ -952,7 +952,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Измерение высоты.
+        ///   Looks up a localized string similar to Height measuring.
         /// </summary>
         public static string MeasureDialog_Title {
             get {
@@ -961,7 +961,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сообщение.
+        ///   Looks up a localized string similar to Message.
         /// </summary>
         public static string Message {
             get {
@@ -970,7 +970,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Мин. UDRM, В.
+        ///   Looks up a localized string similar to Min. VDRM, V.
         /// </summary>
         public static string MinVdrm_V {
             get {
@@ -979,7 +979,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Мин. URRM, В.
+        ///   Looks up a localized string similar to Min. VRRM, V.
         /// </summary>
         public static string MinVrrm_V {
             get {
@@ -988,7 +988,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Код КИП.
+        ///   Looks up a localized string similar to MME Codes.
         /// </summary>
         public static string MME_Code {
             get {
@@ -997,7 +997,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Связь КИП и Профилей.
+        ///   Looks up a localized string similar to MME to Profiles.
         /// </summary>
         public static string MME_Profiles {
             get {
@@ -1006,7 +1006,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Профили.
+        ///   Looks up a localized string similar to Profile names.
         /// </summary>
         public static string MME_ProfilesLabel {
             get {
@@ -1015,7 +1015,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отсутствуют MME коды в базе данных, дальнейшая работа невозможна.
+        ///   Looks up a localized string similar to Missing MME codes in the database, no further work possible.
         /// </summary>
         public static string MMECodesEmpty {
             get {
@@ -1024,7 +1024,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Режим.
+        ///   Looks up a localized string similar to Mode.
         /// </summary>
         public static string Mode {
             get {
@@ -1033,7 +1033,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Далее.
+        ///   Looks up a localized string similar to Next.
         /// </summary>
         public static string Next {
             get {
@@ -1042,7 +1042,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не верно.
+        ///   Looks up a localized string similar to Not correct.
         /// </summary>
         public static string NonCorrect {
             get {
@@ -1051,7 +1051,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ОК.
+        ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Ok {
             get {
@@ -1060,7 +1060,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Параметр.
+        ///   Looks up a localized string similar to Parameter type.
         /// </summary>
         public static string ParameterType {
             get {
@@ -1069,7 +1069,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Номер ЗНП.
+        ///   Looks up a localized string similar to Order number.
         /// </summary>
         public static string PartyNumber {
             get {
@@ -1078,7 +1078,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Годные.
+        ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string Passed {
             get {
@@ -1087,7 +1087,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пароль неверен.
+        ///   Looks up a localized string similar to Password incorrect.
         /// </summary>
         public static string PasswordIncorrect {
             get {
@@ -1096,7 +1096,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to В очереди.
+        ///   Looks up a localized string similar to Pending.
         /// </summary>
         public static string Pending {
             get {
@@ -1105,7 +1105,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Период:.
+        ///   Looks up a localized string similar to Period:.
         /// </summary>
         public static string Period {
             get {
@@ -1114,7 +1114,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время, мс.
+        ///   Looks up a localized string similar to Plate time, ms.
         /// </summary>
         public static string PlateTime_ms {
             get {
@@ -1123,7 +1123,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Позиция.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
             get {
@@ -1132,7 +1132,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Позиция 1.
+        ///   Looks up a localized string similar to Position 1.
         /// </summary>
         public static string Position_1 {
             get {
@@ -1141,7 +1141,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Позиция 2.
+        ///   Looks up a localized string similar to Position 2.
         /// </summary>
         public static string Position_2 {
             get {
@@ -1150,7 +1150,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Печать.
+        ///   Looks up a localized string similar to Print.
         /// </summary>
         public static string Print {
             get {
@@ -1159,7 +1159,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Настройки печати:.
+        ///   Looks up a localized string similar to Printing options:.
         /// </summary>
         public static string PrintingOptions {
             get {
@@ -1168,7 +1168,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Профили.
+        ///   Looks up a localized string similar to Profile.
         /// </summary>
         public static string Profile {
             get {
@@ -1177,7 +1177,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ошибка загрузки профилей.
+        ///   Looks up a localized string similar to Profile load error.
         /// </summary>
         public static string Profile_load_error {
             get {
@@ -1186,7 +1186,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не могу загрузить профили с сервера компании. Временно используется локальная копия. Ошибка {0}.
+        ///   Looks up a localized string similar to Failed to load profiles from company server. Local copy is used temporary. Error {0}.
         /// </summary>
         public static string Profile_load_error_ex {
             get {
@@ -1195,7 +1195,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Путь к базе данных.
+        ///   Looks up a localized string similar to Database name.
         /// </summary>
         public static string ProfileBuilderDBName {
             get {
@@ -1204,7 +1204,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пароль.
+        ///   Looks up a localized string similar to Zauberwort.
         /// </summary>
         public static string ProfileBuilderDBPassword {
             get {
@@ -1213,7 +1213,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пользователь.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         public static string ProfileBuilderDBUser {
             get {
@@ -1222,7 +1222,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Использовать интегрированную аутентификацию.
+        ///   Looks up a localized string similar to Use SSPI authentification.
         /// </summary>
         public static string ProfileBuilderIntegratedSecurity {
             get {
@@ -1231,7 +1231,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Укажите путь к серверу.
+        ///   Looks up a localized string similar to Server name.
         /// </summary>
         public static string ProfileBuilderServerName {
             get {
@@ -1240,7 +1240,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Путь к БД.
+        ///   Looks up a localized string similar to DB path.
         /// </summary>
         public static string ProfileBuilderTitle {
             get {
@@ -1249,7 +1249,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Имя профиля.
+        ///   Looks up a localized string similar to Profile name.
         /// </summary>
         public static string ProfileName {
             get {
@@ -1258,7 +1258,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отожмите кнопку Стоп.
+        ///   Looks up a localized string similar to Pull stop button.
         /// </summary>
         public static string PullStopButton {
             get {
@@ -1267,7 +1267,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Анодный ток.
+        ///   Looks up a localized string similar to Anode current.
         /// </summary>
         public static string PureVgt {
             get {
@@ -1285,7 +1285,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Скорость спада тока, А/мкс.
+        ///   Looks up a localized string similar to Direct current fall rate, A/us.
         /// </summary>
         public static string QrrTqDCFallRate {
             get {
@@ -1294,7 +1294,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Длительность импульса прямого тока, в мкс.
+        ///   Looks up a localized string similar to Direct current pulse duration, us.
         /// </summary>
         public static string QrrTqDCPulseWidth {
             get {
@@ -1303,7 +1303,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Скорость нарастания прямого тока, А/мкс.
+        ///   Looks up a localized string similar to Direct current rise rate, A/us.
         /// </summary>
         public static string QrrTqDCRiseRate {
             get {
@@ -1312,7 +1312,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Амплитуда прямого тока, А.
+        ///   Looks up a localized string similar to Direct current amplitude, A.
         /// </summary>
         public static string QrrTqDirectCurrent {
             get {
@@ -1321,7 +1321,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Режим.
+        ///   Looks up a localized string similar to Mode.
         /// </summary>
         public static string QrrTqMode {
             get {
@@ -1330,7 +1330,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Прямое повторное напряжение, В.
+        ///   Looks up a localized string similar to Off-state voltage, V.
         /// </summary>
         public static string QrrTqOffStateVoltage {
             get {
@@ -1339,7 +1339,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Скорость нарастания прямого повторного напр., В/мкс.
+        ///   Looks up a localized string similar to Off-state voltage rise rate, V/us.
         /// </summary>
         public static string QrrTqOsvRate {
             get {
@@ -1348,7 +1348,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Измерение Trr по методу 90%-50%.
+        ///   Looks up a localized string similar to Measure Trr by 90%-50% method.
         /// </summary>
         public static string QrrTqTrrMeasureBy9050Method {
             get {
@@ -1366,7 +1366,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Амплитуда напряжения для измерения, В.
+        ///   Looks up a localized string similar to DC voltage value for resistance measurement, V.
         /// </summary>
         public static string RACResVoltage {
             get {
@@ -1375,7 +1375,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Трапеция.
+        ///   Looks up a localized string similar to Ramp.
         /// </summary>
         public static string Ramp {
             get {
@@ -1384,7 +1384,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Наклон, В/мс.
+        ///   Looks up a localized string similar to Ramp up, V/ms.
         /// </summary>
         public static string Rampup_Vms {
             get {
@@ -1393,7 +1393,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Чтение.
+        ///   Looks up a localized string similar to Read.
         /// </summary>
         public static string Read {
             get {
@@ -1402,7 +1402,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  - Только чтение.
+        ///   Looks up a localized string similar to  - Read only.
         /// </summary>
         public static string ReadOnly {
             get {
@@ -1411,7 +1411,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Брак.
+        ///   Looks up a localized string similar to Rejected.
         /// </summary>
         public static string Rejected {
             get {
@@ -1420,7 +1420,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rg, Ом.
+        ///   Looks up a localized string similar to Rg, Ohm.
         /// </summary>
         public static string Resistance_Ohm {
             get {
@@ -1429,7 +1429,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Перезапуск.
+        ///   Looks up a localized string similar to Restart.
         /// </summary>
         public static string Restart {
             get {
@@ -1438,7 +1438,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Результаты.
+        ///   Looks up a localized string similar to Results.
         /// </summary>
         public static string Results {
             get {
@@ -1447,7 +1447,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Обратный.
+        ///   Looks up a localized string similar to Reverse.
         /// </summary>
         public static string Reverse {
             get {
@@ -1456,7 +1456,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Защитная цепь разомкнута.
+        ///   Looks up a localized string similar to Safety circuit is open.
         /// </summary>
         public static string SafetyCircuitIsOpen {
             get {
@@ -1465,7 +1465,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сохранить.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -1474,7 +1474,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Проверка.
+        ///   Looks up a localized string similar to Selftest.
         /// </summary>
         public static string Selftest {
             get {
@@ -1483,7 +1483,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сервис.
+        ///   Looks up a localized string similar to Service.
         /// </summary>
         public static string Service {
             get {
@@ -1492,7 +1492,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Полусинус.
+        ///   Looks up a localized string similar to Sinus.
         /// </summary>
         public static string Sinus {
             get {
@@ -1501,7 +1501,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Источник.
+        ///   Looks up a localized string similar to Source.
         /// </summary>
         public static string Source {
             get {
@@ -1510,7 +1510,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Старт.
+        ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
             get {
@@ -1519,7 +1519,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Стартовое, В.
+        ///   Looks up a localized string similar to Start voltage, V.
         /// </summary>
         public static string StartVoltage_V {
             get {
@@ -1528,7 +1528,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Стоп.
+        ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
             get {
@@ -1537,7 +1537,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Нажата кнопка Стоп.
+        ///   Looks up a localized string similar to Stop button is pressed.
         /// </summary>
         public static string StopButtonIsPressed {
             get {
@@ -1546,7 +1546,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Останов.
+        ///   Looks up a localized string similar to Stopped.
         /// </summary>
         public static string Stopped {
             get {
@@ -1555,7 +1555,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (Номер ППЭ).
+        ///   Looks up a localized string similar to (SCI number).
         /// </summary>
         public static string StructureName {
             get {
@@ -1564,7 +1564,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (Партия ППЭ).
+        ///   Looks up a localized string similar to (SCI order).
         /// </summary>
         public static string StructureOrder {
             get {
@@ -1573,7 +1573,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Запрос отправлен.
+        ///   Looks up a localized string similar to Successfully sent.
         /// </summary>
         public static string Successful {
             get {
@@ -1582,7 +1582,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Наладчик.
+        ///   Looks up a localized string similar to Technitian.
         /// </summary>
         public static string Technitian {
             get {
@@ -1600,7 +1600,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тест.
+        ///   Looks up a localized string similar to Test.
         /// </summary>
         public static string Test {
             get {
@@ -1609,7 +1609,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тип теста.
+        ///   Looks up a localized string similar to Test type.
         /// </summary>
         public static string TestType {
             get {
@@ -1618,7 +1618,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время, мкс.
+        ///   Looks up a localized string similar to Time, us.
         /// </summary>
         public static string Time_us {
             get {
@@ -1636,7 +1636,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Время.
+        ///   Looks up a localized string similar to Timestamp.
         /// </summary>
         public static string Timestamp {
             get {
@@ -1645,7 +1645,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сегодня.
+        ///   Looks up a localized string similar to Today.
         /// </summary>
         public static string Today {
             get {
@@ -1654,7 +1654,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сила тока (ITM),  А.
+        ///   Looks up a localized string similar to Amperage (ITM), A.
         /// </summary>
         public static string TOUITM {
             get {
@@ -1663,7 +1663,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подключиться.
+        ///   Looks up a localized string similar to Try to connect.
         /// </summary>
         public static string TryConnect {
             get {
@@ -1672,7 +1672,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тип.
+        ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string Type {
             get {
@@ -1681,7 +1681,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Снять все.
+        ///   Looks up a localized string similar to Uncheck All.
         /// </summary>
         public static string UnCheckAll {
             get {
@@ -1690,7 +1690,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Полный диапазон.
+        ///   Looks up a localized string similar to Full scale.
         /// </summary>
         public static string UseFullScale {
             get {
@@ -1699,7 +1699,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LSQ метод.
+        ///   Looks up a localized string similar to LSQ method.
         /// </summary>
         public static string UseLsqMethod {
             get {
@@ -1708,7 +1708,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Оператор.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         public static string User {
             get {
@@ -1717,7 +1717,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выберите профиль.
+        ///   Looks up a localized string similar to Select profile.
         /// </summary>
         public static string UserPage_Title {
             get {
@@ -1726,7 +1726,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Тестирование.
+        ///   Looks up a localized string similar to Test.
         /// </summary>
         public static string UserTestPage_Title {
             get {
@@ -1735,7 +1735,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to В.
+        ///   Looks up a localized string similar to V.
         /// </summary>
         public static string V {
             get {
@@ -1744,7 +1744,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Значение.
+        ///   Looks up a localized string similar to Value.
         /// </summary>
         public static string Value {
             get {
@@ -1753,7 +1753,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UDRM, В.
+        ///   Looks up a localized string similar to VDRM, V.
         /// </summary>
         public static string VdrmV {
             get {
@@ -1762,7 +1762,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UGT.
+        ///   Looks up a localized string similar to VGT.
         /// </summary>
         public static string Vgt {
             get {
@@ -1771,7 +1771,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UGT, мВ.
+        ///   Looks up a localized string similar to VGT, mV.
         /// </summary>
         public static string VgtmV {
             get {
@@ -1780,7 +1780,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UGT, В.
+        ///   Looks up a localized string similar to VGT, V.
         /// </summary>
         public static string VgtV {
             get {
@@ -1789,7 +1789,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to В / мс.
+        ///   Looks up a localized string similar to V / ms.
         /// </summary>
         public static string Vms {
             get {
@@ -1798,7 +1798,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Напр. прям., В.
+        ///   Looks up a localized string similar to Voltage D, V.
         /// </summary>
         public static string VoltageLimitD_V {
             get {
@@ -1807,7 +1807,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Напр. обрат., В.
+        ///   Looks up a localized string similar to Voltage R, V.
         /// </summary>
         public static string VoltageLimitR_V {
             get {
@@ -1816,7 +1816,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to URRM, В.
+        ///   Looks up a localized string similar to VRRM, V.
         /// </summary>
         public static string VrrmV {
             get {
@@ -1825,7 +1825,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Стат. потери.
+        ///   Looks up a localized string similar to Static losses.
         /// </summary>
         public static string Vtm {
             get {
@@ -1834,7 +1834,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UTM, В.
+        ///   Looks up a localized string similar to VTM, V.
         /// </summary>
         public static string VtmV {
             get {
@@ -1843,7 +1843,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Готов.
+        ///   Looks up a localized string similar to Ready.
         /// </summary>
         public static string Waiting {
             get {
@@ -1852,7 +1852,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Предупреждение.
+        ///   Looks up a localized string similar to Warning.
         /// </summary>
         public static string Warning {
             get {
@@ -1861,7 +1861,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подключение.
+        ///   Looks up a localized string similar to Connecting.
         /// </summary>
         public static string WelcomePage_Title {
             get {
@@ -1870,7 +1870,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Запись.
+        ///   Looks up a localized string similar to Write.
         /// </summary>
         public static string Write {
             get {
@@ -1879,7 +1879,7 @@ namespace SCME.ProfileBuilder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вчера.
+        ///   Looks up a localized string similar to Yesterday.
         /// </summary>
         public static string Yesterday {
             get {

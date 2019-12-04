@@ -9,7 +9,7 @@
         xmlns:types="clr-namespace:SCME.Types;assembly=SCME.Types"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944"
         x:Name="userWorkModePage" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
-        Title="{x:Static res:Resources.LoginPage_Title}" >
+        Title="{x:Static res:Resources.SelectWorkModePageTitle}" >
     
     <Page.Resources>
         <ResourceDictionary>

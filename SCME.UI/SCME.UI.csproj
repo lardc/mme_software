@@ -168,7 +168,6 @@
       <DependentUpon>HardwareItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="IO\ControlLogic.cs" />
-    <Compile Include="IO\FtdiLibrary.cs" />
     <Compile Include="IO\QueueWorker.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\TechnicianPageVm.cs" />
@@ -524,7 +523,6 @@
     </None>
     <Resource Include="FodyWeavers.xml" />
     <Content Include="Lib\DynamicDataDisplay.SilverLight.dll" />
-    <Content Include="Lib\FTD2XX_NET.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

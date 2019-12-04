@@ -50,9 +50,7 @@
     <Setting Name="SinglePositionModuleMode" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="FTDIPresent" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
+   
     <Setting Name="CommExIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -65,9 +63,7 @@
     <Setting Name="AccountsPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AccountsConfig\Accounts.xml</Value>
     </Setting>
-    <Setting Name="FTDIIsInUse" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
+    
     <Setting Name="ClampIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>

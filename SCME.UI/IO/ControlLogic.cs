@@ -35,8 +35,6 @@ namespace SCME.UI.IO
 
         public ControlLogic()
         {
-            if (Settings.Default.FTDIPresent)
-                Cache.FTDI = new FtdiLibrary();
 
             m_CallbackHost = new ExternalControlCallbackHost(this);
 
@@ -77,7 +75,7 @@ namespace SCME.UI.IO
 
         public bool IsStopButtonPressed
         {
-            get { return (Settings.Default.FTDIPresent) && Cache.FTDI.IsStopButtonPressed || m_ControlClient.GetButtonState(ComplexButtons.ButtonStop); }
+            get { return m_ControlClient.GetButtonState(ComplexButtons.ButtonStop); }
         }
 
         public ExternalControlCallbackHost CallbackManager
@@ -116,30 +114,6 @@ namespace SCME.UI.IO
             try
             {
                 m_CallbackHost.AddCommonConnectionEvent(DeviceConnectionState.ConnectionInProcess, "Connecting");
-
-                if (Settings.Default.FTDIPresent)
-                {
-                    string ftMsg;
-
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI, DeviceConnectionState.ConnectionInProcess,
-                                                            "Connecting");
-                    var ftState = Cache.FTDI.Connect(!param.IsInternalEnabled, out ftMsg);
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI, ftState, ftMsg);
-
-                    if (ftState != DeviceConnectionState.ConnectionSuccess)
-                    {
-                        m_CallbackHost.AddCommonConnectionEvent(DeviceConnectionState.ConnectionFailed, "Connection error");
-                        return;
-                    }
-                }
-                else
-                {
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI,
-                                                           DeviceConnectionState.ConnectionInProcess,
-                                                           "Connecting");
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI,
-                                                           DeviceConnectionState.ConnectionSuccess, "Connected");
-                }
 
                 m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.Service,
                                                        DeviceConnectionState.ConnectionInProcess,
@@ -217,24 +191,6 @@ namespace SCME.UI.IO
             {
                 m_StopInit = true;
                 m_NetPingTimer.Stop();
-
-                try
-                {
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI,
-                                                            DeviceConnectionState.DisconnectionInProcess,
-                                                            "Disconnecting");
-                    if (Settings.Default.FTDIPresent)
-                        Cache.FTDI.Disconnect();
-
-                    m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.FTDI,
-                                                            DeviceConnectionState.DisconnectionSuccess,
-                                                            "Disconnected");
-                }
-                catch (Exception ex)
-                {
-                    savedEx = ex;
-                    ProcessGeneralException(ex);
-                }
 
                 m_CallbackHost.AddDeviceConnectionEvent(ComplexParts.Service, DeviceConnectionState.DisconnectionInProcess,
                                                        "Disconnecting");

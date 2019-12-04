@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using SCME.Types;
 using SCME.UI.IO;
@@ -21,6 +22,9 @@ namespace SCME.UI.PagesCommon
             IsRestartEnable = false;
 
             btnRestart.Click += Cache.Main.RestartRoutine;
+            
+            
+            
         }
 
         internal bool IsBackEnable
@@ -43,60 +47,57 @@ namespace SCME.UI.PagesCommon
             }
         }
 
-        internal void State(ComplexParts Device, DeviceConnectionState ConnectionState, string Message)
+        internal void State(ComplexParts device, DeviceConnectionState connectionState, string message)
         {
-            switch (Device)
+            switch (device)
             {
-                case ComplexParts.FTDI:
-                    internalControl.SetConnectionStatus(ConnectionState, Message);
-                    break;
                 case ComplexParts.Service:
-                    serviceControl.SetConnectionStatus(ConnectionState, Message);
+                    serviceControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Sync:
-                    syncControl.SetConnectionStatus(ConnectionState, Message);
+                    syncControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Adapter:
-                    adapterControl.SetConnectionStatus(ConnectionState, Message);
+                    adapterControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Gateway:
-                    gatewayControl.SetConnectionStatus(ConnectionState, Message);
+                    gatewayControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Commutation:
-                    commutationControl.SetConnectionStatus(ConnectionState, Message);
+                    commutationControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Gate:
-                    gateControl.SetConnectionStatus(ConnectionState, Message);
+                    gateControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.SL:
-                    vtmControl.SetConnectionStatus(ConnectionState, Message);
+                    vtmControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.BVT:
-                    bvtControl.SetConnectionStatus(ConnectionState, Message);
+                    bvtControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.Clamping:
-                    clampControl.SetConnectionStatus(ConnectionState, Message);
+                    clampControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.CommutationEx:
-                    commutationControlEx.SetConnectionStatus(ConnectionState, Message);
+                    commutationControlEx.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.DvDt:
-                    dVdtControl.SetConnectionStatus(ConnectionState, Message);
+                    dVdtControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.ATU:
-                    aTUControl.SetConnectionStatus(ConnectionState, Message);
+                    aTUControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.QrrTq:
-                    qrrTqControl.SetConnectionStatus(ConnectionState, Message);
+                    qrrTqControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.RAC:
-                    rACControl.SetConnectionStatus(ConnectionState, Message);
+                    rACControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.IH:
-                    ihControl.SetConnectionStatus(ConnectionState, Message);
+                    ihControl.SetConnectionStatus(connectionState, message);
                     break;
                 case ComplexParts.TOU:
-                    touControl.SetConnectionStatus(ConnectionState, Message);
+                    touControl.SetConnectionStatus(connectionState, message);
                     break;
             }
         }
@@ -105,8 +106,6 @@ namespace SCME.UI.PagesCommon
         {
             switch (Device)
             {
-                case ComplexParts.FTDI:
-                    return !internalControl.IsDisabled;
                 case ComplexParts.Service:
                     return !serviceControl.IsDisabled;
                 case ComplexParts.Sync:
@@ -148,8 +147,6 @@ namespace SCME.UI.PagesCommon
         {
             switch (Device)
             {
-                case ComplexParts.FTDI:
-                    return internalControl.OperationTimeout;
                 case ComplexParts.Service:
                     return serviceControl.OperationTimeout;
                 case ComplexParts.Sync:

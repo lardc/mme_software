@@ -20,6 +20,7 @@ namespace SCME.UI.PagesTech
 
         private void BtnOk_Clicked(object Sender, RoutedEventArgs E)
         {
+            var q = Settings.Default.TechPassword;
             if (tbPassword.Text == Settings.Default.TechPassword && NavigationService != null)
             {
                 lblIncorrect.Content = "";

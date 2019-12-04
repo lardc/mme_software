@@ -28,7 +28,7 @@ namespace SCME.WpfControlLibrary.Pages
         
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
 
-        public event Action PreviewGoBackAction;
+        public event Action GoBackAction;
 
         private Dictionary<string, int> GetMMeCodes => ProfileVm.IsSingleMmeCode
             ? _dbService.GetMmeCodes().Where(m => m.Key == ProfileVm.SelectedMmeCode).ToDictionary(m => m.Key, m => m.Value)
@@ -204,8 +204,10 @@ namespace SCME.WpfControlLibrary.Pages
         {
             ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = null;
-            PreviewGoBackAction?.Invoke();
-            NavigationService?.GoBack();
+            if (GoBackAction != null)
+                GoBackAction.Invoke();
+            else
+                NavigationService?.GoBack();
         }
     }
 }

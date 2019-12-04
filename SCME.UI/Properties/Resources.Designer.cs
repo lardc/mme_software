@@ -1709,6 +1709,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Work mode.
+        /// </summary>
+        public static string SelectWorkModePageTitle {
+            get {
+                return ResourceManager.GetString("SelectWorkModePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selftest.
         /// </summary>
         public static string Selftest {

@@ -32,6 +32,8 @@ namespace SCME.UI.ViewModels
 
         public string  MmeCode { get; set; }
 
+        public string AccountName { get; set; }
+
 
     }
 }

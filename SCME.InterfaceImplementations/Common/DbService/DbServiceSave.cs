@@ -74,8 +74,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             var gateParameters = new Dictionary<string, (object Min, object Max)>
             {
                 {"RG", (DBNull.Value, gate.Resistance)},
-                {"IGT", (DBNull.Value, gate.IGT)},
-                {"MIM_IGT", (DBNull.Value, gate.MinIGT)},
+                {"IGT", (gate.MinIGT, gate.IGT)},
                 {"VGT", (DBNull.Value, gate.VGT)},
             };
 

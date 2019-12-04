@@ -118,612 +118,612 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Adapter" xml:space="preserve">
-    <value>Адаптер</value>
+    <value>Adapter</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Добавить</value>
+    <value>Add</value>
   </data>
   <data name="AdditionalTime_us" xml:space="preserve">
-    <value>Доп. время, мкс</value>
+    <value>Additional time, us</value>
   </data>
   <data name="Address" xml:space="preserve">
-    <value>Адрес</value>
+    <value>Address</value>
   </data>
   <data name="All" xml:space="preserve">
-    <value>Все</value>
+    <value>All</value>
   </data>
   <data name="AllUnitsAreDisabled" xml:space="preserve">
-    <value>Все модули отключены</value>
+    <value>All units are disabled</value>
   </data>
   <data name="ApplicationStartError" xml:space="preserve">
-    <value>Ошибка при запуске приложения</value>
+    <value>Application start error</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Назад</value>
+    <value>Back</value>
   </data>
   <data name="Both" xml:space="preserve">
-    <value>Полный</value>
+    <value>Full</value>
   </data>
   <data name="Bvt" xml:space="preserve">
-    <value>Классификатор</value>
+    <value>BVT</value>
   </data>
   <data name="Calibration" xml:space="preserve">
-    <value>Калибровка</value>
+    <value>Calibration</value>
   </data>
   <data name="Call" xml:space="preserve">
-    <value>Вызвать</value>
+    <value>Call</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Cancel</value>
   </data>
   <data name="CanNotStartTest" xml:space="preserve">
-    <value>Невозможно начать тест</value>
+    <value>Can not start test</value>
   </data>
   <data name="Clamp" xml:space="preserve">
-    <value>Пресс</value>
+    <value>Clamp</value>
   </data>
   <data name="CloseSafetyHood" xml:space="preserve">
-    <value>Закройте защитную заслонку</value>
+    <value>Close safety hood</value>
   </data>
   <data name="Code" xml:space="preserve">
-    <value>Код</value>
+    <value>Code</value>
   </data>
   <data name="Commutation" xml:space="preserve">
-    <value>Блок коммутации</value>
+    <value>Commutation</value>
   </data>
   <data name="CommutationType" xml:space="preserve">
-    <value>Коммутация</value>
+    <value>Commutation</value>
   </data>
   <data name="CommutationTypeT" xml:space="preserve">
-    <value>Тип коммутации</value>
+    <value>Commutation type</value>
   </data>
   <data name="Console" xml:space="preserve">
-    <value>Консоль</value>
+    <value>Console</value>
   </data>
   <data name="Correct" xml:space="preserve">
-    <value>Верно</value>
+    <value>Correct</value>
   </data>
   <data name="Count" xml:space="preserve">
-    <value>Кол-во</value>
+    <value>Count</value>
   </data>
   <data name="CurrentLimit_mA" xml:space="preserve">
-    <value>Ток, мА</value>
+    <value>Current limit, mA</value>
   </data>
   <data name="Current_A" xml:space="preserve">
-    <value>Ток, А</value>
+    <value>Current, A</value>
   </data>
   <data name="Curve" xml:space="preserve">
-    <value>S-кривая</value>
+    <value>Curve</value>
   </data>
   <data name="CurveFactor" xml:space="preserve">
-    <value>Коэффициент</value>
+    <value>Factor</value>
   </data>
   <data name="Customer" xml:space="preserve">
-    <value>Заказчик:</value>
+    <value>Customer:</value>
   </data>
   <data name="Device" xml:space="preserve">
-    <value>Тип п-ра:</value>
+    <value>Device:</value>
   </data>
   <data name="DeviceName" xml:space="preserve">
-    <value>Сер. номер прибора</value>
+    <value>Device name</value>
   </data>
   <data name="Direct" xml:space="preserve">
-    <value>Прямой</value>
+    <value>Direct</value>
   </data>
   <data name="Disable" xml:space="preserve">
-    <value>Отключить</value>
+    <value>Disable</value>
   </data>
   <data name="Disabled" xml:space="preserve">
-    <value>Отключен</value>
+    <value>Disabled</value>
   </data>
   <data name="Display" xml:space="preserve">
-    <value>Дисплей</value>
+    <value>Display</value>
   </data>
   <data name="DisplayTimeout" xml:space="preserve">
-    <value>Таймаут дисплея</value>
+    <value>Display timeout</value>
   </data>
   <data name="DoClamp" xml:space="preserve">
-    <value>Зажать</value>
+    <value>Clamp</value>
   </data>
   <data name="DoUnclamp" xml:space="preserve">
-    <value>Разжать</value>
+    <value>Unclamp</value>
   </data>
   <data name="dVdt" xml:space="preserve">
     <value>dVdt</value>
   </data>
   <data name="Enable" xml:space="preserve">
-    <value>Подключить</value>
+    <value>Enable</value>
   </data>
   <data name="EnterPassword" xml:space="preserve">
-    <value>Введите пароль</value>
+    <value>Enter password</value>
   </data>
   <data name="ErrorWhileProfileParsing" xml:space="preserve">
-    <value>Ошибка при чтении конфигурационного файла профилей</value>
+    <value>Error while parsing Profile config file</value>
   </data>
   <data name="Failed" xml:space="preserve">
-    <value>Ошибка отправки</value>
+    <value>Failed to send</value>
   </data>
   <data name="Fault" xml:space="preserve">
-    <value>Ошибка</value>
+    <value>Fault</value>
   </data>
   <data name="Force" xml:space="preserve">
-    <value>Усилие, кН</value>
+    <value>Force, kN</value>
   </data>
   <data name="FreqRate_Hz" xml:space="preserve">
-    <value>Частота имп., Гц</value>
+    <value>Freq rate, Hz</value>
   </data>
   <data name="Frequency_Hz" xml:space="preserve">
-    <value>Частота, Гц</value>
+    <value>Frequency, Hz</value>
   </data>
   <data name="Gate" xml:space="preserve">
-    <value>Управление</value>
+    <value>Gate</value>
   </data>
   <data name="Gateway" xml:space="preserve">
-    <value>Шлюз</value>
+    <value>Gateway</value>
   </data>
   <data name="Graph_ImA" xml:space="preserve">
-    <value>I, мА</value>
+    <value>I, mA</value>
   </data>
   <data name="Graph_TimeMs" xml:space="preserve">
-    <value>Время, мс</value>
+    <value>Time, ms</value>
   </data>
   <data name="Graph_TimeUs" xml:space="preserve">
-    <value>Время, мкс</value>
+    <value>Time, us</value>
   </data>
   <data name="Graph_V" xml:space="preserve">
-    <value>U</value>
+    <value>V</value>
   </data>
   <data name="Graph_VI" xml:space="preserve">
-    <value>U, I</value>
+    <value>V, I</value>
   </data>
   <data name="GroupList" xml:space="preserve">
-    <value>Список партий</value>
+    <value>Group list</value>
   </data>
   <data name="Hardware" xml:space="preserve">
-    <value>Аппаратная часть</value>
+    <value>Hardware</value>
   </data>
   <data name="HeatCurrent_A" xml:space="preserve">
-    <value>Ток откр., А</value>
+    <value>Opening current, A</value>
   </data>
   <data name="HeatTime_us" xml:space="preserve">
-    <value>Время откр., мкс</value>
+    <value>Opening time, us</value>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Высота</value>
+    <value>Height</value>
   </data>
   <data name="HoldingCurrent" xml:space="preserve">
-    <value>Ток удержания</value>
+    <value>Holding current</value>
   </data>
   <data name="HoldingStrikeCurrent" xml:space="preserve">
-    <value>Доп. импульс</value>
+    <value>Holding strike current</value>
   </data>
   <data name="Idrm_mA" xml:space="preserve">
-    <value>IDRM, мА</value>
+    <value>IDRM, mA</value>
   </data>
   <data name="Igt_mA" xml:space="preserve">
-    <value>IGT, мА</value>
+    <value>IGT, mA</value>
   </data>
   <data name="Iholding_mA" xml:space="preserve">
-    <value>Ih, мА</value>
+    <value>Ih, mA</value>
   </data>
   <data name="Ilatching_mA" xml:space="preserve">
-    <value>Il, мА</value>
+    <value>Il, mA</value>
   </data>
   <data name="Information" xml:space="preserve">
-    <value>Информация</value>
+    <value>Information</value>
   </data>
   <data name="Irrm_mA" xml:space="preserve">
-    <value>IRRM, мА</value>
+    <value>IRRM, mA</value>
   </data>
   <data name="IsHeatEnabled" xml:space="preserve">
-    <value>Открытие</value>
+    <value>Opening</value>
   </data>
   <data name="Itm_A" xml:space="preserve">
     <value>ITM, A</value>
   </data>
   <data name="Kelvin" xml:space="preserve">
-    <value>Прозвонка</value>
+    <value>Kelvin</value>
   </data>
   <data name="Last7Days" xml:space="preserve">
-    <value>За 7 дней</value>
+    <value>Last 7 days</value>
   </data>
   <data name="LastMonth" xml:space="preserve">
-    <value>За месяц</value>
+    <value>Last month</value>
   </data>
   <data name="LatchingCurrent" xml:space="preserve">
-    <value>Ток включения</value>
+    <value>Latching current</value>
   </data>
   <data name="LoginPage_Title" xml:space="preserve">
-    <value>Авторизация</value>
+    <value>Login</value>
   </data>
   <data name="Logs" xml:space="preserve">
-    <value>Логи</value>
+    <value>Logs</value>
   </data>
   <data name="mA" xml:space="preserve">
-    <value>мА</value>
+    <value>mA</value>
   </data>
   <data name="MaxIdrm_mA" xml:space="preserve">
-    <value>Макс. IDRM, мА</value>
+    <value>Max. IDRM, mA</value>
   </data>
   <data name="MaxIgt_mA" xml:space="preserve">
-    <value>Макс. IGT, мА</value>
+    <value>Max. IGT, mA</value>
   </data>
   <data name="MaxIh_mA" xml:space="preserve">
-    <value>Макс. IH, мА</value>
+    <value>Max. IH, mA</value>
   </data>
   <data name="MaxIl_mA" xml:space="preserve">
-    <value>Макс. IL, мА</value>
+    <value>Max. IL, mA</value>
   </data>
   <data name="MaxIrrm_mA" xml:space="preserve">
-    <value>Макс. IRRM, мА</value>
+    <value>Max. IRRM, mA</value>
   </data>
   <data name="MaxResistance_Ohm" xml:space="preserve">
-    <value>Макс. Rg, Ом</value>
+    <value>Max. Rg, Ohm</value>
   </data>
   <data name="MaxVgt_V" xml:space="preserve">
-    <value>Макс. UGT, В</value>
+    <value>Max. VGT, V</value>
   </data>
   <data name="MaxVtm_V" xml:space="preserve">
-    <value>Макс. UTM, В</value>
+    <value>Max. VTM, V</value>
   </data>
   <data name="MeasureDialog_Title" xml:space="preserve">
-    <value>Измерение высоты</value>
+    <value>Height measuring</value>
   </data>
   <data name="Message" xml:space="preserve">
-    <value>Сообщение</value>
+    <value>Message</value>
   </data>
   <data name="MinVdrm_V" xml:space="preserve">
-    <value>Мин. UDRM, В</value>
+    <value>Min. VDRM, V</value>
   </data>
   <data name="MinVrrm_V" xml:space="preserve">
-    <value>Мин. URRM, В</value>
+    <value>Min. VRRM, V</value>
   </data>
   <data name="Mode" xml:space="preserve">
-    <value>Режим</value>
+    <value>Mode</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Далее</value>
+    <value>Next</value>
   </data>
   <data name="NonCorrect" xml:space="preserve">
-    <value>Не верно</value>
+    <value>Not correct</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>ОК</value>
+    <value>OK</value>
   </data>
   <data name="ParameterType" xml:space="preserve">
-    <value>Параметр</value>
+    <value>Parameter type</value>
   </data>
   <data name="PartyNumber" xml:space="preserve">
-    <value>Номер ЗНП</value>
+    <value>Order number</value>
   </data>
   <data name="Passed" xml:space="preserve">
-    <value>Годные</value>
+    <value>Passed</value>
   </data>
   <data name="PasswordIncorrect" xml:space="preserve">
-    <value>Пароль неверен</value>
+    <value>Password incorrect</value>
   </data>
   <data name="Pending" xml:space="preserve">
-    <value>В очереди</value>
+    <value>Pending</value>
   </data>
   <data name="Period" xml:space="preserve">
-    <value>Период:</value>
+    <value>Period:</value>
   </data>
   <data name="PlateTime_ms" xml:space="preserve">
-    <value>Время, мс</value>
+    <value>Plate time, ms</value>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Позиция</value>
+    <value>Position</value>
   </data>
   <data name="Position_1" xml:space="preserve">
-    <value>Позиция 1</value>
+    <value>Position 1</value>
   </data>
   <data name="Position_2" xml:space="preserve">
-    <value>Позиция 2</value>
+    <value>Position 2</value>
   </data>
   <data name="Print" xml:space="preserve">
-    <value>Печать</value>
+    <value>Print</value>
   </data>
   <data name="PrintingOptions" xml:space="preserve">
-    <value>Настройки печати:</value>
+    <value>Printing options:</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Профили</value>
+    <value>Profile</value>
   </data>
   <data name="ProfileName" xml:space="preserve">
-    <value>Имя профиля</value>
+    <value>Profile name</value>
   </data>
   <data name="Profile_load_error" xml:space="preserve">
-    <value>Ошибка загрузки профилей</value>
+    <value>Profile load error</value>
   </data>
   <data name="Profile_load_error_ex" xml:space="preserve">
-    <value>Не могу загрузить профили с сервера компании. Временно используется локальная копия. Ошибка {0}</value>
+    <value>Failed to load profiles from company server. Local copy is used temporary. Error {0}</value>
   </data>
   <data name="PullStopButton" xml:space="preserve">
-    <value>Отожмите кнопку Стоп</value>
+    <value>Pull stop button</value>
   </data>
   <data name="PureVgt" xml:space="preserve">
-    <value>Анодный ток</value>
+    <value>Anode current</value>
   </data>
   <data name="Ramp" xml:space="preserve">
-    <value>Трапеция</value>
+    <value>Ramp</value>
   </data>
   <data name="Rampup_Vms" xml:space="preserve">
-    <value>Наклон, В/мс</value>
+    <value>Ramp up, V/ms</value>
   </data>
   <data name="Read" xml:space="preserve">
-    <value>Чтение</value>
+    <value>Read</value>
   </data>
   <data name="ReadOnly" xml:space="preserve">
-    <value> - Только чтение</value>
+    <value> - Read only</value>
   </data>
   <data name="Rejected" xml:space="preserve">
-    <value>Брак</value>
+    <value>Rejected</value>
   </data>
   <data name="Resistance_Ohm" xml:space="preserve">
-    <value>Rg, Ом</value>
+    <value>Rg, Ohm</value>
   </data>
   <data name="Restart" xml:space="preserve">
-    <value>Перезапуск</value>
+    <value>Restart</value>
   </data>
   <data name="Results" xml:space="preserve">
-    <value>Результаты</value>
+    <value>Results</value>
   </data>
   <data name="Reverse" xml:space="preserve">
-    <value>Обратный</value>
+    <value>Reverse</value>
   </data>
   <data name="SafetyCircuitIsOpen" xml:space="preserve">
-    <value>Защитная цепь разомкнута</value>
+    <value>Safety circuit is open</value>
   </data>
   <data name="Selftest" xml:space="preserve">
-    <value>Проверка</value>
+    <value>Selftest</value>
   </data>
   <data name="Service" xml:space="preserve">
-    <value>Сервис</value>
+    <value>Service</value>
   </data>
   <data name="Sinus" xml:space="preserve">
-    <value>Полусинус</value>
+    <value>Sinus</value>
   </data>
   <data name="Source" xml:space="preserve">
-    <value>Источник</value>
+    <value>Source</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Старт</value>
+    <value>Start</value>
   </data>
   <data name="StartVoltage_V" xml:space="preserve">
-    <value>Стартовое, В</value>
+    <value>Start voltage, V</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Стоп</value>
+    <value>Stop</value>
   </data>
   <data name="StopButtonIsPressed" xml:space="preserve">
-    <value>Нажата кнопка Стоп</value>
+    <value>Stop button is pressed</value>
   </data>
   <data name="Stopped" xml:space="preserve">
-    <value>Останов</value>
+    <value>Stopped</value>
   </data>
   <data name="StructureName" xml:space="preserve">
-    <value>(Номер ППЭ)</value>
+    <value>(SCI number)</value>
   </data>
   <data name="StructureOrder" xml:space="preserve">
-    <value>(Партия ППЭ)</value>
+    <value>(SCI order)</value>
   </data>
   <data name="Successful" xml:space="preserve">
-    <value>Запрос отправлен</value>
+    <value>Successfully sent</value>
   </data>
   <data name="Technitian" xml:space="preserve">
-    <value>Наладчик</value>
+    <value>Technitian</value>
   </data>
   <data name="Test" xml:space="preserve">
-    <value>Тест</value>
+    <value>Test</value>
   </data>
   <data name="TestType" xml:space="preserve">
-    <value>Тип теста</value>
+    <value>Test type</value>
   </data>
   <data name="Timeout" xml:space="preserve">
     <value>Timeout</value>
   </data>
   <data name="Timestamp" xml:space="preserve">
-    <value>Время</value>
+    <value>Timestamp</value>
   </data>
   <data name="Time_us" xml:space="preserve">
-    <value>Время, мкс</value>
+    <value>Time, us</value>
   </data>
   <data name="Today" xml:space="preserve">
-    <value>Сегодня</value>
+    <value>Today</value>
   </data>
   <data name="Type" xml:space="preserve">
-    <value>Тип</value>
+    <value>Type</value>
   </data>
   <data name="UseFullScale" xml:space="preserve">
-    <value>Полный диапазон</value>
+    <value>Full scale</value>
   </data>
   <data name="UseLsqMethod" xml:space="preserve">
-    <value>LSQ метод</value>
+    <value>LSQ method</value>
   </data>
   <data name="User" xml:space="preserve">
-    <value>Оператор</value>
+    <value>User</value>
   </data>
   <data name="UserPage_Title" xml:space="preserve">
-    <value>Выберите профиль</value>
+    <value>Select profile</value>
   </data>
   <data name="UserTestPage_Title" xml:space="preserve">
-    <value>Тестирование</value>
+    <value>Test</value>
   </data>
   <data name="V" xml:space="preserve">
-    <value>В</value>
+    <value>V</value>
   </data>
   <data name="Value" xml:space="preserve">
-    <value>Значение</value>
+    <value>Value</value>
   </data>
   <data name="VdrmV" xml:space="preserve">
-    <value>UDRM, В</value>
+    <value>VDRM, V</value>
   </data>
   <data name="Vgt" xml:space="preserve">
-    <value>UGT</value>
+    <value>VGT</value>
   </data>
   <data name="VgtmV" xml:space="preserve">
-    <value>UGT, мВ</value>
+    <value>VGT, mV</value>
   </data>
   <data name="VgtV" xml:space="preserve">
-    <value>UGT, В</value>
+    <value>VGT, V</value>
   </data>
   <data name="Vms" xml:space="preserve">
-    <value>В / мс</value>
+    <value>V / ms</value>
   </data>
   <data name="VoltageLimitD_V" xml:space="preserve">
-    <value>Напр. прям., В</value>
+    <value>Voltage D, V</value>
   </data>
   <data name="VoltageLimitR_V" xml:space="preserve">
-    <value>Напр. обрат., В</value>
+    <value>Voltage R, V</value>
   </data>
   <data name="VrrmV" xml:space="preserve">
-    <value>URRM, В</value>
+    <value>VRRM, V</value>
   </data>
   <data name="Vtm" xml:space="preserve">
-    <value>Стат. потери</value>
+    <value>Static losses</value>
   </data>
   <data name="VtmV" xml:space="preserve">
-    <value>UTM, В</value>
+    <value>VTM, V</value>
   </data>
   <data name="Waiting" xml:space="preserve">
-    <value>Готов</value>
+    <value>Ready</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Предупреждение</value>
+    <value>Warning</value>
   </data>
   <data name="WelcomePage_Title" xml:space="preserve">
-    <value>Подключение</value>
+    <value>Connecting</value>
   </data>
   <data name="Write" xml:space="preserve">
-    <value>Запись</value>
+    <value>Write</value>
   </data>
   <data name="Yesterday" xml:space="preserve">
-    <value>Вчера</value>
+    <value>Yesterday</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Обзор</value>
+    <value>Browse</value>
   </data>
   <data name="Connect" xml:space="preserve">
-    <value>Подключиться</value>
-  </data>
-  <data name="ProfileBuilderServerName" xml:space="preserve">
-    <value>Укажите путь к серверу</value>
+    <value>Connect</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Save</value>
   </data>
   <data name="MME_Code" xml:space="preserve">
-    <value>Код КИП</value>
+    <value>MME Codes</value>
   </data>
   <data name="MME_Profiles" xml:space="preserve">
-    <value>Связь КИП и Профилей</value>
+    <value>MME to Profiles</value>
   </data>
   <data name="MME_ProfilesLabel" xml:space="preserve">
-    <value>Профили</value>
+    <value>Profile names</value>
   </data>
   <data name="Height_Prof" xml:space="preserve">
-    <value>Высота, мм</value>
-  </data>
-  <data name="TryConnect" xml:space="preserve">
-    <value>Подключиться</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="CheckAll" xml:space="preserve">
-    <value>Отметить все</value>
-  </data>
-  <data name="UnCheckAll" xml:space="preserve">
-    <value>Снять все</value>
-  </data>
-  <data name="DvdtConfirmation" xml:space="preserve">
-    <value>Подтверджение</value>
-  </data>
-  <data name="DvdtDetection" xml:space="preserve">
-    <value>Определение</value>
-  </data>
-  <data name="DvDtVoltage" xml:space="preserve">
-    <value>Напряжение, В</value>
+    <value>Height, mm</value>
   </data>
   <data name="Temp" xml:space="preserve">
     <value>Temp, C</value>
   </data>
+  <data name="TryConnect" xml:space="preserve">
+    <value>Try to connect</value>
+  </data>
+  <data name="DvDtVoltage" xml:space="preserve">
+    <value>Voltage, V</value>
+  </data>
   <data name="DvdtVoltageRate" xml:space="preserve">
-    <value>Скор. роста, В/мкс</value>
+    <value>Voltage Rate, V/msc</value>
+  </data>
+  <data name="DvdtConfirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="DvdtDetection" xml:space="preserve">
+    <value>Detection</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CheckAll" xml:space="preserve">
+    <value>Check All</value>
+  </data>
+  <data name="UnCheckAll" xml:space="preserve">
+    <value>Uncheck All</value>
   </data>
   <data name="ProfileBuilderDBName" xml:space="preserve">
-    <value>Путь к базе данных</value>
+    <value>Database name</value>
   </data>
   <data name="ProfileBuilderDBPassword" xml:space="preserve">
-    <value>Пароль</value>
+    <value>Zauberwort</value>
   </data>
   <data name="ProfileBuilderDBUser" xml:space="preserve">
-    <value>Пользователь</value>
+    <value>User</value>
   </data>
   <data name="ProfileBuilderIntegratedSecurity" xml:space="preserve">
-    <value>Использовать интегрированную аутентификацию</value>
+    <value>Use SSPI authentification</value>
+  </data>
+  <data name="ProfileBuilderServerName" xml:space="preserve">
+    <value>Server name</value>
   </data>
   <data name="ProfileBuilderTitle" xml:space="preserve">
-    <value>Путь к БД</value>
+    <value>DB path</value>
   </data>
   <data name="DvdtConfirmationCount" xml:space="preserve">
-    <value>Число подтверждений</value>
+    <value>DvdtConfirmationCount</value>
   </data>
   <data name="DvdtVoltageRateLimit" xml:space="preserve">
-    <value>Огр. скор. роста, В/мкс</value>
+    <value>VoltageRateLimit, V/mcs</value>
   </data>
   <data name="DvdtVoltageRateOffSet" xml:space="preserve">
-    <value>(+) к скор. роста, В/мкс</value>
+    <value>DvdtVoltageRateOffSet, V/mcs</value>
   </data>
   <data name="AtuPowerValueSet" xml:space="preserve">
-    <value>Мощность, кВт</value>
+    <value>Power, kW</value>
   </data>
   <data name="AtuPrePulseValue" xml:space="preserve">
-    <value>Амплитуда предв. импульса тока, мА</value>
+    <value>AmplitudePrePulseCurrent, mA</value>
   </data>
   <data name="Atu" xml:space="preserve">
-    <value>Лавина</value>
+    <value>ATU</value>
   </data>
   <data name="QrrTq" xml:space="preserve">
     <value>QrrTq</value>
   </data>
   <data name="QrrTqDCFallRate" xml:space="preserve">
-    <value>Скорость спада тока, А/мкс</value>
+    <value>Direct current fall rate, A/us</value>
   </data>
   <data name="QrrTqDCPulseWidth" xml:space="preserve">
-    <value>Длительность импульса прямого тока, в мкс</value>
+    <value>Direct current pulse duration, us</value>
   </data>
   <data name="QrrTqDCRiseRate" xml:space="preserve">
-    <value>Скорость нарастания прямого тока, А/мкс</value>
+    <value>Direct current rise rate, A/us</value>
   </data>
   <data name="QrrTqDirectCurrent" xml:space="preserve">
-    <value>Амплитуда прямого тока, А</value>
+    <value>Direct current amplitude, A</value>
   </data>
   <data name="QrrTqMode" xml:space="preserve">
-    <value>Режим</value>
+    <value>Mode</value>
   </data>
   <data name="QrrTqOffStateVoltage" xml:space="preserve">
-    <value>Прямое повторное напряжение, В</value>
+    <value>Off-state voltage, V</value>
   </data>
   <data name="QrrTqOsvRate" xml:space="preserve">
-    <value>Скорость нарастания прямого повторного напр., В/мкс</value>
+    <value>Off-state voltage rise rate, V/us</value>
   </data>
   <data name="RAC" xml:space="preserve">
     <value>R A-C</value>
   </data>
   <data name="RACResVoltage" xml:space="preserve">
-    <value>Амплитуда напряжения для измерения, В</value>
+    <value>DC voltage value for resistance measurement, V</value>
   </data>
   <data name="QrrTqTrrMeasureBy9050Method" xml:space="preserve">
-    <value>Измерение Trr по методу 90%-50%</value>
+    <value>Measure Trr by 90%-50% method</value>
   </data>
   <data name="TOUITM" xml:space="preserve">
-    <value>Сила тока (ITM),  А</value>
+    <value>Amperage (ITM), A</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Изменить</value>
+    <value>Edit</value>
   </data>
   <data name="MMECodesEmpty" xml:space="preserve">
-    <value>Отсутствуют MME коды в базе данных, дальнейшая работа невозможна</value>
+    <value>Missing MME codes in the database, no further work possible</value>
   </data>
 </root>

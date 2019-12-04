@@ -609,7 +609,7 @@ namespace SCME.UI.PagesTech
             if (profilesList != null)
                 Title = Title + "\n" + string.Format("всего {0} шт.", profilesList.Items.Count);
 
-            Cache.Main.VM.TopTitle = Title;
+//            Cache.Main.VM.TopTitle = Title;
         }
 
         private void profilePage_Unloaded(object sender, RoutedEventArgs e)

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SCME.Types;
 using SCME.UI.IO;
+using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI.PagesTech
 {
@@ -118,24 +119,25 @@ namespace SCME.UI.PagesTech
             if (NavigationService != null)
             {
                 if (PreviousPage == null)
-                    PreviousPage = Cache.Login;
+                    NavigationService.Navigate(Cache.Login);
+                    //PreviousPage = Cache.Login;
 
 //                Cache.ProfileEdit.ClearFilter();
 //                Cache.ProfileSelection.InitFilter();
 //                Cache.ProfileSelection.InitSorting();
-                if (PreviousPage is PagesUser.ProfileSelectionPage)
-                {
-//                    NavigationService.Navigate(Cache.ProfileSelection);
-                    return;
-                }
+//                if (PreviousPage is ProfilesPage)
+//                {
+////                    NavigationService.Navigate(Cache.ProfileSelection);
+//                    return;
+//                }
 
-                NavigationService.Navigate(PreviousPage);
+                NavigationService.GoBack();
             }
         }
 
         private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Cache.ProfilesPage.PreviewGoBackAction += () => { ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.Profiles.ToList());};
+            Cache.ProfilesPage.GoBackAction += () => { ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.Profiles.ToList());};
         }
     }
 }

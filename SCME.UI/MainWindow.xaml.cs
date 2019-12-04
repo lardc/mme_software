@@ -131,9 +131,21 @@ namespace SCME.UI
 
                 Application.Current.Shutdown(1);
             }
+            
+            mainFrame.Navigated += MainFrameOnNavigated;
+            mainFrame.Navigating += MainFrameOnNavigating;
         }
 
-   
+        private void MainFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
+        {
+            
+        }
+
+        private void MainFrameOnNavigated(object sender, NavigationEventArgs e)
+        {
+            VM.TopTitle = (e.Content as Page)?.Title;
+        }
+
 
         private static void CurrentDomainOnUnhandledException(object Sender, UnhandledExceptionEventArgs Args)
         {
@@ -151,14 +163,7 @@ namespace SCME.UI
         }
 
     
-        internal string AccountName
-        {
-            get { return accountLabel.Content.ToString(); }
-            set { accountLabel.Content = value; }
-        }
-
-
-     
+   
 
         internal bool IsNeedToRestart { get; private set; }
 
@@ -171,7 +176,7 @@ namespace SCME.UI
             Param = new TypeCommon.InitParams
             {
                 TimeoutService = Cache.Welcome.GetTimeout(ComplexParts.Service),
-                IsInternalEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.FTDI) && Settings.Default.FTDIIsInUse,
+                IsInternalEnabled = false,
                 TimeoutAdapter = Cache.Welcome.GetTimeout(ComplexParts.Adapter),
                 IsGateEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.Gate) && Settings.Default.GateIsVisible,
                 TimeoutGate = Cache.Welcome.GetTimeout(ComplexParts.Gate),

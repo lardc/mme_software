@@ -230,7 +230,7 @@ namespace SCME.UI.PagesUser
                 {
                     CollectionViewSource.GetDefaultView(profilesList.ItemsSource).Refresh();
                     m_StopAnaliseQueue = true;
-                    BuildTittle();
+                    //BuildTittle();
                 }
             });
         }
@@ -266,15 +266,15 @@ namespace SCME.UI.PagesUser
             TimerSyncSelectedProfile?.Start();
         }
 
-        private void BuildTittle()
-        {
-            Title = Properties.Resources.UserPage_Title;
-
-            if (profilesList != null)
-                Title = Title + "\n" + Properties.Resources.Total.ToLower() + string.Format(" {0} шт.", profilesList.Items.Count);
-
-            Cache.Main.VM.TopTitle = Title;
-        }
+//        private void BuildTittle()
+//        {
+//            Title = Properties.Resources.UserPage_Title;
+//
+//            if (profilesList != null)
+//                Title = Title + "\n" + Properties.Resources.Total.ToLower() + string.Format(" {0} шт.", profilesList.Items.Count);
+//
+//            Cache.Main.VM.TopTitle = Title;
+//        }
 
         private BaseTestParametersAndNormatives TestByTypeAndOrder(ProfileItem profileItem, TestParametersType type, int order)
         {
@@ -708,7 +708,7 @@ namespace SCME.UI.PagesUser
                             IList<Profile> ProfileEngine = (IList<Profile>)profilesList.ItemsSource;
                             ProfileEngine.Remove(profile);
                             ProfilesDbLogic.SaveProfilesToDb(ProfileEngine);
-                            BuildTittle();
+                            //BuildTittle();
 
                             if (profilesList.Items.Count > 0)
                                 profilesList.SelectedIndex = 0;
@@ -736,7 +736,7 @@ namespace SCME.UI.PagesUser
             //событие TextChanged любого TextBox наступает автоматически при инициализации всего Page. чтобы оно не наступало автоматически при инициализации Page будем вешать его обработчик здесь
             FilterTextBox.TextChanged += FilterTextBox_OnTextChanged;
 
-            BuildTittle();
+            //BuildTittle();
         }
 
         private void ProfileSelectionPage_OnUnloaded(object sender, RoutedEventArgs e)

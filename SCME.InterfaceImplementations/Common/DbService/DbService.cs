@@ -137,9 +137,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private readonly Dictionary<int, ProfileCache> _cacheProfileById;
 
         private InserterBaseTestParametersAndNormatives _inserter;
-            
-        protected DbService(TDbConnection connection)
+
+        private bool _enableCache;
+        
+        
+        protected DbService(TDbConnection connection, bool enableCache = true)
         {
+            _enableCache = enableCache;
+            
             _cacheProfilesByMmeCode = new Dictionary<string, List<MyProfile>>();
             _cacheProfileById = new Dictionary<int, ProfileCache>();
             

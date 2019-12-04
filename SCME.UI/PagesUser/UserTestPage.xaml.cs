@@ -615,7 +615,6 @@ namespace SCME.UI.PagesUser
             if (State == DeviceState.None || State == DeviceState.Heating)
                 return;
 
-            Cache.Main.VM.AccountButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
             Cache.Main.VM.GoTechButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
 
             if (State == DeviceState.InProcess)
@@ -705,7 +704,7 @@ namespace SCME.UI.PagesUser
                     ResultItem DataForSave = new ResultItem
                     {
                         Timestamp = DateTime.Now,
-                        User = Cache.Main.AccountName,
+                        User = Cache.Main.VM.AccountName,
                         MmeCode = Cache.Main.VM.MmeCode,
                         ProfileKey = Profile.Key,
                         PsdJob = tbPsdJob.Text,
@@ -1359,13 +1358,13 @@ namespace SCME.UI.PagesUser
 
             if (m_CurrentPos == 1)
             {
-                ResultsBVT1[bvtCounter].IDSM = result.IDSM;
-                ResultsBVT1[bvtCounter].VDSM = result.VDSM;
+                ResultsBVT1[bvtCounter].IDRM = result.IDRM;
+                ResultsBVT1[bvtCounter].VDRM = result.VDRM;
             }
             else
             {
-                ResultsBVT2[bvtCounter].IDSM = result.IDSM;
-                ResultsBVT2[bvtCounter].VDSM = result.VDSM;
+                ResultsBVT2[bvtCounter].IDRM = result.IDRM;
+                ResultsBVT2[bvtCounter].VDRM = result.VDRM;
             }
 
             var bvtItemContainer = GetBvtItemContainer();
@@ -1373,14 +1372,14 @@ namespace SCME.UI.PagesUser
 
             var labelBvtVdsmResult = FindChild<Label>(presenter, "labelBvtVdsmResult1");
             if (labelBvtVdsmResult != null)
-                labelBvtVdsmResult.Content = result.VDSM.ToString(CultureInfo.InvariantCulture);
+                labelBvtVdsmResult.Content = result.VDRM.ToString(CultureInfo.InvariantCulture);
 
             var labelBvtIdsmResult = FindChild<Label>(presenter, "labelBvtIdsmResult1");
             if (labelBvtIdsmResult != null)
-                SetLabel(labelBvtIdsmResult, state, result.IDSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM, result.IDSM.ToString(CultureInfo.InvariantCulture));
+                SetLabel(labelBvtIdsmResult, state, result.IDRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM, result.IDRM.ToString(CultureInfo.InvariantCulture));
 
             if (state != DeviceState.InProcess)
-                if (result.IDSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
+                if (result.IDRM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IDSM");
         }
 
@@ -1390,28 +1389,28 @@ namespace SCME.UI.PagesUser
 
             if (m_CurrentPos == 1)
             {
-                ResultsBVT1[bvtCounter].IRSM = result.IRSM;
-                ResultsBVT1[bvtCounter].VRSM = result.VRSM;
+                ResultsBVT1[bvtCounter].IRRM = result.IRRM;
+                ResultsBVT1[bvtCounter].VRRM = result.VRRM;
             }
             else
             {
-                ResultsBVT2[bvtCounter].IRSM = result.IRSM;
-                ResultsBVT2[bvtCounter].VRSM = result.VRSM;
+                ResultsBVT2[bvtCounter].IRRM = result.IRRM;
+                ResultsBVT2[bvtCounter].VRRM = result.VRRM;
             }
-
+            
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
 
             var labelBvtVrsmResult = FindChild<Label>(presenter, "labelBvtVrsmResult1");
             if (labelBvtVrsmResult != null)
-                labelBvtVrsmResult.Content = result.VRSM.ToString(CultureInfo.InvariantCulture);
+                labelBvtVrsmResult.Content = result.VRRM.ToString(CultureInfo.InvariantCulture);
 
             var labelBvtIrsmResult = FindChild<Label>(presenter, "labelBvtIrsmResult1");
             if (labelBvtIrsmResult != null)
-                SetLabel(labelBvtIrsmResult, state, result.IRSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM, result.IRSM.ToString(CultureInfo.InvariantCulture));
+                SetLabel(labelBvtIrsmResult, state, result.IRRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM, result.IRRM.ToString(CultureInfo.InvariantCulture));
 
             if (state != DeviceState.InProcess)
-                if (result.IRSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
+                if (result.IRRM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IRSM");
         }
 
@@ -3196,7 +3195,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            Cache.Main.VM.TopTitle = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Profile.Name;
+            Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Profile.Name;
         }
 
         private void UserTestPage_PreviewKeyDown(object Sender, KeyEventArgs E)

@@ -16,10 +16,12 @@ namespace SCME.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            SCME.UI.Properties.Resources.Culture = new CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
+            
             base.OnStartup(e);
         }
 

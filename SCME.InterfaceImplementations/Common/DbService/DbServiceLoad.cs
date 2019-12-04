@@ -44,6 +44,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
         {
+            var profiles = new List<MyProfile>();
             DbCommand profileSelect;
 
             if (mmeCode == null)
@@ -63,18 +64,22 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 //profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
             }
 
-            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
-            if (profiles != null)
-                return profiles.Select(m => m.Copy()).ToList();
+            if (_enableCache)
+            {
+                _cacheProfilesByMmeCode.TryGetValue(mmeCode, out profiles);
+                if (profiles != null)
+                    return profiles.Select(m => m.Copy()).ToList();
 
-            _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
+                _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
+            }
 
             using var reader = profileSelect.ExecuteReader();
             while (reader.Read())
             {
                 var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
                 profiles.Add(readProfile);
-                _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                if (_enableCache)
+                    _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
             }
 
             return profiles.Select(m => m.Copy()).ToList();
@@ -114,9 +119,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
-            var cacheProfile = _cacheProfileById[profile.Id];
-            // ReSharper disable once InvertIf
-            if (cacheProfile.IsDeepLoad == false)
+            ProfileCache cacheProfile;
+            
+            if(_enableCache)
+                cacheProfile = _cacheProfileById[profile.Id];
+            else
+                cacheProfile = new ProfileCache(profile);
+            
+            if (cacheProfile.IsDeepLoad == false || !_enableCache)
             {
                 var testTypes = new Dictionary<long, long>();
 
@@ -129,8 +139,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 foreach (var testType in testTypes)
                     FillParameters(cacheProfile.Profile.DeepData, testType.Key, testType.Value);
 
-                cacheProfile.IsDeepLoad = true;
-                _cacheProfileById[profile.Id] = cacheProfile;
+                if (_enableCache)
+                {
+                    cacheProfile.IsDeepLoad = true;
+                    _cacheProfileById[profile.Id] = cacheProfile;
+                }
             }
 
             return cacheProfile.Profile.DeepData.Copy();
@@ -502,13 +515,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         if (result.Item3.HasValue)
                             parameters.Resistance = result.Item3.Value;
                         break;
-                    case "MIM_IGT":
-                        if (result.Item3.HasValue)
-                            parameters.MinIGT = result.Item3.Value;
-                        break;
                     case "IGT":
                         if (result.Item3.HasValue)
                             parameters.IGT = result.Item3.Value;
+                        if (result.Item2.HasValue)
+                            parameters.MinIGT = result.Item2.Value;
                         break;
                     case "VGT":
                         if (result.Item3.HasValue)

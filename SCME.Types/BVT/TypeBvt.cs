@@ -309,17 +309,17 @@ namespace SCME.Types.BVT
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
-        [DataMember]
-        public ushort VDSM { get; set; }
-        
-        [DataMember]
-        public ushort VRSM { get; set; }
-        
-        [DataMember]
-        public float IDSM { get; set; }
-        
-        [DataMember]
-        public float IRSM { get; set; }
+//        [DataMember]
+//        public ushort VDSM { get; set; }
+//        
+//        [DataMember]
+//        public ushort VRSM { get; set; }
+//        
+//        [DataMember]
+//        public float IDSM { get; set; }
+//        
+//        [DataMember]
+//        public float IRSM { get; set; }
         
         [DataMember]
         public ushort VDRM { get; set; }

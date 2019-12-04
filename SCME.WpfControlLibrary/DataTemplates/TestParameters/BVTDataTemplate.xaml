@@ -40,7 +40,7 @@
     <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource BvtTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
     <Label Grid.Column="3" Grid.Row="0" Content="{x:Static res:Resources.CurrentLimit_mA}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentLimit }" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentLimit }" StringFormat="{}{0:N0}"/>
 
     <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitD_V}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding VoltageLimitD }" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
@@ -94,7 +94,7 @@
             </MultiBinding>
         </Label.Visibility>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="7" Value="{Binding IDRM}">
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="7" Value="{Binding IDRM}" StringFormat="{}{0:N0}">
         <customControls:NumericUpDown.Visibility>
             <MultiBinding Converter="{StaticResource Idrm2V}">
                 <Binding Path="MeasurementMode" />
@@ -104,12 +104,13 @@
     </customControls:NumericUpDown>
 
     <Label Grid.Column="3" Grid.Row="7" Content="{x:Static res:Resources.MaxIrrm_mA}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" StringFormat="{}{0:N0}" />
 
 
     <CheckBox Grid.Column="0"  Grid.Row="8" Grid.ColumnSpan="2"  Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />
 
 
+   
   
 
 

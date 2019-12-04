@@ -53,6 +53,8 @@ namespace SCME.UI.IO
                 act.Invoke();
         }
 
+        private bool _isInitializeModules = false;
+
         public void AddCommonConnectionEvent(DeviceConnectionState State, string Message)
         {
             m_ActionQueue.Enqueue(delegate
@@ -60,53 +62,20 @@ namespace SCME.UI.IO
                 switch (State)
                 {
                     case DeviceConnectionState.ConnectionSuccess:
-                    {
-                        //Cache.Calibration.PatchClamp();
-                        //выполнена инициализация аппаратных модулей, вполне возможно, что при наступлении данного события синхронизация баз данных уже будет завершена процессом Service.exe, поэтому проверяем это и если синхронизация уже действительно завершилась - выполняем то, что надо выполнять после её завершения 
-
-                        var stateService = Cache.Net.GetStateService;
-
-
-                        if (Cache.Net.IsDBSyncInProgress(stateService.InitializationResult))
-                            Cache.Main.VM.SyncState = "RunSync";
-//                        else
-//                        {
-//                            AfterEndOfSincedProcessDBRoutine();
-//                        }
-
-                        if (Settings.Default.FTDIPresent)
-                        {
-                            Cache.FTDI.LedRedSwitch(false);
-                            Cache.FTDI.LedGreenSwitch(false);
-                        }
-
                         Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
-                    }
+
+                        _isInitializeModules = true;
+                        CheckEndSyncAndEndInitialize();
+
                         break;
 
                     case DeviceConnectionState.ConnectionFailed:
-                    {
                         Cache.Welcome.IsRestartEnable = true;
-
-                        if (Settings.Default.FTDIPresent)
-                        {
-                            Cache.FTDI.LedGreenSwitch(false);
-                            Cache.FTDI.LedRedBlinkStart();
-                        }
-                    }
                         break;
                     case DeviceConnectionState.DisconnectionError:
                     case DeviceConnectionState.DisconnectionSuccess:
-                    {
                         if (Cache.Main.IsNeedToRestart)
                             m_Net.Initialize(Cache.Main.Param);
-
-                        if (Settings.Default.FTDIPresent)
-                        {
-                            Cache.FTDI.LedRedSwitch(false);
-                            Cache.FTDI.LedGreenSwitch(false);
-                        }
-                    }
                         break;
                 }
             });
@@ -136,25 +105,6 @@ namespace SCME.UI.IO
                     Cache.RAC.SetResultAll(State);
                     Cache.IH.SetResultAll(State);
                 }
-
-                if (Settings.Default.FTDIPresent)
-                {
-                    if (State == DeviceState.InProcess)
-                    {
-                        Cache.FTDI.LedRedSwitch(false);
-                        Cache.FTDI.LedGreenBlinkStart();
-                    }
-                    else if (State == DeviceState.Fault)
-                    {
-                        Cache.FTDI.LedGreenSwitch(false);
-                        Cache.FTDI.LedRedBlinkStart();
-                    }
-                    else
-                    {
-                        Cache.FTDI.LedRedSwitch(false);
-                        Cache.FTDI.LedGreenSwitch(false);
-                    }
-                }
             });
         }
 
@@ -182,12 +132,6 @@ namespace SCME.UI.IO
                 }
 
                 Cache.Main.mainFrame.Navigate(Cache.Welcome);
-
-                if (Settings.Default.FTDIPresent)
-                {
-                    Cache.FTDI.LedGreenSwitch(false);
-                    Cache.FTDI.LedRedBlinkStart();
-                }
             });
         }
 
@@ -422,7 +366,10 @@ namespace SCME.UI.IO
             });
         }
 
-        private void AfterEndOfSincedProcessDBRoutine()
+
+        private bool _isSynced = false;
+
+        private void AfterEndOfSincedProcessDbRoutine()
         {
             //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
             Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
@@ -452,20 +399,30 @@ namespace SCME.UI.IO
             {
                 Cache.Welcome.IsRestartEnable = true;
                 Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
-                
+
                 if (args.Result is Exception ex) new DialogWindow("Error", ex.ToString()).ShowDialog();
 
-                Cache.Welcome.IsBackEnable = true;
-                if (Cache.Net.IsModulesInitialized)
-                    Cache.Main.mainFrame.Navigate(Cache.UserWorkMode); //Cache.Main.mainFrame.Navigate(Cache.Login);
+                _isSynced = true;
+                CheckEndSyncAndEndInitialize();
             };
             worker.RunWorkerAsync();
+        }
+
+        private void CheckEndSyncAndEndInitialize()
+        {
+            // ReSharper disable once InvertIf
+            if (_isInitializeModules && _isSynced)
+            {
+                Cache.Welcome.IsBackEnable = true;
+                if (Cache.Net.IsModulesInitialized)
+                    Cache.Main.mainFrame.Navigate(Cache.UserWorkMode);
+            }
         }
 
         public void AddSyncDbAreProcessedEvent()
         {
             //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
-            m_ActionQueue.Enqueue(AfterEndOfSincedProcessDBRoutine);
+            m_ActionQueue.Enqueue(AfterEndOfSincedProcessDbRoutine);
         }
 
         public void AddButtonPressedEvent(ComplexButtons Button, bool State)

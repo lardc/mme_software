@@ -283,21 +283,21 @@ namespace SCME.InterfaceImplementations
                         switch (result.BVTTestParameters[i].TestType)
                         {
                             case BVTTestType.Both:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
 
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.BVT[i].TestTypeId);
                                 break;
 
                             case BVTTestType.Direct:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
                                 break;
 
                             case BVTTestType.Reverse:
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.BVT[i].TestTypeId);
                                 break;
                         }
                     }

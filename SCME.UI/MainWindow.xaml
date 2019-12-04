@@ -86,7 +86,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="0"
-                       Name="titleLabel" Content="{Binding TopTitle}"
+                        Content="{Binding TopTitle}"
                        FontSize="28" 
                        HorizontalAlignment="Center" Width="auto" 
                        VerticalContentAlignment="Center"/>
@@ -120,8 +120,8 @@
                           Stretch="UniformToFill" Margin="0, 10, 30, 10" 
                           Visibility="{Binding IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
                         <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
-                        <Label x:Name="accountLabel" Content="User Account" FontSize="24" HorizontalAlignment="Left"
-                           Visibility="{Binding AccountButtonVisibility}"
+                        <Label  Content="{Binding AccountName}"  FontSize="24" HorizontalAlignment="Left"
+                           Visibility="{Binding AccountName.IsEmpty, Converter={StaticResource B2VI}}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
                         <Button Content="{StaticResource LogoutPath}" Click="Logout_Click"
                             Visibility="{Binding AccountButtonVisibility}"

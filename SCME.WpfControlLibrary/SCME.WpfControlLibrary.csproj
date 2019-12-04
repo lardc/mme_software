@@ -103,6 +103,9 @@
     <Compile Include="DataTemplates\MmeCodeCheckboxDataTemplate.xaml.cs">
       <DependentUpon>MmeCodeCheckboxDataTemplate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataTemplates\TestParameters\UdsmUrsmDataTemplate.xaml.cs">
+      <DependentUpon>UdsmUrsmDataTemplate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IValueConverters\BvtParametersToVisibilityConverter.cs" />
     <Compile Include="IValueConverters\VtmConverters.cs" />
     <Compile Include="IValueConverters\BvtTypeToStringConverter.cs" />
@@ -222,6 +225,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="DataTemplates\TestParameters\UdsmUrsmDataTemplate.xaml" />
     <Page Include="DataTemplates\TestParameters\VTMDataTemplate.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>

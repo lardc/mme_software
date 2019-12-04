@@ -57,6 +57,7 @@ namespace SCME.Service.IO
 
         internal DeviceConnectionState Initialize(bool Enable, int Timeout)
         {
+            
             m_Timeout = Timeout;
             m_IsGateEmulation = m_IsGateEmulationHard || !Enable;
 
@@ -68,7 +69,7 @@ namespace SCME.Service.IO
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
 
                 FireConnectionEvent(m_ConnectionState, "Gate initialized");
-
+                
                 return m_ConnectionState;
             }
 
@@ -85,6 +86,7 @@ namespace SCME.Service.IO
                 FireConnectionEvent(m_ConnectionState, String.Format("Gate initialization error: {0}", ex.Message));
             }
 
+            
             return m_ConnectionState;
         }
 

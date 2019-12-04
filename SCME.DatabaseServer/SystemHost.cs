@@ -76,7 +76,7 @@ namespace SCME.DatabaseServer
                     UserID = Settings.Default.DBUser,
                     Password = Settings.Default.DBPassword,
                     ConnectTimeout = 5
-                }.ToString())));
+                }.ToString()), false));
                 mssqlDbService.Migrate();
                 _databaseServiceHost.Open();
             }
