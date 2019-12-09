@@ -17,7 +17,7 @@
     </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-        <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column1"/>
         <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
@@ -33,26 +33,26 @@
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqMode}" />
+    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqMode}" />
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
 
-    <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method}" />
+    <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5"  Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method}" />
 
-    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
+    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding DirectCurrent}" />
 
-    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
+    <Label Grid.Column="0" Grid.Row="3"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding DCPulseWidth}" />
 
-    <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
+    <Label Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding DCRiseRate}" StringFormat="{}{0:N3}" />
 
-    <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqDCFallRate}" />
+    <Label Grid.Column="0" Grid.Row="5"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCFallRate}" />
     <ComboBox Grid.Column="4" Grid.Row="5"  ItemsSource="{Binding Source={StaticResource TDcFallRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DCFallRate}" />
 
-    <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
+    <Label Grid.Column="0" Grid.Row="6"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding OffStateVoltage}" />
 
-    <TextBlock Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" Text="{x:Static res:Resources.QrrTqOsvRate}" />
+    <Label Grid.Column="0" Grid.Row="7"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqOsvRate}" />
     <ComboBox Grid.Column="4" Grid.Row="7"  ItemsSource="{Binding Source={StaticResource TOsvRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
 </Grid>

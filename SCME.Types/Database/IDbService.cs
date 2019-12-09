@@ -10,6 +10,12 @@ namespace SCME.Types.Database
     public interface IDbService
     {
         [OperationContract]
+        MyProfile GetProfileByKey(Guid key);
+        
+        [OperationContract]
+        void ClearCacheByMmeCode(string mmeCode);
+        
+        [OperationContract]
         Dictionary<string, int> GetMmeCodes();
 
         [FaultContract(typeof(Exception))]

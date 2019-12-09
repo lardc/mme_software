@@ -1,4 +1,5 @@
 ﻿using System;
+using SCME.Types.Profiles;
 
 namespace SCME.Types.Interfaces
 {
@@ -16,5 +17,7 @@ namespace SCME.Types.Interfaces
         /// Refresh local profiles from central db
         /// </summary>
         void SyncProfiles(AfterSyncProfilesRoutine afterSyncProfilesRoutine);
+
+        MyProfile SyncProfile(MyProfile profile);
     }
 }

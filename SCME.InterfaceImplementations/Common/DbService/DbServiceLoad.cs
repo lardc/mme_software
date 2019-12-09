@@ -15,6 +15,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
+        public MyProfile GetProfileByKey(Guid key)
+        {
+            using var reader = _profileByKeySelect.ExecuteReader();
+            reader.Read();
+            return new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+        }
+
         public Dictionary<string, int> GetMmeCodes()
         {
             var mmeCodes = new Dictionary<string, int>();
@@ -26,6 +33,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return mmeCodes;
         }
 
+        
+        
         public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
         {
             var res = GetProfilesSuperficially(mmeCode).Select(m =>

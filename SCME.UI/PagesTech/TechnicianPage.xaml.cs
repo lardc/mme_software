@@ -130,7 +130,7 @@ namespace SCME.UI.PagesTech
 ////                    NavigationService.Navigate(Cache.ProfileSelection);
 //                    return;
 //                }
-
+                Cache.Password.AfterOkRoutine = delegate { Cache.Main.mainFrame.Navigate(Cache.Technician); };
                 NavigationService.GoBack();
             }
         }

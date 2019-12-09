@@ -35,7 +35,7 @@ namespace SCME.Service
         private readonly IoSctu _ioSctu;
         private readonly ThreadService m_Thread;
         private readonly IOTOU m_IOTOU;
-        private readonly IoDbSync _ioDbSync;
+        public readonly IoDbSync IoDbSync;
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
@@ -109,7 +109,7 @@ namespace SCME.Service
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
-            _ioDbSync = new IoDbSync(m_Communication);
+            IoDbSync = new IoDbSync(m_Communication);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -153,7 +153,7 @@ namespace SCME.Service
             try
             {
                 //
-                _ioDbSync.Initialize(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
+                IoDbSync.Initialize(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
                 
                 state = m_IOAdapter.Initialize(m_Param.TimeoutAdapter);
                 

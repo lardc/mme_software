@@ -85,6 +85,6 @@ namespace SCME.WpfControlLibrary.ViewModels
         public ProfileDeepData ProfileDeepDataCopy { get; set; }
         public string SelectedProfileNameCopy { get; set; }
 
-        [DependsOn(nameof(SelectedProfile))] public bool IsClampingCommutationActive => SelectedProfile != null;
+        [DependsOn(nameof(ProfileDeepDataCopy))] public bool IsClampingCommutationActive => ProfileDeepDataCopy != null;
     }
 }

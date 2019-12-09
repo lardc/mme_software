@@ -19,6 +19,10 @@ namespace SCME.Types
     {
         [OperationContract]
         [FaultContract(typeof(FaultData))]
+        MyProfile SyncProfile(MyProfile profile);
+        
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
         void SetUserWorkMode(UserWorkMode userWorkMode);
 
         [OperationContract]

@@ -3,6 +3,7 @@ using SCME.InterfaceImplementations;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Interfaces;
+using SCME.Types.Profiles;
 
 // ReSharper disable InvertIf
 
@@ -37,6 +38,11 @@ namespace SCME.Service.IO
             }
         }
 
+        public MyProfile SyncProfile(MyProfile profile)
+        {
+            return _syncService.SyncProfile(profile);
+        }
+        
         private void SyncWithServer(AfterSyncProfilesRoutine afterSyncProfilesRoutine)
         {
             //запоминаем что нам надо вызвать после того как будет выполнена синхронизация результатов измерений

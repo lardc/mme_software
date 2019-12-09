@@ -14,6 +14,9 @@ namespace SCME.UI.IO
 {
     public class QueueWorker
     {
+        public bool IsInitializeModules;
+        public  bool IsSynced;
+        
         private readonly ControlLogic m_Net;
         private readonly ConcurrentQueue<Action> m_ActionQueue;
         private readonly DispatcherTimer m_Timer;
@@ -53,7 +56,7 @@ namespace SCME.UI.IO
                 act.Invoke();
         }
 
-        private bool _isInitializeModules = false;
+        
 
         public void AddCommonConnectionEvent(DeviceConnectionState State, string Message)
         {
@@ -61,10 +64,13 @@ namespace SCME.UI.IO
             {
                 switch (State)
                 {
+                    case DeviceConnectionState.ConnectionInProcess:
+                        IsInitializeModules = false;
+                        break;
                     case DeviceConnectionState.ConnectionSuccess:
                         Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
 
-                        _isInitializeModules = true;
+                        IsInitializeModules = true;
                         CheckEndSyncAndEndInitialize();
 
                         break;
@@ -367,7 +373,7 @@ namespace SCME.UI.IO
         }
 
 
-        private bool _isSynced = false;
+        
 
         private void AfterEndOfSincedProcessDbRoutine()
         {
@@ -388,6 +394,7 @@ namespace SCME.UI.IO
             {
                 try
                 {
+                    Cache.DatabaseProxy.ClearCacheByMmeCode(stateService.MMECode);
                     Cache.DatabaseProxy.GetProfilesDeepByMmeCode(stateService.MMECode);
                 }
                 catch (Exception e)
@@ -402,7 +409,7 @@ namespace SCME.UI.IO
 
                 if (args.Result is Exception ex) new DialogWindow("Error", ex.ToString()).ShowDialog();
 
-                _isSynced = true;
+                IsSynced = true;
                 CheckEndSyncAndEndInitialize();
             };
             worker.RunWorkerAsync();
@@ -411,7 +418,7 @@ namespace SCME.UI.IO
         private void CheckEndSyncAndEndInitialize()
         {
             // ReSharper disable once InvertIf
-            if (_isInitializeModules && _isSynced)
+            if (IsInitializeModules && IsSynced)
             {
                 Cache.Welcome.IsBackEnable = true;
                 if (Cache.Net.IsModulesInitialized)
@@ -421,6 +428,7 @@ namespace SCME.UI.IO
 
         public void AddSyncDbAreProcessedEvent()
         {
+            IsSynced = false;
             //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
             m_ActionQueue.Enqueue(AfterEndOfSincedProcessDbRoutine);
         }

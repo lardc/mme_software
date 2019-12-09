@@ -111,7 +111,6 @@ namespace SCME.WpfControlLibrary.Pages
         {
 //            if (ProfileVm.SelectedProfile != null)
 //                ((TreeViewItem) ProfilesTreeView.ItemContainerGenerator.ContainerFromItem(ProfileVm.SelectedProfile)).IsSelected = false;
-            ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = new ProfileDeepData();
             ProfileVm.SelectedProfileNameCopy = _dbService.GetFreeProfileName();
             ProfileVm.IsEditModeActive = true;
@@ -161,7 +160,12 @@ namespace SCME.WpfControlLibrary.Pages
         {
             ProfileVm.IsEditModeActive = false;
             if (ProfileVm.SelectedProfile == null)
+            {
+                ProfileVm.ProfileDeepDataCopy = null;
+                ProfileVm.SelectedProfileNameCopy = string.Empty;
                 return;
+            }
+
             ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData;
             ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
         }

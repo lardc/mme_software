@@ -14,6 +14,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
     public abstract partial class DbService<TDbCommand, TDbConnection> : IDbService where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
        
+        
         protected virtual string SelectAllTopProfileString => @"SELECT PROFILES.PROF_ID, PROFILES.PROF_NAME, PROFILES.PROF_GUID, LATEST_ORDERS.VERS, PROFILES.PROF_TS FROM
                                                                 (SELECT PROF_NAME, MAX(PROF_VERS) AS VERS FROM PROFILES GROUP BY PROF_NAME) AS LATEST_ORDERS 
                                                                 INNER JOIN PROFILES 
@@ -139,7 +140,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private InserterBaseTestParametersAndNormatives _inserter;
 
         private bool _enableCache;
-        
+
+        public void ClearCacheByMmeCode(string mmeCode)
+        {
+            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+            if(profiles == null)
+                return;
+
+            foreach (var profile in profiles)
+                _cacheProfileById.Remove(profile.Id);
+
+            _cacheProfilesByMmeCode.Remove(mmeCode);
+        }
         
         protected DbService(TDbConnection connection, bool enableCache = true)
         {

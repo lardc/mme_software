@@ -97,6 +97,9 @@ namespace SCME.Types.Profiles
             
             TestParametersAndNormatives = DeepData.TestParametersAndNormatives
         };
+
+        public MyProfile(Profile profile) : this(profile.Id, profile.Name, profile.Key, profile.Version, profile.Timestamp)
+        {        }
         
         public override bool Equals(object obj)
         {

@@ -5,6 +5,7 @@ using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Commutation;
+using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
 
@@ -352,6 +353,11 @@ namespace SCME.Service
         {
             m_IOMain.SetSafetyMode(safetyMode);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, $"Safety mode is: {safetyMode}");
+        }
+
+        public MyProfile SyncProfile(MyProfile profile)
+        {
+            return m_IOMain.IoDbSync.SyncProfile(profile);
         }
 
         public void SetUserWorkMode(UserWorkMode userWorkMode)

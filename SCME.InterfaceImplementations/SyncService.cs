@@ -99,7 +99,7 @@ namespace SCME.InterfaceImplementations
                     }
                     else
                     {
-                        deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();;
+                        deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
                         addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
                     }
                     
@@ -149,6 +149,21 @@ namespace SCME.InterfaceImplementations
 
             //стартуем фоновый поток, нужды во входных параметрах нет - поэтому будем передавать null
             Worker.Run(null);
+        }
+
+        public MyProfile SyncProfile(MyProfile profile)
+        {
+            using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
+            {
+                var centralProfile = msSqlDbService.GetProfileByKey(profile.Key);
+                if (!new MyProfile.ProfileByVersionTimeEqualityComparer().Equals(profile, centralProfile))
+                {
+                    _sqLiteDbService.InsertUpdateProfile(profile, centralProfile, _mmeCode);
+                    return centralProfile;
+                }
+
+                return null;
+            }
         }
 
         public void SyncProfiles(ICentralDatabaseService centralDatabaseService)

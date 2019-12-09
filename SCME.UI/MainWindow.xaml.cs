@@ -173,6 +173,7 @@ namespace SCME.UI
 
         internal void RestartRoutine(object Sender, RoutedEventArgs E)
         {
+            
             Param = new TypeCommon.InitParams
             {
                 TimeoutService = Cache.Welcome.GetTimeout(ComplexParts.Service),

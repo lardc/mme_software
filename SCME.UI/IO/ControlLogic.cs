@@ -42,6 +42,11 @@ namespace SCME.UI.IO
             m_NetPingTimer.Tick += NetPingTimerOnTick;
         }
 
+        public MyProfile SyncProfile(MyProfile profile)
+        {
+            return m_ControlClient.SyncProfile(profile);
+        }
+
         public bool IsServerConnected
         {
             get { return m_IsServerConnected; }

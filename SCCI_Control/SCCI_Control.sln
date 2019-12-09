@@ -1,27 +1,42 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.138
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCCI_IO", "SCCI_Master\SCCI_IO.csproj", "{9AED1722-D677-47C4-B0A2-E3C7A83E906C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlConsole", "ControlConsole\ControlConsole.csproj", "{217D7686-FA78-4315-954A-C1DC4E081B2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Debug|x64.Build.0 = Debug|Any CPU
 		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Debug|x86.ActiveCfg = Debug|x86
 		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Debug|x86.Build.0 = Debug|x86
+		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Release|x64.ActiveCfg = Release|Any CPU
+		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Release|x64.Build.0 = Release|Any CPU
 		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Release|x86.ActiveCfg = Release|x86
 		{9AED1722-D677-47C4-B0A2-E3C7A83E906C}.Release|x86.Build.0 = Release|x86
+		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Debug|x64.ActiveCfg = Debug|x64
+		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Debug|x64.Build.0 = Debug|x64
 		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Debug|x86.ActiveCfg = Debug|x86
 		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Debug|x86.Build.0 = Debug|x86
+		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Release|x64.ActiveCfg = Release|x64
+		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Release|x64.Build.0 = Release|x64
 		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Release|x86.ActiveCfg = Release|x86
 		{217D7686-FA78-4315-954A-C1DC4E081B2F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54993037-15B0-4407-8448-CCA9D2B6A811}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

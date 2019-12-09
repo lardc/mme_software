@@ -3226,6 +3226,14 @@ namespace SCME.UI.PagesUser
         }
 
         #endregion
+
+        private void BtnSync_OnClick(object sender, RoutedEventArgs e)
+        {
+            var centralProfile = Cache.Net.SyncProfile(new MyProfile(Profile));
+            if(centralProfile == null)
+                return;
+            NavigationService?.GoBack();
+        }
     }
 
     public class MultiIdentificationFieldsToVisibilityConverter : IMultiValueConverter
