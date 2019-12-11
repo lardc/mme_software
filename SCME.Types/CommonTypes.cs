@@ -96,14 +96,14 @@ namespace SCME.Types
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class InitializationResponce
+    public class InitializationResponse
     {
         [DataMember]
         public InitializationResult InitializationResult { get; set; }
         [DataMember]
         public bool IsLocal { get; set; }
         [DataMember]
-        public string MMECode { get; set; }
+        public string MmeCode { get; set; }
     }
 
 

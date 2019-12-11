@@ -43,7 +43,8 @@ namespace SCME.WpfControlLibrary.ViewModels
                 if (_selectedProfile != null)
                 {
                     SelectedProfileNameCopy = _selectedProfile.Name;
-                    SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
+                    if(!SpecialMeasure)
+                        SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
                     ProfileDeepDataCopy = _selectedProfile.DeepData.Copy();
                 }
                 else
@@ -66,6 +67,7 @@ namespace SCME.WpfControlLibrary.ViewModels
         public string SearchingName { get; set; }
 
         public bool ReadOnlyMode { get; set; }
+        public bool SpecialMeasure { get; set; }
 
         [DependsOn(nameof(ReadOnlyMode), nameof(SelectedProfile))]
         public bool ShowHeightMeasure => ReadOnlyMode && SelectedProfile != null;

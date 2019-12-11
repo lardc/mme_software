@@ -144,6 +144,7 @@ namespace SCME.UI
         private void MainFrameOnNavigated(object sender, NavigationEventArgs e)
         {
             VM.TopTitle = (e.Content as Page)?.Title;
+            
         }
 
 

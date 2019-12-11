@@ -88,6 +88,8 @@ namespace SCME.Types.Profiles
         {
             Name = Name,
             Key = Key,
+            Version = Version,
+            Timestamp = Timestamp,
             
             IsHeightMeasureEnabled = DeepData.IsHeightMeasureEnabled,
             ParametersClamp = DeepData.ParameterClamp,

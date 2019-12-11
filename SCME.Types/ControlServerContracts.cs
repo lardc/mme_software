@@ -51,7 +51,7 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        InitializationResponce IsInitialized();
+        InitializationResponse IsInitialized();
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]

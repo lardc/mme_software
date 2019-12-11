@@ -65,7 +65,8 @@ namespace SCME.Service
         private Boolean m_Stop;
         private ComplexSafety m_SafetyType;
         private UserWorkMode _UserWorkMode;
-
+        public InitializationResponse InitializationResponse { get; private set; }
+        
         public LogicContainer(BroadcastCommunication Communication)
         {
             m_ClampingSystemConnected = Settings.Default.IsClampingSystemConnected;
@@ -153,7 +154,9 @@ namespace SCME.Service
             try
             {
                 //
+                
                 IoDbSync.Initialize(Settings.Default.ResultsDatabasePath, Settings.Default.DBOptionsResults, Settings.Default.MMECode);
+                var taskSync = IoDbSync.SyncProfilesAsync();
                 
                 state = m_IOAdapter.Initialize(m_Param.TimeoutAdapter);
                 
@@ -204,7 +207,8 @@ namespace SCME.Service
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
-                
+
+                InitializationResponse = taskSync.Result;
                 
                 //при инициализации оборудования необходимо включить зеленый светодиод (запись 1 в регистр 128 gateway)
                 if (state == DeviceConnectionState.ConnectionSuccess)

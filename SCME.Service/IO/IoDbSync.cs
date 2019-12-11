@@ -1,7 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using SCME.InterfaceImplementations;
+using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.Types.Database;
+using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
 
@@ -12,8 +20,9 @@ namespace SCME.Service.IO
     internal class IoDbSync
     {
         private readonly BroadcastCommunication _communication;
-        private ISyncService _syncService;
-        private AfterSyncProfilesRoutine _afterSyncProfilesRoutine;
+        private string _mmeCode;
+        private IDbService _sqLiteDbService;
+        private IDbService _msSqlDbService;
 
         public IoDbSync(BroadcastCommunication communication)
         {
@@ -25,12 +34,16 @@ namespace SCME.Service.IO
             try
             {
                 var connectionString = $"data source={databasePath};{databaseOptions}";
-                _syncService = new SyncService(connectionString, mmeCode);
+                _mmeCode = mmeCode;
+                _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(connectionString));
+                _msSqlDbService = new DatabaseProxy("SCME.CentralDatabase");
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionInProcess, string.Empty);
-                if (Settings.Default.IsLocal)
-                    AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
-                else
-                    SyncWithServer(AfterSyncWithServerRoutineHandler);
+                if (!Settings.Default.IsLocal)
+                    SyncProfiles();
+
+//                    AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
+//                else
+//                    SyncWithServer(AfterSyncWithServerRoutineHandler);
             }
             catch (Exception e)
             {
@@ -38,72 +51,146 @@ namespace SCME.Service.IO
             }
         }
 
-        public MyProfile SyncProfile(MyProfile profile)
+        public Task<InitializationResponse> SyncProfilesAsync()
         {
-            return _syncService.SyncProfile(profile);
-        }
-        
-        private void SyncWithServer(AfterSyncProfilesRoutine afterSyncProfilesRoutine)
-        {
-            //запоминаем что нам надо вызвать после того как будет выполнена синхронизация результатов измерений
-            _afterSyncProfilesRoutine = afterSyncProfilesRoutine;
-
-            //последовательно синхронизируем данные: сначала вызываем синхронизацию результатов измерений, которая после своего исполнения вызовет синхронизацию профилей
-            _syncService.SyncResults(AfterSyncResultsHandler);
-        }
-
-        private void AfterSyncResultsHandler(string error)
-        {
-            _syncService.SyncProfiles(_afterSyncProfilesRoutine);
-        }
-
-        private void AfterSyncWithServerRoutineHandler(string notSyncedReason)
-        {
-            //данная реализация будет вызвана после того, как будет пройдена стадия синхронизации данных SQLLite базы данных с данными центральной базы
-            if (notSyncedReason == string.Empty)
+            return Task.Factory.StartNew(() =>
             {
-                SystemHost.IsSyncedWithServer = true;
-                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, "Local database was successfully synced with a central database");
-                //Включим в процесс синхронизации загрузку профилей, UI пошлёт сообщение для ползунка об окончании синхронизации 
-                //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
-            }
-            else
-            {
-                SystemHost.IsSyncedWithServer = false;
-                LogMessageType logMessageType;
-
-                if (Settings.Default.IsLocal)
+                var initializationResponce = new InitializationResponse()
                 {
-                    logMessageType = LogMessageType.Info;
-                        //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+                    IsLocal = Settings.Default.IsLocal,
+                    MmeCode = _mmeCode
+                };
+
+                try
+                {
+                    if (!initializationResponce.IsLocal)
+                        SyncProfiles();
+                }
+                catch (Exception e)
+                {
+                    initializationResponce.IsLocal = true;
+                    _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
+                }
+
+                _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+
+                return initializationResponce;
+            });
+        }
+
+        private void SyncProfiles()
+        {
+            try
+            {
+                var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
+                var centralProfiles = _msSqlDbService.GetProfilesSuperficially(_mmeCode);
+                if (!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
+                    _sqLiteDbService.InsertMmeCode(_mmeCode);
+
+                List<MyProfile> deletingProfiles;
+                List<MyProfile> addingProfiles;
+
+                if (_sqLiteDbService.Migrate())
+                {
+                    deletingProfiles = localProfiles;
+                    addingProfiles = centralProfiles;
                 }
                 else
                 {
-                    logMessageType = LogMessageType.Error;
-                    _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, "Sync error");
+                    deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+                    addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
                 }
 
-                SystemHost.Journal.AppendLog(ComplexParts.Sync, logMessageType, $"Local database not synced with a central database. Reason: {notSyncedReason}");
+                foreach (var i in deletingProfiles)
+                    _sqLiteDbService.RemoveProfile(i, _mmeCode);
+
+                foreach (var i in addingProfiles)
+                {
+                    i.DeepData = _msSqlDbService.LoadProfileDeepData(i);
+                    _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
+                }
             }
-
-            FireSyncDbAreProcessedEvent();
-        }
-
-        private void FireSyncDbAreProcessedEvent()
-        {
-            var sCommunicationLive = string.Empty;
-            _communication.PostSyncDBAreProcessedEvent();
-
-
-            if (SystemHost.Journal != null)
+            catch (Exception ex)
             {
-                var mess = "Sync DataBases are processed";
-
-                if (sCommunicationLive != string.Empty)
-                    mess = mess + ", " + sCommunicationLive;
-
-                SystemHost.Journal.AppendLog(ComplexParts.Sync, LogMessageType.Info, mess);
+                throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.Message));
             }
         }
+
+        public MyProfile SyncProfile(MyProfile profile)
+        {
+            var centralProfile = _msSqlDbService.GetTopProfileByName(_mmeCode, profile.Name);
+            if (!new MyProfile.ProfileByVersionTimeEqualityComparer().Equals(profile, centralProfile))
+            {
+                centralProfile.DeepData = _msSqlDbService.LoadProfileDeepData(centralProfile);
+                _sqLiteDbService.InsertUpdateProfile(profile, centralProfile, _mmeCode);
+                return centralProfile;
+            }
+
+            return null;
+        }
+
+
+//        private void SyncWithServer(AfterSyncProfilesRoutine afterSyncProfilesRoutine)
+//        {
+//            //запоминаем что нам надо вызвать после того как будет выполнена синхронизация результатов измерений
+//            _afterSyncProfilesRoutine = afterSyncProfilesRoutine;
+//
+//            //последовательно синхронизируем данные: сначала вызываем синхронизацию результатов измерений, которая после своего исполнения вызовет синхронизацию профилей
+//            _syncService.SyncResults(AfterSyncResultsHandler);
+//        }
+//
+//        private void AfterSyncResultsHandler(string error)
+//        {
+//            _syncService.SyncProfiles(_afterSyncProfilesRoutine);
+//        }
+//
+//        private void AfterSyncWithServerRoutineHandler(string notSyncedReason)
+//        {
+//            //данная реализация будет вызвана после того, как будет пройдена стадия синхронизации данных SQLLite базы данных с данными центральной базы
+//            if (notSyncedReason == string.Empty)
+//            {
+//                SystemHost.IsSyncedWithServer = true;
+//                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, "Local database was successfully synced with a central database");
+//                //Включим в процесс синхронизации загрузку профилей, UI пошлёт сообщение для ползунка об окончании синхронизации 
+//                //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+//            }
+//            else
+//            {
+//                SystemHost.IsSyncedWithServer = false;
+//                LogMessageType logMessageType;
+//
+//                if (Settings.Default.IsLocal)
+//                {
+//                    logMessageType = LogMessageType.Info;
+//                        //_communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
+//                }
+//                else
+//                {
+//                    logMessageType = LogMessageType.Error;
+//                    _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, "Sync error");
+//                }
+//
+//                SystemHost.Journal.AppendLog(ComplexParts.Sync, logMessageType, $"Local database not synced with a central database. Reason: {notSyncedReason}");
+//            }
+//
+//            FireSyncDbAreProcessedEvent();
+//        }
+//
+//        private void FireSyncDbAreProcessedEvent()
+//        {
+//            var sCommunicationLive = string.Empty;
+//            _communication.PostSyncDBAreProcessedEvent();
+//
+//
+//            if (SystemHost.Journal != null)
+//            {
+//                var mess = "Sync DataBases are processed";
+//
+//                if (sCommunicationLive != string.Empty)
+//                    mess = mess + ", " + sCommunicationLive;
+//
+//                SystemHost.Journal.AppendLog(ComplexParts.Sync, LogMessageType.Info, mess);
+//            }
+//        }
     }
 }

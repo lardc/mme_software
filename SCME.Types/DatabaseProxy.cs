@@ -16,9 +16,10 @@ namespace SCME.Types
         {
         }
 
-        public MyProfile GetProfileByKey(Guid key)
+
+        public MyProfile GetTopProfileByName(string mmeCode, string name)
         {
-            return Channel.GetProfileByKey(key);
+            return Channel.GetTopProfileByName(mmeCode, name);
         }
 
         public void ClearCacheByMmeCode(string mmeCode)

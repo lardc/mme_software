@@ -34,7 +34,7 @@ namespace SCME.WpfControlLibrary.Pages
             ? _dbService.GetMmeCodes().Where(m => m.Key == ProfileVm.SelectedMmeCode).ToDictionary(m => m.Key, m => m.Value)
             : _dbService.GetMmeCodes().Where(m => m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m => m.Key, m => m.Value);
         
-        public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false)
+        public ProfilesPage(IDbService dbService, string mmeCode, bool isSingleMmeCode = false, bool isWithoutChild = false, bool readOnlyMode = false, bool specialMeasure = false)
         {
             ProfileVm = new ProfilesPageProfileVm(dbService);
 
@@ -50,6 +50,8 @@ namespace SCME.WpfControlLibrary.Pages
             _dbService = dbService;
             _isWithoutChild = isWithoutChild;
 
+            ProfileVm.SpecialMeasure = specialMeasure;
+            
             ProfileVm.SelectedMmeCode = mmeCode;
 
             ProfileVm.MmeCodes = GetMMeCodes;
@@ -140,14 +142,16 @@ namespace SCME.WpfControlLibrary.Pages
             if (oldProfile == null)
             {
                 newProfile = new MyProfile(0, ProfileVm.SelectedProfileNameCopy, Guid.NewGuid(), 0, DateTime.Now).GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
-                newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
-
+                if(!ProfileVm.SpecialMeasure)
+                    newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
+                
                 ProfileVm.Profiles.Insert(0, newProfile);
             }
             else
             {
                 newProfile = oldProfile.GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
-                newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
+                if(!ProfileVm.SpecialMeasure)
+                    newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
                 ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(oldProfile), newProfile);
                 ProfileVm.Profiles.Remove(oldProfile);
@@ -196,6 +200,16 @@ namespace SCME.WpfControlLibrary.Pages
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
                 return;
             }
+        }
+
+        public void RefreshProfile(MyProfile newProfile)
+        {
+          
+                
+            ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(ProfileVm.SelectedProfile), newProfile);
+            ProfileVm.Profiles.Remove(ProfileVm.SelectedProfile);
+            ProfileVm.SelectedProfile = newProfile;
+           
         }
 
 

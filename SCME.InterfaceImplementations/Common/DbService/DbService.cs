@@ -13,15 +13,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> : IDbService where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-       
-        
         protected virtual string SelectAllTopProfileString => @"SELECT PROFILES.PROF_ID, PROFILES.PROF_NAME, PROFILES.PROF_GUID, LATEST_ORDERS.VERS, PROFILES.PROF_TS FROM
                                                                 (SELECT PROF_NAME, MAX(PROF_VERS) AS VERS FROM PROFILES GROUP BY PROF_NAME) AS LATEST_ORDERS 
                                                                 INNER JOIN PROFILES 
                                                                 ON PROFILES.PROF_NAME = LATEST_ORDERS.PROF_NAME AND PROFILES.PROF_VERS = LATEST_ORDERS.VERS";
-        
+
         protected virtual string CheckMmeCodeIsActiveString => $"SELECT COUNT (*) FROM MME_CODES WHERE MME_CODE = '{Constants.MME_CODE_IS_ACTIVE_NAME}'";
-        
+
 //        ALTER TABLE MME_CODES_TO_PROFILES 
 //            ADD CONSTRAINT FK_MME_CODES_TO_PROFILES_MME_CODES
 //        FOREIGN KEY (MME_CODE_ID) 
@@ -29,7 +27,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 //        ON DELETE CASCADE;
 
 //        alter table MME_CODES_TO_PROFILES drop constraint FK_MME_CODES_TO_PROFILES_MME_CODES
-        
+
         protected virtual string CheckConditionString => "SELECT COUNT (*) FROM CONDITIONS WHERE COND_NAME = @WHERE_PARAMETER";
         protected virtual string CheckParameterString => "SELECT COUNT (*) FROM PARAMS WHERE PARAM_NAME = @WHERE_PARAMETER";
         protected virtual string CheckTestTypeString => $"SELECT COUNT (*) FROM TEST_TYPE WHERE {DatabaseFieldTestTypeName} = @WHERE_PARAMETER";
@@ -55,7 +53,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
         protected virtual string OrderSelectString => @"SELECT [ORD] FROM [PROF_TEST_TYPE] WHERE [PTT_ID] = @TEST_TYPE_ID";
         protected virtual string ConditionSelectString => @"SELECT C.[COND_NAME], PC.[VALUE] FROM [PROF_COND] PC LEFT JOIN [CONDITIONS] C on C.[COND_ID] = PC.[COND_ID] WHERE PC.[PROF_TESTTYPE_ID] = @TEST_TYPE_ID";
         protected virtual string ParamSelectString => "SELECT P.[PARAM_NAME], PP.[MIN_VAL], PP.[MAX_VAL] FROM [PROF_PARAM] PP LEFT JOIN [PARAMS] P on P.[PARAM_ID] = PP.[PARAM_ID] WHERE PP.[PROF_TESTTYPE_ID] = @TEST_TYPE_ID";
-        protected virtual string ProfileByKeySelectString => @"SELECT PROF_ID, PROF_NAME, PROF_GUID, PROF_VERS, PROF_TS FROM PROFILES WHERE PROF_GUID = @PROF_GUID";
+
+        protected virtual string ProfileByNameByMmeMaxTimestampString => @"SELECT TOP 1 PROF_ID, PROF_NAME, PROF_GUID, PROF_VERS, PROF_TS FROM PROFILES WHERE PROF_NAME = @PROF_NAME AND PROF_ID IN (
+                SELECT PROFILE_ID FROM MME_CODES_TO_PROFILES WHERE MME_CODE_ID IN 
+                    (SELECT MME_CODE_ID FROM MME_CODES  WHERE MME_CODE = @MME_CODE) ) ORDER BY PROF_TS DESC";
+
         protected virtual string AllMmeCodesSelectString => @"SELECT MME_CODE, MME_CODE_ID FROM MME_CODES";
 
         protected virtual string ProfileInsertString =>
@@ -67,7 +69,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         protected virtual string InsertMmeCodeString => @"INSERT INTO MME_CODES (MME_CODE) OUTPUT INSERTED.MME_CODE_ID VALUES(@MME_CODE)";
         protected virtual string DeleteAllMmeCodeToProfileByMmeCodeString => @"DELETE FROM MME_CODES_TO_PROFILES WHERE MME_CODE_ID = (SELECT MME_CODE_ID FROM MME_CODES WHERE MME_CODE = @MME_CODE)";
         protected virtual string DeleteMmeCodeString => @"DELETE FROM MME_CODES WHERE @MME_CODE = MME_CODE";
-        
+
         protected virtual string MmeCodeToProfileInsertString => "INSERT INTO [MME_CODES_TO_PROFILES] (MME_CODE_ID, PROFILE_ID) VALUES (" +
                                                                  "(SELECT MME_CODE_ID FROM MME_CODES WHERE MME_CODE = @MME_CODE), @PROFILE_ID)";
 
@@ -85,7 +87,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private TDbCommand _mmeCodesByProfile;
 
         private TDbCommand _checkMmeCodeIsActive;
-        
+
         private TDbCommand _checkCondition;
         private TDbCommand _checkParameter;
         private TDbCommand _checkTestType;
@@ -108,7 +110,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private TDbCommand _mmeCodeToProfileInsert;
         private TDbCommand _mmeCodeToProfileDelete;
         private TDbCommand _deleteAllMmeCodeToProfileByMmeCode;
-        
+
 
         private TDbCommand _loadTestTypes;
         private TDbCommand _loadConditions;
@@ -128,6 +130,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private TDbCommand _deleteMmeCode;
         private TDbCommand _insertMmeCode;
 
+        private TDbCommand _profileByNameByMmeMaxTimestamp;
+
         private DbTransaction _dbTransaction;
 
         protected readonly TDbConnection Connection;
@@ -144,7 +148,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         public void ClearCacheByMmeCode(string mmeCode)
         {
             _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
-            if(profiles == null)
+            if (profiles == null)
                 return;
 
             foreach (var profile in profiles)
@@ -152,21 +156,20 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             _cacheProfilesByMmeCode.Remove(mmeCode);
         }
-        
+
         protected DbService(TDbConnection connection, bool enableCache = true)
         {
             _enableCache = enableCache;
-            
+
             _cacheProfilesByMmeCode = new Dictionary<string, List<MyProfile>>();
             _cacheProfileById = new Dictionary<int, ProfileCache>();
-            
+
             Connection = connection;
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
 
             PrepareQueries();
             LoadDictionary();
-            
         }
 
         private TDbCommand CreateCommand(string commandString, IEnumerable<DbCommandParameter> parameters)
@@ -188,6 +191,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         private void PrepareQueries()
         {
+       
+                _profileByNameByMmeMaxTimestamp = CreateCommand(ProfileByNameByMmeMaxTimestampString, new List<DbCommandParameter>()
+                {
+                    new DbCommandParameter("@PROF_NAME", DbType.String, 32),
+                    new DbCommandParameter("@MME_CODE", DbType.String, 64),
+                });
+
+            
             _mmeCodesByProfile = CreateCommand(MmeCodesByProfileString, new List<DbCommandParameter>()
             {
                 new DbCommandParameter("@PROFILE_ID", DbType.Int32),
@@ -199,7 +210,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             };
 
             _checkMmeCodeIsActive = CreateCommand(CheckMmeCodeIsActiveString, new List<DbCommandParameter>());
-            
+
             _checkCondition = CreateCommand(CheckConditionString, checkTDbCommandParameters);
             _checkParameter = CreateCommand(CheckParameterString, checkTDbCommandParameters);
             _checkError = CreateCommand(CheckErrorString, checkTDbCommandParameters);
@@ -267,15 +278,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32)
             });
 
-            _profileByKeySelect = CreateCommand(ProfileByKeySelectString, new List<DbCommandParameter>()
-            {
-                new DbCommandParameter("@PROF_GUID", DbType.Guid)
-            });
-
             _allMmeCodesSelect = CreateCommand(AllMmeCodesSelectString, new List<DbCommandParameter>());
 
             _selectAllTopProfile = CreateCommand(SelectAllTopProfileString, new List<DbCommandParameter>());
-            
+
             _getFreeProfileName = CreateCommand(GetFreeProfileNameString, new List<DbCommandParameter>());
             _profileNameExists = CreateCommand(ProfileNameExistsString, new List<DbCommandParameter>()
             {
@@ -336,7 +342,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 new DbCommandParameter("@PROFILE_ID", DbType.Int32),
             });
             
-            
+
 
             _loadTestTypes = CreateCommand(LoadTestTypesString, new List<DbCommandParameter>());
             _loadConditions = CreateCommand(LoadConditionsString, new List<DbCommandParameter>());

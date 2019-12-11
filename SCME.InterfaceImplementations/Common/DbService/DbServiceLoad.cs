@@ -15,11 +15,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-        public MyProfile GetProfileByKey(Guid key)
+        public MyProfile GetTopProfileByName(string mmeCode, string name)
         {
-            using var reader = _profileByKeySelect.ExecuteReader();
-            reader.Read();
-            return new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+            try
+            {
+                _profileByNameByMmeMaxTimestamp.Parameters["@MME_CODE"].Value = mmeCode;
+                _profileByNameByMmeMaxTimestamp.Parameters["@PROF_NAME"].Value = name;
+                using var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader();
+                reader.Read();
+                return new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public Dictionary<string, int> GetMmeCodes()
@@ -33,8 +43,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return mmeCodes;
         }
 
-        
-        
+
         public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
         {
             var res = GetProfilesSuperficially(mmeCode).Select(m =>
@@ -128,11 +137,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
-            ProfileCache cacheProfile;
+            _cacheProfileById.TryGetValue(profile.Id,  out var cacheProfile );
             
-            if(_enableCache)
-                cacheProfile = _cacheProfileById[profile.Id];
-            else
+            if(cacheProfile == null)
                 cacheProfile = new ProfileCache(profile);
             
             if (cacheProfile.IsDeepLoad == false || !_enableCache)
@@ -179,20 +186,30 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null)
         {
-            _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
-            if (profileCache == null) throw new NotImplementedException("GetMmeCodesByProfile bad logic");
-
-            if (profileCache.MmeCodes != null)
-                return profileCache.MmeCodes.Copy();
-
-            profileCache.MmeCodes = new List<string>();
-
             _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profile.Id;
-            _mmeCodesByProfile.Transaction = dbTransaction;
-            using var reader = _mmeCodesByProfile.ExecuteReader();
-            while (reader.Read())
-                profileCache.MmeCodes.Add(reader.GetString(0));
-            return profileCache.MmeCodes.Copy();
+            
+            _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
+            if (_enableCache && profileCache != null)
+            {
+                if (profileCache.MmeCodes != null)
+                    return profileCache.MmeCodes.Copy();
+
+                profileCache.MmeCodes = new List<string>();
+                
+                _mmeCodesByProfile.Transaction = dbTransaction;
+                using var reader = _mmeCodesByProfile.ExecuteReader();
+                while (reader.Read())
+                    profileCache.MmeCodes.Add(reader.GetString(0));
+                return profileCache.MmeCodes.Copy();
+            }
+            else
+            {
+                var mmeCodes = new List<string>();
+                using var reader = _mmeCodesByProfile.ExecuteReader();
+                while (reader.Read())
+                    mmeCodes.Add(reader.GetString(0));
+                return mmeCodes;
+            }
         }
 
         #region Fill
@@ -621,9 +638,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "BVT_PlateTime":
                         testParams.PlateTime = UInt16.Parse(result.Value.ToString());
                         break;
-                    
-                    
-                    
+
+
                     case "BVT_UdsmUrsm_PulseFrequency":
                         testParams.UdsmUrsmPulseFrequency = Convert.ToUInt16(result.Value);
                         break;
@@ -708,7 +724,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         if (result.Item3.HasValue)
                             parameters.IDRM = Convert.ToUInt16(result.Item3.Value);
                         break;
-                    
+
                     case "UdsmUrsm_IRRM":
                         if (result.Item3.HasValue)
                             parameters.UdsmUrsmIRRM = Convert.ToUInt16(result.Item3.Value);

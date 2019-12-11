@@ -813,4 +813,7 @@
   <data name="SelectWorkModePageTitle" xml:space="preserve">
     <value>Режим работы</value>
   </data>
+  <data name="ProfileNotChanged" xml:space="preserve">
+    <value>Профиль не изменен</value>
+  </data>
 </root>

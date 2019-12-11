@@ -53,7 +53,7 @@ namespace SCME.UI.IO
             private set { m_IsServerConnected = value; }
         }
 
-        public InitializationResponce GetStateService => m_ControlClient.IsInitialized();
+        public InitializationResponse GetStateService => m_ControlClient.IsInitialized();
         
         public bool IsDBSync
         {
@@ -397,6 +397,9 @@ namespace SCME.UI.IO
             {
             }
             catch (CommunicationException ex)
+            
+            
+            
             {
                 ProcessCommunicationException(ex);
             }
@@ -1651,7 +1654,8 @@ namespace SCME.UI.IO
 
         public void SyncDBAreProcessedHandler()
         {
-            m_QueueWorker.AddSyncDbAreProcessedEvent();
+            throw  new NotImplementedException();
+            //m_QueueWorker.AddSyncDbAreProcessedEvent();
         }
 
         public void GatewayNotificationHandler(Types.Gateway.HWWarningReason Warning, Types.Gateway.HWFaultReason Fault,

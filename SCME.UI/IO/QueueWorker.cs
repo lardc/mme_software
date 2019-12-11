@@ -14,9 +14,6 @@ namespace SCME.UI.IO
 {
     public class QueueWorker
     {
-        public bool IsInitializeModules;
-        public  bool IsSynced;
-        
         private readonly ControlLogic m_Net;
         private readonly ConcurrentQueue<Action> m_ActionQueue;
         private readonly DispatcherTimer m_Timer;
@@ -64,17 +61,39 @@ namespace SCME.UI.IO
             {
                 switch (State)
                 {
-                    case DeviceConnectionState.ConnectionInProcess:
-                        IsInitializeModules = false;
-                        break;
                     case DeviceConnectionState.ConnectionSuccess:
                         Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
 
-                        IsInitializeModules = true;
-                        CheckEndSyncAndEndInitialize();
+                        var stateService = Cache.Net.GetStateService;
+                        Cache.Main.VM.MmeCode = stateService.MmeCode;
+                        Cache.Main.VM.IsLocal = stateService.IsLocal;
 
+                        BackgroundWorker worker = new BackgroundWorker();
+                        worker.DoWork += (sender, args) =>
+                        {
+                            try
+                            {
+                                Cache.DatabaseProxy.ClearCacheByMmeCode(stateService.MmeCode);
+                                Cache.DatabaseProxy.GetProfilesDeepByMmeCode(stateService.MmeCode);
+                            }
+                            catch (Exception e)
+                            {
+                                args.Result = e;
+                            }
+                        };
+                        worker.RunWorkerCompleted += (sender, args) =>
+                        {
+                            Cache.Welcome.IsRestartEnable = true;
+                            Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
+
+                            if (args.Result is Exception ex) new DialogWindow("Error", ex.ToString()).ShowDialog();
+
+                            Cache.Welcome.IsBackEnable = true;
+                            Cache.Main.mainFrame.Navigate(Cache.UserWorkMode);
+                        };
+                        worker.RunWorkerAsync();
+                        
                         break;
-
                     case DeviceConnectionState.ConnectionFailed:
                         Cache.Welcome.IsRestartEnable = true;
                         break;
@@ -375,64 +394,9 @@ namespace SCME.UI.IO
 
         
 
-        private void AfterEndOfSincedProcessDbRoutine()
-        {
-            //набор действий, которые надо выполнить после завершения процесса синхронизации (не важно с каким результатом) локальной базы данных с центральной базой данных          
-            Cache.Main.VM.SyncState = Cache.Net.IsDBSync ? "SYNCED" : "LOCAL";
+    
 
-//            if(Cache.Net.IsDBSync)
-//                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
-//            else
-//                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionFailed, "Sync error");
-
-            var stateService = Cache.Net.GetStateService;
-            Cache.Main.VM.MmeCode = stateService.MMECode;
-            Cache.Main.VM.IsLocal = stateService.IsLocal;
-
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += (sender, args) =>
-            {
-                try
-                {
-                    Cache.DatabaseProxy.ClearCacheByMmeCode(stateService.MMECode);
-                    Cache.DatabaseProxy.GetProfilesDeepByMmeCode(stateService.MMECode);
-                }
-                catch (Exception e)
-                {
-                    args.Result = e;
-                }
-            };
-            worker.RunWorkerCompleted += (sender, args) =>
-            {
-                Cache.Welcome.IsRestartEnable = true;
-                Cache.Welcome.State(ComplexParts.Sync, DeviceConnectionState.ConnectionSuccess, string.Empty);
-
-                if (args.Result is Exception ex) new DialogWindow("Error", ex.ToString()).ShowDialog();
-
-                IsSynced = true;
-                CheckEndSyncAndEndInitialize();
-            };
-            worker.RunWorkerAsync();
-        }
-
-        private void CheckEndSyncAndEndInitialize()
-        {
-            // ReSharper disable once InvertIf
-            if (IsInitializeModules && IsSynced)
-            {
-                Cache.Welcome.IsBackEnable = true;
-                if (Cache.Net.IsModulesInitialized)
-                    Cache.Main.mainFrame.Navigate(Cache.UserWorkMode);
-            }
-        }
-
-        public void AddSyncDbAreProcessedEvent()
-        {
-            IsSynced = false;
-            //процесс синхронизации данных локальной базы данных с данными центральной базы данных как-то (успешно или нет) завершился
-            m_ActionQueue.Enqueue(AfterEndOfSincedProcessDbRoutine);
-        }
-
+      
         public void AddButtonPressedEvent(ComplexButtons Button, bool State)
         {
             m_ActionQueue.Enqueue(delegate

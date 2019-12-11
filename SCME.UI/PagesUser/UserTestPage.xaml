@@ -184,7 +184,7 @@
               Grid.Column="3" Grid.Row="0" Grid.RowSpan="6" Margin="0,20" Width="0" />
 
         <Button Name="btnBack" x:FieldModifier="private" Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.Back}" Click="Back_Click" Margin="0" TabIndex="7"/>
-        <!-- <Button Name="btnSync" x:FieldModifier="private" Grid.Column="1" Grid.Row="8" Content="{x:Static res:Resources.Sync}" Click="BtnSync_OnClick" Margin="0" TabIndex="7"/> -->
+        <Button Name="btnSync" x:FieldModifier="private" Grid.Column="1" Grid.Row="8" Content="{x:Static res:Resources.Sync}" Click="BtnSync_OnClick" Margin="0" TabIndex="7"/>
         <Button Grid.Column="2" Grid.Row="8" Content="{x:Static res:Resources.Stop}" Background="{StaticResource xRed1}" Click="Stop_Click" Margin="0,0,10,0" TabIndex="8" />
         <Button Name="btnStart" x:FieldModifier="private" Grid.Column="3" Grid.Row="8" Content="{x:Static res:Resources.Start}" Background="{StaticResource xGreen1}" Click="Start_Click" Margin="10,0,0,0" TabIndex="5"/>
     </Grid>

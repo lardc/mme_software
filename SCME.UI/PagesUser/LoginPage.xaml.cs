@@ -9,6 +9,7 @@ using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.UI.IO;
 using SCME.UI.Properties;
+using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI.PagesUser
 {
@@ -52,7 +53,7 @@ namespace SCME.UI.PagesUser
 //                Cache.ProfileSelection.InitFilter();
 //                Cache.ProfileSelection.InitSorting();
                 //NavigationService.Navigate(Cache.ProfileSelection);
-                PrepareMoveToSelectProfilePage();
+                PrepareMoveToSelectProfilePage(Cache.ProfilesPageSelectForTest);
                 Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
                 NavigationService.Navigate(Cache.ProfilesPageSelectForTest);
             }
@@ -62,23 +63,23 @@ namespace SCME.UI.PagesUser
             tbPassword.Text = string.Empty;
         }
 
-        public void PrepareMoveToSelectProfilePage()
+        public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage)
         {
-            Cache.ProfilesPageSelectForTest.LoadTopProfiles();
-            Cache.ProfilesPageSelectForTest.Title = $"{SCME.UI.Properties.Resources.Total} {SCME.UI.Properties.Resources.Profiles}: {Cache.ProfilesPageSelectForTest.ProfileVm.Profiles.Count}";
+            profilesPage.LoadTopProfiles();
+            profilesPage.Title = $"{SCME.UI.Properties.Resources.Total} {SCME.UI.Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
 //            Cache.ProfilesPageSelectForTest.GoBackAction += () =>
 //            {
 //                var navigationService = Cache.ProfilesPageSelectForTest.NavigationService;
 //                Debug.Assert(navigationService != null, nameof(navigationService) + " != null");
 //                navigationService.Navigate(Cache.Login);
 //            };
-            Cache.ProfilesPageSelectForTest.ProfileVm.NextAction = () =>
+            profilesPage.ProfileVm.NextAction = () =>
             {
-                Cache.UserTest.Profile = Cache.ProfilesPageSelectForTest.ProfileVm.SelectedProfile.ToProfile();
+                Cache.UserTest.Profile = profilesPage.ProfileVm.SelectedProfile.ToProfile();
                 //запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
                 Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
 
-                var navigationService = Cache.ProfilesPageSelectForTest.NavigationService;
+                var navigationService = profilesPage.NavigationService;
 
                 Cache.UserTest.InitSorting();
                 Cache.UserTest.InitTemp();

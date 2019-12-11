@@ -64,7 +64,8 @@ namespace SCME.Service
 
         public void PostSyncDBAreProcessedEvent()
         {
-            EnumerateClients(Client => Client.SyncDBAreProcessedHandler());
+            throw  new NotImplementedException();
+            //EnumerateClients(Client => Client.SyncDBAreProcessedHandler());
         }
 
         public void PostGatewayNotificationEvent(Types.Gateway.HWWarningReason Warning,

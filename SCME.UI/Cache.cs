@@ -34,11 +34,14 @@ namespace SCME.UI
         private static IHPage ms_IHPage;
         private static ProfilesPage _profilesPage;
         private static ProfilesPage _profilesPageSelectForTest;
+        private static ProfilesPage _profilesPageSpecialMeasure;
 
 
         internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.IsCentral));
 
         internal static ProfilesPage ProfilesPageSelectForTest => _profilesPageSelectForTest ?? (_profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, true));
+        
+        internal static ProfilesPage ProfilesPageSpecialMeasure => _profilesPageSpecialMeasure ?? (_profilesPageSpecialMeasure = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, false, true));
                                                                       
 
         public static MainWindow Main { get; set; }

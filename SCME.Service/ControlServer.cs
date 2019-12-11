@@ -17,7 +17,7 @@ namespace SCME.Service
     public class ExternalControlServer : IExternalControl
     {
         private readonly BroadcastCommunication m_Communication;
-        private readonly LogicContainer m_IOMain;
+        private readonly LogicContainer _IoMain;
 
         private const string PRINTING_ENDPOINT_NAME = "SCME.PrintingService";
 
@@ -27,7 +27,7 @@ namespace SCME.Service
             //чтобы SystemHost мог говорить UI о том, что процесс синхронизации баз данных как-то завершился - сообщаем ему значение m_Communication
             SystemHost.SetCommunication(m_Communication);
 
-            m_IOMain = new LogicContainer(m_Communication);
+            _IoMain = new LogicContainer(m_Communication);
         }
 
         #region Interface implementation
@@ -54,235 +54,236 @@ namespace SCME.Service
 
         void IExternalControl.Initialize(TypeCommon.InitParams Param)
         {
-            ThreadPool.QueueUserWorkItem(Func => m_IOMain.Initialize(Param));
+            ThreadPool.QueueUserWorkItem(Func => _IoMain.Initialize(Param));
         }
 
         void IExternalControl.Deinitialize()
         {
-            m_IOMain.Deinitialize();
+            _IoMain.Deinitialize();
         }
 
-        InitializationResponce IExternalControl.IsInitialized()
+        InitializationResponse IExternalControl.IsInitialized()
         {
-            /*return (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None)
-                   | (SystemHost.IsSyncedWithServer ? InitializationResult.SyncedWithServer : InitializationResult.None);
-            */
-
-
-            InitializationResponce initializationResponce = new InitializationResponce()
-            {
-                IsLocal = Properties.Settings.Default.IsLocal,
-                MMECode = Properties.Settings.Default.MMECode
-            };
-
-            //в switch нельзя проверять это условие в default - компилятор успешно откомпилирует, но работать будет с ошибкой
-            if (SystemHost.IsSyncedWithServer == null)
-            {
-                //синхронизация данных в данный момент выполняется
-                initializationResponce.InitializationResult = InitializationResult.SyncInProgress;
-            }
-            else
-            {
-                switch (SystemHost.IsSyncedWithServer)
-                {
-                    case (true):
-                        //синхронизация данных завершена, данные синхронизированы
-                        initializationResponce.InitializationResult = InitializationResult.SyncedWithServer;
-                        break;
-
-                    default:
-                        //синхронизация данных завершена, данные не синхронизированы
-                        initializationResponce.InitializationResult = InitializationResult.None;
-                        break;
-                }
-            }
-
-            //Ужасное выражение, которое я оставляю потому что работает.
-            initializationResponce.InitializationResult = (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None) | initializationResponce.InitializationResult;
-            
-            return initializationResponce;
+            return _IoMain.InitializationResponse;
+//            /*return (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None)
+//                   | (SystemHost.IsSyncedWithServer ? InitializationResult.SyncedWithServer : InitializationResult.None);
+//            */
+//
+//
+//            InitializationResponce initializationResponse = new InitializationResponce()
+//            {
+//                IsLocal = Properties.Settings.Default.IsLocal,
+//                MMECode = Properties.Settings.Default.MMECode
+//            };
+//
+//            //в switch нельзя проверять это условие в default - компилятор успешно откомпилирует, но работать будет с ошибкой
+//            if (SystemHost.IsSyncedWithServer == null)
+//            {
+//                //синхронизация данных в данный момент выполняется
+//                initializationResponse.InitializationResult = InitializationResult.SyncInProgress;
+//            }
+//            else
+//            {
+//                switch (SystemHost.IsSyncedWithServer)
+//                {
+//                    case (true):
+//                        //синхронизация данных завершена, данные синхронизированы
+//                        initializationResponse.InitializationResult = InitializationResult.SyncedWithServer;
+//                        break;
+//
+//                    default:
+//                        //синхронизация данных завершена, данные не синхронизированы
+//                        initializationResponse.InitializationResult = InitializationResult.None;
+//                        break;
+//                }
+//            }
+//
+//            //Ужасное выражение, которое я оставляю потому что работает.
+//            initializationResponse.InitializationResult = (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None) | initializationResponse.InitializationResult;
+//            
+//            return initializationResponse;
         }
 
         bool IExternalControl.GetButtonState(ComplexButtons Button)
         {
-            return m_IOMain.GetButtonState(Button);
+            return _IoMain.GetButtonState(Button);
         }
 
         void IExternalControl.ProvocationButtonResponse(ComplexButtons Button)
         {
-            m_IOMain.ProvocationButtonResponse(Button);
+            _IoMain.ProvocationButtonResponse(Button);
         }
 
         ComplexSafety IExternalControl.GetSafetyType()
         {
-            return m_IOMain.GetSafetyType();
+            return _IoMain.GetSafetyType();
         }
 
         bool IExternalControl.Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL,
                                     Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC,
                                     Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
-            return m_IOMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
+            return _IoMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
         }
 
         bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
-            return m_IOMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
+            return _IoMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
         }
 
         void IExternalControl.ClearSafetyTrig()
         {
-            m_IOMain.ClearSafetyTrig();
+            _IoMain.ClearSafetyTrig();
         }
 
         void IExternalControl.SafetySystemOn()
         {
-            m_IOMain.SafetySystemOn();
+            _IoMain.SafetySystemOn();
         }
 
         void IExternalControl.SafetySystemOff()
         {
-            m_IOMain.SafetySystemOff();
+            _IoMain.SafetySystemOff();
         }
 
         ushort IExternalControl.ActivationWorkPlace(ComplexParts Device, ChannelByClumpType ChByClumpType, SctuWorkPlaceActivationStatuses ActivationStatus)
         {
-            return m_IOMain.ActivationWorkPlace(Device, ChByClumpType, ActivationStatus);
+            return _IoMain.ActivationWorkPlace(Device, ChByClumpType, ActivationStatus);
         }
 
         string IExternalControl.NotReadyDevicesToStart()
         {
-            return m_IOMain.NotReadyDevicesToStart();
+            return _IoMain.NotReadyDevicesToStart();
         }
 
         string IExternalControl.NotReadyDevicesToStartDynamic()
         {
-            return m_IOMain.NotReadyDevicesToStartDynamic();
+            return _IoMain.NotReadyDevicesToStartDynamic();
         }
 
         public bool StartHeating(int temperature)
         {
-            return m_IOMain.StartHeating(temperature);
+            return _IoMain.StartHeating(temperature);
         }
 
         public void StopHeating()
         {
-            m_IOMain.StopHeating();
+            _IoMain.StopHeating();
         }
 
         public void SetPermissionToUseCanDataBus(bool PermissionToUseCanDataBus)
         {
-            m_IOMain.SetPermissionToUseCanDataBus(PermissionToUseCanDataBus);
+            _IoMain.SetPermissionToUseCanDataBus(PermissionToUseCanDataBus);
         }
 
         void IExternalControl.Stop()
         {
-            ThreadPool.QueueUserWorkItem(Func => m_IOMain.Stop());
+            ThreadPool.QueueUserWorkItem(Func => _IoMain.Stop());
         }
 
         void IExternalControl.StopByButtonStop()
         {
-            ThreadPool.QueueUserWorkItem(Func => m_IOMain.StopByButtonStop());
+            ThreadPool.QueueUserWorkItem(Func => _IoMain.StopByButtonStop());
         }
 
         void IExternalControl.SqueezeClamping(Types.Clamping.TestParameters ParametersClamping)
         {
-            m_IOMain.Squeeze(ParametersClamping);
+            _IoMain.Squeeze(ParametersClamping);
         }
 
         void IExternalControl.UnsqueezeClamping(Types.Clamping.TestParameters ParametersClamping)
         {
-            m_IOMain.Unsqueeze(ParametersClamping);
+            _IoMain.Unsqueeze(ParametersClamping);
         }
 
         void IExternalControl.ClearFault(ComplexParts Device)
         {
-            m_IOMain.ClearFault(Device);
+            _IoMain.ClearFault(Device);
         }
 
         ushort IExternalControl.ReadRegister(ComplexParts Device, ushort Address)
         {
-            return m_IOMain.ReadRegister(Device, Address);
+            return _IoMain.ReadRegister(Device, Address);
         }
 
         void IExternalControl.WriteRegister(ComplexParts Device, ushort Address, ushort Value)
         {
-            m_IOMain.WriteRegister(Device, Address, Value);
+            _IoMain.WriteRegister(Device, Address, Value);
         }
 
         void IExternalControl.CallAction(ComplexParts Device, ushort Address)
         {
-            m_IOMain.CallAction(Device, Address);
+            _IoMain.CallAction(Device, Address);
         }
 
         Types.Gate.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
         {
-            return m_IOMain.GatePulseCalibrationGate(Current);
+            return _IoMain.GatePulseCalibrationGate(Current);
         }
 
         ushort IExternalControl.GatePulseCalibrationMain(ushort Current)
         {
-            return m_IOMain.GatePulseCalibrationMain(Current);
+            return _IoMain.GatePulseCalibrationMain(Current);
         }
 
         void IExternalControl.GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
         {
-            m_IOMain.GateWriteCalibrationParams(Parameters);
+            _IoMain.GateWriteCalibrationParams(Parameters);
         }
 
         Types.Gate.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
         {
-            return m_IOMain.GateReadCalibrationParams();
+            return _IoMain.GateReadCalibrationParams();
         }
 
         void IExternalControl.SLWriteCalibrationParameters(Types.VTM.CalibrationParameters Parameters)
         {
-            m_IOMain.SLWriteCalibrationParams(Parameters);
+            _IoMain.SLWriteCalibrationParams(Parameters);
         }
 
         Types.VTM.CalibrationParameters IExternalControl.SLReadCalibrationParameters()
         {
-            return m_IOMain.SLReadCalibrationParams();
+            return _IoMain.SLReadCalibrationParams();
         }
 
         void IExternalControl.BVTWriteCalibrationParameters(Types.BVT.CalibrationParams Parameters)
         {
-            m_IOMain.BVTWriteCalibrationParams(Parameters);
+            _IoMain.BVTWriteCalibrationParams(Parameters);
         }
 
         Types.BVT.CalibrationParams IExternalControl.BVTReadCalibrationParameters()
         {
-            return m_IOMain.BVTReadCalibrationParams();
+            return _IoMain.BVTReadCalibrationParams();
         }
 
         void IExternalControl.CSWriteCalibrationParameters(Types.Clamping.CalibrationParams Parameters)
         {
-            m_IOMain.CSWriteCalibrationParams(Parameters);
+            _IoMain.CSWriteCalibrationParams(Parameters);
         }
 
         Types.Clamping.CalibrationParams IExternalControl.CSReadCalibrationParameters()
         {
-            return m_IOMain.CSReadCalibrationParams();
+            return _IoMain.CSReadCalibrationParams();
         }
 
         void IExternalControl.DvDtWriteCalibrationParameters(Types.dVdt.CalibrationParams Parameters)
         {
-            m_IOMain.DvDtWriteCalibrationParams(Parameters);
+            _IoMain.DvDtWriteCalibrationParams(Parameters);
         }
 
         Types.dVdt.CalibrationParams IExternalControl.DvDtReadCalibrationParameters()
         {
-            return m_IOMain.DvDtReadCalibrationParams();
+            return _IoMain.DvDtReadCalibrationParams();
         }
 
         void IExternalControl.ATUWriteCalibrationParameters(Types.ATU.CalibrationParams Parameters)
         {
-            m_IOMain.ATUWriteCalibrationParams(Parameters);
+            _IoMain.ATUWriteCalibrationParams(Parameters);
         }
 
         Types.ATU.CalibrationParams IExternalControl.ATUReadCalibrationParameters()
         {
-            return m_IOMain.ATUReadCalibrationParams();
+            return _IoMain.ATUReadCalibrationParams();
         }
 
         void IExternalControl.QRRWriteCalibrationParameters(Types.QRR.CalibrationParams Parameters)
@@ -297,12 +298,12 @@ namespace SCME.Service
 
         void IExternalControl.WriteResults(ResultItem Item, List<string> Errors)
         {
-            m_IOMain.WriteResults(Item, Errors);
+            _IoMain.WriteResults(Item, Errors);
         }
 
         List<ProfileForSqlSelect> IExternalControl.SaveProfiles(List<ProfileItem> profileItems)
         {
-            return m_IOMain.SaveProfiles(profileItems);
+            return _IoMain.SaveProfiles(profileItems);
         }
 
         bool IExternalControl.RequestRemotePrinting(string GroupName, string CustomerName, string DeviceType,
@@ -351,18 +352,20 @@ namespace SCME.Service
 
         public void SetSafetyMode(SafetyMode safetyMode)
         {
-            m_IOMain.SetSafetyMode(safetyMode);
+            _IoMain.SetSafetyMode(safetyMode);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, $"Safety mode is: {safetyMode}");
         }
 
         public MyProfile SyncProfile(MyProfile profile)
         {
-            return m_IOMain.IoDbSync.SyncProfile(profile);
+            return _IoMain.IoDbSync.SyncProfile(profile);
         }
+        
+        
 
         public void SetUserWorkMode(UserWorkMode userWorkMode)
         {
-            m_IOMain.SetUserWorkMode(userWorkMode);
+            _IoMain.SetUserWorkMode(userWorkMode);
         }
 
 

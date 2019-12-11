@@ -22,6 +22,9 @@ namespace SCME.InterfaceImplementations.NewImplement.SQLite
 
         protected override string InsertMmeCodeString => @"INSERT INTO MME_CODES (MME_CODE_ID, MME_CODE) VALUES (NULL, @MME_CODE)";
 
+        protected virtual string ProfileByNameByMmeMaxTimestampString => @"SELECT PROF_ID, PROF_NAME, PROF_GUID, PROF_VERS, PROF_TS FROM PROFILES WHERE PROF_NAME = @PROF_NAME AND PROF_ID IN (
+                SELECT PROFILE_ID FROM MME_CODES_TO_PROFILES WHERE MME_CODE_ID IN (SELECT MME_CODE_ID WHERE MME_CODE = @MME_CODE) ) ORDER BY PROF_TS DESC LIMIT 1";
+        
         protected override string DatabaseFieldTestTypeName => "NAME";
 
         protected override int ExecuteCommandWithId(DbCommand command)

@@ -1304,6 +1304,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile Not Changed.
+        /// </summary>
+        public static string ProfileNotChanged {
+            get {
+                return ResourceManager.GetString("ProfileNotChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile not synced.
         /// </summary>
         public static string ProfileNotSynced {

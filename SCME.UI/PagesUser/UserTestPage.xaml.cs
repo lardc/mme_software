@@ -3229,10 +3229,26 @@ namespace SCME.UI.PagesUser
 
         private void BtnSync_OnClick(object sender, RoutedEventArgs e)
         {
-            var centralProfile = Cache.Net.SyncProfile(new MyProfile(Profile));
-            if(centralProfile == null)
-                return;
-            NavigationService?.GoBack();
+            try
+            {
+                var centralProfile = Cache.Net.SyncProfile(new MyProfile(Profile));
+                if (centralProfile == null)
+                {
+                    var dw = new DialogWindow(string.Empty, Properties.Resources.ProfileNotChanged);
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+                    return;
+                }
+                
+                Cache.ProfilesPageSelectForTest.RefreshProfile(centralProfile);
+                NavigationService?.GoBack();
+            }
+            catch (Exception ex)
+            {
+                var dw = new DialogWindow(SCME.WpfControlLibrary.Properties.Resources.Error, ex.ToString());
+                dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                dw.ShowDialog();
+            }
         }
     }
 

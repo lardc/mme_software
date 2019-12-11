@@ -24,11 +24,10 @@ namespace SCME.InterfaceImplementations
 
         private AfterSyncResultsRoutine FAfterSyncResultsRoutine;
         private AfterSyncProfilesRoutine FAfterSyncProfilesRoutine;
-        private SQLiteDbService _sqLiteDbService;
         
         public SyncService(string databasePath, string mmeCode)
         {
-            _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(databasePath));
+            //_sqLiteDbService = new SQLiteDbService(new SQLiteConnection(databasePath));
             _mmeCode = mmeCode;
             _connection = new SQLiteConnection(databasePath, false);
             _connection.Open();
@@ -80,55 +79,55 @@ namespace SCME.InterfaceImplementations
 
         private void SyncProfilesWorkerHandler(InputWorkerParameters WorkerParameters)
         {
-            try
-            {
-                using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
-                {
-                    var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
-                    var centralProfiles = msSqlDbService.GetProfilesSuperficially(_mmeCode);
-                    if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
-                        _sqLiteDbService.InsertMmeCode(_mmeCode);
-
-                    List<MyProfile> deletingProfiles;
-                    List<MyProfile> addingProfiles;
-                    
-                    if (_sqLiteDbService.Migrate())
-                    {
-                        deletingProfiles = localProfiles;
-                        addingProfiles = centralProfiles;
-                    }
-                    else
-                    {
-                        deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
-                        addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
-                    }
-                    
-                    foreach (var i in deletingProfiles)
-                        _sqLiteDbService.RemoveProfile(i, _mmeCode);
-
-                    foreach (var i in addingProfiles)
-                    {
-                        i.DeepData = msSqlDbService.LoadProfileDeepData(i);
-                        _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
-                    }
-
-                    return;
-                }
-                using (var centralDbClient = new CentralDatabaseServiceClient())
-                {
-//                    Thread.Sleep(5000);
-//                    throw new Exception();
-                    
-                    var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
-                    serverProfiles.ForEach(m => m.NextGenerationKey = m.ProfileKey);
-
-                    SaveProfiles(serverProfiles);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.Message));
-            }
+//            try
+//            {
+//                using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
+//                {
+//                    var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
+//                    var centralProfiles = msSqlDbService.GetProfilesSuperficially(_mmeCode);
+//                    if(!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
+//                        _sqLiteDbService.InsertMmeCode(_mmeCode);
+//
+//                    List<MyProfile> deletingProfiles;
+//                    List<MyProfile> addingProfiles;
+//                    
+//                    if (_sqLiteDbService.Migrate())
+//                    {
+//                        deletingProfiles = localProfiles;
+//                        addingProfiles = centralProfiles;
+//                    }
+//                    else
+//                    {
+//                        deletingProfiles = localProfiles.Except(centralProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+//                        addingProfiles = centralProfiles.Except(localProfiles, new MyProfile.ProfileByVersionTimeEqualityComparer()).ToList();
+//                    }
+//                    
+//                    foreach (var i in deletingProfiles)
+//                        _sqLiteDbService.RemoveProfile(i, _mmeCode);
+//
+//                    foreach (var i in addingProfiles)
+//                    {
+//                        i.DeepData = msSqlDbService.LoadProfileDeepData(i);
+//                        _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
+//                    }
+//
+//                    return;
+//                }
+//                using (var centralDbClient = new CentralDatabaseServiceClient())
+//                {
+////                    Thread.Sleep(5000);
+////                    throw new Exception();
+//                    
+//                    var serverProfiles = centralDbClient.GetProfileItemsByMme(_mmeCode);
+//                    serverProfiles.ForEach(m => m.NextGenerationKey = m.ProfileKey);
+//
+//                    SaveProfiles(serverProfiles);
+//                }
+//            }
+//            catch (Exception ex)
+//            {
+//                throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.Message));
+//            }
         }
 
         private void SyncProfilesCompletedHandler(string Error)
@@ -153,17 +152,18 @@ namespace SCME.InterfaceImplementations
 
         public MyProfile SyncProfile(MyProfile profile)
         {
-            using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
-            {
-                var centralProfile = msSqlDbService.GetProfileByKey(profile.Key);
-                if (!new MyProfile.ProfileByVersionTimeEqualityComparer().Equals(profile, centralProfile))
-                {
-                    _sqLiteDbService.InsertUpdateProfile(profile, centralProfile, _mmeCode);
-                    return centralProfile;
-                }
-
-                return null;
-            }
+//            using (var msSqlDbService = new DatabaseProxy("SCME.CentralDatabase"))
+//            {
+//                var centralProfile = msSqlDbService.GetProfileByKey(profile.Key);
+//                if (!new MyProfile.ProfileByVersionTimeEqualityComparer().Equals(profile, centralProfile))
+//                {
+//                    _sqLiteDbService.InsertUpdateProfile(profile, centralProfile, _mmeCode);
+//                    return centralProfile;
+//                }
+//
+//                return null;
+//            }
+            return null;
         }
 
         public void SyncProfiles(ICentralDatabaseService centralDatabaseService)
