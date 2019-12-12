@@ -8,13 +8,7 @@
       xmlns:qrrTq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=qrrTq:TestParameters}"
       d:DesignHeight="450" d:DesignWidth="800">
-    <Grid.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Grid.Resources>
+    
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>

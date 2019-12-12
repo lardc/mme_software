@@ -10,7 +10,7 @@ namespace SCME.Types.Database
     public interface IDbService
     {
         [OperationContract]
-        MyProfile GetTopProfileByName(string mmeCode, string name);
+        (MyProfile profile, bool IsInMmeCode) GetTopProfileByName(string mmeCode, string name);
         
         [OperationContract]
         void ClearCacheByMmeCode(string mmeCode);

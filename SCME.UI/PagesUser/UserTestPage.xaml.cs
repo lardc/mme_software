@@ -3233,7 +3233,16 @@ namespace SCME.UI.PagesUser
         {
             try
             {
-                var centralProfile = Cache.Net.SyncProfile(new MyProfile(Profile));
+                var (centralProfile, isInMmeCode) = Cache.Net.SyncProfile(new MyProfile(Profile));
+                if (!isInMmeCode)
+                {
+                    var dw = new DialogWindow(string.Empty, Properties.Resources.ProfileWasUntied);
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+                    Cache.ProfilesPageSelectForTest.RemoveSelectedProfile();
+                    NavigationService?.GoBack();
+                    return;
+                }
                 if (centralProfile == null)
                 {
                     var dw = new DialogWindow(string.Empty, Properties.Resources.ProfileNotChanged);

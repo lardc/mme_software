@@ -841,5 +841,8 @@
   <data name="ProfileNotChanged" xml:space="preserve">
     <value>Profile Not Changed</value>
   </data>
+  <data name="ProfileWasUntied" xml:space="preserve">
+    <value>profile was untied from mme code</value>
+  </data>
   
 </root>

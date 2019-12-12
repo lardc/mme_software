@@ -816,4 +816,7 @@
   <data name="ProfileNotChanged" xml:space="preserve">
     <value>Профиль не изменен</value>
   </data>
+  <data name="ProfileWasUntied" xml:space="preserve">
+    <value>Профиль был отвязан от mme кода</value>
+  </data>
 </root>

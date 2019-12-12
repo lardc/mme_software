@@ -15,15 +15,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
 {
     public abstract partial class DbService<TDbCommand, TDbConnection> where TDbCommand : DbCommand where TDbConnection : DbConnection
     {
-        public MyProfile GetTopProfileByName(string mmeCode, string name)
+        public (MyProfile profile, bool IsInMmeCode) GetTopProfileByName(string mmeCode, string name)
         {
             try
             {
                 _profileByNameByMmeMaxTimestamp.Parameters["@MME_CODE"].Value = mmeCode;
                 _profileByNameByMmeMaxTimestamp.Parameters["@PROF_NAME"].Value = name;
                 using var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader();
-                reader.Read();
-                return new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+                var isRead = reader.Read();
+                return !isRead ? (null, false) : (new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4)), true);
             }
             catch (Exception e)
             {
@@ -137,11 +137,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
-            _cacheProfileById.TryGetValue(profile.Id,  out var cacheProfile );
-            
-            if(cacheProfile == null)
+            _cacheProfileById.TryGetValue(profile.Id, out var cacheProfile);
+
+            if (cacheProfile == null)
                 cacheProfile = new ProfileCache(profile);
-            
+
             if (cacheProfile.IsDeepLoad == false || !_enableCache)
             {
                 var testTypes = new Dictionary<long, long>();
@@ -187,7 +187,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         public List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null)
         {
             _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profile.Id;
-            
+
             _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
             if (_enableCache && profileCache != null)
             {
@@ -195,7 +195,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     return profileCache.MmeCodes.Copy();
 
                 profileCache.MmeCodes = new List<string>();
-                
+
                 _mmeCodesByProfile.Transaction = dbTransaction;
                 using var reader = _mmeCodesByProfile.ExecuteReader();
                 while (reader.Read())

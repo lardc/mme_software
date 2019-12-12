@@ -116,17 +116,21 @@ namespace SCME.Service.IO
             }
         }
 
-        public MyProfile SyncProfile(MyProfile profile)
+        public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)
         {
-            var centralProfile = _msSqlDbService.GetTopProfileByName(_mmeCode, profile.Name);
+            var (centralProfile, isInMmeCode) = _msSqlDbService.GetTopProfileByName(_mmeCode, profile.Name);
+            
+            if (!isInMmeCode)
+                return (null, false);
+            
             if (!new MyProfile.ProfileByVersionTimeEqualityComparer().Equals(profile, centralProfile))
             {
                 centralProfile.DeepData = _msSqlDbService.LoadProfileDeepData(centralProfile);
                 _sqLiteDbService.InsertUpdateProfile(profile, centralProfile, _mmeCode);
-                return centralProfile;
+                return (centralProfile, true);
             }
 
-            return null;
+            return (null, true);
         }
 
 

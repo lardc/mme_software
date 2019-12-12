@@ -1340,6 +1340,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to profile was untied from mme code.
+        /// </summary>
+        public static string ProfileWasUntied {
+            get {
+                return ResourceManager.GetString("ProfileWasUntied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job number.
         /// </summary>
         public static string PsdJob {

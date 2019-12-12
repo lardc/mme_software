@@ -53,18 +53,19 @@ namespace SCME.WpfControlLibrary.Pages
 
             ProfileVm.SpecialMeasure = specialMeasure;
             
-            ProfileVm.MmeCodes = GetMMeCodes;
-            
-            if (mmeCode == string.Empty)
-                mmeCode = ProfileVm.MmeCodes.First().Key;
-            
             ProfileVm.SelectedMmeCode = mmeCode;
+            ProfileVm.MmeCodes = GetMMeCodes;
 
-            if (!ProfileVm.MmeCodes.ContainsKey(mmeCode))
+            if (ProfileVm.SelectedMmeCode  == string.Empty)
+                ProfileVm.SelectedMmeCode  = ProfileVm.MmeCodes.First().Key;
+            
+            if (!ProfileVm.MmeCodes.ContainsKey(ProfileVm.SelectedMmeCode ))
             {
-                _dbService.InsertMmeCode(mmeCode);
+                _dbService.InsertMmeCode(ProfileVm.SelectedMmeCode );
                 ProfileVm.MmeCodes = GetMMeCodes;
             }
+            
+            
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
             _dispatcherTimerFindProfile.Interval = new TimeSpan(0, 0, 1);
@@ -192,6 +193,7 @@ namespace SCME.WpfControlLibrary.Pages
         {
             ProfileVm.ProfileDeepDataCopy = null;
             ProfileVm.SearchingName = string.Empty;
+            ProfileVm.SelectedProfileNameCopy = string.Empty;
             LoadTopProfiles();
         }
 
@@ -204,12 +206,14 @@ namespace SCME.WpfControlLibrary.Pages
 
         public void RefreshProfile(MyProfile newProfile)
         {
-          
-                
             ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(ProfileVm.SelectedProfile), newProfile);
             ProfileVm.Profiles.Remove(ProfileVm.SelectedProfile);
             ProfileVm.SelectedProfile = newProfile;
-           
+        }
+        
+        public void RemoveSelectedProfile()
+        {
+            ProfileVm.Profiles.Remove(ProfileVm.SelectedProfile);
         }
 
 

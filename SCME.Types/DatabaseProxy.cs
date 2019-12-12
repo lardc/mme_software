@@ -17,7 +17,7 @@ namespace SCME.Types
         }
 
 
-        public MyProfile GetTopProfileByName(string mmeCode, string name)
+        public (MyProfile profile, bool IsInMmeCode) GetTopProfileByName(string mmeCode, string name)
         {
             return Channel.GetTopProfileByName(mmeCode, name);
         }

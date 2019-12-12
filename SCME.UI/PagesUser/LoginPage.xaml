@@ -40,9 +40,9 @@
                 Margin="0,0,0,0" />
 
         <customControl:ListBoxProfiles x:Name="accountsListBox"
-                                Grid.Column="0" Grid.Row="0" Grid.RowSpan="5"
+                                Grid.Column="0" Grid.Row="0" Grid.RowSpan="4"
                                 SelectionChanged="AccountsListBox_OnSelectionChanged"
-                                Margin="0,0,0,0" IsEditable="False" />
+                                 IsEditable="False" />
 
         <Label Grid.Column="1" Grid.Row="1"
                Content="{x:Static res:Resources.EnterPassword}"
@@ -58,10 +58,10 @@
                FontSize="18" Margin="400,0,150,0" Foreground="{StaticResource xOrange2}"/>
 
         <Button x:Name="btn_Back" x:FieldModifier="private"
-                    Grid.Column="1" Grid.Row="4"
+                    Grid.Column="0" Grid.Row="4"
                     Content="{x:Static res:Resources.Back}"
                     Click="btBack_OnClick"
-                    Margin="6, 0, 110, 0" />
+                     />
 
         <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>

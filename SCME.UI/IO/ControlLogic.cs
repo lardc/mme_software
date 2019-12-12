@@ -42,7 +42,7 @@ namespace SCME.UI.IO
             m_NetPingTimer.Tick += NetPingTimerOnTick;
         }
 
-        public MyProfile SyncProfile(MyProfile profile)
+        public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)
         {
             return m_ControlClient.SyncProfile(profile);
         }

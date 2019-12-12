@@ -260,7 +260,7 @@ namespace SCME.Types
             Channel.SetSafetyMode(safetyMode);
         }
 
-        public MyProfile SyncProfile(MyProfile profile)
+        public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)
         {
             return Channel.SyncProfile(profile);
         }

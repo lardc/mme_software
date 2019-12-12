@@ -356,7 +356,7 @@ namespace SCME.Service
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, $"Safety mode is: {safetyMode}");
         }
 
-        public MyProfile SyncProfile(MyProfile profile)
+        public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)
         {
             return _IoMain.IoDbSync.SyncProfile(profile);
         }

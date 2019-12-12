@@ -19,7 +19,7 @@ namespace SCME.Types
     {
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        MyProfile SyncProfile(MyProfile profile);
+        (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile);
         
         [OperationContract]
         [FaultContract(typeof(FaultData))]
