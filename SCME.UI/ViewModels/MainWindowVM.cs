@@ -31,6 +31,8 @@ namespace SCME.UI.ViewModels
         [DependsOn(nameof(IsLocal))] public bool IsCentral => !IsLocal;
 
         public string  MmeCode { get; set; }
+        
+        public bool AccountNameIsVisibility { get; set; }
 
         public string AccountName { get; set; }
 

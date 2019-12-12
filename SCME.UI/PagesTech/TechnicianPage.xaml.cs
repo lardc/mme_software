@@ -138,6 +138,7 @@ namespace SCME.UI.PagesTech
         private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             Cache.ProfilesPage.GoBackAction += () => { ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.Profiles.ToList());};
+            Cache.Main.VM.AccountNameIsVisibility = false;
         }
     }
 }

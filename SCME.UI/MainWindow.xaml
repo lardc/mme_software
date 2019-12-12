@@ -121,7 +121,7 @@
                           Visibility="{Binding IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
                         <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
                         <Label  Content="{Binding AccountName}"  FontSize="24" HorizontalAlignment="Left"
-                           Visibility="{Binding AccountName.IsEmpty, Converter={StaticResource B2VI}}"
+                           Visibility="{Binding AccountNameIsVisibility, Converter={StaticResource B2V}}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
                         <Button Content="{StaticResource LogoutPath}" Click="Logout_Click"
                             Visibility="{Binding AccountButtonVisibility}"

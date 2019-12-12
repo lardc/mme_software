@@ -29,7 +29,8 @@ namespace SCME.WpfControlLibrary.Pages
         private readonly DispatcherTimer _dispatcherTimerFindProfile = new DispatcherTimer();
 
         public event Action GoBackAction;
-
+        public event Action AfterLoadAction;
+        
         private Dictionary<string, int> GetMMeCodes => ProfileVm.IsSingleMmeCode
             ? _dbService.GetMmeCodes().Where(m => m.Key == ProfileVm.SelectedMmeCode).ToDictionary(m => m.Key, m => m.Value)
             : _dbService.GetMmeCodes().Where(m => m.Key != Constants.MME_CODE_IS_ACTIVE_NAME).ToDictionary(m => m.Key, m => m.Value);
@@ -196,10 +197,8 @@ namespace SCME.WpfControlLibrary.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (ProfileVm.MmeCodes.Count == 0)
-            {
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
-                return;
-            }
+            AfterLoadAction?.Invoke();
         }
 
         public void RefreshProfile(MyProfile newProfile)

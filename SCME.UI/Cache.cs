@@ -39,8 +39,20 @@ namespace SCME.UI
 
         internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.IsCentral));
 
-        internal static ProfilesPage ProfilesPageSelectForTest => _profilesPageSelectForTest ?? (_profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, true));
+        internal static ProfilesPage ProfilesPageSelectForTest
+        {
+            get
+            {
+                if(_profilesPageSelectForTest == null)
+                 _profilesPageSelectForTest = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, true);
+                
+                _profilesPageSelectForTest.AfterLoadAction += () => Main.VM.AccountNameIsVisibility = true;
+                return _profilesPageSelectForTest;
+            }
+        }
         
+
+
         internal static ProfilesPage ProfilesPageSpecialMeasure => _profilesPageSpecialMeasure ?? (_profilesPageSpecialMeasure = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, false, true));
                                                                       
 

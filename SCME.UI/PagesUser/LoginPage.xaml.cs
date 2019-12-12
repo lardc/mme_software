@@ -65,6 +65,7 @@ namespace SCME.UI.PagesUser
 
         public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage)
         {
+            Cache.Main.VM.AccountNameIsVisibility = true;
             profilesPage.LoadTopProfiles();
             profilesPage.Title = $"{SCME.UI.Properties.Resources.Total} {SCME.UI.Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
 //            Cache.ProfilesPageSelectForTest.GoBackAction += () =>
@@ -99,6 +100,7 @@ namespace SCME.UI.PagesUser
         private void LoginPage_Loaded(object Sender, RoutedEventArgs E)
         {
             lblIncorrect.Content = "";
+//            Cache.Main.VM.AccountName = string.Empty;
         }
     }
 }

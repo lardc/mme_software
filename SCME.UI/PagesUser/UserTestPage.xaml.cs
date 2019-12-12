@@ -3142,6 +3142,7 @@ namespace SCME.UI.PagesUser
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
         {          
+            
             tbPsdJob.Text = "";
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
@@ -3166,6 +3167,7 @@ namespace SCME.UI.PagesUser
             }
             else
             {
+                Cache.Main.VM.AccountNameIsVisibility = true;
                 //случай режима отличного от 'режим специальных измерений'. поля для ввода идентификационных данных должны быть введены, поэтому делаем их видимыми
 
                 switch (Settings.Default.DUTType)
