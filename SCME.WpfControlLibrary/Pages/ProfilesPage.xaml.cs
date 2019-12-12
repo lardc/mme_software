@@ -53,17 +53,18 @@ namespace SCME.WpfControlLibrary.Pages
 
             ProfileVm.SpecialMeasure = specialMeasure;
             
-            ProfileVm.SelectedMmeCode = mmeCode;
-
             ProfileVm.MmeCodes = GetMMeCodes;
+            
+            if (mmeCode == string.Empty)
+                mmeCode = ProfileVm.MmeCodes.First().Key;
+            
+            ProfileVm.SelectedMmeCode = mmeCode;
 
             if (!ProfileVm.MmeCodes.ContainsKey(mmeCode))
             {
                 _dbService.InsertMmeCode(mmeCode);
                 ProfileVm.MmeCodes = GetMMeCodes;
             }
-
-            
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
             _dispatcherTimerFindProfile.Interval = new TimeSpan(0, 0, 1);

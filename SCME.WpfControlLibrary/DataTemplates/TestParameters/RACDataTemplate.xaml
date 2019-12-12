@@ -21,7 +21,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"  Value="{Binding ResVoltage}" />
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.RACResVoltage}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"  Value="{Binding ResVoltage}" />
     </Grid>
 </Grid>
