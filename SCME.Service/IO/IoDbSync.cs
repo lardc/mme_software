@@ -38,9 +38,6 @@ namespace SCME.Service.IO
                 _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(connectionString));
                 _msSqlDbService = new DatabaseProxy("SCME.CentralDatabase");
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionInProcess, string.Empty);
-                if (!Settings.Default.IsLocal)
-                    SyncProfiles();
-
 //                    AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
 //                else
 //                    SyncWithServer(AfterSyncWithServerRoutineHandler);
@@ -55,7 +52,7 @@ namespace SCME.Service.IO
         {
             return Task.Factory.StartNew(() =>
             {
-                var initializationResponce = new InitializationResponse()
+                var initializationResponse = new InitializationResponse()
                 {
                     IsLocal = Settings.Default.IsLocal,
                     MmeCode = _mmeCode
@@ -63,18 +60,18 @@ namespace SCME.Service.IO
 
                 try
                 {
-                    if (!initializationResponce.IsLocal)
+                    if (!initializationResponse.IsLocal)
                         SyncProfiles();
                 }
                 catch (Exception e)
                 {
-                    initializationResponce.IsLocal = true;
+                    initializationResponse.IsLocal = true;
                     _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
                 }
 
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
 
-                return initializationResponce;
+                return initializationResponse;
             });
         }
 
@@ -83,7 +80,7 @@ namespace SCME.Service.IO
             try
             {
                 var localProfiles = _sqLiteDbService.GetProfilesSuperficially(_mmeCode);
-                var centralProfiles = _msSqlDbService.GetProfilesSuperficially(_mmeCode);
+                var centralProfiles = _msSqlDbService.GetProfilesDeepByMmeCode(_mmeCode);
                 if (!_sqLiteDbService.GetMmeCodes().ContainsKey(_mmeCode))
                     _sqLiteDbService.InsertMmeCode(_mmeCode);
 
@@ -106,7 +103,7 @@ namespace SCME.Service.IO
 
                 foreach (var i in addingProfiles)
                 {
-                    i.DeepData = _msSqlDbService.LoadProfileDeepData(i);
+                    //i.DeepData = _msSqlDbService.LoadProfileDeepData(i);
                     _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
                 }
             }

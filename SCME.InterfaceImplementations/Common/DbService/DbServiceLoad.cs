@@ -135,6 +135,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return cacheProfile.Profile.Children.Select((m => m.Copy())).ToList();
         }
 
+        public void InvalidCacheById(int id, string mmeCode)
+        {
+            _cacheProfileById.Remove(id);
+            _cacheProfilesByMmeCode.Remove(mmeCode);
+        }
+        
         public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
             _cacheProfileById.TryGetValue(profile.Id, out var cacheProfile);

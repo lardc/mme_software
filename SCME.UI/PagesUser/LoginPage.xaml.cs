@@ -36,8 +36,7 @@ namespace SCME.UI.PagesUser
 
         private void btBack_OnClick(object sender, RoutedEventArgs e)
         {
-            if (NavigationService != null)
-                NavigationService.GoBack();
+                NavigationService?.Navigate(Cache.UserWorkMode);
         }
 
         private void ButtonNext_OnClick(object Sender, RoutedEventArgs E)

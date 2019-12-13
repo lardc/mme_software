@@ -43,8 +43,7 @@ namespace SCME.WpfControlLibrary.ViewModels
                 if (_selectedProfile != null)
                 {
                     SelectedProfileNameCopy = _selectedProfile.Name;
-                    if(!SpecialMeasure)
-                        SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
+                    SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
                     ProfileDeepDataCopy = _selectedProfile.DeepData.Copy();
                 }
                 else

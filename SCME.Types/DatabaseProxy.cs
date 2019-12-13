@@ -55,6 +55,11 @@ namespace SCME.Types
             return Channel.GetProfileChildSuperficially(profile);
         }
 
+        public void InvalidCacheById(int id, string mmeCode)
+        {
+            Channel.InvalidCacheById(id, mmeCode);
+        }
+
         public ProfileDeepData LoadProfileDeepData(MyProfile profile)
         {
             return Channel.LoadProfileDeepData(profile);

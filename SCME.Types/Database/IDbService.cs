@@ -27,6 +27,9 @@ namespace SCME.Types.Database
         
         [OperationContract]
         List<MyProfile> GetProfileChildSuperficially(MyProfile profile);
+
+        [OperationContract]
+        void InvalidCacheById(int id, string mmeCode);
         
         [OperationContract]
         ProfileDeepData LoadProfileDeepData(MyProfile profile);

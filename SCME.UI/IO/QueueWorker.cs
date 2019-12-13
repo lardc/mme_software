@@ -65,6 +65,7 @@ namespace SCME.UI.IO
                         Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
 
                         var stateService = Cache.Net.GetStateService;
+                        Cache.Main.VM.SyncState = stateService.IsLocal ? "Local" : "Synced";
                         Cache.Main.VM.MmeCode = stateService.MmeCode;
                         Cache.Main.VM.IsLocal = stateService.IsLocal;
 

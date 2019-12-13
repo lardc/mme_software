@@ -53,7 +53,7 @@
             <!--         </HierarchicalDataTemplate> -->
             <!--     </TreeView.ItemTemplate> -->
             <!-- </TreeView> -->
-            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}">
+            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                 <ListView.ItemTemplate >
                     <DataTemplate >
                         <Label d:DataContext="{d:DesignInstance profiles:MyProfile}" Content="{Binding Name}"></Label>
