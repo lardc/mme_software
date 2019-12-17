@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using SCME.Types;
 using SCME.WpfControlLibrary.Commands;
+// ReSharper disable All
 
 namespace SCME.WpfControlLibrary.CustomControls
 {
@@ -48,16 +49,10 @@ namespace SCME.WpfControlLibrary.CustomControls
                 DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 DefaultValue = 1.0
             });
-        
-     
-        
-        public string StringFormat
-        {
-            get => (string)GetValue(StringFormatProperty);
-            set => SetValue(StringFormatProperty, value);
-        }
-        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register(
-            nameof(StringFormat), typeof(string), typeof(NumericUpDown),new PropertyMetadata(null));
+
+
+
+        public string StringFormat { get; set; }
         
         public RelayCommand Up => new RelayCommand((obj) =>
         {
@@ -109,19 +104,18 @@ namespace SCME.WpfControlLibrary.CustomControls
             }
         }
 
-        public static T FindChild<T>(DependencyObject parent, string childName)
+        private static T FindChild<T>(DependencyObject parent, string childName)
             where T : DependencyObject
         {    
             // Confirm parent and childName are valid. 
             if (parent == null) return null;
             T foundChild = null;
-            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < childrenCount; i++)
+            var childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < childrenCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
                 // If the child is not of the request child type child
-                T childType = child as T;
-                if (childType == null)
+                if (!(child is T))
                 {
                     // recursively drill down the tree
                     foundChild = FindChild<T>(child, childName);
@@ -130,9 +124,8 @@ namespace SCME.WpfControlLibrary.CustomControls
                 }
                 else if (!string.IsNullOrEmpty(childName))
                 {
-                    var frameworkElement = child as FrameworkElement;
                     // If the child's name is set for search
-                    if (frameworkElement != null && frameworkElement.Name == childName)
+                    if (child is FrameworkElement frameworkElement && frameworkElement.Name == childName)
                     {
                         // if the child's name is of the request name
                         foundChild = (T)child;
@@ -156,13 +149,18 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            
+            var textBoxValue = FindChild<TextBox>(this,"TextBoxValue");
+            if (textBoxValue != null && !string.IsNullOrEmpty(StringFormat))
+                {
+                    var be = textBoxValue.GetBindingExpression(TextBox.TextProperty);
+                    var pb = be.ParentBinding;
+                    textBoxValue.SetBinding(TextBox.TextProperty, new Binding("Value")
+                    {
+                        RelativeSource = pb.RelativeSource,
+                        StringFormat = StringFormat
+                    });
+                }
         }
 
-//        public new float Minimum
-//        {
-//            get => Convert.ToSingle(base.Minimum);
-//            set => base.Minimum = Convert.ToSingle(value);
-//        }
     }
 }

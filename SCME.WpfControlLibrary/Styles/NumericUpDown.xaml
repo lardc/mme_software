@@ -21,8 +21,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                        <TextBox Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <Label Grid.Column="0" x:Name="LabelValue" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <TextBox Grid.Column="0" x:Name="TextBoxValue" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                         <RepeatButton Grid.Column="1" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">
                             
                             <Path Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z " Fill="Black" Stretch="Fill" />

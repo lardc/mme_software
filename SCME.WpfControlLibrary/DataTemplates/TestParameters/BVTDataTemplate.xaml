@@ -55,7 +55,7 @@
     <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.StartVoltage_V}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding StartVoltage}" />
     <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.Frequency_Hz}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding VoltageFrequency}" />
+    <ComboBox Grid.Column="4" Grid.Row="3" ItemsSource="{Binding Source={StaticResource VoltageFrequency}}" SelectedValue="{Binding VoltageFrequency}" />
 
     <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}" />
     <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource FrequencyDivisors}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding FrequencyDivisor}" />

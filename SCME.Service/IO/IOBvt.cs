@@ -720,7 +720,7 @@ namespace SCME.Service.IO
             if (State == DeviceState.Success)
                 message = string.Format($"BVT {(IsUdsmUrsm ? "UdsmUrsm" : "")} {(type == BVTTestType.Direct ? "direct" : "reverse")} test result " +
                                         $"{(type == BVTTestType.Direct ? Result.VDRM : Result.VRRM)} V, {(type == BVTTestType.Direct ? Result.IDRM : Result.IRRM)} mA");
-            
+
             SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Info, message);
             if (type == BVTTestType.Direct)
             {
@@ -743,11 +743,9 @@ namespace SCME.Service.IO
                 {
                     m_Communication.PostBVTReverseEvent(State, Result);
                 }
-
             }
-            
         }
-        
+
 //        private void FireBvtDirectEvent(DeviceState State, Types.BVT.TestResults Result, bool IsUdsmUrsm)
 //        {
 //            var message = string.Format("BVT direct test state {0}", State);
@@ -928,8 +926,9 @@ namespace SCME.Service.IO
                     if (bvtInputParameter.TestType == Types.BVT.BVTTestType.Both ||
                         bvtInputParameter.TestType == Types.BVT.BVTTestType.Direct)
                     {
+                        internalState = DeviceState.InProcess;
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
-                        
+
                         if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTD, commutation.CommutationType, commutation.Position) ==
                             DeviceState.Fault)
                         {
@@ -962,7 +961,7 @@ namespace SCME.Service.IO
                         }
 
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
-                        
+
 
                         if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
                         {

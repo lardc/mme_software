@@ -101,6 +101,7 @@ namespace SCME.UI
                 {
                     if (Settings.Default.NormalWindow)
                     {
+                        
                         WindowStyle = WindowStyle.SingleBorderWindow;
                         WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         ResizeMode = ResizeMode.CanResize;

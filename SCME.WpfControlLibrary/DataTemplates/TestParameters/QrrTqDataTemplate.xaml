@@ -39,7 +39,7 @@
      <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding DCPulseWidth}" /> 
     
     <Label Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" /> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding DCRiseRate}" StringFormat="{}{0:N3}" /> 
+     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding DCRiseRate}" StringFormat="N3" /> 
     
     <Label Grid.Column="0" Grid.Row="5"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCFallRate}" /> 
      <ComboBox Grid.Column="4" Grid.Row="5"  ItemsSource="{Binding Source={StaticResource TDcFallRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DCFallRate}" /> 

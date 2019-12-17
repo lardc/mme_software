@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
@@ -179,6 +180,14 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {5, 10},
                 {2, 25},
                 {1, 50},
+            };
+        }
+        
+        public static List<ushort> GetVoltageFrequency()
+        {
+            return new List<ushort>()
+            {
+                50,60
             };
         }
     }

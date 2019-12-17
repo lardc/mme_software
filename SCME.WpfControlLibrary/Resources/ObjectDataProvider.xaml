@@ -25,6 +25,8 @@
     
     
     <ObjectDataProvider x:Key="FrequencyDivisors" MethodName="GetFrequencyDivisors" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VoltageFrequency" MethodName="GetVoltageFrequency" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    
     
     
     <ObjectDataProvider x:Key="MinWidthForListViewMmeCode" MethodName="MeasureString" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}">
