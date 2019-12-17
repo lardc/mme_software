@@ -12,13 +12,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
             <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
-            <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+            <ColumnDefinition Width="30" />
             <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
             <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.TOUITM}" />
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentAmplitude}" MinMaxInterval="{x:Static types:ConstantsMinMax+Tou.CurrentAmplitude}" />
 </Grid>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-             xmlns:rac="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
+             xmlns:rac="clr-namespace:SCME.Types.RAC;assembly=SCME.Types" 
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=rac:TestParameters}"
              d:DesignWidth="800">
    
@@ -13,7 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
             <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
-            <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+            <ColumnDefinition Width="30" />
             <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
             <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>

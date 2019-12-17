@@ -13,18 +13,17 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Grid>
+            <Grid >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"  />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="auto"  />
-                <ColumnDefinition Width="*"/>
+             <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
@@ -60,5 +59,4 @@
                       Visibility="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource B2VI}}"/>
             
         </Grid>
-    </Grid>
 </UserControl>

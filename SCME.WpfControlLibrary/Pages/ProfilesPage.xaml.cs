@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
@@ -82,8 +83,12 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void BeginEditProfile()
         {
-            ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData.Copy();
-            ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name.Copy();
+            if (!ProfileVm.SpecialMeasure)
+            {
+                ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData.Copy();
+                ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name.Copy();
+            }
+
             ProfileVm.IsEditModeActive = true;
         }
 
@@ -112,6 +117,12 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void EndEditProfile_Click(object sender, RoutedEventArgs e)
         {
+            if (ProfileVm.SpecialMeasure)
+            {
+                ProfileVm.IsEditModeActive = false;
+                return;
+            }
+
             var oldName = ProfileVm.SelectedProfile?.Name;
             if (CheckName(oldName) == false)
                 return;
@@ -123,16 +134,14 @@ namespace SCME.WpfControlLibrary.Pages
             if (oldProfile == null)
             {
                 newProfile = new MyProfile(0, ProfileVm.SelectedProfileNameCopy, Guid.NewGuid(), 0, DateTime.Now).GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
-                if (!ProfileVm.SpecialMeasure)
-                    newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
+                newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
                 ProfileVm.Profiles.Insert(0, newProfile);
             }
             else
             {
                 newProfile = oldProfile.GenerateNextVersion(ProfileVm.ProfileDeepDataCopy, ProfileVm.SelectedProfileNameCopy);
-                if (!ProfileVm.SpecialMeasure)
-                    newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
+                newProfile.Id = _dbService.InsertUpdateProfile(oldProfile, newProfile, ProfileVm.SelectedMmeCode);
 
                 ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(oldProfile), newProfile);
                 ProfileVm.Profiles.Remove(oldProfile);
@@ -188,7 +197,7 @@ namespace SCME.WpfControlLibrary.Pages
             newProfile.DeepData.TestParametersAndNormatives.Clear();
             _dbService.InvalidCacheById(ProfileVm.SelectedProfile.Id, ProfileVm.SelectedMmeCode);
 
-            
+
             ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(ProfileVm.SelectedProfile), newProfile);
             ProfileVm.Profiles.Remove(ProfileVm.SelectedProfile);
             ProfileVm.SelectedProfile = newProfile;
@@ -217,12 +226,25 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void ListViewProfiles_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-//            if(ProfileVm.SelectedProfile == null)
-//                return;
+            if (ProfileVm.SelectedProfile == null)
+                return;
 //            if (_disabledProfileSelectionChanged)
 //                return;
             if (ProfileVm.SpecialMeasure)
                 BeginEditProfile();
+        }
+
+        private void TestParametersListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = sender;
+                var parent = ((Control) sender).Parent as UIElement;
+                parent.RaiseEvent(eventArg);
+            }
         }
     }
 }

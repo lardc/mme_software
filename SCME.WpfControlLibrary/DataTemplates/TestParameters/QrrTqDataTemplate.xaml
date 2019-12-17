@@ -12,7 +12,7 @@
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
-        <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+        <ColumnDefinition Width="30" />
         <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
     </Grid.ColumnDefinitions>
@@ -49,6 +49,5 @@
 
     
     <Label Grid.Column="0" Grid.Row="7"  Grid.ColumnSpan="4"  Content="{x:Static res:Resources.QrrTqOsvRate}" />
-    
     <ComboBox Grid.Column="4" Grid.Row="7"  ItemsSource="{Binding Source={StaticResource TOsvRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
 </Grid>

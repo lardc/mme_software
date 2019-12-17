@@ -86,6 +86,7 @@ namespace SCME.Types.Profiles
 
         public Profile ToProfile() => new Profile()
         {
+            Id = Id,
             Name = Name,
             Key = Key,
             Version = Version,

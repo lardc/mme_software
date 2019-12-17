@@ -18,7 +18,8 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:mahappsConverters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
-                    xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters">
+                    xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
+                    xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
@@ -39,7 +40,6 @@
 
    
     <Style TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
     

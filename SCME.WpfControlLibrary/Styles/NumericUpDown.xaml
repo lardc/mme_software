@@ -6,6 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <converters:ThicknessBindingConverter x:Key="ThicknessBindingConverter" />
@@ -20,7 +21,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <Label Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <TextBox Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                         <RepeatButton Grid.Column="1" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}">
                             
                             <Path Data="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z " Fill="Black" Stretch="Fill" />
@@ -30,6 +32,7 @@
                         </RepeatButton>
                     </Grid>          
                     <ControlTemplate.Triggers>
+
                         <!--<Trigger Property="IsEnabled" Value="True">
                             <Setter TargetName="ButtonUp" Property="Background" Value="Transparent"></Setter>
                             <Setter TargetName="ButtonDown" Property="Background" Value="Transparent"></Setter>

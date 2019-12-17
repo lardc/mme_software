@@ -22,54 +22,53 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
+    <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="75*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" SharedSizeGroup="Column0" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMmeCode}" SelectedValuePath="Key" DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}" SelectionChanged="ComboBox_SelectionChanged"
-                      Visibility="{Binding IsSingleMmeCode, Converter={StaticResource B2VI}}"/>
-            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}" IsEnabled="{Binding IsEditModeInActive}" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
+            <ComboBox Grid.Column="0" Grid.Row="0" SelectedValue="{Binding SelectedMmeCode}" SelectedValuePath="Key"
+                      DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}"
+                      SelectionChanged="ComboBox_SelectionChanged"
+                      Visibility="{Binding IsSingleMmeCode, Converter={StaticResource B2VI}}" />
+            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}"
+                    IsEnabled="{Binding IsEditModeInActive}"
+                    Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}"
+                    Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
-            
-            <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}" Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource PlaceholderTextBox}" TextChanged="TextBoxFind_TextChanged" />
 
-
-            <!-- <TreeView Grid.Column="0" Grid.Row="3" Name="ProfilesTreeView" ItemsSource="{Binding Profiles}" SelectedItemChanged="ProfilesTreeView_SelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" -->
-            <!--           VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" -->
-            <!--           VirtualizingStackPanel.CacheLength="50" VirtualizingStackPanel.CacheLengthUnit="Item" -->
-            <!--           VirtualizingStackPanel.ScrollUnit="Item" > -->
-            <!--     <TreeView.ItemTemplate> -->
-            <!--         <HierarchicalDataTemplate> -->
-            <!--             <dataTemplate:ProfileHierarchicalDataTemplate/> -->
-            <!--         </HierarchicalDataTemplate> -->
-            <!--     </TreeView.ItemTemplate> -->
-            <!-- </TreeView> -->
-            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
-                <ListView.ItemTemplate >
-                    <DataTemplate >
+            <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}"
+                                              Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource PlaceholderTextBox}"
+                                              TextChanged="TextBoxFind_TextChanged" />
+            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}"
+                      SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
                         <Label d:DataContext="{d:DesignInstance profiles:MyProfile}" Content="{Binding Name}"></Label>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}" Click="GoBack_Click" />
+            <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}"
+                    Style="{StaticResource BackButton}" Click="GoBack_Click" />
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="0" Grid.IsSharedSizeScope="True">
+        <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" SharedSizeGroup="Column0" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
+
             <Grid Grid.Column="0" Grid.Row="0" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -77,58 +76,64 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" IsEnabled="{Binding IsEditModeActive}" />
-                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}" Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}"
+                         IsEnabled="{Binding IsEditModeActive}" />
+                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"
+                        Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="Pencil" />
                 </Button>
-                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}" Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="10,0,10,0">
+                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"
+                        Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="10,0,10,0">
                     <iconPacks:PackIconMaterial Kind="Cancel" />
                 </Button>
-                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}" Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"
+                        Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <iconPacks:PackIconMaterial Kind="ContentSave" />
                 </Button>
             </Grid>
-            <Grid Grid.Column="0" Grid.Row="1" Background="{StaticResource ListViewTestParametersBrush}" Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
-                <StackPanel>
-                    <Border IsEnabled="{Binding IsEditModeActive}" BorderThickness="1" Background="{StaticResource PurpleBrush2}" BorderBrush="AliceBlue" Margin="10">
-                        <profilesPageComponents:AddTestParameterUserControl x:Name="AddTestParameterUserControl" Margin="10" DataContext="{Binding ProfileDeepDataCopy}" AddTestParametersEvent="AddTestParametersEvent_Click" />
-                    </Border>
-                    <Border BorderThickness="1" Background="{StaticResource PurpleBrush2}" BorderBrush="AliceBlue" Margin="10"
-                            Visibility="{Binding ProfileVm.ReadOnlyMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Converter={StaticResource B2V}}">
-                        <CheckBox Margin="10" DataContext="{Binding ProfileDeepDataCopy}" IsChecked="{Binding IsHeightMeasureEnabled}" Content="{x:Static res:Resources.MeasureDialog_Title}" />
-                    </Border>
-                </StackPanel>
-            </Grid>
-            <!-- <Grid Grid.Column="0" Grid.Row="1" Background="{StaticResource ListViewTestParametersBrush}"  Visibility="{Binding ShowHeightMeasure, Converter={StaticResource B2V}}"> -->
-            <!--     <Border BorderThickness="1" Background="{StaticResource PurpleBrush2}" BorderBrush="AliceBlue" Margin="10"> -->
-            <!--         <Grid> -->
-            <!--             <Grid.ColumnDefinitions> -->
-            <!--                 <ColumnDefinition Width="Auto"/> -->
-            <!--                 <ColumnDefinition Width="1*"/> -->
-            <!--             </Grid.ColumnDefinitions> -->
-            <!--             <Grid.RowDefinitions> -->
-            <!--                 <RowDefinition Height="Auto"/> -->
-            <!--                 <RowDefinition Height="Auto"/> -->
-            <!--                 <RowDefinition Height="Auto"/> -->
-            <!--             </Grid.RowDefinitions> -->
-            <!--             <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.CommutationTypeT}"/> -->
-            <!--             <Label Grid.Column="0" Grid.Row="0"  Content="{x:Static res:Resources.CommutationTypeT}"/> -->
-            <!--             <CheckBox IsChecked="{Binding ProfileDeepDataCopy.IsHeightMeasureEnabled}" Margin="20"  Content="{x:Static res:Resources.MeasureDialog_Title}" /> -->
-            <!--         </Grid> -->
-            <!--     </Border> -->
-            <!--      -->
-            <!-- </Grid> -->
-            <!-- <Grid Grid.Column="0" Grid.Row="2"> -->
-            <!--     <testParameters:ClampCommutationDataTemplate IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Path=ProfileVm.IsEditModeActive }" -->
-            <!--                                                  Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Path=ProfileVm.IsClampingCommutationActive, Converter={StaticResource B2V}}" -->
-            <!--                                                  DataContext="{Binding ProfileDeepDataCopy}" /> -->
-            <!-- </Grid> -->
-            <Grid Grid.Column="0" Grid.Row="3">
-                <profilesPageComponents:ListViewTestParametersUserControl ContentIsEnabled="{Binding IsEditModeActive}" ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
-                                                                          VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.ScrollUnit="Pixel" />
-            </Grid>
 
-            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource BackButton}" Content="{x:Static res:Resources.Next}" Visibility="{Binding ButtonNextIsVisible, Converter={StaticResource B2V}}" Command="{Binding ButtonNextRelayCommand}" />
+            <!--<Border Grid.Column="0" Grid.Row="1" Grid.RowSpan="3"
+                    Background="{StaticResource ListViewTestParametersBrush}" />-->
+            <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+                <Grid IsSharedSizeScope="True" Background="{StaticResource ListViewTestParametersBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0"  HorizontalAlignment="Center"  Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
+                            <Border IsEnabled="{Binding IsEditModeActive}" BorderThickness="1" BorderBrush="AliceBlue"
+                                    Margin="10">
+                                <profilesPageComponents:AddTestParameterUserControl Background="{StaticResource ListViewTestParametersBrush}"
+                                    x:Name="AddTestParameterUserControl" Margin="10"
+                                    DataContext="{Binding ProfileDeepDataCopy}"
+                                    AddTestParametersEvent="AddTestParametersEvent_Click" />
+                            </Border>
+                            <Border BorderThickness="1" Background="{StaticResource PurpleBrush2}"
+                                    BorderBrush="AliceBlue" Margin="10"
+                                    Visibility="{Binding ProfileVm.ReadOnlyMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Converter={StaticResource B2V}}">
+                                <CheckBox Margin="10" DataContext="{Binding ProfileDeepDataCopy}"
+                                          IsChecked="{Binding IsHeightMeasureEnabled}"
+                                          Content="{x:Static res:Resources.MeasureDialog_Title}" />
+                            </Border>
+                        </StackPanel>
+
+                        <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" 
+                            ContentIsEnabled="{Binding IsEditModeActive}"
+                            ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
+                            PreviewMouseWheel="TestParametersListView_OnPreviewMouseWheel"
+                            VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.ScrollUnit="Pixel" />
+                </Grid>
+            </ScrollViewer>
+
+            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource BackButton}"
+                    Content="{x:Static res:Resources.Next}"
+                    Visibility="{Binding ButtonNextIsVisible, Converter={StaticResource B2V}}"
+                    Command="{Binding ButtonNextRelayCommand}" />
 
         </Grid>
     </Grid>

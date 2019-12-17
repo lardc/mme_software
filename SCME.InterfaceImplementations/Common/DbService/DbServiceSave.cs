@@ -462,6 +462,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 _dbTransaction = Connection.BeginTransaction();
                 RemoveMmeCodeToProfile(profile.Id, mmeCode, _dbTransaction);
+                _cacheProfileById.Remove(profile.Id);
                 _dbTransaction.Commit();
 
 //                _cacheProfileByKey.Remove(profile.Key);
@@ -509,8 +510,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {
                     _cacheProfileById.Remove(oldProfile.Id);
                     foreach (var i in mmeCodes)
-                        if (_cacheProfilesByMmeCode.ContainsKey(i))
-                            _cacheProfilesByMmeCode[mmeCode]?.Remove(oldProfile);
+                        if (_cacheProfilesByMmeCode.TryGetValue(i, out var profilesByMmeCode))
+                            profilesByMmeCode.Remove(oldProfile);
 
 
                     if (newProfile.Name.Equals(oldProfile.Name))

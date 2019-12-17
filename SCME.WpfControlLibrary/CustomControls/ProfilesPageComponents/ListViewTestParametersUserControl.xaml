@@ -32,9 +32,9 @@
     </UserControl.Resources>
     <ListView BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
               ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="{StaticResource ListViewTestParametersBrush}" >
-        <ListView.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Grid.IsSharedSizeScope="True" />
+      <ListView.ItemsPanel>
+          <ItemsPanelTemplate>
+                    <StackPanel />
             </ItemsPanelTemplate>
         </ListView.ItemsPanel>
         <ListView.Resources>

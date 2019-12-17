@@ -49,6 +49,8 @@ namespace SCME.WpfControlLibrary.CustomControls
                 DefaultValue = 1.0
             });
         
+     
+        
         public string StringFormat
         {
             get => (string)GetValue(StringFormatProperty);

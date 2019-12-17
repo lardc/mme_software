@@ -14,13 +14,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <Grid Margin="10" IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
+                    <Grid Margin="10" HorizontalAlignment="Center" IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         
-                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" Background="{StaticResource PurpleBrush2}" BorderBrush="AliceBlue" />
+                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" Background="Transparent" BorderBrush="AliceBlue" />
 
                         <Grid Grid.Row="0" Margin="10">
                             <Grid.RowDefinitions>
@@ -30,7 +30,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
                                 <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
-                                <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+                                <ColumnDefinition Width="30" />
                                 <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
                                 <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
                             </Grid.ColumnDefinitions>

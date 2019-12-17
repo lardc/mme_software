@@ -17,7 +17,7 @@
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
-        <ColumnDefinition Width="30" SharedSizeGroup="Column2"/>
+        <ColumnDefinition Width="30" />
         <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
     </Grid.ColumnDefinitions>
@@ -30,22 +30,22 @@
         <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Mode}" />
-    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource DvdtModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
+    <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.Mode}" />
+    <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource DvdtModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
 
-    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.DvDtVoltage}" />
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding Voltage }" />
+    <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Content="{x:Static res:Resources.DvDtVoltage}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Value="{Binding Voltage }" />
 
-    <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtVoltageRate}" />
-    <ComboBox Grid.Column="1" Grid.Row="2"  ItemsSource="{Binding Source={StaticResource VoltageRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding VoltageRate}"
+    <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtVoltageRate}" />
+    <ComboBox Grid.Column="4" Grid.Row="2"  ItemsSource="{Binding Source={StaticResource VoltageRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding VoltageRate}"
               Visibility="{Binding Mode, Converter={StaticResource DT2V}}" />
 
-    <Label Grid.Column="0" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtConfirmationCount}" />
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Value="{Binding ConfirmationCount }" />
+    <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Content="{x:Static res:Resources.DvdtConfirmationCount}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Visibility="{Binding Mode, Converter={StaticResource DT2V}}" Value="{Binding ConfirmationCount }" />
 
-    <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" />
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateOffSet }" />
+    <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateOffSet}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateOffSet }" />
 
-    <Label Grid.Column="0" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateLimit}" />
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateLimit }" />
+    <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Content="{x:Static res:Resources.DvdtVoltageRateLimit}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5" Visibility="{Binding Mode, Converter={StaticResource DT2VB}}" Value="{Binding VoltageRateLimit }" />
 </Grid>
