@@ -741,8 +741,11 @@ namespace SCME.UI.PagesUser
                         Cache.Net.WriteResultServer(DataForSave, errors);
                         DataForSave.IsSentToServer = true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        var dw = new DialogWindow(Properties.Resources.ErrorWriteResult, ex.ToString());
+                        dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                        dw.ShowDialog();
                         DataForSave.IsSentToServer = false;
                     }
 

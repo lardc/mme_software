@@ -106,10 +106,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\FTD2XX_NET.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net46\MahApps.Metro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="MahApps.Metro.IconPacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a">
       <HintPath>..\packages\MahApps.Metro.IconPacks.3.0.0-alpha0223\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
       <Private>True</Private>

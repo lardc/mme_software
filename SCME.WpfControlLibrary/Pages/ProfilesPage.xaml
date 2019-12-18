@@ -113,7 +113,7 @@
                                     DataContext="{Binding ProfileDeepDataCopy}"
                                     AddTestParametersEvent="AddTestParametersEvent_Click" />
                             </Border>
-                            <Border BorderThickness="1" Background="{StaticResource PurpleBrush2}"
+                            <Border BorderThickness="1" 
                                     BorderBrush="AliceBlue" Margin="10"
                                     Visibility="{Binding ProfileVm.ReadOnlyMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Converter={StaticResource B2V}}">
                                 <CheckBox Margin="10" DataContext="{Binding ProfileDeepDataCopy}"

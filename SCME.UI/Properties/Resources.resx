@@ -844,5 +844,7 @@
   <data name="ProfileWasUntied" xml:space="preserve">
     <value>profile was untied from mme code</value>
   </data>
-  
+  <data name="ErrorWriteResult" xml:space="preserve">
+    <value>Error sending results to server</value>
+  </data>
 </root>

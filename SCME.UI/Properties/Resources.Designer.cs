@@ -592,6 +592,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error sending results to server.
+        /// </summary>
+        public static string ErrorWriteResult {
+            get {
+                return ResourceManager.GetString("ErrorWriteResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to send.
         /// </summary>
         public static string Failed {

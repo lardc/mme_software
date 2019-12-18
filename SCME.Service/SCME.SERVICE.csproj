@@ -152,7 +152,7 @@
     </None>
     <None Include="Db\SCME_ResultsDB_LocalOld.sqlite" />
     <None Include="Db\SCME_ResultsDB_Local.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

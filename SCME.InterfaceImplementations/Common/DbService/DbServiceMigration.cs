@@ -124,6 +124,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_VRSM", "BVT_VRSM, V", false),
             ("BVT_IDSM", "BVT_IDSM, A", false),
             ("BVT_IRSM", "BVT_IRSM, A", false),
+            
+            ("DVDT_OK", "DVDT_OK", false),
         };
 
         private readonly (string name, string localName, int code)[] _errorsList =

@@ -819,4 +819,7 @@
   <data name="ProfileWasUntied" xml:space="preserve">
     <value>Профиль был отвязан от mme кода</value>
   </data>
+  <data name="ErrorWriteResult" xml:space="preserve">
+    <value>Ошибка отправки результатов на сервер</value>
+  </data>
 </root>
