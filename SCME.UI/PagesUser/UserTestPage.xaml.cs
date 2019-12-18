@@ -3120,6 +3120,7 @@ namespace SCME.UI.PagesUser
             tbPseJob.Visibility = Visibility.Collapsed;
 
             tbPsdJob.Focus();
+            FocusManager.SetFocusedElement(this, tbPsdJob);
         }
 
         private void EnabledPSEMode()
@@ -3136,7 +3137,8 @@ namespace SCME.UI.PagesUser
             lbPsdSerialNumber.Visibility = Visibility.Collapsed;
             tbPsdSerialNumber.Visibility = Visibility.Collapsed;
 
-            lbPseJob.Focus();
+            tbPseJob.Focus();
+            FocusManager.SetFocusedElement(this, tbPseJob);
         }
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)

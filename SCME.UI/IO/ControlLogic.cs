@@ -1168,7 +1168,7 @@ namespace SCME.UI.IO
                 }
                 catch (CommunicationException ex)
                 {
-                    ProcessCommunicationException(ex);
+                    //ProcessCommunicationException(ex);
                 }
             }
         }
