@@ -75,7 +75,9 @@ namespace SCME.UI.PagesUser
 //            };
             profilesPage.ProfileVm.NextAction = () =>
             {
+                
                 Cache.UserTest.Profile = profilesPage.ProfileVm.SelectedProfile.ToProfile();
+                Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Cache.UserTest.Profile;
                 //запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
                 Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
 

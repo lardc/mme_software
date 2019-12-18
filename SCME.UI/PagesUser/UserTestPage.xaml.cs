@@ -768,7 +768,6 @@ namespace SCME.UI.PagesUser
                     }
                 }
 
-                tbPseJob.Text = "";
                 tbPseNumber.Text = "";
                 tbPsdSerialNumber.Text = "";
                 tbPsdSerialNumber.Focus();
@@ -3196,8 +3195,6 @@ namespace SCME.UI.PagesUser
                         throw new InvalidEnumArgumentException($"{nameof(Settings.Default.DUTType)} bad value");
                 }
             }
-
-            Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Profile.Name;
         }
 
         private void UserTestPage_PreviewKeyDown(object Sender, KeyEventArgs E)

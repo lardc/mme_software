@@ -27,8 +27,8 @@
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" StringFormat="{}{0:N1}"/>
         
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}"></Label>
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="{}{0:N1}"/>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
         <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"></Label>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}" StringFormat="{}{0:N1}"/>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}" StringFormat="N2"/>
         
 </Grid>
