@@ -147,14 +147,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public void ClearCacheByMmeCode(string mmeCode)
         {
-            _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
-            if (profiles == null)
-                return;
+            try
+            {
+                _cacheProfilesByMmeCode.TryGetValue(mmeCode, out var profiles);
+                if (profiles == null)
+                    return;
 
-            foreach (var profile in profiles)
-                _cacheProfileById.Remove(profile.Id);
+                foreach (var profile in profiles)
+                    _cacheProfileById.Remove(profile.Id);
 
-            _cacheProfilesByMmeCode.Remove(mmeCode);
+                _cacheProfilesByMmeCode.Remove(mmeCode);
+            }
+            catch(Exception ex)
+            {
+                throw new System.ServiceModel.FaultException(ex.ToString());
+            }
         }
 
         protected DbService(TDbConnection connection, bool enableCache = true)

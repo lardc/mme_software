@@ -361,3 +361,4 @@ MigrationBackup/
 .ionide/
 /Debug.zip
 /SCCI_IO.zip
+/DB/SCME_ResultsDB_Local - Copy.sqlite
