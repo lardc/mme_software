@@ -287,7 +287,8 @@ namespace SCME.UI.IO
                 }
                 catch (CommunicationException ex)
                 {
-                    ProcessCommunicationException(ex);
+                    throw ex;
+                    //ProcessCommunicationException(ex);
                 }
             }
 
@@ -310,7 +311,8 @@ namespace SCME.UI.IO
                 }
                 catch (CommunicationException ex)
                 {
-                    ProcessCommunicationException(ex);
+                    throw ex;
+                    //ProcessCommunicationException(ex);
                 }
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Linq;
+using System.ServiceModel;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
@@ -62,45 +63,52 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<MyProfile> GetProfilesSuperficially(string mmeCode, string name = null)
         {
-            var profiles = new List<MyProfile>();
-            DbCommand profileSelect;
-
-            if (mmeCode == null)
-                throw new ArgumentNullException(nameof(mmeCode));
-            if (string.IsNullOrEmpty(mmeCode))
-                profileSelect = _selectAllTopProfile;
-            else if (string.IsNullOrEmpty(name))
+            try
             {
-                profileSelect = _profilesByMmeSelect;
-                profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
-            }
-            else
-            {
-                throw new NotImplementedException("_ProfilesByNameByMMESelect");
-                //profileSelect = _ProfilesByNameByMMESelect;
-                //profileSelect.Parameters["@PROF_NAME"].Value = name;
-                //profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
-            }
+                var profiles = new List<MyProfile>();
+                DbCommand profileSelect;
 
-            if (_enableCache)
-            {
-                _cacheProfilesByMmeCode.TryGetValue(mmeCode, out profiles);
-                if (profiles != null)
-                    return profiles.Select(m => m.Copy()).ToList();
+                if (mmeCode == null)
+                    throw new ArgumentNullException(nameof(mmeCode));
+                if (string.IsNullOrEmpty(mmeCode))
+                    profileSelect = _selectAllTopProfile;
+                else if (string.IsNullOrEmpty(name))
+                {
+                    profileSelect = _profilesByMmeSelect;
+                    profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
+                }
+                else
+                {
+                    throw new NotImplementedException("_ProfilesByNameByMMESelect");
+                    //profileSelect = _ProfilesByNameByMMESelect;
+                    //profileSelect.Parameters["@PROF_NAME"].Value = name;
+                    //profileSelect.Parameters["@MME_CODE"].Value = mmeCode;
+                }
 
-                _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
-            }
-
-            using var reader = profileSelect.ExecuteReader();
-            while (reader.Read())
-            {
-                var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
-                profiles.Add(readProfile);
                 if (_enableCache)
-                    _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
-            }
+                {
+                    _cacheProfilesByMmeCode.TryGetValue(mmeCode, out profiles);
+                    if (profiles != null)
+                        return profiles.Select(m => m.Copy()).ToList();
 
-            return profiles.Select(m => m.Copy()).ToList();
+                    _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
+                }
+
+                using var reader = profileSelect.ExecuteReader();
+                while (reader.Read())
+                {
+                    var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+                    profiles.Add(readProfile);
+                    if (_enableCache)
+                        _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                }
+
+                return profiles.Select(m => m.Copy()).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException(ex.ToString());
+            }
         }
 
         //        public MyProfile GetProfileByKey(Guid key)

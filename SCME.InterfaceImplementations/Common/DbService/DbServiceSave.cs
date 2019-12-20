@@ -230,7 +230,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     break;
             }
 
-            var dvdtParameters = new Dictionary<string, (object Min, object Max)>();
+            var dvdtParameters = new Dictionary<string, (object Min, object Max)>
+            {
+                { "DVDT_OK", (true,true)}
+            };
 
 
             return ("Dvdt", dvdtCondition, dvdtParameters);

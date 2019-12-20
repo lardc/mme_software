@@ -117,7 +117,7 @@ namespace SCME.UI.PagesUser
                 Grid.SetRowSpan(chartPlotter1, 2);
             }
 
-            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);                      
+            SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);
         }
 
         private void SetChartPlotterSettings(bool SinglePositionModuleMode)
@@ -197,7 +197,7 @@ namespace SCME.UI.PagesUser
         }
 
         public void InitTemp()
-        { 
+        {
             if (Profile.Temperature >= 60)
             {
                 lblTitleTop.Visibility =
@@ -693,7 +693,7 @@ namespace SCME.UI.PagesUser
                 }
 
 
-                if(_HasFault == true)
+                if (_HasFault == true)
                 {
                     var dw = new DialogWindow("Error", Properties.Resources.MessageErrorSaveTestFault);
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
@@ -732,7 +732,7 @@ namespace SCME.UI.PagesUser
                         IsHeightOk = HeightMeasureResult
                     };
 
-                    
+
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
                     try
@@ -751,7 +751,7 @@ namespace SCME.UI.PagesUser
 
                     //сохраняем результаты измерений в локальную базу данных
                     Cache.Net.WriteResultLocal(DataForSave, errors);
-                    
+
                     //вычисляем класс только что измеренного изделия и выводим его на форму
                     if (DataForSave.IsSentToServer && tbNumber != null)
                         CalcDeviceClass(tbNumber, true);
@@ -774,7 +774,7 @@ namespace SCME.UI.PagesUser
                 tbPseNumber.Text = "";
                 tbPsdSerialNumber.Text = "";
                 tbPsdSerialNumber.Focus();
-                
+
                 if (tbNumber?.Visibility == Visibility.Visible)
                     tbNumber?.Focus();
             }
@@ -847,7 +847,7 @@ namespace SCME.UI.PagesUser
 
             var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult1");
             if (labelIgtResult != null)
-                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT && 
+                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT &&
                                                 igt >= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].MinIGT,
                      string.Format("{0}", igt));
 
@@ -1353,8 +1353,8 @@ namespace SCME.UI.PagesUser
 
             IsRunning = false;
         }
-        
-         internal void SetResultBvtUdsmUrsmDirect(DeviceState state, Types.BVT.TestResults result)
+
+        internal void SetResultBvtUdsmUrsmDirect(DeviceState state, Types.BVT.TestResults result)
         {
             m_StateBvt = state;
 
@@ -1399,7 +1399,7 @@ namespace SCME.UI.PagesUser
                 ResultsBVT2[bvtCounter].IRRM = result.IRRM;
                 ResultsBVT2[bvtCounter].VRRM = result.VRRM;
             }
-            
+
             var bvtItemContainer = GetBvtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(bvtItemContainer[bvtCounter]);
 
@@ -2456,6 +2456,23 @@ namespace SCME.UI.PagesUser
             var labelBvtIrrmResult1 = FindChild<Label>(presenter, "labelBvtIrrmResult1");
             if (labelBvtIrrmResult1 != null)
                 ResetLabel(labelBvtIrrmResult1);
+
+            var labelBvtVdsmResult1 = FindChild<Label>(presenter, "labelBvtVdsmResult1");
+            if (labelBvtVdsmResult1 != null)
+                ResetLabel(labelBvtVdsmResult1);
+
+            var labelBvtIdsmResult1 = FindChild<Label>(presenter, "labelBvtIdsmResult1");
+            if (labelBvtIdsmResult1 != null)
+                ResetLabel(labelBvtIdsmResult1);
+
+            var labelBvtVrsmResult1 = FindChild<Label>(presenter, "labelBvtVrsmResult1");
+            if (labelBvtVrsmResult1 != null)
+                ResetLabel(labelBvtVrsmResult1);
+
+            var labelBvtIrsmResult1 = FindChild<Label>(presenter, "labelBvtIrsmResult1");
+            if (labelBvtIrsmResult1 != null)
+                ResetLabel(labelBvtIrsmResult1);
+
         }
 
         private void ClearVtmResults(DependencyObject element)
@@ -2631,7 +2648,7 @@ namespace SCME.UI.PagesUser
 
             //чистим результаты измерений
             var label = FindChild<Label>(presenter, "lbTOUITM");
-            if (label != null) 
+            if (label != null)
                 ResetLabel(label);
 
             label = FindChild<Label>(presenter, "lbTOUTGD");
@@ -2679,7 +2696,7 @@ namespace SCME.UI.PagesUser
             ValidatingTextBox tb = sender as ValidatingTextBox;
             CalcDeviceClass(tb, false);
         }
-        
+
         private void PlotX(int Position, string LineName, Color LineColor, IEnumerable<short> UPoints)
         {
             var points = UPoints.Select((T, I) => new PointF(I, T)).ToList();
@@ -2732,7 +2749,7 @@ namespace SCME.UI.PagesUser
             ((Position == 1) ? chartPlotter1 : chartPlotter2).FitToView();
         }
 
-          private void CalcDeviceClass(ValidatingTextBox sourceOfdeviceCode, bool factClass)
+        private void CalcDeviceClass(ValidatingTextBox sourceOfdeviceCode, bool factClass)
         {
             //вычисляет класс изделия и выводит его на форме
 
@@ -2745,7 +2762,8 @@ namespace SCME.UI.PagesUser
                     //для этого будем проверять количество символов после символа '/' и если оно равно 10 - будем пытаться вычислить класс этого изделия
                     string deviceCode = sourceOfdeviceCode.Text;
                     int jobFirstSimbol = deviceCode.IndexOf("/", 0);
-
+                    btnStart.IsEnabled = true;
+                    lblDeviceClass.Foreground = Brushes.Black;
                     if (jobFirstSimbol != -1)
                     {
                         jobFirstSimbol++;
@@ -2757,83 +2775,61 @@ namespace SCME.UI.PagesUser
                             int? deviceRTClass = null;
 
                             //пробуем вычислить значение класса
-                            switch (factClass)
+                            if (factClass)
+                                Cache.Net.ReadDeviceClass(deviceCode, Profile.Name);
+                            else
+                                deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
+
+                            if (deviceRTClass == null)
+                                //для вычисления класса при RT нет измерений на основе которых можно его вычислить
+                                sDeviceRTClass = Properties.Resources.NoResults;
+                            else
                             {
-                                case true:
-                                    Cache.Net.ReadDeviceClass(deviceCode, Profile.Name);
-                                    break;
+                                //класс не null - какое-то значение получено, разбираемся что получено
+                                int iDeviceRTClass = deviceRTClass.Value;
 
-                                default:
-                            deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
-                                    break;
-                        }
+                                if (iDeviceRTClass == -1)
+                                    //случай ошибки в реализации вычисления класса
+                                    sDeviceRTClass = Properties.Resources.ErrorRealisation;
 
-                            switch (deviceRTClass == null)
-                            {
-                                case true:
-                                    //для вычисления класса при RT нет измерений на основе которых можно его вычислить
-                                    sDeviceRTClass = Properties.Resources.NoResults;
-                                    break;
+                                else
+                                {
+                                    //получено вменяемое значение класса изделия
+                                    sDeviceRTClass = iDeviceRTClass.ToString();
 
-                                default:
+                                    if (int.TryParse(Profile.Name.Split(" ".ToArray(), StringSplitOptions.RemoveEmptyEntries).Last(), out var iClassByProfileName))
                                     {
-                                        //класс не null - какое-то значение получено, разбираемся что получено
-                                        int iDeviceRTClass = (int)deviceRTClass;
-
-                                        switch (iDeviceRTClass)
+                                        if (iDeviceRTClass >= iClassByProfileName)
                                         {
-                                            case (-1):
-                                                //случай ошибки в реализации вычисления класса
-                                                sDeviceRTClass = Properties.Resources.ErrorRealisation;
-                                                break;
-
-                                            default:
-                                                //получено вменяемое значение класса изделия
-                                                sDeviceRTClass = iDeviceRTClass.ToString();
-
-                                                //смотрим на вычисленное значение класса по выбранному наименованию профиля                                               
-                                                if (m_ClassByProfileName == null)
-                                                {
-                                                    //по обозначению профиля значение класса не вычислено
-                                                    btnStart.IsEnabled = true;
-                                                }
-                                                else
-                                                {
-                                                    //по обозначению профиля вычислено не null значение класса, сравниваем его с iDeviceRTClass
-                                                    int iClassByProfileName = (int)m_ClassByProfileName;
-
-                                                    switch (iDeviceRTClass >= iClassByProfileName)
-                                                    {
-                                                        case true:
-                                                            btnStart.IsEnabled = true;
-                                                            lblDeviceClass.Foreground = Brushes.Black;
-                                                            break;
-
-                                                        default:
-                                                            btnStart.IsEnabled = false;
-                                                            lblDeviceClass.Foreground = Brushes.Red;
-                                                            break;
-                                                    }
-                                                }
-                                                break;
+                                            btnStart.IsEnabled = true;
+                                            lblDeviceClass.Foreground = Brushes.Black;
+                                        }
+                                        else
+                                        {
+                                            btnStart.IsEnabled = false;
+                                            lblDeviceClass.Foreground = Brushes.Red;
                                         }
                                     }
-                                    break;
+
+                                }
                             }
+                                    
+                            
 
                             //выводим полученный класс на форму
                             lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, sDeviceRTClass);
                         }
-                        else btnStart.IsEnabled = true;
+                        else
+                            btnStart.IsEnabled = true;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, Properties.Resources.ErrorRealisation);
             }
         }
-          
+
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
                                    Types.VTM.TestParameters ParamsVTM,
                                    Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
@@ -2970,7 +2966,7 @@ namespace SCME.UI.PagesUser
                                 parBvt.IsEnabled = false;
                             break;
                     }
-                    
+
                     Profile.ParametersBVT.ClassByProfileName = m_ClassByProfileName;
                     parBvt.ClassByProfileName = m_ClassByProfileName;
                     continue;
@@ -3088,18 +3084,18 @@ namespace SCME.UI.PagesUser
                 Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
                 NavigationService.GoBack();
                 return;
-//                switch (Cache.WorkMode)
-//                {
-//                    //в режиме наладчика и в режиме специальных измерений возвращаемся к редактированию профиля, иначе к выбору профиля без возможности редактирования
-//                    case (UserWorkMode.ServiceMan):
-//                    case (UserWorkMode.SpecialMeasure):
-//                        NavigationService.Navigate(Cache.ProfileEdit);
-//                        break;
-//
-//                    default:
-//                        NavigationService.Navigate(Cache.ProfileSelection);
-//                        break;
-//                }
+                //                switch (Cache.WorkMode)
+                //                {
+                //                    //в режиме наладчика и в режиме специальных измерений возвращаемся к редактированию профиля, иначе к выбору профиля без возможности редактирования
+                //                    case (UserWorkMode.ServiceMan):
+                //                    case (UserWorkMode.SpecialMeasure):
+                //                        NavigationService.Navigate(Cache.ProfileEdit);
+                //                        break;
+                //
+                //                    default:
+                //                        NavigationService.Navigate(Cache.ProfileSelection);
+                //                        break;
+                //                }
             }
         }
 
@@ -3145,8 +3141,8 @@ namespace SCME.UI.PagesUser
         }
 
         private void UserTestPage_OnLoaded(object Sender, RoutedEventArgs E)
-        {          
-            
+        {
+
             tbPsdJob.Text = "";
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
@@ -3252,7 +3248,7 @@ namespace SCME.UI.PagesUser
                     dw.ShowDialog();
                     return;
                 }
-                
+
                 Cache.ProfilesPageSelectForTest.RefreshProfile(centralProfile);
                 NavigationService?.GoBack();
             }

@@ -43,7 +43,9 @@ namespace SCME.ProfileBuilder.Pages
             }
 
             var sqlConnection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString());
-            return new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection);
+            var service = new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection);
+            service.Migrate();
+            return service;
         }
 
         private IDbService GetSqliteDbService()
@@ -59,7 +61,9 @@ namespace SCME.ProfileBuilder.Pages
             };
 
             var sqliteConnection = new SQLiteConnection(connectionStringBuilder.ToString());
-            return new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection);
+            var service = new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection);
+            service.Migrate();
+            return service;
         }
 
         private void EditProfile_OnClick(object sender, RoutedEventArgs e)
