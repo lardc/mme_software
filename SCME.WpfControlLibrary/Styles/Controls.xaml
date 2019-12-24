@@ -17,22 +17,25 @@
                     xmlns:qrrtq="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:mahappsConverters="clr-namespace:MahApps.Metro.Converters;assembly=MahApps.Metro"
+                    
                     xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
                     xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
 
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Icons.xaml" />
+
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ScrollBar.xaml" />
+
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Path.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Label.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/RadioButton.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/CheckBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TreeViewItemProfile.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/PlaceHolderValidatingTextBox.xaml" />
         
     </ResourceDictionary.MergedDictionaries>
@@ -48,19 +51,27 @@
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 
-    <Style TargetType="ScrollBar">
-        <Setter Property="Width" Value="{DynamicResource SCME.ScrollBarWidth}" />
-    </Style>
-
-    <Style TargetType="iconPacks:PackIconMaterial" BasedOn="{StaticResource {x:Type iconPacks:PackIconMaterial}}">
-        <Setter Property="Height" Value="auto" />
-        <Setter Property="Width" Value="auto" />
-    </Style>
-
+  
     <Style TargetType="ListViewItem" x:Key="DragDropListViewItem">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     </Style>
-    
 
+    <AlternationConverter x:Key="BackgroundConverter">
+        <SolidColorBrush>Transparent</SolidColorBrush>
+        <StaticResource ResourceKey="xGray3" />
+    </AlternationConverter>
+
+    <Style x:Key="DefaultListViewItemContainerStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Background"
+                Value="{Binding RelativeSource={RelativeSource Self},
+                     Path=(ItemsControl.AlternationIndex),
+                     Converter={StaticResource BackgroundConverter}}" />
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+        </Style.Resources>
+    </Style>
 
 </ResourceDictionary>

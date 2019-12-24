@@ -232,7 +232,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             var dvdtParameters = new Dictionary<string, (object Min, object Max)>
             {
-                { "DVDT_OK", (true,true)}
+                { "DVDT_OK", (DBNull.Value,true)}
             };
 
 

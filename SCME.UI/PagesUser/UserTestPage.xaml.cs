@@ -41,6 +41,9 @@ namespace SCME.UI.PagesUser
         private const int DATA_LENGTH = 600;
 
         private readonly SolidColorBrush m_XRed, m_XGreen, m_XOrange;
+
+        private readonly SolidColorBrush _bvtReverseColorBrush, _bvtDirectSolidColorBrush;
+
         private readonly Brush m_TbBrush;
         private readonly List<string> m_Errors1, m_Errors2;
         private List<Types.Gate.TestResults> m_ResultsGate1, m_ResultsGate2;
@@ -98,6 +101,9 @@ namespace SCME.UI.PagesUser
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XGreen = (SolidColorBrush)FindResource("xGreen1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
+
+            _bvtReverseColorBrush = (SolidColorBrush)FindResource("xGreen3"); 
+            _bvtDirectSolidColorBrush = (SolidColorBrush)FindResource("xRed1"); 
 
             m_TbBrush = tbPsdJob.BorderBrush;
 
@@ -1246,7 +1252,7 @@ namespace SCME.UI.PagesUser
             }
 
             if (state == DeviceState.Success && Settings.Default.PlotUserBVT)
-                PlotYX(m_CurrentPos, "Direct", m_XRed.Color, result.VoltageData, result.CurrentData);
+                PlotYX(m_CurrentPos, "Direct", _bvtDirectSolidColorBrush.Color, result.VoltageData, result.CurrentData);
         }
 
         internal void SetResultReverseBvt(DeviceState state, Types.BVT.TestResults result)
@@ -1301,7 +1307,7 @@ namespace SCME.UI.PagesUser
             }
 
             if (state == DeviceState.Success && Settings.Default.PlotUserBVT)
-                PlotYX(m_CurrentPos, "Reverse", m_XOrange.Color, result.VoltageData, result.CurrentData);
+                PlotYX(m_CurrentPos, "Reverse", _bvtReverseColorBrush.Color, result.VoltageData, result.CurrentData);
         }
 
         internal void SetBvtWarning(Types.BVT.HWWarningReason Warning)
@@ -2795,7 +2801,8 @@ namespace SCME.UI.PagesUser
                     return;
                 
                 var deviceClass = factClass ? Cache.Net.ReadDeviceClass(deviceCode, Profile.Name) : Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
-                //var deviceClass = factClass ? QWE(): ASD();
+                var profileFirstWord = Profile.Name.Split().First();
+                var isRt = profileFirstWord.Substring(profileFirstWord.Length - 2).ToUpper() == "RT";
                 
                 string secondPart;
                 
@@ -2809,7 +2816,8 @@ namespace SCME.UI.PagesUser
                         break;
                     default:
                     {
-                        if (deviceClassByProfileName >= deviceClass && !factClass)
+                        
+                        if (deviceClassByProfileName > deviceClass && !factClass && !isRt)
                         {
                             btnStart.IsEnabled = false;
                             lblDeviceClass.Foreground = Brushes.Red;
@@ -3145,8 +3153,11 @@ namespace SCME.UI.PagesUser
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
             tbPseJob.Text = "";
+            lblDeviceClass.Content = SCME.UI.Properties.Resources.DeviceRTClass;
 
             ClearStatus(true, true);
+
+            Cache.UserTest.InitTemp();
 
             //в режиме специальных измерений пользователь не должен вводить идентификационную информацию, поле для вывода предупреждений по поводу не заполненных полей для ввода идентификационной информации становится не нужным
             if (Cache.WorkMode == UserWorkMode.SpecialMeasure)

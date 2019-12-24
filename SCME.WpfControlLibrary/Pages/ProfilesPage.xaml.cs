@@ -119,6 +119,7 @@ namespace SCME.WpfControlLibrary.Pages
         {
             if (ProfileVm.SpecialMeasure)
             {
+                ProfileVm.SelectedProfile.DeepData = ProfileVm.ProfileDeepDataCopy.Copy();
                 ProfileVm.IsEditModeActive = false;
                 return;
             }

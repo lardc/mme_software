@@ -325,6 +325,10 @@ namespace SCME.UI.IO
 
             try
             {
+                var dw = new DialogWindow("Critical error - restart UI", Ex.ToString());
+                dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                dw.ShowDialog();
+
                 m_NetPingTimer.Stop();
 
                 Thread.Sleep(1000);
@@ -392,8 +396,8 @@ namespace SCME.UI.IO
 
             try
             {
-                m_ControlClient.Check();
-                DatabaseClient.Check();
+                //m_ControlClient.Check();
+                //DatabaseClient.Check();
             }
             catch (FaultException<FaultData>)
             {
@@ -1170,7 +1174,9 @@ namespace SCME.UI.IO
                 }
                 catch (CommunicationException ex)
                 {
-                    //ProcessCommunicationException(ex);
+                    var dw = new DialogWindow("Write database error", ex.ToString());
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
                 }
             }
         }

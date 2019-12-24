@@ -13,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -47,8 +48,8 @@
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.MaxIgt_mA}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding IGT}" StringFormat="{}{0:N0}"/>
-        
-        <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MaxIh_mA}" />
+
+    <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MaxIh_mA}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding IH }" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.MaxIl_mA}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IL}" StringFormat="{}{0:N0}"/>

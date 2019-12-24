@@ -18,8 +18,6 @@ namespace SCME.ProfileBuilder.Pages
             _contentLoaded = contentLoaded;
         }
 
-        public ViewModels.ConnectPage.ConnectPageVM Vm { get; set; } = new ViewModels.ConnectPage.ConnectPageVM();
-
         public SelectEditModePage()
         {
             InitializeComponent();

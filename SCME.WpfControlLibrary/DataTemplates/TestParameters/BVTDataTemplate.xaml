@@ -108,7 +108,7 @@
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" StringFormat="{}{0:N0}" />
 
 
-    <CheckBox Grid.Column="0"  Grid.Row="8" Grid.ColumnSpan="2"  Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />
+    <CheckBox Grid.Column="0" Margin="5,5,5,0" Grid.Row="8" Grid.ColumnSpan="2"  Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />
 
 
    

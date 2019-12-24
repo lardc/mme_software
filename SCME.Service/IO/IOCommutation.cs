@@ -218,6 +218,10 @@ namespace SCME.Service.IO
             if ((m_SafetyType != ComplexSafety.Optical) || (m_ID != ComplexParts.Commutation))
                 return false;
 
+            //Если безопасность отключенна
+            if (_SafetyMode == SafetyMode.Disabled)
+                return false;
+
             //опрашиваем состояние блока коммутации и если оно SafetyTrig (сработала оптическая шторка) - возвращаем true, иначе false
             Types.Commutation.HWDeviceState devState = (Types.Commutation.HWDeviceState)GetDeviceState(true);
 
@@ -336,7 +340,7 @@ namespace SCME.Service.IO
 
         internal void SetSafetyOn()
         {
-            if ((m_SafetyType == ComplexSafety.Optical) && (m_ID == ComplexParts.Commutation))
+            if ((m_SafetyType == ComplexSafety.Optical) && (m_ID == ComplexParts.Commutation) && _SafetyMode != SafetyMode.Disabled)
             {
                 //активация оптического датчика безопасности
                 SystemHost.Journal.AppendLog(m_ID, LogMessageType.Info, "Try to commutation optical safety set to on");

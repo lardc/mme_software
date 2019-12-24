@@ -20,7 +20,9 @@
     <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
     <Converters:TypeTestParameterToString x:Key="TP2S" />
-    
+
+    <Converters:GridLengthConverter x:Key="G2L" />
+
     <Converters:BvtVrrmToVisibilityConverter x:Key="Vrrm2V" />
     <Converters:BvtVdrmToVisibilityConverter x:Key="Vdrm2V" />
     <Converters:BvtIrrmToVisibilityConverter x:Key="Irrm2V" />

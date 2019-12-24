@@ -120,8 +120,7 @@
                                             <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand"
                                                           Content="M 0 1 L 1 0 L 2 1"
                                                           Margin="0,0,0,1" Style="{StaticResource ScrollBarLineButton}"
-                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"
-                                                          Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ScrollBarButtonIsVisible, Converter={StaticResource B2V}}" />
+                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"/>
                                             <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
                                                 <Track.DecreaseRepeatButton>
                                                     <RepeatButton Style="{StaticResource ScrollBarPageButton}"
@@ -139,8 +138,7 @@
                                             <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand"
                                                           Content="M 0 0 L 1 1 L 2 0"
                                                           Margin="0,1,0,0" Style="{StaticResource ScrollBarLineButton}"
-                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"
-                                                          Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ScrollBarButtonIsVisible, Converter={StaticResource B2V}}" />
+                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"/>
                                         </Grid>
                                     </ControlTemplate>
                                 </ScrollBar.Template>

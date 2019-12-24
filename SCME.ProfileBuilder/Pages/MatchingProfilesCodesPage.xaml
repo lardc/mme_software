@@ -54,10 +54,10 @@
 
                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" VerticalAlignment="Center">
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding MoveToInactive}">
-                        <iconPacks:PackIconMaterial Kind="ArrowRight" />
+                        <Path Data="{StaticResource ArrowRight}" Style="{StaticResource PathIcon}"/>
                     </Button>
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding MoveToActive}">
-                        <iconPacks:PackIconMaterial Kind="ArrowLeft" />
+                        <Path Data="{StaticResource ArrowLeft}" Style="{StaticResource PathIcon}"/>
                     </Button>
                 </StackPanel>
 
@@ -91,10 +91,10 @@
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.ProfilesSelectedForMme}"/>
                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" VerticalAlignment="Center">
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding RemoveProfileFromMmeCode}">
-                        <iconPacks:PackIconMaterial Kind="ArrowRight" />
+                        <Path Data="{StaticResource ArrowRight}" Style="{StaticResource PathIcon}"/>
                     </Button>
                     <Button Style="{StaticResource ButtonWithIcon}" Command="{Binding AddProfileToMmeCode}">
-                        <iconPacks:PackIconMaterial Kind="ArrowLeft" />
+                        <Path Data="{StaticResource ArrowLeft}" Style="{StaticResource PathIcon}"/>
                     </Button>
                 </StackPanel>
                 

@@ -24,7 +24,7 @@ namespace SCME.UI.PagesTech
     {
         private const int DATA_LENGTH = 600;
 
-        private readonly SolidColorBrush m_XRed, m_XOrange;
+        private readonly SolidColorBrush m_XRed, m_XGreen;
         private bool m_IsRunning;
 
         public Types.BVT.TestParameters Parameters { get; set; }
@@ -50,7 +50,7 @@ namespace SCME.UI.PagesTech
             InitializeComponent();
 
             m_XRed = (SolidColorBrush) FindResource("xRed1");
-            m_XOrange = (SolidColorBrush) FindResource("xOrange1");
+            m_XGreen = (SolidColorBrush) FindResource("xGreen3");
 
             ClearStatus();
 
@@ -139,7 +139,7 @@ namespace SCME.UI.PagesTech
             SetLabel(labelReverse, State,
                 $"{Result.VRRM}{Properties.Resources.V} : {Result.IRRM}{Properties.Resources.mA}");
             if (State == DeviceState.Success)
-                PlotYX("Reverse", m_XOrange.Color, Result.VoltageData, Result.CurrentData);
+                PlotYX("Reverse", m_XGreen.Color, Result.VoltageData, Result.CurrentData);
         }
 
         internal void SetWarning(Types.BVT.HWWarningReason Warning)

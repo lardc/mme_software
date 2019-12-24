@@ -45,18 +45,80 @@
                     Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
 
+            
             <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}"
                                               Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}"
                                               Style="{StaticResource PlaceholderTextBox}"
                                               TextChanged="TextBoxFind_TextChanged" />
-            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}"
-                      SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
+
+
+
+
+
+
+
+
+
+            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Name="ListViewProfiles"  ItemContainerStyle="{StaticResource DefaultListViewItemContainerStyle}" AlternationCount="2" 
+                      SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged" >
+                <!--<ListView.Template>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ScrollViewer Focusable="False" x:Name="ScrollViewer"
+                                          Padding="{TemplateBinding Padding}"
+                                          Background="{TemplateBinding Background}">
+                                <Grid x:Name="Grid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="0" x:Name="ColumnDefinition"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ItemsPresenter />
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=ScrollViewer, Path=ComputedVerticalScrollBarVisibility}" Value="True">
+                                <Setter TargetName="ColumnDefinition" Property="Width" Value="60"></Setter>
+                            </DataTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="border" Property="Opacity" Value="0.4" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </ListView.Template>-->
+
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Label d:DataContext="{d:DesignInstance profiles:MyProfile}" Content="{Binding Name}"></Label>
+                    <DataTemplate DataType="profiles:Profile">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                
+                            </Grid.ColumnDefinitions>
+                            <Polygon Name="polygon" Stretch="Fill" Fill="Transparent" Grid.Column="0" Points="0,0 190,0 200,10 190,20 0,20" />
+                            <Label Name="label" Content="{Binding Path=Name}" Grid.Column="0" Background="Transparent" />
+                            
+                        </Grid>
+
+                        <DataTemplate.Triggers>
+                            <DataTrigger
+                    Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"
+                    Value="True">
+                                <Setter TargetName="polygon" Property="Fill" Value="{StaticResource PurpleBrush1}" />
+                                <Setter TargetName="label" Property="Foreground" Value="White" />
+                            </DataTrigger>
+                            
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+
+
+
+
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}"
                     Style="{StaticResource BackButton}" Click="GoBack_Click" />
         </Grid>
@@ -80,15 +142,15 @@
                          IsEnabled="{Binding IsEditModeActive}" />
                 <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"
                         Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="Pencil" />
+                    <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
                 </Button>
-                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"
-                        Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="10,0,10,0">
-                    <iconPacks:PackIconMaterial Kind="Cancel" />
+                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}" 
+                        Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="5,0">
+                    <Path Data="{StaticResource Cansel}" Style="{StaticResource PathIcon}"/>
                 </Button>
                 <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"
                         Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
-                    <iconPacks:PackIconMaterial Kind="ContentSave" />
+                    <Path Data="{StaticResource Save}" Style="{StaticResource PathIcon}"/>
                 </Button>
             </Grid>
 

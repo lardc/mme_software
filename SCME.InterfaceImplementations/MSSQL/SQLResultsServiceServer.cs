@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.ServiceModel;
 using SCME.Types;
 using SCME.Types.BVT;
 using SCME.Types.DataContracts;
@@ -170,7 +171,7 @@ namespace SCME.InterfaceImplementations
                     " WHERE (D.CODE=@DevCode)" +
                     " GROUP BY P.PROF_ID" +
                     " ) AS z", _connection);
-            
+
             _selectDevClassCommand =
                 new SqlCommand(
                     "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @ProfName) AS DEVICECLASS" +
@@ -196,7 +197,7 @@ namespace SCME.InterfaceImplementations
             _selectDevRTClassCommand.Parameters.Add("@ProfBody", SqlDbType.NVarChar, 32);
             _selectDevRTClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
             _selectDevRTClassCommand.Prepare();
-            
+
             _selectDevNormCommand =
                 new SqlCommand(
                     "SELECT P.[PARAM_NAME] AS P_NID, PP.[MIN_VAL] AS P_MIN, PP.[MAX_VAL] AS P_MAX FROM [dbo].[PARAMS] P, [dbo].[PROF_PARAM] PP, [dbo].[DEVICES] D, [dbo].[PROFILES] PR WHERE PP.[PARAM_ID] = P.[PARAM_ID] AND PP.[PROF_ID] = PR.[PROF_ID] AND PR.[PROF_GUID] = D.[PROFILE_ID] AND D.[DEV_ID] = @DEV_ID",
@@ -387,33 +388,40 @@ namespace SCME.InterfaceImplementations
 
         public void WriteResults(ResultItem result, IEnumerable<string> errors)
         {
-            if (_connection != null && _connection.State == ConnectionState.Open)
+            try
             {
-                //смотрим с чем мы имеем дело: либо с PSE, либо с PSD. сразу оба параметра result.PseJob и result.PsdJob заполнены быть не могут
-                if (!String.IsNullOrWhiteSpace(result.PsdJob) && !String.IsNullOrWhiteSpace(result.PseJob))
-                    throw new ArgumentException(@"Only one of result.PsdJob or result.PseJob can be filled. In fact both parameters are filled.");
-
-                if (!String.IsNullOrWhiteSpace(result.PsdSerialNumber) && !String.IsNullOrWhiteSpace(result.PseNumber))
-                    throw new ArgumentException(@"Only one of result.PsdSerialNumber or result.PseNumber can be filled. In fact both parameters are filled.");
-
-                string groupName = String.IsNullOrWhiteSpace(result.PsdJob) ? result.PseJob : result.PsdJob;
-                string code = String.IsNullOrWhiteSpace(result.PsdSerialNumber) ? result.PseNumber : result.PsdSerialNumber;
-
-                var trans = _connection.BeginTransaction();
-
-                try
+                if (_connection != null && _connection.State == ConnectionState.Open)
                 {
-                    var devId = InsertDevice(code, GetOrMakeGroupId(groupName, trans), result.ProfileKey, result, trans);
-                    InsertErrors(errors, devId, trans);
-                    InsertParameterValues(result, devId, trans);
+                    //смотрим с чем мы имеем дело: либо с PSE, либо с PSD. сразу оба параметра result.PseJob и result.PsdJob заполнены быть не могут
+                    if (!String.IsNullOrWhiteSpace(result.PsdJob) && !String.IsNullOrWhiteSpace(result.PseJob))
+                        throw new ArgumentException(@"Only one of result.PsdJob or result.PseJob can be filled. In fact both parameters are filled.");
 
-                    trans.Commit();
+                    if (!String.IsNullOrWhiteSpace(result.PsdSerialNumber) && !String.IsNullOrWhiteSpace(result.PseNumber))
+                        throw new ArgumentException(@"Only one of result.PsdSerialNumber or result.PseNumber can be filled. In fact both parameters are filled.");
+
+                    string groupName = String.IsNullOrWhiteSpace(result.PsdJob) ? result.PseJob : result.PsdJob;
+                    string code = String.IsNullOrWhiteSpace(result.PsdSerialNumber) ? result.PseNumber : result.PsdSerialNumber;
+
+                    var trans = _connection.BeginTransaction();
+
+                    try
+                    {
+                        var devId = InsertDevice(code, GetOrMakeGroupId(groupName, trans), result.ProfileKey, result, trans);
+                        InsertErrors(errors, devId, trans);
+                        InsertParameterValues(result, devId, trans);
+
+                        trans.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
                 }
-                catch (Exception)
-                {
-                    trans.Rollback();
-                    throw;
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException(ex.ToString());
             }
         }
 
@@ -470,7 +478,7 @@ namespace SCME.InterfaceImplementations
 
             return result;
         }
-        
+
         public int? ReadDeviceClass(string devCode, string profileName)
         {
             //чтение фактического класса изделия по принятым devCode, profileName
@@ -510,7 +518,7 @@ namespace SCME.InterfaceImplementations
 
             return result;
         }
-        
+
         private long GetOrMakeGroupId(string groupName, SqlTransaction trans)
         {
             long groupId;
@@ -619,7 +627,7 @@ namespace SCME.InterfaceImplementations
                     InsertParameterValue(devId, "IL", result.Gate[i].IL, result.ProfileKey, "Gate", trans);
             }
         }
-        
+
         private void InsertDvdtParameterValues(ResultItem result, long devId, SqlTransaction trans)
         {
             for (var i = 0; i < result.DvdTestParameterses.Length; i++)
@@ -633,7 +641,7 @@ namespace SCME.InterfaceImplementations
             for (int i = 0; i < result.VTMTestParameters.Length; i++)
             {
                 if (result.VTMTestParameters[i].IsEnabled)
-                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, "VTM", trans);
+                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, "SL", trans);
             }
         }
 
@@ -657,7 +665,7 @@ namespace SCME.InterfaceImplementations
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
                             InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", trans);
                     }
-                    
+
                     if (result.BVTTestParameters[i].UseUdsmUrsm)
                     {
                         //результаты теста UDSM/URSM
@@ -803,7 +811,7 @@ namespace SCME.InterfaceImplementations
                                 {
                                     InternalID = reader.GetInt32(ordID),
                                     Code = reader.GetString(ordCode),
-                                    StructureOrd = ((reader.GetValue(ordSn1) as System.DBNull) == System.DBNull.Value)? string.Empty : reader.GetString(ordSn1),
+                                    StructureOrd = ((reader.GetValue(ordSn1) as System.DBNull) == System.DBNull.Value) ? string.Empty : reader.GetString(ordSn1),
                                     StructureID = ((reader.GetValue(ordSn2) as System.DBNull) == System.DBNull.Value) ? string.Empty : reader.GetString(ordSn2),
                                     Position = reader.GetBoolean(ordPos) ? 2 : 1,
                                     User = reader.GetString(ordUser),
@@ -816,7 +824,7 @@ namespace SCME.InterfaceImplementations
                     return list;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new System.ServiceModel.FaultException<FaultData>(new FaultData()
                 {

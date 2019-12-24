@@ -357,6 +357,8 @@ namespace SCME.UI
 
         private void Logout_Click(object Sender, RoutedEventArgs E)
         {
+            Cache.Net.SetSafetyMode(SafetyMode.Internal);
+
             if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
                 Cache.UserTest.OnLeaveNotify();
 

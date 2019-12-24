@@ -658,7 +658,8 @@
     <ListView.ItemContainerStyle>
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            
+
+            <Setter Property="Focusable" Value="false"/>
         </Style>
     </ListView.ItemContainerStyle>
     <ListView.Template>
