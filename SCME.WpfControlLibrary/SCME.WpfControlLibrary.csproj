@@ -34,6 +34,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PB|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\PB\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>

@@ -262,7 +262,7 @@ namespace PE.ControlConsole
         {
             try
             {
-                PlotForm.RunPlot(XValues.Select(Convert.ToDouble).ToList(), YValues.Select(Convert.ToDouble).ToList());
+                PlotForm.RunPlot(XValues.Select(m=> Convert.ToDouble(m, CultureInfo.InvariantCulture)).ToList(), YValues.Select(Convert.ToDouble).ToList());
             }
             catch (Exception e)
             {

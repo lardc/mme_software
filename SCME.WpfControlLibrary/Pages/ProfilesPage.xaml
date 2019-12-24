@@ -22,14 +22,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid >
+    <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*" />
             <ColumnDefinition Width="75*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" SharedSizeGroup="Column0" />
+                <RowDefinition Height="auto" SharedSizeGroup="ColumnMmeAndName" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
@@ -62,7 +62,7 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" SharedSizeGroup="Column0" />
+                <RowDefinition Height="auto" SharedSizeGroup="ColumnMmeAndName" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
@@ -105,24 +105,25 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                        <StackPanel Grid.Column="1" Grid.Row="0"  HorizontalAlignment="Center"  Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
-                            <Border IsEnabled="{Binding IsEditModeActive}" BorderThickness="1" BorderBrush="AliceBlue"
+                    <StackPanel Grid.Column="1" Grid.Row="0"  HorizontalAlignment="Center"  Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
+                        <Border IsEnabled="{Binding IsEditModeActive}" BorderThickness="1" BorderBrush="AliceBlue"
                                     Margin="10">
-                                <profilesPageComponents:AddTestParameterUserControl Background="{StaticResource ListViewTestParametersBrush}"
+                            <profilesPageComponents:AddTestParameterUserControl Background="{StaticResource ListViewTestParametersBrush}"
                                     x:Name="AddTestParameterUserControl" Margin="10"
                                     DataContext="{Binding ProfileDeepDataCopy}"
                                     AddTestParametersEvent="AddTestParametersEvent_Click" />
-                            </Border>
-                            <Border BorderThickness="1" 
-                                    BorderBrush="AliceBlue" Margin="10"
-                                    Visibility="{Binding ProfileVm.ReadOnlyMode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Converter={StaticResource B2V}}">
-                                <CheckBox Margin="10" DataContext="{Binding ProfileDeepDataCopy}"
+                        </Border>
+
+                        <Border BorderThickness="1" Grid.ColumnSpan="2"
+                                    BorderBrush="AliceBlue" Margin="10" Background="{StaticResource ListViewTestParametersBrush}"
+                                    IsEnabled="{Binding IsEditModeActive}">
+                            <CheckBox Margin="10" DataContext="{Binding ProfileDeepDataCopy}" FlowDirection="RightToLeft"
                                           IsChecked="{Binding IsHeightMeasureEnabled}"
                                           Content="{x:Static res:Resources.MeasureDialog_Title}" />
-                            </Border>
-                        </StackPanel>
+                        </Border>
+                    </StackPanel>
 
-                        <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" 
+                    <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" 
                             ContentIsEnabled="{Binding IsEditModeActive}"
                             ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
                             PreviewMouseWheel="TestParametersListView_OnPreviewMouseWheel"

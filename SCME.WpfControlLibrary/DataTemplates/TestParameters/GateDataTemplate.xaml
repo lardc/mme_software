@@ -8,6 +8,15 @@
              xmlns:gate="clr-namespace:SCME.Types.Gate;assembly=SCME.Types"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=gate:TestParameters}"
              d:DesignHeight="450" d:DesignWidth="800">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
         <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>

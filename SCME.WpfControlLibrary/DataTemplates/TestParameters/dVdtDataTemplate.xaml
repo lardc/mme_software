@@ -10,7 +10,9 @@
     <Grid.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>

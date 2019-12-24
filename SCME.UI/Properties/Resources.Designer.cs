@@ -412,6 +412,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string DeviceClass {
+            get {
+                return ResourceManager.GetString("DeviceClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class by RT.
         /// </summary>
         public static string DeviceRTClass {

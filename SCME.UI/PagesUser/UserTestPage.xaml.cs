@@ -771,7 +771,10 @@ namespace SCME.UI.PagesUser
                     }
                 }
 
+                tbPseNumber.TextChanged -= tbPseNumber_TextChanged;
                 tbPseNumber.Text = "";
+                tbPseNumber.TextChanged += tbPseNumber_TextChanged;
+                
                 tbPsdSerialNumber.Text = "";
                 tbPsdSerialNumber.Focus();
 
@@ -2749,84 +2752,79 @@ namespace SCME.UI.PagesUser
             ((Position == 1) ? chartPlotter1 : chartPlotter2).FitToView();
         }
 
+        // private int? QWE()
+        // {
+        //     int? x = 3;
+        //     return x;
+        // }
+        //
+        // private int? ASD()
+        // {
+        //     int? x = 39;
+        //     return x;
+        // }
+        
+
         private void CalcDeviceClass(ValidatingTextBox sourceOfdeviceCode, bool factClass)
         {
             //вычисляет класс изделия и выводит его на форме
 
             //чтобы исключить зависимость работоспособности приложения от работоспособности данной реализации заворачиваем её в try...catch
+            var firstPart = factClass ? Properties.Resources.DeviceClass : Properties.Resources.DeviceRTClass;
             try
             {
-                if (sourceOfdeviceCode != null)
+                btnStart.IsEnabled = true;
+                lblDeviceClass.Foreground = Brushes.Black;
+                
+                if(!int.TryParse(Profile.Name.Split(" ".ToArray(), StringSplitOptions.RemoveEmptyEntries)[3], out var deviceClassByProfileName))
+                    return;
+                
+                if (sourceOfdeviceCode == null)
+                    return;
+                
+                var deviceCode = sourceOfdeviceCode.Text;
+                var jobFirstSymbol = deviceCode.IndexOf("/", 0, StringComparison.Ordinal);
+                
+                if (jobFirstSymbol == -1)
+                    return;
+                
+                jobFirstSymbol++;
+                var job = deviceCode.Substring(jobFirstSymbol);
+                
+                if (job.Length != 10)
+                    return;
+                
+                var deviceClass = factClass ? Cache.Net.ReadDeviceClass(deviceCode, Profile.Name) : Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
+                //var deviceClass = factClass ? QWE(): ASD();
+                
+                string secondPart;
+                
+                switch (deviceClass)
                 {
-                    //чтобы система смогла вычислить класс изделия надо чтобы обозначение изделия было введено полностью - пример 2/4-00020997
-                    //для этого будем проверять количество символов после символа '/' и если оно равно 10 - будем пытаться вычислить класс этого изделия
-                    string deviceCode = sourceOfdeviceCode.Text;
-                    int jobFirstSimbol = deviceCode.IndexOf("/", 0);
-                    btnStart.IsEnabled = true;
-                    lblDeviceClass.Foreground = Brushes.Black;
-                    if (jobFirstSimbol != -1)
+                    case -1:
+                        secondPart = Properties.Resources.ErrorRealisation;
+                        break;
+                    case null:
+                        secondPart = Properties.Resources.NoResults;
+                        break;
+                    default:
                     {
-                        jobFirstSimbol++;
-                        string job = deviceCode.Substring(jobFirstSimbol);
-
-                        if (job.Length == 10)
+                        if (deviceClassByProfileName >= deviceClass && !factClass)
                         {
-                            string sDeviceRTClass = string.Empty;
-                            int? deviceRTClass = null;
-
-                            //пробуем вычислить значение класса
-                            if (factClass)
-                                Cache.Net.ReadDeviceClass(deviceCode, Profile.Name);
-                            else
-                                deviceRTClass = Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
-
-                            if (deviceRTClass == null)
-                                //для вычисления класса при RT нет измерений на основе которых можно его вычислить
-                                sDeviceRTClass = Properties.Resources.NoResults;
-                            else
-                            {
-                                //класс не null - какое-то значение получено, разбираемся что получено
-                                int iDeviceRTClass = deviceRTClass.Value;
-
-                                if (iDeviceRTClass == -1)
-                                    //случай ошибки в реализации вычисления класса
-                                    sDeviceRTClass = Properties.Resources.ErrorRealisation;
-
-                                else
-                                {
-                                    //получено вменяемое значение класса изделия
-                                    sDeviceRTClass = iDeviceRTClass.ToString();
-
-                                    if (int.TryParse(Profile.Name.Split(" ".ToArray(), StringSplitOptions.RemoveEmptyEntries).Last(), out var iClassByProfileName))
-                                    {
-                                        if (iDeviceRTClass >= iClassByProfileName)
-                                        {
-                                            btnStart.IsEnabled = true;
-                                            lblDeviceClass.Foreground = Brushes.Black;
-                                        }
-                                        else
-                                        {
-                                            btnStart.IsEnabled = false;
-                                            lblDeviceClass.Foreground = Brushes.Red;
-                                        }
-                                    }
-
-                                }
-                            }
-                                    
-                            
-
-                            //выводим полученный класс на форму
-                            lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, sDeviceRTClass);
+                            btnStart.IsEnabled = false;
+                            lblDeviceClass.Foreground = Brushes.Red;
                         }
-                        else
-                            btnStart.IsEnabled = true;
+
+                        secondPart = deviceClass.ToString();
+                        break;
                     }
                 }
+
+                lblDeviceClass.Content = $"{firstPart}: {secondPart}";
             }
             catch (Exception ex)
             {
-                lblDeviceClass.Content = string.Format("{0}: {1}", Properties.Resources.DeviceRTClass, Properties.Resources.ErrorRealisation);
+                lblDeviceClass.Content = lblDeviceClass.Content = $"{firstPart}: {Properties.Resources.ErrorRealisation}";;
             }
         }
 

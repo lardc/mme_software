@@ -829,6 +829,9 @@
   <data name="DeviceRTClass" xml:space="preserve">
     <value>Class by RT</value>
   </data>
+  <data name="DeviceClass" xml:space="preserve">
+    <value>Class</value>
+  </data>
   <data name="NoResults" xml:space="preserve">
     <value>No results</value>
   </data>
