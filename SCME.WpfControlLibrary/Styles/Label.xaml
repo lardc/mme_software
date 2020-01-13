@@ -7,7 +7,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
-        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">

@@ -21,7 +21,6 @@
     <!--         <Setter Property="HorizontalAlignment" Value="Stretch" /> -->
     <!--         <Setter Property="VerticalContentAlignment" Value="Center" /> -->
     <!--         <Setter Property="HorizontalContentAlignment" Value="Left" /> -->
-    <!--         <Setter Property="FontFamily" Value="Helvetica Neue LT Std" /> -->
     <!--         <Setter Property="FontWeight" Value="ExtraLight" /> -->
     <!--         <Setter Property="Text" Value="0" /> -->
     <!--         <Style.Triggers> -->

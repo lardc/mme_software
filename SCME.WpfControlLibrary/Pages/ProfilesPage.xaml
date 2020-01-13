@@ -51,17 +51,10 @@
                                               Style="{StaticResource PlaceholderTextBox}"
                                               TextChanged="TextBoxFind_TextChanged" />
 
-
-
-
-
-
-
-
-
-            <ListView Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Name="ListViewProfiles"  ItemContainerStyle="{StaticResource DefaultListViewItemContainerStyle}" AlternationCount="2" 
-                      SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged" >
-                <!--<ListView.Template>
+            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource ListViewProfiles}" x:Name="ListViewProfiles"  ItemContainerStyle="{StaticResource DefaultListViewItemContainerStyle}" AlternationCount="2" 
+                      SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged"
+                      >
+               <!--<ListView.Template>
                     <ControlTemplate TargetType="{x:Type ListBox}">
                         <Border x:Name="border"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -113,11 +106,7 @@
                         </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>
-
-
-
-
+            </customControls:ListViewMouseLeftButtonScroll>
 
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}"
                     Style="{StaticResource BackButton}" Click="GoBack_Click" />
@@ -138,9 +127,11 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}"
+
+                <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" BorderThickness="0" Margin="10,0,0,0"
                          IsEnabled="{Binding IsEditModeActive}" />
-                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"
+                <Border BorderThickness="1" Grid.Column="0" Grid.Row="0" BorderBrush="Gray"   />
+                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}" 
                         Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
                 </Button>

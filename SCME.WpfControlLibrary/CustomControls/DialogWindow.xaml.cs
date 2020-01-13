@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
-using PropertyChanged;
 using SCME.WpfControlLibrary.Commands;
 
 namespace SCME.WpfControlLibrary.CustomControls

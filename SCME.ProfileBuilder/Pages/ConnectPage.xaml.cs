@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Windows;
 using SCME.Types;
@@ -23,24 +24,34 @@ namespace SCME.ProfileBuilder.Pages
             InitializeComponent();
         }
 
-        private IDbService GetMsSqlDbService()
-        {
-            var prop = Properties.Settings.Default;
-            var connectionStringBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder
+        private Properties.Settings Settings => Properties.Settings.Default;
+
+        private SqlConnectionStringBuilder GetSqlConnectionStringBuilder =>
+            new SqlConnectionStringBuilder()
             {
-                DataSource = prop.MSSQLServer,
-                InitialCatalog = prop.MSSQLDatabase,
-                IntegratedSecurity = prop.MSSQLIntegratedSecurity,
-                ConnectTimeout = prop.SQLTimeout
+                DataSource = Settings.MSSQLServer,
+                InitialCatalog = Settings.MSSQLDatabase,
+                IntegratedSecurity = Settings.MSSQLIntegratedSecurity,
+                ConnectTimeout = Settings.SQLTimeout,
+                UserID = Settings.MSSQLIntegratedSecurity == false ? Settings.MSSQLUserId : null,
+                Password = Settings.MSSQLIntegratedSecurity == false ? Settings.MSSQLPassword : null
             };
 
-            if (prop.MSSQLIntegratedSecurity == false)
+        private SQLiteConnectionStringBuilder GetSQLiteConnectionStringBuilder =>
+            new SQLiteConnectionStringBuilder()
             {
-                connectionStringBuilder.UserID = prop.MSSQLUserId;
-                connectionStringBuilder.Password = prop.MSSQLPassword;
-            }
+                DataSource = Settings.SQLiteFileName,
+                DefaultTimeout = Settings.SQLTimeout,
+                SyncMode = SynchronizationModes.Full,
+                JournalMode = SQLiteJournalModeEnum.Truncate,
+                FailIfMissing = true
+            };
 
-            var sqlConnection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString());
+        private IDbService GetMsSqlDbService()
+        {
+            var connectionStringBuilder = GetSqlConnectionStringBuilder;
+          
+            var sqlConnection = new SqlConnection(connectionStringBuilder.ToString());
             var service = new InterfaceImplementations.NewImplement.MSSQL.MSSQLDbService(sqlConnection);
             service.Migrate();
             return service;
@@ -48,15 +59,7 @@ namespace SCME.ProfileBuilder.Pages
 
         private IDbService GetSqliteDbService()
         {
-            var prop = Properties.Settings.Default;
-            var connectionStringBuilder = new SQLiteConnectionStringBuilder()
-            {
-                DataSource = prop.SQLiteFileName,
-                DefaultTimeout = prop.SQLTimeout,
-                SyncMode = SynchronizationModes.Full,
-                JournalMode = SQLiteJournalModeEnum.Truncate,
-                FailIfMissing = true
-            };
+            var connectionStringBuilder = GetSQLiteConnectionStringBuilder;
 
             var sqliteConnection = new SQLiteConnection(connectionStringBuilder.ToString());
             var service = new InterfaceImplementations.NewImplement.SQLite.SQLiteDbService(sqliteConnection);
@@ -79,6 +82,8 @@ namespace SCME.ProfileBuilder.Pages
                     default:
                         throw new NotImplementedException();
                 }
+
+                SetTitle();
             }
             catch (Exception ex)
             {
@@ -101,11 +106,30 @@ namespace SCME.ProfileBuilder.Pages
                     default:
                         throw new NotImplementedException();
                 }
+
+                SetTitle();
             }
             catch (Exception ex)
             {
                 new DialogWindow(WpfControlLibrary.Properties.Resources.Error, ex.ToString()).ShowDialog();
             }
+        }
+
+        private void SetTitle()
+        {
+            switch (Properties.Settings.Default.TypeDb)
+            {
+                case TypeDb.SQLite:
+                    Cache.Main.Title = $"SCME.ProfileBuilder SQLite {GetSQLiteConnectionStringBuilder.DataSource}";
+                    break;
+                case TypeDb.MSSQL:
+                    var connection = GetSqlConnectionStringBuilder;
+                    Cache.Main.Title = $"SCME.ProfileBuilder MSSQL Server={connection.DataSource} Database={connection.InitialCatalog}";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            
         }
     }
 }

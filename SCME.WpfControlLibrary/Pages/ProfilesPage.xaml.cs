@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
@@ -237,15 +239,81 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TestParametersListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (!e.Handled)
-            {
-                e.Handled = true;
-                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
-                eventArg.Source = sender;
-                var parent = ((Control) sender).Parent as UIElement;
-                parent.RaiseEvent(eventArg);
-            }
+            if (e.Handled) 
+                return;
+            
+            e.Handled = true;
+            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) {RoutedEvent = MouseWheelEvent, Source = sender};
+            var parent = (UIElement)((Control) sender).Parent;
+            parent.RaiseEvent(eventArg);
         }
+
+
+        private Point?_lastPoint;
+        private MyProfile _lastSelectProfile;
+
+            private void ListViewProfiles_OnMouseUp(object sender, MouseButtonEventArgs e)
+            {
+                var lv = (ListView)sender;
+                if (e.ChangedButton != MouseButton.Left) 
+                    return;
+
+                var obj = lv.ContainerFromElement((Visual)e.OriginalSource);
+                var element = (ListViewItem)obj;
+
+
+                Debug.Assert(element != null, nameof(element) + " != null");
+                var item = (MyProfile)element.Content;
+
+                if (item == _lastSelectProfile )
+                    lv.SelectedItem = item;
+
+            }
+
+            private void ListViewProfiles_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+            {
+                var lv = (ListView)sender;
+                if (e.ChangedButton != MouseButton.Left) 
+                    return;
+
+                _lastPoint = e.GetPosition((IInputElement) sender);
+
+                var obj = lv.ContainerFromElement((Visual)e.OriginalSource);
+                var element = (ListViewItem)obj;
+
+                Debug.Assert(element != null, nameof(element) + " != null");
+                _lastSelectProfile = (MyProfile)element.Content;
+
+                e.Handled = true;
+            }
+
+
+            private static TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
+            {
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                    if (child is TChildItem item)
+                        return item;
+
+                    var childOfChild = FindVisualChild<TChildItem>(child);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+                return null;
+            }
+
+            private void ListViewProfiles_OnMouseMove(object sender, MouseEventArgs e)
+            {
+                var lv = (ListView)sender;
+                if (e.LeftButton != MouseButtonState.Pressed) 
+                    return;
+
+                var sv = FindVisualChild<ScrollViewer>(lv);
+                
+                if(_lastPoint != null)
+                    sv.ScrollToVerticalOffset(sv.VerticalOffset + (e.GetPosition((IInputElement)sender).Y - _lastPoint.Value.Y));
+                _lastPoint = e.GetPosition((IInputElement) sender);
+            }
     }
 }

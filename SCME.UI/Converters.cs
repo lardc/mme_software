@@ -810,6 +810,10 @@ namespace SCME.UI
 
             switch (ct)
             {
+                case HWModuleCommutationType.Reverse:
+                    return
+                        new Tuple<HWModuleCommutationType, BVTTestType, bool>(
+                            HWModuleCommutationType.Reverse, BVTTestType.Both, false);
                 case HWModuleCommutationType.Direct:
                     return
                         new Tuple<HWModuleCommutationType, BVTTestType, bool>(

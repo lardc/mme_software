@@ -19,18 +19,18 @@
                 <ControlTemplate TargetType="{x:Type myControls:NumericUpDown}">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" x:Name="LabelValue" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                        <TextBox Grid.Column="0" x:Name="TextBoxValue" TextAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                        <RepeatButton Grid.Column="1" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" Margin="5,0">
+                        <RepeatButton Grid.Column="0" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" >
                             <Path Data="{StaticResource Plus}" Style="{StaticResource PathIcon}" />
                         </RepeatButton>
-                        <RepeatButton Grid.Column="2" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36">
+                        <RepeatButton Grid.Column="1" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="5,0">
                             <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" />
                         </RepeatButton>
+                        <Label Grid.Column="2" x:Name="LabelValue" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <TextBox Grid.Column="2" x:Name="TextBoxValue" TextAlignment="Right" BorderThickness="0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                     </Grid>          
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">

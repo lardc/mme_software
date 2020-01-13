@@ -19,7 +19,8 @@
                     xmlns:mahappsControls="http://metro.mahapps.com/winfx/xaml/controls"
                     
                     xmlns:dataTemplatesTestParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
-                    xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
+                    xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents"
+                    xmlns:profiles1="clr-namespace:SCME.Types.Profiles;assembly=SCME.Types">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Sizes.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
@@ -35,22 +36,19 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewProfile.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/PlaceHolderValidatingTextBox.xaml" />
         
     </ResourceDictionary.MergedDictionaries>
 
-
-   
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
-    
+   
     <Style TargetType="customControl:ValidatingTextBox">
-        <Setter Property="FontFamily" Value="{DynamicResource SCME.DefaultFont}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
-
   
     <Style TargetType="ListViewItem" x:Key="DragDropListViewItem">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -61,17 +59,19 @@
         <StaticResource ResourceKey="xGray3" />
     </AlternationConverter>
 
-    <Style x:Key="DefaultListViewItemContainerStyle" TargetType="{x:Type ListBoxItem}">
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Background"
-                Value="{Binding RelativeSource={RelativeSource Self},
-                     Path=(ItemsControl.AlternationIndex),
-                     Converter={StaticResource BackgroundConverter}}" />
-        <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-        </Style.Resources>
+    <Style TargetType="ListBoxItem" x:Key="DefaultListViewItemContainerStyle">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

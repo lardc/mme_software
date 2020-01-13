@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="CustomControls\DragGrid.cs" />
     <Compile Include="CustomControls\GridTransform4T2.cs" />
+    <Compile Include="CustomControls\ListViewLeftMouseButtonScroll.cs" />
     <Compile Include="CustomControls\NumericUpDown.cs" />
     <Compile Include="CustomControls\PanelButton.xaml.cs">
       <DependentUpon>PanelButton.xaml</DependentUpon>

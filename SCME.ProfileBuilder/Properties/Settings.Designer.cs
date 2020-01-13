@@ -12,7 +12,7 @@ namespace SCME.ProfileBuilder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -61,15 +61,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\Работа\\mme_softwareUS03\\bin\\Db\\SCME_ResultsDB_Local.sqlite")]
-        public string SQLiteFileName {
-            get {
-                return ((string)(this["SQLiteFileName"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int SQLTimeout {
             get {
@@ -100,15 +91,6 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
-        public global::SCME.Types.TypeDb TypeDb {
-            get {
-                return ((global::SCME.Types.TypeDb)(this["TypeDb"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("qwerty_123")]
         public string MSSQLPassword {
             get {
@@ -118,7 +100,25 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDB")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\SCME_ResultsDB_Local.sqlite")]
+        public string SQLiteFileName {
+            get {
+                return ((string)(this["SQLiteFileName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SQLite")]
+        public global::SCME.Types.TypeDb TypeDb {
+            get {
+                return ((global::SCME.Types.TypeDb)(this["TypeDb"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDBTest")]
         public string MSSQLDatabase {
             get {
                 return ((string)(this["MSSQLDatabase"]));

@@ -46,14 +46,17 @@ namespace SCME.UI.PagesTech
                 case 1:
                     Cache.Gate = new GatePage();
                     page = Cache.Gate;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 2:
                     Cache.Sl = new SLPage();
                     page = Cache.Sl;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 3:
                     Cache.Bvt = new BvtPage();
                     page = Cache.Bvt;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 4:
                     page = Cache.Selftest;
@@ -83,18 +86,22 @@ namespace SCME.UI.PagesTech
                     break;
                 case 11:
                     page = Cache.Clamp;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 12:
                     Cache.DVdt = new DVdtPage();
                     page = Cache.DVdt;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 13:
                     Cache.ATU = new ATUPage();
                     page = Cache.ATU;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 14:
                     Cache.QrrTq = new QrrTqPage();
                     page = Cache.QrrTq;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 15:
                     Cache.RAC = new RACPage();
@@ -103,13 +110,16 @@ namespace SCME.UI.PagesTech
                 case 16:
                     Cache.IH = new IHPage();
                     page = Cache.IH;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 17:
                     Cache.TOU = new TOUPage();
                     page = Cache.TOU;
+                    page.Margin = new Thickness(0,0,10,0);
                     break;
             }
 
+            
             if (page != null && NavigationService != null)
                 NavigationService.Navigate(page);
         }

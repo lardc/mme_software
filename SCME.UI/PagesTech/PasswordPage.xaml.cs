@@ -23,27 +23,22 @@ namespace SCME.UI.PagesTech
             var q = Settings.Default.TechPassword;
             if (tbPassword.Text == Settings.Default.TechPassword && NavigationService != null)
             {
-                lblIncorrect.Content = "";
-
                 if (AfterOkRoutine != null)
                 {
                     AfterOkRoutine(NavigationService);
                     AfterOkRoutine = null;
                 }
+                lblIncorrect.Visibility = Visibility.Hidden;
             }
             else
-                lblIncorrect.Content = Properties.Resources.PasswordIncorrect;
+                lblIncorrect.Visibility = Visibility.Visible;
 
             tbPassword.Text = "";
         }
 
         private void BtnCancel_OnClick(object Sender, RoutedEventArgs E)
         {
-            if (NavigationService != null)
-            {
-                lblIncorrect.Content = "";
-                NavigationService.GoBack();
-            }
+            NavigationService?.GoBack();
         }
     }
 }
