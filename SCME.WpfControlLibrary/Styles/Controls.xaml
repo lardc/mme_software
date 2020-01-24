@@ -33,18 +33,16 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Label.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/CheckBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBlock.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ComboBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewProfile.xaml" />
-        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListView.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/PlaceHolderValidatingTextBox.xaml" />
         
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-    </Style>
+   
    
     <Style TargetType="customControl:ValidatingTextBox">
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
@@ -54,21 +52,26 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     </Style>
 
-    <AlternationConverter x:Key="BackgroundConverter">
-        <SolidColorBrush>Transparent</SolidColorBrush>
-        <StaticResource ResourceKey="xGray3" />
-    </AlternationConverter>
 
     <Style TargetType="ListBoxItem" x:Key="DefaultListViewItemContainerStyle">
+        <Setter Property="Background" 
+                Value="{Binding RelativeSource={RelativeSource Self},
+                     Path=(ItemsControl.AlternationIndex),
+                     Converter={StaticResource BackgroundConverter}}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                <ControlTemplate TargetType="ListBoxItem" >
+                    <Grid Background="{TemplateBinding Background}">
+                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}" 
+                                          
+                                          Height="60" 
                                ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
                                ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
                                HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
                                VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
-                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                        />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

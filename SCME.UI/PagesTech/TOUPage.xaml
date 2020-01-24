@@ -13,31 +13,37 @@
       Title="{x:Static res:Resources.TOU}">
 
     <Page.Resources>
+        <!--<ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/ScrollBar.xaml" />
+        </ResourceDictionary.MergedDictionaries>-->
 
         <ui:TryBooleanToVisibilityConverter x:Key="B2V" />
         <ui:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
         <ui:EnumValueToString x:Key="E2S" />
         
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
-            <Setter Property="Padding" Value="5,0,0,0" />
-            <Setter Property="Height" Value="62" />
+         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CComboboxStyle}">
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+        </Style>
+
+
+        <Style TargetType="customControls:ValidatingTextBox" BasedOn="{StaticResource {x:Type customControls:ValidatingTextBox}}">
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
         </Style>
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
             <Setter Property="Margin" Value="10,0" />
         </Style>
 
-        <Style x:Key="StLblStyle" TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
-            <Setter Property="Height" Value="50" />
-            <Setter Property="Padding" Value="10,0" />
-        </Style>
-        
-        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CCheckBoxStyle}">
-            <Setter Property="Foreground" Value="{StaticResource xBlack1}" />
-            <Setter Property="Margin" Value="20,20" />
-            <Setter Property="Padding" Value="5,0" />
-        </Style>
-
+        <!--</ResourceDictionary>-->
     </Page.Resources>
     
     <Grid>
@@ -53,9 +59,10 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Column="3" Grid.Row="0" Margin="10,0,0,0">
+            <customControls:ScrollViewerLeftMouseButtonScroll Style="{StaticResource DefaultScrollViewer}">
             <Grid >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="190" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -78,67 +85,66 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Content="{x:Static res:Resources.Amperage}"   Grid.Column="0"  Grid.Row="0" />
-                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="0" Padding="5" Margin="10"
+                <Label Content="{x:Static res:Resources.Amperage}"   Grid.Column="0"  Grid.Row="0" HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="0" 
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
                                                  Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
                                                  Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
                           Text="{Binding TOU.CurrentAmplitude}" />
 
-                <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" />
-                <Label Content="{x:Static res:Resources.Itm_A}"   Grid.Column="0"  Grid.Row="3" />
-                <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="4" />
-                <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="5" />
+                <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" HorizontalAlignment="Left"/>
+                <Label Content="{x:Static res:Resources.Itm_A}"   Grid.Column="0"  Grid.Row="3" HorizontalAlignment="Left" />
+                <Label Content="{x:Static res:Resources.TGD}"   Grid.Column="0"  Grid.Row="4" HorizontalAlignment="Left"/>
+                <Label Content="{x:Static res:Resources.TGT}"   Grid.Column="0"  Grid.Row="5" HorizontalAlignment="Left"/>
 
-                <Label Content="{Binding State}" Grid.Column="1"  Grid.Row="2"  Margin="0" FontSize="{StaticResource FontSize26}"/>
-                <Label Content="{Binding ITM}"   Grid.Column="1"  Grid.Row="3" Margin="0"/>
-                <Label Content="{Binding TGD}"   Grid.Column="1"  Grid.Row="4" Margin="0"/>
-                <Label Content="{Binding TGT}"   Grid.Column="1"  Grid.Row="5" Margin="0"/>
+                <Label Content="{Binding State}" Grid.Column="1"  Grid.Row="2" />
+                <Label Content="{Binding ITM}"   Grid.Column="1"  Grid.Row="3"  />
+                <Label Content="{Binding TGD}"   Grid.Column="1"  Grid.Row="4" />
+                <Label Content="{Binding TGT}"   Grid.Column="1"  Grid.Row="5"  />
 
-                <Label Name="lblWarning" x:FieldModifier="private" Background="Gold" Height="Auto" Padding="10"
+                <Label Name="lblWarning" x:FieldModifier="private" Background="Gold" Height="Auto"  
                        Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Content="Warning" />
 
-                <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" Padding="10"
+                <Label Name="lblFault" x:FieldModifier="private" Background="Tomato" Height="Auto" 
                        Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="Fault" />
-                
-                <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.CommutationType}" />
 
-                <ComboBox Grid.Column="1" Grid.Row="8" Margin="10" Padding="5" MaxDropDownHeight="1500"
+                <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.CommutationType}"  HorizontalAlignment="Left"/>
+
+                <ComboBox Grid.Column="1" Grid.Row="8"  MaxDropDownHeight="1500" VerticalAlignment="Center"
                           ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
-                          SelectedItem="{Binding CommutationType, Converter={StaticResource E2S}}"
-                          Style="{StaticResource CComboboxStyle}" />
+                          SelectedItem="{Binding CommutationType, Converter={StaticResource E2S}}"  />
 
-                <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.Position}" />
+                <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.Position}"  HorizontalAlignment="Left"/>
 
-                <ComboBox Grid.Column="1" Grid.Row="9" Margin="10" Padding="5"
+                <ComboBox Grid.Column="1" Grid.Row="9" VerticalAlignment="Center"
                           ItemsSource="{Binding Source={StaticResource DataFromModulePositionEnum}}"
-                          SelectedItem="{Binding Position, Converter={StaticResource E2S}}"
-                          Style="{StaticResource CComboboxStyle}" />
+                          SelectedItem="{Binding Position, Converter={StaticResource E2S}}" />
 
-                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10" Padding="5" Margin="10"
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10" 
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding Clamping.Height}" />
 
-                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11" Margin="10" Padding="5"
+                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding Clamping.CustomForce}" />
 
-                <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="12" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="12"  Padding="5" Margin="10"
+                <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="12" HorizontalAlignment="Left" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="12"  
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}" 
                           Text="{Binding Temperature}" />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="13" Content="{x:Static res:Resources.TopTempName}" />
-                <Label Grid.Column="1" Grid.Row="13" Content="0" x:Name="TopTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0"   />
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="13" Content="{x:Static res:Resources.TopTempName}" HorizontalAlignment="Left" />
+                    <Label Grid.Column="1" Grid.Row="13" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right"  />
 
-                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="14" Content="{x:Static res:Resources.BotTempName}"/>
-                <Label Grid.Column="1" x:Name="BotTempLabel" Grid.Row="14" HorizontalAlignment="Right" Content="0" Background="LightGreen" Height="Auto"  Margin="0,0,7,0"  />
+                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="14" Content="{x:Static res:Resources.BotTempName}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="1" x:Name="BotTempLabel" Grid.Row="14" Content="0" Background="LightGreen" HorizontalContentAlignment="Right"  />
                 
                 
             </Grid>
+            </customControls:ScrollViewerLeftMouseButtonScroll>
         </Border>
 
         <Line HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"

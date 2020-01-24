@@ -45,8 +45,8 @@ namespace SCME.WpfControlLibrary
         {
             var (_, DPIY) = GetSystemDpi();
             double cmFactor = DPIY / 2.54 * factor;
-            
-            Application.Current.Resources["SCME.BaseFontSize"] = cmFactor;
+
+            Application.Current.Resources["SCME.BaseFontSize"] = 24.0;//cmFactor;
             Application.Current.Resources["SCME.ScrollBarWidth"] = cmFactor;
             Application.Current.Resources["SCME.SizeButtonWithIcon"] = 1.5 * cmFactor;
             

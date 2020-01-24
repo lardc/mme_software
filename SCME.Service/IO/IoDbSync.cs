@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SCME.InterfaceImplementations;
 using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Service.Properties;
@@ -67,6 +68,7 @@ namespace SCME.Service.IO
                 {
                     initializationResponse.IsLocal = true;
                     _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
+                    MessageBox.Show(e.ToString(), "Error sync, передайте сообщение разработчику");
                 }
 
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
@@ -109,7 +111,7 @@ namespace SCME.Service.IO
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.Message));
+                throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.ToString()));
             }
         }
 

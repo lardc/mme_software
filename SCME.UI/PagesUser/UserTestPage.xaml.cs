@@ -2898,7 +2898,8 @@ namespace SCME.UI.PagesUser
             m_TwoPosRequested =
                 !(Profile.ParametersComm == Types.Commutation.ModuleCommutationType.MT1 ||
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.MD1 ||
-                  Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Direct);
+                  Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Direct ||
+                  Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Reverse);
 
 
             StartN(1);

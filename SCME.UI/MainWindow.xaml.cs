@@ -89,7 +89,7 @@ namespace SCME.UI
             try
             {
                 Cache.Main = this;
-                if (Settings.Default.WindowIs1280x1024 == true)
+                if (Settings.Default.WindowIs1280x1024)
                 {
                     Top = SystemParameters.WorkArea.Top;
                     Left = SystemParameters.WorkArea.Left;

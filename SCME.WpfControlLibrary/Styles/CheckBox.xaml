@@ -36,7 +36,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid x:Name="PART_CHECKBOX" Grid.Column="0">
                             <!--<Rectangle Fill="{DynamicResource TransparentWhiteBrush}" />-->
-                            <Border x:Name="normal" 
+                            <Border x:Name="normal"  
                                     Width="36"
                                     Height="36"
                                     Background="{TemplateBinding Background}"
@@ -80,30 +80,18 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
-                            <Setter TargetName="checkBox" Property="Visibility" Value="Collapsed"></Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type profilesPageComponents:AddTestParameterUserControl}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type Border}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-                        </DataTrigger>
-                        <!-- <Trigger Property="IsMouseOver" Value="True"> -->
-                        <!--     <Setter TargetName="normal" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.MouseOverBorderBrush)}" /> -->
-                        <!-- </Trigger> -->
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="normal" Property="BorderBrush" Value="{DynamicResource HighlightBrush}" />
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             
                         </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="checkBox" Property="Visibility" Value="Collapsed"></Setter>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <!--<Setter Property="Background" Value="Transparent"/>-->
-                            <!--<Setter TargetName="normal" Property="Visibility" Value="Hidden"/>-->
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter TargetName="normal" Property="Visibility" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="FlowDirection" Value="RightToLeft">
                             <Setter TargetName="contentPresenter" Property="HorizontalAlignment" Value="Right"></Setter>

@@ -11,10 +11,22 @@
       d:DesignWidth="1280" d:DesignHeight="924">
     
     <Page.Resources>
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
+        </Style>
+
+        <Style TargetType="customControls:ValidatingTextBox" BasedOn="{StaticResource {x:Type customControls:ValidatingTextBox}}">
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
+        </Style>
+
+        <!--<Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Padding" Value="5,0,0,0" />
             <Setter Property="Height" Value="62" />
-        </Style>
+        </Style>-->
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
             <Setter Property="Margin" Value="10,0" />
@@ -46,17 +58,17 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}"/>
-                <customControls:ValidatingTextBox x:Name="vtbResVoltage" Grid.Column="1" Grid.Row="0" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding Parameters.ResVoltage, ElementName=rACPage, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.RACResVoltage}" HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox x:Name="vtbResVoltage" Grid.Column="1" Grid.Row="0"  IsNumeric="True" Minimum="1000" Maximum="2500" Text="{Binding Parameters.ResVoltage, ElementName=rACPage, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.RACResultR}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="1" Content="0" x:Name="lbResultR"  Height="Auto"/>
 
-                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.RACResultR}"/>
-                <Label Grid.Column="1" Grid.Row="1" Content="0" x:Name="lbResultR" FontSize="{StaticResource FontSize26}" Margin="0,0,7,0" Height="Auto"/>
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="2" Content="{x:Static res:Resources.TopTempName}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="2" Content="{x:Static res:Resources.TopTempName}" />
-                <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="TopTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0" />
-
-                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="3" Content="{x:Static res:Resources.BotTempName}" />
-                <Label Grid.Column="1" Grid.Row="3" Content="0" x:Name="BotTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0" />
+                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="3" Content="{x:Static res:Resources.BotTempName}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="0" x:Name="BotTempLabel" Background="LightGreen" />
             </Grid>
         </Border>
 

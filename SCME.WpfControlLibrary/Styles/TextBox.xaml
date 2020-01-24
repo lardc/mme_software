@@ -5,17 +5,43 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Storyboard x:Key="blinkAnimation" Duration="0:0:5" >
+        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)"
+                                                                  Storyboard.TargetName="TitleTextBlock"
+                                                                  AutoReverse="True">
+            <ColorAnimationUsingKeyFrames.KeyFrames>
+                <DiscreteColorKeyFrame KeyTime="0:0:0" Value="White"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:1" Value="Black"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:2" Value="White"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:3" Value="Black"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:4" Value="White"/>
+            </ColorAnimationUsingKeyFrames.KeyFrames>
+        </ColorAnimationUsingKeyFrames>
+
+        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                                                                  Storyboard.TargetName="TitleTextBlock"
+                                                                  AutoReverse="True">
+            <ColorAnimationUsingKeyFrames.KeyFrames>
+                <DiscreteColorKeyFrame KeyTime="0:0:0" Value="Black"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:1" Value="White"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:2" Value="Black"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:3" Value="White"/>
+                <DiscreteColorKeyFrame KeyTime="0:0:4" Value="Black"/>
+            </ColorAnimationUsingKeyFrames.KeyFrames>
+        </ColorAnimationUsingKeyFrames>
+    </Storyboard>
+
     <Style TargetType="TextBox" >
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
+        <Setter Property="FontWeight" Value="ExtraLight"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Setter Property="Background" Value="Transparent"></Setter>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type profilesPageComponents:AddTestParameterUserControl}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
+
     <Style TargetType="customControls:TextBoxWithTimer" BasedOn="{StaticResource {x:Type TextBox}}"></Style>
 </ResourceDictionary>

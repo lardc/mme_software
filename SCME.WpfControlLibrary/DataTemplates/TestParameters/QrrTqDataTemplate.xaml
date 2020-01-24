@@ -39,8 +39,8 @@
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
 
      <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5"  Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method}" />
-    
-     <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDirectCurrent}" /> 
+
+    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Name="WidthTemplate" Text="{x:Static res:Resources.QrrTqDirectCurrent}" /> 
      <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding DirectCurrent}" /> 
     
     <Label Grid.Column="0" Grid.Row="3"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" /> 
@@ -53,9 +53,9 @@
      <ComboBox Grid.Column="4" Grid.Row="5"  ItemsSource="{Binding Source={StaticResource TDcFallRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DCFallRate}" /> 
     
      <Label Grid.Column="0" Grid.Row="6"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" /> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding OffStateVoltage}" /> 
+     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding OffStateVoltage}" />
 
-    
-    <Label Grid.Column="0" Grid.Row="7"  Grid.ColumnSpan="4"  Content="{x:Static res:Resources.QrrTqOsvRate}" />
+
+    <TextBlock Grid.Column="0" Grid.Row="7"  Grid.ColumnSpan="4" TextWrapping="Wrap" HorizontalAlignment="Left" Width="{Binding ElementName=WidthTemplate, Path=ActualWidth}" Text="{x:Static res:Resources.QrrTqOsvRate}"  />
     <ComboBox Grid.Column="4" Grid.Row="7"  ItemsSource="{Binding Source={StaticResource TOsvRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
 </Grid>

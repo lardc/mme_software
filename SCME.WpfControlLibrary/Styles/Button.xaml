@@ -19,7 +19,7 @@
         <Setter Property="FontSize" Value="{DynamicResource BaseFontSize}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="Height" Value="50" />
+        <Setter Property="Height" Value="80" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -65,16 +65,21 @@
 
 
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
+        <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="Background" Value="{StaticResource BlueBrush}" />
+    </Style>
+
+    <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="Red" />
+    </Style>
+
+    <Style x:Key="StartButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="GreenYellow" />
     </Style>
 
     <Style x:Key="PurpleButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
+        <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="Background" Value="{StaticResource PurpleBrush1}" />
     </Style>
-
-    <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
-        <Setter Property="Background" Value="{StaticResource BlueBrush}" />
-    </Style>
-
 
 </ResourceDictionary>

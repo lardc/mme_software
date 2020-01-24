@@ -528,8 +528,15 @@ namespace SCME.Service
         public void SafetySystemOn()
         {
             //включение системы безопасности
-            if (m_IOCommutation != null)
-                SetSafetyState(m_IOCommutation, true);
+            try
+            {
+                if (m_IOCommutation != null)
+                    SetSafetyState(m_IOCommutation, true);
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException(ex.ToString());
+            }
         }
 
         public void SafetySystemOff()

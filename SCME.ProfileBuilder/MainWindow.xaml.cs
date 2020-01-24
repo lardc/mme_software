@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using SCME.InterfaceImplementations.NewImplement.MSSQL;
 using SCME.ProfileBuilder.Pages;
@@ -46,5 +47,6 @@ namespace SCME.ProfileBuilder
             //Cache.ConnectPage.ConnectToMssql();
             
         }
+
     }
 }

@@ -12,26 +12,18 @@
 
     <Page.Resources>
         <ui:EnumValueToString x:Key="EnumToString" />
-        
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
-            <Setter Property="Padding" Value="5,0,0,0" />
-            <Setter Property="Height" Value="62" />
+
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
-            <Setter Property="Margin" Value="10,0" />
+        <Style TargetType="customControls:ValidatingTextBox" BasedOn="{StaticResource {x:Type customControls:ValidatingTextBox}}">
+            <Setter Property="Margin" Value="10,10,7,10"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
         </Style>
 
-        <Style x:Key="StLblStyle" TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
-            <Setter Property="Height" Value="50" />
-            <Setter Property="Padding" Value="10,0" />
-        </Style>
-
-        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CCheckBoxStyle}">
-            <Setter Property="Foreground" Value="{StaticResource xBlack1}" />
-            <Setter Property="Margin" Value="20,20" />
-            <Setter Property="Padding" Value="5,0" />
-        </Style>
     </Page.Resources>
 
     <Grid>
@@ -67,57 +59,57 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.AtuPrePulseValue}" />
-                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="15" Maximum="250" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.AtuPrePulseValue}" HorizontalAlignment="Left" />
+                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0"   IsNumeric="True" Minimum="15" Maximum="250" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}" />
-                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" IsFloat="True" Minimum="2" Maximum="75" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1"   IsNumeric="True" IsFloat="True" Minimum="2" Maximum="75" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuUBR}" />
-                <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbAtuUBR" FontSize="{StaticResource FontSize26}" Margin="0,0,7,0" Height="Auto" />
+                <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuUBR}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbAtuUBR" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
 
-                <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.AtuUPRSM}" />
-                <Label Grid.Column="1" Grid.Row="3" Content="0" x:Name="lbAtuUPRSM" FontSize="{StaticResource FontSize26}" Margin="0,0,7,0" Height="Auto" />
+                <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.AtuUPRSM}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="3" Content="0" x:Name="lbAtuUPRSM" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
 
-                <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.AtuIPRSM}" />
-                <Label Grid.Column="1" Grid.Row="4" Content="0" x:Name="lbAtuIPRSM" FontSize="{StaticResource FontSize26}" Margin="0,0,7,0" Height="Auto" />
+                <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.AtuIPRSM}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="4" Content="0" x:Name="lbAtuIPRSM" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
 
-                <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.AtuPRSM}" />
-                <Label Grid.Column="1" Grid.Row="5" Content="0" x:Name="lbAtuPRSM" FontSize="{StaticResource FontSize26}" Margin="0,0,7,0" Height="Auto" />
+                <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.AtuPRSM}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="5" Content="0" x:Name="lbAtuPRSM" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
 
-                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="6" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="6" Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="0" Maximum="100000" Text="{Binding ClampParameters.Height, ElementName=aTUPage}" />
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="6"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="6"   IsNumeric="True" Minimum="0" Maximum="100000" Text="{Binding ClampParameters.Height, ElementName=aTUPage}" />
 
-                <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="7" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7"  Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="0" Maximum="200" Text="{Binding Temperature, ElementName=aTUPage}" />
+                <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="7"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7"   IsNumeric="True" Minimum="0" Maximum="200" Text="{Binding Temperature, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"  Padding="5" Margin="10" TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0" Text="{Binding ClampParameters.CustomForce, ElementName=aTUPage}" />
+                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"    IsNumeric="True"   Maximum="200" Minimum="0" Text="{Binding ClampParameters.CustomForce, ElementName=aTUPage}" />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{x:Static res:Resources.TopTempName}" />
-                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0" />
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{x:Static res:Resources.TopTempName}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right" />
 
-                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="10" Content="{x:Static res:Resources.BotTempName}" />
-                <Label Grid.Column="1" Grid.Row="10" Content="0" x:Name="BotTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0" />
+                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="10" Content="{x:Static res:Resources.BotTempName}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="10" Content="0" x:Name="BotTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right"  />
             </Grid>
         </Border>
-        <Button x:Name="btnBack" x:FieldModifier="private"
+        <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
                 Grid.Column="0" Grid.Row="2" 
                 Content="{x:Static res:Resources.Back}"
                 Click="btnBack_OnClick"
                Margin="6" />
-        <Button x:Name="btnTemperature" x:FieldModifier="private"
+        <Button x:Name="btnTemperature" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
                 Grid.Column="1" Grid.Row="2"
                 Content="{x:Static res:Resources.SetTemp}"
                 Click="btnTemperature_OnClick"
                 Margin="6" />
         <Button Grid.Column="2" Grid.Row="2"
-                Content="{x:Static res:Resources.Stop}"
+                Content="{x:Static res:Resources.Stop}" Style="{StaticResource StopButton}"
                 Click="btnStop_OnClick"
                 Margin="6" Background="{StaticResource xRed1}" />
         <Button x:Name="btnStart" x:FieldModifier="private"
                 Grid.Column="3" Grid.Row="2"
-                Content="{x:Static res:Resources.Start}"
+                Content="{x:Static res:Resources.Start}" Style="{StaticResource StartButton}"
                 Click="btnStart_OnClick"
                 Margin="6" Background="{StaticResource xGreen1}" />
 

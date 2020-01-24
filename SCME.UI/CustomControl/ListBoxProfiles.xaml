@@ -204,7 +204,7 @@
         <DataTemplate DataType="profiles:Profile">
             <Grid Background="Transparent">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource ListBoxScrollWidth}" />
+                    <ColumnDefinition Width="0" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>

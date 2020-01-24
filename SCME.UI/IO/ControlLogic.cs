@@ -268,7 +268,7 @@ namespace SCME.UI.IO
             m_NetPingTimer.Stop();
 
             m_CallbackHost.AddExceptionEvent(ComplexParts.Service,
-                                            string.Format("Exception - {0}", Ex.Message));
+                                            string.Format("Exception - {0}", Ex.ToString()));
         }
 
         public int? ReadDeviceRTClass(string devCode, string profileName)

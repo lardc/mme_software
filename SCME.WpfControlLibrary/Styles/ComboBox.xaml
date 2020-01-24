@@ -3,6 +3,7 @@
                     xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ScrollBar.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
     <Style TargetType="Border" x:Key="BorderComboBox">
@@ -104,24 +105,21 @@
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
                             <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" Background="White"  BorderBrush="{StaticResource xGray1}"/>
-                                <ScrollViewer Margin="4,6,4,6" UseLayoutRounding="True">
-                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                <Border x:Name="DropDownBorder" Background="{StaticResource ListViewItemTestParametersBrush}"  BorderBrush="{StaticResource xGray1}">
+                                    <ScrollViewer Margin="4,6,4,6" UseLayoutRounding="True"  x:Name="ScrollViewerComboBoxItems" Style="{StaticResource DefaultScrollViewer}" >
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" x:Name="StackPanelComboBoxItemsContainer"  />
                                 </ScrollViewer>
+                                </Border>
                             </Grid>
                         </Popup>
                         <Border BorderThickness="1" Name="MainBorder"  BorderBrush="Gray"></Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type ListView}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Background.Color, RelativeSource={RelativeSource AncestorType={x:Type profilesPageComponents:AddTestParameterUserControl}, Mode=FindAncestor}}" Value="{StaticResource ListViewTestParametersColor}">
-                            <Setter Property="Foreground" Value="{StaticResource WhiteColorBrush}"></Setter>
-                        </DataTrigger>
-                        <Trigger Property="IsDropDownOpen" Value="True">
-                            <Setter Property="Foreground" Value="Black"></Setter>
+    
+                        <Trigger SourceName="ScrollViewerComboBoxItems" Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+                            <Setter TargetName="StackPanelComboBoxItemsContainer" Property="Margin" Value="0,0,50,0"></Setter>
                         </Trigger>
+                
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
                         </Trigger>
@@ -134,7 +132,13 @@
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
                         </Trigger>
-
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="Tag" Value="M"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

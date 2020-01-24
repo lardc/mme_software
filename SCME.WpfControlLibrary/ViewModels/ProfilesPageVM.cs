@@ -14,6 +14,7 @@ using SCME.Types;
 using SCME.Types.Commutation;
 using SCME.Types.Database;
 using SCME.WpfControlLibrary.Commands;
+using SCME.WpfControlLibrary.CustomControls;
 
 namespace SCME.WpfControlLibrary.ViewModels
 {
@@ -39,15 +40,23 @@ namespace SCME.WpfControlLibrary.ViewModels
             get => _selectedProfile;
             set
             {
-                _selectedProfile = value;
-                if (_selectedProfile != null)
+                try
                 {
-                    SelectedProfileNameCopy = _selectedProfile.Name;
-                    SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
-                    ProfileDeepDataCopy = _selectedProfile.DeepData.Copy();
+                    _selectedProfile = value;
+                    if (_selectedProfile != null)
+                    {
+                        SelectedProfileNameCopy = _selectedProfile.Name;
+                        SelectedProfile.DeepData = _dbService.LoadProfileDeepData(_selectedProfile);
+                        ProfileDeepDataCopy = _selectedProfile.DeepData.Copy();
+                    }
+                    else
+                        ProfileDeepDataCopy = null;
                 }
-                else
-                    ProfileDeepDataCopy = null;
+                catch (Exception exception)
+                {
+                    new DialogWindow("Error OnSelectionChanged", exception.ToString()).ShowDialog();
+                    throw;
+                }
             }
         }
 

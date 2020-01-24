@@ -5,6 +5,7 @@ using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.BVT;
+using SCME.Types.Commutation;
 
 namespace SCME.Service.IO
 {
@@ -856,7 +857,7 @@ namespace SCME.Service.IO
         #endregion
 
 
-        struct BvtInputParameters
+        class BvtInputParameters
         {
             public BVTTestType TestType { get; set; }
             public float CurrentLimit { get; set; }
@@ -908,8 +909,11 @@ namespace SCME.Service.IO
                     MeasurementMode = BVTMeasurementMode.ModeI,
                     IsUdsmUrsm = true
                 });
+
+      
             foreach (var bvtInputParameter in data)
             {
+
                 try
                 {
                     WriteRegister(REG_LIMIT_CURRENT, (ushort) (bvtInputParameter.CurrentLimit * 10));
@@ -929,7 +933,9 @@ namespace SCME.Service.IO
                         internalState = DeviceState.InProcess;
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
 
-                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTD, commutation.CommutationType, commutation.Position) ==
+                        if (m_IOCommutation.Switch( commutation.CommutationType == HWModuleCommutationType.Reverse ?
+                            CommutationMode.BVTR : CommutationMode.BVTD
+                                , commutation.CommutationType, commutation.Position) ==
                             DeviceState.Fault)
                         {
                             m_State = DeviceState.Fault;
@@ -980,7 +986,8 @@ namespace SCME.Service.IO
                         internalState = DeviceState.InProcess;
                         FireBvtEvent(internalState, m_Result, BVTTestType.Reverse, bvtInputParameter.IsUdsmUrsm);
 
-                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.BVTR, commutation.CommutationType, commutation.Position) ==
+                        if (m_IOCommutation.Switch(commutation.CommutationType == HWModuleCommutationType.Reverse ? 
+                                CommutationMode.BVTD: CommutationMode.BVTR, commutation.CommutationType, commutation.Position) ==
                             DeviceState.Fault)
                         {
                             m_State = DeviceState.Fault;

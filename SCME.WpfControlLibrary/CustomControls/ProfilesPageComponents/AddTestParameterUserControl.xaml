@@ -13,7 +13,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml"/>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml"/>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/DataTemplateForTestParameters.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

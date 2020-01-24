@@ -26,9 +26,6 @@
     <Setting Name="TechPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Localization" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ru-RU</Value>
-    </Setting>
     <Setting Name="PlotUserSL" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -50,7 +47,6 @@
     <Setting Name="SinglePositionModuleMode" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-   
     <Setting Name="CommExIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -63,7 +59,6 @@
     <Setting Name="AccountsPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AccountsConfig\Accounts.xml</Value>
     </Setting>
-    
     <Setting Name="ClampIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -103,9 +98,6 @@
     <Setting Name="IHIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SpecialMeasureForUse" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="MMECode" Type="System.String" Scope="Application">
       <Value Profile="(Default)">A</Value>
     </Setting>
@@ -118,8 +110,14 @@
     <Setting Name="DUTType" Type="SCME.Types.DUTType" Scope="Application">
       <Value Profile="(Default)">Profile</Value>
     </Setting>
-    <Setting Name="OperatorBuildModeIsEnabled" Type="System.Boolean" Scope="Application">
+    <Setting Name="Localization" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">en-EN</Value>
+    </Setting>
+    <Setting Name="SpecialMeasureForUse" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="OperatorBuildModeIsEnabled" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

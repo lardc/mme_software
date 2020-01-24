@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,39 +11,56 @@ namespace SCME.WpfControlLibrary.CustomControls
     public class ListViewMouseLeftButtonScroll : ListView
     {
         private Point? _lastPoint;
-        private MyProfile _lastSelectProfile;
+        private object _lastSelectedItem;
 
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if(!(e.OriginalSource is Visual visual))
-                return;
-            
-            var obj = this.ContainerFromElement(visual);
-            var element = (ListViewItem)obj;
+            try
+            {
+                if (!(e.OriginalSource is Visual visual))
+                    return;
 
-            if(element == null)
-                return;
+                var obj = this.ContainerFromElement(visual);
+                var element = (ListViewItem)obj;
 
-            var item = (MyProfile)element.Content;
+                if (element == null)
+                    return;
 
-            if (item == _lastSelectProfile)
-                SelectedItem = item;
+                var item = element.Content;
+
+                if (item == _lastSelectedItem)
+                    SelectedItem = item;
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            _lastPoint = e.GetPosition(this);
+            try
+            {
+                _lastPoint = e.GetPosition(this);
 
-            var obj = ContainerFromElement((Visual)e.OriginalSource);
-            var element = (ListViewItem)obj;
+                if (!(e.OriginalSource is Visual visual))
+                    return;
 
-            if(element == null)
-                return;
+                var obj = ContainerFromElement(visual);
+                var element = (ListViewItem) obj;
 
-            _lastSelectProfile = (MyProfile)element.Content;
+                if (element == null)
+                    return;
 
-            e.Handled = true;
+                _lastSelectedItem = element.Content;
+
+                e.Handled = true;
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private static TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
@@ -62,14 +80,21 @@ namespace SCME.WpfControlLibrary.CustomControls
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.LeftButton != MouseButtonState.Pressed)
-                return;
+            try
+            {
+                if (e.LeftButton != MouseButtonState.Pressed)
+                    return;
 
-            var sv = FindVisualChild<ScrollViewer>(this);
+                var sv = FindVisualChild<ScrollViewer>(this);
 
-            if (_lastPoint != null)
-                sv.ScrollToVerticalOffset(sv.VerticalOffset + (e.GetPosition(this).Y - _lastPoint.Value.Y));
-            _lastPoint = e.GetPosition(this);
+                if (_lastPoint != null)
+                    sv.ScrollToVerticalOffset(sv.VerticalOffset - (e.GetPosition(this).Y - _lastPoint.Value.Y));
+                _lastPoint = e.GetPosition(this);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
 

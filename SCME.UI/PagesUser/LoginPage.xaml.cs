@@ -5,10 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.UI.IO;
 using SCME.UI.Properties;
+using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI.PagesUser
@@ -103,5 +105,11 @@ namespace SCME.UI.PagesUser
             lblIncorrect.Content = "";
 //            Cache.Main.VM.AccountName = string.Empty;
         }
+
+        //private void TbPassword_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (WpfControlLibrary.Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+        //        window.ShowKeyboard(true, sender as );
+        //}
     }
 }

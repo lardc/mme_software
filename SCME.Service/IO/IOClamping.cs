@@ -813,7 +813,7 @@ namespace SCME.Service.IO
             }
             catch (Exception ex)
             {
-                FireExceptionEvent(ex.Message);
+                FireExceptionEvent(ex.ToString());
                 return DeviceState.Fault;
             }
         }

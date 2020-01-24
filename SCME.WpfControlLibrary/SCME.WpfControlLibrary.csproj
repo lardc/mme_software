@@ -45,10 +45,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.0.1\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
       <Private>True</Private>
@@ -64,10 +60,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +86,7 @@
     <Compile Include="CustomControls\PanelButton.xaml.cs">
       <DependentUpon>PanelButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\ScrollViewerLeftMouseButtonScroll.cs" />
     <Compile Include="CustomControls\TextBoxWithTimer.cs" />
     <Compile Include="CustomControls\ValidatingTextBox.xaml.cs">
       <DependentUpon>ValidatingTextBox.xaml</DependentUpon>
@@ -116,7 +109,7 @@
     <Compile Include="IValueConverters\TOsvRateValueFromEnum.cs" />
     <Compile Include="IValueConverters\TypeTestParameterToString.cs" />
     <Compile Include="KeyboardLayouts.cs" />
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="IMainWindow.cs" />
     <Compile Include="Pages\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
@@ -251,11 +244,14 @@
     </Page>
     <Page Include="Styles\Label.xaml" />
     <Page Include="Styles\ListViewItemTestParameter.xaml" />
-    <Page Include="Styles\ListViewProfile.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Styles\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\NumericUpDown.xaml" />
+    <Page Include="Styles\NumericUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Path.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Sizes.xaml" />
+    <Page Include="Styles\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\TextBox.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -314,9 +314,7 @@
       <Name>SCME.Types</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MarkupExtension\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="mscorlib">
       <Guid>{BED7F4EA-1A96-11D2-8F08-00A0C9A6186D}</Guid>

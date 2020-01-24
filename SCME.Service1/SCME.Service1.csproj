@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>SCME.Service</RootNamespace>
+    <AssemblyName>SCME.Service</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="App.ico" />
+    <None Remove="Lib\SCCI_IO.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App.ico" />
+    <Content Include="Lib\SCCI_IO.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ServiceFabric" Version="7.0.457" />
+    <PackageReference Include="System.Private.ServiceModel" Version="4.7.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations1\SCME.InterfaceImplementations1.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SCCI_IO">
+      <HintPath>..\SCME.SERVICE\Lib\SCCI_IO.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="IO\IOCommutation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="IO\IOGate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Db\SCME_LogsDB.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Db\SCME_ResultsDB_Local.sqlite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+</Project>

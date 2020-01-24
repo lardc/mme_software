@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using SCME.Types;
@@ -203,27 +204,38 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profile.Id;
 
             _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
-            if (_enableCache && profileCache != null)
-            {
-                if (profileCache.MmeCodes != null)
-                    return profileCache.MmeCodes.Copy();
 
-                profileCache.MmeCodes = new List<string>();
+            Debug.Assert(profileCache != null, nameof(profileCache) + " != null");
+            profileCache.MmeCodes = new List<string>();
 
-                _mmeCodesByProfile.Transaction = dbTransaction;
-                using var reader = _mmeCodesByProfile.ExecuteReader();
-                while (reader.Read())
-                    profileCache.MmeCodes.Add(reader.GetString(0));
-                return profileCache.MmeCodes.Copy();
-            }
-            else
-            {
-                var mmeCodes = new List<string>();
-                using var reader = _mmeCodesByProfile.ExecuteReader();
-                while (reader.Read())
-                    mmeCodes.Add(reader.GetString(0));
-                return mmeCodes;
-            }
+            _mmeCodesByProfile.Transaction = dbTransaction;
+            using var reader = _mmeCodesByProfile.ExecuteReader();
+            while (reader.Read())
+                profileCache.MmeCodes.Add(reader.GetString(0));
+            return profileCache.MmeCodes.Copy();
+
+            //_cacheProfileById.TryGetValue(profile.Id, out var profileCache);
+            //if (_enableCache && profileCache != null)
+            //{
+            //    if (profileCache.MmeCodes != null)
+            //        return profileCache.MmeCodes.Copy();
+
+            //    profileCache.MmeCodes = new List<string>();
+
+            //    _mmeCodesByProfile.Transaction = dbTransaction;
+            //    using var reader = _mmeCodesByProfile.ExecuteReader();
+            //    while (reader.Read())
+            //        profileCache.MmeCodes.Add(reader.GetString(0));
+            //    return profileCache.MmeCodes.Copy();
+            //}
+            //else
+            //{
+            //    var mmeCodes = new List<string>();
+            //    using var reader = _mmeCodesByProfile.ExecuteReader();
+            //    while (reader.Read())
+            //        mmeCodes.Add(reader.GetString(0));
+            //    return mmeCodes;
+            //}
         }
 
         #region Fill
