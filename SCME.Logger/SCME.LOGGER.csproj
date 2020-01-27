@@ -110,22 +110,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
-      <Project>{41FAD811-1A7A-4AC2-95E8-6195F905E1C6}</Project>
-      <Name>SCME.InterfaceImplementations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
-      <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
-      <Name>SCME.Types</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations1\SCME.InterfaceImplementations.csproj">
+      <Project>{7734FC01-1628-4343-91DE-C9902563AEA2}</Project>
+      <Name>SCME.InterfaceImplementations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SCME.Types\SCME.Types.csproj">
+      <Project>{64A797CF-B3B6-41EE-8598-F6BB07A59B17}</Project>
+      <Name>SCME.Types</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <AlternationConverter x:Key="BackgroundConverter">
+        <SolidColorBrush>Transparent</SolidColorBrush>
+        <StaticResource ResourceKey="xGray3" />
+    </AlternationConverter>
+
+    <Color x:Key="Purple1">#FF8C0095</Color>
+    <Color x:Key="Purple2">#FF9F40DE</Color>
+    <Color x:Key="Purple3">#FFB100BA</Color>
+    
+    <Color x:Key="SelectEditModePageButtonColor">#FF8000FF</Color>
+
+    <Color x:Key="ListViewTestParametersColor">#FF8C0095</Color>
+    <Color x:Key="WhiteColor">White</Color>
+    <Color x:Key="BlackColor">Black</Color>
+    
+    <Color x:Key="Blue1">#FF00A7FF</Color>
+    
+    <Color x:Key="Red1">#FFFF1F00</Color>
+    <Color x:Key="Green1">#FF0CFF08</Color>
+    
+    <SolidColorBrush x:Key="xGray1"         Color="#686868"/>
+    <SolidColorBrush x:Key="xGray2"         Color="#EDEDED"/>
+    <SolidColorBrush x:Key="xGray3"         Color="#E6E6E6"/>
+    <SolidColorBrush x:Key="xGray4"         Color="#BCBEC4"/>
+    <SolidColorBrush x:Key="GrayWhite"         Color="LightGray"/>
+    
+    <SolidColorBrush x:Key="PurpleBrush1" Color="{StaticResource Purple1}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="PurpleBrush2" Color="{StaticResource Purple2}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="PurpleBrush3" Color="{StaticResource Purple3}" ></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="ListViewTestParametersBrush"  Color="{StaticResource ListViewTestParametersColor}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="WhiteColorBrush"  Color="{StaticResource WhiteColor}" ></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="ListViewItemTestParametersBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonWithIconBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource Blue1}" ></SolidColorBrush>
+    
+    <SolidColorBrush x:Key="SelectEditModePageButtonBrush" Color="{StaticResource SelectEditModePageButtonColor}"/>
+</ResourceDictionary>

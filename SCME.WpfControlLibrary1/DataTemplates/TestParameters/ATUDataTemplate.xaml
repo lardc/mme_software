@@ -1,0 +1,43 @@
+﻿<Grid x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.ATUDataTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:atu="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=atu:TestParameters}"
+             d:DesignWidth="800">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.AtuPrePulseValue}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"  Value="{Binding PrePulseValue}" />
+
+        <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" StringFormat="{}{0:N1}"/>
+        
+        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}"></Label>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+        <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"></Label>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}" StringFormat="N2"/>
+        
+</Grid>

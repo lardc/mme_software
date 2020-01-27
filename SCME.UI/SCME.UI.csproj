@@ -520,24 +520,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
-      <Project>{41fad811-1a7a-4ac2-95e8-6195f905e1c6}</Project>
-      <Name>SCME.InterfaceImplementations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
-      <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
-      <Name>SCME.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.UIServiceConfig\SCME.UIServiceConfig.csproj">
-      <Project>{6a7c3037-e15a-44c8-846d-65f7a486f641}</Project>
-      <Name>SCME.UIServiceConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj">
-      <Project>{75abf5ae-fb9f-42d3-9568-a49833ce61d3}</Project>
-      <Name>SCME.WpfControlLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="App.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,8 @@
-﻿using SCME.Types.BaseTestParams;
+﻿using SCME.Types;
+using SCME.Types.BaseTestParams;
+using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
+using SCME.Types.SQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -76,7 +79,7 @@ namespace SCME.InterfaceImplementations.Common
             LoadDictionary();
         }
 
-        private TDbCommand CreateCommand(string commandString, List<TDbCommandParametr> parameters)
+        private TDbCommand CreateCommand(string commandString, List<DbCommandParameter> parameters)
         {
             var command = _CommandConstructor.Invoke(new object[] {commandString, _Connection}) as TDbCommand;
             foreach (var i in parameters)
@@ -96,49 +99,49 @@ namespace SCME.InterfaceImplementations.Common
 
         private void PrepareQueries()
         {
-            _ProfileInsert = CreateCommand(_ProfileInsertString, new List<TDbCommandParametr>()
+            _ProfileInsert = CreateCommand(_ProfileInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_NAME", DbType.String, 32),
-                new TDbCommandParametr("@PROF_GUID", DbType.Guid),
-                new TDbCommandParametr("@PROF_TS", DbType.DateTime, 8),
-                new TDbCommandParametr("@VERSION", DbType.Int32),
+                new DbCommandParameter("@PROF_NAME", DbType.String, 32),
+                new DbCommandParameter("@PROF_GUID", DbType.Guid),
+                new DbCommandParameter("@PROF_TS", DbType.DateTime, 8),
+                new DbCommandParameter("@VERSION", DbType.Int32),
             });
 
-            _ProfileConditionInsert = CreateCommand(_ProfileConditionInsertString, new List<TDbCommandParametr>()
+            _ProfileConditionInsert = CreateCommand(_ProfileConditionInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_TESTTYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@COND_ID", DbType.Int32),
-                new TDbCommandParametr("@VALUE", DbType.String, 16),
+                new DbCommandParameter("@PROF_TESTTYPE_ID", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@COND_ID", DbType.Int32),
+                new DbCommandParameter("@VALUE", DbType.String, 16),
             });
-            _ProfileTestTypeInsert = CreateCommand(_ProfileTestTypeInsertString, new List<TDbCommandParametr>()
+            _ProfileTestTypeInsert = CreateCommand(_ProfileTestTypeInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@ORD", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32),
+                new DbCommandParameter("@ORD", DbType.Int32),
             });
-            _ProfileParameterInsert = CreateCommand(_ProfileParameterInsertString, new List<TDbCommandParametr>()
+            _ProfileParameterInsert = CreateCommand(_ProfileParameterInsertString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_TESTTYPE_ID", DbType.Int32),
-                new TDbCommandParametr("@PROF_ID", DbType.Int32),
-                new TDbCommandParametr("@PARAM_ID", DbType.Int32),
-                new TDbCommandParametr("@MIN_VAL", DbType.Single),
-                new TDbCommandParametr("@MAX_VAL", DbType.Single),
-            });
-
-            _MMECodeToProfileInsert = CreateCommand(_MMECodeToProfileInsertString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64),
-                new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
-            });
-            _MMECodeToProfileDelete = CreateCommand(_MMECodeToProfileDeleteString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@PROFILE_ID", DbType.Int32),
+                new DbCommandParameter("@PROF_TESTTYPE_ID", DbType.Int32),
+                new DbCommandParameter("@PROF_ID", DbType.Int32),
+                new DbCommandParameter("@PARAM_ID", DbType.Int32),
+                new DbCommandParameter("@MIN_VAL", DbType.Single),
+                new DbCommandParameter("@MAX_VAL", DbType.Single),
             });
 
-            _LoadTestTypes = CreateCommand(_LoadTestTypesString, new List<TDbCommandParametr>());
-            _LoadConditions = CreateCommand(_LoadConditionsString, new List<TDbCommandParametr>());
-            _LoadParameters = CreateCommand(_LoadParametersString, new List<TDbCommandParametr>());
+            _MMECodeToProfileInsert = CreateCommand(_MMECodeToProfileInsertString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@MME_CODE", DbType.String, 64),
+                new DbCommandParameter("@PROFILE_ID", DbType.Int32),
+            });
+            _MMECodeToProfileDelete = CreateCommand(_MMECodeToProfileDeleteString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@PROFILE_ID", DbType.Int32),
+            });
+
+            _LoadTestTypes = CreateCommand(_LoadTestTypesString, new List<DbCommandParameter>());
+            _LoadConditions = CreateCommand(_LoadConditionsString, new List<DbCommandParameter>());
+            _LoadParameters = CreateCommand(_LoadParametersString, new List<DbCommandParameter>());
         }
 
         private void LoadDictionary()
@@ -449,9 +452,9 @@ namespace SCME.InterfaceImplementations.Common
                 _TestTypeIdByName, _ConditionIdByName, _ParameterIdByName);
 
             inserter.Order = 0;
-            inserter.Insert(ClampingConditionsParameters(profile.ProfileDeepData));
-            inserter.Insert(ComutationConditionsParameters(profile.ProfileDeepData));
-            foreach (var i in profile.ProfileDeepData.TestParametersAndNormatives)
+            inserter.Insert(ClampingConditionsParameters(profile.DeepData));
+            inserter.Insert(ComutationConditionsParameters(profile.DeepData));
+            foreach (var i in profile.DeepData.TestParametersAndNormatives)
             {
                 switch (i)
                 {
@@ -518,6 +521,26 @@ namespace SCME.InterfaceImplementations.Common
                 _DbTransaction.Rollback();
                 throw;
             }
+        }
+
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProfiles(List<ProfileItem> profilesToDelete)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteProfiles(List<ProfileItem> profilesToDelete, string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProfileForSqlSelect SaveProfileItem(ProfileItem profileItem, string mmeCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

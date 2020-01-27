@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using SCME.Types.Interfaces;
 
 namespace SCME.InterfaceImplementations.Common
 {
@@ -65,7 +66,7 @@ namespace SCME.InterfaceImplementations.Common
             PrepareQueries();
         }
 
-        private TDbCommand CreateCommand(string commandString, List<TDbCommandParametr> parameters)
+        private TDbCommand CreateCommand(string commandString, List<DbCommandParameter> parameters)
         {
             var command = _CommandConstructor.Invoke(new object[] { commandString, _Connection }) as TDbCommand;
             foreach (var i in parameters)
@@ -83,46 +84,46 @@ namespace SCME.InterfaceImplementations.Common
 
         public void PrepareQueries()
         {
-            _ChildsSelect = CreateCommand(_ChildsSelectString, new List<TDbCommandParametr>()
+            _ChildsSelect = CreateCommand(_ChildsSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_NAME", DbType.String, 32 ),
-                new TDbCommandParametr("@PROF_ID_EXCLUDE", DbType.String, 32 )
+                new DbCommandParameter("@PROF_NAME", DbType.String, 32 ),
+                new DbCommandParameter("@PROF_ID_EXCLUDE", DbType.String, 32 )
             });
-            _TestTypeSelect = CreateCommand(_TestTypeSelectString, new List<TDbCommandParametr>()
+            _TestTypeSelect = CreateCommand(_TestTypeSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@PROF_ID", DbType.Int32)
+                new DbCommandParameter("@PROF_ID", DbType.Int32)
             });
 
-            //_AllTopProfilesSelect = CreateCommand(_AllTopProfilesSelectString, new List<TDbCommandParametr>());
-            _ProfilesByMMESelect = CreateCommand(_ProfilesByMMESelectString, new List<TDbCommandParametr>()
+            //_AllTopProfilesSelect = CreateCommand(_AllTopProfilesSelectString, new List<DbCommandParameter>());
+            _ProfilesByMMESelect = CreateCommand(_ProfilesByMMESelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@MME_CODE", DbType.String, 64 )
+                new DbCommandParameter("@MME_CODE", DbType.String, 64 )
             });
-            //_ProfilesByNameByMMESelect = CreateCommand(_ProfilesByNameByMMESelectString, new List<TDbCommandParametr>()
+            //_ProfilesByNameByMMESelect = CreateCommand(_ProfilesByNameByMMESelectString, new List<DbCommandParameter>()
             //{
-            //    new TDbCommandParametr("@PROF_NAME", DbType.String, 32 ),
-            //    new TDbCommandParametr("@MME_CODE", DbType.String, 64 )
+            //    new DbCommandParameter("@PROF_NAME", DbType.String, 32 ),
+            //    new DbCommandParameter("@MME_CODE", DbType.String, 64 )
             //});
 
-            _OrderSelect = CreateCommand(_OrderSelectString, new List<TDbCommandParametr>()
+            _OrderSelect = CreateCommand(_OrderSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32 )
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32 )
             });
-            _ConditionSelect = CreateCommand(_ConditionSelectString, new List<TDbCommandParametr>()
+            _ConditionSelect = CreateCommand(_ConditionSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID",DbType.Int32)
+                new DbCommandParameter("@TEST_TYPE_ID",DbType.Int32)
             });
-            _ParamSelect = CreateCommand(_ParamSelectString, new List<TDbCommandParametr>()
+            _ParamSelect = CreateCommand(_ParamSelectString, new List<DbCommandParameter>()
             {
-                new TDbCommandParametr("@TEST_TYPE_ID", DbType.Int32)
-            });
-
-            _ProfileByKeySelect = CreateCommand(_ProfileByKeySelectString, new List<TDbCommandParametr>()
-            {
-                new TDbCommandParametr("@PROF_GUID", DbType.Guid)
+                new DbCommandParameter("@TEST_TYPE_ID", DbType.Int32)
             });
 
-            _AllMMECodesSelect = CreateCommand(_AllMMECodesSelectString, new List<TDbCommandParametr>());
+            _ProfileByKeySelect = CreateCommand(_ProfileByKeySelectString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@PROF_GUID", DbType.Guid)
+            });
+
+            _AllMMECodesSelect = CreateCommand(_AllMMECodesSelectString, new List<DbCommandParameter>());
         }
 
 
@@ -768,6 +769,41 @@ namespace SCME.InterfaceImplementations.Common
                     results.Add(new Tuple<string, float?, float?>(name, minValParsed ? minVal : (float?)null, maxValParsed ? maxVal : (float?)null));
                 }
             }
+        }
+
+        public List<ProfileItem> GetProfileItemsSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsDeep(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItemsWithChildSuperficially(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Profile GetProfileDeep(Guid key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProfileItem> GetProfileItems(string mmeCode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProfileItem GetProfileByProfName(string profName, string mmmeCode, ref bool Found)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

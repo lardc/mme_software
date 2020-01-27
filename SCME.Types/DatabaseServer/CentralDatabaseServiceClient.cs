@@ -9,7 +9,7 @@ using SCME.Types.SQL;
 
 namespace SCME.Types.DatabaseServer
 {
-    public class CentralDatabaseServiceClient : ClientBase<ICentralDatabaseService>, ICentralDatabaseService, IErrorHandler
+    public class CentralDatabaseServiceClient : ClientBase<ICentralDatabaseService>, ICentralDatabaseService
     {
         public int? ReadDeviceRTClass(string devCode, string profileName)
         {
@@ -61,15 +61,7 @@ namespace SCME.Types.DatabaseServer
             return Channel.GetGroups(from, to);
         }
 
-        public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
-        {
-
-        }
-
-        public bool HandleError(Exception error)
-        {
-            return true;
-        }
+      
 
         public List<DeviceItem> GetDevices(string @group)
         {

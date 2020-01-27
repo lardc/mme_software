@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters">
+
+    
+    
+    <Converters:TryBooleanToVisibilityHiddenConverter x:Key="B2VC" />
+    <Converters:TryBooleanToVisibilityConverter x:Key="B2V" />
+    <Converters:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
+    <Converters:EnumValueToString x:Key="E2S" />
+    <Converters:dVdtTypeToStringConverter x:Key="DT2S"/>
+    <Converters:DvdtTestTypeToVisibilityConverter x:Key="DT2V"/>
+    <Converters:DvdtTestTypeToVisibilityUnConverter x:Key="DT2VB" />
+    <Converters:VtmTestTypeToVisibilityConverter x:Key="VT2V"/>
+    <Converters:VtmTestTypeToStringConverter x:Key="VT2S"/>
+    <Converters:BvtTestTypeToVisibilityConverter x:Key="TT2V"/>
+    <Converters:BvtTypeToStringConverter x:Key="BT2S" />
+    <Converters:FrequencyDivisorToFrequency x:Key="FD2F" />
+    <Converters:MeasureModeToVisibilityConverter x:Key="MM2V" />
+    <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
+    <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
+    <Converters:TypeTestParameterToString x:Key="TP2S" />
+
+    <Converters:GridLengthConverter x:Key="G2L" />
+
+    <Converters:BvtVrrmToVisibilityConverter x:Key="Vrrm2V" />
+    <Converters:BvtVdrmToVisibilityConverter x:Key="Vdrm2V" />
+    <Converters:BvtIrrmToVisibilityConverter x:Key="Irrm2V" />
+    <Converters:BvtIdrmToVisibilityConverter x:Key="Idrm2V" />
+    <Converters:BvtUdsmUrsmIdrmToVisibilityConverter x:Key="IdrmUdsmUrsm2V" />
+
+
+</ResourceDictionary>

@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>SCME.ProfileBuilder</AssemblyName>
+    <RootNamespace>SCME.ProfileBuilder</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="App.ico" />
+    <None Remove="Resources\PE_logo_1024.png" />
+    <None Remove="Resources\splashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations1\SCME.InterfaceImplementations.csproj" />
+    <ProjectReference Include="..\SCME.Types\SCME.Types.csproj" />
+    <ProjectReference Include="..\SCME.WpfControlLibrary1\SCME.WpfControlLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="App.ico" />
+    <Resource Include="Resources\PE_logo_1024.png" />
+    <Resource Include="Resources\splashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControls\ActiveInactiveProfilesGroup.xaml.cs">
+      <DependentUpon>ActiveInactiveProfilesGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="MainWindow.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\ConnectPage.xaml.cs">
+      <DependentUpon>SelectEditModePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\MatchingProfilesCodesPage.xaml.cs">
+      <DependentUpon>MatchingProfilesCodesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Resources.ru-RU.Designer.cs">
+      <DependentUpon>Resources.ru-RU.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\MatchingProfilesCodesPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\SelectEditModePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.ru-RU.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+</Project>

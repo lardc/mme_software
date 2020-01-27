@@ -8,10 +8,9 @@ using SCME.Types.SQL;
 
 namespace SCME.Types
 {
-    public class ControlServerProxy : ClientBase<IExternalControl>, IExternalControl
+    public class ControlServerProxy : DuplexClientBase<IExternalControl>, IExternalControl
     {
-        public ControlServerProxy(string ServerEndpointConfigurationName, IClientCallback CallbackServiceProvider)
-            : base(new InstanceContext(CallbackServiceProvider), ServerEndpointConfigurationName)
+          public ControlServerProxy(InstanceContext instanceContext, string serverEndpointConfigurationName) : base(instanceContext, WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(serverEndpointConfigurationName))
         {
         }
 

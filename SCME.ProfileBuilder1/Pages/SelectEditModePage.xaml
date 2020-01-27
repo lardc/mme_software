@@ -1,0 +1,95 @@
+﻿<Page x:Class="SCME.ProfileBuilder.Pages.SelectEditModePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:res="clr-namespace:SCME.ProfileBuilder.Properties"
+      xmlns:profileBuilder="clr-namespace:SCME.ProfileBuilder"
+      xmlns:local="clr-namespace:SCME.WpfControlLibrary;assembly=SCME.WpfControlLibrary"
+      mc:Ignorable="d" 
+      xmlns:customControls="WpfControlLibrary"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:res1="clr-namespace:SCME.WpfControlLibrary.Properties;assembly=SCME.WpfControlLibrary"
+      d:DesignWidth="1280" d:DesignHeight="924"
+      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
+	Title="ConnectPage">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SCME.WpfControlLibrary;component/Styles/Controls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Column="1" Grid.Row="1"  Style="{StaticResource FlatButtonAllSize}"  Background="{StaticResource SelectEditModePageButtonBrush}" Click="EditProfile_OnClick">
+            <TextBlock Text="{x:Static res1:Resources.EditProfiles}" TextWrapping="Wrap" ></TextBlock>
+        </Button>
+        <Button Grid.Column="3" Grid.Row="1"  Click="EditProfileMme_OnClick" Style="{StaticResource FlatButtonAllSize}" Background="{StaticResource SelectEditModePageButtonBrush}">
+            <TextBlock Text="{x:Static res1:Resources.EditProfileBindings}" TextWrapping="Wrap" ></TextBlock>
+        </Button>
+        
+        <!-- <customControls:PanelButton Grid.Column="1" Grid.Row="1" Caption="qweqwe" Background="Chartreuse"/> -->
+        <!-- <Button Grid.Column="1" Grid.Row="1"> -->
+        <!--     <Border Padding="{StaticResource SCME.PaddingForPanelButton}" Background="{StaticResource Red1}"> -->
+        <!--     <StackPanel> -->
+        <!--         <Path Width="{StaticResource SCME.WidthHeightPathForPanelButton}" Height="{StaticResource SCME.WidthHeightPathForPanelButton}"/> -->
+        <!--         <Label VerticalAlignment="Bottom" HorizontalAlignment="Right" Content="{x:Static res1:Resources.EditProfiles}"/> -->
+        <!--     </StackPanel> -->
+        <!--     </Border> -->
+        <!-- </Button> -->
+        
+        <!-- <TabControl> -->
+        <!--     <TabItem> -->
+        <!--         <TabItem.Header> -->
+        <!--             <StackPanel Orientation="Horizontal"> -->
+        <!--                 <TextBlock Margin="3">Direct Connection SQlite</TextBlock> -->
+        <!--             </StackPanel> -->
+        <!--         </TabItem.Header> -->
+        <!--         <TabItem.Content> -->
+        <!--             ~1~ <connectPage:ConnectToSQLite DataContext="{Binding ConnectToSQLiteVM}" ConnectToSqLiteEditProfiles="ConnectToSqLite" ConnectToSqLiteEditProfileBindings="ConnectToSQLite_OnConnectToSqLiteEditProfileBindings"/> @1@ -->
+        <!--         </TabItem.Content> -->
+        <!--     </TabItem> -->
+        <!--     <TabItem> -->
+        <!--         <TabItem.Header> -->
+        <!--             <StackPanel Orientation="Horizontal"> -->
+        <!--                 <TextBlock Margin="3">Direct MS SQL DB connection</TextBlock> -->
+        <!--             </StackPanel> -->
+        <!--         </TabItem.Header> -->
+        <!--         <TabItem.Content> -->
+        <!--             ~1~ <connectPage:ConnectToMSSQL DataContext="{Binding ConnectToMSSQLVM}" ConnectToMssqlEditProfiles="ConnectToMssql" ConnectToMssqlEditProfileBindings="ConnectToMsSql_OnConnectToSqLiteEditProfileBindings"/> @1@ -->
+        <!--         </TabItem.Content> -->
+        <!--     </TabItem> -->
+        <!--     ~1~ <TabItem > @1@ -->
+        <!--     ~1~     <TabItem.Header> @1@ -->
+        <!--     ~1~         <StackPanel Orientation="Horizontal"> @1@ -->
+        <!--     ~1~             <TextBlock Margin="3">Color scheme</TextBlock> @1@ -->
+        <!--     ~1~         </StackPanel> @1@ -->
+        <!--     ~1~     </TabItem.Header> @1@ -->
+        <!--     ~1~     <TabItem.Content> @1@ -->
+        <!--     ~1~         <customControls:AccentAndThemeUserControl DataContext="{Binding AccentAndThemeUserControlVM}"/> @1@ -->
+        <!--     ~1~     </TabItem.Content> @1@ -->
+        <!--     ~1~ </TabItem> @1@ -->
+        <!-- </TabControl> -->
+
+    </Grid>
+</Page>

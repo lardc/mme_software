@@ -261,15 +261,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 new DbCommandParameter("@PROF_ID", DbType.Int32)
             });
 
-            //_AllTopProfilesSelect = CreateCommand(_AllTopProfilesSelectString, new List<TDbCommandParametr>());
+            //_AllTopProfilesSelect = CreateCommand(_AllTopProfilesSelectString, new List<DbCommandParameter>());
             _profilesByMmeSelect = CreateCommand(ProfilesByMmeSelectString, new List<DbCommandParameter>()
             {
                 new DbCommandParameter("@MME_CODE", DbType.String, 64)
             });
-            //_ProfilesByNameByMMESelect = CreateCommand(_ProfilesByNameByMMESelectString, new List<TDbCommandParametr>()
+            //_ProfilesByNameByMMESelect = CreateCommand(_ProfilesByNameByMMESelectString, new List<DbCommandParameter>()
             //{
-            //    new TDbCommandParametr("@PROF_NAME", DbType.String, 32 ),
-            //    new TDbCommandParametr("@MME_CODE", DbType.String, 64 )
+            //    new DbCommandParameter("@PROF_NAME", DbType.String, 32 ),
+            //    new DbCommandParameter("@MME_CODE", DbType.String, 64 )
             //});
 
             _orderSelect = CreateCommand(OrderSelectString, new List<DbCommandParameter>()

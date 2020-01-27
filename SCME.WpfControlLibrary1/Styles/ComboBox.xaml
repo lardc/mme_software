@@ -1,0 +1,147 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Common.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ScrollBar.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Style TargetType="Border" x:Key="BorderComboBox">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True"> 
+                <Setter  Property="Background" Value="{StaticResource xGray4}"/> 
+            </Trigger> 
+            <Trigger Property="IsEnabled" Value="False"> 
+                <Setter  Property="Background" Value="Transparent"/> 
+            </Trigger> 
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Path" x:Key="PathComboBox">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False"> 
+                <Setter  Property="Visibility" Value="Collapsed"/> 
+            </Trigger> 
+        </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton" x:Shared="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+                
+            <Border x:Name="border" Grid.ColumnSpan="2" Style="{StaticResource BorderComboBox}"
+                    BorderBrush="{TemplateBinding BorderBrush}"  />
+                
+            <Border  Grid.Column="1" Background="Transparent" Name="BorderArrow" >
+                <Path Name="arrow" Margin="10" Stretch="Uniform" StrokeThickness="2" Style="{StaticResource PathComboBox}"
+                      Stroke="{TemplateBinding Foreground}"  Data="M 0 0 L 1 1 L 2 0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <RotateTransform x:Name="rotateTransform" Angle="0" />
+                    </Path.RenderTransform>
+                </Path>
+            </Border>
+        </Grid>
+        
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="arrow" Property="RenderTransform">
+                    <Setter.Value>
+                        <RotateTransform Angle="180"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="BorderArrow" Property="Visibility" Value="Collapsed" ></Setter>
+                <Setter TargetName="arrow" Property="Visibility" Value="Collapsed" ></Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ComboBoxTextBox"
+                     TargetType="{x:Type TextBox}">
+        <Border x:Name="PART_ContentHost"
+                Focusable="False"
+                Background="{TemplateBinding Background}" />
+    </ControlTemplate>
+    
+      <Style  TargetType="ComboBox">
+        <Setter Property="UseLayoutRounding" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}"/>
+        <Setter Property="ItemContainerStyle" >
+            <Setter.Value>
+                <Style TargetType="{x:Type ComboBoxItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                <Border Name="border" Background="Transparent" Margin="1">
+                                    <ContentPresenter IsHitTestVisible="False" Margin="5,0,5,0"
+                                                      VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                </Border>
+    </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton BorderThickness="0" Name="ToggleButton"  Template="{StaticResource ComboBoxToggleButton}" Focusable="false"
+                                      IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press"/>
+
+                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+
+                        <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
+                            <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border x:Name="DropDownBorder" Background="{StaticResource ListViewItemTestParametersBrush}"  BorderBrush="{StaticResource xGray1}">
+                                    <ScrollViewer Margin="4,6,4,6" UseLayoutRounding="True"  x:Name="ScrollViewerComboBoxItems" Style="{StaticResource DefaultScrollViewer}" >
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" x:Name="StackPanelComboBoxItemsContainer"  />
+                                </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                        <Border BorderThickness="1" Name="MainBorder"  BorderBrush="Gray"></Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+    
+                        <Trigger SourceName="ScrollViewerComboBoxItems" Property="ComputedVerticalScrollBarVisibility" Value="Visible">
+                            <Setter TargetName="StackPanelComboBoxItemsContainer" Property="Margin" Value="0,0,50,0"></Setter>
+                        </Trigger>
+                
+                        <Trigger Property="HasItems" Value="false">
+                            <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                        </Trigger>
+                        <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                            <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False"/>
+                                <Condition Property="Tag" Value="M"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
