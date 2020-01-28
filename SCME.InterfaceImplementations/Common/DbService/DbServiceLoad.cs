@@ -23,9 +23,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 _profileByNameByMmeMaxTimestamp.Parameters["@MME_CODE"].Value = mmeCode;
                 _profileByNameByMmeMaxTimestamp.Parameters["@PROF_NAME"].Value = name;
-                using var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader();
-                var isRead = reader.Read();
-                return !isRead ? (null, false) : (new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4)), true);
+                using (var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader())
+                {
+                    var isRead = reader.Read();
+                    return !isRead ? (null, false) : (new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4)), true);
+                }
             }
             catch (Exception e)
             {
@@ -95,20 +97,22 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
                 }
 
-                using var reader = profileSelect.ExecuteReader();
-                while (reader.Read())
+                using (var reader = profileSelect.ExecuteReader())
                 {
-                    var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
-                    profiles.Add(readProfile);
-                    if (_enableCache)
-                        _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                    while (reader.Read())
+                    {
+                        var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+                        profiles.Add(readProfile);
+                        if (_enableCache)
+                            _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                    }
                 }
 
                 return profiles.Select(m => m.Copy()).ToList();
             }
             catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw ex;
             }
         }
 
@@ -209,10 +213,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
             profileCache.MmeCodes = new List<string>();
 
             _mmeCodesByProfile.Transaction = dbTransaction;
-            using var reader = _mmeCodesByProfile.ExecuteReader();
-            while (reader.Read())
-                profileCache.MmeCodes.Add(reader.GetString(0));
-            return profileCache.MmeCodes.Copy();
+            using (var reader = _mmeCodesByProfile.ExecuteReader())
+            {
+                while (reader.Read())
+                    profileCache.MmeCodes.Add(reader.GetString(0));
+                return profileCache.MmeCodes.Copy();
+            }
 
             //_cacheProfileById.TryGetValue(profile.Id, out var profileCache);
             //if (_enableCache && profileCache != null)

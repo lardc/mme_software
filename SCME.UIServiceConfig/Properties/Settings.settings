@@ -299,5 +299,11 @@
     <Setting Name="DebugUpdate" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="CentralDatabaseService" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp://127.0.0.1:730/SCME/SCME.IO.CentralDatabaseService</Value>
+    </Setting>
+    <Setting Name="CentralDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp://127.0.0.1:730/SCME/CentralDatabase</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

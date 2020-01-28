@@ -916,5 +916,29 @@ namespace SCME.UIServiceConfig.Properties {
                 return ((bool)(this["DebugUpdate"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:730/SCME/SCME.IO.CentralDatabaseService")]
+        public string CentralDatabaseService {
+            get {
+                return ((string)(this["CentralDatabaseService"]));
+            }
+            set {
+                this["CentralDatabaseService"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:730/SCME/CentralDatabase")]
+        public string CentralDatabase {
+            get {
+                return ((string)(this["CentralDatabase"]));
+            }
+            set {
+                this["CentralDatabase"] = value;
+            }
+        }
     }
 }

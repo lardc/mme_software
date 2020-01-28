@@ -143,12 +143,8 @@ namespace SCME.UI.IO
                             else
                                 DatabaseClient.Close();
 
-                        m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
-
-                        m_ControlClient.Open();
-
-                        DatabaseClient.Open();
+                        m_ControlClient = new ControlServerProxy(new InstanceContext(m_CallbackHost), Settings.Default.ControlService);
+                        DatabaseClient = new DatabaseCommunicationProxy(Settings.Default.DatabaseService);
 
                         m_NetPingTimer.Start();
 
@@ -352,11 +348,9 @@ namespace SCME.UI.IO
                             else
                                 DatabaseClient.Close();
 
-                        m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        m_ControlClient = new ControlServerProxy(new InstanceContext( m_CallbackHost), Settings.Default.ControlService);
+                        DatabaseClient = new DatabaseCommunicationProxy(Settings.Default.DatabaseService);
 
-                        m_ControlClient.Open();
-                        DatabaseClient.Open();
                         m_ControlClient.Subscribe();
 
                         break;
@@ -419,7 +413,7 @@ namespace SCME.UI.IO
         #region ExternalControl members
 
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
-                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
+                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
             if (!IsServerConnected)
                 return false;
@@ -1031,9 +1025,9 @@ namespace SCME.UI.IO
             return parameters;
         }
 
-        public Types.Clamping.CalibrationParams CSReadCalibrationParameters()
+        public CalibrationParams CSReadCalibrationParameters()
         {
-            var parameters = new Types.Clamping.CalibrationParams();
+            var parameters = new CalibrationParams();
             try
             {
                 parameters = m_ControlClient.CSReadCalibrationParameters();
@@ -1054,7 +1048,7 @@ namespace SCME.UI.IO
             return parameters;
         }
 
-        public void CSWriteCalibrationParameters(Types.Clamping.CalibrationParams Parameters)
+        public void CSWriteCalibrationParameters(CalibrationParams Parameters)
         {
             try
             {
@@ -1560,7 +1554,6 @@ namespace SCME.UI.IO
         }
     }
 
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
     public class ExternalControlCallbackHost : IClientCallback
     {
         private readonly QueueWorker m_QueueWorker;
@@ -1857,7 +1850,7 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddRACFaultEvent(Fault);
         }
 
-        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
+        public void TOUHandler(DeviceState State, TestResults Result)
         {
             m_QueueWorker.AddTOUEvent(State, Result);
         }
@@ -1902,7 +1895,7 @@ namespace SCME.UI.IO
             //UI не использует виртуальный блок RCC, его использует только комплекс АКИМ
         }
 
-        public void ClampingSwitchHandler(Types.Clamping.SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd)
+        public void ClampingSwitchHandler(SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd)
         {
             m_QueueWorker.AddClampingSwitchEvent(Up, ArrayF, ArrayFd);
         }

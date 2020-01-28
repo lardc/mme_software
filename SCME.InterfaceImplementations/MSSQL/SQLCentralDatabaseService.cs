@@ -16,10 +16,8 @@ using SCME.Types.SQL;
 
 namespace SCME.InterfaceImplementations
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
-        Namespace = "http://proton-electrotex.com/SCME",
-        ConcurrencyMode = ConcurrencyMode.Single, IncludeExceptionDetailInFaults = true)]
-    public class SQLCentralDatabaseService : ICentralDatabaseService, IErrorHandler
+
+    public class SQLCentralDatabaseService : ICentralDatabaseService
     {
         private readonly IProfilesService _profilesService;
         private readonly IResultsService _resultsService;

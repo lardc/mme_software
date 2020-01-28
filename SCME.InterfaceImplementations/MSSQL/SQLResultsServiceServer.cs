@@ -421,7 +421,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw ex;
             }
         }
 
@@ -826,11 +826,12 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                throw new System.ServiceModel.FaultException<FaultData>(new FaultData()
-                {
-                    Device = ComplexParts.Database,
-                    TimeStamp = DateTime.Now,
-                }, new Exception("ReadDevicesFromServer -> GetDevices not work", ex).ToString());
+                throw ex;
+                //throw new System.ServiceModel.FaultException<FaultData>(new FaultData()
+                //{
+                //    Device = ComplexParts.Database,
+                //    TimeStamp = DateTime.Now,
+                //}, new Exception("ReadDevicesFromServer -> GetDevices not work", ex).ToString());
             }
         }
 

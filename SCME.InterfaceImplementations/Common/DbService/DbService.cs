@@ -160,7 +160,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
             catch(Exception ex)
             {
-                throw new System.ServiceModel.FaultException(ex.ToString());
+                throw ex;
             }
         }
 

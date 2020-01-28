@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Database;

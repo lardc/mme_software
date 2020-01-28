@@ -10,7 +10,7 @@ namespace SCME.Types
 {
     public class ControlServerProxy : DuplexClientBase<IExternalControl>, IExternalControl
     {
-          public ControlServerProxy(InstanceContext instanceContext, string serverEndpointConfigurationName) : base(instanceContext, WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(serverEndpointConfigurationName))
+          public ControlServerProxy(InstanceContext instanceContext, string uri) : base(instanceContext, WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(uri))
         {
         }
 

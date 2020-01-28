@@ -56,6 +56,8 @@ namespace SCME.DatabaseServer
             {
                 var service = new SQLCentralDatabaseService(Settings.Default);
                 ms_ServiceHost = new ServiceHost(service);
+                var behaviour = ms_ServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                behaviour.InstanceContextMode = InstanceContextMode.Single;
                 ms_ServiceHost.Open();
             }
             catch (Exception ex)
@@ -77,6 +79,8 @@ namespace SCME.DatabaseServer
                     Password = Settings.Default.DBPassword,
                     ConnectTimeout = 5
                 }.ToString()), false));
+                var behaviour = _databaseServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                behaviour.InstanceContextMode = InstanceContextMode.Single;
                 mssqlDbService.Migrate();
                 _databaseServiceHost.Open();
             }

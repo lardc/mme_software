@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Data.SQLite;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
-using System.Windows.Forms;
 
 namespace SCME.InterfaceImplementations
 {
@@ -218,20 +217,20 @@ namespace SCME.InterfaceImplementations
                     {
                         ImportSQliteProfiles(sqliteConnection);
 
-                        MessageBox.Show("Profile import successful");
+                        //MessageBox.Show("Profile import successful");
                     }
 
                     if (importResults)
                     {
                         ImportSQliteResults(sqliteConnection);
 
-                        MessageBox.Show("Result import successful");
+                        //MessageBox.Show("Result import successful");
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Operation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show(ex.ToString(), "Operation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

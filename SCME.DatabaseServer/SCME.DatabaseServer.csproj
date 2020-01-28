@@ -98,6 +98,7 @@
       <HintPath>..\packages\System.Data.SqlClient.4.8.0\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Security" />
@@ -166,7 +167,7 @@
     <None Include="ServiceIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SCME.InterfaceImplementations1\SCME.InterfaceImplementations.csproj">
+    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
       <Project>{7734FC01-1628-4343-91DE-C9902563AEA2}</Project>
       <Name>SCME.InterfaceImplementations</Name>
     </ProjectReference>
