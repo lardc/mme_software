@@ -253,14 +253,6 @@ namespace SCME.InterfaceImplementations
                         InsertParameters(qrrTqTestParameter, testTypeId, profileId, trans);
                     }
 
-                    foreach (var racTestParameter in profileItem.RACTestParameters)
-                    {
-                        var testTypeId = InsertRacTestType(profileId, racTestParameter.Order, trans);
-                        racTestParameter.IsEnabled = true;
-                        InsertConditions(racTestParameter, testTypeId, profileId, trans);
-                        InsertParameters(racTestParameter, testTypeId, profileId, trans);
-                    }
-
                     foreach (var touTestParameter in profileItem.TOUTestParameters)
                     {
                         var testTypeId = InsertTOUTestType(profileId, touTestParameter.Order, trans);
@@ -519,9 +511,6 @@ namespace SCME.InterfaceImplementations
                 case TestParametersType.QrrTq:
                     InsertQrrTqConditions(baseTestParametersAndNormatives as Types.QrrTq.TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.RAC:
-                    InsertRacConditions(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId, trans);
-                    break;
                 case TestParametersType.TOU:
                     InsertTOUConditions(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId, trans);
                     break;
@@ -633,12 +622,6 @@ namespace SCME.InterfaceImplementations
             InsertCondition(testTypeId, profileId, "QrrTq_OsvRate", (uint)testParameters.OsvRate, trans);
         }
 
-        private void InsertRacConditions(Types.RAC.TestParameters testParameters, long testTypeId, long profileId, SqlTransaction trans)
-        {
-            InsertCondition(testTypeId, profileId, "RAC_En", testParameters.IsEnabled, trans);
-            InsertCondition(testTypeId, profileId, "RAC_ResVoltage", testParameters.ResVoltage, trans);
-        }
-
         private void InsertTOUConditions(Types.TOU.TestParameters testParameters, long testTypeId, long profileId, SqlTransaction trans)
         {
             InsertCondition(testTypeId, profileId, "TOU_En", testParameters.IsEnabled, trans);
@@ -678,9 +661,6 @@ namespace SCME.InterfaceImplementations
                     break;
                 case TestParametersType.QrrTq:
                     InsertQrrTqParameters(baseTestParametersAndNormatives as Types.QrrTq.TestParameters, testTypeId, profileId, trans);
-                    break;
-                case TestParametersType.RAC:
-                    InsertRacParameters(baseTestParametersAndNormatives as Types.RAC.TestParameters, testTypeId, profileId, trans);
                     break;
                 case TestParametersType.TOU:
                     InsertTOUParameters(baseTestParametersAndNormatives as Types.TOU.TestParameters, testTypeId, profileId, trans);
@@ -741,11 +721,6 @@ namespace SCME.InterfaceImplementations
 
             if (qrrTqTestParameters.Mode == Types.QrrTq.TMode.QrrTq)
                 InsertParameter(testTypeId, profileId, "TQ", qrrTqTestParameters.Tq, DBNull.Value, trans);
-        }
-
-        private void InsertRacParameters(Types.RAC.TestParameters racTestParameters, long testTypeId, long profileId, SqlTransaction trans)
-        {
-            InsertParameter(testTypeId, profileId, "ResultR", racTestParameters.ResultR, DBNull.Value, trans);
         }
 
         private void InsertTOUParameters(Types.TOU.TestParameters touTestParameters, long testTypeId, long profileId, SqlTransaction trans)

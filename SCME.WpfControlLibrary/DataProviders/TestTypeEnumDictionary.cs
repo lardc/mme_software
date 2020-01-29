@@ -149,7 +149,6 @@ namespace SCME.WpfControlLibrary.DataProviders
                 new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters), "dVdt"),
                 new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
                 new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
-                new TestParameter(TestParametersType.RAC, typeof(Types.RAC.TestParameters), "RAC"),
                 new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
             };
         }

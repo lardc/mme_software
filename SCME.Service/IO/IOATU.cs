@@ -397,27 +397,7 @@ namespace SCME.Service.IO
             return DeviceState.Success;
         }
 
-        internal void WriteCalibrationParams(Types.ATU.CalibrationParams Parameters)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Note, "ATU @WriteCalibrationParams begin");
-
-            //пустая реализация - нет калибровочных параметров
-
-            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Note, "ATU @WriteCalibrationParams end");
-        }
-
-        internal Types.ATU.CalibrationParams ReadCalibrationParams()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Note, "ATU @ReadCalibrationParams begin");
-
-            var parameters = new Types.ATU.CalibrationParams();
-
-            //пустая реализация - нет калибровочных параметров
-
-            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Note, "ATU @ReadCalibrationParams end");
-
-            return parameters;
-        }
+      
 
         #region Standart API
         private void EnablePower()

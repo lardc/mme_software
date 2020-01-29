@@ -11,7 +11,6 @@
              xmlns:atuParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
              xmlns:customControls="WpfControlLibrary"
              xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
-             xmlns:rac="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
              Background="{StaticResource xWhite1}" HorizontalAlignment="Stretch">
     <ListView.Resources>
 

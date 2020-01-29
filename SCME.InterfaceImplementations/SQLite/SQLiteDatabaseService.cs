@@ -72,7 +72,6 @@ namespace SCME.InterfaceImplementations
                 DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                 ATUTestParameters = new List<Types.ATU.TestParameters>(),
                 QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                RACTestParameters = new List<Types.RAC.TestParameters>(),
                 TOUTestParameters = new List<Types.TOU.TestParameters>(),
                 CommTestParameters = profile.ParametersComm,
                 IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
@@ -109,10 +108,6 @@ namespace SCME.InterfaceImplementations
                 var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                 if (qrrTq != null)
                     profileItem.QrrTqTestParameters.Add(qrrTq);
-
-                var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                if (rac != null)
-                    profileItem.RACTestParameters.Add(rac);
 
                 var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                 if (tou != null)

@@ -277,49 +277,6 @@ namespace SCME.Service.IO
 
         #endregion
 
-        internal void WriteCalibrationParams(CalibrationParams Parameters)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.DvDt, LogMessageType.Note,
-                                         "dVdt @WriteCalibrationParams begin");
-
-            //WriteRegister(REG_V_FINE_N, Parameters.VFineN, true);
-            //WriteRegister(REG_V_FINE_D, Parameters.VFineD, true);
-
-            //WriteRegister(REG_G500, Parameters.V500, true);
-            //WriteRegister(REG_G1000, Parameters.V1000, true);
-            //WriteRegister(REG_G1500, Parameters.V1500, true);
-            //WriteRegister(REG_G2000, Parameters.V2000, true);
-            //WriteRegister(REG_G2500, Parameters.V2500, true);
-
-            //if (!m_IsdVdtEmulation)
-            //    m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
-
-            SystemHost.Journal.AppendLog(ComplexParts.DvDt, LogMessageType.Note,
-                                         "dVdt @WriteCalibrationParams end");
-        }
-
-        internal CalibrationParams ReadCalibrationParams()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.DvDt, LogMessageType.Note,
-                                         "dVdt @ReadCalibrationParams begin");
-
-            var parameters = new CalibrationParams
-            {
-                //VFineN = ReadRegister(REG_V_FINE_N, true),
-                //VFineD = ReadRegister(REG_V_FINE_D, true),
-
-                //V500 = ReadRegister(REG_G500, true),
-                //V1000 = ReadRegister(REG_G1000, true),
-                //V1500 = ReadRegister(REG_G1500, true),
-                //V2000 = ReadRegister(REG_G2000, true),
-                //V2500 = ReadRegister(REG_G2500, true)
-            };
-
-            SystemHost.Journal.AppendLog(ComplexParts.DvDt, LogMessageType.Note,
-                                         "dVdt @ReadCalibrationParams end");
-
-            return parameters;
-        }
 
 
         private void PrepareSteps(List<ushort> Steps)

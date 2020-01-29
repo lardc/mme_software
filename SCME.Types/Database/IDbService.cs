@@ -51,7 +51,7 @@ namespace SCME.Types.Database
 
         [FaultContract(typeof(Exception))]
         [OperationContract]
-        List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null);
+        List<string> GetMmeCodesByProfile(int profileId, DbTransaction dbTransaction = null);
 
         [FaultContract(typeof(Exception))]
         [OperationContract]

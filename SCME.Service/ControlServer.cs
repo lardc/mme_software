@@ -121,15 +121,15 @@ namespace SCME.Service
         }
 
         bool IExternalControl.Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL,
-                                    Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC,
+                                    Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC,
                                     Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
-            return _IoMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
+            return _IoMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
         }
 
-        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
-            return _IoMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
+            return _IoMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersSctu, parametersTOU);
         }
 
         void IExternalControl.ClearSafetyTrig()
@@ -217,85 +217,7 @@ namespace SCME.Service
             _IoMain.CallAction(Device, Address);
         }
 
-        Types.Gate.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
-        {
-            return _IoMain.GatePulseCalibrationGate(Current);
-        }
 
-        ushort IExternalControl.GatePulseCalibrationMain(ushort Current)
-        {
-            return _IoMain.GatePulseCalibrationMain(Current);
-        }
-
-        void IExternalControl.GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
-        {
-            _IoMain.GateWriteCalibrationParams(Parameters);
-        }
-
-        Types.Gate.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
-        {
-            return _IoMain.GateReadCalibrationParams();
-        }
-
-        void IExternalControl.SLWriteCalibrationParameters(Types.VTM.CalibrationParameters Parameters)
-        {
-            _IoMain.SLWriteCalibrationParams(Parameters);
-        }
-
-        Types.VTM.CalibrationParameters IExternalControl.SLReadCalibrationParameters()
-        {
-            return _IoMain.SLReadCalibrationParams();
-        }
-
-        void IExternalControl.BVTWriteCalibrationParameters(Types.BVT.CalibrationParams Parameters)
-        {
-            _IoMain.BVTWriteCalibrationParams(Parameters);
-        }
-
-        Types.BVT.CalibrationParams IExternalControl.BVTReadCalibrationParameters()
-        {
-            return _IoMain.BVTReadCalibrationParams();
-        }
-
-        void IExternalControl.CSWriteCalibrationParameters(Types.Clamping.CalibrationParams Parameters)
-        {
-            _IoMain.CSWriteCalibrationParams(Parameters);
-        }
-
-        Types.Clamping.CalibrationParams IExternalControl.CSReadCalibrationParameters()
-        {
-            return _IoMain.CSReadCalibrationParams();
-        }
-
-        void IExternalControl.DvDtWriteCalibrationParameters(Types.dVdt.CalibrationParams Parameters)
-        {
-            _IoMain.DvDtWriteCalibrationParams(Parameters);
-        }
-
-        Types.dVdt.CalibrationParams IExternalControl.DvDtReadCalibrationParameters()
-        {
-            return _IoMain.DvDtReadCalibrationParams();
-        }
-
-        void IExternalControl.ATUWriteCalibrationParameters(Types.ATU.CalibrationParams Parameters)
-        {
-            _IoMain.ATUWriteCalibrationParams(Parameters);
-        }
-
-        Types.ATU.CalibrationParams IExternalControl.ATUReadCalibrationParameters()
-        {
-            return _IoMain.ATUReadCalibrationParams();
-        }
-
-        void IExternalControl.QRRWriteCalibrationParameters(Types.QRR.CalibrationParams Parameters)
-        {
-            //m_IOMain.QRRWriteCalibrationParams(Parameters);
-        }
-
-        Types.QRR.CalibrationParams IExternalControl.QRRReadCalibrationParameters()
-        {
-            return new Types.QRR.CalibrationParams(); //m_IOMain.QRRReadCalibrationParams();
-        }
 
         void IExternalControl.WriteResults(ResultItem Item, List<string> Errors)
         {

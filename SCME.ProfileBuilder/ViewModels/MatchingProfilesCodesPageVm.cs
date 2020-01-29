@@ -106,7 +106,7 @@ namespace SCME.ProfileBuilder.ViewModels
         {
             foreach (var i in SelectedActiveProfiles.ToList())
             {
-                foreach (var j in _dbService.GetMmeCodesByProfile(i))
+                foreach (var j in _dbService.GetMmeCodesByProfile(i.Id))
                     _dbService.RemoveMmeCodeToProfile(i.Id, j);
                 
                 ActiveProfilesSource.Remove(i);

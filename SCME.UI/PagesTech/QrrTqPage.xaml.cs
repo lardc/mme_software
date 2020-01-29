@@ -249,7 +249,6 @@ namespace SCME.UI.PagesTech
             var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
-            var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
             var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
@@ -257,7 +256,7 @@ namespace SCME.UI.PagesTech
             //если пресс был зажат вручную - не стоит пробовать зажимать его ещё раз
             ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
 
-            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, Parameters, paramRAC, paramIH, paramRCC,
+            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, Parameters, paramIH, paramRCC,
                                  new Types.Commutation.TestParameters
                                  {
                                      BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,

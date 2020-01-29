@@ -415,14 +415,14 @@ namespace SCME.UI.IO
         #region ExternalControl members
 
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
-                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRAC, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
+                          Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
             if (!IsServerConnected)
                 return false;
 
             try
             {
-                if (!ParametersGate.IsEnabled && !ParametersVtm.IsEnabled && !ParametersBvt.IsEnabled && !ParametersAtu.IsEnabled && !ParametersQrrTq.IsEnabled && !ParametersRAC.IsEnabled && !ParametersIH.IsEnabled && !ParametersRCC.IsEnabled && !ParametersTOU.IsEnabled)
+                if (!ParametersGate.IsEnabled && !ParametersVtm.IsEnabled && !ParametersBvt.IsEnabled && !ParametersAtu.IsEnabled && !ParametersQrrTq.IsEnabled && !ParametersIH.IsEnabled && !ParametersRCC.IsEnabled && !ParametersTOU.IsEnabled)
                 {
                     var dw = new DialogWindow(Resources.Information,
                                               Resources.CanNotStartTest + Environment.NewLine +
@@ -462,7 +462,7 @@ namespace SCME.UI.IO
                     return false;
                 }
 
-                result = m_ControlClient.Start(ParametersGate, ParametersVtm, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
+                result = m_ControlClient.Start(ParametersGate, ParametersVtm, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
 
                 return result;
 
@@ -526,7 +526,7 @@ namespace SCME.UI.IO
                     return false;
                 }
 
-                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.RAC.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
+                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
 
                 return result;
             }
@@ -850,310 +850,6 @@ namespace SCME.UI.IO
             {
                 ProcessGeneralException(ex);
             }
-        }
-
-        public Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
-        {
-            try
-            {
-                return m_ControlClient.GatePulseCalibrationGate(Current);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-                return new Types.Gate.CalibrationResultGate();
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-                return new Types.Gate.CalibrationResultGate();
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-                return new Types.Gate.CalibrationResultGate();
-            }
-        }
-
-        public ushort GatePulseCalibrationMain(ushort Current)
-        {
-            try
-            {
-                return m_ControlClient.GatePulseCalibrationMain(Current);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-                return 0;
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-                return 0;
-            }
-        }
-
-        public void GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
-        {
-            try
-            {
-                m_ControlClient.GateWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public Types.Gate.CalibrationParameters GateReadCalibrationParameters()
-        {
-            var parameters = new Types.Gate.CalibrationParameters();
-            try
-            {
-                parameters = m_ControlClient.GateReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
-        }
-
-        public void SLWriteCalibrationParameters(Types.VTM.CalibrationParameters Parameters)
-        {
-            try
-            {
-                m_ControlClient.SLWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public Types.VTM.CalibrationParameters SLReadCalibrationParameters()
-        {
-            var parameters = new Types.VTM.CalibrationParameters();
-            try
-            {
-                parameters = m_ControlClient.SLReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
-        }
-
-        public void BvtWriteCalibrationParameters(Types.BVT.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_ControlClient.BVTWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public Types.BVT.CalibrationParams BvtReadCalibrationParameters()
-        {
-            var parameters = new Types.BVT.CalibrationParams();
-            try
-            {
-                parameters = m_ControlClient.BVTReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
-        }
-
-        public CalibrationParams CSReadCalibrationParameters()
-        {
-            var parameters = new CalibrationParams();
-            try
-            {
-                parameters = m_ControlClient.CSReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
-        }
-
-        public void CSWriteCalibrationParameters(CalibrationParams Parameters)
-        {
-            try
-            {
-                m_ControlClient.CSWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public void DvDtWriteCalibrationParameters(Types.dVdt.CalibrationParams Parameters)
-        {
-            try
-            {
-                //m_ControlClient.BVTWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public Types.dVdt.CalibrationParams DvDtReadCalibrationParameters()
-        {
-            var parameters = new Types.dVdt.CalibrationParams();
-            try
-            {
-                //parameters = m_ControlClient.BVTReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
-        }
-
-        public void ATUWriteCalibrationParameters(Types.ATU.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_ControlClient.ATUWriteCalibrationParameters(Parameters);
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-        }
-
-        public Types.ATU.CalibrationParams ATUReadCalibrationParameters()
-        {
-            var parameters = new Types.ATU.CalibrationParams();
-            try
-            {
-                parameters = m_ControlClient.ATUReadCalibrationParameters();
-            }
-            catch (FaultException<FaultData> ex)
-            {
-                ShowFaultError("Calibration error", ex);
-            }
-            catch (CommunicationException ex)
-            {
-                ProcessCommunicationException(ex);
-            }
-            catch (Exception ex)
-            {
-                ProcessGeneralException(ex);
-            }
-
-            return parameters;
         }
 
         public void WriteResultServer(ResultItem item, List<string> errors)
@@ -1835,22 +1531,6 @@ namespace SCME.UI.IO
             m_QueueWorker.AddQrrTqKindOfFreezingEvent(KindOfFreezing);
         }
 
-        public void RACHandler(DeviceState State, Types.RAC.TestResults Result)
-        {
-            m_QueueWorker.AddRACEvent(State, Result);
-        }
-
-        public void RACNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
-        {
-            if (Problem != (ushort)Types.RAC.HWProblemReason.None)
-                m_QueueWorker.AddRACProblemEvent(Problem);
-
-            if (Warning != (ushort)Types.QrrTq.HWWarningReason.None)
-                m_QueueWorker.AddRACWarningEvent(Warning);
-
-            if (Fault != (ushort)Types.QrrTq.HWFaultReason.None)
-                m_QueueWorker.AddRACFaultEvent(Fault);
-        }
 
         public void TOUHandler(DeviceState State, TestResults Result)
         {

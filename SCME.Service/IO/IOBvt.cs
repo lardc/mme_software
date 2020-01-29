@@ -287,50 +287,7 @@ namespace SCME.Service.IO
 
         #endregion
 
-        internal void WriteCalibrationParams(Types.BVT.CalibrationParams Parameters)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Note,
-                "BVT @WriteCalibrationParams begin");
-
-            WriteRegister(REG_S1_CURRENT1_FINE_N, Parameters.S1Current1FineN, true);
-            WriteRegister(REG_S1_CURRENT1_FINE_D, Parameters.S1Current1FineD, true);
-            WriteRegister(REG_S1_CURRENT2_FINE_N, Parameters.S1Current2FineN, true);
-            WriteRegister(REG_S1_CURRENT2_FINE_D, Parameters.S1Current2FineD, true);
-
-            WriteRegister(REG_S1_VOLTAGE1_FINE_N, Parameters.S1Voltage1FineN, true);
-            WriteRegister(REG_S1_VOLTAGE1_FINE_D, Parameters.S1Voltage1FineD, true);
-            WriteRegister(REG_S1_VOLTAGE2_FINE_N, Parameters.S1Voltage2FineN, true);
-            WriteRegister(REG_S1_VOLTAGE2_FINE_D, Parameters.S1Voltage2FineD, true);
-
-            if (!m_IsBVTEmulation)
-                m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
-
-            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Note,
-                "BVT @WriteCalibrationParams end");
-        }
-
-        internal Types.BVT.CalibrationParams ReadCalibrationParams()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Note,
-                "BVT @ReadCalibrationParams begin");
-
-            var parameters = new Types.BVT.CalibrationParams
-            {
-                S1Current1FineN = ReadRegister(REG_S1_CURRENT1_FINE_N, true),
-                S1Current1FineD = ReadRegister(REG_S1_CURRENT1_FINE_D, true),
-                S1Current2FineN = ReadRegister(REG_S1_CURRENT2_FINE_N, true),
-                S1Current2FineD = ReadRegister(REG_S1_CURRENT2_FINE_D, true),
-                S1Voltage1FineN = ReadRegister(REG_S1_VOLTAGE1_FINE_N, true),
-                S1Voltage1FineD = ReadRegister(REG_S1_VOLTAGE1_FINE_D, true),
-                S1Voltage2FineN = ReadRegister(REG_S1_VOLTAGE2_FINE_N, true),
-                S1Voltage2FineD = ReadRegister(REG_S1_VOLTAGE2_FINE_D, true),
-            };
-
-            SystemHost.Journal.AppendLog(ComplexParts.BVT, LogMessageType.Note,
-                "BVT @ReadCalibrationParams end");
-
-            return parameters;
-        }
+     
 
 //        private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
 //        {

@@ -338,50 +338,7 @@ namespace SCME.Service.IO
 
         #endregion
 
-        internal void WriteCalibrationParams(Types.VTM.CalibrationParameters Parameters)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @WriteCalibrationParams begin");
-
-            WriteRegisterS(REG_VTM_OFFSET, Parameters.VtmOffset, true);
-
-            WriteRegister(REG_ITM_FINE_N, Parameters.ItmFineN, true);
-            WriteRegister(REG_ITM_FINE_D, Parameters.ItmFineD, true);
-            WriteRegister(REG_VTM_FINE_N, Parameters.VtmFineN, true);
-            WriteRegister(REG_VTM_FINE_D, Parameters.VtmFineD, true);
-            WriteRegister(REG_PREDICT_PARAM_K1, Parameters.PredictParamK1, true);
-            WriteRegister(REG_PREDICT_PARAM_K2, Parameters.PredictParamK2, true);
-            WriteRegister(REG_VTM_FINE2_N, Parameters.VtmFine2N, true);
-            WriteRegister(REG_VTM_FINE2_D, Parameters.VtmFine2D, true);
-
-            if (!m_IsSLEmulation)
-                m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
-
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @WriteCalibrationParams end");
-
-        }
-
-        internal Types.VTM.CalibrationParameters ReadCalibrationParams()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @ReadCalibrationParams begin");
-
-            var parameters = new Types.VTM.CalibrationParameters
-            {
-                VtmOffset = ReadRegisterS(REG_VTM_OFFSET, true),
-
-                ItmFineN = ReadRegister(REG_ITM_FINE_N, true),
-                ItmFineD = ReadRegister(REG_ITM_FINE_D, true),
-                VtmFineN = ReadRegister(REG_VTM_FINE_N, true),
-                VtmFineD = ReadRegister(REG_VTM_FINE_D, true),
-                PredictParamK1 = ReadRegister(REG_PREDICT_PARAM_K1, true),
-                PredictParamK2 = ReadRegister(REG_PREDICT_PARAM_K2, true),
-                VtmFine2N = ReadRegister(REG_VTM_FINE2_N, true),
-                VtmFine2D = ReadRegister(REG_VTM_FINE2_D, true)
-            };
-
-            SystemHost.Journal.AppendLog(ComplexParts.SL, LogMessageType.Note, "VTM @ReadCalibrationParams end");
-
-            return parameters;
-        }
+ 
 
         private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
         {

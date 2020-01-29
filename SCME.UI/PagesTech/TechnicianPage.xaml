@@ -97,20 +97,6 @@
                     </Grid>
                 </Button>
 
-                <Button CommandParameter="4">
-                    <Grid Background="{StaticResource xGreen3}">
-                        <Path Data="{StaticResource SelftestPath}" />
-                        <Label Content="{x:Static res:Resources.Selftest}" />
-                    </Grid>
-                </Button>
-
-                <Button CommandParameter="5">
-                    <Grid Background="{StaticResource xGreen1}">
-                        <Path Data="{StaticResource CalibrationPath}" />
-                        <Label Content="{x:Static res:Resources.Calibration}" />
-                    </Grid>
-                </Button>
-
                 <Button CommandParameter="6">
                     <Grid Background="{StaticResource xOrange1}">
                         <Path Data="{StaticResource ConsolePath}" />
@@ -125,13 +111,6 @@
                     <Grid Background="{StaticResource xPurple1}">
                         <Path Data="{StaticResource EditPath}" />
                         <Label Content="{x:Static res:Resources.Profiles}" />
-                    </Grid>
-                </Button>
-
-                <Button CommandParameter="8">
-                    <Grid Background="{StaticResource xBlue1}">
-                        <Path Data="{StaticResource LogsPath}" />
-                        <Label Content="{x:Static res:Resources.Logs}" />
                     </Grid>
                 </Button>
 
@@ -177,14 +156,6 @@
                     <Grid Background="{StaticResource xGreen1}">
                         <Path Data="{StaticResource QrrTqPath}" />
                         <Label Content="{x:Static res:Resources.QrrTq}" />
-                    </Grid>
-                </Button>
-
-                <Button CommandParameter="15" Name="btnRAC"
-                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}">
-                    <Grid Background="{StaticResource xGreen3}">
-                        <Path Data="{StaticResource RACPath}" />
-                        <Label Content="{x:Static res:Resources.RAC}" />
                     </Grid>
                 </Button>
 

@@ -52,7 +52,6 @@ namespace SCME.UI.PagesUser
         private List<Types.dVdt.TestResults> _dvdTestResults1, _dvdTestResults2;
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
         private List<Types.QrrTq.TestResults> m_ResultsQrrTq1, m_ResultsQrrTq2;
-        private List<Types.RAC.TestResults> m_ResultsRAC1, m_ResultsRAC2;
         private List<Types.TOU.TestResults> _ResultsTOU1, _ResultsTOU2;
         private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC, _StateTOU;
         private Profile m_Profile;
@@ -73,7 +72,6 @@ namespace SCME.UI.PagesUser
             _dvdTestResults1 = new List<Types.dVdt.TestResults>();
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
-            m_ResultsRAC1 = new List<Types.RAC.TestResults>();
             _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<Types.Gate.TestResults>();
@@ -82,7 +80,6 @@ namespace SCME.UI.PagesUser
             _dvdTestResults2 = new List<Types.dVdt.TestResults>();
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
-            m_ResultsRAC2 = new List<Types.RAC.TestResults>();
             _ResultsTOU2 = new List<Types.TOU.TestResults>();
 
             m_StateGate = DeviceState.None;
@@ -336,26 +333,6 @@ namespace SCME.UI.PagesUser
             {
                 m_ResultsQrrTq2 = value;
                 OnPropertyChanged("ResultsQrrTq2");
-            }
-        }
-
-        public List<Types.RAC.TestResults> ResultsRAC1
-        {
-            get { return m_ResultsRAC1; }
-            set
-            {
-                m_ResultsRAC1 = value;
-                OnPropertyChanged("ResultsRAC1");
-            }
-        }
-
-        public List<Types.RAC.TestResults> ResultsRAC2
-        {
-            get { return m_ResultsRAC2; }
-            set
-            {
-                m_ResultsRAC2 = value;
-                OnPropertyChanged("ResultsRAC2");
             }
         }
 
@@ -722,7 +699,6 @@ namespace SCME.UI.PagesUser
                         BVT = (m_CurrentPos == 1) ? ResultsBVT1.ToArray() : ResultsBVT2.ToArray(),
                         ATU = (m_CurrentPos == 1) ? ResultsATU1.ToArray() : ResultsATU2.ToArray(),
                         QrrTq = (m_CurrentPos == 1) ? ResultsQrrTq1.ToArray() : ResultsQrrTq2.ToArray(),
-                        RAC = (m_CurrentPos == 1) ? ResultsRAC1.ToArray() : ResultsRAC2.ToArray(),
                         TOU = (m_CurrentPos == 1) ? ResultsTOU1.ToArray() : ResultsTOU2.ToArray(),
                         DVDT = (m_CurrentPos == 1) ? _dvdTestResults1.ToArray() : _dvdTestResults2.ToArray(),
                         GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
@@ -730,7 +706,6 @@ namespace SCME.UI.PagesUser
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
-                        RACTestParameters = Profile.TestParametersAndNormatives.OfType<Types.RAC.TestParameters>().ToArray(),
                         TOUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.TOU.TestParameters>().ToArray(),
                         DvdTestParameterses =  Profile.TestParametersAndNormatives.OfType<Types.dVdt.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
@@ -1896,137 +1871,6 @@ namespace SCME.UI.PagesUser
             btnStart.Content = string.Format(Properties.Resources.Start + " ({0})", KindOfFreezing);
         }
 
-        private int RACCounter;
-
-        private List<DependencyObject> GetRACItemContainer()
-        {
-            var results = new List<DependencyObject>(7);
-            ListView ListView = null;
-
-            switch (m_CurrentPos)
-            {
-                case (1):
-                    ListView = ListViewResults1;
-                    break;
-
-                default:
-                    ListView = ListViewResults2;
-                    break;
-            }
-
-            bool isNewlyRealized;
-
-            for (int i = 0; i < ListView.Items.Count; i++)
-            {
-                if (ListView.Items[i] is Types.RAC.TestParameters)
-                {
-                    IItemContainerGenerator generator = ListView.ItemContainerGenerator;
-
-                    var position = generator.GeneratorPositionFromIndex(i);
-                    using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                    {
-                        var child = generator.GenerateNext(out isNewlyRealized);
-                        generator.PrepareItemContainer(child);
-                        results.Add(child);
-                    }
-                }
-            }
-
-            return results;
-        }
-
-        internal void SetResultRAC(DeviceState state, Types.RAC.TestResults result)
-        {
-            m_StateRAC = state;
-
-            if (m_StateRAC == DeviceState.InProcess)
-                RACCounter++;
-
-            if (m_CurrentPos == 1)
-            {
-                ResultsRAC1[RACCounter].ResultR = result.ResultR;
-            }
-            else
-            {
-                ResultsRAC2[RACCounter].ResultR = result.ResultR;
-            }
-
-            if (state == DeviceState.Success)
-            {
-                List<DependencyObject> RACItemContainer = GetRACItemContainer();
-                ContentPresenter presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
-
-                Label labelMeasure = FindChild<Label>(presenter, "lbResultR");
-
-                if (labelMeasure != null)
-                {
-                    SetLabel(labelMeasure, state, true, result.ResultR.ToString());
-                }
-            }
-        }
-
-        internal void SetRACProblem(ushort Problem)
-        {
-            var RACItemContainer = GetRACItemContainer();
-            var presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
-
-            var label = FindChild<Label>(presenter, "lbProblem");
-
-            if (label != null && label.Visibility != Visibility.Visible)
-            {
-                Types.RAC.HWProblemReason ProblemReason = (Types.RAC.HWProblemReason)Problem;
-                label.Content = ProblemReason.ToString();
-
-                label.Visibility = Visibility.Visible;
-
-                label = FindChild<Label>(presenter, "lbTittleProblem");
-                label.Visibility = Visibility.Visible;
-            }
-
-            IsRunning = false;
-        }
-
-        internal void SetRACWarning(ushort Warning)
-        {
-            var RACItemContainer = GetRACItemContainer();
-            var presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
-
-            var label = FindChild<Label>(presenter, "lbWarning");
-
-            if (label != null && label.Visibility != Visibility.Visible)
-            {
-                Types.RAC.HWWarningReason WarningReason = (Types.RAC.HWWarningReason)Warning;
-
-                label.Content = WarningReason.ToString();
-                label.Visibility = Visibility.Visible;
-
-                label = FindChild<Label>(presenter, "lbTittleWarning");
-                label.Visibility = Visibility.Visible;
-            }
-
-            IsRunning = false;
-        }
-
-        internal void SetRACFault(ushort Fault)
-        {
-            _HasFault = true;
-            var RACItemContainer = GetRACItemContainer();
-            var presenter = FindVisualChild<ContentPresenter>(RACItemContainer[RACCounter]);
-
-            var label = FindChild<Label>(presenter, "lbFaultReason");
-
-            if (label != null && label.Visibility != Visibility.Visible)
-            {
-                Types.RAC.HWFaultReason FaultReason = (Types.RAC.HWFaultReason)Fault;
-
-                label.Content = FaultReason.ToString();
-                label.Visibility = Visibility.Visible;
-
-                label = FindChild<Label>(presenter, "lbTittleFaultReason");
-                label.Visibility = Visibility.Visible;
-            }
-        }
-
         private int TOUCounter;
 
         private List<DependencyObject> GetTOUItemContainer()
@@ -2368,11 +2212,6 @@ namespace SCME.UI.PagesUser
                             ClearResultsQrrTq(element);
                         }
 
-                        if (ListViewResults1.Items[i] is Types.RAC.TestParameters)
-                        {
-                            ClearResultsRAC(element);
-                        }
-
                         if (ListViewResults1.Items[i] is Types.TOU.TestParameters)
                         {
                             ClearResultsTOU(element);
@@ -2419,11 +2258,6 @@ namespace SCME.UI.PagesUser
                         if (ListViewResults2.Items[i] is Types.QrrTq.TestParameters)
                         {
                             ClearResultsQrrTq(element);
-                        }
-
-                        if (ListViewResults2.Items[i] is Types.RAC.TestParameters)
-                        {
-                            ClearResultsRAC(element);
                         }
 
                         if (ListViewResults2.Items[i] is Types.TOU.TestParameters)
@@ -2838,7 +2672,7 @@ namespace SCME.UI.PagesUser
 
         private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
                                    Types.VTM.TestParameters ParamsVTM,
-                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.RAC.TestParameters ParamsRAC, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
+                                   Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
         {
             if (this.Profile != null)
             {
@@ -2864,7 +2698,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsRAC, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp, ParamsTOU))
+            if (!Cache.Net.Start(ParamsGate, ParamsVTM, ParamsBVT, ParamsATU, ParamsQrrTq, ParamsIH, ParamsRCC, ParamsComm, ParamsClamp, ParamsTOU))
                 return;
 
             ClearStatus(Position == 1, true);
@@ -2915,7 +2749,6 @@ namespace SCME.UI.PagesUser
             _dvdTestResults1 = new List<Types.dVdt.TestResults>();
             m_ResultsATU1 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
-            m_ResultsRAC1 = new List<Types.RAC.TestResults>();
             _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
             m_ResultsGate2 = new List<TestResults>();
@@ -2924,7 +2757,6 @@ namespace SCME.UI.PagesUser
             _dvdTestResults2 = new List<Types.dVdt.TestResults>();
             m_ResultsATU2 = new List<Types.ATU.TestResults>();
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
-            m_ResultsRAC2 = new List<Types.RAC.TestResults>();
             _ResultsTOU2 = new List<Types.TOU.TestResults>();
 
             _gateCounter = -1;
@@ -2933,7 +2765,6 @@ namespace SCME.UI.PagesUser
             dvdtCounter = -1;
             ATUCounter = -1;
             QrrTqCounter = -1;
-            RACCounter = -1;
             TOUCounter = -1;
 
             var parameters = Profile.TestParametersAndNormatives.ToList();
@@ -3000,14 +2831,6 @@ namespace SCME.UI.PagesUser
                 {
                     m_ResultsQrrTq1.Add(new Types.QrrTq.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
                     m_ResultsQrrTq2.Add(new Types.QrrTq.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    continue;
-                }
-
-                var parRAC = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                if (parRAC != null)
-                {
-                    m_ResultsRAC1.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
-                    m_ResultsRAC2.Add(new Types.RAC.TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });
                     continue;
                 }
 

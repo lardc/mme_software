@@ -608,7 +608,6 @@ namespace SCME.InterfaceImplementations
             InsertBvtParameterValues(result, devId, trans);
             InsertAtuParameterValues(result, devId, trans);
             InsertQrrTqParameterValues(result, devId, trans);
-            InsertRacParameterValues(result, devId, trans);
             InsertTOUParameterValues(result, devId, trans);
         }
 
@@ -720,17 +719,6 @@ namespace SCME.InterfaceImplementations
                     InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, result.ProfileKey, "QrrTq", trans);
                     InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, result.ProfileKey, "QrrTq", trans);
                     InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, result.ProfileKey, "QrrTq", trans);
-                }
-            }
-        }
-
-        private void InsertRacParameterValues(ResultItem result, long devId, SqlTransaction trans)
-        {
-            for (int i = 0; i < result.RACTestParameters.Length; i++)
-            {
-                if (result.RACTestParameters[i].IsEnabled)
-                {
-                    InsertParameterValue(devId, "ResultR", result.RAC[i].ResultR, result.ProfileKey, "RAC", trans);
                 }
             }
         }

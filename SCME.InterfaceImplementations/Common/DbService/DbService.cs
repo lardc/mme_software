@@ -80,6 +80,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         protected virtual string LoadConditionsString => "SELECT COND_ID, RTRIM(COND_NAME) FROM CONDITIONS";
         protected virtual string LoadParametersString => "SELECT PARAM_ID, RTRIM(PARAM_NAME) FROM PARAMS";
 
+        protected virtual string UpdateMmeCodesToProfilesString => "UPDATE MME_CODES_TO_PROFILES SET PROFILE_ID = @NEW_PROFILE_ID WHERE PROFILE_ID = @OLD_PROFILE_ID" ;
+
         private readonly Dictionary<string, int> _testTypeIdByName = new Dictionary<string, int>();
         private readonly Dictionary<string, int> _conditionIdByName = new Dictionary<string, int>();
         private readonly Dictionary<string, int> _parameterIdByName = new Dictionary<string, int>();
@@ -131,6 +133,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
         private TDbCommand _insertMmeCode;
 
         private TDbCommand _profileByNameByMmeMaxTimestamp;
+
+        private TDbCommand _updateMmeCodesToProfile;
 
         private DbTransaction _dbTransaction;
 
@@ -349,7 +353,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 new DbCommandParameter("@PROFILE_ID", DbType.Int32),
             });
             
-
+            _updateMmeCodesToProfile = CreateCommand(UpdateMmeCodesToProfilesString, new List<DbCommandParameter>()
+            {
+                new DbCommandParameter("@NEW_PROFILE_ID", DbType.Int32),
+                new DbCommandParameter("@OLD_PROFILE_ID", DbType.Int32),
+            });
 
             _loadTestTypes = CreateCommand(LoadTestTypesString, new List<DbCommandParameter>());
             _loadConditions = CreateCommand(LoadConditionsString, new List<DbCommandParameter>());

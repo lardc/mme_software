@@ -186,7 +186,6 @@ namespace SCME.Types.Profiles
                 DvDTestParameterses = new List<dVdt.TestParameters>(),
                 ATUTestParameters = new List<ATU.TestParameters>(),
                 QrrTqTestParameters = new List<QrrTq.TestParameters>(),
-                RACTestParameters = new List<RAC.TestParameters>(),
                 TOUTestParameters = new List<TOU.TestParameters>(),
                 CommTestParameters = ParametersComm,
                 IsHeightMeasureEnabled = IsHeightMeasureEnabled,
@@ -216,9 +215,6 @@ namespace SCME.Types.Profiles
                         break;
                     case QrrTq.TestParameters qrrTq:
                         profileItem.QrrTqTestParameters.Add(qrrTq);
-                        break;
-                    case RAC.TestParameters rac:
-                        profileItem.RACTestParameters.Add(rac);
                         break;
                     case TOU.TestParameters tou:
                         profileItem.TOUTestParameters.Add(tou);

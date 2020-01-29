@@ -129,7 +129,6 @@ namespace SCME.UI.IO
                     Cache.Bvt.SetResultAll(State);
                     Cache.ATU.SetResultAll(State);
                     Cache.QrrTq.SetResultAll(State);
-                    Cache.RAC.SetResultAll(State);
                     Cache.IH.SetResultAll(State);
                 }
             });
@@ -154,7 +153,6 @@ namespace SCME.UI.IO
                     Cache.Bvt.SetResultAll(DeviceState.Fault);
                     Cache.ATU.SetResultAll(DeviceState.Fault);
                     Cache.QrrTq.SetResultAll(DeviceState.Fault);
-                    Cache.RAC.SetResultAll(DeviceState.Fault);
                     Cache.IH.SetResultAll(DeviceState.Fault);
                 }
 
@@ -249,7 +247,6 @@ namespace SCME.UI.IO
 
                     Cache.TOU.VM.IsRunning = false;
                     Cache.IH.IsRunning = false;
-                    Cache.RAC.IsRunning = false;
                     Cache.QrrTq.IsRunning = false;
                     Cache.ATU.IsRunning = false;
                     Cache.DVdt.IsRunning = false;
@@ -358,7 +355,6 @@ namespace SCME.UI.IO
 
                         Cache.TOU.VM.IsRunning = false;
                         Cache.IH.IsRunning = false;
-                        Cache.RAC.IsRunning = false;
                         Cache.QrrTq.IsRunning = false;
                         Cache.ATU.IsRunning = false;
                         Cache.DVdt.IsRunning = false;
@@ -417,8 +413,6 @@ namespace SCME.UI.IO
                         Cache.ATU.Start();
                     else if (Equals(Cache.Main.mainFrame.Content, Cache.QrrTq))
                         Cache.QrrTq.Start();
-                    else if (Equals(Cache.Main.mainFrame.Content, Cache.RAC))
-                        Cache.RAC.Start();
                     else if (Equals(Cache.Main.mainFrame.Content, Cache.IH))
                         Cache.IH.Start();
                 }
@@ -811,42 +805,6 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddRACEvent(DeviceState State, Types.RAC.TestResults Result)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetResultRAC(State, Result);
-                else Cache.RAC.SetResult(State, Result);
-            });
-        }
-
-        public void AddRACProblemEvent(ushort Problem)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetRACProblem(Problem);
-                else Cache.RAC.SetProblem(Problem);
-            });
-        }
-
-        public void AddRACWarningEvent(ushort Warning)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetRACWarning(Warning);
-                else Cache.RAC.SetWarning(Warning);
-            });
-        }
-
-        public void AddRACFaultEvent(ushort Fault)
-        {
-            m_ActionQueue.Enqueue(delegate
-            {
-                if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest)) Cache.UserTest.SetRACFault(Fault);
-                else Cache.RAC.SetFault(Fault);
-            });
-        }
-
         public void AddTOUEvent(DeviceState State, Types.TOU.TestResults Result)
         {
             m_ActionQueue.Enqueue(delegate
@@ -932,8 +890,6 @@ namespace SCME.UI.IO
                     Cache.ATU.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.QrrTq))
                     Cache.QrrTq.SetTopTemp(temperature);
-                else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
-                    Cache.RAC.SetTopTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
                     Cache.TOU.SetTopTemp(temperature);
             });
@@ -959,8 +915,6 @@ namespace SCME.UI.IO
                     Cache.ATU.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.QrrTq))
                     Cache.QrrTq.SetBottomTemp(temperature);
-                else if (Cache.Main.mainFrame.Content.Equals(Cache.RAC))
-                    Cache.RAC.SetBottomTemp(temperature);
                 else if (Cache.Main.mainFrame.Content.Equals(Cache.TOU))
                     Cache.TOU.SetBottomTemp(temperature);
             });

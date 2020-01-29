@@ -16,7 +16,6 @@
              xmlns:dVdtParameters="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
              xmlns:atuParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
              xmlns:qrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
-             xmlns:racParameters="clr-namespace:SCME.Types.RAC;assembly=SCME.Types"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              mc:Ignorable="d" Name="ThisListViewTestParametersUserControl"
@@ -61,9 +60,6 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type qrrTqParameters:TestParameters}" >
                 <testResultDataTemplate:QrrTqDataTemplate/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type racParameters:TestParameters}" >
-                <testResultDataTemplate:RACDataTemplate/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type touParameters:TestParameters}" >
                 <testResultDataTemplate:TOUDataTemplate/>

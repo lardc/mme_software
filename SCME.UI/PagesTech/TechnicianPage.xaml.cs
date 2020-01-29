@@ -29,7 +29,6 @@ namespace SCME.UI.PagesTech
             btndVdt.IsEnabled = Param.IsdVdtEnabled;
             btnATU.IsEnabled = Param.IsATUEnabled;
             btnQrrTq.IsEnabled = Param.IsQrrTqEnabled;
-            btnRAC.IsEnabled = Param.IsRACEnabled;
             btnIH.IsEnabled = Param.IsIHEnabled;
             btnTOU.IsEnabled = Param.IsTOUEnabled;
 
@@ -62,7 +61,7 @@ namespace SCME.UI.PagesTech
                     page = Cache.Selftest;
                     break;
                 case 5:
-                    page = Cache.Calibration;
+                    //page = Cache.Calibration;
                     break;
                 case 6:
                     page = Cache.Console;
@@ -72,9 +71,6 @@ namespace SCME.UI.PagesTech
 //                    Cache.ProfileSelection.ClearFilter();
 //                    Cache.ProfileEdit.InitFilter();
 //                    page = Cache.ProfileEdit;
-                    break;
-                case 8:
-                    page = Cache.Logs;
                     break;
                 case 9:
                     page = Cache.Results;
@@ -104,8 +100,8 @@ namespace SCME.UI.PagesTech
                     page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 15:
-                    Cache.RAC = new RACPage();
-                    page = Cache.RAC;
+                    //Cache.RAC = new RACPage();
+                    //page = Cache.RAC;
                     break;
                 case 16:
                     Cache.IH = new IHPage();

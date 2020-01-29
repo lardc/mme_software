@@ -17,20 +17,17 @@ namespace SCME.UI
         private static LoginPage ms_LoginPage;
         private static UserTestPage ms_UserTestPage;
         private static TechnicianPage ms_TechnicianPage;
-        private static CalibrationPage ms_CalibrationPage;
         private static SLPage ms_SLPage;
         private static GatePage ms_GatePage;
         private static BvtPage ms_BVTPage;
         private static SelftestPage ms_SelftestPage;
         private static ResultsPage ms_ResultsPage;
-        private static LogsPage ms_LogsPage;
         private static ConsolePage ms_ConsolePage;
         private static ClampPage ms_ClampPage;
         private static DVdtPage ms_DVdtPage;
         private static TOUPage ms_TOUPage;
         private static ATUPage ms_ATUPage;
         private static QrrTqPage ms_QrrTqPage;
-        private static RACPage ms_RACPage;
         private static IHPage ms_IHPage;
         private static ProfilesPage _profilesPage;
         private static ProfilesPage _profilesPageSelectForTest;
@@ -118,11 +115,7 @@ namespace SCME.UI
 
         //internal static ProfilePage ProfileEdit { get; set; }
 
-        internal static CalibrationPage Calibration
-        {
-            get { return ms_CalibrationPage ?? (ms_CalibrationPage = new CalibrationPage()); }
-            set { ms_CalibrationPage = value; }
-        }
+     
 
         internal static SLPage Sl
         {
@@ -152,12 +145,6 @@ namespace SCME.UI
         {
             get { return ms_ResultsPage ?? (ms_ResultsPage = new ResultsPage()); }
             set { ms_ResultsPage = value; }
-        }
-
-        internal static LogsPage Logs
-        {
-            get { return ms_LogsPage ?? (ms_LogsPage = new LogsPage()); }
-            set { ms_LogsPage = value; }
         }
 
         internal static ConsolePage Console
@@ -196,11 +183,6 @@ namespace SCME.UI
             set { ms_QrrTqPage = value; }
         }
 
-        internal static RACPage RAC
-        {
-            get { return ms_RACPage ?? (ms_RACPage = new RACPage()); }
-            set { ms_RACPage = value; }
-        }
 
         internal static IHPage IH
         {

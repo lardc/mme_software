@@ -196,11 +196,6 @@ namespace SCME.Service
             EnumerateClients(Client => Client.QrrTqHandler(State, Result));
         }
 
-        public void PostRACEvent(DeviceState State, Types.RAC.TestResults Result)
-        {
-            EnumerateClients(Client => Client.RACHandler(State, Result));
-        }
-
         public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
         {
             EnumerateClients(Client => Client.TOUHandler(State, Result));
@@ -240,11 +235,6 @@ namespace SCME.Service
         public void PostQrrTqKindOfFreezingEvent(ushort KindOfFreezing)
         {
             EnumerateClients(Client => Client.QrrTqKindOfFreezingHandler(KindOfFreezing));
-        }
-
-        public void PostRACNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
-        {
-            EnumerateClients(Client => Client.RACNotificationHandler(Problem, Warning, Fault, Disable));
         }
 
         public void PostTOUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)

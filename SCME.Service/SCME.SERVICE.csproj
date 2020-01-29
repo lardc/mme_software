@@ -146,7 +146,6 @@
     <Compile Include="IO\IOdVdt.cs" />
     <Compile Include="IO\IoIH.cs" />
     <Compile Include="IO\IOQrrTq.cs" />
-    <Compile Include="IO\IORAC.cs" />
     <Compile Include="IO\IORCC.cs" />
     <Compile Include="IO\IoSctu.cs" />
     <Compile Include="MaintenanceServer.cs" />

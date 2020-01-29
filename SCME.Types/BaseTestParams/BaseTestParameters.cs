@@ -10,7 +10,6 @@ using VtmTestParameters = SCME.Types.VTM.TestParameters;
 using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
-using RacParameters = SCME.Types.RAC.TestParameters;
 using TOUParameters = SCME.Types.TOU.TestParameters;
 
 namespace SCME.Types.BaseTestParams
@@ -46,9 +45,6 @@ namespace SCME.Types.BaseTestParams
         QrrTq = 9,
 
         [EnumMember]
-        RAC = 10,
-
-        [EnumMember]
         IH = 11,
 
         [EnumMember]
@@ -63,7 +59,6 @@ namespace SCME.Types.BaseTestParams
     [KnownType(typeof(dVdt.TestParameters))]
     [KnownType(typeof(Gate.TestParameters))]
     [KnownType(typeof(QrrTq.TestParameters))]
-    [KnownType(typeof(RAC.TestParameters))]
     [KnownType(typeof(TOU.TestParameters))]
     [KnownType(typeof(VTM.TestParameters))]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -98,8 +93,6 @@ namespace SCME.Types.BaseTestParams
                     return new AtuParameters();
                 case TestParametersType.QrrTq:
                     return new QrrTqParameters();
-                case TestParametersType.RAC:
-                    return new RacParameters();
                 case TestParametersType.TOU:
                     return new TOUParameters();
                 default:
