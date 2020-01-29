@@ -75,9 +75,6 @@ namespace SCME.Types
         public QrrTq.TestResults[] QrrTq { get; set; }
 
         [DataMember]
-        public RAC.TestResults[] RAC { get; set; }
-
-        [DataMember]
         public TOU.TestResults[] TOU { get; set; }
         [DataMember]
         public dVdt.TestResults[] DVDT { get; set; }
@@ -99,9 +96,6 @@ namespace SCME.Types
 
         [DataMember]
         public QrrTq.TestParameters[] QrrTqTestParameters { get; set; }
-
-        [DataMember]
-        public RAC.TestParameters[] RACTestParameters { get; set; }
 
         [DataMember]
         public TOU.TestParameters[] TOUTestParameters { get; set; }
@@ -153,9 +147,6 @@ namespace SCME.Types
 
         [DataMember]
         public List<QrrTq.TestParameters> QrrTqTestParameters { get; set; }
-
-        [DataMember]
-        public List<RAC.TestParameters> RACTestParameters { get; set; }
 
         [DataMember]
         public List<TOU.TestParameters> TOUTestParameters { get; set; }
@@ -246,9 +237,6 @@ namespace SCME.Types
             if (QrrTqTestParameters.Count != oldItem.QrrTqTestParameters.Count)
                 return true;
 
-            if (RACTestParameters.Count != oldItem.RACTestParameters.Count)
-                return true;
-
             if (TOUTestParameters.Count != oldItem.TOUTestParameters.Count)
                 return true;
 
@@ -300,12 +288,6 @@ namespace SCME.Types
             for (var i = 0; i < QrrTqTestParameters.Count; i++)
             {
                 if (QrrTqTestParameters[i].IsHasChanges(oldItem.QrrTqTestParameters[i]))
-                    return true;
-            }
-
-            for (var i = 0; i < RACTestParameters.Count; i++)
-            {
-                if (RACTestParameters[i].IsHasChanges(oldItem.RACTestParameters[i]))
                     return true;
             }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Linq;
 using SCME.Types;
 using SCME.Types.Profiles;
 
@@ -288,22 +289,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("QrrTq", qrrTqCondition, qrrTqParameters);
         }
 
-        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.RAC.TestParameters rac)
-        {
-            var racCondition = new Dictionary<string, object>()
-            {
-                {"RAC_En", rac.IsEnabled},
-                {"RAC_ResVoltage", rac.ResVoltage},
-            };
-
-            var racParameters = new Dictionary<string, (object Min, object Max)>()
-            {
-                {"ResultR", (rac.ResultR, DBNull.Value)}
-            };
-
-            return ("RAC", racCondition, racParameters);
-        }
-
         private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.TOU.TestParameters tou)
         {
             var touCondition = new Dictionary<string, object>()
@@ -392,11 +377,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
         }
 
+        public void UpdateMmeCodesToProfile(int oldProfileId, int newProfileId)
+        {
+            _updateMmeCodesToProfile.Parameters["@NEW_PROFILE_ID"].Value = newProfileId;
+            _updateMmeCodesToProfile.Parameters["@OLD_PROFILE_ID"].Value = oldProfileId;
+            _updateMmeCodesToProfile.Transaction = _dbTransaction;
+            _updateMmeCodesToProfile.ExecuteNonQuery();
+        }
+
         public void InsertMmeCode(string mmeCode)
         {
             _insertMmeCode.Parameters["@MME_CODE"].Value = mmeCode; 
             _insertMmeCode.ExecuteNonQuery();
-            
         }
 
         private int InsertProfile(MyProfile profile)
@@ -445,9 +437,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case Types.QrrTq.TestParameters qrrTq:
                         _inserter.Insert(TypeConditionsParameters(qrrTq));
                         break;
-                    case Types.RAC.TestParameters rac:
-                        _inserter.Insert(TypeConditionsParameters(rac));
-                        break;
                     case Types.TOU.TestParameters tou:
                         _inserter.Insert(TypeConditionsParameters(tou));
                         break;
@@ -483,51 +472,34 @@ namespace SCME.InterfaceImplementations.Common.DbService
             try
             {
                 _dbTransaction = Connection.BeginTransaction();
+                var newProfileId = SaveProfile(newProfile);
+                List<string> mmeCodes = oldProfile != null ? GetMmeCodesByProfile(oldProfile.Id, _dbTransaction) : new List<string>(){ mmeCode, Constants.MME_CODE_IS_ACTIVE_NAME};
 
-                List<string> mmeCodes;
-
-                if (oldProfile != null)
-                {
-                    mmeCodes = GetMmeCodesByProfile(oldProfile, _dbTransaction);
+                if(oldProfile == null)
                     foreach (var i in mmeCodes)
-                        RemoveMmeCodeToProfile(oldProfile.Id, i, _dbTransaction);
-                }
+                        InsertMmeCodeToProfile(newProfileId, i, _dbTransaction);
                 else
-                    mmeCodes = new List<string>() {mmeCode, Constants.MME_CODE_IS_ACTIVE_NAME};
-
-                var id = SaveProfile(newProfile);
-                foreach (var i in mmeCodes)
-                    InsertMmeCodeToProfile(id, i, _dbTransaction);
-
+                    UpdateMmeCodesToProfile(oldProfile.Id, newProfileId);
 
                 _dbTransaction.Commit();
 
-
-                _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile) {IsChildLoad = true, IsDeepLoad = true};
-                foreach (var i in mmeCodes)
-                    if (_cacheProfilesByMmeCode.ContainsKey(i))
-                        _cacheProfilesByMmeCode[i]?.Add(newProfile);
-
-                // ReSharper disable once InvertIf
-                if (oldProfile != null)
+                if(oldProfile != null)
                 {
-                    _cacheProfileById.Remove(oldProfile.Id);
-                    foreach (var i in mmeCodes)
-                        if (_cacheProfilesByMmeCode.TryGetValue(i, out var profilesByMmeCode))
-                            profilesByMmeCode.Remove(oldProfile);
+                    foreach(var i in _cacheProfilesByMmeCode)
+                            i.Value.RemoveAll(m=> m.Key == oldProfile.Key);
 
-
-                    if (newProfile.Name.Equals(oldProfile.Name))
-                    {
-                        newProfile.Children.Add(oldProfile);
-                        foreach (var i in oldProfile.Children)
-                            newProfile.Children.Add(i);
-                    }
-
-                    oldProfile.Children.Clear();
+                    if(_cacheProfileById.ContainsKey(oldProfile.Id))
+                        _cacheProfileById.Remove(oldProfile.Id);
                 }
 
-                return id;
+                 foreach(var i in mmeCodes)
+                    if(_cacheProfilesByMmeCode.ContainsKey(i))
+                        _cacheProfilesByMmeCode[i].Add(newProfile);
+
+                 _cacheProfileById[newProfile.Id] = new ProfileCache(newProfile) {IsChildLoad = true, IsDeepLoad = true, MmeCodes = mmeCodes};
+
+
+                return newProfileId;
             }
 
             catch (Exception ex)

@@ -67,11 +67,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
+        bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
+        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -129,69 +129,7 @@ namespace SCME.Types
         [FaultContract(typeof(FaultData))]
         void CallAction(ComplexParts Device, ushort Address);
 
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void GateWriteCalibrationParameters(Gate.CalibrationParameters Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        Gate.CalibrationParameters GateReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void SLWriteCalibrationParameters(VTM.CalibrationParameters Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        VTM.CalibrationParameters SLReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void BVTWriteCalibrationParameters(BVT.CalibrationParams Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        BVT.CalibrationParams BVTReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void CSWriteCalibrationParameters(Clamping.CalibrationParams Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        Clamping.CalibrationParams CSReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void DvDtWriteCalibrationParameters(dVdt.CalibrationParams Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        dVdt.CalibrationParams DvDtReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void ATUWriteCalibrationParameters(ATU.CalibrationParams Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        ATU.CalibrationParams ATUReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        void QRRWriteCalibrationParameters(QRR.CalibrationParams Parameters);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        QRR.CalibrationParams QRRReadCalibrationParameters();
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current);
-
-        [OperationContract]
-        [FaultContract(typeof(FaultData))]
-        ushort GatePulseCalibrationMain(ushort Current);
+      
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -321,12 +259,6 @@ namespace SCME.Types
 
         [OperationContract(IsOneWay = true)]
         void QrrTqKindOfFreezingHandler(ushort KindOfFreezing);
-
-        [OperationContract(IsOneWay = true)]
-        void RACHandler(DeviceState State, RAC.TestResults Result);
-
-        [OperationContract(IsOneWay = true)]
-        void RACNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
         void IHHandler(DeviceState State, IH.TestResults Result);

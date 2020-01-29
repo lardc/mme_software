@@ -351,17 +351,6 @@ namespace SCME.UI.PagesUser
 
                         break;
 
-                    case TestParametersType.RAC:
-                        for (int i = 0; i < profileItem.RACTestParameters.Count; i++)
-                        {
-                            Test = profileItem.RACTestParameters[i];
-
-                            if (Test.Order == order)
-                                return Test;
-                        }
-
-                        break;
-
                     case TestParametersType.TOU:
                         for (int i = 0; i < profileItem.TOUTestParameters.Count; i++)
                         {
@@ -495,20 +484,6 @@ namespace SCME.UI.PagesUser
                         QrrTqCount++;
                     }
 
-                    var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                    if (rac != null)
-                    {
-                        var r = TestByTypeAndOrder(actualProfileItem, TestParametersType.RAC, rac.Order);
-
-                        if (r == null)
-                            return true;
-
-                        if (r.IsHasChanges(rac))
-                            return true;
-
-                        RACCount++;
-                    }
-
                     var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                     if (tou != null)
                     {
@@ -551,11 +526,6 @@ namespace SCME.UI.PagesUser
                     return Result;
 
                 Result = (QrrTqCount != actualProfileItem.QrrTqTestParameters.Count);
-
-                if (Result)
-                    return Result;
-
-                Result = (RACCount != actualProfileItem.RACTestParameters.Count);
 
                 if (Result)
                     return Result;
@@ -606,9 +576,6 @@ namespace SCME.UI.PagesUser
 
                     foreach (var q in Source.QrrTqTestParameters)
                         Dest.TestParametersAndNormatives.Add(q);
-
-                    foreach (var r in Source.RACTestParameters)
-                        Dest.TestParametersAndNormatives.Add(r);
 
                     foreach (var t in Source.TOUTestParameters)
                         Dest.TestParametersAndNormatives.Add(t);

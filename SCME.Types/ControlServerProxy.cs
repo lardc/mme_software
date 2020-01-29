@@ -61,10 +61,10 @@ namespace SCME.Types
         }
 
         public bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersVTM,
-                          BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, RAC.TestParameters ParametersRAC, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
+                          BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
                           Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping, TOU.TestParameters ParametersTOU)
         {
-            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersRAC, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
+            return Channel.Start(ParametersGate, ParametersVTM, ParametersBVT, ParametersATU, ParametersQrrTq, ParametersIH, ParametersRCC, ParametersCommutation, ParametersClamping, ParametersTOU);
         }
 
         public void Stop()
@@ -137,85 +137,7 @@ namespace SCME.Types
             Channel.CallAction(Device, Address);
         }
 
-        public void GateWriteCalibrationParameters(Gate.CalibrationParameters Parameters)
-        {
-            Channel.GateWriteCalibrationParameters(Parameters);
-        }
-
-        public Gate.CalibrationParameters GateReadCalibrationParameters()
-        {
-            return Channel.GateReadCalibrationParameters();
-        }
-
-        public void SLWriteCalibrationParameters(VTM.CalibrationParameters Parameters)
-        {
-            Channel.SLWriteCalibrationParameters(Parameters);
-        }
-
-        public VTM.CalibrationParameters SLReadCalibrationParameters()
-        {
-            return Channel.SLReadCalibrationParameters();
-        }
-
-        public void BVTWriteCalibrationParameters(BVT.CalibrationParams Parameters)
-        {
-            Channel.BVTWriteCalibrationParameters(Parameters);
-        }
-
-        public BVT.CalibrationParams BVTReadCalibrationParameters()
-        {
-            return Channel.BVTReadCalibrationParameters();
-        }
-
-        public Clamping.CalibrationParams CSReadCalibrationParameters()
-        {
-            return Channel.CSReadCalibrationParameters();
-        }
-
-        public void CSWriteCalibrationParameters(Clamping.CalibrationParams Parameters)
-        {
-            Channel.CSWriteCalibrationParameters(Parameters);
-        }
-
-        public dVdt.CalibrationParams DvDtReadCalibrationParameters()
-        {
-            return Channel.DvDtReadCalibrationParameters();
-        }
-
-        public void DvDtWriteCalibrationParameters(dVdt.CalibrationParams Parameters)
-        {
-            Channel.DvDtWriteCalibrationParameters(Parameters);
-        }
-
-        public ATU.CalibrationParams ATUReadCalibrationParameters()
-        {
-            return Channel.ATUReadCalibrationParameters();
-        }
-
-        public void ATUWriteCalibrationParameters(ATU.CalibrationParams Parameters)
-        {
-            Channel.ATUWriteCalibrationParameters(Parameters);
-        }
-
-        public QRR.CalibrationParams QRRReadCalibrationParameters()
-        {
-            return Channel.QRRReadCalibrationParameters();
-        }
-
-        public void QRRWriteCalibrationParameters(QRR.CalibrationParams Parameters)
-        {
-            Channel.QRRWriteCalibrationParameters(Parameters);
-        }
-
-        public Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
-        {
-            return Channel.GatePulseCalibrationGate(Current);
-        }
-
-        public ushort GatePulseCalibrationMain(ushort Current)
-        {
-            return Channel.GatePulseCalibrationMain(Current);
-        }
+      
 
         public void WriteResults(ResultItem Item, List<string> Errors)
         {
@@ -235,9 +157,9 @@ namespace SCME.Types
 
         public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
-                          QrrTq.TestParameters[] parametersQrrTq, RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
+                          QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {
-            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersRac, parametersSctu, parametersTOU);
+            return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersSctu, parametersTOU);
         }
 
         public bool StartHeating(int temperature)

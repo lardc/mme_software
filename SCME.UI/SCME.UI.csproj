@@ -208,9 +208,6 @@
     <Compile Include="PagesTech\QrrTqPage.xaml.cs">
       <DependentUpon>QrrTqPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PagesTech\RACPage.xaml.cs">
-      <DependentUpon>RACPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="PagesUser\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -220,9 +217,6 @@
     <Compile Include="Cache.cs" />
     <Compile Include="PagesTech\BvtPage.xaml.cs">
       <DependentUpon>BvtPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\CalibrationPage.xaml.cs">
-      <DependentUpon>CalibrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesTech\ConsolePage.xaml.cs">
       <DependentUpon>ConsolePage.xaml</DependentUpon>
@@ -235,9 +229,6 @@
     </Compile>
     <Compile Include="PagesCommon\ResultsPage.xaml.cs">
       <DependentUpon>ResultsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\LogsPage.xaml.cs">
-      <DependentUpon>LogsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PagesTech\SelftestPage.xaml.cs">
       <DependentUpon>SelftestPage.xaml</DependentUpon>
@@ -326,10 +317,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PagesTech\RACPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PagesUser\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -366,10 +353,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PagesTech\CalibrationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="PagesTech\ConsolePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -383,10 +366,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PagesCommon\ResultsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\LogsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

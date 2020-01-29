@@ -239,7 +239,6 @@ namespace SCME.UI.PagesTech
             var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
             var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
             var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
@@ -252,7 +251,7 @@ namespace SCME.UI.PagesTech
                     break;
             }
 
-            var started = Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramRAC, paramIH, paramRCC,
+            var started = Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramIH, paramRCC,
                                           new Types.Commutation.TestParameters
                                           {
                                               BlockIndex = Types.Commutation.HWBlockIndex.Block1,

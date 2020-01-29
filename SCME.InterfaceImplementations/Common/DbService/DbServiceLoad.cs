@@ -199,43 +199,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return newProfileName;
         }
 
-        public List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null)
+        public List<string> GetMmeCodesByProfile(int profileId, DbTransaction dbTransaction = null)
         {
-            _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profile.Id;
-
-            _cacheProfileById.TryGetValue(profile.Id, out var profileCache);
-
-            Debug.Assert(profileCache != null, nameof(profileCache) + " != null");
-            profileCache.MmeCodes = new List<string>();
-
+            _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profileId;
             _mmeCodesByProfile.Transaction = dbTransaction;
             using var reader = _mmeCodesByProfile.ExecuteReader();
+
+            List<string> mmeCodes = new List<string>();
+
             while (reader.Read())
-                profileCache.MmeCodes.Add(reader.GetString(0));
-            return profileCache.MmeCodes.Copy();
+                mmeCodes.Add(reader.GetString(0));
 
-            //_cacheProfileById.TryGetValue(profile.Id, out var profileCache);
-            //if (_enableCache && profileCache != null)
-            //{
-            //    if (profileCache.MmeCodes != null)
-            //        return profileCache.MmeCodes.Copy();
-
-            //    profileCache.MmeCodes = new List<string>();
-
-            //    _mmeCodesByProfile.Transaction = dbTransaction;
-            //    using var reader = _mmeCodesByProfile.ExecuteReader();
-            //    while (reader.Read())
-            //        profileCache.MmeCodes.Add(reader.GetString(0));
-            //    return profileCache.MmeCodes.Copy();
-            //}
-            //else
-            //{
-            //    var mmeCodes = new List<string>();
-            //    using var reader = _mmeCodesByProfile.ExecuteReader();
-            //    while (reader.Read())
-            //        mmeCodes.Add(reader.GetString(0));
-            //    return mmeCodes;
-            //}
+            return mmeCodes;
         }
 
         #region Fill
@@ -271,10 +246,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 case TestParametersType.QrrTq:
                     var qrrTqParams = FillQrrTqConditions(testTypeId);
                     data.TestParametersAndNormatives.Add(qrrTqParams);
-                    break;
-                case TestParametersType.RAC:
-                    var racParams = FillRACConditions(testTypeId);
-                    data.TestParametersAndNormatives.Add(racParams);
                     break;
                 case TestParametersType.TOU:
                     var touParams = FillTOUConditions(testTypeId);
@@ -425,32 +396,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "QrrTq_OsvRate":
                         testParams.OsvRate = (Types.QrrTq.TOsvRate) Enum.Parse(typeof(Types.QrrTq.TOsvRate), result.Value.ToString());
-                        break;
-                }
-            }
-
-            return testParams;
-        }
-
-        private Types.RAC.TestParameters FillRACConditions(long testTypeId)
-        {
-            var results = new Dictionary<string, object>(2);
-            var testParams = new Types.RAC.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
-
-            FillOrder(testTypeId, testParams);
-
-            FillConditionsResults(testTypeId, results);
-
-            foreach (var result in results)
-            {
-                switch (result.Key)
-                {
-                    case "RAC_En":
-                        testParams.IsEnabled = Boolean.Parse(result.Value.ToString());
-                        break;
-
-                    case "RAC_ResVoltage":
-                        testParams.ResVoltage = UInt16.Parse(result.Value.ToString());
                         break;
                 }
             }

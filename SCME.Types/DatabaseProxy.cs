@@ -75,9 +75,9 @@ namespace SCME.Types
             return Channel.GetFreeProfileName();
         }
 
-        public List<string> GetMmeCodesByProfile(MyProfile profile, DbTransaction dbTransaction = null)
+        public List<string> GetMmeCodesByProfile(int profileId, DbTransaction dbTransaction = null)
         {
-            return Channel.GetMmeCodesByProfile(profile, dbTransaction);
+            return Channel.GetMmeCodesByProfile(profileId, dbTransaction);
         }
 
         public int InsertUpdateProfile(MyProfile oldProfile, MyProfile newProfile, string mmeCode)

@@ -29,7 +29,6 @@ namespace SCME.Service
         private readonly IOdVdt m_IOdVdt;
         private readonly IOATU m_IOAtu;
         private readonly IOQrrTq m_IOQrrTq;
-        private readonly IORAC m_IORAC;
         private readonly IOIH m_IOIH;
         private readonly IORCC m_IORCC;
         private readonly IoSctu _ioSctu;
@@ -44,7 +43,6 @@ namespace SCME.Service
         private Types.dVdt.TestParameters m_ParametersdVdt;
         private Types.ATU.TestParameters m_ParametersAtu;
         private Types.QrrTq.TestParameters m_ParametersQrrTq;
-        private Types.RAC.TestParameters m_ParametersRac;
         private Types.IH.TestParameters m_ParametersIH;
         private Types.RCC.TestParameters m_ParametersRCC;
         private Types.TOU.TestParameters m_ParametersTOU;
@@ -55,7 +53,6 @@ namespace SCME.Service
         private Types.dVdt.TestParameters[] m_ParametersdVdtDyn;
         private Types.ATU.TestParameters[] m_ParametersAtuDyn;
         private Types.QrrTq.TestParameters[] m_ParametersQrrTqDyn;
-        private Types.RAC.TestParameters[] m_ParametersRacDyn;
         private SctuTestParameters[] _sctuTestParameters;
         private Types.TOU.TestParameters[] m_ParametersTOUDyn;
 
@@ -85,7 +82,6 @@ namespace SCME.Service
             m_ParametersdVdt = new Types.dVdt.TestParameters { IsEnabled = false };
             m_ParametersAtu = new Types.ATU.TestParameters { IsEnabled = false };
             m_ParametersQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            m_ParametersRac = new Types.RAC.TestParameters { IsEnabled = false };
             m_ParametersIH = new Types.IH.TestParameters { IsEnabled = false };
             m_ParametersRCC = new Types.RCC.TestParameters { IsEnabled = false };
             m_ParametersTOU = new Types.TOU.TestParameters { IsEnabled = false };
@@ -105,7 +101,6 @@ namespace SCME.Service
             m_IOdVdt = new IOdVdt(m_IOAdapter, m_Communication);
             m_IOAtu = new IOATU(m_IOAdapter, m_Communication);
             m_IOQrrTq = new IOQrrTq(m_IOAdapter, m_Communication);
-            m_IORAC = new IORAC(m_IOAdapter, m_Communication);
             m_IOIH = new IOIH(m_IOGate, m_IOStls, m_Communication);
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
@@ -119,7 +114,6 @@ namespace SCME.Service
             m_IOClamping.ActiveCommutation = m_IOCommutation;
             m_IOAtu.ActiveCommutation = m_IOCommutation;
             m_IOQrrTq.ActiveCommutation = m_IOCommutation;
-            m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOIH.ActiveCommutation = m_IOCommutation;
             m_IORCC.ActiveCommutation = m_IOCommutation;
             m_IOTOU.ActiveCommutation = m_IOCommutation;
@@ -192,9 +186,6 @@ namespace SCME.Service
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOQrrTq.Initialize(m_Param.IsQrrTqEnabled, m_Param.TimeoutQrrTq);
-
-                if (state == DeviceConnectionState.ConnectionSuccess)
-                    state = m_IORAC.Initialize(m_Param.IsRACEnabled, m_Param.TimeoutRAC);
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOIH.Initialize(m_Param.IsIHEnabled, m_Param.TimeoutIH);
@@ -358,17 +349,6 @@ namespace SCME.Service
             try
             {
                 m_IOQrrTq.Deinitialize();
-            }
-            catch (Exception ex)
-            {
-                var message = string.Format(Resources.Error_LogicContainer_Exception, ex.Message);
-                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, message);
-                savedEx = ex;
-            }
-
-            try
-            {
-                m_IORAC.Deinitialize();
             }
             catch (Exception ex)
             {
@@ -601,17 +581,6 @@ namespace SCME.Service
                 }
             }
 
-            if (m_ParametersRac.IsEnabled && m_Param.IsRACEnabled)
-            {
-                if (!m_IORAC.IsReadyToStart())
-                {
-                    if (res != "")
-                        res = res + ", ";
-
-                    res = res + "RAC";
-                }
-            }
-
             if (m_ParametersIH.IsEnabled && m_Param.IsIHEnabled)
             {
                 if (!m_IOIH.IsReadyToStart())
@@ -650,14 +619,13 @@ namespace SCME.Service
 
 
 
-            var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
+            var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
             orderedParameters.AddRange(m_ParametersGateDyn);
             orderedParameters.AddRange(m_ParametersSLDyn);
             orderedParameters.AddRange(m_ParametersBvtDyn);
             orderedParameters.AddRange(m_ParametersdVdtDyn);
             orderedParameters.AddRange(m_ParametersAtuDyn);
             orderedParameters.AddRange(m_ParametersQrrTqDyn);
-            orderedParameters.AddRange(m_ParametersRacDyn);
             orderedParameters.AddRange(_sctuTestParameters);
             orderedParameters.AddRange(m_ParametersTOUDyn);
             orderedParameters = orderedParameters.OrderBy(o => o.Order).ToList();
@@ -724,18 +692,6 @@ namespace SCME.Service
                             res = res + ", ";
 
                         res = res + "QrrTq";
-                    }
-                }
-
-                var RACParameters = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                if (!ReferenceEquals(RACParameters, null))
-                {
-                    if (!m_IORAC.IsReadyToStart())
-                    {
-                        if (res != "")
-                            res = res + ", ";
-
-                        res = res + "RAC";
                     }
                 }
 
@@ -872,7 +828,7 @@ namespace SCME.Service
 
         #region Test sequence
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.RAC.TestParameters ParametersRac, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
+        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             m_Stop = false;
 
@@ -894,7 +850,6 @@ namespace SCME.Service
             m_IOClamping.ActiveCommutation = m_IOActiveCommutation;
             m_IOAtu.ActiveCommutation = m_IOActiveCommutation;
             m_IOQrrTq.ActiveCommutation = m_IOActiveCommutation;
-            m_IORAC.ActiveCommutation = m_IOActiveCommutation;
             m_IOIH.ActiveCommutation = m_IOActiveCommutation;
             m_IORCC.ActiveCommutation = m_IOActiveCommutation;
             m_IOTOU.ActiveCommutation = m_IOActiveCommutation;
@@ -904,15 +859,14 @@ namespace SCME.Service
             m_ParametersBvt = ParametersBvt;
             m_ParametersAtu = ParametersAtu;
             m_ParametersQrrTq = ParametersQrrTq;
-            m_ParametersRac = ParametersRac;
             m_ParametersIH = ParametersIH;
             m_ParametersRCC = ParametersRCC;
             m_ParametersTOU = ParametersTOU;
 
             m_State = DeviceState.InProcess;
 
-            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, VTM, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, RAC - {6}, IH - {7}, RCC - {8}, TOU - {9}",
-                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersRac.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
+            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, VTM, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, IH - {7}, RCC - {8}, TOU - {9}",
+                                        m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, message);
 
             m_Communication.PostTestAllEvent(m_State, "Starting tests");
@@ -929,7 +883,7 @@ namespace SCME.Service
             return true;
         }
 
-        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, Types.RAC.TestParameters[] parametersRac, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
             m_Stop = false;
 
@@ -957,7 +911,6 @@ namespace SCME.Service
             m_IOdVdt.ActiveCommutation = m_IOActiveCommutation;
             m_IOAtu.ActiveCommutation = m_IOCommutation;
             m_IOQrrTq.ActiveCommutation = m_IOCommutation;
-            m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOClamping.ActiveCommutation = m_IOActiveCommutation;
             m_IOTOU.ActiveCommutation = m_IOActiveCommutation;
 
@@ -967,7 +920,6 @@ namespace SCME.Service
             m_ParametersdVdtDyn = parametersDvDt;
             m_ParametersAtuDyn = parametersAtu;
             m_ParametersQrrTqDyn = parametersQrrTq;
-            m_ParametersRacDyn = parametersRac;
             _sctuTestParameters = parametersSctu;
             m_ParametersTOUDyn = parametersTOU;
 
@@ -1107,14 +1059,13 @@ namespace SCME.Service
 
                     if (res == DeviceState.Success)
                     {
-                        var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + m_ParametersRacDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
+                        var orderedParameters = new List<BaseTestParametersAndNormatives>(m_ParametersGateDyn.Length + m_ParametersSLDyn.Length + m_ParametersBvtDyn.Length + m_ParametersdVdtDyn.Length + m_ParametersAtuDyn.Length + m_ParametersQrrTqDyn.Length + _sctuTestParameters.Length + m_ParametersTOUDyn.Length);
                         orderedParameters.AddRange(m_ParametersGateDyn);
                         orderedParameters.AddRange(m_ParametersSLDyn);
                         orderedParameters.AddRange(m_ParametersBvtDyn);
                         orderedParameters.AddRange(m_ParametersdVdtDyn);
                         orderedParameters.AddRange(m_ParametersAtuDyn);
                         orderedParameters.AddRange(m_ParametersQrrTqDyn);
-                        orderedParameters.AddRange(m_ParametersRacDyn);
                         orderedParameters.AddRange(_sctuTestParameters);
                         orderedParameters.AddRange(m_ParametersTOUDyn);
 
@@ -1213,22 +1164,6 @@ namespace SCME.Service
                                 catch (Exception ex)
                                 {
                                     ThrowFaultException(ComplexParts.QrrTq, ex.Message, "Start QrrTq test");
-                                }
-                            }
-
-                            var racParameters = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                            if (!ReferenceEquals(racParameters, null))
-                            {
-                                try
-                                {
-                                    if (m_ClampingSystemConnected && m_Param.IsClampEnabled && !m_Stop)
-                                        m_IOClamping.SetCustomForce();
-
-                                    res = m_IORAC.Start(racParameters, parametersCommutation);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ThrowFaultException(ComplexParts.RAC, ex.Message, "Start RAC test");
                                 }
                             }
 
@@ -1447,18 +1382,6 @@ namespace SCME.Service
                                 }
                             }
 
-                            if (m_ParametersRac.IsEnabled && m_Param.IsRACEnabled && !m_Stop)
-                            {
-                                try
-                                {
-                                    res = m_IORAC.Start(m_ParametersRac, ParametersComm);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ThrowFaultException(ComplexParts.RAC, ex.Message, "Start RAC test");
-                                }
-                            }
-
                             if (m_ParametersIH.IsEnabled && m_Param.IsIHEnabled && !m_Stop)
                             {
                                 try
@@ -1542,9 +1465,6 @@ namespace SCME.Service
 
             if (m_ParametersQrrTq.IsEnabled)
                 m_IOQrrTq.Stop();
-
-            if (m_ParametersRac.IsEnabled)
-                m_IORAC.Stop();
 
             if (m_ParametersIH.IsEnabled)
                 m_IOIH.Stop();
@@ -1709,9 +1629,6 @@ namespace SCME.Service
                     case ComplexParts.QrrTq:
                         res = m_IOQrrTq.ReadRegister(Address);
                         break;
-                    case ComplexParts.RAC:
-                        res = m_IORAC.ReadRegister(Address);
-                        break;
                     case ComplexParts.IH:
                         //блок IH физичести не существует
                         break;
@@ -1770,9 +1687,6 @@ namespace SCME.Service
                     case ComplexParts.QrrTq:
                         m_IOQrrTq.WriteRegister(Address, Value);
                         break;
-                    case ComplexParts.RAC:
-                        m_IORAC.WriteRegister(Address, Value);
-                        break;
                     case ComplexParts.TOU:
                         m_IOTOU.WriteRegister(Address, Value);
                         break;
@@ -1825,9 +1739,6 @@ namespace SCME.Service
                         break;
                     case ComplexParts.QrrTq:
                         m_IOQrrTq.CallAction(Address);
-                        break;
-                    case ComplexParts.RAC:
-                        m_IORAC.CallAction(Address);
                         break;
                     case ComplexParts.IH:
                         //блок IH физичести не существует
@@ -1885,9 +1796,6 @@ namespace SCME.Service
                     case ComplexParts.QrrTq:
                         m_IOQrrTq.ClearFault();
                         break;
-                    case ComplexParts.RAC:
-                        m_IORAC.ClearFault();
-                        break;
                     case ComplexParts.IH:
                         m_IOIH.ClearFault();
                         break;
@@ -1912,220 +1820,6 @@ namespace SCME.Service
         }
 
         #endregion
-
-
-        #region Calibration
-
-
-        internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
-        {
-            try
-            {
-                var res = m_IOGate.PulseCalibrationGate(Current);
-
-                return new Types.Gate.CalibrationResultGate { Current = res.Item1, Voltage = res.Item2 };
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-                return new Types.Gate.CalibrationResultGate();
-            }
-        }
-
-
-        internal ushort GatePulseCalibrationMain(ushort Current)
-        {
-            try
-            {
-                return m_IOGate.PulseCalibrationMain(Current);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-                return 0;
-            }
-        }
-
-
-        internal void GateWriteCalibrationParams(Types.Gate.CalibrationParameters Parameters)
-        {
-            try
-            {
-                m_IOGate.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-
-        internal Types.Gate.CalibrationParameters GateReadCalibrationParams()
-        {
-            var parameters = new Types.Gate.CalibrationParameters();
-
-            try
-            {
-                parameters = m_IOGate.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-
-        internal void SLWriteCalibrationParams(Types.VTM.CalibrationParameters Parameters)
-        {
-            try
-            {
-                m_IOStls.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-
-        internal Types.VTM.CalibrationParameters SLReadCalibrationParams()
-        {
-            var parameters = new Types.VTM.CalibrationParameters();
-
-            try
-            {
-                parameters = m_IOStls.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.SL, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-
-        internal void BVTWriteCalibrationParams(Types.BVT.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_IOBvt.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.BVT, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-
-        internal Types.BVT.CalibrationParams BVTReadCalibrationParams()
-        {
-            var parameters = new Types.BVT.CalibrationParams();
-
-            try
-            {
-                parameters = m_IOBvt.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.BVT, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-
-        internal void CSWriteCalibrationParams(Types.Clamping.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_IOClamping.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Clamping, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-
-        internal Types.Clamping.CalibrationParams CSReadCalibrationParams()
-        {
-            var parameters = new Types.Clamping.CalibrationParams();
-
-            try
-            {
-                parameters = m_IOClamping.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.Clamping, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-
-        internal void DvDtWriteCalibrationParams(Types.dVdt.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_IOdVdt.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.DvDt, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-
-        internal Types.dVdt.CalibrationParams DvDtReadCalibrationParams()
-        {
-            var parameters = new Types.dVdt.CalibrationParams();
-
-            try
-            {
-                parameters = m_IOdVdt.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.DvDt, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-        internal void ATUWriteCalibrationParams(Types.ATU.CalibrationParams Parameters)
-        {
-            try
-            {
-                m_IOAtu.WriteCalibrationParams(Parameters);
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.ATU, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-        }
-
-        internal Types.ATU.CalibrationParams ATUReadCalibrationParams()
-        {
-            var parameters = new Types.ATU.CalibrationParams();
-
-            try
-            {
-                parameters = m_IOAtu.ReadCalibrationParams();
-            }
-            catch (Exception ex)
-            {
-                ThrowFaultException(ComplexParts.DvDt, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-            }
-
-            return parameters;
-        }
-
-        #endregion
-
 
         private void ThrowFaultException(ComplexParts Device, string Exception, string Func, bool SwitchToFault = true)
         {

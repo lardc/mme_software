@@ -62,7 +62,7 @@ namespace SCME.UI.PagesTech
                     page = Cache.Selftest;
                     break;
                 case 5:
-                    page = Cache.Calibration;
+                    //page = Cache.Calibration;
                     break;
                 case 6:
                     page = Cache.Console;
@@ -104,8 +104,8 @@ namespace SCME.UI.PagesTech
                     page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 15:
-                    Cache.RAC = new RACPage();
-                    page = Cache.RAC;
+                    //Cache.RAC = new RACPage();
+                    //page = Cache.RAC;
                     break;
                 case 16:
                     Cache.IH = new IHPage();

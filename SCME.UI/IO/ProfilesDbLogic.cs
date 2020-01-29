@@ -61,7 +61,6 @@ namespace SCME.UI.IO
                 foreach (var d in profileItem.DvDTestParameterses) profile.TestParametersAndNormatives.Add(d);
                 foreach (var a in profileItem.ATUTestParameters) profile.TestParametersAndNormatives.Add(a);
                 foreach (var q in profileItem.QrrTqTestParameters) profile.TestParametersAndNormatives.Add(q);
-                foreach (var r in profileItem.RACTestParameters) profile.TestParametersAndNormatives.Add(r);
                 foreach (var t in profileItem.TOUTestParameters) profile.TestParametersAndNormatives.Add(t);
 
                 profiles.Add(profile);
@@ -99,7 +98,6 @@ namespace SCME.UI.IO
                     DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                     ATUTestParameters = new List<Types.ATU.TestParameters>(),
                     QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                    RACTestParameters = new List<Types.RAC.TestParameters>(),
                     TOUTestParameters = new List<Types.TOU.TestParameters>(),
                     CommTestParameters = profile.ParametersComm,
                     IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
@@ -137,10 +135,6 @@ namespace SCME.UI.IO
                     var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                     if (qrrTq != null)
                         profileItem.QrrTqTestParameters.Add(qrrTq);
-
-                    var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                    if (rac != null)
-                        profileItem.RACTestParameters.Add(rac);
 
                     var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                     if (tou != null)

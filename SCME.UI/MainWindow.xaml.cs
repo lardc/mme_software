@@ -210,7 +210,6 @@ namespace SCME.UI
             Cache.Welcome.IsRestartEnable = false;
             Cache.Welcome.IsBackEnable = false;
             Cache.Technician.AreButtonsEnabled(Param);
-            Cache.Calibration.AreButtonsEnabled(Param);
             Cache.Console.AreButtonEnabled(Param);
             Cache.Selftest.AreButtonEnabled(Param);
 

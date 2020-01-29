@@ -818,40 +818,7 @@ namespace SCME.Service.IO
             }
         }
 
-        internal void WriteCalibrationParams(CalibrationParams Parameters)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info,
-                                         "Clamping @WriteCalibrationParams begin");
-
-            WriteRegister(REG_FORCE_FINE_N, Parameters.ForceFineN, true);
-            WriteRegister(REG_FORCE_FINE_D, Parameters.ForceFineD, true);
-            WriteRegisterS(REG_FORCE_OFFSET, Parameters.ForceOffset, true);
-
-            if (!m_IsClampingEmulation)
-                m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
-
-            SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info,
-                                         "Clamping @WriteCalibrationParams end");
-        }
-
-        internal CalibrationParams ReadCalibrationParams()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info,
-                                         "Clamping @ReadCalibrationParams begin");
-
-            var parameters = new CalibrationParams
-            {
-                ForceOffset = ReadRegisterS(REG_FORCE_OFFSET, true),
-
-                ForceFineN = ReadRegister(REG_FORCE_FINE_N, true),
-                ForceFineD = ReadRegister(REG_FORCE_FINE_D, true)
-            };
-
-            SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info,
-                                         "Clamping @ReadCalibrationParams end");
-
-            return parameters;
-        }
+   
 
         private ushort GetDeviceState()
         {

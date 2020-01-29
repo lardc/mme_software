@@ -179,7 +179,6 @@ namespace SCME.InterfaceImplementations
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                        RACTestParameters = new List<Types.RAC.TestParameters>(),
                         TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
@@ -209,7 +208,6 @@ namespace SCME.InterfaceImplementations
                             DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                             ATUTestParameters = new List<Types.ATU.TestParameters>(),
                             QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                            RACTestParameters = new List<Types.RAC.TestParameters>(),
                             TOUTestParameters = new List<Types.TOU.TestParameters>(),
                             CommTestParameters = childProfile.ParametersComm,
                             IsHeightMeasureEnabled = childProfile.IsHeightMeasureEnabled,
@@ -266,10 +264,6 @@ namespace SCME.InterfaceImplementations
                 var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                 if (qrrTq != null)
                     profileItem.QrrTqTestParameters.Add(qrrTq);
-
-                var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                if (rac != null)
-                    profileItem.RACTestParameters.Add(rac);
 
                 var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                 if (tou != null)
@@ -347,7 +341,6 @@ namespace SCME.InterfaceImplementations
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                        RACTestParameters = new List<Types.RAC.TestParameters>(),
                         TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
@@ -387,10 +380,6 @@ namespace SCME.InterfaceImplementations
                         var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                         if (qrrTq != null)
                             profileItem.QrrTqTestParameters.Add(qrrTq);
-
-                        var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                        if (rac != null)
-                            profileItem.RACTestParameters.Add(rac);
 
                         var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                         if (tou != null)
@@ -443,11 +432,6 @@ namespace SCME.InterfaceImplementations
                 case (int)TestParametersType.QrrTq:
                     var qrrTqParams = FillQrrTqConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(qrrTqParams);
-                    break;
-
-                case (int)TestParametersType.RAC:
-                    var racParams = FillRACConditions(testTypeId);
-                    profile.TestParametersAndNormatives.Add(racParams);
                     break;
 
                 case (int)TestParametersType.TOU:
@@ -583,32 +567,6 @@ namespace SCME.InterfaceImplementations
 
                     case "QrrTq_OsvRate":
                         testParams.OsvRate = (Types.QrrTq.TOsvRate)Enum.Parse(typeof(Types.QrrTq.TOsvRate), result.Value.ToString());
-                        break;
-                }
-            }
-
-            return testParams;
-        }
-
-        private Types.RAC.TestParameters FillRACConditions(long testTypeId)
-        {
-            var results = new Dictionary<string, object>(2);
-            var testParams = new Types.RAC.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
-
-            FillOrder(testTypeId, testParams);
-
-            FillConditionsResults(testTypeId, results);
-
-            foreach (var result in results)
-            {
-                switch (result.Key)
-                {
-                    case "RAC_En":
-                        testParams.IsEnabled = Boolean.Parse(result.Value.ToString());
-                        break;
-
-                    case "RAC_ResVoltage":
-                        testParams.ResVoltage = UInt16.Parse(result.Value.ToString());
                         break;
                 }
             }
@@ -1040,7 +998,6 @@ namespace SCME.InterfaceImplementations
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
                         ATUTestParameters = new List<Types.ATU.TestParameters>(),
                         QrrTqTestParameters = new List<Types.QrrTq.TestParameters>(),
-                        RACTestParameters = new List<Types.RAC.TestParameters>(),
                         TOUTestParameters = new List<Types.TOU.TestParameters>(),
                         CommTestParameters = profile.ParametersComm,
                         IsHeightMeasureEnabled = profile.IsHeightMeasureEnabled,
@@ -1074,10 +1031,6 @@ namespace SCME.InterfaceImplementations
                         var qrrTq = baseTestParametersAndNormativese as Types.QrrTq.TestParameters;
                         if (qrrTq != null)
                             Result.QrrTqTestParameters.Add(qrrTq);
-
-                        var rac = baseTestParametersAndNormativese as Types.RAC.TestParameters;
-                        if (rac != null)
-                            Result.RACTestParameters.Add(rac);
 
                         var tou = baseTestParametersAndNormativese as Types.TOU.TestParameters;
                         if (tou != null)

@@ -40,7 +40,7 @@ namespace SCME.UI.PagesTech
             //закрашиваем цветом поле вывода Warning, чтобы обратить на него внимание оператора
             SetColorByWarning(Warning);
 
-            Types.RAC.HWWarningReason WarningReason = (Types.RAC.HWWarningReason)Warning;
+            Types.TOU.HWWarningReason WarningReason = (Types.TOU.HWWarningReason)Warning;
             lblWarning.Content = "Warning " + WarningReason.ToString();
 
             lblWarning.Visibility = Visibility.Visible;
@@ -48,7 +48,7 @@ namespace SCME.UI.PagesTech
 
         internal void SetFault(ushort Fault)
         {
-            Types.RAC.HWFaultReason FaultReason = (Types.RAC.HWFaultReason)Fault;
+            Types.TOU.HWFaultReason FaultReason = (Types.TOU.HWFaultReason)Fault;
 
             lblFault.Content = "Fault " + FaultReason.ToString();
             lblFault.Visibility = Visibility.Visible;
@@ -61,7 +61,7 @@ namespace SCME.UI.PagesTech
             switch (Warning)
             {
                 //будем привлекать внимание оператора с помощью выделения сообщения цветом
-                case (ushort)Types.RAC.HWWarningReason.None:
+                case (ushort)Types.TOU.HWWarningReason.None:
                     lblWarning.Background = Brushes.Transparent;
                     break;
 
@@ -103,7 +103,6 @@ namespace SCME.UI.PagesTech
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
             var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramRAC = new Types.RAC.TestParameters { IsEnabled = false };
             var paramIH = new Types.IH.TestParameters { IsEnabled = false };
             var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
 
@@ -119,7 +118,7 @@ namespace SCME.UI.PagesTech
 
 
 
-            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramRAC, paramIH, paramRCC, commutation, VM.Clamping, VM.TOU))
+            if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, paramATU, paramQrrTq, paramIH, paramRCC, commutation, VM.Clamping, VM.TOU))
                 return;
 
             ClearStatus();
