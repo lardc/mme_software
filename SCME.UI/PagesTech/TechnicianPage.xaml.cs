@@ -29,7 +29,6 @@ namespace SCME.UI.PagesTech
             btndVdt.IsEnabled = Param.IsdVdtEnabled;
             btnATU.IsEnabled = Param.IsATUEnabled;
             btnQrrTq.IsEnabled = Param.IsQrrTqEnabled;
-            btnRAC.IsEnabled = Param.IsRACEnabled;
             btnIH.IsEnabled = Param.IsIHEnabled;
             btnTOU.IsEnabled = Param.IsTOUEnabled;
 
@@ -74,7 +73,7 @@ namespace SCME.UI.PagesTech
 //                    page = Cache.ProfileEdit;
                     break;
                 case 8:
-                    page = Cache.Logs;
+                    //page = Cache.Logs;
                     break;
                 case 9:
                     page = Cache.Results;
