@@ -72,6 +72,9 @@ namespace SCME.UI.PagesTech
 //                    Cache.ProfileEdit.InitFilter();
 //                    page = Cache.ProfileEdit;
                     break;
+                case 8:
+                    //page = Cache.Logs;
+                    break;
                 case 9:
                     page = Cache.Results;
                     break;
