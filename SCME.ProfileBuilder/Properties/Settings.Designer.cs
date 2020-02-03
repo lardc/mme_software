@@ -109,7 +109,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SQLite")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
         public global::SCME.Types.TypeDb TypeDb {
             get {
                 return ((global::SCME.Types.TypeDb)(this["TypeDb"]));
@@ -118,7 +118,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDBTest")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCME_ResultsDB")]
         public string MSSQLDatabase {
             get {
                 return ((string)(this["MSSQLDatabase"]));

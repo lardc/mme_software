@@ -36,6 +36,7 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBlock.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/TextBox.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ComboBox.xaml" />
+        <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/LabelWithIndex.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListView.xaml" />
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/PlaceHolderValidatingTextBox.xaml" />

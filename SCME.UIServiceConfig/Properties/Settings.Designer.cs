@@ -901,7 +901,7 @@ namespace SCME.UIServiceConfig.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MME007")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME010")]
         public string MMECode {
             get {
                 return ((string)(this["MMECode"]));

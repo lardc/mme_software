@@ -261,8 +261,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 case TestParametersType.Commutation:
                     FillComutationConditions(data, testTypeId);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(testParametersType), testParametersType, null);
             }
         }
 
