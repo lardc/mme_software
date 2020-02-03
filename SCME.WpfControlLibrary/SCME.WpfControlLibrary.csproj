@@ -61,6 +61,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,6 +82,7 @@
     </Compile>
     <Compile Include="CustomControls\DragGrid.cs" />
     <Compile Include="CustomControls\GridTransform4T2.cs" />
+    <Compile Include="CustomControls\LabelWithIndex.cs" />
     <Compile Include="CustomControls\ListViewLeftMouseButtonScroll.cs" />
     <Compile Include="CustomControls\NumericUpDown.cs" />
     <Compile Include="CustomControls\PanelButton.xaml.cs">
@@ -236,6 +238,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Label.xaml" />
+    <Page Include="Styles\LabelWithIndex.xaml" />
     <Page Include="Styles\ListViewItemTestParameter.xaml" />
     <Page Include="Styles\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>

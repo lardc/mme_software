@@ -99,8 +99,8 @@ namespace SCME.UI.PagesUser
             m_XGreen = (SolidColorBrush)FindResource("xGreen1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
 
-            _bvtReverseColorBrush = (SolidColorBrush)FindResource("xGreen3"); 
-            _bvtDirectSolidColorBrush = (SolidColorBrush)FindResource("xRed1"); 
+            _bvtReverseColorBrush = (SolidColorBrush)FindResource("xGreen3");
+            _bvtDirectSolidColorBrush = (SolidColorBrush)FindResource("xRed1");
 
             m_TbBrush = tbPsdJob.BorderBrush;
 
@@ -707,7 +707,7 @@ namespace SCME.UI.PagesUser
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
                         QrrTqTestParameters = Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray(),
                         TOUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.TOU.TestParameters>().ToArray(),
-                        DvdTestParameterses =  Profile.TestParametersAndNormatives.OfType<Types.dVdt.TestParameters>().ToArray(),
+                        DvdTestParameterses = Profile.TestParametersAndNormatives.OfType<Types.dVdt.TestParameters>().ToArray(),
                         Position = m_CurrentPos,
                         IsHeightMeasureEnabled = paramsClamp.IsHeightMeasureEnabled,
                         IsHeightOk = HeightMeasureResult
@@ -755,7 +755,7 @@ namespace SCME.UI.PagesUser
                 tbPseNumber.TextChanged -= tbPseNumber_TextChanged;
                 tbPseNumber.Text = "";
                 tbPseNumber.TextChanged += tbPseNumber_TextChanged;
-                
+
                 tbPsdSerialNumber.Text = "";
                 tbPsdSerialNumber.Focus();
 
@@ -2169,6 +2169,26 @@ namespace SCME.UI.PagesUser
             return foundChild;
         }
 
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
         private void ClearStatus(bool Position1, bool Position2)
         {
             if (Position1)
@@ -2179,6 +2199,9 @@ namespace SCME.UI.PagesUser
                     if (element != null)
                     {
                         ListViewResults1.UpdateLayout();
+
+                        foreach (var j in FindVisualChildren<LabelWithIndex>(element))
+                            j.Number = ListViewResults1.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
 
                         if (ListViewResults1.Items[i] is Types.Gate.TestParameters)
                         {
@@ -2231,6 +2254,10 @@ namespace SCME.UI.PagesUser
                     if (element != null)
                     {
                         ListViewResults2.UpdateLayout();
+
+                        foreach (var j in FindVisualChildren<LabelWithIndex>(element))
+                            j.Number = ListViewResults2.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
+
                         if (ListViewResults2.Items[i] is Types.Gate.TestParameters)
                         {
                             ClearResultsGate(element);
@@ -2603,7 +2630,7 @@ namespace SCME.UI.PagesUser
         //     int? x = 39;
         //     return x;
         // }
-        
+
 
         private void CalcDeviceClass(ValidatingTextBox sourceOfdeviceCode, bool factClass)
         {
@@ -2615,31 +2642,31 @@ namespace SCME.UI.PagesUser
             {
                 btnStart.IsEnabled = true;
                 lblDeviceClass.Foreground = Brushes.Black;
-                
-                if(!int.TryParse(Profile.Name.Split(" ".ToArray(), StringSplitOptions.RemoveEmptyEntries)[3], out var deviceClassByProfileName))
+
+                if (!int.TryParse(Profile.Name.Split(" ".ToArray(), StringSplitOptions.RemoveEmptyEntries)[3], out var deviceClassByProfileName))
                     return;
-                
+
                 if (sourceOfdeviceCode == null)
                     return;
-                
+
                 var deviceCode = sourceOfdeviceCode.Text;
                 var jobFirstSymbol = deviceCode.IndexOf("/", 0, StringComparison.Ordinal);
-                
+
                 if (jobFirstSymbol == -1)
                     return;
-                
+
                 jobFirstSymbol++;
                 var job = deviceCode.Substring(jobFirstSymbol);
-                
+
                 if (job.Length != 10)
                     return;
-                
+
                 var deviceClass = factClass ? Cache.Net.ReadDeviceClass(deviceCode, Profile.Name) : Cache.Net.ReadDeviceRTClass(deviceCode, Profile.Name);
                 var profileFirstWord = Profile.Name.Split().First();
                 var isRt = profileFirstWord.Substring(profileFirstWord.Length - 2).ToUpper() == "RT";
-                
+
                 string secondPart;
-                
+
                 switch (deviceClass)
                 {
                     case -1:
@@ -2649,24 +2676,24 @@ namespace SCME.UI.PagesUser
                         secondPart = Properties.Resources.NoResults;
                         break;
                     default:
-                    {
-                        
-                        if (deviceClassByProfileName > deviceClass && !factClass && !isRt)
                         {
-                            btnStart.IsEnabled = false;
-                            lblDeviceClass.Foreground = Brushes.Red;
-                        }
 
-                        secondPart = deviceClass.ToString();
-                        break;
-                    }
+                            if (deviceClassByProfileName > deviceClass && !factClass && !isRt)
+                            {
+                                btnStart.IsEnabled = false;
+                                lblDeviceClass.Foreground = Brushes.Red;
+                            }
+
+                            secondPart = deviceClass.ToString();
+                            break;
+                        }
                 }
 
                 lblDeviceClass.Content = $"{firstPart}: {secondPart}";
             }
             catch (Exception ex)
             {
-                lblDeviceClass.Content = lblDeviceClass.Content = $"{firstPart}: {Properties.Resources.ErrorRealisation}";;
+                lblDeviceClass.Content = lblDeviceClass.Content = $"{firstPart}: {Properties.Resources.ErrorRealisation}"; ;
             }
         }
 
