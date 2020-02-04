@@ -865,7 +865,7 @@ namespace SCME.Service
 
             m_State = DeviceState.InProcess;
 
-            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, VTM, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, IH - {7}, RCC - {8}, TOU - {9}",
+            var message = string.Format("Start main test, state {0}; test enabled: Gate - {1}, VTM, - {2}, BVT - {3}, ATU - {4}, QrrTq - {5}, IH - {6}, RCC - {7}, TOU - {8}",
                                         m_State, m_ParametersGate.IsEnabled, m_ParametersSL.IsEnabled, m_ParametersBvt.IsEnabled, m_ParametersAtu.IsEnabled, m_ParametersQrrTq.IsEnabled, m_ParametersIH.IsEnabled, m_ParametersRCC.IsEnabled, m_ParametersTOU.IsEnabled);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Info, message);
 
