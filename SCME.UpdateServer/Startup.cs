@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,8 +23,10 @@ namespace SCME.UpdateServer
             services.AddOptions();
 
             // Add our Config object so it can be injected
-            services.Configure<MyConfig>(Configuration.GetSection("MyConfig"));
+            services.Configure<UpdateDataConfig>(Configuration.GetSection("UpdateDataConfig"));
         }
+        
+   
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
