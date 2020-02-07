@@ -315,6 +315,7 @@ namespace SCME.Service.IO
                                 WaitForEndOfGateTest();
 
                                 //тесты в обоих блоках завершились успешно, поэтому читаем регистры результатов
+                                m_State = DeviceState.Success;
                                 m_Result.Ih = m_IOGate.ReadRegister(201);
                             }
                         }
