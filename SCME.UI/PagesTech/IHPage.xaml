@@ -48,6 +48,8 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="55" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -61,18 +63,29 @@
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.IHItm}" HorizontalAlignment="Left"/>
                 <customControls:ValidatingTextBox x:Name="vtbItm" Grid.Column="2" Grid.Row="0" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="500" Maximum="2000" Text="{Binding Parameters.Itm, ElementName=ihPage, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.IHIh}" HorizontalAlignment="Left"/>
-                <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbIh" FontSize="{StaticResource FontSize26}"  />
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1"  
+                          TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
+                          Text="{Binding ClampParameters.Height, ElementName=ihPage}" />
 
-                <Label x:Name="lblTitleTop" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Content="{x:Static res:Resources.TopTempName}" />
-                <Label x:Name="TopTempLabel" Grid.Column="1" Grid.Row="3" Content="0" Background="LightGreen"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2"  
+                          TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
+                          IsNumeric="True" IsFloat="True"
+                          Text="{Binding ElementName=ihPage, Path=ClampParameters.CustomForce}" />
 
-                <Label x:Name="lblTitleBot" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Content="{x:Static res:Resources.BotTempName}" />
-                <Label x:Name="BotTempLabel" Grid.Column="1" Grid.Row="4" Content="0" Background="LightGreen" />
+                <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.IHIh}" HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="4" Content="0" x:Name="lbIh" FontSize="{StaticResource FontSize26}"  />
 
-                <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" x:Name="lbFaultReason" Content="FaultReason" FontSize="{StaticResource FontSize26}" Background="Tomato"/>
-                <Label Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" x:Name="lbWarning" Content="Warning" FontSize="{StaticResource FontSize26}" Background="Gold"/>
-                <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" x:Name="lbProblem" Content="Problem" FontSize="{StaticResource FontSize26}" Background="LightPink"/>
+                <Label x:Name="lblTitleTop" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Content="{x:Static res:Resources.TopTempName}" />
+                <Label x:Name="TopTempLabel" Grid.Column="1" Grid.Row="5" Content="0" Background="LightGreen"/>
+
+                <Label x:Name="lblTitleBot" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Content="{x:Static res:Resources.BotTempName}" />
+                <Label x:Name="BotTempLabel" Grid.Column="1" Grid.Row="6" Content="0" Background="LightGreen" />
+
+                <Label Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" x:Name="lbFaultReason" Content="FaultReason" FontSize="{StaticResource FontSize26}" Background="Tomato"/>
+                <Label Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" x:Name="lbWarning" Content="Warning" FontSize="{StaticResource FontSize26}" Background="Gold"/>
+                <Label Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" x:Name="lbProblem" Content="Problem" FontSize="{StaticResource FontSize26}" Background="LightPink"/>
             </Grid>
         </Border>
 

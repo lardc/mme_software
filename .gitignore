@@ -36,7 +36,6 @@ binProfileBuilder/
 binProfileBuilder.zip
 mme_software.zip
 Debug.rar
-launchSettings.*
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -364,3 +363,4 @@ MigrationBackup/
 /Debug.zip
 /SCCI_IO.zip
 /DB/SCME_ResultsDB_Local - Copy.sqlite
+launchSettings.json
