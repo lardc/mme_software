@@ -35,7 +35,7 @@ namespace SCME.UI.PagesTech
         public IHPage()
         {
             Parameters = new Types.IH.TestParameters { IsEnabled = true };
-            ClampParameters = new Types.Clamping.TestParameters { StandardForce = Types.Clamping.ClampingForceInternal.Custom, CustomForce = 5 };
+            ClampParameters = new Types.Clamping.TestParameters { StandardForce = Types.Clamping.ClampingForceInternal.Custom, CustomForce = 5, Height = 80};
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
             Temperature = RoomTemp;
 
