@@ -26,6 +26,7 @@ using SCME.UI.ViewModels;
 using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.CustomControls;
 using DialogWindow = SCME.UI.CustomControl.DialogWindow;
+using System.Reflection;
 
 namespace SCME.UI
 {
@@ -49,6 +50,7 @@ namespace SCME.UI
         public MainWindowVM VM { get; set; } = new MainWindowVM();
         public MainWindow()
         {
+            string s = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
             Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 

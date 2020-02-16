@@ -373,10 +373,10 @@
     <value>Сообщение</value>
   </data>
   <data name="MinVdrm_V" xml:space="preserve">
-    <value>Мин. UDRM, В</value>
+    <value>Мин. Ub0, В</value>
   </data>
   <data name="MinVrrm_V" xml:space="preserve">
-    <value>Мин. URRM, В</value>
+    <value>Мин. Ub0, В</value>
   </data>
   <data name="Mode" xml:space="preserve">
     <value>Режим</value>
@@ -556,7 +556,7 @@
     <value>Значение</value>
   </data>
   <data name="VdrmV" xml:space="preserve">
-    <value>UDRM, В</value>
+    <value>Ub0, В</value>
   </data>
   <data name="Vgt" xml:space="preserve">
     <value>UGT</value>
@@ -577,7 +577,7 @@
     <value>Напр. обрат., В</value>
   </data>
   <data name="VrrmV" xml:space="preserve">
-    <value>URRM, В</value>
+    <value>Ub0, В</value>
   </data>
   <data name="Vtm" xml:space="preserve">
     <value>Стат. потери</value>
