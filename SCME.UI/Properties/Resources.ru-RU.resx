@@ -244,10 +244,10 @@
     <value>Макс. UTM, В</value>
   </data>
   <data name="MinVdrm_V" xml:space="preserve">
-    <value>Мин. UDRM, В</value>
+    <value>Мин. Ub0, В</value>
   </data>
   <data name="MinVrrm_V" xml:space="preserve">
-    <value>Мин. URRM, В</value>
+    <value>Мин. Ubr, В</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Далее</value>
@@ -325,7 +325,7 @@
     <value>Значение</value>
   </data>
   <data name="VdrmV" xml:space="preserve">
-    <value>UDRM, В</value>
+    <value>Ub0, В</value>
   </data>
   <data name="Vgt" xml:space="preserve">
     <value>UGT</value>
@@ -334,7 +334,7 @@
     <value>UGT, В</value>
   </data>
   <data name="VrrmV" xml:space="preserve">
-    <value>URRM, В</value>
+    <value>Ubr, В</value>
   </data>
   <data name="Vms" xml:space="preserve">
     <value>В / мс</value>

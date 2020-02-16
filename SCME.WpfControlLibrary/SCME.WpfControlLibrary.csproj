@@ -115,6 +115,11 @@
     <Compile Include="Pages\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.ru-RU.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.ru-RU.resx</DependentUpon>
+    </Compile>
     <Compile Include="ResourceBinding.cs" />
     <Compile Include="RowDefinitionWithVisibility.cs" />
     <Compile Include="ViewModels\EditProfileVm.cs" />

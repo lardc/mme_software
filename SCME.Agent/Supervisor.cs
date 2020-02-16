@@ -10,13 +10,13 @@ namespace SCME.Agent
 {
     internal class Supervisor
     {
-        private readonly NotifyIcon _trayIcon;
-        private readonly Process _pService, _pUserInterface, _pProxy;
+        private readonly NotifyIcon m_TrayIcon;
+        private readonly Process m_PService, m_PUserInterface, m_PProxy;
 
         internal Supervisor()
         {
             var ico = Resources.TrayIconPE;
-            _trayIcon = new NotifyIcon
+            m_TrayIcon = new NotifyIcon
                 {
                     Text = @"SCME.Agent",
                     Icon = new Icon(ico, ico.Width, ico.Height),
@@ -24,7 +24,7 @@ namespace SCME.Agent
                     Visible = true
                 };
 
-            _pProxy = new Process
+            m_PProxy = new Process
                 {
                     StartInfo =
                         {
@@ -36,9 +36,9 @@ namespace SCME.Agent
                         },
                     EnableRaisingEvents = true
                 };
-            _pProxy.Exited += PExited;
+            m_PProxy.Exited += PExited;
 
-            _pService = new Process
+            m_PService = new Process
                 {
                     StartInfo =
                         {
@@ -50,11 +50,11 @@ namespace SCME.Agent
                         },
                     EnableRaisingEvents = true
                 };
-            _pService.Exited += PExited;
+            m_PService.Exited += PExited;
 
             if (Settings.Default.IsUserInterfaceEnabled)
             {
-                _pUserInterface = new Process
+                m_PUserInterface = new Process
                 {
                     StartInfo =
                     {
@@ -67,7 +67,7 @@ namespace SCME.Agent
                     EnableRaisingEvents = true
                 };
 
-                _pUserInterface.Exited += PExited;
+                m_PUserInterface.Exited += PExited;
             }
 
             Application.ApplicationExit += Application_ApplicationExit;
@@ -77,46 +77,46 @@ namespace SCME.Agent
         {
             if (Settings.Default.IsProxyEnabled)
             {
-                StartProcess(_pProxy);
+                StartProcess(m_PProxy);
                 Thread.Sleep(Settings.Default.ProxyInitDelayMs);
             }
             
-            StartProcess(_pService);
+            StartProcess(m_PService);
             
             if (Settings.Default.IsUserInterfaceEnabled)
-                StartProcess(_pUserInterface);
+                StartProcess(m_PUserInterface);
         }
 
-        private static void PExited(object sender, EventArgs e)
+        private static void PExited(object Sender, EventArgs E)
         {
-            var p = sender as Process;
+            var p = Sender as Process;
             
             StartProcess(p);
         }
 
-        private void OnExit(object sender, EventArgs e)
+        private void OnExit(object Sender, EventArgs E)
         {
-            _trayIcon.Visible = false;
+            m_TrayIcon.Visible = false;
             Application.Exit();
         }
 
-        private void Application_ApplicationExit(object sender, EventArgs e)
+        private void Application_ApplicationExit(object Sender, EventArgs E)
         {
-            _trayIcon.Visible = false;
+            m_TrayIcon.Visible = false;
         }
 
-        private static void StartProcess(Process p)
+        private static void StartProcess(Process P)
         {
             try
             {
-                var processesByName = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(p.StartInfo.FileName));
+                var pname = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(P.StartInfo.FileName));
 
-                if (processesByName.Length == 0)
-                    p.Start();
+                if (pname.Length == 0)
+                    P.Start();
             }
             catch (Exception ex)
             {
-                var str = string.Format(Resources.Log_Message_Process_error, p.StartInfo.FileName, ex.Message);
+                var str = string.Format(Resources.Log_Message_Process_error, P.StartInfo.FileName, ex.Message);
 
                 MessageBox.Show(str, Resources.Error_Caption_Supervisor_error, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
