@@ -1,5 +1,5 @@
 ﻿using PropertyChanged;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

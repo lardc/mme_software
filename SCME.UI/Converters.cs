@@ -10,7 +10,7 @@ using SCME.Types.dVdt;
 using SCME.Types.Profiles;
 using SCME.Types.VTM;
 using SCME.Types.QrrTq;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using TestParameters = SCME.Types.VTM.TestParameters;
 
 namespace SCME.UI

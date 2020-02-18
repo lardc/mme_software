@@ -41,6 +41,8 @@ namespace SCME.Service
 
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+                UIServiceConfig.Settings.LoadSettings();
+
                 var ico = Resources.ServiceIcon;
                 ms_TrayIcon = new NotifyIcon
                 {

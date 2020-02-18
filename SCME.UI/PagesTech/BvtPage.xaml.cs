@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using SCME.Types;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 //
@@ -125,7 +125,7 @@ namespace SCME.UI.PagesTech
             labelFault.Visibility = Visibility.Collapsed;
 
             SetLabel(labelDirect, State,
-                $"{Result.VDRM}{Properties.Resources.V} : {Result.IDRM}{Properties.Resources.mA}");
+                $"{Result.VDRM}{UIServiceConfig.Properties.Resources.V} : {Result.IDRM}{UIServiceConfig.Properties.Resources.mA}");
 
             if (State == DeviceState.Success)
                 PlotYX("Direct", m_XRed.Color, Result.VoltageData, Result.CurrentData);
@@ -137,7 +137,7 @@ namespace SCME.UI.PagesTech
             labelFault.Visibility = Visibility.Collapsed;
 
             SetLabel(labelReverse, State,
-                $"{Result.VRRM}{Properties.Resources.V} : {Result.IRRM}{Properties.Resources.mA}");
+                $"{Result.VRRM}{UIServiceConfig.Properties.Resources.V} : {Result.IRRM}{UIServiceConfig.Properties.Resources.mA}");
             if (State == DeviceState.Success)
                 PlotYX("Reverse", m_XGreen.Color, Result.VoltageData, Result.CurrentData);
         }

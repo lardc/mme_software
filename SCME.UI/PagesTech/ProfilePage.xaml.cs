@@ -16,7 +16,7 @@ using SCME.UI.Annotations;
 using SCME.UI.CustomControl;
 using SCME.UI.IO;
 using SCME.UI.PagesUser;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using GateTestParameters = SCME.Types.Gate.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
 using VtmTestParameters = SCME.Types.VTM.TestParameters;
@@ -582,7 +582,7 @@ namespace SCME.UI.PagesTech
             if (Cache.WorkMode == UserWorkMode.SpecialMeasure)
             {
                 //форма открыта в режиме специальных измерений - меняем Content кнопки на "Next"
-                btUniversal.Content = Properties.Resources.Next;
+                btUniversal.Content = UIServiceConfig.Properties.Resources.Next;
 
                 //уставливаем обработчик нажатия для режима специальных измерений
                 btUniversal.Click += ButtonNext_OnClick;
@@ -590,7 +590,7 @@ namespace SCME.UI.PagesTech
             else
             {
                 //в любом режиме работы кроме режима специальных измерений кнопка имеет Content="OK"
-                btUniversal.Content = Properties.Resources.Ok;
+                btUniversal.Content = UIServiceConfig.Properties.Resources.Ok;
 
                 //уставливаем обработчик нажатия для кнопки Ok
                 btUniversal.Click += ButtonOk_OnClick;
@@ -604,7 +604,7 @@ namespace SCME.UI.PagesTech
 
         private void BuildTittle()
         {
-            Title = Properties.Resources.Profiles;
+            Title = UIServiceConfig.Properties.Resources.Profiles;
 
             if (profilesList != null)
                 Title = Title + "\n" + string.Format("всего {0} шт.", profilesList.Items.Count);

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SCME.UI.Properties {
+namespace SCME.UIServiceConfig.Properties {
     using System;
     
     

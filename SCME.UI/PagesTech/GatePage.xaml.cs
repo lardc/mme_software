@@ -7,7 +7,7 @@ using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using SCME.Types;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 
@@ -72,7 +72,7 @@ namespace SCME.UI.PagesTech
 
         internal void SetResultKelvin(DeviceState State, bool IsKelvinOk)
         {
-            SetLabel(lblKelvin, State, IsKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
+            SetLabel(lblKelvin, State, IsKelvinOk ? UIServiceConfig.Properties.Resources.Ok : UIServiceConfig.Properties.Resources.Fault);
         }
 
         internal void SetResultResistance(DeviceState State, float Resistance)

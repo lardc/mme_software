@@ -13,6 +13,7 @@ using SCME.Types.Database;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
+using SCME.UIServiceConfig.Properties;
 
 // ReSharper disable InvertIf
 

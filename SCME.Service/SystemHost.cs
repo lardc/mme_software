@@ -13,6 +13,7 @@ using SCME.Logger;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Database;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {
@@ -80,7 +81,7 @@ namespace SCME.Service
                 FailIfMissing = true
             }.ToString())));
             
-            if (Properties.Settings.Default.IsLocal)
+            if (UIServiceConfig.Properties.Settings.Default.IsLocal)
                 _dbService.Migrate();
             
             _SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());

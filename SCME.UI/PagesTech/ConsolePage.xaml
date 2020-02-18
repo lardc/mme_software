@@ -4,9 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:my="clr-namespace:SCME.UI"
-      xmlns:res="clr-namespace:SCME.UI.Properties"
+      xmlns:res="clr-namespace:SCME.UIServiceConfig.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
       xmlns:customControls="WpfControlLibrary"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="consolePage" Title="{x:Static res:Resources.Console}"
       >
@@ -123,43 +124,43 @@
                     <Button Background="{StaticResource xBlue3}"
                             Content="{x:Static res:Resources.Commutation}" CommandParameter="2"
                             Style="{StaticResource SpcButton}"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xOrange2}"
                             Content="{x:Static res:Resources.Gate}" CommandParameter="3"
                             Style="{StaticResource SpcButton}" Name="btnGate"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xRed1}"
                             Content="{x:Static res:Resources.Vtm}" CommandParameter="4"
                             Style="{StaticResource SpcButton}" Name="btnVtm"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xBlue2}"
                             Content="{x:Static res:Resources.Bvt}" CommandParameter="5"
                             Style="{StaticResource SpcButton}" Name="btnBvt"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xOrange2}"
                             Content="{x:Static res:Resources.Commutation}" CommandParameter="6"
                             Style="{StaticResource SpcButton}" Name="btnCommEx"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=CommExIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommExIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xPurple1}"
                             Content="{x:Static res:Resources.Clamp}" CommandParameter="7"
                             Style="{StaticResource SpcButton}" Name="btnClamp"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xBlue2}"
                             Content="{x:Static res:Resources.dVdt}" CommandParameter="8"
                             Style="{StaticResource SpcButton}" Name="btndVdt"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xGreen4}"
                             Content="{x:Static res:Resources.ATU}" CommandParameter="9"
                             Style="{StaticResource SpcButton}" Name="btnAtu"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xGreen1}"
                             Content="{x:Static res:Resources.QrrTq}" CommandParameter="10"
                             Style="{StaticResource SpcButton}" Name="btnQrrTq"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}" />
                     <Button Background="{StaticResource xGreen3}"
                             Content="{x:Static res:Resources.RAC}" CommandParameter="11"
                             Style="{StaticResource SpcButton}" Name="btnRAC"
-                            Visibility="{Binding Source={x:Static res:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}" />
+                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}" />
                 </UniformGrid>
             </TabItem>
 

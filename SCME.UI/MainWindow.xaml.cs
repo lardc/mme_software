@@ -21,7 +21,7 @@ using SCME.Types.Profiles;
 using SCME.UI.IO;
 using SCME.UI.PagesTech;
 using SCME.UI.PagesUser;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using SCME.UI.ViewModels;
 using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.CustomControls;
@@ -126,7 +126,7 @@ namespace SCME.UI
             }
             catch (Exception ex)
             {
-                var dw = new DialogWindow(Properties.Resources.ApplicationStartError, ex.Message);
+                var dw = new DialogWindow(UIServiceConfig.Properties.Resources.ApplicationStartError, ex.Message);
                 dw.ButtonConfig(DialogWindow.EbConfig.OK);
                 dw.ShowDialog();
 

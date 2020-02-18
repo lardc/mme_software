@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.UI.PagesTech
 {

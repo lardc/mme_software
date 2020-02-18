@@ -8,6 +8,7 @@ using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {

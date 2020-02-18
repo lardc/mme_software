@@ -12,6 +12,7 @@ using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {
@@ -935,7 +936,7 @@ namespace SCME.Service
 
             //наладчик в принципе не может запускать данную реализацию, но забыть включить систему безопасности он может, поэтому спасём оператора
             SetSafetyState(m_IOCommutation, true);
-            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            if (m_IOCommutation.IsSafetyAlarm() || SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
             {
                 SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
                 m_State = DeviceState.None;
@@ -1331,7 +1332,7 @@ namespace SCME.Service
             else m_IOActiveCommutation = m_IOCommutationEx;
 
             SetSafetyState(m_IOCommutation, true);
-            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            if (m_IOCommutation.IsSafetyAlarm() || SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
             {
                 SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
                 m_State = DeviceState.None;

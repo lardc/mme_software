@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:my="clr-namespace:SCME.UI"
-      xmlns:res="clr-namespace:SCME.UI.Properties"
+      xmlns:res="clr-namespace:SCME.UIServiceConfig.Properties"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d" Loaded="TechnicianPage_OnLoaded"
       d:DesignWidth="1280" d:DesignHeight="924"
       Name="technicianPage" Title="{x:Static res:Resources.Technitian}">
@@ -73,7 +74,7 @@
         
        <UniformGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Columns="3" Margin="80,20">
                 <Button CommandParameter="1" Name="btnGate"
-                    Visibility="{Binding Source={x:Static res:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}">
+                    Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xOrange2}">
                         <Path Data="{StaticResource GatePath}" />
                         <Label Content="{x:Static res:Resources.Gate}" />
@@ -81,7 +82,7 @@
                 </Button>
 
                 <Button CommandParameter="2" Name="btnVtm"
-                    Visibility="{Binding Source={x:Static res:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}">
+                    Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xRed1}">
                         <Path Data="{StaticResource VtmPath}" />
                         <Label Content="{x:Static res:Resources.Vtm}" />
@@ -89,7 +90,7 @@
                 </Button>
 
                 <Button CommandParameter="3" Name="btnBvt"
-                    Visibility="{Binding Source={x:Static res:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}">
+                    Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xBlue2}">
                         <Path Data="{StaticResource BvtPath}" />
                         <Label Content="{x:Static res:Resources.Bvt}" />
@@ -149,14 +150,14 @@
                 </Button>
 
                 <Button CommandParameter="11"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xOrange1}">
                         <Path Data="{StaticResource ClampPath}" />
                         <Label Content="{x:Static res:Resources.Clamp}" />
                     </Grid>
                 </Button>
                 <Button CommandParameter="12" Name="btndVdt"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xBlue2}">
                         <Path Data="{StaticResource CurvePath}" />
                         <Label Content="{x:Static res:Resources.dVdt}" />
@@ -164,7 +165,7 @@
                 </Button>
 
                 <Button CommandParameter="13" Name="btnATU"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xGreen4}">
                         <Path Data="{StaticResource ATUPath}" />
                         <Label Content="{x:Static res:Resources.ATU}" />
@@ -172,7 +173,7 @@
                 </Button>
 
                 <Button CommandParameter="14" Name="btnQrrTq"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xGreen1}">
                         <Path Data="{StaticResource QrrTqPath}" />
                         <Label Content="{x:Static res:Resources.QrrTq}" />
@@ -180,7 +181,7 @@
                 </Button>
 
                 <Button CommandParameter="15" Name="btnRAC"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xGreen3}">
                         <Path Data="{StaticResource RACPath}" />
                         <Label Content="{x:Static res:Resources.RAC}" />
@@ -188,7 +189,7 @@
                 </Button>
 
                 <Button CommandParameter="16" Name="btnIH"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xRed1}">
                         <Path Data="" />
                         <Label Content="{x:Static res:Resources.IH}" />
@@ -196,7 +197,7 @@
                 </Button>
 
                 <Button CommandParameter="17" Name="btnTOU"
-                Visibility="{Binding Source={x:Static res:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}">
+                Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xGreen2}">
                         <Path Data="{StaticResource TOUPath}" />
                         <Label Content="{x:Static res:Resources.TOU}" />

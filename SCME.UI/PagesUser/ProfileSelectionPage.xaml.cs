@@ -6,7 +6,7 @@ using System.Windows.Data;
 using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.Types.DatabaseServer;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using System.Collections.Concurrent;
 using System.Windows.Threading;
 using System.Collections.Generic;

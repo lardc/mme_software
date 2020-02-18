@@ -6,7 +6,7 @@ using System.Windows.Media;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.UI.ViewModels;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.UI.PagesTech
 {

@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using SCME.Types;
 
 namespace SCME.UI.PagesTech
@@ -178,7 +178,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Stopped:
-                    Target.Content = Properties.Resources.Stopped;
+                    Target.Content = UIServiceConfig.Properties.Resources.Stopped;
                     Target.Background = Brushes.LightGreen;
                     break;
 
@@ -188,7 +188,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Fault:
-                    Target.Content = Properties.Resources.Fault;
+                    Target.Content = UIServiceConfig.Properties.Resources.Fault;
                     Target.Background = Brushes.Tomato;
                     break;
             }

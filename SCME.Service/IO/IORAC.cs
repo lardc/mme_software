@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using SCME.Types;
 using SCME.Types.RAC;
+using SCME.UIServiceConfig.Properties;
 using SCME.Service.Properties;
 
 namespace SCME.Service.IO

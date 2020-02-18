@@ -6,7 +6,7 @@ using System.Windows.Media;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.ATU;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.UI.PagesTech
 {
@@ -155,7 +155,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Stopped:
-                    Target.Content = Properties.Resources.Stopped;
+                    Target.Content = UIServiceConfig.Properties.Resources.Stopped;
                     Target.Background = Brushes.LightGreen;
                     break;
 
@@ -165,7 +165,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Fault:
-                    Target.Content = Properties.Resources.Fault;
+                    Target.Content = UIServiceConfig.Properties.Resources.Fault;
                     Target.Background = Brushes.Tomato;
                     break;
             }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using SCME.Types;
 using SCME.Types.QrrTq;
+using SCME.UIServiceConfig.Properties;
 using SCME.Service.Properties;
 
 namespace SCME.Service.IO

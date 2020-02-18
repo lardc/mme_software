@@ -1,9 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using System.Xml;
 using SCME.UI.CustomControl;
 
 namespace SCME.UI
@@ -13,12 +16,15 @@ namespace SCME.UI
     /// </summary>
     public partial class App
     {
+        
+
         protected override void OnStartup(StartupEventArgs e)
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-            SCME.UI.Properties.Resources.Culture = new CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(SCME.UI.Properties.Settings.Default.Localization);
+            UIServiceConfig.Settings.LoadSettings();
+            UIServiceConfig.Properties.Resources.Culture = new CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
             

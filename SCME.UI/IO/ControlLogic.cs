@@ -14,7 +14,7 @@ using SCME.Types.SQL;
 using SCME.Types.TOU;
 using SCME.UI.CustomControl;
 using SCME.UI.PagesUser;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using TestParameters = SCME.Types.Commutation.TestParameters;
 
 namespace SCME.UI.IO

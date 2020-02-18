@@ -6,6 +6,7 @@ using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.BVT;
 using SCME.Types.Commutation;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {

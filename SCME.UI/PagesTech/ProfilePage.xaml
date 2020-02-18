@@ -5,9 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:ui="clr-namespace:SCME.UI"
       xmlns:TOUTypes="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
-      xmlns:res="clr-namespace:SCME.UI.Properties"
+      xmlns:res="clr-namespace:SCME.UIServiceConfig.Properties"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
       xmlns:customControls="WpfControlLibrary"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
       Name="profilePage" Title="{x:Static res:Resources.Profiles}" Loaded="ProfilePage_Loaded" Unloaded="profilePage_Unloaded">
 
@@ -279,7 +280,7 @@
                     ItemsSource="{Binding SelectedItem.TestParametersAndNormatives, ElementName=profilesList}" MaxHeight="400"
                     IsButtonDeleteVisible="True" PreviewMouseLeftButtonDown="TestParameters_PreviewMouseLeftButtonDown"/>
                     <Grid
-                       Visibility="{Binding IsHeighMeasureEnable, Converter={StaticResource B2V}, Source={x:Static res:Settings.Default}}"
+                       Visibility="{Binding IsHeighMeasureEnable, Converter={StaticResource B2V}, Source={x:Static uiServiceConfig:Settings.Default}}"
                         Margin="10,0,85,10" Background="{StaticResource xPurple2}">
                         <Border BorderBrush="{StaticResource xWhite1}" BorderThickness="1" />
                         <CheckBox x:Name="cbIsHeigtMeasureEnabled" x:FieldModifier="private"

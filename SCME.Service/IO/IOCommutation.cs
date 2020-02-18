@@ -3,6 +3,7 @@ using System.Threading;
 using SCME.Types;
 using SCME.Service.Properties;
 using System.Collections.Generic;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {
@@ -315,7 +316,7 @@ namespace SCME.Service.IO
 
         private void WriteSafetyRegister()
         {
-            if (Properties.Settings.Default.IsWriteSafetyRegister == true)
+            if (SCME.UIServiceConfig.Properties.Settings.Default.IsWriteSafetyRegister == true)
                 switch (_SafetyMode)
                 {
                     case SafetyMode.Internal:
@@ -347,7 +348,7 @@ namespace SCME.Service.IO
 
                 if (m_IsCommutationEmulation)
                 {
-                    if(Properties.Settings.Default.AlarmEmulation)
+                    if(SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
                     {
                         m_SafetyAlarm = true;
                         FireSafetyEvent(m_SafetyAlarm);
@@ -389,7 +390,7 @@ namespace SCME.Service.IO
 
                 if (m_IsCommutationEmulation)
                 {
-                    if (Properties.Settings.Default.AlarmEmulation)
+                    if (SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
                         m_SafetyAlarm = false;
                     return;
                 }

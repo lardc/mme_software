@@ -106,7 +106,7 @@ namespace SCME.UI.CustomControl
             {
                 m_IsDisabled = value;
                 NotifyPropertyChanged("IsDisabled");
-                DisableButtonContent = m_IsDisabled ? Properties.Resources.Enable : Properties.Resources.Disable;
+                DisableButtonContent = m_IsDisabled ? UIServiceConfig.Properties.Resources.Enable : UIServiceConfig.Properties.Resources.Disable;
             }
         }
 
@@ -255,7 +255,7 @@ namespace SCME.UI.CustomControl
                 return;
 
             Cache.Net.CallbackManager.DeviceConnectionHandler(Device, DeviceConnectionState.ConnectionTimeout,
-                                                              Properties.Resources.DisplayTimeout);
+                                                              UIServiceConfig.Properties.Resources.DisplayTimeout);
         }
     }
 }
