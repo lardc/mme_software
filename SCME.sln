@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.WpfControlLibrary", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.Agent", "SCME.Agent\SCME.Agent.csproj", "{23B7149E-3F45-4D40-BE6F-1B6F031A0FB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseRepair", "BaseRepair\BaseRepair.csproj", "{6ED42F57-394F-4BAE-BEDE-34649922946E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,18 @@ Global
 		{23B7149E-3F45-4D40-BE6F-1B6F031A0FB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23B7149E-3F45-4D40-BE6F-1B6F031A0FB6}.Release|x86.ActiveCfg = Release|x86
 		{23B7149E-3F45-4D40-BE6F-1B6F031A0FB6}.Release|x86.Build.0 = Release|x86
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Debug|x86.Build.0 = Debug|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.PB|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.PB|Any CPU.Build.0 = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.PB|x86.ActiveCfg = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.PB|x86.Build.0 = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|x86.ActiveCfg = Release|Any CPU
+		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
