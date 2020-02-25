@@ -24,7 +24,7 @@ namespace BaseRepair
                     InitialCatalog = @"SCME_ResultsDB",
                     IntegratedSecurity = false,
                     UserID = "sa",
-                    Password = ,
+                    Password = "dfgdfg",
                     ConnectTimeout = 15
                 };
             var  mssqlDbService = new MSSQLDbService(new  SqlConnection(q.ToString()));
