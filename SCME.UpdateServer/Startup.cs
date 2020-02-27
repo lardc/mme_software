@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +9,11 @@ namespace SCME.UpdateServer
 {
     public class Startup
     {
+        public const string LOGS_DIRECTORY = "Logs";
         public Startup(IConfiguration configuration)
         {
+            if (!Directory.Exists(LOGS_DIRECTORY))
+                Directory.CreateDirectory(LOGS_DIRECTORY);
             Configuration = configuration;
         }
 
@@ -35,7 +39,8 @@ namespace SCME.UpdateServer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseExceptionHandler("/Update/Error");
+            
             app.UseRouting();
 
             //app.UseAuthorization();

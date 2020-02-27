@@ -296,5 +296,8 @@
     <Setting Name="MMECode" Type="System.String" Scope="Application">
       <Value Profile="(Default)">MME007</Value>
     </Setting>
+    <Setting Name="DebugUpdate" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

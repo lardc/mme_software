@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace SCME.UpdateServer
@@ -39,28 +40,36 @@ namespace SCME.UpdateServer
         }
 
 
-        public  static async Task<byte[]> ReplaceConfig(string propertiesTagName, ZipArchiveEntry zipArchiveEntry, MmeParameter mmeParameter)
+        public  static async Task<byte[]> ReplaceConfig(ZipArchiveEntry zipArchiveEntry, MmeParameter mmeParameter)
         {
             await using var zipStream = zipArchiveEntry.Open();
             await using var memoryStream = new MemoryStream();
             await zipStream.CopyToAsync(memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);
 
-            var xDocument = XDocument.Load(memoryStream);
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(memoryStream);
 
-            var appSettings = xDocument.Element("configuration")?.Element("applicationSettings")?.Element(propertiesTagName)?.Elements("setting").ToList();
+            var appSettings = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().ToList();
+             
             if (appSettings == null)
                 throw new Exception($"{nameof(ReplaceConfig)} {nameof(appSettings)} == null");
 
             foreach (var configurationSection in mmeParameter.Configs.GetChildren().SelectMany(m => m.GetChildren()))
             {
-                var xElement = appSettings.SingleOrDefault(m => (string) m.Attribute("name") == configurationSection.Key);
-                xElement?.RemoveNodes();
-                xElement?.Add(new XElement("value", configurationSection.Value));
+                var xmlNode = appSettings.SingleOrDefault(m => m.Attributes["name"].InnerText == configurationSection.Key);
+                // ReSharper disable once InvertIf
+                if (xmlNode != null)
+                {
+                    xmlNode.RemoveAll();
+                    var newNode = xmlDocument.CreateElement("value");
+                    newNode.InnerText = configurationSection.Value;
+                    xmlNode.AppendChild(newNode);
+                }
             }
 
             memoryStream.Position = 0;
-            xDocument.Save(memoryStream);
+            xmlDocument.Save(memoryStream);
             return memoryStream.ToArray();
         }
     }

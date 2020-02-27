@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
@@ -16,12 +18,23 @@ namespace SCME.UI
     /// </summary>
     public partial class App
     {
-        
-
         protected override void OnStartup(StartupEventArgs e)
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             UIServiceConfig.Settings.LoadSettings();
+
+            if(UIServiceConfig.Properties.Settings.Default.DebugUpdate)
+            {
+                try
+                {
+                    File.WriteAllText("Version info.txt", FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion);
+                }
+                catch(Exception ex)
+                {
+                    File.WriteAllText("Debug update.txt", ex.ToString());
+                }
+            }
+
             UIServiceConfig.Properties.Resources.Culture = new CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);

@@ -16,21 +16,29 @@ namespace SCME.Agent
         internal Supervisor()
         {
             var ico = Resources.TrayIconPE;
+                ToolStripButton q  = new ToolStripButton()
+                {
+                    Text = @"Exit"
+                };
+            q.Click += OnExit;
+            ContextMenuStrip w = new ContextMenuStrip();
+            w.Items.Add(q);
             _trayIcon = new NotifyIcon
                 {
                     Text = @"SCME.Agent",
                     Icon = new Icon(ico, ico.Width, ico.Height),
-                    ContextMenu = new ContextMenu(new[] {new MenuItem(@"Exit", OnExit)}),
+                    ContextMenuStrip = w,
                     Visible = true
                 };
+            return;
 
             _pProxy = new Process
                 {
                     StartInfo =
                         {
-                            FileName = Settings.Default.ProxyAppPath,
+                            FileName = Program.ConfigData.ProxyAppPath,
                             WorkingDirectory =
-                                Path.GetDirectoryName(Settings.Default.ProxyAppPath) ??
+                                Path.GetDirectoryName(Program.ConfigData.ProxyAppPath) ??
                                 Environment.CurrentDirectory,
                             ErrorDialog = false
                         },
@@ -42,9 +50,9 @@ namespace SCME.Agent
                 {
                     StartInfo =
                         {
-                            FileName = Settings.Default.ServiceAppPath,
+                            FileName = Program.ConfigData.ServiceAppPath,
                             WorkingDirectory =
-                                Path.GetDirectoryName(Settings.Default.ServiceAppPath) ??
+                                Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ??
                                 Environment.CurrentDirectory,
                             ErrorDialog = false
                         },
@@ -52,15 +60,15 @@ namespace SCME.Agent
                 };
             _pService.Exited += PExited;
 
-            if (Settings.Default.IsUserInterfaceEnabled)
+            if (Program.ConfigData.IsUserInterfaceEnabled)
             {
                 _pUserInterface = new Process
                 {
                     StartInfo =
                     {
-                        FileName = Settings.Default.UIAppPath,
+                        FileName = Program.ConfigData.UIAppPath,
                         WorkingDirectory =
-                            (Path.GetDirectoryName(Settings.Default.UIAppPath)) ??
+                            (Path.GetDirectoryName(Program.ConfigData.UIAppPath)) ??
                             Environment.CurrentDirectory,
                         ErrorDialog = false
                     },
@@ -75,15 +83,15 @@ namespace SCME.Agent
 
         internal void Start()
         {
-            if (Settings.Default.IsProxyEnabled)
+            if (Program.ConfigData.IsProxyEnabled)
             {
                 StartProcess(_pProxy);
-                Thread.Sleep(Settings.Default.ProxyInitDelayMs);
+                Thread.Sleep(Program.ConfigData.ProxyInitDelayMs);
             }
             
             StartProcess(_pService);
             
-            if (Settings.Default.IsUserInterfaceEnabled)
+            if (Program.ConfigData.IsUserInterfaceEnabled)
                 StartProcess(_pUserInterface);
         }
 

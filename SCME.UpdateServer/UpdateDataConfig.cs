@@ -19,7 +19,11 @@ namespace SCME.UpdateServer
         public string ScmeAgentExeName { get; set; }
         
         public string ScmeServiceConfigName { get; set; }
+        
+        public string ScmeCommonConfigName { get; set; }
         public string ScmeUiConfigName { get; set; }
+
+        public string ScmeUIExeName { get; set; }
         public MmeParameter[] MmeParameters { get; set; }
         
     }
