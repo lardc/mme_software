@@ -413,7 +413,7 @@ namespace SCME.InterfaceImplementations
 
                         trans.Commit();
                     }
-                    catch (Exception)
+                    catch
                     {
                         trans.Rollback();
                         throw;
@@ -422,7 +422,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw new FaultException<FaultData>(new FaultData(){}, new FaultReason(ex.ToString()));
             }
         }
 
