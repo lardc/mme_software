@@ -21,7 +21,6 @@ namespace SCME.Agent
         [STAThread]
         private static void Main()
         {
-            
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             var configuration = builder.Build();
             ConfigData = configuration.GetSection(nameof(ConfigData)).Get<ConfigData>();
@@ -67,14 +66,16 @@ namespace SCME.Agent
             }
 
             updater.UpdateUiService().Wait();
-            return;
 
             using (mutex)
             {
                 _supervisor = new Supervisor();
-                //_supervisor.Start();
+                _supervisor.Start();
 
                 Application.Run();
+                mutex.ReleaseMutex();
+                if(_supervisor.NeedRestart)
+                    Process.Start(Path.ChangeExtension(Application.ExecutablePath, "exe"));
             }
         }
     }

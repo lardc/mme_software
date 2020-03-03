@@ -5,60 +5,47 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SCME.Agent.Properties;
+// ReSharper disable InvertIf
 
 namespace SCME.Agent
 {
     internal class Supervisor
     {
-        private readonly NotifyIcon _trayIcon;
-        private readonly Process _pService, _pUserInterface, _pProxy;
-
+        private readonly Process _pService, _pUserInterface;
+        private bool _restartService = true;
+        public bool NeedRestart = false;
         internal Supervisor()
         {
             var ico = Resources.TrayIconPE;
-                ToolStripButton q  = new ToolStripButton()
-                {
-                    Text = @"Exit"
-                };
-            q.Click += OnExit;
-            ContextMenuStrip w = new ContextMenuStrip();
-            w.Items.Add(q);
-            _trayIcon = new NotifyIcon
-                {
-                    Text = @"SCME.Agent",
-                    Icon = new Icon(ico, ico.Width, ico.Height),
-                    ContextMenuStrip = w,
-                    Visible = true
-                };
-            return;
+            var toolStripButton = new ToolStripButton()
+            {
+                Text = @"Exit"
+            };
+            toolStripButton.Click += (sender, args) => Application.Exit();
+            var contextMenuStrip = new ContextMenuStrip();
+            contextMenuStrip.Items.Add(toolStripButton);
+            var notifyIcon = new NotifyIcon
+            {
+                Text = @"SCME.Agent",
+                Icon = new Icon(ico, ico.Width, ico.Height),
+                ContextMenuStrip = contextMenuStrip,
+                Visible = true
+            };
 
-            _pProxy = new Process
-                {
-                    StartInfo =
-                        {
-                            FileName = Program.ConfigData.ProxyAppPath,
-                            WorkingDirectory =
-                                Path.GetDirectoryName(Program.ConfigData.ProxyAppPath) ??
-                                Environment.CurrentDirectory,
-                            ErrorDialog = false
-                        },
-                    EnableRaisingEvents = true
-                };
-            _pProxy.Exited += PExited;
 
             _pService = new Process
+            {
+                StartInfo =
                 {
-                    StartInfo =
-                        {
-                            FileName = Program.ConfigData.ServiceAppPath,
-                            WorkingDirectory =
-                                Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ??
-                                Environment.CurrentDirectory,
-                            ErrorDialog = false
-                        },
-                    EnableRaisingEvents = true
-                };
-            _pService.Exited += PExited;
+                    FileName = Program.ConfigData.ServiceAppPath,
+                    WorkingDirectory =
+                        Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ??
+                        Environment.CurrentDirectory,
+                    ErrorDialog = false
+                },
+                EnableRaisingEvents = true
+            };
+            _pService.Exited += PServiceOnExited;
 
             if (Program.ConfigData.IsUserInterfaceEnabled)
             {
@@ -75,43 +62,34 @@ namespace SCME.Agent
                     EnableRaisingEvents = true
                 };
 
-                _pUserInterface.Exited += PExited;
+                _pUserInterface.Exited += PUserInterfaceOnExited;
             }
 
-            Application.ApplicationExit += Application_ApplicationExit;
+        }
+
+        private void PUserInterfaceOnExited(object sender, EventArgs e)
+        {
+            _restartService = false;
+            _pService.Kill();
+            _pService.WaitForExit();
+            NeedRestart = true;
+            Application.Exit();
+        }
+
+        private void PServiceOnExited(object sender, EventArgs e)
+        {
+            if(_restartService)
+                StartProcess(_pService);
         }
 
         internal void Start()
         {
-            if (Program.ConfigData.IsProxyEnabled)
-            {
-                StartProcess(_pProxy);
-                Thread.Sleep(Program.ConfigData.ProxyInitDelayMs);
-            }
-            
             StartProcess(_pService);
-            
+
             if (Program.ConfigData.IsUserInterfaceEnabled)
                 StartProcess(_pUserInterface);
         }
-
-        private static void PExited(object sender, EventArgs e)
-        {
-            var p = sender as Process;
-            
-            StartProcess(p);
-        }
-
-        private void OnExit(object sender, EventArgs e)
-        {
-            _trayIcon.Visible = false;
-            Application.Exit();
-        }
-
-        private void Application_ApplicationExit(object sender, EventArgs e)
-        {
-            _trayIcon.Visible = false;
-        }
+        
 
         private static void StartProcess(Process p)
         {
@@ -127,7 +105,7 @@ namespace SCME.Agent
                 var str = string.Format(Resources.Log_Message_Process_error, p.StartInfo.FileName, ex.Message);
 
                 MessageBox.Show(str, Resources.Error_Caption_Supervisor_error, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                    MessageBoxIcon.Error);
 
                 Environment.Exit(1);
             }

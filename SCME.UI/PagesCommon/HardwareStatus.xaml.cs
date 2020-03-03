@@ -21,7 +21,7 @@ namespace SCME.UI.PagesCommon
             IsBackEnable = false;
             IsRestartEnable = false;
 
-            btnRestart.Click += Cache.Main.RestartRoutine;
+            btnRestart.Click += (object sender, RoutedEventArgs e) => System.Windows.Application.Current.Shutdown();
             
             
             
@@ -43,7 +43,7 @@ namespace SCME.UI.PagesCommon
             set
             {
                 m_IsRestartEnable = value;
-                btnRestart.Visibility = m_IsRestartEnable ? Visibility.Visible : Visibility.Collapsed;
+                    //btnRestart.Visibility = m_IsRestartEnable ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
