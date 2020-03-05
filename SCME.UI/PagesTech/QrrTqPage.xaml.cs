@@ -203,7 +203,7 @@ namespace SCME.UI.PagesTech
 
         internal void RefreshKindOfFreezing(ushort KindOfFreezing)
         {
-            btnStart.Content = string.Format(UIServiceConfig.Properties.Resources.Start + " ({0})", KindOfFreezing);
+            btnStart.Content = string.Format(Properties.Resources.Start + " ({0})", KindOfFreezing);
         }
 
         private static void SetLabel(ContentControl Target, DeviceState State, bool IsFitWithNormatives, string Value)
@@ -225,7 +225,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Stopped:
-                    Target.Content = UIServiceConfig.Properties.Resources.Stopped;
+                    Target.Content = Properties.Resources.Stopped;
                     Target.Background = Brushes.LightGreen;
                     break;
 
@@ -235,7 +235,7 @@ namespace SCME.UI.PagesTech
                     break;
 
                 case DeviceState.Fault:
-                    Target.Content = UIServiceConfig.Properties.Resources.Fault;
+                    Target.Content = Properties.Resources.Fault;
                     Target.Background = Brushes.Tomato;
                     break;
             }

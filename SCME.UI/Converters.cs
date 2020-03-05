@@ -12,6 +12,7 @@ using SCME.Types.VTM;
 using SCME.Types.QrrTq;
 using SCME.UIServiceConfig.Properties;
 using TestParameters = SCME.Types.VTM.TestParameters;
+using SCME.UI.Properties;
 
 namespace SCME.UI
 {

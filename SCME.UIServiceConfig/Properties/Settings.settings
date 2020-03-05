@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.UIServiceConfig.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.UIServiceConfig.Properties" GeneratedClassName="Settings1">
   <Profiles />
   <Settings>
     <Setting Name="GateIsVisible" Type="System.Boolean" Scope="Application">
@@ -298,6 +298,15 @@
     </Setting>
     <Setting Name="DebugUpdate" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ControlService" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp://127.0.0.1:800/SCME/SCME.IO.ControlService</Value>
+    </Setting>
+    <Setting Name="DatabaseService" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp://127.0.0.1:800/SCME/SCME.IO.DatabaseService</Value>
+    </Setting>
+    <Setting Name="LocalDatabase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp://127.0.0.1:800/SCME/LocalDatabase</Value>
     </Setting>
     <Setting Name="CentralDatabaseService" Type="System.String" Scope="User">
       <Value Profile="(Default)">net.tcp://127.0.0.1:730/SCME/SCME.IO.CentralDatabaseService</Value>

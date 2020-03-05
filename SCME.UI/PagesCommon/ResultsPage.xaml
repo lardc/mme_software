@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl"
-      xmlns:res="clr-namespace:SCME.UIServiceConfig.Properties"
+      xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1458.178" d:DesignHeight="894.93"
       Name="resultsPage" Title="{x:Static res:Resources.Results}"

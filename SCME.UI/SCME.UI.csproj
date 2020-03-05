@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>SCME.UI</AssemblyName>
     <RootNamespace>SCME.UI</RootNamespace>
+<Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,6 +38,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj" />
     <ProjectReference Include="..\SCME.Types\SCME.Types.csproj" />
+    <ProjectReference Include="..\SCME.UIServiceConfig\SCME.UIServiceConfig.csproj" />
     <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj" />
   </ItemGroup>
 

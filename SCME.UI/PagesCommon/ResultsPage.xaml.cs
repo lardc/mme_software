@@ -84,12 +84,12 @@ namespace SCME.UI.PagesCommon
             if (String.IsNullOrWhiteSpace(group))
                 return;
 
-            lblStatus.Content = UIServiceConfig.Properties.Resources.Pending;
+            lblStatus.Content = Properties.Resources.Pending;
             lblStatus.Content = Cache.Net.RequestRemotePrinting(group,
                 String.IsNullOrEmpty(FieldCustomer) ? "Proton" : FieldCustomer, FieldDeviceType,
                 m_ReportSelection)
-                ? UIServiceConfig.Properties.Resources.Successful
-                : UIServiceConfig.Properties.Resources.Failed;
+                ? Properties.Resources.Successful
+                : Properties.Resources.Failed;
         }
 
         private void TgbAll_Cheched(object Sender, RoutedEventArgs E)
@@ -125,7 +125,7 @@ namespace SCME.UI.PagesCommon
         private void ResultsPage_OnLoaded(object Sender, RoutedEventArgs E)
         {
             m_Active = true;
-            lblStatus.Content = UIServiceConfig.Properties.Resources.Waiting;
+            lblStatus.Content = Properties.Resources.Waiting;
             tgbAll.IsChecked = true;
             FieldCustomer = "";
             FieldDeviceType = "";
@@ -169,7 +169,7 @@ namespace SCME.UI.PagesCommon
 
         private void LbGroupList_SelectionChanged(object Sender, SelectionChangedEventArgs E)
         {
-            lblStatus.Content = UIServiceConfig.Properties.Resources.Waiting;
+            lblStatus.Content = Properties.Resources.Waiting;
 
             if (lbGroupList.SelectedItem != null)
             {

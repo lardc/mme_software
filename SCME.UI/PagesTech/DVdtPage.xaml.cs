@@ -83,7 +83,7 @@ namespace SCME.UI.PagesTech
                     Target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Stopped:
-                    Target.Content = UIServiceConfig.Properties.Resources.Stopped;
+                    Target.Content = Properties.Resources.Stopped;
                     Target.Background = Brushes.LightGreen;
                     break;
                 case DeviceState.Success:
@@ -95,7 +95,7 @@ namespace SCME.UI.PagesTech
                     Target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Fault:
-                    Target.Content = UIServiceConfig.Properties.Resources.Fault;
+                    Target.Content = Properties.Resources.Fault;
                     Target.Background = Brushes.Tomato;
                     break;
                 case DeviceState.None:

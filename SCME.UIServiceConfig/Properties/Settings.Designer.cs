@@ -919,6 +919,42 @@ namespace SCME.UIServiceConfig.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/SCME.IO.ControlService")]
+        public string ControlService {
+            get {
+                return ((string)(this["ControlService"]));
+            }
+            set {
+                this["ControlService"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/SCME.IO.DatabaseService")]
+        public string DatabaseService {
+            get {
+                return ((string)(this["DatabaseService"]));
+            }
+            set {
+                this["DatabaseService"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/LocalDatabase")]
+        public string LocalDatabase {
+            get {
+                return ((string)(this["LocalDatabase"]));
+            }
+            set {
+                this["LocalDatabase"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:730/SCME/SCME.IO.CentralDatabaseService")]
         public string CentralDatabaseService {
             get {

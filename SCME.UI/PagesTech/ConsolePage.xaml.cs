@@ -42,37 +42,37 @@ namespace SCME.UI.PagesTech
             switch (m_Index)
             {
                 case 1:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Gateway;
+                    lblTitle.Content = Properties.Resources.Gateway;
                     break;
                 case 2:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Commutation;
+                    lblTitle.Content = Properties.Resources.Commutation;
                     break;
                 case 3:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Gate;
+                    lblTitle.Content = Properties.Resources.Gate;
                     break;
                 case 4:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Vtm;
+                    lblTitle.Content = Properties.Resources.Vtm;
                     break;
                 case 5:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Bvt;
+                    lblTitle.Content = Properties.Resources.Bvt;
                     break;
                 case 6:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Commutation;
+                    lblTitle.Content = Properties.Resources.Commutation;
                     break;
                 case 7:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.Clamp;
+                    lblTitle.Content = Properties.Resources.Clamp;
                     break;
                 case 8:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.dVdt;
+                    lblTitle.Content = Properties.Resources.dVdt;
                     break;
                 case 9:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.ATU;
+                    lblTitle.Content = Properties.Resources.ATU;
                     break;
                 case 10:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.QrrTq;
+                    lblTitle.Content = Properties.Resources.QrrTq;
                     break;
                 case 11:
-                    lblTitle.Content = UIServiceConfig.Properties.Resources.RAC;
+                    lblTitle.Content = Properties.Resources.RAC;
                     break;
             }
         }

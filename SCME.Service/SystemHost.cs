@@ -83,7 +83,7 @@ namespace SCME.Service
              var behaviour = _SQLiteDbServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
                 behaviour.InstanceContextMode = InstanceContextMode.Single;
 
-            if (Properties.Settings.Default.IsLocal)
+            if (SCME.UIServiceConfig.Properties.Settings.Default.IsLocal)
             
             if (UIServiceConfig.Properties.Settings.Default.IsLocal)
                 _dbService.Migrate();

@@ -139,11 +139,11 @@ namespace SCME.UI.PagesUser
                     //для стенда с блоком QrrTq не требуется установка ограничения по оси Y, ось Y имеет размерность Амперы, ось X - время в мкс
                     VerticalAxisTitle vAxisTitle = FindChild<VerticalAxisTitle>(this.MainGrid, "chartPlotter" + i.ToString() + "VerticalAxisTitle");
                     if (vAxisTitle != null)
-                        vAxisTitle.Content = UIServiceConfig.Properties.Resources.Graph_IA;
+                        vAxisTitle.Content = Properties.Resources.Graph_IA;
 
                     HorizontalAxisTitle hAxisTitle = FindChild<HorizontalAxisTitle>(this.MainGrid, "chartPlotter" + i.ToString() + "HorizontalAxisTitle");
                     if (hAxisTitle != null)
-                        hAxisTitle.Content = UIServiceConfig.Properties.Resources.Graph_TimeUs;
+                        hAxisTitle.Content = Properties.Resources.Graph_TimeUs;
                 }
                 else
                 {
@@ -701,7 +701,7 @@ namespace SCME.UI.PagesUser
 
                 if (_HasFault == true)
                 {
-                    var dw = new DialogWindow("Error", UIServiceConfig.Properties.Resources.MessageErrorSaveTestFault);
+                    var dw = new DialogWindow("Error", Properties.Resources.MessageErrorSaveTestFault);
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
                 }
@@ -749,7 +749,7 @@ namespace SCME.UI.PagesUser
                     }
                     catch (Exception ex)
                     {
-                        var dw = new DialogWindow(UIServiceConfig.Properties.Resources.ErrorWriteResult, ex.ToString());
+                        var dw = new DialogWindow(Properties.Resources.ErrorWriteResult, ex.ToString());
                         dw.ButtonConfig(DialogWindow.EbConfig.OK);
                         dw.ShowDialog();
                         DataForSave.IsSentToServer = false;
@@ -805,7 +805,7 @@ namespace SCME.UI.PagesUser
 
             var labelKelvinResult = FindChild<Label>(presenter, "labelKelvinResult1");
             if (labelKelvinResult != null)
-                SetLabel(labelKelvinResult, state, isKelvinOk, isKelvinOk ? UIServiceConfig.Properties.Resources.Ok : UIServiceConfig.Properties.Resources.Fault);
+                SetLabel(labelKelvinResult, state, isKelvinOk, isKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
 
             if (state != DeviceState.InProcess)
             {
@@ -877,7 +877,7 @@ namespace SCME.UI.PagesUser
             if (state == DeviceState.Success && Settings.Default.PlotUserGate)
             {
                 PlotX(m_CurrentPos, "Igt", m_XRed.Color, arrayI);
-                PlotX(m_CurrentPos, UIServiceConfig.Properties.Resources.Vgt, m_XOrange.Color, arrayV);
+                PlotX(m_CurrentPos, Properties.Resources.Vgt, m_XOrange.Color, arrayV);
             }
         }
 
@@ -1893,7 +1893,7 @@ namespace SCME.UI.PagesUser
 
         internal void RefreshKindOfFreezing(ushort KindOfFreezing)
         {
-            btnStart.Content = string.Format(UIServiceConfig.Properties.Resources.Start + " ({0})", KindOfFreezing);
+            btnStart.Content = string.Format(Properties.Resources.Start + " ({0})", KindOfFreezing);
         }
 
         private int RACCounter;
@@ -2228,7 +2228,7 @@ namespace SCME.UI.PagesUser
                     Target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Stopped:
-                    Target.Content = UIServiceConfig.Properties.Resources.Stopped;
+                    Target.Content = Properties.Resources.Stopped;
                     Target.Background = Brushes.LightGreen;
                     break;
                 case DeviceState.Success:
@@ -2240,7 +2240,7 @@ namespace SCME.UI.PagesUser
                     Target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Fault:
-                    Target.Content = UIServiceConfig.Properties.Resources.Fault;
+                    Target.Content = Properties.Resources.Fault;
                     Target.Background = Brushes.Tomato;
                     break;
                 case DeviceState.None:
@@ -2776,7 +2776,7 @@ namespace SCME.UI.PagesUser
             //вычисляет класс изделия и выводит его на форме
 
             //чтобы исключить зависимость работоспособности приложения от работоспособности данной реализации заворачиваем её в try...catch
-            var firstPart = factClass ? UIServiceConfig.Properties.Resources.DeviceClass : UIServiceConfig.Properties.Resources.DeviceRTClass;
+            var firstPart = factClass ? Properties.Resources.DeviceClass : Properties.Resources.DeviceRTClass;
             try
             {
                 btnStart.IsEnabled = true;
@@ -2809,10 +2809,10 @@ namespace SCME.UI.PagesUser
                 switch (deviceClass)
                 {
                     case -1:
-                        secondPart = UIServiceConfig.Properties.Resources.ErrorRealisation;
+                        secondPart = Properties.Resources.ErrorRealisation;
                         break;
                     case null:
-                        secondPart = UIServiceConfig.Properties.Resources.NoResults;
+                        secondPart = Properties.Resources.NoResults;
                         break;
                     default:
                     {
@@ -2832,7 +2832,7 @@ namespace SCME.UI.PagesUser
             }
             catch (Exception ex)
             {
-                lblDeviceClass.Content = lblDeviceClass.Content = $"{firstPart}: {UIServiceConfig.Properties.Resources.ErrorRealisation}";;
+                lblDeviceClass.Content = lblDeviceClass.Content = $"{firstPart}: {Properties.Resources.ErrorRealisation}";;
             }
         }
 
@@ -3154,7 +3154,7 @@ namespace SCME.UI.PagesUser
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
             tbPseJob.Text = "";
-            lblDeviceClass.Content = UIServiceConfig.Properties.Resources.DeviceRTClass;
+            lblDeviceClass.Content = Properties.Resources.DeviceRTClass;
 
             ClearStatus(true, true);
 
@@ -3244,7 +3244,7 @@ namespace SCME.UI.PagesUser
                 var (centralProfile, isInMmeCode) = Cache.Net.SyncProfile(new MyProfile(Profile));
                 if (!isInMmeCode)
                 {
-                    var dw = new DialogWindow(string.Empty, UIServiceConfig.Properties.Resources.ProfileWasUntied);
+                    var dw = new DialogWindow(string.Empty, Properties.Resources.ProfileWasUntied);
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
                     Cache.ProfilesPageSelectForTest.RemoveSelectedProfile();
@@ -3253,7 +3253,7 @@ namespace SCME.UI.PagesUser
                 }
                 if (centralProfile == null)
                 {
-                    var dw = new DialogWindow(string.Empty, UIServiceConfig.Properties.Resources.ProfileNotChanged);
+                    var dw = new DialogWindow(string.Empty, Properties.Resources.ProfileNotChanged);
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
                     return;
@@ -3314,7 +3314,7 @@ namespace SCME.UI.PagesUser
                                     return null;
                                 break;
                             default:
-                                return Resources.ResultsWillNotBeSaved;
+                                return Properties.Resources.ResultsWillNotBeSaved;
                         }
                         break;
                     default:
@@ -3322,7 +3322,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            return Resources.ResultsWillNotBeSaved;
+            return Properties.Resources.ResultsWillNotBeSaved;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

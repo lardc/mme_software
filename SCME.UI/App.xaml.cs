@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Threading;
 using System.Xml;
 using SCME.UI.CustomControl;
+using SCME.UI.Properties;
 
 namespace SCME.UI
 {
@@ -35,7 +36,8 @@ namespace SCME.UI
                 }
             }
 
-            UIServiceConfig.Properties.Resources.Culture = new CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
+            
+            SCME.UI.Properties.Resources.Culture = new CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(UIServiceConfig.Properties.Settings.Default.Localization);
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));

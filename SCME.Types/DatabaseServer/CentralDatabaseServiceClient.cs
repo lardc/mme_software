@@ -11,6 +11,12 @@ namespace SCME.Types.DatabaseServer
 {
     public class CentralDatabaseServiceClient : ClientBase<ICentralDatabaseService>, ICentralDatabaseService
     {
+        public CentralDatabaseServiceClient(){}
+        public CentralDatabaseServiceClient(string uri) : base(WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(uri))
+        {
+
+        }
+
         public int? ReadDeviceRTClass(string devCode, string profileName)
         {
             return Channel.ReadDeviceRTClass(devCode, profileName);

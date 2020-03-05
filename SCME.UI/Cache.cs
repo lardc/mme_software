@@ -57,7 +57,7 @@ namespace SCME.UI
                                                                       
 
         public static MainWindow Main { get; set; }
-        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy(Properties.Settings.Default.LocalDatabase);
+        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy(UIServiceConfig.Properties.Settings.Default.LocalDatabase);
 
         internal static ControlLogic Net { get; set; }
 

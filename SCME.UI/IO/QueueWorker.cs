@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using SCME.Types;
 using SCME.UIServiceConfig.Properties;
 using SCME.UI.CustomControl;
+using SCME.UI.Properties;
 
 namespace SCME.UI.IO
 {

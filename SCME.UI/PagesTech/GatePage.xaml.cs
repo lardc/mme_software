@@ -72,7 +72,7 @@ namespace SCME.UI.PagesTech
 
         internal void SetResultKelvin(DeviceState State, bool IsKelvinOk)
         {
-            SetLabel(lblKelvin, State, IsKelvinOk ? UIServiceConfig.Properties.Resources.Ok : UIServiceConfig.Properties.Resources.Fault);
+            SetLabel(lblKelvin, State, IsKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
         }
 
         internal void SetResultResistance(DeviceState State, float Resistance)

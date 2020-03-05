@@ -38,7 +38,7 @@ namespace SCME.Service.IO
                 var connectionString = $"data source={databasePath};{databaseOptions}";
                 _mmeCode = mmeCode;
                 _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(connectionString));
-                _msSqlDbService = new DatabaseProxy(Properties.Settings.Default.CentralDatabase);
+                _msSqlDbService = new DatabaseProxy(Settings.Default.CentralDatabase);
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionInProcess, string.Empty);
 //                    AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
 //                else

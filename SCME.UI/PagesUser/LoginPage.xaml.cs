@@ -59,7 +59,7 @@ namespace SCME.UI.PagesUser
                 NavigationService.Navigate(Cache.ProfilesPageSelectForTest);
             }
             else
-                lblIncorrect.Content = UIServiceConfig.Properties.Resources.PasswordIncorrect;
+                lblIncorrect.Content = Properties.Resources.PasswordIncorrect;
 
             tbPassword.Text = string.Empty;
         }
@@ -68,7 +68,7 @@ namespace SCME.UI.PagesUser
         {
             Cache.Main.VM.AccountNameIsVisibility = true;
             profilesPage.LoadTopProfiles();
-            profilesPage.Title = $"{UIServiceConfig.Properties.Resources.Total} {UIServiceConfig.Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
+            profilesPage.Title = $"{Properties.Resources.Total} {Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
 //            Cache.ProfilesPageSelectForTest.GoBackAction += () =>
 //            {
 //                var navigationService = Cache.ProfilesPageSelectForTest.NavigationService;
@@ -79,7 +79,7 @@ namespace SCME.UI.PagesUser
             {
                 
                 Cache.UserTest.Profile = profilesPage.ProfileVm.SelectedProfile.ToProfile();
-                Cache.UserTest.Title = UIServiceConfig.Properties.Resources.UserTestPage_Title + ", " + UIServiceConfig.Properties.Resources.Profile.ToLower() + ": " + "\n" + Cache.UserTest.Profile;
+                Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Cache.UserTest.Profile;
                 //запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
                 Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
 

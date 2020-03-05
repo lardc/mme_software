@@ -14,6 +14,7 @@ using SCME.Types.SQL;
 using SCME.Types.TOU;
 using SCME.UI.CustomControl;
 using SCME.UI.PagesUser;
+using SCME.UI.Properties;
 using SCME.UIServiceConfig.Properties;
 using TestParameters = SCME.Types.Commutation.TestParameters;
 
@@ -143,6 +144,7 @@ namespace SCME.UI.IO
                             else
                                 DatabaseClient.Close();
 
+
                         m_ControlClient = new ControlServerProxy(new InstanceContext(m_CallbackHost), Settings.Default.ControlService);
                         DatabaseClient = new DatabaseCommunicationProxy(Settings.Default.DatabaseService);
 
@@ -271,7 +273,7 @@ namespace SCME.UI.IO
         {
             int? result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -295,7 +297,7 @@ namespace SCME.UI.IO
         {
             int? result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1156,7 +1158,7 @@ namespace SCME.UI.IO
 
         public void WriteResultServer(ResultItem item, List<string> errors)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1197,7 +1199,7 @@ namespace SCME.UI.IO
 
         public List<ProfileForSqlSelect> SaveProfilesToServer(List<ProfileItem> profileItems)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1352,7 +1354,7 @@ namespace SCME.UI.IO
 
         public List<string> ReadGroupsFromServer(DateTime? @from, DateTime? to)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1397,7 +1399,7 @@ namespace SCME.UI.IO
 
         public List<DeviceItem> ReadDevicesFromServer(string @group)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1469,7 +1471,7 @@ namespace SCME.UI.IO
             serviceConnected = true;
 
             List<ProfileItem> profiles = null;
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1527,7 +1529,7 @@ namespace SCME.UI.IO
             //получение профиля с именем profName, связанного с mmmeCode от SCME.DatabaseServer без использования SCME.Service
             ProfileItem Result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {

@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:customControl="clr-namespace:SCME.UI.CustomControl" xmlns:ui="clr-namespace:SCME.UI"
-      xmlns:res="clr-namespace:SCME.UIServiceConfig.Properties"
+      xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" x:Name="aTUPage"
       d:DesignWidth="1280" d:DesignHeight="924"
