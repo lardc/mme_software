@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.UIServiceConfig", "SCM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.Agent", "SCME.Agent\SCME.Agent.csproj", "{B66790F2-2EE1-4F8E-8A15-CFE52774A5BA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.UpdateServer", "SCME.UpdateServer\SCME.UpdateServer.csproj", "{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,18 @@ Global
 		{B66790F2-2EE1-4F8E-8A15-CFE52774A5BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B66790F2-2EE1-4F8E-8A15-CFE52774A5BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{B66790F2-2EE1-4F8E-8A15-CFE52774A5BA}.Release|x86.Build.0 = Release|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.PB|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.PB|Any CPU.Build.0 = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.PB|x86.ActiveCfg = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.PB|x86.Build.0 = Debug|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
