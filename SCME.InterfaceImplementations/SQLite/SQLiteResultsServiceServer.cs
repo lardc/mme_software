@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
+using System.ServiceModel;
 using SCME.Types;
 using SCME.Types.BVT;
 using SCME.Types.DataContracts;
@@ -15,22 +16,42 @@ namespace SCME.InterfaceImplementations
         protected readonly SQLiteConnection _connection;
         private readonly Dictionary<string, long> _errors;
         private readonly Dictionary<string, long> _params;
+        private readonly Dictionary<string, long> _tests;
         protected static readonly object MsLocker = new object();
+
+        private SQLiteCommand _devLookupPTTSelectCommand;
+        private SQLiteCommand _devLookupProfileIdSelectCommand;
 
         public SQLiteResultsServiceServer(string databasePath)
         {
             _connection = new SQLiteConnection(databasePath, false);
             _errors = new Dictionary<string, long>(64);
             _params = new Dictionary<string, long>(64);
+            _tests = new Dictionary<string, long>(20);
             _connection.Open();
 
             PopulateDictionaries();
+
+              _devLookupPTTSelectCommand =
+                new SQLiteCommand(
+                    "SELECT P.[ID] FROM [PROF_TEST_TYPE] P WHERE P.[PROF_ID] = @PROF_ID AND P.[TEST_TYPE_ID] = @TEST_TYPE_ID AND P.[ORDER] = @ORD",
+                    _connection);
+            _devLookupPTTSelectCommand.Parameters.Add("@PROF_ID", DbType.Int32);
+            _devLookupPTTSelectCommand.Parameters.Add("@TEST_TYPE_ID", DbType.Int32);
+            _devLookupPTTSelectCommand.Parameters.Add("@ORD", DbType.Int32);
+            _devLookupPTTSelectCommand.Prepare();
+
+            _devLookupProfileIdSelectCommand =
+                new SQLiteCommand("SELECT P.[PROF_ID] FROM [PROFILES] P WHERE P.[PROF_GUID] = @PROF_GUID", _connection);
+            _devLookupProfileIdSelectCommand.Parameters.Add("@PROF_GUID", DbType.Guid);
+            _devLookupProfileIdSelectCommand.Prepare();
         }
 
         private void PopulateDictionaries()
         {
             _errors.Clear();
             _params.Clear();
+            _tests.Clear();
 
             using (var paramCmd = _connection.CreateCommand())
             {
@@ -53,6 +74,17 @@ namespace SCME.InterfaceImplementations
                         _params.Add((string)reader[1], (long)reader[0]);
                 }
             }
+
+            using (var paramCmd = _connection.CreateCommand())
+            {
+                paramCmd.CommandText = "SELECT T.ID, T.NAME FROM TEST_TYPE T";
+
+                using (var reader = paramCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                        _tests.Add(((string)reader[1]), Convert.ToInt32(reader[0]));
+                }
+            }
         }
         
         public int? ReadDeviceRTClass(string devCode, string profName)
@@ -71,36 +103,70 @@ namespace SCME.InterfaceImplementations
 
         public void WriteResults(ResultItem result, IEnumerable<string> errors)
         {
-            if (_connection != null && _connection.State == ConnectionState.Open)
+            try
             {
-                //смотрим с чем мы имеем дело: либо с PSE, либо с PSD. сразу оба параметра result.PseJob и result.PsdJob заполнены быть не могут
-                if (!String.IsNullOrWhiteSpace(result.PsdJob) && !String.IsNullOrWhiteSpace(result.PseJob))
-                    throw new ArgumentException(@"Only one of result.PsdJob or result.PseJob can be filled. In fact both parameters are filled.");
-
-                if (!String.IsNullOrWhiteSpace(result.PsdSerialNumber) && !String.IsNullOrWhiteSpace(result.PseNumber))
-                    throw new ArgumentException(@"Only one of result.PsdSerialNumber or result.PseNumber can be filled. In fact both parameters are filled.");
-
-                string groupName = String.IsNullOrWhiteSpace(result.PsdJob) ? result.PseJob : result.PsdJob;
-                string code = String.IsNullOrWhiteSpace(result.PsdSerialNumber) ? result.PseNumber : result.PsdSerialNumber;
-
-                var trans = _connection.BeginTransaction();
-
-                try
+                if (_connection != null && _connection.State == ConnectionState.Open)
                 {
-                    var devId = InsertDevice(result, code, GetOrMakeGroupId(groupName), result.ProfileKey);
+                    //смотрим с чем мы имеем дело: либо с PSE, либо с PSD. сразу оба параметра result.PseJob и result.PsdJob заполнены быть не могут
+                    if (!String.IsNullOrWhiteSpace(result.PsdJob) && !String.IsNullOrWhiteSpace(result.PseJob))
+                        throw new ArgumentException(@"Only one of result.PsdJob or result.PseJob can be filled. In fact both parameters are filled.");
 
-                    InsertParameterValues(result, devId);
+                    if (!String.IsNullOrWhiteSpace(result.PsdSerialNumber) && !String.IsNullOrWhiteSpace(result.PseNumber))
+                        throw new ArgumentException(@"Only one of result.PsdSerialNumber or result.PseNumber can be filled. In fact both parameters are filled.");
 
-                    InsertErrors(errors, devId);
+                    string groupName = String.IsNullOrWhiteSpace(result.PsdJob) ? result.PseJob : result.PsdJob;
+                    string code = String.IsNullOrWhiteSpace(result.PsdSerialNumber) ? result.PseNumber : result.PsdSerialNumber;
 
-                    trans.Commit();
-                }
-                catch (Exception)
-                {
-                    trans.Rollback();
-                    throw;
+                    var trans = _connection.BeginTransaction();
+
+                    try
+                    {
+                        var devId = InsertDevice(result, code, GetOrMakeGroupId(groupName), result.ProfileKey, trans);
+                        InsertErrors(errors, devId, trans);
+                        InsertParameterValues(result, devId, trans);
+                        
+
+                        trans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
                 }
             }
+             catch (Exception ex)
+            {
+                throw new FaultException(ex.ToString());
+            }
+        }
+
+          private int LookupProfileId(Guid profileGuid, SQLiteTransaction trans)
+        {
+            _devLookupProfileIdSelectCommand.Parameters["@PROF_GUID"].Value = profileGuid;
+            _devLookupProfileIdSelectCommand.Transaction = trans;
+
+            var res = _devLookupProfileIdSelectCommand.ExecuteScalar();
+
+            if (res != null)
+                return Convert.ToInt32(res);
+
+            return 0;
+        }
+
+        private int LookupPTT(int profileId, int testType, int ord, SQLiteTransaction trans)
+        {
+            _devLookupPTTSelectCommand.Parameters["@PROF_ID"].Value = profileId;
+            _devLookupPTTSelectCommand.Parameters["@TEST_TYPE_ID"].Value = testType;
+            _devLookupPTTSelectCommand.Parameters["@ORD"].Value = ord;
+            _devLookupPTTSelectCommand.Transaction = trans;
+
+            var res = _devLookupPTTSelectCommand.ExecuteScalar();
+
+            if (res != null)
+                return Convert.ToInt32(res);
+
+            return 0;
         }
 
         private long GetProfileId(Guid profileKey)
@@ -143,12 +209,13 @@ namespace SCME.InterfaceImplementations
             return groupId;
         }
 
-        private void InsertErrors(IEnumerable<string> errors, long devId)
+        private void InsertErrors(IEnumerable<string> errors, long devId, SQLiteTransaction trans)
         {
             var devErrInsertCommand = new SQLiteCommand("INSERT INTO DEV_ERR(DEV_ID, ERR_ID) VALUES(@DEV_ID, @ERR_ID)", _connection);
             devErrInsertCommand.Parameters.Add("@DEV_ID", DbType.Int64);
             devErrInsertCommand.Parameters.Add("@ERR_ID", DbType.Int64);
             devErrInsertCommand.Prepare();
+            devErrInsertCommand.Transaction = trans;
             devErrInsertCommand.Parameters["@DEV_ID"].Value = devId;
             foreach (var error in errors)
             {
@@ -157,7 +224,7 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        protected virtual long InsertDevice(ResultItem result, string code, long groupId, Guid profileId)
+        protected virtual long InsertDevice(ResultItem result, string code, long groupId, Guid profileId, SQLiteTransaction trans)
         {
             var deviceSelectCmd = new SQLiteCommand("SELECT D.DEV_ID FROM DEVICES D WHERE D.CODE = @CODE AND D.GROUP_ID = @GROUP_ID AND D.POS = @POS AND D.PROFILE_ID = @PROF_ID", _connection);
             deviceSelectCmd.Parameters.Add("@CODE", DbType.String);
@@ -169,6 +236,7 @@ namespace SCME.InterfaceImplementations
             deviceSelectCmd.Parameters["@GROUP_ID"].Value = groupId;
             deviceSelectCmd.Parameters["@POS"].Value = (result.Position == 2);
             deviceSelectCmd.Parameters["@PROF_ID"].Value = profileId;
+            deviceSelectCmd.Transaction = trans;
             var devId = deviceSelectCmd.ExecuteScalar();
 
             if (devId != null)
@@ -218,63 +286,77 @@ namespace SCME.InterfaceImplementations
             return _connection.LastInsertRowId;
         }
 
-        private void InsertParameterValues(ResultItem result, long devId)
+        private void InsertParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             if (result.IsHeightMeasureEnabled)
-                InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, 0);
+                InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, result.ProfileKey, 
+                    LookupPTT(LookupProfileId(result.ProfileKey, trans), Convert.ToInt32(_tests["Clamping"]), 1, trans), 1, trans);
 
-            InsertGateParameterValues(result, devId);
-            InsertVtmParameterValues(result, devId);
-            InsertBvtParameterValues(result, devId);
-            InsertAtuParameterValues(result, devId);
-            InsertQrrTqParameterValues(result, devId);
-            InsertTOUParameterValues(result, devId);
+            InsertDvdtParameterValues(result, devId, trans);
+            InsertGateParameterValues(result, devId, trans);
+            InsertVtmParameterValues(result, devId, trans);
+            InsertBvtParameterValues(result, devId, trans);
+            InsertAtuParameterValues(result, devId, trans);
+            InsertQrrTqParameterValues(result, devId, trans);
+            InsertTOUParameterValues(result, devId, trans);
         }
 
-        private void InsertGateParameterValues(ResultItem result, long devId)
+        private void InsertDvdtParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
+        {
+            for (var i = 0; i < result.DvdTestParameterses.Length; i++)
+            {
+                var order = result.DvdTestParameterses[i].Order;
+                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.ProfileKey, result.DVDT[i].TestTypeId , order, trans);
+            }
+        }
+
+        private void InsertGateParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (var i = 0; i < result.GateTestParameters.Length; i++)
             {
-                InsertParameterValue(devId, "K", result.Gate[i].IsKelvinOk ? 1 : 0, result.Gate[i].TestTypeId);
-                InsertParameterValue(devId, "RG", result.Gate[i].Resistance, result.Gate[i].TestTypeId);
-                InsertParameterValue(devId, "IGT", result.Gate[i].IGT, result.Gate[i].TestTypeId);
-                InsertParameterValue(devId, "VGT", result.Gate[i].VGT, result.Gate[i].TestTypeId);
+                var order = result.GateTestParameters[i].Order;
+                InsertParameterValue(devId, "K", result.Gate[i].IsKelvinOk ? 1 : 0, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                InsertParameterValue(devId, "RG", result.Gate[i].Resistance, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                InsertParameterValue(devId, "IGT", result.Gate[i].IGT, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                InsertParameterValue(devId, "VGT", result.Gate[i].VGT, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
 
                 if (result.GateTestParameters[i].IsIhEnabled)
-                    InsertParameterValue(devId, "IH", result.Gate[i].IH, result.Gate[i].TestTypeId);
+                    InsertParameterValue(devId, "IH", result.Gate[i].IH, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
                 if (result.GateTestParameters[i].IsIlEnabled)
-                    InsertParameterValue(devId, "IL", result.Gate[i].IL, result.Gate[i].TestTypeId);
+                    InsertParameterValue(devId, "IL", result.Gate[i].IL, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
             }
         }
 
-        private void InsertVtmParameterValues(ResultItem result, long devId)
+        private void InsertVtmParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (int i = 0; i < result.VTMTestParameters.Length; i++)
             {
+                var order = result.VTMTestParameters[i].Order;
                 if (result.VTMTestParameters[i].IsEnabled)
-                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.VTM[i].TestTypeId);
+                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, result.VTM[i].TestTypeId, order, trans);
             }
         }
 
-        private void InsertBvtParameterValues(ResultItem result, long devId)
+        private void InsertBvtParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (int i = 0; i < result.BVTTestParameters.Length; i++)
             {
+                var order = result.BVTTestParameters[i].Order;
                 if (result.BVTTestParameters[i].IsEnabled)
                 {
                     if (result.BVTTestParameters[i].MeasurementMode == BVTMeasurementMode.ModeV)
                     {
-                        InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.BVT[i].TestTypeId);
+                        InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM,result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
 
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
-                            InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.BVT[i].TestTypeId);
+                            InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM,result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
                     }
                     else
                     {
-                        InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.BVT[i].TestTypeId);
+                        InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
 
                         if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
-                            InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
+                            InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
                     }
                     
                     if (result.BVTTestParameters[i].UseUdsmUrsm)
@@ -282,21 +364,21 @@ namespace SCME.InterfaceImplementations
                         switch (result.BVTTestParameters[i].TestType)
                         {
                             case BVTTestType.Both:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
 
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
                                 break;
 
                             case BVTTestType.Direct:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
                                 break;
 
                             case BVTTestType.Reverse:
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.BVT[i].TestTypeId);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.BVT[i].TestTypeId);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
                                 break;
                         }
                     }
@@ -304,62 +386,81 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private void InsertAtuParameterValues(ResultItem result, long devId)
+        private void InsertAtuParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (int i = 0; i < result.ATUTestParameters.Length; i++)
             {
+                var order = result.ATUTestParameters[i].Order;
                 if (result.ATUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "UBR", result.ATU[i].UBR, result.ATU[i].TestTypeId);
-                    InsertParameterValue(devId, "UPRSM", result.ATU[i].UPRSM, result.ATU[i].TestTypeId);
-                    InsertParameterValue(devId, "IPRSM", result.ATU[i].IPRSM, result.ATU[i].TestTypeId);
-                    InsertParameterValue(devId, "PRSM", result.ATU[i].PRSM, result.ATU[i].TestTypeId);
+                    InsertParameterValue(devId, "UBR", result.ATU[i].UBR, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "UPRSM", result.ATU[i].UPRSM, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "IPRSM", result.ATU[i].IPRSM, result.ProfileKey,  result.ATU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "PRSM", result.ATU[i].PRSM, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
                 }
             }
         }
 
-        private void InsertQrrTqParameterValues(ResultItem result, long devId)
+        private void InsertQrrTqParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (int i = 0; i < result.QrrTqTestParameters.Length; i++)
             {
+                var order = result.QrrTqTestParameters[i].Order;
                 if (result.QrrTqTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, result.QrrTq[i].TestTypeId);
-                    InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, result.QrrTq[i].TestTypeId);
-                    InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, result.QrrTq[i].TestTypeId);
-                    InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, result.QrrTq[i].TestTypeId);
-                    InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, result.QrrTq[i].TestTypeId);
-                    InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, result.QrrTq[i].TestTypeId);
+                    InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, result.ProfileKey, result.QrrTq[i].TestTypeId,  order, trans);
                 }
             }
         }
 
-        private void InsertTOUParameterValues(ResultItem result, long devId)
+        private void InsertTOUParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             for (int i = 0; i < result.TOUTestParameters.Length; i++)
             {
+                var order = result.TOUTestParameters[i].Order;
                 if (result.TOUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.TOU[i].TestTypeId);
-                    InsertParameterValue(devId, "TOU_TGT", result.TOU[i].TGT, result.TOU[i].TestTypeId);
+                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, result.TOU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "TOU_TGT", result.TOU[i].TGT, result.ProfileKey, result.TOU[i].TestTypeId, order, trans);
                 }
             }
         }
 
-        private void InsertParameterValue(long device, string name, float value, long testTypeId)
-        {
-            var devParamInsertCommand = new SQLiteCommand("INSERT INTO DEV_PARAM(DEV_ID, PARAM_ID, VALUE,TEST_TYPE_ID) VALUES(@DEV_ID, @PARAM_ID, @VALUE,@TEST_TYPE_ID)", _connection);
-            devParamInsertCommand.Parameters.Add("@DEV_ID", DbType.Int64);
-            devParamInsertCommand.Parameters.Add("@PARAM_ID", DbType.Int64);
-            devParamInsertCommand.Parameters.Add("@VALUE", DbType.Single);
-            devParamInsertCommand.Parameters.Add("@TEST_TYPE_ID", DbType.Int64);
-            devParamInsertCommand.Prepare();
-            devParamInsertCommand.Parameters["@DEV_ID"].Value = device;
-            devParamInsertCommand.Parameters["@PARAM_ID"].Value = _params[name];
-            devParamInsertCommand.Parameters["@VALUE"].Value = value;
-            devParamInsertCommand.Parameters["@TEST_TYPE_ID"].Value = testTypeId;
-            devParamInsertCommand.ExecuteNonQuery();
-        }
+        //private void InsertParameterValue(long device, string name, float value, long testTypeId)
+        //{
+        //    var devParamInsertCommand = new SQLiteCommand("INSERT INTO DEV_PARAM(DEV_ID, PARAM_ID, VALUE,TEST_TYPE_ID) VALUES(@DEV_ID, @PARAM_ID, @VALUE,@TEST_TYPE_ID)", _connection);
+        //    devParamInsertCommand.Parameters.Add("@DEV_ID", DbType.Int64);
+        //    devParamInsertCommand.Parameters.Add("@PARAM_ID", DbType.Int64);
+        //    devParamInsertCommand.Parameters.Add("@VALUE", DbType.Single);
+        //    devParamInsertCommand.Parameters.Add("@TEST_TYPE_ID", DbType.Int64);
+        //    devParamInsertCommand.Prepare();
+        //    devParamInsertCommand.Parameters["@DEV_ID"].Value = device;
+        //    devParamInsertCommand.Parameters["@PARAM_ID"].Value = _params[name];
+        //    devParamInsertCommand.Parameters["@VALUE"].Value = value;
+        //    devParamInsertCommand.Parameters["@TEST_TYPE_ID"].Value = testTypeId;
+        //    devParamInsertCommand.ExecuteNonQuery();
+        //}
+
+          private void InsertParameterValue(long device, string name, float value, Guid profileKey, long testTypeId, int order, SQLiteTransaction trans)
+          {
+              var devParamInsertCommand = new SQLiteCommand("INSERT INTO DEV_PARAM(DEV_ID, PARAM_ID, VALUE,TEST_TYPE_ID) VALUES(@DEV_ID, @PARAM_ID, @VALUE,@TEST_TYPE_ID)", _connection);
+              devParamInsertCommand.Parameters.Add("@DEV_ID", DbType.Int64);
+              devParamInsertCommand.Parameters.Add("@PARAM_ID", DbType.Int64);
+              devParamInsertCommand.Parameters.Add("@VALUE", DbType.Single);
+              devParamInsertCommand.Parameters.Add("@TEST_TYPE_ID", DbType.Int64);
+              devParamInsertCommand.Prepare();
+              devParamInsertCommand.Parameters["@DEV_ID"].Value = device;
+              devParamInsertCommand.Parameters["@PARAM_ID"].Value = _params[name];
+              devParamInsertCommand.Parameters["@VALUE"].Value = value;
+              devParamInsertCommand.Parameters["@TEST_TYPE_ID"].Value = testTypeId ;
+              devParamInsertCommand.Transaction = trans;
+              devParamInsertCommand.ExecuteNonQuery();
+          }
 
         #endregion
 

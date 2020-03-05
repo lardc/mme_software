@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
@@ -672,6 +673,10 @@ namespace SCME.UI.IO
             try
             {
                 m_ControlClient.SafetySystemOn();
+            }
+            catch(FaultException<FaultData> ex)
+            {
+                MessageBox.Show(ex.Detail.Message);
             }
             catch (CommunicationException ex)
             {

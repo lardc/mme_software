@@ -1393,7 +1393,7 @@ namespace SCME.UI.PagesUser
 
             var labelBvtIrsmResult = FindChild<Label>(presenter, "labelBvtIrsmResult1");
             if (labelBvtIrsmResult != null)
-                SetLabel(labelBvtIrsmResult, state, result.IRRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM, result.IRRM.ToString(CultureInfo.InvariantCulture));
+                SetLabel(labelBvtIrsmResult, state, result.IRRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].UdsmUrsmIRRM, result.IRRM.ToString(CultureInfo.InvariantCulture));
 
             if (state != DeviceState.InProcess)
                 if (result.IRRM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)

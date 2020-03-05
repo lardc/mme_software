@@ -12,7 +12,7 @@ namespace SCME.InterfaceImplementations
     {
         public SQLiteResultsServiceLocal(string databasePath) : base(databasePath) { }
 
-        protected override long InsertDevice(ResultItem result, string code, long groupId, Guid profileId)
+        protected override long InsertDevice(ResultItem result, string code, long groupId, Guid profileId, SQLiteTransaction trans)
         {
             var deviceSelectCmd = new SQLiteCommand("SELECT D.DEV_ID FROM DEVICES D WHERE D.CODE = @CODE AND D.GROUP_ID = @GROUP_ID AND D.POS = @POS AND D.PROFILE_ID = @PROF_ID", _connection);
             deviceSelectCmd.Parameters.Add("@CODE", DbType.String);
