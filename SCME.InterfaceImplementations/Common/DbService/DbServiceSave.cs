@@ -201,10 +201,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
                 }
 
-                bvtParameters.Add("UdsmUrsm_IRRM", (DBNull.Value, bvt.UdsmUrsmIRRM));
+                bvtParameters.Add("UdsmUrsm_IRRM", (DBNull.Value, bvt.IRSM));
 
                 if (bvt.UdsmUrsmTestType != Types.BVT.BVTTestType.Reverse)
-                    bvtParameters.Add("UdsmUrsm_IDRM", (DBNull.Value, bvt.UdsmUrsmIDRM));
+                    bvtParameters.Add("UdsmUrsm_IDRM", (DBNull.Value, bvt.IDSM));
             }
 
             return ("BVT", bvtCondition, bvtParameters);

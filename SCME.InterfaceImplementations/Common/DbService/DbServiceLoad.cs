@@ -696,11 +696,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "UdsmUrsm_IRRM":
                         if (result.Item3.HasValue)
-                            parameters.UdsmUrsmIRRM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IRSM = Convert.ToUInt16(result.Item3.Value);
                         break;
                     case "UdsmUrsm_IDRM":
                         if (result.Item3.HasValue)
-                            parameters.UdsmUrsmIDRM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IDSM = Convert.ToUInt16(result.Item3.Value);
                         break;
                 }
             }

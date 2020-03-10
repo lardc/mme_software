@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.BVT;
@@ -909,8 +910,16 @@ namespace SCME.Service.IO
                         {
                             internalState = WaitForEndOfTest();
 
-                            m_Result.VDRM = (ushort) Math.Abs(ReadRegisterS(REG_RESULT_V));
-                            m_Result.IDRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            if (bvtInputParameter.IsUdsmUrsm)
+                            {
+                                m_Result.VDSM = (ushort)Math.Abs(ReadRegisterS(REG_RESULT_V));
+                                m_Result.IDSM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            }
+                            else
+                            {
+                                m_Result.VDRM = (ushort)Math.Abs(ReadRegisterS(REG_RESULT_V));
+                                m_Result.IDRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            }
 
                             if (m_ReadGraph)
                                 ReadArrays(m_Result, true);
@@ -919,8 +928,16 @@ namespace SCME.Service.IO
                         {
                             internalState = DeviceState.Success;
 
-                            m_Result.VDRM = EMU_DEFAULT_VDRM;
-                            m_Result.IDRM = EMU_DEFAULT_IDRM;
+                            if (bvtInputParameter.IsUdsmUrsm)
+                            {
+                                m_Result.VDSM = Convert.ToUInt16(EMU_DEFAULT_VDRM * new Random((int)DateTime.Now.Ticks).NextDouble());
+                                m_Result.IDSM = Convert.ToUInt16(EMU_DEFAULT_IDRM * 300 * new Random((int)DateTime.Now.Ticks).NextDouble());
+                            }
+                            else
+                            {
+                                m_Result.VDRM = Convert.ToUInt16(EMU_DEFAULT_VDRM * new Random((int)DateTime.Now.Ticks).NextDouble());
+                                m_Result.IDRM = Convert.ToUInt16(EMU_DEFAULT_IDRM * 300 * new Random((int)DateTime.Now.Ticks).NextDouble());
+                            }
                         }
 
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
@@ -960,8 +977,16 @@ namespace SCME.Service.IO
                         {
                             internalState = WaitForEndOfTest();
 
-                            m_Result.VRRM = (ushort) Math.Abs(ReadRegisterS(REG_RESULT_V));
-                            m_Result.IRRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            if (bvtInputParameter.IsUdsmUrsm)
+                            {
+                                m_Result.VRSM = (ushort)Math.Abs(ReadRegisterS(REG_RESULT_V));
+                                m_Result.IRSM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            }
+                            else
+                            {
+                                m_Result.VRRM = (ushort)Math.Abs(ReadRegisterS(REG_RESULT_V));
+                                m_Result.IRRM = Math.Abs(ReadRegisterS(REG_RESULT_I) / 10.0f);
+                            }
 
                             if (m_ReadGraph)
                                 ReadArrays(m_Result, false);
@@ -970,8 +995,16 @@ namespace SCME.Service.IO
                         {
                             internalState = DeviceState.Success;
 
-                            m_Result.VRRM = EMU_DEFAULT_VRRM;
-                            m_Result.IRRM = EMU_DEFAULT_IRRM;
+                            if (bvtInputParameter.IsUdsmUrsm)
+                            {
+                                m_Result.VRSM = Convert.ToUInt16(EMU_DEFAULT_VRRM * new Random((int)DateTime.Now.Ticks).NextDouble());
+                                m_Result.IRSM = Convert.ToUInt16(EMU_DEFAULT_IRRM * 300 * new Random((int)DateTime.Now.Ticks).NextDouble());
+                            }
+                            else
+                            {
+                                m_Result.VRRM = Convert.ToUInt16(EMU_DEFAULT_VRRM * new Random((int)DateTime.Now.Ticks).NextDouble());
+                                m_Result.IRRM = Convert.ToUInt16(EMU_DEFAULT_IRRM * 300 * new Random((int)DateTime.Now.Ticks).NextDouble());
+                            }
                         }
 
                         FireBvtEvent(internalState, m_Result, BVTTestType.Reverse, bvtInputParameter.IsUdsmUrsm);

@@ -1342,15 +1342,15 @@ namespace SCME.UI.PagesUser
         {
             m_StateBvt = state;
 
-            if (m_CurrentPos == 1)
+            if (m_CurrentPos == 1) //IOBvt н знает про SM
             {
-                ResultsBVT1[bvtCounter].IDRM = result.IDRM;
-                ResultsBVT1[bvtCounter].VDRM = result.VDRM;
+                ResultsBVT1[bvtCounter].IDSM = result.IDSM;
+                ResultsBVT1[bvtCounter].VDSM = result.VDSM;
             }
             else
             {
-                ResultsBVT2[bvtCounter].IDRM = result.IDRM;
-                ResultsBVT2[bvtCounter].VDRM = result.VDRM;
+                ResultsBVT2[bvtCounter].IDSM = result.IDSM;
+                ResultsBVT2[bvtCounter].VDSM = result.VDSM;
             }
 
             var bvtItemContainer = GetBvtItemContainer();
@@ -1358,14 +1358,14 @@ namespace SCME.UI.PagesUser
 
             var labelBvtVdsmResult = FindChild<Label>(presenter, "labelBvtVdsmResult1");
             if (labelBvtVdsmResult != null)
-                labelBvtVdsmResult.Content = result.VDRM.ToString(CultureInfo.InvariantCulture);
+                labelBvtVdsmResult.Content = result.VDSM.ToString(CultureInfo.InvariantCulture);
 
             var labelBvtIdsmResult = FindChild<Label>(presenter, "labelBvtIdsmResult1");
             if (labelBvtIdsmResult != null)
-                SetLabel(labelBvtIdsmResult, state, result.IDRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM, result.IDRM.ToString(CultureInfo.InvariantCulture));
+                SetLabel(labelBvtIdsmResult, state, result.IDSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDSM, result.IDSM.ToString(CultureInfo.InvariantCulture));
 
             if (state != DeviceState.InProcess)
-                if (result.IDRM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
+                if (result.IDSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDSM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IDSM");
         }
 
@@ -1375,13 +1375,13 @@ namespace SCME.UI.PagesUser
 
             if (m_CurrentPos == 1)
             {
-                ResultsBVT1[bvtCounter].IRRM = result.IRRM;
-                ResultsBVT1[bvtCounter].VRRM = result.VRRM;
+                ResultsBVT1[bvtCounter].IRSM = result.IRSM;
+                ResultsBVT1[bvtCounter].VRSM = result.VRSM;
             }
             else
             {
-                ResultsBVT2[bvtCounter].IRRM = result.IRRM;
-                ResultsBVT2[bvtCounter].VRRM = result.VRRM;
+                ResultsBVT2[bvtCounter].IRSM = result.IRSM;
+                ResultsBVT2[bvtCounter].VRSM = result.VRSM;
             }
 
             var bvtItemContainer = GetBvtItemContainer();
@@ -1389,14 +1389,14 @@ namespace SCME.UI.PagesUser
 
             var labelBvtVrsmResult = FindChild<Label>(presenter, "labelBvtVrsmResult1");
             if (labelBvtVrsmResult != null)
-                labelBvtVrsmResult.Content = result.VRRM.ToString(CultureInfo.InvariantCulture);
+                labelBvtVrsmResult.Content = result.VRSM.ToString(CultureInfo.InvariantCulture);
 
             var labelBvtIrsmResult = FindChild<Label>(presenter, "labelBvtIrsmResult1");
             if (labelBvtIrsmResult != null)
-                SetLabel(labelBvtIrsmResult, state, result.IRRM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].UdsmUrsmIRRM, result.IRRM.ToString(CultureInfo.InvariantCulture));
+                SetLabel(labelBvtIrsmResult, state, result.IRSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRSM, result.IRSM.ToString(CultureInfo.InvariantCulture));
 
             if (state != DeviceState.InProcess)
-                if (result.IRRM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
+                if (result.IRSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRSM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IRSM");
         }
 
