@@ -240,9 +240,13 @@ namespace SCME.Types.BVT
                 return true;
             if (UdsmUrsmTestType != oldParameters.TestType)
                 return true;
-            if (IDSM.CompareTo(oldParameters.IDRM) != 0)
+            if (VDSM != oldParameters.VDSM)
                 return true;
-            if (IRSM.CompareTo(oldParameters.IRRM) != 0)
+            if (VRSM != oldParameters.VRSM)
+                return true;
+            if (IDSM.CompareTo(oldParameters.IDSM) != 0)
+                return true;
+            if (IRSM.CompareTo(oldParameters.IRSM) != 0)
                 return true;
 
             return false;

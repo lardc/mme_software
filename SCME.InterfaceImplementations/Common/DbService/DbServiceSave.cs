@@ -190,21 +190,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 switch (bvt.UdsmUrsmTestType)
                 {
                     case Types.BVT.BVTTestType.Both:
-                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
-                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        bvtCondition.Add("VDSM", bvt.UdsmUrsmVoltageLimitD);
+                        bvtCondition.Add("VRSM", bvt.UdsmUrsmVoltageLimitR);
                         break;
                     case Types.BVT.BVTTestType.Direct:
-                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        bvtCondition.Add("VDSM", bvt.UdsmUrsmVoltageLimitD);
                         break;
                     case Types.BVT.BVTTestType.Reverse:
-                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        bvtCondition.Add("VRSM", bvt.UdsmUrsmVoltageLimitR);
                         break;
                 }
 
-                bvtParameters.Add("UdsmUrsm_IRRM", (DBNull.Value, bvt.IRSM));
+                bvtParameters.Add("IRSM", (DBNull.Value, bvt.IRSM));
 
                 if (bvt.UdsmUrsmTestType != Types.BVT.BVTTestType.Reverse)
-                    bvtParameters.Add("UdsmUrsm_IDRM", (DBNull.Value, bvt.IDSM));
+                    bvtParameters.Add("IDSM", (DBNull.Value, bvt.IDSM));
             }
 
             return ("BVT", bvtCondition, bvtParameters);
