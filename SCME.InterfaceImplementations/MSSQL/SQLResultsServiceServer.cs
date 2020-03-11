@@ -653,46 +653,61 @@ namespace SCME.InterfaceImplementations
             for (int i = 0; i < result.BVTTestParameters.Length; i++)
             {
                 var order = result.BVTTestParameters[i].Order;
-                if (result.BVTTestParameters[i].IsEnabled)
+                switch (result.BVTTestParameters[i].MeasurementMode)
                 {
-                    if (result.BVTTestParameters[i].MeasurementMode == BVTMeasurementMode.ModeV)
-                    {
-                        InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
-
-                        if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
-                            InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
-                    }
-                    else
-                    {
-                        InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
-
-                        if (result.BVTTestParameters[i].TestType != BVTTestType.Reverse)
-                            InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
-                    }
-
-                    if (result.BVTTestParameters[i].UseUdsmUrsm)
-                    {
-                        //результаты теста UDSM/URSM
+                    case BVTMeasurementMode.ModeI:
                         switch (result.BVTTestParameters[i].TestType)
                         {
                             case BVTTestType.Both:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", order, trans);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", order, trans);
-
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", order, trans);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", order, trans);
+                                InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
+                                InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
                                 break;
-
                             case BVTTestType.Direct:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", order, trans);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", order, trans);
+                                InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
                                 break;
-
                             case BVTTestType.Reverse:
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", order, trans);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", order, trans);
+                                InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
                                 break;
                         }
+                        break;
+                    case BVTMeasurementMode.ModeV:
+                        switch (result.BVTTestParameters[i].TestType)
+                        {
+                            case BVTTestType.Both:
+                                InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
+                                InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
+                                break;
+                            case BVTTestType.Direct:
+                                InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
+                                break;
+                            case BVTTestType.Reverse:
+                                InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
+                                break;
+                        }
+                        break;
+                }
+
+                if (result.BVTTestParameters[i].UseUdsmUrsm)
+                {
+                    switch (result.BVTTestParameters[i].TestType)
+                    {
+                        case BVTTestType.Both:
+                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
+
+                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
+                            break;
+
+                        case BVTTestType.Direct:
+                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
+                            break;
+
+                        case BVTTestType.Reverse:
+                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
+                            break;
                     }
                 }
             }
