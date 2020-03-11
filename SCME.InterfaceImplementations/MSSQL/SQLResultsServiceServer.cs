@@ -838,7 +838,8 @@ namespace SCME.InterfaceImplementations
                 {
                     Device = ComplexParts.Database,
                     TimeStamp = DateTime.Now,
-                }, new Exception("ReadDevicesFromServer -> GetDevices not work", ex).ToString());
+                    Message = new Exception("ReadDevicesFromServer -> GetDevices not work", ex).ToString()
+                });
             }
         }
 

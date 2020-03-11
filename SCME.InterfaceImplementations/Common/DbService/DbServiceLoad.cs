@@ -50,8 +50,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
         {
+            int n = 0;
             var res = GetProfilesSuperficially(mmeCode).Select(m =>
             {
+                n++;
                 m.DeepData = LoadProfileDeepData(m);
                 return m;
             }).ToList();

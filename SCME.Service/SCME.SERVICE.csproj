@@ -205,7 +205,7 @@
       <Name>SCME.LOGGER</Name>
     </ProjectReference>
     <ProjectReference Include="..\SCME.Types\SCME.Types.csproj">
-      <Project>{64A797CF-B3B6-41EE-8598-F6BB07A59B17}</Project>
+      <Project>{64a797cf-b3b6-41ee-8598-f6bb07a59b17}</Project>
       <Name>SCME.Types</Name>
     </ProjectReference>
     <ProjectReference Include="..\SCME.UIServiceConfig\SCME.UIServiceConfig.csproj">

@@ -137,7 +137,7 @@ namespace SCME.InterfaceImplementations
             }
              catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw new FaultException<FaultData>(new FaultData(){TimeStamp = DateTime.Now, Message =ex.ToString() });
             }
         }
 
