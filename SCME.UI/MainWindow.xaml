@@ -121,10 +121,23 @@
                           StrokeThickness="4" VerticalAlignment="Center"
                           Stretch="UniformToFill" Margin="0, 10, 30, 10" 
                           Visibility="{Binding IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                        
                         <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
-                        <Label  Content="{Binding AccountName}"  FontSize="24" HorizontalAlignment="Left"
+                        <Label Grid.Column="1"  Content="{Binding AccountName}"   FontSize="24" HorizontalAlignment="Left"
                            Visibility="{Binding AccountNameIsVisibility, Converter={StaticResource B2V}}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
+                            <TextBlock Text="{Binding Version}" FontSize="12" Grid.Row="1" Grid.ColumnSpan="2"/>
+                        </Grid>
+                        
                         <Button Content="{StaticResource LogoutPath}" Click="Logout_Click"
                             Visibility="{Binding AccountButtonVisibility}"
                             Style="{StaticResource ButtonPath}" Margin="0, 10, 30, 10" Padding="5" />

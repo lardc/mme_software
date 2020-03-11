@@ -21,7 +21,8 @@ namespace SCME.Agent
             {
                 Text = @"Exit"
             };
-            toolStripButton.Click += (sender, args) => Application.Exit();
+            toolStripButton.Click += ToolStripButtonExit_Click;
+
             var contextMenuStrip = new ContextMenuStrip();
             contextMenuStrip.Items.Add(toolStripButton);
             var notifyIcon = new NotifyIcon
@@ -65,6 +66,17 @@ namespace SCME.Agent
                 _pUserInterface.Exited += PUserInterfaceOnExited;
             }
 
+        }
+
+        private void ToolStripButtonExit_Click(object sender, EventArgs e)
+        {
+            _pService.Exited -= PServiceOnExited;
+            _pUserInterface.Exited -= PUserInterfaceOnExited;
+            _pService.Kill();
+            _pService.WaitForExit();
+            _pUserInterface.Kill();
+            _pUserInterface.WaitForExit();
+            Application.Exit();
         }
 
         private void PUserInterfaceOnExited(object sender, EventArgs e)

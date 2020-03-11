@@ -74,7 +74,7 @@ namespace SCME.Agent
             using var memoryStream = new MemoryStream(archiveBytes);
             using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
             foreach (var entry in zipArchive.Entries)
-                File.WriteAllBytes(Path.Combine(destinationDirectory, entry.Name), new BinaryReader(entry.Open()).ReadBytes((int)entry.Length));
+                File.WriteAllBytes(Path.Combine(destinationDirectory, entry.FullName), new BinaryReader(entry.Open()).ReadBytes((int)entry.Length));
         }
 
 
@@ -116,7 +116,7 @@ namespace SCME.Agent
         {
             try
             {
-                string uiServiceDirectory = Path.GetDirectoryName(Program.ConfigData.UIAppPath);
+                string uiServiceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
 
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.UIAppPath), "SCME.UIServiceConfig.dll.config"));
@@ -141,7 +141,7 @@ namespace SCME.Agent
                 
                 var newVersionBytes = await RepeatActionAsync(() => _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={mmeCode}")));
 
-                 if(Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
+                if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
                     Directory.Delete(BACK_UI_SERVICE_DIRECTORY, true);
 
                 DirectoryMove(uiServiceDirectory, BACK_UI_SERVICE_DIRECTORY,true);

@@ -70,12 +70,7 @@ namespace SCME.UI
                 dw.ShowDialog();
             }
 
-            Cache.Keyboards =
-                new KeyboardLayouts(Path.IsPathRooted(Settings.Default.KeyboardsPath)
-                                        ? Settings.Default.KeyboardsPath
-                                        : Path.Combine(
-                                            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase),
-                                            Settings.Default.KeyboardsPath));
+            Cache.Keyboards = new KeyboardLayouts(Path.IsPathRooted(Settings.Default.KeyboardsPath) ? Settings.Default.KeyboardsPath : Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase),Settings.Default.KeyboardsPath));
             
             ResourceBinding.Scaling(0.60);
 

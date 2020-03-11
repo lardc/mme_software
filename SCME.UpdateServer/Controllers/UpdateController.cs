@@ -57,15 +57,32 @@ namespace SCME.UpdateServer.Controllers
             //Чтобы в MemoryStream записались изменения должен быть вызван метод Dispose для ZipArchive
             using (var zipArchive = new ZipArchive(zipStreamAsync, ZipArchiveMode.Update, true))
             {
-                var oldEntry = zipArchive.Entries.Single(m => m.Name == _config.ScmeCommonConfigName);
+                var oldEntry = zipArchive.Entries.Single(m => m.FullName== _config.ScmeCommonConfigName);
 
                 var newEntryBytes = await ZipAndXmlHelper.ReplaceConfig(oldEntry, mmeParameter);
 
                 oldEntry.Delete();
 
-                var modifiedEntry = zipArchive.CreateEntry(oldEntry.Name);
+                var modifiedEntry = zipArchive.CreateEntry(oldEntry.FullName);
                 await modifiedEntry.Open().WriteAsync(newEntryBytes);
             }
+
+            using (var zipArchive = new ZipArchive(zipStreamAsync, ZipArchiveMode.Update, true))
+            {
+                var oldEntry = zipArchive.Entries.Single(m => m.FullName == $@"netcoreapp3.1\{_config.ScmeCommonConfigName}");
+                if (oldEntry != null)
+                {
+                    var newEntryBytes = await ZipAndXmlHelper.ReplaceConfig(oldEntry, mmeParameter);
+
+                    oldEntry.Delete();
+
+                    var modifiedEntry = zipArchive.CreateEntry(oldEntry.FullName);
+                    await modifiedEntry.Open().WriteAsync(newEntryBytes);
+                }
+            }
+
+              
+
 
             zipStreamAsync.Position = 0;
             return File(zipStreamAsync, "application/octet-stream");
