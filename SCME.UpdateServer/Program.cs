@@ -1,6 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,26 +15,63 @@ namespace SCME.UpdateServer
 {
     public static class Program
     {
-        private const string START_ERROR = "CRITICAL_START_ERROR";
-        private static FileStream appSettingsLocker;
+        private const string StartError = "CRITICAL_START_ERROR";
+        private static FileStream _appSettingsLocker;
+        private static string _appSetting = "appsettings.json";
+        private static string _appSettingEditable = "appsettings.editable.json";
         public static void Main(string[] args)
         {
+            Console.WriteLine($"Start {Guid.NewGuid()}");
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            
+            File.Copy(_appSetting, _appSettingEditable, true);
+            Task.Factory.StartNew(CheckSettings);
             try
             {
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
             {
-                File.WriteAllText(START_ERROR, ex.ToString());
+                File.WriteAllText(StartError, ex.ToString());
             }
             
         }
 
+        private static void CheckSettings()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (HashFile(_appSettingEditable).SequenceEqual(HashFile(_appSetting))) 
+                    continue;
+                try
+                {
+                    new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(_appSettingEditable, true, true).Build();
+                    _appSettingsLocker.Close();
+                    File.Copy(_appSettingEditable, _appSetting, true);
+                    _appSettingsLocker = File.Open(_appSetting, FileMode.Open, FileAccess.Read, FileShare.Read);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Console.WriteLine("Нажмите Enter чтобы продолжить валидацию");
+                    Console.ReadLine();
+                }
+            }
+            // ReSharper disable once FunctionNeverReturns
+        }
+
+        private static byte[] HashFile(string filename)
+        {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(filename);
+            return md5.ComputeHash(stream);
+        }
+
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
-            appSettingsLocker = File.Open("appsettings.json", FileMode.Open, FileAccess.Read, FileShare.Read);
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
+            _appSettingsLocker = File.Open(_appSetting, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile(_appSetting,  true, true).Build();
             
             return Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>

@@ -15,7 +15,7 @@ namespace SCME.UpdateServer.Controllers
     {
         private readonly UpdateDataConfig _config;
 
-        public UpdateController(IOptions<UpdateDataConfig> config)
+        public UpdateController(IOptionsSnapshot<UpdateDataConfig> config)
         {
             _config = config.Value;
         }
@@ -32,6 +32,9 @@ namespace SCME.UpdateServer.Controllers
             System.IO.File.AppendAllText(Path.GetFullPath(Path.Combine(Startup.LOGS_DIRECTORY, $"{DateTime.Now:s}.txt".Replace(':', '-'))), $"{exceptionHandlerPathFeature.Path} {exceptionHandlerPathFeature.Error}");
         }
 
+        [HttpGet]
+        public string DebugParameter() => _config.DebugParameter;
+        
         [HttpGet]
         public string GetAgentVersion() => FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName, _config.ScmeAgentExeName)).ProductVersion;
 

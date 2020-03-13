@@ -14,6 +14,7 @@ namespace SCME.UpdateServer
     
     public class UpdateDataConfig
     {
+        public string DebugParameter { get; set; }
         public string DataPathRoot { get; set; }
         public string ScmeAgentFolderName { get; set; }
         public string ScmeAgentExeName { get; set; }
