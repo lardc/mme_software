@@ -209,18 +209,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 switch (bvt.UdsmUrsmTestType)
                 {
                     case Types.BVT.BVTTestType.Both:
-                        bvtCondition.Add("VDSM", bvt.UdsmUrsmVoltageLimitD);
-                        bvtCondition.Add("VRSM", bvt.UdsmUrsmVoltageLimitR);
+                        bvtParameters.Add("VDSM", (bvt.VDSM, DBNull.Value));
+                        bvtParameters.Add("VRSM", (bvt.VRSM, DBNull.Value));
                         bvtParameters.Add("IDSM", (DBNull.Value, bvt.IDSM));
                         bvtParameters.Add("IRSM", (DBNull.Value, bvt.IRSM));
                         break;
                     case Types.BVT.BVTTestType.Direct:
                         bvtParameters.Add("IDSM", (DBNull.Value, bvt.IDSM));
-                        bvtCondition.Add("VDSM", bvt.UdsmUrsmVoltageLimitD);
+                        bvtParameters.Add("VDSM", (bvt.VDSM, DBNull.Value));
                         break;
                     case Types.BVT.BVTTestType.Reverse:
                         bvtParameters.Add("IRSM", (DBNull.Value, bvt.IRSM));
-                        bvtCondition.Add("VRSM", bvt.UdsmUrsmVoltageLimitR);
+                        bvtParameters.Add("VRSM", (bvt.VRSM, DBNull.Value));
                         break;
                 }
             }
