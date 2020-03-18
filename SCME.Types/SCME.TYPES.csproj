@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>SCME.Types</AssemblyName>
     <RootNamespace>SCME.Types</RootNamespace>
   </PropertyGroup>
@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.0" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.7.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />

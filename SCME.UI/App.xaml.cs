@@ -48,6 +48,7 @@ namespace SCME.UI
 
         private static void Current_DispatcherUnhandledException(object Sender, DispatcherUnhandledExceptionEventArgs E)
         {
+            File.WriteAllText("error.txt", E.Exception.ToString());
             System.IO.File.WriteAllText("Critical error UI.txt", E.Exception.ToString());
             var dw = new DialogWindow("Application crashed!",
                 string.Format("{0}\n{1}", E.Exception.Message, E.Exception))

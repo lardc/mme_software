@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>SCME.WpfControlLibrary</AssemblyName>
     <RootNamespace>SCME.WpfControlLibrary</RootNamespace>
 	<UseWPF>true</UseWPF>
@@ -15,7 +15,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 

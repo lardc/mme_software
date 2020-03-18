@@ -16,6 +16,7 @@ namespace SCME.UpdateServer
     public static class Program
     {
         private const string StartError = "CRITICAL_START_ERROR";
+        private const string ValidateErrorFile = "VALIDATE_ERROR";
         private static FileStream _appSettingsLocker;
         private static string _appSetting = "appsettings.json";
         private static string _appSettingEditable = "appsettings.editable.json";
@@ -42,6 +43,13 @@ namespace SCME.UpdateServer
             while (true)
             {
                 Thread.Sleep(1000);
+                if (!File.Exists(_appSettingEditable))
+                {
+                    File.WriteAllText(ValidateErrorFile, $"{_appSettingEditable} has been deleted");
+                    File.Copy(_appSetting, _appSettingEditable);
+                    continue;
+                }
+
                 if (HashFile(_appSettingEditable).SequenceEqual(HashFile(_appSetting))) 
                     continue;
                 try
@@ -53,9 +61,7 @@ namespace SCME.UpdateServer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    Console.WriteLine("Нажмите Enter чтобы продолжить валидацию");
-                    Console.ReadLine();
+                    File.WriteAllText(ValidateErrorFile, e.ToString());
                 }
             }
             // ReSharper disable once FunctionNeverReturns
