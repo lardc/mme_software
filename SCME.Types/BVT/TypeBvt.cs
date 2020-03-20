@@ -116,14 +116,18 @@ namespace SCME.Types.BVT
         
         [DataMember]
         public ushort UdsmUrsmPlateTime { get; set; }
-        
-        
-        [DataMember]
-        public float UdsmUrsmIDRM { get; set; }
+
 
         [DataMember]
-        public float UdsmUrsmIRRM { get; set; }
-        
+        public ushort VDSM { get; set; }
+
+        [DataMember]
+        public ushort VRSM { get; set; }
+        [DataMember]
+        public float IDSM { get; set; }
+
+        [DataMember]
+        public float IRSM { get; set; }
 
         [DataMember]
         public bool UseUdsmUrsm { get; set; }
@@ -235,9 +239,13 @@ namespace SCME.Types.BVT
                 return true;
             if (UdsmUrsmTestType != oldParameters.TestType)
                 return true;
-            if (UdsmUrsmIDRM.CompareTo(oldParameters.IDRM) != 0)
+            if (VDSM != oldParameters.VDSM)
                 return true;
-            if (UdsmUrsmIRRM.CompareTo(oldParameters.IRRM) != 0)
+            if (VRSM != oldParameters.VRSM)
+                return true;
+            if (IDSM.CompareTo(oldParameters.IDSM) != 0)
+                return true;
+            if (IRSM.CompareTo(oldParameters.IRSM) != 0)
                 return true;
 
             return false;
@@ -258,8 +266,8 @@ namespace SCME.Types.BVT
             UdsmUrsmFrequencyDivisor = FrequencyDivisor = 1;
             VDRM = 1400;
             VRRM = 1400;
-            UdsmUrsmIDRM =IDRM = 5;
-            UdsmUrsmIRRM = IRRM = 5;
+            IDSM =IDRM = 5;
+            IRSM = IRRM = 5;
             
 
             TestParametersType = TestParametersType.Bvt;
@@ -311,16 +319,16 @@ namespace SCME.Types.BVT
     {
         [DataMember]
         public ushort VDSM { get; set; }
-        
+
         [DataMember]
         public ushort VRSM { get; set; }
-        
+
         [DataMember]
         public float IDSM { get; set; }
-        
+
         [DataMember]
         public float IRSM { get; set; }
-        
+
         [DataMember]
         public ushort VDRM { get; set; }
 

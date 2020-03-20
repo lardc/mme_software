@@ -4,7 +4,7 @@
 
     <!-- Static losses parameters -->
     <system:Single x:Key="MaxITM">12500</system:Single>
-    <system:Single x:Key="MinITM">300</system:Single>
+    <system:Single x:Key="MinITM">150</system:Single>
 
     <system:Single x:Key="MaxTimeITM">10000</system:Single>
     <system:Single x:Key="MinTimeITM">10000</system:Single>

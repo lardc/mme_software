@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Resources;
+using System.ServiceModel.Channels;
 using SCME.Types;
 
 
@@ -102,9 +104,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("VRRM", "VRRM, V", false),
             ("IDRM", "IDRM, mA", false),
             ("IRRM", "IRRM, mA", false),
+            ("VDSM", "VDRM, V", false),
+            ("VRSM", "VRRM, V", false),
+            ("IDSM", "IDRM, mA", false),
+            ("IRSM", "IRRM, mA", false),
 
-            ("UdsmUrsm_IDRM", "UdsmUrsm_IDRM, A", false),
-            ("UdsmUrsm_IRRM", "UdsmUrsm_IRRM, A", false),
+            //("UdsmUrsm_IDRM", "UdsmUrsm_IDRM, A", false),
+            //("UdsmUrsm_IRRM", "UdsmUrsm_IRRM, A", false),
 
             ("IsHeightOk", "IsHeightOk", false),
             ("UBR", "UBR, V", false),
@@ -124,7 +130,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_VRSM", "BVT_VRSM, V", false),
             ("BVT_IDSM", "BVT_IDSM, A", false),
             ("BVT_IRSM", "BVT_IRSM, A", false),
-            
+
             ("DVDT_OK", "DVDT_OK", false),
         };
 
@@ -271,8 +277,64 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 if (isMigrate)
                     LoadDictionary();
 
+            }
+            BvtCheck();
+            return isMigrate;
+        }
 
-                return isMigrate;
+        private void BvtCheck()
+        {
+            Dictionary<string, List<string>> newParamsOldParams = new Dictionary<string, List<string>>
+            {
+                {"VDSM", new List<string> { "BVT_VDSM"} },
+                {"VRSM", new List<string> { "BVT_VRSM" } },
+                {"IDSM", new List<string> { "BVT_IDSM", "UdsmUrsm_IDRM" } },
+                {"IRSM", new List<string> { "BVT_IRSM", "UdsmUrsm_IRRM" } }
+            };
+
+
+            using (_dbTransaction = Connection.BeginTransaction())
+            {
+                TDbCommand getParamCmd = CreateCommand(@"SELECT PARAM_ID FROM PARAMS WHERE PARAM_NAME = @PARAM_NAME", new List<DbCommandParameter>()
+                {
+                    new DbCommandParameter("@PARAM_NAME", DbType.String, 32)
+                }, _dbTransaction);
+
+                TDbCommand profParamUpdate = CreateCommand(@"Update PROF_PARAM SET PARAM_ID = @NEW_PARAM_ID WHERE PARAM_ID = @OLD_PARAM_ID", new List<DbCommandParameter>()
+                {
+                    new DbCommandParameter("@OLD_PARAM_ID", DbType.Int32),
+                    new DbCommandParameter("@NEW_PARAM_ID", DbType.Int32)
+                }, _dbTransaction);
+
+                TDbCommand devParamUpdate = CreateCommand(@"Update DEV_PARAM SET PARAM_ID = @NEW_PARAM_ID WHERE PARAM_ID = @OLD_PARAM_ID", new List<DbCommandParameter>()
+                {
+                    new DbCommandParameter("@OLD_PARAM_ID", DbType.Int32),
+                    new DbCommandParameter("@NEW_PARAM_ID", DbType.Int32)
+                }, _dbTransaction);
+
+                foreach (var i in newParamsOldParams)
+                {
+                    getParamCmd.Parameters["@PARAM_NAME"].Value = i.Key;
+                    var newParamId = Convert.ToInt32(getParamCmd.ExecuteScalar());
+                    if (newParamId == 0)
+                        continue;
+                    profParamUpdate.Parameters["@NEW_PARAM_ID"].Value = newParamId;
+                    devParamUpdate.Parameters["@NEW_PARAM_ID"].Value = newParamId;
+                    foreach (var j in i.Value)
+                    {
+                        getParamCmd.Parameters["@PARAM_NAME"].Value = j;
+                        var oldParamId = Convert.ToInt32(getParamCmd.ExecuteScalar());
+                        if (oldParamId == 0)
+                            continue;
+                        profParamUpdate.Parameters["@OLD_PARAM_ID"].Value = oldParamId;
+                        devParamUpdate.Parameters["@OLD_PARAM_ID"].Value = oldParamId;
+                        profParamUpdate.ExecuteNonQuery();
+                    }
+
+
+                }
+
+
             }
         }
     }

@@ -157,19 +157,38 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
 
             var bvtParameters = new Dictionary<string, (object Min, object Max)>();
-            if (bvt.MeasurementMode == Types.BVT.BVTMeasurementMode.ModeV)
+            switch (bvt.MeasurementMode)
             {
-                bvtParameters.Add("VRRM", (bvt.VRRM, DBNull.Value));
-
-                if (bvt.TestType != Types.BVT.BVTTestType.Reverse)
-                    bvtParameters.Add("VDRM", (bvt.VDRM, DBNull.Value));
-            }
-            else
-            {
-                bvtParameters.Add("IRRM", (DBNull.Value, bvt.IRRM));
-
-                if (bvt.TestType != Types.BVT.BVTTestType.Reverse)
-                    bvtParameters.Add("IDRM", (DBNull.Value, bvt.IDRM));
+                case Types.BVT.BVTMeasurementMode.ModeI:
+                    switch (bvt.TestType)
+                    {
+                        case Types.BVT.BVTTestType.Both:
+                            bvtParameters.Add("IDRM", (DBNull.Value, bvt.IDRM));
+                            bvtParameters.Add("IRRM", (DBNull.Value, bvt.IRRM));
+                            break;
+                        case Types.BVT.BVTTestType.Direct:
+                            bvtParameters.Add("IDRM", (DBNull.Value, bvt.IDRM));
+                            break;
+                        case Types.BVT.BVTTestType.Reverse:
+                            bvtParameters.Add("IRRM", (DBNull.Value, bvt.IRRM));
+                            break;
+                    }
+                    break;
+                case Types.BVT.BVTMeasurementMode.ModeV:
+                    switch (bvt.TestType)
+                    {
+                        case Types.BVT.BVTTestType.Both:
+                            bvtParameters.Add("VDRM", (bvt.VDRM, DBNull.Value));
+                            bvtParameters.Add("VRRM", (bvt.VRRM, DBNull.Value));
+                            break;
+                        case Types.BVT.BVTTestType.Direct:
+                            bvtParameters.Add("VDRM", (bvt.VDRM, DBNull.Value));
+                            break;
+                        case Types.BVT.BVTTestType.Reverse:
+                            bvtParameters.Add("VRRM", (bvt.VRRM, DBNull.Value));
+                            break;
+                    }
+                    break;
             }
 
             if (bvt.UseUdsmUrsm)
@@ -190,21 +209,20 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 switch (bvt.UdsmUrsmTestType)
                 {
                     case Types.BVT.BVTTestType.Both:
-                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
-                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        bvtParameters.Add("VDSM", (bvt.VDSM, DBNull.Value));
+                        bvtParameters.Add("VRSM", (bvt.VRSM, DBNull.Value));
+                        bvtParameters.Add("IDSM", (DBNull.Value, bvt.IDSM));
+                        bvtParameters.Add("IRSM", (DBNull.Value, bvt.IRSM));
                         break;
                     case Types.BVT.BVTTestType.Direct:
-                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        bvtParameters.Add("IDSM", (DBNull.Value, bvt.IDSM));
+                        bvtParameters.Add("VDSM", (bvt.VDSM, DBNull.Value));
                         break;
                     case Types.BVT.BVTTestType.Reverse:
-                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        bvtParameters.Add("IRSM", (DBNull.Value, bvt.IRSM));
+                        bvtParameters.Add("VRSM", (bvt.VRSM, DBNull.Value));
                         break;
                 }
-
-                bvtParameters.Add("UdsmUrsm_IRRM", (DBNull.Value, bvt.UdsmUrsmIRRM));
-
-                if (bvt.UdsmUrsmTestType != Types.BVT.BVTTestType.Reverse)
-                    bvtParameters.Add("UdsmUrsm_IDRM", (DBNull.Value, bvt.UdsmUrsmIDRM));
             }
 
             return ("BVT", bvtCondition, bvtParameters);

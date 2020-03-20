@@ -365,8 +365,11 @@ namespace SCME.UI
 
         private void MyWindow_PreviewGotKeyboardFocus(object Sender, KeyboardFocusChangedEventArgs E)
         {
-            var control = E.NewFocus as ValidatingTextBox;
-            ShowKeyboard(control != null && !Settings.Default.NormalWindow, control);
+            Control control = E.NewFocus as ValidatingTextBox;
+            if (control == null)
+                control = E.NewFocus as NumericUpDown;
+            if (control != null) 
+                ShowKeyboard(control != null && !Settings.Default.NormalWindow, control);
         }
 
         private void MyWindow_MouseDown(object Sender, MouseButtonEventArgs E)
@@ -374,7 +377,7 @@ namespace SCME.UI
             ShowKeyboard(false, null);
         }
 
-        public void ShowKeyboard(bool Show, ValidatingTextBox Control)
+        public void ShowKeyboard(bool Show, Control Control)
         {
             if (!m_IsKeyboardShown && Show)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using SCME.Types;
 using SCME.WpfControlLibrary.Commands;
@@ -142,13 +143,24 @@ namespace SCME.WpfControlLibrary.CustomControls
         public NumericUpDown()
         {
             Loaded +=OnLoaded;
+            
+             
+        }
+
+        private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+                window.ShowKeyboard(true, this);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             var textBoxValue = FindChild<TextBox>(this,"TextBoxValue");
+            if (textBoxValue != null)
+                textBoxValue.PreviewMouseDown+=OnPreviewMouseDown; 
             if (textBoxValue != null && !string.IsNullOrEmpty(StringFormat))
                 {
+                    
                     var be = textBoxValue.GetBindingExpression(TextBox.TextProperty);
                     var pb = be.ParentBinding;
                     textBoxValue.SetBinding(TextBox.TextProperty, new Binding("Value")
@@ -158,6 +170,24 @@ namespace SCME.WpfControlLibrary.CustomControls
                     });
                 }
         }
+        
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            else
+                return FindParent<T>(parentObject);
+        }
+        
+        
 
     }
 }

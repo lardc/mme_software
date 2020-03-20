@@ -183,7 +183,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             LoadDictionary();
         }
 
-        private TDbCommand CreateCommand(string commandString, IEnumerable<DbCommandParameter> parameters)
+        private TDbCommand CreateCommand(string commandString, IEnumerable<DbCommandParameter> parameters, DbTransaction dbTransaction = null)
         {
             var command = (TDbCommand) _commandConstructor.Invoke(new object[] {commandString, Connection});
             foreach (var i in parameters)
@@ -196,6 +196,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 command.Parameters.Add(parameter);
             }
 
+            command.Transaction = dbTransaction;
             command.Prepare();
             return command;
         }
