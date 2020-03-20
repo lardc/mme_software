@@ -6,30 +6,30 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:res="clr-namespace:SCME.dbViewer.Properties"
         xmlns:local="clr-namespace:SCME.dbViewer"
-        xmlns:customControl="clr-namespace:SCME.dbViewer.CustomControl"        
+        xmlns:customControl="clr-namespace:SCME.dbViewer.CustomControl"
         mc:Ignorable="d"
+        x:Name="Main"
         Title="{x:Static res:Resources.MainWindowTitle}" Height="800" Width="1290" WindowState="Maximized" PreviewKeyUp="Window_PreviewKeyUp">
 
     <Window.Resources>
-        <local:IntToVisibilityConverter x:Key="I2V" />
+        <local:IntToVisibilityConverter x:Key="I2V"/>
+        <local:BoolToVisibilityConverter x:Key="B2V"/>
     </Window.Resources>
 
     <Grid x:Name="grdParent">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-
+           
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="15"/>
@@ -55,27 +55,36 @@
                 <ColumnDefinition Width="15"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="3" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Menu Grid.Row="0" Grid.ColumnSpan="22" DockPanel.Dock="Top" Background="Transparent">
+                <MenuItem Header="{x:Static res:Resources.Session}">
+                    <MenuItem Header="{x:Static res:Resources.Begin}" Click="mnuBeginSessionClick"/>
+                    <MenuItem Header="{x:Static res:Resources.Close}" Click="mnuCloseSessionClick"/>
+                    <MenuItem x:Name="mnuSelectDCUser" Header="{x:Static res:Resources.SelectDCUser}" Visibility="Collapsed" Click="mnuSelectDCUserClick"/>
+                    <MenuItem x:Name="mnuBitCalculator" Header="{x:Static res:Resources.BitCalculator}" Visibility="Collapsed" Click="mnuBitCalculatorClick"/>
+                </MenuItem>
+            </Menu>
+
+            <TextBlock Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="3" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Run Text="{x:Static res:Resources.RecordsShown}"/>
                 <Run Text="{Binding ElementName=dgDevices, Path=Items.Count, Mode=OneWay}" FontWeight="Bold"/>
             </TextBlock>
 
-            <Button x:Name="btRefresh" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Refresh}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" Click="btRefresh_Click"/>
-            <Label x:Name="lbBottomRecordCount" Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
-            <Button x:Name="btReport" Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Report}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReport_Click"/>
-            <Button x:Name="btReportPrint" Grid.Row="0" Grid.Column="19" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Print}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReportPrint_Click"/>
+            <Button x:Name="btRefresh" Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Refresh}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" Click="btRefresh_Click"/>
+            <Label x:Name="lbBottomRecordCount" Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
+            <Button x:Name="btReport" Grid.Row="1" Grid.Column="13" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Report}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReport_Click"/>
+            <Button x:Name="btReportPrint" Grid.Row="1" Grid.Column="19" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Print}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Top" Click="btReportPrint_Click"/>
 
-            <Label x:Name="lbFromDate" Grid.Row="1" Grid.Column="0" Content="{x:Static res:Resources.FromDate}" FontSize="16" HorizontalAlignment="Center"/>
-            <customControl:DatePickerCustom Grid.Row="2" Grid.Column="0" x:Name="dpBegin" FontSize="16"/>
+            <Label x:Name="lbFromDate" Grid.Row="2" Grid.Column="0" Content="{x:Static res:Resources.FromDate}" FontSize="16" HorizontalAlignment="Center"/>
+            <customControl:DatePickerCustom Grid.Row="3" Grid.Column="0" x:Name="dpBegin" FontSize="16"/>
 
-            <Label x:Name="lbToDate" Grid.Row="1" Grid.Column="2" Content="{x:Static res:Resources.ToDate}" FontSize="16" HorizontalAlignment="Center"/>
-            <customControl:DatePickerCustom Grid.Row="2" Grid.Column="2" x:Name="dpEnd" FontSize="16"/>
+            <Label x:Name="lbToDate" Grid.Row="2" Grid.Column="2" Content="{x:Static res:Resources.ToDate}" FontSize="16" HorizontalAlignment="Center"/>
+            <customControl:DatePickerCustom Grid.Row="3" Grid.Column="2" x:Name="dpEnd" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="4" Content="{x:Static res:Resources.GroupName}" FontSize="16" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_Job" Grid.Row="2" Grid.Column="4" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="4" Content="{x:Static res:Resources.GroupName}" FontSize="16" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_Job" Grid.Row="3" Grid.Column="4" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="6" Content="{x:Static res:Resources.DeviceType}" FontSize="16" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="cmb_DeviceType" Grid.Row="2" Grid.Column="6" FontSize="16" MaxDropDownHeight="350" PreviewKeyUp="cmb_DeviceType_PreviewKeyUp">
+            <Label Grid.Row="2" Grid.Column="6" Content="{x:Static res:Resources.DeviceType}" FontSize="16" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="cmb_DeviceType" Grid.Row="3" Grid.Column="6" FontSize="16" MaxDropDownHeight="350" PreviewKeyUp="cmb_DeviceType_PreviewKeyUp">
                 <ComboBoxItem Content="Д"/>
                 <ComboBoxItem Content="ДЛ"/>
                 <ComboBoxItem Content="ДЧ"/>
@@ -91,17 +100,17 @@
                 <ComboBoxItem Content="MTF"/>
             </ComboBox>
 
-            <Label Grid.Row="1" Grid.Column="8" Content="{x:Static res:Resources.Constructive}" FontSize="16" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_Сonstructive" Grid.Row="2" Grid.Column="8" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="8" Content="{x:Static res:Resources.Constructive}" FontSize="16" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_Сonstructive" Grid.Row="3" Grid.Column="8" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="10" Content="{x:Static res:Resources.AverageCurrent}" FontSize="16" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_AverageCurrent" Grid.Row="2" Grid.Column="10" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="10" Content="{x:Static res:Resources.AverageCurrent}" FontSize="16" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_AverageCurrent" Grid.Row="3" Grid.Column="10" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="12" Content="{x:Static res:Resources.DeviceClass}" FontSize="16" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_DeviceClass" Grid.Row="2" Grid.Column="12" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="12" Content="{x:Static res:Resources.DeviceClass}" FontSize="16" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_DeviceClass" Grid.Row="3" Grid.Column="12" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="14" Content="{x:Static res:Resources.SiType}" FontSize="16" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="cmb_SiType" Grid.Row="2" Grid.Column="14" FontSize="16" PreviewKeyUp="cmb_SiType_PreviewKeyUp">
+            <Label Grid.Row="2" Grid.Column="14" Content="{x:Static res:Resources.SiType}" FontSize="16" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="cmb_SiType" Grid.Row="3" Grid.Column="14" FontSize="16" PreviewKeyUp="cmb_SiType_PreviewKeyUp">
                 <ComboBoxItem Content="1 - КОФ">
                     <ComboBoxItem.Tag>
                         <sys:Byte>1</sys:Byte>
@@ -121,35 +130,17 @@
                 </ComboBoxItem>
             </ComboBox>
 
-            <Label Grid.Row="1" Grid.Column="16" Content="{x:Static res:Resources.Profile}" FontSize="18" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_ProfName" Grid.Row="2" Grid.Column="16" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="16" Content="{x:Static res:Resources.Profile}" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_ProfName" Grid.Row="3" Grid.Column="16" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="18" Content="{x:Static res:Resources.MmeCode}" FontSize="18" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_MmeCode" Grid.Row="2" Grid.Column="18" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="18" Content="{x:Static res:Resources.MmeCode}" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_MmeCode" Grid.Row="3" Grid.Column="18" FontSize="16"/>
 
-            <Label Grid.Row="1" Grid.Column="20" Content="{x:Static res:Resources.Usr}" FontSize="18" HorizontalAlignment="Center"/>
-            <TextBox x:Name="tb_Usr" Grid.Row="2" Grid.Column="20" FontSize="16"/>
+            <Label Grid.Row="2" Grid.Column="20" Content="{x:Static res:Resources.Usr}" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox x:Name="tb_Usr" Grid.Row="3" Grid.Column="20" FontSize="16"/>
         </Grid>
 
-        <customControl:DataGridSqlResult x:Name="dgDevices" Grid.Row="1" ColumnHeaderHeight="45" SelectionMode="Single" SelectionChanged="dgDevices_SelectionChanged" LoadingRow="dgDevices_LoadingRow"/>
-        <GridSplitter Grid.Row="2" ShowsPreview="False" Height="3" HorizontalAlignment="Stretch" Background="LightGray"/>
-
-        <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Label x:Name="lbRTProfileName" Grid.Row="0" Grid.Column="0" FontSize="18" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="#FFE0EBF5" Visibility="{Binding ElementName=dgRTData, Path=Visibility}"/>
-            <customControl:DataGridSqlResult x:Name="dgRTData" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=RT}" AutoGenerateColumns="True" ColumnHeaderHeight="80" HorizontalAlignment="Stretch" Visibility="{Binding Path=RT.DefaultView.Table.Columns.Count, Converter={StaticResource I2V}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Label x:Name="lbTMProfileName" Grid.Row="0" Grid.Column="1" FontSize="18" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Background="LightPink" Visibility="{Binding ElementName=dgTMData, Path=Visibility}" Margin="7,0,0,0"/>
-            <customControl:DataGridSqlResult x:Name="dgTMData" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Path=TM}" AutoGenerateColumns="True" ColumnHeaderHeight="80" HorizontalAlignment="Stretch" Visibility="{Binding Path=TM.DefaultView.Table.Columns.Count, Converter={StaticResource I2V}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </Grid>
+        <customControl:DataGridSqlResult x:Name="dgDevices" Grid.Row="4" ColumnHeaderHeight="60" SelectionChanged="dgDevices_SelectionChanged" LoadingRow="dgDevices_LoadingRow"/>
     </Grid>
 </Window>
+

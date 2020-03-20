@@ -61,7 +61,25 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average current.
+        ///   Looks up a localized string similar to Authenticate.
+        /// </summary>
+        public static string Authenticate {
+            get {
+                return ResourceManager.GetString("Authenticate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication.
+        /// </summary>
+        public static string Authentication {
+            get {
+                return ResourceManager.GetString("Authentication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ITAV.
         /// </summary>
         public static string AverageCurrent {
             get {
@@ -70,7 +88,34 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject number.
+        ///   Looks up a localized string similar to To begin.
+        /// </summary>
+        public static string Begin {
+            get {
+                return ResourceManager.GetString("Begin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage user permissions.
+        /// </summary>
+        public static string BitCalculator {
+            get {
+                return ResourceManager.GetString("BitCalculator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject num.
         /// </summary>
         public static string Code {
             get {
@@ -93,6 +138,15 @@ namespace SCME.dbViewer.Properties {
         public static string Constructive {
             get {
                 return ResourceManager.GetString("Constructive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
             }
         }
         
@@ -133,6 +187,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From date.
         /// </summary>
         public static string FromDate {
@@ -160,11 +223,38 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading data from database.
+        /// </summary>
+        public static string LoadDataFromDataBaseFault {
+            get {
+                return ResourceManager.GetString("LoadDataFromDataBaseFault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work with the data collected by means of MME hardware in the central database.
         /// </summary>
         public static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle name.
+        /// </summary>
+        public static string MiddleName {
+            get {
+                return ResourceManager.GetString("MiddleName", resourceCulture);
             }
         }
         
@@ -183,6 +273,15 @@ namespace SCME.dbViewer.Properties {
         public static string NoData {
             get {
                 return ResourceManager.GetString("NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -216,9 +315,9 @@ namespace SCME.dbViewer.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Profile name.
         /// </summary>
-        public static string ProfName {
+        public static string ProfileName {
             get {
-                return ResourceManager.GetString("ProfName", resourceCulture);
+                return ResourceManager.GetString("ProfileName", resourceCulture);
             }
         }
         
@@ -268,6 +367,33 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select DC user.
+        /// </summary>
+        public static string SelectDCUser {
+            get {
+                return ResourceManager.GetString("SelectDCUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Session.
+        /// </summary>
+        public static string Session {
+            get {
+                return ResourceManager.GetString("Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set user as admin.
+        /// </summary>
+        public static string SetAdministrator {
+            get {
+                return ResourceManager.GetString("SetAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Omnity.
         /// </summary>
         public static string SiOmnity {
@@ -277,7 +403,7 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silicon.
+        ///   Looks up a localized string similar to Si.
         /// </summary>
         public static string SiType {
             get {
@@ -313,11 +439,20 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date measured with zero time.
+        ///   Looks up a localized string similar to User.
         /// </summary>
-        public static string TsZeroTime {
+        public static string User {
             get {
-                return ResourceManager.GetString("TsZeroTime", resourceCulture);
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User credentials.
+        /// </summary>
+        public static string UserCredentials {
+            get {
+                return ResourceManager.GetString("UserCredentials", resourceCulture);
             }
         }
         

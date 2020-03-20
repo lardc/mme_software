@@ -26,6 +26,9 @@ namespace SCME.dbViewer.ForFilters
         {
             InitializeComponent();
 
+            this.Owner = Application.Current.MainWindow;
+            this.ShowInTaskbar = false;
+
             this.Filters = activeFilters;
             DataContext = this;
         }       
@@ -87,6 +90,11 @@ namespace SCME.dbViewer.ForFilters
             collection?.Clear();
 
             this.DialogResult = true;
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

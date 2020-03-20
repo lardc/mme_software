@@ -91,6 +91,13 @@ namespace SCME.dbViewer.CustomControl
                         Founded = (_extension.TemplateDictionary.TryGetValue(templateName, out dataTemplate));
                 }
 
+                if ((Type)filterDescription.type == typeof(double))
+                {
+                    string templateName = "doubleFilterTemplate";
+                    if (_extension.TemplateDictionary.ContainsKey(templateName))
+                        Founded = (_extension.TemplateDictionary.TryGetValue(templateName, out dataTemplate));
+                }
+
                 if (Founded)
                     return dataTemplate;
             }

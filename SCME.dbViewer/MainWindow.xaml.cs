@@ -22,6 +22,8 @@ using System.Collections.ObjectModel;
 using SCME.dbViewer.CustomControl;
 using System.Windows.Controls.Primitives;
 using SCME.Types.Profiles;
+using SCME.dbViewer.ForSorting;
+using System.ComponentModel;
 
 namespace SCME.dbViewer
 {
@@ -30,26 +32,37 @@ namespace SCME.dbViewer
     /// </summary>
     public partial class MainWindow
     {
-        public const int cDevID = 0;
-        public const int cProfileID = 1;
-        public const int cTsZeroTime = 5;
-        public const int cGroupName = 6;
-        public const int cItem = 2;
-        public const int cCode = 7;
-        public const int cProfileName = 9;
-        public const int cDeviceType = 10;
-        public const int cСonstructive = 11;
-        public const int cAverageCurrent = 12;
-        public const int cDeviceClass = 13;
-        public const int cEquipment = 14;
-        public const int cUser = 15;
-        public const int cStatus = 16;
-        public const int cReason = 17;
-        public const int cCodeOfNonMatch = 18;
+        //табельный номер, идентификатор аутентифицированного в данном приложении пользователя и битовая маска его разрешений
+        public string FUserName = null;
+        public long FUserID = -1;
+        public long FPermissionsLo = 0;
 
-        private SqlConnection connection = null;
-        private List<DataTableParameters> listOfDeviceParameters = null;
-        private ReportByDevices reportByDevices = null;
+        //идентификатор пользователя, выбранного для изменения его битовой маски разрешений. т.е. текущий пользователь FUserID есть администратор данного приложения, он выбрал пользователя FManagedUserID с целью изменения его прав
+        public long FManagedUserID = -1;
+        public long FManagedPermissionsLo = 0;
+
+        /*
+        private const int cDevID = 0;
+        private const int cGroupName = 1;
+        private const int cCode = 2;
+        private const int cTsZeroTime = 4;
+        private const int cUser = 6;
+        private const int cDeviceType = 7;
+        private const int cAverageCurrent = 8;
+        private const int cСonstructive = 9;
+        private const int cItem = 10;
+        private const int cProfileID = 13;
+        private const int cProfileName = 14;
+
+        //временно отсутствуют
+        private const int cDeviceClass = -1;
+        private const int cEquipment = -1;
+        private const int cStatus = -1;
+        private const int cReason = -1;
+        private const int cCodeOfNonMatch = -1;
+
+        private List<DataTableParameters> listOfDeviceParameters = new List<DataTableParameters>();
+        */
 
         public MainWindow()
         {
@@ -69,17 +82,15 @@ namespace SCME.dbViewer
 
             CreateDeviceColumns();
             KeyPreview();
-            connection = CreateConnection();
 
-            //чтобы скрыть пустые DataGrid сразу после запуска приложения
-            this.DataContext = new DataViewModel();
+            dgDevices.UnFrozeMainFormHandler = this.UnFrozeMainForm;
 
-            dgDevices.CreateCalculatedFields = CreateCalculatedFields;
-            dgDevices.ReBuildData = ReBuildData;
-
-            //применяем стили для раскраски DataGrid
-            dgRTData.RTStyle();
-            dgTMData.TMStyle();
+            //dgDevices.CreateCalculatedFieldsHandler = CreateCalculatedFields;
+            dgDevices.GetDeviceTypeHandler = this.DeviceType;
+            dgDevices.GetCodeHandler = this.Code;
+            dgDevices.GetGroupNameHandler = this.GroupName;
+            dgDevices.GetProfileNameHandler = this.ProfileName;
+            dgDevices.RefreshBottomRecordCountHandler = this.RefreshBottomRecordCount;
         }
 
         static void DispatcherUnhandledException(object Sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs E)
@@ -92,93 +103,109 @@ namespace SCME.dbViewer
             MessageBox.Show(Args.ExceptionObject.ToString(), "Unhandled exception");
         }
 
+        private void UnFrozeMainForm()
+        {
+            this.IsEnabled = true;
+        }
+
         private int DevID(object[] itemArray)
         {
-            return int.Parse(itemArray?[cDevID].ToString());
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.DevID);
+            return int.Parse(itemArray?[index].ToString());
         }
 
         private string ProfileID(object[] itemArray)
         {
-            return itemArray?[cProfileID].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.ProfileID);
+            return itemArray?[index].ToString();
         }
 
-        private DateTime TsZeroTime(object[] itemArray)
+        private DateTime Ts(object[] itemArray)
         {
-            return DateTime.Parse(itemArray?[cTsZeroTime].ToString());
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Ts);
+            return DateTime.Parse(itemArray?[index].ToString());
         }
 
         private string GroupName(object[] itemArray)
         {
-            return itemArray?[cGroupName].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.GroupName);
+            return itemArray?[index].ToString();
         }
 
         private string Item(object[] itemArray)
         {
-            return itemArray?[cItem].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Item);
+            return itemArray?[index].ToString();
         }
 
         private string Code(object[] itemArray)
         {
-            return itemArray?[cCode].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Code);
+            return itemArray?[index].ToString();
         }
 
         private string ProfileName(object[] itemArray)
         {
-            return itemArray?[cProfileName].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.ProfileName);
+            return itemArray?[index].ToString();
         }
 
         private string DeviceType(object[] itemArray)
         {
-            return itemArray?[cDeviceType].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.DeviceType);
+            return itemArray?[index].ToString();
         }
 
         private string Constructive(object[] itemArray)
         {
-            return itemArray?[cСonstructive].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Сonstructive);
+            return itemArray?[index].ToString();
         }
 
         private int? AverageCurrent(object[] itemArray)
         {
-            int? averageCurrent = itemArray?[cAverageCurrent] as int?;
-            return (averageCurrent == null) ? null : int.Parse(itemArray?[cAverageCurrent].ToString()) as int?;
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.AverageCurrent);
+            int? averageCurrent = itemArray?[index] as int?;
+
+            return (averageCurrent == null) ? null : int.Parse(itemArray?[index].ToString()) as int?;
         }
 
         private int? DeviceClass(object[] itemArray)
         {
-            int? deviceClass = itemArray?[cDeviceClass] as int?;
-            return (deviceClass == null) ? null : int.Parse(itemArray?[cDeviceClass].ToString()) as int?;
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.DeviceClass);
+            int? deviceClass = itemArray?[index] as int?;
+
+            return (deviceClass == null) ? null : int.Parse(itemArray?[index].ToString()) as int?;
         }
 
         private string Equipment(object[] itemArray)
         {
-            return itemArray?[cEquipment].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.MmeCode);
+            return itemArray?[index].ToString();
         }
 
         private string User(object[] itemArray)
         {
-            return itemArray?[cUser].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Usr);
+            return itemArray?[index].ToString();
         }
 
         private string Status(object[] itemArray)
         {
-            return itemArray?[cStatus].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Status);
+            return itemArray?[index].ToString();
         }
 
         private string CodeOfNonMatch(object[] itemArray)
         {
-            return itemArray?[cCodeOfNonMatch].ToString();
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.CodeOfNonMatch);
+            return itemArray?[index].ToString();
         }
 
         private string Reason(object[] itemArray)
         {
-            return itemArray?[cReason].ToString();
-        }
-
-        private SqlConnection CreateConnection()
-        {
-            string strCon = "server=192.168.0.134, 1444;uid=sa;pwd=Hpl1520; database=SCME_ResultsDB";
-
-            return new SqlConnection(strCon);
+            int index = this.dgDevices.dtData.Columns.IndexOf(Constants.Reason);
+            return itemArray?[index].ToString();
         }
 
         public void KeyEventHandler(object sender, KeyEventArgs e)
@@ -232,105 +259,85 @@ namespace SCME.dbViewer
             }
         }
 
-        private void CreateColumns()
-        {
-            CreateDeviceColumns();
-        }
-
         private void CreateDeviceColumns()
         {
             dgDevices.ClearColumns();
 
-            DataGridColumn column = dgDevices.NewColumn(Properties.Resources.DevID, "DEV_ID");  //0
+            DataGridColumn column = dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.DevID, Constants.DevID);  //0
             column.Visibility = Visibility.Collapsed;
 
-            column = dgDevices.NewColumn(Properties.Resources.ProfileID, "PROFILE_ID");         //1
+            column = dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.ProfileID, Constants.ProfileID);         //1
             column.Visibility = Visibility.Collapsed;
 
-            column = dgDevices.NewColumn(Properties.Resources.TsZeroTime, "TSZEROTIME");        //2
-            column.Visibility = Visibility.Collapsed;
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.GroupName, Constants.GroupName);                  //2
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Item, Constants.Item);                            //3
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.SiType, Constants.SiType);                        //4
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.SiOmnity, Constants.SiOmnity);                    //5
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Code, Constants.Code);                            //6
 
-            dgDevices.NewColumn(Properties.Resources.GroupName, "GROUP_NAME");                  //3
-            dgDevices.NewColumn(Properties.Resources.Item, "ITEM");                             //4
-            dgDevices.NewColumn(Properties.Resources.SiType, "SITYPE");                         //5
-            dgDevices.NewColumn(Properties.Resources.SiOmnity, "SIOMNITY");                     //6
-            dgDevices.NewColumn(Properties.Resources.Code, "CODE");                             //7
-            dgDevices.NewColumn(Properties.Resources.Ts, "TS");                                 //8
-            dgDevices.NewColumn(Properties.Resources.ProfName, "PROF_NAME");                    //9
-            dgDevices.NewColumn(Properties.Resources.DeviceType, "DEVICETYPE");                 //10
-            dgDevices.NewColumn(Properties.Resources.Constructive, "СONSTRUCTIVE");             //11
-            dgDevices.NewColumn(Properties.Resources.AverageCurrent, "AVERAGECURRENT");         //12
-            dgDevices.NewColumn(Properties.Resources.DeviceClass, "DEVICECLASS");               //13
-            dgDevices.NewColumn(Properties.Resources.MmeCode, "MME_CODE");                      //14
-            dgDevices.NewColumn(Properties.Resources.Usr, "USR");                               //15
-            dgDevices.NewColumn(Properties.Resources.Status, "STATUS");                         //16
-            dgDevices.NewColumn(Properties.Resources.CodeOfNonMatch, "CODEOFNONMATCH");         //17
-            dgDevices.NewColumn(Properties.Resources.Reason, "REASON");                         //18
+            //ширину столбца с датой/временем регистрации изделия в БД делаем так, чтобы было видно только дату - время пользователь смотрит редко и если ему это понадобится - он сам сделает столбец шире
+            column = dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Ts, Constants.Ts);                       //7
+            column.Width = 58;
+            ((DataGridTextColumn)column).Binding.StringFormat = ("dd.MM.yy HH:mm:ss");
+
+            //dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.ProfileName, Constants.ProfileName);              //8
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.DeviceType, Constants.DeviceType);                //9
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Constructive, Constants.Сonstructive);            //10
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.AverageCurrent, Constants.AverageCurrent);        //11
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.DeviceClass, Constants.DeviceClass);              //12
+            //dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.MmeCode, Constants.MmeCode);                      //13
+            //dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Usr, Constants.Usr);                              //14
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Status, Constants.Status);                        //15
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.CodeOfNonMatch, Constants.CodeOfNonMatch);        //16
+            dgDevices.NewColumn(TemperatureCondition.None, TemperatureCondition.None, Properties.Resources.Reason, Constants.Reason);                        //17
+
+            //на данный момент ещё не содан ни один столбец темепературного режима 1
+            dgDevices.FirstCPColumnIndexInDataGrid1 = -1;
         }
 
         private void CreateCalculatedFields()
         {
             //создание вычисляемых полей, т.е. тех полей, значения которых не считываются из базы данных
-            dgDevices?.dataTable?.Columns.Add("CODEOFNONMATCH");
-        }
-
-        private void ReBuildData()
-        {
-            //формирование исходных данных для отображения списка условий, параметров и построения протокола испытаний
-            this.RefreshBottomRecordCount();
-            this.listOfDeviceParameters = ListOfDeviceParameters();
-            this.reportByDevices = GroupData(listOfDeviceParameters);
+            dgDevices?.dtData?.Columns.Add(Constants.CodeOfNonMatch);
         }
 
         private void LoadDevices()
         {
-            /*
-            string SqlText = "SELECT x.DEV_ID, x.PROFILE_ID, x.ITEM, x.SITYPE, x.SIOMNITY, x.TSZEROTIME, x.GROUP_NAME, x.CODE, x.TS, x.PROF_NAME, x.DEVICETYPE, x.СONSTRUCTIVE, x.AVERAGECURRENT, x.DEVICECLASS, x.MME_CODE, x.USR, x.STATUS, x.REASON" +
-                              " FROM" +
-                              " (" +
-                                 "SELECT s.DEV_ID, s.PROFILE_ID, s.ITEM, dbo.SiType(s.ITEM) AS SITYPE, dbo.SiOmnity(s.ITEM) AS SIOMNITY, s.TSZEROTIME, s.GROUP_NAME, s.CODE, s.TS, s.PROF_NAME, s.DEVICETYPE, dbo.СonstructiveByProfileName(s.DEVICETYPE, s.PROF_NAME) AS СONSTRUCTIVE, dbo.AverageCurrent(s.DEVICETYPE, s.PROF_NAME) AS AVERAGECURRENT, dbo.DeviceClass(s.DEV_ID, s.DEVICETYPE, s.PROF_ID) AS DEVICECLASS, s.MME_CODE, s.USR, dbo.StrIsEmpty(s.REASON) AS STATUS, s.REASON" +
-                                 " FROM" +
-                                 " (" +
-                                    "SELECT D.DEV_ID, D.PROFILE_ID, dbo.SL_ItemByJob(G.GROUP_NAME) AS ITEM, dbo.DateTimeToDateZeroTime(D.TS) AS TSZEROTIME, RTRIM(G.GROUP_NAME) AS GROUP_NAME, D.CODE, D.TS, P.PROF_ID, P.PROF_NAME, dbo.DeviceTypeByProfileName(P.PROF_NAME) AS DEVICETYPE, MME_CODE, USR, dbo.IsAllTestsGood(D.DEV_ID, P.PROF_ID) AS REASON" +
-                                    " FROM" +
-                                    " (" +
-                                       "SELECT MAX(DG.DEV_ID) AS DEV_ID" +
-                                       " FROM DEVICES DG" +
-                                       "  INNER JOIN PROFILES AS P ON (DG.PROFILE_ID=P.PROF_GUID)" +
-                                       " GROUP BY P.PROF_NAME, DG.GROUP_ID, DG.CODE, DG.MME_CODE" +
-                                    " ) AS z" +
-                                    " INNER JOIN DEVICES AS D ON (D.DEV_ID=z.DEV_ID)" +
-                                    " INNER JOIN GROUPS G ON(G.GROUP_ID=D.GROUP_ID)" +
-                                    " INNER JOIN PROFILES AS P ON (" +
-                                    "                              (P.PROF_GUID=D.PROFILE_ID) AND" +
-                                    "                              (ISNULL(P.IS_DELETED, 0)=0)" +
-                                    "                             )" +
-                                 " ) AS s" +
-                              " ) AS x";
-            */
             //нас интересуют самые свежие результаты измерений
-            string SqlText = "SELECT x.DEV_ID, x.PROFILE_ID, x.ITEM, x.SITYPE, x.SIOMNITY, x.TSZEROTIME, x.GROUP_NAME, x.CODE, x.TS, x.PROF_NAME, x.DEVICETYPE, x.СONSTRUCTIVE, x.AVERAGECURRENT, x.DEVICECLASS, x.MME_CODE, x.USR, x.STATUS, x.REASON" +
+            string SqlText = "SELECT x.DEV_ID, x.GROUP_NAME, x.CODE, x.MME_CODE, x.TS, x.USR, x.DEVICETYPE, x.AVERAGECURRENT, x.СONSTRUCTIVE, x.ITEM, x.SITYPE, x.SIOMNITY, x.DEVICECLASS, x.STATUS, x.REASON, x.CODEOFNONMATCH, x.PROF_ID, x.PROF_NAME," +
+                             "       (" +
+                             "         SELECT T.TEST_TYPE_NAME AS Test, RTRIM(C.COND_NAME) AS Name, RTRIM(CAST(PC.VALUE AS VARCHAR(10))) AS Value" +
+                             "         FROM PROF_COND PC" +
+                             "          INNER JOIN PROF_TEST_TYPE PTT ON (PC.PROF_TESTTYPE_ID=PTT.PTT_ID)" +
+                             "          INNER JOIN TEST_TYPE T ON (PTT.TEST_TYPE_ID=T.TEST_TYPE_ID)" +
+                             "          INNER JOIN CONDITIONS C ON (PC.COND_ID=C.COND_ID)" +
+                             "         WHERE (x.PROF_ID=PC.PROF_ID)" +
+                             "         FOR XML AUTO, ROOT('CONDITIONS')" +
+                             "       ) AS PROFCONDITIONS," +
+                             "       (" +
+                             "         SELECT TT.TEST_TYPE_NAME AS Test, RTRIM(P.PARAM_NAME) AS Name, ISNULL(P.PARAMUM, '') AS Um, CAST(DP.VALUE AS VARCHAR(10)) AS Value, CAST(PP.MIN_VAL AS VARCHAR(10)) AS NrmMin, CAST(PP.MAX_VAL AS VARCHAR(10)) AS NrmMax" +
+                             "         FROM DEV_PARAM DP" +
+                             "          INNER JOIN PROF_TEST_TYPE PTTD ON (DP.TEST_TYPE_ID=PTTD.PTT_ID)" +
+                             "          INNER JOIN TEST_TYPE TT ON (PTTD.TEST_TYPE_ID=TT.TEST_TYPE_ID)" +
+                             "          INNER JOIN PARAMS P ON (DP.PARAM_ID=P.PARAM_ID)" +
+                             "          LEFT JOIN PROF_PARAM PP ON (" +
+                             "                                      (DP.TEST_TYPE_ID=PP.PROF_TESTTYPE_ID) AND" +
+                             "                                      (DP.PARAM_ID=PP.PARAM_ID)" +
+                             "                                     )" +
+                             "         WHERE (x.DEV_ID=DP.DEV_ID)" +
+                             "         FOR XML AUTO, ROOT('PARAMETERS')" +
+                             "       ) AS DEVICEPARAMETERS" +
                              " FROM" +
-                             " (" +
-                                "SELECT s.DEV_ID, s.PROFILE_ID, s.ITEM, dbo.SiType(s.ITEM) AS SITYPE, dbo.SiOmnity(s.ITEM) AS SIOMNITY, s.TSZEROTIME, s.GROUP_NAME, s.CODE, s.TS, s.PROF_NAME, s.DEVICETYPE, dbo.СonstructiveByProfileName(s.DEVICETYPE, s.PROF_NAME) AS СONSTRUCTIVE, dbo.AverageCurrent(s.DEVICETYPE, s.PROF_NAME) AS AVERAGECURRENT, dbo.DeviceClass(s.DEV_ID, s.DEVICETYPE, s.PROF_ID, s.PROF_NAME) AS DEVICECLASS, s.MME_CODE, s.USR, dbo.StrIsEmpty(s.REASON) AS STATUS, s.REASON" +
-                                " FROM" +
-                                " (" +
-                                   "SELECT z.DEV_ID, D.PROFILE_ID, dbo.SL_ItemByJob(G.GROUP_NAME) AS ITEM, dbo.DateTimeToDateZeroTime(D.TS) AS TSZEROTIME, RTRIM(G.GROUP_NAME) AS GROUP_NAME, z.CODE, D.TS, P.PROF_ID, z.PROF_NAME, dbo.DeviceTypeByProfileName(z.PROF_NAME) AS DEVICETYPE, z.MME_CODE, USR, dbo.IsAllTestsGood(z.DEV_ID, P.PROF_ID) AS REASON" +
-                                   " FROM" +
-                                   " (" +
-                                      "SELECT MAX(DG.DEV_ID) AS DEV_ID, DG.CODE, DG.MME_CODE, PG.PROF_NAME" +
-                                      " FROM DEVICES DG" +
-                                      "  INNER JOIN PROFILES AS PG ON (" +
-                                      "                                (DG.PROFILE_ID=PG.PROF_GUID) AND" +
-                                      "                                (ISNULL(PG.IS_DELETED, 0)=0)" +
-                                      "                               )" +
-                                      " GROUP BY PG.PROF_NAME, DG.GROUP_ID, DG.CODE, DG.MME_CODE" +
-                                   " ) AS z" +
-                                   " INNER JOIN DEVICES AS D ON (D.DEV_ID=z.DEV_ID)" +
-                                   " INNER JOIN GROUPS G ON (G.GROUP_ID=D.GROUP_ID)" +
-                                   " INNER JOIN PROFILES AS P ON (P.PROF_GUID=D.PROFILE_ID)" +
-                                   " ) AS s" +
-                             " ) AS x";
+                             "      (" +
+                             "        SELECT RTRIM(G.GROUP_NAME) AS GROUP_NAME, D.DEV_ID, D.CODE, D.MME_CODE, D.TS, D.USR, D.DEVICETYPE, D.AVERAGECURRENT, D.СONSTRUCTIVE, D.ITEM, D.SITYPE, D.SIOMNITY, D.DEVICECLASS, D.STATUS, D.REASON, D.CODEOFNONMATCH, P.PROF_ID, P.PROF_NAME, ROW_NUMBER() OVER(PARTITION BY D.GROUP_ID, D.CODE, D.MME_CODE, P.PROF_NAME ORDER BY D.DEV_ID DESC) AS RN" +
+                             "        FROM DEVICES D" +
+                             "         INNER JOIN PROFILES AS P ON (" +
+                             "                                       (D.PROFILE_ID=P.PROF_GUID) AND" +
+                             "                                       (ISNULL(P.IS_DELETED, 0)=0)" +
+                             "                                     )" +
+                             "         INNER JOIN GROUPS AS G ON (D.GROUP_ID=G.GROUP_ID)" +
+                             "      ) x" +
+                             " WHERE (x.RN=1)";
 
             string dateBeg = null;
             if (dpBegin.SelectedDate != null)
@@ -404,19 +411,19 @@ namespace SCME.dbViewer
             if (tb_Usr.Text.Trim() != string.Empty)
                 usr = tb_Usr.Text.Trim();
 
-            SqlText += ((dateBeg != null) || (dateEnd != null) || (job != null) || (deviceType != null) || (constructive != null) || (averageCurrent != null) || (deviceClass != null) || (siType != null) || (profName != null) || (mmeCode != null) || (usr != null)) ? " WHERE" : string.Empty;
+            SqlText += ((dateBeg != null) || (dateEnd != null) || (job != null) || (deviceType != null) || (constructive != null) || (averageCurrent != null) || (deviceClass != null) || (siType != null) || (profName != null) || (mmeCode != null) || (usr != null)) ? " AND" : string.Empty;
 
             string whereSection = string.Empty;
 
             if (dateBeg != null)
-                whereSection = string.Format(" x.TSZEROTIME>='{0}'", dateBeg);
+                whereSection = string.Format(" dbo.DateTimeToDateZeroTime(TS)>='{0}'", dateBeg);
 
             if (dateEnd != null)
             {
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.TSZEROTIME<='{0}'", dateEnd);
+                whereSection += string.Format(" dbo.DateTimeToDateZeroTime(TS)<='{0}'", dateEnd);
             }
 
             if (job != null)
@@ -424,7 +431,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.GROUP_NAME='{0}'", job);
+                whereSection += string.Format(" GROUP_NAME='{0}'", job);
             }
 
             if (deviceType != null)
@@ -432,7 +439,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.DEVICETYPE='{0}'", deviceType);
+                whereSection += string.Format(" DEVICETYPE='{0}'", deviceType);
             }
 
             if (constructive != null)
@@ -440,7 +447,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.СONSTRUCTIVE='{0}'", constructive);
+                whereSection += string.Format(" СONSTRUCTIVE='{0}'", constructive);
             }
 
             if (averageCurrent != null)
@@ -448,7 +455,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.AVERAGECURRENT='{0}'", averageCurrent);
+                whereSection += string.Format(" AVERAGECURRENT='{0}'", averageCurrent);
             }
 
             if (deviceClass != null)
@@ -456,7 +463,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.DEVICECLASS='{0}'", deviceClass);
+                whereSection += string.Format(" DEVICECLASS='{0}'", deviceClass);
             }
 
             if (siType != null)
@@ -464,7 +471,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.SITYPE='{0}'", siType);
+                whereSection += string.Format(" SITYPE='{0}'", siType);
             }
 
             if (profName != null)
@@ -472,7 +479,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.PROF_NAME='{0}'", profName);
+                whereSection += string.Format(" PROF_NAME='{0}'", profName);
             }
 
             if (mmeCode != null)
@@ -480,7 +487,7 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.MME_CODE='{0}'", mmeCode);
+                whereSection += string.Format(" MME_CODE='{0}'", mmeCode);
             }
 
             if (usr != null)
@@ -488,14 +495,18 @@ namespace SCME.dbViewer
                 if (whereSection != string.Empty)
                     whereSection += " AND";
 
-                whereSection += string.Format(" x.USR='{0}'", usr);
+                whereSection += string.Format(" USR='{0}'", usr);
             }
 
             if (whereSection != string.Empty)
                 SqlText += whereSection;
 
-            dgDevices.ViewSqlResult(connection, SqlText);
-            RefreshConditionsAndParameters();
+            //чтобы пользователь не смог нажать кнопку или изменить фильтр - во время загрузки данных блокируем всю форму со всем её содержимым
+            this.IsEnabled = false;
+
+            //исполняется весьма долго и чтобы не получить исключительную ситуацию о ставшей очереди сообщений вызывает её принудительную обработку
+            //эта обработка очереди сообщений позволяет пользователю во время загрузки данных делать что, что он не должен делать - нажимать кнопки, устанвливать фильтры и т.д. именно поэтому перед вызовом данной реализации вызывается this.IsEnabled
+            dgDevices.ViewSqlResultByThread(SqlText);
         }
 
         private TemperatureCondition TemperatureConditionByProfileName(string profileName)
@@ -512,32 +523,7 @@ namespace SCME.dbViewer
             return result;
         }
 
-        private static String WildCardToRegular(string value)
-        {
-            return "^" + System.Text.RegularExpressions.Regex.Escape(value).Replace("\\*", ".*") + "$";
-        }
-
-        private DataTableParameters CalcPairData(List<DataTableParameters> listOfDeviceParameters, string profileBody, string GroupName, string Code)
-        {
-            //GroupName есть номер ПЗ, Code есть порядковый номер, а их сочетание это серийный номер. это справедливо как для PSE, так и для PSD 
-            //извлекаем из profileBody обозначение спецтребования (его может и не быть вовсе)
-
-
-            //ищем в listOfDeviceParameters первую попавшуюся не использованную запись с Data == null по вычисленному телу профиля profileName, номеру ПЗ GroupName и номеру ГП (ППЭ) Code
-            var results = from DataTableParameters dtp in listOfDeviceParameters
-                          where (
-                                 (dtp.Code == Code) &&
-                                 (dtp.GroupName == GroupName) &&
-                                 (dtp.Data == null) &&
-                                 (System.Text.RegularExpressions.Regex.IsMatch(dtp.ProfileName.ToUpper(), WildCardToRegular(profileBody)))  //(dtp.ProfileName.ToUpper().Contains(profileBody))                                 
-                                )
-                          select dtp;
-
-            DataTableParameters result = results.FirstOrDefault();
-
-            return result;
-        }
-
+        /*
         private int IndexOfDevID(List<DataTableParameters> listOfDeviceParameters, int DevID)
         {
             //вычисляет индекс записи в списке listOfDeviceParameters, с идентификатором DevID. в списке listOfDeviceParameters может быть только одна такая запись
@@ -554,164 +540,39 @@ namespace SCME.dbViewer
 
             return listOfDeviceParameters.IndexOf(result);
         }
+        */
 
-        private void RefreshConditionsAndParameters()
-        {
-            //извлекаем из this.listOfDeviceParameters данные, которые имеют тот же Dev_ID, что и выбранная запись
-            int index = dgDevices.SelectedIndex;
 
-            if (index != -1)
-            {
-                if (this.listOfDeviceParameters != null)
-                {
-                    //ищем в listOfDeviceParameters выбранный Dev_ID
-                    var drv = dgDevices.Items[index] as System.Data.DataRowView;
-
-                    if (drv != null)
-                    {
-                        var itemArray = drv.Row.ItemArray;
-
-                        if (itemArray != null)
-                        {
-                            int devID = DevID(itemArray);
-                            index = this.IndexOfDevID(this.listOfDeviceParameters, devID);
-
-                            DataTableParameters selData = this.listOfDeviceParameters[index];
-
-                            if (selData != null)
-                            {
-                                DataViewModel vm = null;
-                                TemperatureCondition selTemperatureCondition = TemperatureConditionByProfileName(selData.ProfileName);
-
-                                switch (selTemperatureCondition)
-                                {
-                                    case TemperatureCondition.RT:
-                                        lbRTProfileName.Content = selData.ProfileName;
-                                        lbTMProfileName.Content = (selData.Data == null) ? string.Empty : ((selData.Data.TMData == null) ? string.Empty : selData.Data.TMData.ProfileName);
-                                        vm = new DataViewModel(selData.Data.RTData, selData.Data.TMData);
-                                        break;
-
-                                    case TemperatureCondition.TM:
-                                        lbTMProfileName.Content = selData.ProfileName;
-                                        lbRTProfileName.Content = (selData.Data == null) ? string.Empty : ((selData.Data.RTData == null) ? string.Empty : selData.Data.RTData.ProfileName);
-                                        vm = new DataViewModel(selData.Data.RTData, selData.Data.TMData);
-                                        break;
-
-                                    default:
-                                        vm = new DataViewModel();
-                                        break;
-                                }
-
-                                this.DataContext = vm;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
+        public delegate void delegateRefreshBottomRecordCount();
         private void RefreshBottomRecordCount()
         {
             //вычисляем сколько записей стоит ниже текущей выбранной
-            int selectedRowNum = dgDevices.Items.IndexOf(dgDevices.SelectedItem) + 1;
-            int bottomRecords = dgDevices.Items.Count - selectedRowNum;
-            lbBottomRecordCount.Content = string.Format("({0})", bottomRecords.ToString());
+            if (dgDevices.SelectedItem == null)
+            {
+                lbBottomRecordCount.Content = string.Empty;
+            }
+            else
+            {
+                int selectedRowNum = dgDevices.Items.IndexOf(dgDevices.SelectedItem) + 1;
+                int bottomRecords = dgDevices.Items.Count - selectedRowNum;
+
+                lbBottomRecordCount.Content = string.Format("({0})", bottomRecords.ToString());
+            }
         }
 
         private void dgDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //вычисляем сколько записей стоит ниже текущей выбранной
             this.RefreshBottomRecordCount();
-
-            RefreshConditionsAndParameters();
         }
 
+        /*
         private DataTableParameters FindDataTableParametersByProfileID(List<DataTableParameters> listOfDeviceParameters, string profileID)
         {
             //ищет в принятом listOfDeviceParameters первую попавшуюся запись, имеющую профиль profileID
             var linqResults = listOfDeviceParameters.Where(fn => fn.ProfileID == profileID);
 
             return linqResults.FirstOrDefault();
-        }
-
-        private List<DataTableParameters> ListOfDeviceParameters()
-        {
-            //формирует список списков параметров по текущему отображаемому списку изделий            
-            if (connection.State != ConnectionState.Open)
-                connection.Open();
-
-            List<DataTableParameters> result = new List<DataTableParameters>();
-
-            try
-            {
-                foreach (System.Data.DataRowView drv in dgDevices.ItemsSource)
-                {
-                    object[] itemArray = drv.Row.ItemArray;
-
-                    int devID = DevID(itemArray);
-                    string profileID = ProfileID(itemArray);
-                    DateTime tsZeroTime = TsZeroTime(itemArray);
-                    string groupName = GroupName(itemArray);
-                    string item = Item(itemArray);
-                    string code = Code(itemArray);
-                    string profileName = ProfileName(itemArray);
-                    string deviceType = DeviceType(itemArray);
-                    string constructive = Constructive(itemArray);
-                    int? averageCurrent = AverageCurrent(itemArray);
-                    int? deviceClass = DeviceClass(itemArray);
-                    string equipment = Equipment(itemArray);
-                    string user = User(itemArray);
-                    string status = Status(itemArray);
-                    string reason = Reason(itemArray);
-                    string codeOfNonMatch = CodeOfNonMatch(itemArray);
-                    TemperatureCondition temperatureCondition = TemperatureConditionByProfileName(profileName);
-
-                    //conditions для одного и того же профиля одинаковы, пробуем найти в result запись с профилем profileID, чтобы получить из неё conditions без обращения к базе данных - используем result как кеш
-                    DataTableParameters dataTableParameters = FindDataTableParametersByProfileID(result, profileID);
-
-                    DataTableParameters p = new DataTableParameters(drv.Row, devID, deviceType, temperatureCondition, profileID, profileName, tsZeroTime, groupName, item, code, constructive, averageCurrent, deviceClass, equipment, user, status, codeOfNonMatch, reason);
-                    result.Add(p);
-
-                    p.Load(connection, dataTableParameters, profileID, devID, deviceType, temperatureCondition);
-                }
-            }
-
-            finally
-            {
-                connection.Close();
-            }
-
-            return result;
-        }
-        /*
-        private ReportData FindData(string profName, string SilN1, string SilN2)
-        {
-            //ищет DataTableParameters пару в списке записей для принятых profName, SilN1, SilN2          
-            string PairProfileName = this.PairProfileBodyByProfileName(profName);
-
-            DataView dv = (DataView)dgDevices.ItemsSource;
-
-            //ищем в dv первую попавшуюся запись с вычисленным кодом профиля PairProfileName, номеру партии SilN1, номеру ППЭ SilN2
-            var results = from DataRowView rowView in dv
-                          where (
-                                 (rowView.Row.Field<string>("PROF_NAME").ToUpper() == PairProfileName.ToUpper()) &&
-                                 (rowView.Row.Field<string>("SIL_N_1") == SilN1) &&
-                                 (rowView.Row.Field<string>("SIL_N_2") == SilN2)
-                                )
-                          select rowView.Row;
-
-            DataRow row = results.FirstOrDefault();
-
-            switch (row == null)
-            {
-                case true:
-                    //ничего не нашли
-                    return null;
-
-                default:
-                    ReportData result = row.Field<ReportData>("PAIR");
-                    return result;
-            }
         }
         */
 
@@ -729,90 +590,33 @@ namespace SCME.dbViewer
             }
         }
 
-        private ReportByDevices GroupData(List<DataTableParameters> listOfDeviceParameters)
-        {
-            ReportByDevices result = new ReportByDevices();
-
-            List<DataTableParameters> sortedListOfDeviceParameters = listOfDeviceParameters.OrderBy(x => x.Code).ThenBy(x => x.GroupName).ThenBy(x => x.ProfileName).ToList();
-
-            //просматриваем список sortedListOfDeviceParameters, формируем пары измерений (RT-TM) и метим использованные списки параметров, чтобы не использовать их повторно
-            foreach (DataTableParameters dtp in sortedListOfDeviceParameters)
-            {
-                if ((dtp.Data == null) && (dtp.TemperatureCondition != TemperatureCondition.None))
-                {
-                    //ищем пару для текущего device
-                    dtp.ProfileBody = ProfileRoutines.PairProfileBodyByProfileName(dtp.ProfileName);
-                    DataTableParameters pair = this.CalcPairData(listOfDeviceParameters, dtp.ProfileBody, dtp.GroupName, dtp.Code);
-
-                    if (pair != null)
-                    {
-                        //мы нашли пару - запоминаем в ней тело профиля, по которому мы её нашли
-                        pair.ProfileBody = dtp.ProfileBody;
-
-                        //вычисляем значение класса как минимальное из двух значений
-                        int? minClass = CalcClass(dtp.DeviceClass, pair.DeviceClass);
-
-                        //запоминаем вычисленное значение класса в построенной паре. это ни как не изменяет отображаемые в форме данные
-                        dtp.DeviceClass = minClass;
-                        pair.DeviceClass = minClass;
-                    }
-
-                    //данный device разрешён для использования (не задействован в ранее построенных парах)
-                    ReportData reportData = result.NewReportData();
-
-                    //проверяем это горячее или холодное измерение
-                    switch (dtp.TemperatureCondition)
-                    {
-                        case TemperatureCondition.RT:
-                            dtp.Data = reportData;
-
-                            reportData.RTData = dtp;
-                            reportData.TMData = pair;
-
-                            if (pair != null)
-                                pair.Data = reportData;
-
-                            break;
-
-                        case TemperatureCondition.TM:
-                            dtp.Data = reportData;
-
-                            reportData.TMData = dtp;
-                            reportData.RTData = pair;
-
-                            if (pair != null)
-                                pair.Data = reportData;
-
-                            break;
-                    }
-                }
-            }
-
-            //данные сгруппированы
-            return result;
-        }
-
         private void btRefresh_Click(object sender, RoutedEventArgs e)
         {
             LoadDevices();
         }
 
-        private ReportByDevices BuildReportInExcel(bool visibleAfterBuilding)
+        private ReportData BuildReportInExcel(bool visibleAfterBuilding)
         {
             //построение отчёта в Excel
-            if ((this.reportByDevices == null) || (this.reportByDevices.Count == 0))
+            DataView dv = this.dgDevices.ItemsSource as DataView;
+            DataTable dt = dv.ToTable();
+
+            if (dt.Rows.Count == 0)
             {
                 MessageBox.Show(Properties.Resources.ReportCannotBeGenerated, Properties.Resources.NoData, MessageBoxButton.OK, MessageBoxImage.Information);
                 return null;
             }
 
-            //исходные данные, необходимые для построения протокола испытаний всегда в актуальном состоянии, нет никакой необходимости строить их заново            
-            //для того, чтобы в отчёте была обеспечена уникальность шапки (любая шапка в формируемом отчёте должна быть уникальной) выполняем сортировку исходных данных для построения отчёта по ColumnsSignature
-            List<ReportData> sortedReportByDevices = this.reportByDevices.OrderByDescending(x => x.ColumnsSignature).ToList<ReportData>();
-            ReportByDevices rep = new ReportByDevices(sortedReportByDevices);
+            ReportData reportData = new ReportData(dt, this.dgDevices);
 
-            //формируем отчёт
-            rep.ToExcel(this.connection, visibleAfterBuilding);
+            //для того, чтобы в отчёте была обеспечена уникальность шапки (любая шапка в формируемом отчёте должна быть уникальной) выполняем сортировку исходных данных для построения отчёта по ColumnsSignature, а внутри каждого уникального набора по коду ГП
+            CustomComparer<object> customComparer = new CustomComparer<object>(ListSortDirection.Ascending);
+            List<ReportRecord> sortedReportByDevices = reportData.OrderByDescending(x => x.ColumnsSignature).ThenBy(x => x.Code, customComparer).ToList<ReportRecord>();
+
+            ReportData rep = new ReportData(sortedReportByDevices);
+
+            //формируем отчёт            
+            rep.ToExcel(this.dgDevices.connection, visibleAfterBuilding);
 
             return rep;
         }
@@ -824,8 +628,10 @@ namespace SCME.dbViewer
 
         private void btReportPrint_Click(object sender, RoutedEventArgs e)
         {
-            //формируем отчёт в Excel и не показывая его пользователю сразу отправляем на печать
-            ReportByDevices rep = BuildReportInExcel(false);
+            //string s = string.Format("{0:X2}{1:X2}{2:X2}", 150, 174, 226);
+
+            //формируем отчёт в Excel и не показывая его пользователю сразу отправляем на печать           
+            ReportData rep = BuildReportInExcel(false);
             rep?.Print();
         }
 
@@ -859,31 +665,61 @@ namespace SCME.dbViewer
             if (e.Key == Key.F5)
                 LoadDevices();
         }
-    }
 
-    public class DataViewModel
-    {
-        public DataTableParameters RT { get; set; }
-        public DataTableParameters TM { get; set; }
-
-        public DataViewModel(DataTableParameters rt, DataTableParameters tm)
+        private void mnuBeginSessionClick(object sender, RoutedEventArgs e)
         {
-            this.RT = (rt == null) ? new DataTableParameters() : rt;
-            this.TM = (tm == null) ? new DataTableParameters() : tm;
+            //начать сеанс работы
+            AuthenticationWindow auth = new AuthenticationWindow();
+
+            if (auth.ShowModal(out this.FUserID, out this.FPermissionsLo) ?? false)
+            {
+                if (Routines.IsUserAdmin(this.FPermissionsLo))
+                {
+                    mnuSelectDCUser.Visibility = Visibility.Visible;
+                    mnuBitCalculator.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    mnuSelectDCUser.Visibility = Visibility.Collapsed;
+                    mnuBitCalculator.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
-        public DataViewModel()
+        private void mnuCloseSessionClick(object sender, RoutedEventArgs e)
         {
-            //пустая модель отображения
-            this.RT = new DataTableParameters();
-            this.TM = new DataTableParameters();
+            //завершить сеанс работы - забываем ранее авторизованного пользователя и его права
+            this.FUserID = -1;
+            this.FPermissionsLo = 0;
+
+            mnuSelectDCUser.Visibility = Visibility.Collapsed;
+            mnuBitCalculator.Visibility = Visibility.Collapsed;
         }
 
-        private SqlConnection CreateConnection()
+        private void mnuSelectDCUserClick(object sender, RoutedEventArgs e)
         {
-            string strCon = "server=192.168.0.134, 1444;uid=sa;pwd=Hpl1520; database=SCME_ResultsDB";
+            //выбор пользователя из списка пользователей DC
+            if (Routines.IsUserAdmin(this.FPermissionsLo))
+            {
+                DCUsersList dcUsersList = new DCUsersList();
 
-            return new SqlConnection(strCon);
+                if (dcUsersList.ShowModal() ?? false)
+                {
+                    BitCalculator bitCalc = new BitCalculator();
+                    bitCalc.ShowModal(this.FManagedPermissionsLo);
+                }
+            }
+        }
+
+        private void mnuBitCalculatorClick(object sender, RoutedEventArgs e)
+        {
+            //управление правами пользователей доступно только пользователю, который является администратором этой системы
+            if (Routines.IsUserAdmin(this.FPermissionsLo))
+            {
+                //имеем случай, когда пользователь, являющийся администратором управляет собственной битовой маской разрешений
+                BitCalculator bitCalc = new BitCalculator();
+                bitCalc.ShowModal(this.FPermissionsLo);
+            }
         }
     }
 }

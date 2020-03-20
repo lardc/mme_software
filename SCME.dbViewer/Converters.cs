@@ -33,6 +33,19 @@ namespace SCME.dbViewer
         }
     }
 
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        {
+            return (bool)Value ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object Value, Type TargetType, object Parameter, CultureInfo Culture)
+        {
+            throw new InvalidOperationException("ConvertBack method is not implemented in BoolToVisibilityConverter");
+        }
+    }
+
     /*
         public class TemperatureConditionToStrConverter : IValueConverter
         {        

@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AverageCurrent" xml:space="preserve">
-    <value>Средний ток</value>
+    <value>ITAV</value>
   </data>
   <data name="Code" xml:space="preserve">
-    <value>Номер ГП (ППЭ)</value>
+    <value>№ ГП (ППЭ)</value>
   </data>
   <data name="Constructive" xml:space="preserve">
     <value>Конструктив</value>
@@ -162,7 +162,7 @@
   <data name="ProfileID" xml:space="preserve">
     <value>Идентификатор профиля</value>
   </data>
-  <data name="ProfName" xml:space="preserve">
+  <data name="ProfileName" xml:space="preserve">
     <value>Профиль</value>
   </data>
   <data name="Reason" xml:space="preserve">
@@ -181,7 +181,7 @@
     <value>УЭС</value>
   </data>
   <data name="SiType" xml:space="preserve">
-    <value>Кремний</value>
+    <value>Si</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Статус</value>
@@ -191,9 +191,6 @@
   </data>
   <data name="Ts" xml:space="preserve">
     <value>Дата</value>
-  </data>
-  <data name="TsZeroTime" xml:space="preserve">
-    <value>Дата измерений с нулевым временем</value>
   </data>
   <data name="Usr" xml:space="preserve">
     <value>Оператор</value>
@@ -206,5 +203,53 @@
   </data>
   <data name="CodeOfNonMatch" xml:space="preserve">
     <value>Код НП</value>
+  </data>
+  <data name="LoadDataFromDataBaseFault" xml:space="preserve">
+    <value>Ошибка при загрузке данных из базы данных</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Begin" xml:space="preserve">
+    <value>Начать</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>Сеанс</value>
+  </data>
+  <data name="Authentication" xml:space="preserve">
+    <value>Аутентификация</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Пользователь</value>
+  </data>
+  <data name="BitCalculator" xml:space="preserve">
+    <value>Управлять правами пользователя</value>
+  </data>
+  <data name="SetAdministrator" xml:space="preserve">
+    <value>Сделать пользователя администратором</value>
+  </data>
+  <data name="SelectDCUser" xml:space="preserve">
+    <value>Выбор пользователя DC</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="MiddleName" xml:space="preserve">
+    <value>Отчество</value>
+  </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>Аутентифицировать</value>
+  </data>
+  <data name="UserCredentials" xml:space="preserve">
+    <value>Ввод учётных данных пользователя</value>
   </data>
 </root>
