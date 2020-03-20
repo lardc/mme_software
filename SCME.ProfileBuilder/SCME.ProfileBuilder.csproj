@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>SCME.ProfileBuilder</AssemblyName>
     <RootNamespace>SCME.ProfileBuilder</RootNamespace>
+	<Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

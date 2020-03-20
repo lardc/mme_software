@@ -21,6 +21,7 @@ namespace SCME.Agent
         [STAThread]
         private static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             var configuration = builder.Build();
             ConfigData = configuration.GetSection(nameof(ConfigData)).Get<ConfigData>();
@@ -77,6 +78,11 @@ namespace SCME.Agent
                 if(_supervisor.NeedRestart)
                     Process.Start(Path.ChangeExtension(Application.ExecutablePath, "exe"));
             }
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            File.WriteAllText("CRITICAL ERROR.txt", e.ExceptionObject.ToString());
         }
     }
 }

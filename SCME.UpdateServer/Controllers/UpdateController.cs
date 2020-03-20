@@ -72,7 +72,7 @@ namespace SCME.UpdateServer.Controllers
 
             using (var zipArchive = new ZipArchive(zipStreamAsync, ZipArchiveMode.Update, true))
             {
-                var oldEntry = zipArchive.Entries.Single(m => m.FullName == $@"netcoreapp3.1\{_config.ScmeCommonConfigName}");
+                var oldEntry = zipArchive.Entries.Single(m => m.FullName == $@"UI\{_config.ScmeCommonConfigName}");
                 if (oldEntry != null)
                 {
                     var newEntryBytes = await ZipAndXmlHelper.ReplaceConfig(oldEntry, mmeParameter);
