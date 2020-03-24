@@ -485,6 +485,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Gate_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
                     case "Gate_IHEn":
                         testParams.IsIhEnabled = Boolean.Parse(result.Value.ToString());
                         break;
@@ -551,6 +554,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "BVT_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
+
                     case "BVT_UseUdsmUrsm":
                         testParams.UseUdsmUrsm = Convert.ToBoolean(result.Value);
                         break;
@@ -737,6 +744,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "SL_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
                     case "SL_Type":
                         testParams.TestType = (Types.VTM.VTMTestType) (Enum.Parse(typeof(Types.VTM.VTMTestType), result.Value.ToString()));
                         break;

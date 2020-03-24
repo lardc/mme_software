@@ -8,11 +8,12 @@
     <AssemblyName>SCME.UI</AssemblyName>
     <RootNamespace>SCME.UI</RootNamespace>
 	<Deterministic>false</Deterministic>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Debug\UIService\UI</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

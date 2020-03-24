@@ -79,7 +79,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MME005")]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
         public string LastSelectedMMECode {
             get {
                 return ((string)(this["LastSelectedMMECode"]));
