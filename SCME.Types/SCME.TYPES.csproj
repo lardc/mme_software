@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>SCME.Types</AssemblyName>
     <RootNamespace>SCME.Types</RootNamespace>
+    <TargetFrameworks>net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
 
   <ItemGroup>
