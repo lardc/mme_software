@@ -99,7 +99,7 @@
                        HorizontalAlignment="Right" />
 
                     <Label Grid.Column="2" Grid.Row="0"
-                       Name="stateLable" Content="{Binding SyncState}"
+                       Name="stateLable" Content="{Binding SyncMode}"
                        FontSize="28"
                        HorizontalAlignment="Right" />
 

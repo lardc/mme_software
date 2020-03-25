@@ -96,12 +96,23 @@ namespace SCME.Types
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum SyncMode
+    {
+        [EnumMember]
+        Local,
+        [EnumMember]
+        Sync,
+        [EnumMember]
+        NotSync,
+    }
+    
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class InitializationResponse
     {
         [DataMember]
         public InitializationResult InitializationResult { get; set; }
         [DataMember]
-        public bool IsLocal { get; set; }
+        public SyncMode SyncMode { get; set; }
         [DataMember]
         public string MmeCode { get; set; }
     }

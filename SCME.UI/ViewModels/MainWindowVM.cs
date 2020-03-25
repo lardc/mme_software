@@ -25,12 +25,11 @@ namespace SCME.UI.ViewModels
 
         public Visibility TechPasswordVisibility { get; set; }
 
-        public string SyncState { get; set; }
-
+        public SyncMode SyncMode { get; set; }
         public string TopTitle { get; set; }
-        
-        public bool IsLocal { get; set; }
-        [DependsOn(nameof(IsLocal))] public bool IsCentral => !IsLocal;
+
+        [DependsOn(nameof(SyncMode))] public bool IsLocal => SyncMode == SyncMode.Local;
+        [DependsOn(nameof(SyncMode))] public bool IsCentral => SyncMode != SyncMode.Local;
 
         public string  MmeCode { get; set; }
         

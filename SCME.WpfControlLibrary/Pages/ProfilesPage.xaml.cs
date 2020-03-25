@@ -221,10 +221,8 @@ namespace SCME.WpfControlLibrary.Pages
         {
             ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = null;
-            if (GoBackAction != null)
-                GoBackAction.Invoke();
-            else
-                NavigationService?.GoBack();
+            GoBackAction?.Invoke();
+            NavigationService?.GoBack();
         }
 
         private void ListViewProfiles_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

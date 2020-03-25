@@ -56,18 +56,22 @@ namespace SCME.Service.IO
             {
                 var initializationResponse = new InitializationResponse()
                 {
-                    IsLocal = Settings.Default.IsLocal,
                     MmeCode = _mmeCode
                 };
 
                 try
                 {
-                    if (!initializationResponse.IsLocal)
+                    if (Settings.Default.IsLocal)
+                        initializationResponse.SyncMode = SyncMode.Local;
+                    else
+                    {
                         SyncProfiles();
+                        initializationResponse.SyncMode = SyncMode.Sync;
+                    }
                 }
                 catch (Exception e)
                 {
-                    initializationResponse.IsLocal = true;
+                    initializationResponse.SyncMode = SyncMode.NotSync;
                     _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
                     MessageBox.Show(e.ToString(), "Error sync, передайте сообщение разработчику");
                 }

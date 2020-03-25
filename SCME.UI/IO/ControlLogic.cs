@@ -56,29 +56,6 @@ namespace SCME.UI.IO
         }
 
         public InitializationResponse GetStateService => m_ControlClient.IsInitialized();
-        
-        public bool IsDBSync
-        {
-            get
-            {
-                var initState = m_ControlClient.IsInitialized();
-
-                return (initState.InitializationResult & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
-            }
-        }
-
-        public bool IsDBSyncInProgress(InitializationResult initState) => (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
-
-        public bool IsModulesInitialized
-        {
-            get
-            {
-                //отвечает на вопрос: инициализация модулей (аппаратных, например BVT) выполнена?
-                InitializationResult initState = m_ControlClient.IsInitialized().InitializationResult;
-
-                return (initState & InitializationResult.ModulesInitialized) == InitializationResult.ModulesInitialized;
-            }
-        }
 
         public bool IsStopButtonPressed
         {

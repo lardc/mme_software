@@ -34,7 +34,7 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSpecialMeasure;
 
 
-        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.IsCentral));
+        internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);
 
         internal static ProfilesPage ProfilesPageSelectForTest
         {
