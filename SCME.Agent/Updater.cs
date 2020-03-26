@@ -69,15 +69,6 @@ namespace SCME.Agent
                     DirectoryMove(directoryInfo.FullName, Path.Combine(destDirName, directoryInfo.Name), true);
         }
 
-        private static void UnzipToCurrentDirectory(byte[] archiveBytes, string destinationDirectory)
-        {
-            using var memoryStream = new MemoryStream(archiveBytes);
-            using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
-            foreach (var entry in zipArchive.Entries)
-                File.WriteAllBytes(Path.Combine(destinationDirectory, entry.FullName), new BinaryReader(entry.Open()).ReadBytes((int)entry.Length));
-        }
-
-
         public async Task<bool> UpdateAgent()
         {
             try
@@ -95,7 +86,9 @@ namespace SCME.Agent
                 
                 try
                 {
-                    UnzipToCurrentDirectory(newVersionBytes, Directory.GetCurrentDirectory());
+                    await using var memoryStream = new MemoryStream(newVersionBytes);
+                    using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
+                    zipArchive.ExtractToDirectory(Directory.GetCurrentDirectory(), true);
                 }
                 catch
                 {
@@ -148,9 +141,11 @@ namespace SCME.Agent
 
                 try
                 {
-                    UnzipToCurrentDirectory(newVersionBytes, uiServiceDirectory);
+                    await using var memoryStream = new MemoryStream(newVersionBytes);
+                    using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
+                    zipArchive.ExtractToDirectory(uiServiceDirectory, true);
                 }
-                catch
+                catch(Exception ex)
                 {
                     DirectoryMove(BACK_UI_SERVICE_DIRECTORY, uiServiceDirectory ,true);
                     throw;
