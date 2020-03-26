@@ -22,7 +22,7 @@ namespace SCME.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-            UIServiceConfig.Settings.LoadSettings();
+            UIServiceConfig.Settings.LoadSettings(true);
 
             if(UIServiceConfig.Properties.Settings.Default.DebugUpdate)
             {

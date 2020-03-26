@@ -9,19 +9,19 @@ using System.Xml;
 
 namespace SCME.UIServiceConfig
 {
-    public partial class Settings
+    public static class Settings
     {
-        public static void LoadSettings()
+        public static void LoadSettings(bool loadParentConfig = false)
         {
-            var settings = SCME.UIServiceConfig.Properties.Settings.Default;
+            var settings = Properties.Settings.Default;
             
-            string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string path = Path.Combine(Path.GetDirectoryName(exePath), "SCME.UIServiceConfig.dll.config");
+            var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var path = Path.Combine((loadParentConfig ? Directory.GetParent(Path.GetDirectoryName(exePath)).FullName : Path.GetDirectoryName(exePath)) ?? throw new DirectoryNotFoundException(), "SCME.UIServiceConfig.dll.config");
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(path);
             foreach(XmlElement i in  xmlDocument.SelectNodes(@"//applicationSettings/SCME.UIServiceConfig.Properties.Settings")[0])
             {
-                string nameSetting = i.GetAttribute("name");
+                var nameSetting = i.GetAttribute("name");
                 var value = i.InnerText;
                 
                 var typeValue = settings[nameSetting].GetType();

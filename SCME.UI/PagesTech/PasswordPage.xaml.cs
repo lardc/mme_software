@@ -40,5 +40,10 @@ namespace SCME.UI.PagesTech
         {
             NavigationService?.GoBack();
         }
+
+        private void PasswordPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            lblIncorrect.Visibility = Visibility.Hidden;
+        }
     }
 }

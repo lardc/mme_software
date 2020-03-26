@@ -692,21 +692,21 @@ namespace SCME.InterfaceImplementations
                     switch (result.BVTTestParameters[i].TestType)
                     {
                         case BVTTestType.Both:
-                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
-                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", order, trans);
 
-                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
-                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", order, trans);
                             break;
 
                         case BVTTestType.Direct:
-                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDRM, result.ProfileKey, "BVT", order, trans);
-                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, "BVT", order, trans);
                             break;
 
                         case BVTTestType.Reverse:
-                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRRM, result.ProfileKey, "BVT", order, trans);
-                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRRM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, "BVT", order, trans);
+                            InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, "BVT", order, trans);
                             break;
                     }
                 }
