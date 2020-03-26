@@ -10,6 +10,11 @@
 	<Deterministic>false</Deterministic>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Prefer32bit>true</Prefer32bit>
+    <OutputPath>..\Debug\PB</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="App.ico" />
     <None Remove="Resources\PE_logo_1024.png" />
