@@ -59,14 +59,15 @@ namespace SCME.Agent
             }
 
             var updater = new Updater();
-            var agentIsUpdated = updater.UpdateAgent().Result;
+            /*var agentIsUpdated = updater.UpdateAgent().Result;
             if (agentIsUpdated)
             {
                 Process.Start(Path.ChangeExtension(Application.ExecutablePath, "exe"));
                 return;
-            }
+            }*/
 
-            updater.UpdateUiService().Wait();
+            if(!updater.UpdateUiService().Result)
+                return;
 
             using (mutex)
             {

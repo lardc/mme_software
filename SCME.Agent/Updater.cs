@@ -11,6 +11,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml;
 using SCME.Agent.Properties;
+
 // ReSharper disable InvertIf
 
 namespace SCME.Agent
@@ -29,7 +30,7 @@ namespace SCME.Agent
 
         private const int DELAY_MS = 1000;
         private const int COUNT_REPEAT = 3;
-        
+
         private static async Task<T> RepeatActionAsync<T>(Func<Task<T>> action, string exceptionMessage = null)
         {
             for (var i = 0; i < COUNT_REPEAT; i++)
@@ -45,6 +46,7 @@ namespace SCME.Agent
                     Thread.Sleep(DELAY_MS);
                 }
             }
+
             throw new NotImplementedException();
         }
 
@@ -53,7 +55,7 @@ namespace SCME.Agent
             var dir = new DirectoryInfo(sourceDirName);
 
             if (!dir.Exists)
-                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: "+ sourceDirName);
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
 
             var subDirectories = dir.GetDirectories();
 
@@ -79,11 +81,11 @@ namespace SCME.Agent
 
                 var newVersionBytes = await RepeatActionAsync(() => _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), DOWNLOAD_SCME_AGENT_FILE_PATH)));
 
-                if(Directory.Exists(BACK_AGENT_DIRECTORY))
+                if (Directory.Exists(BACK_AGENT_DIRECTORY))
                     Directory.Delete(BACK_AGENT_DIRECTORY, true);
 
-                DirectoryMove(Directory.GetCurrentDirectory(), BACK_AGENT_DIRECTORY,true);
-                
+                DirectoryMove(Directory.GetCurrentDirectory(), BACK_AGENT_DIRECTORY, true);
+
                 try
                 {
                     await using var memoryStream = new MemoryStream(newVersionBytes);
@@ -92,7 +94,7 @@ namespace SCME.Agent
                 }
                 catch
                 {
-                    DirectoryMove(BACK_AGENT_DIRECTORY, Directory.GetCurrentDirectory(),true);
+                    DirectoryMove(BACK_AGENT_DIRECTORY, Directory.GetCurrentDirectory(), true);
                     throw;
                 }
 
@@ -105,39 +107,58 @@ namespace SCME.Agent
             }
         }
 
-        public async Task UpdateUiService()
+        public async Task<bool> UpdateUiService()
         {
             try
             {
-                string uiServiceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
-
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.UIAppPath), "SCME.UIServiceConfig.dll.config"));
-                var mmeCode = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().Single(m=> m.Attributes["name"].Value == "MMECode").InnerText;
-
+                bool currentVersionNotFound = false;
+                string mmeCode;
+                var uiServiceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
                 var uriBuilder = new UriBuilder(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), EQUAL_SOFTWARE_VERSION));
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+
+                if (!File.Exists(Program.ConfigData.ServiceAppPath))
+                {
+                    mmeCode = Program.ConfigData.MMECode;
+                    if (MessageBox.Show(@$"Current version not found, install latest version {mmeCode} ? {Environment.NewLine} No - Close program", @"Confirm", MessageBoxButtons.YesNo) ==
+                        DialogResult.No)
+                        return false;
+                    currentVersionNotFound = true;
+                    query["currentVersion"] = "0.0.0.0";
+                }
+                else
+                {
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "SCME.UIServiceConfig.dll.config"));
+                    mmeCode = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>()
+                        .Single(m => m.Attributes["name"].Value == "MMECode").InnerText;
+                    query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.ServiceAppPath).ProductVersion;
+                }
+
                 query["mme"] = mmeCode;
-                query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion;
                 uriBuilder.Query = query.ToString();
-                
+
                 var versionEqual = await RepeatActionAsync(() => _client.GetStringAsync(uriBuilder.Uri));
 
                 if (versionEqual == "null")
                 {
                     MessageBox.Show($@"{mmeCode} не найден на сервере");
-                    return;
+                    return true;
                 }
 
                 if (Convert.ToBoolean(versionEqual))
-                    return;
-                
-                var newVersionBytes = await RepeatActionAsync(() => _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={mmeCode}")));
+                    return true;
 
-                if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
-                    Directory.Delete(BACK_UI_SERVICE_DIRECTORY, true);
+                var newVersionBytes = await RepeatActionAsync(() =>
+                    _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={mmeCode}")));
 
-                DirectoryMove(uiServiceDirectory, BACK_UI_SERVICE_DIRECTORY,true);
+                if (!currentVersionNotFound)
+                {
+                    if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
+                        Directory.Delete(BACK_UI_SERVICE_DIRECTORY, true);
+
+                    DirectoryMove(uiServiceDirectory, BACK_UI_SERVICE_DIRECTORY, true);
+                }
 
                 try
                 {
@@ -145,19 +166,21 @@ namespace SCME.Agent
                     using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
                     zipArchive.ExtractToDirectory(uiServiceDirectory, true);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    DirectoryMove(BACK_UI_SERVICE_DIRECTORY, uiServiceDirectory ,true);
+                    if (!currentVersionNotFound)
+                        DirectoryMove(BACK_UI_SERVICE_DIRECTORY, uiServiceDirectory, true);
                     throw;
                 }
-                
-
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString(), @"Error");
                 File.WriteAllText(ERROR_FILE, ex.ToString());
+                return false;
             }
-        }
 
+            return true;
+        }
     }
 }

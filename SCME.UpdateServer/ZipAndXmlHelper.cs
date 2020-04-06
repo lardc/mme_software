@@ -55,7 +55,7 @@ namespace SCME.UpdateServer
             if (appSettings == null)
                 throw new Exception($"{nameof(ReplaceConfig)} {nameof(appSettings)} == null");
             int n = 0;
-            foreach (var configurationSection in mmeParameter.Configs.GetChildren().SelectMany(m => m.GetChildren()))
+            foreach (var configurationSection in mmeParameter.Configs.GetChildren())
             {
                 n++;
                 var xmlNode = appSettings.SingleOrDefault(m => m.Attributes["name"].InnerText == configurationSection.Key);

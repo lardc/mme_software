@@ -17,5 +17,6 @@
         public string UpdateServerUrl { get; set; }
 
         public bool IsUserInterfaceEnabled { get; set; }
+        public string MMECode { get; set; }
     }
 }
