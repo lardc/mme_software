@@ -234,7 +234,7 @@ namespace SCME.UI.IO
 
         private static void ShowFaultError(string Caption, FaultException<FaultData> Ex)
         {
-            var dw = new DialogWindow(Caption, Ex.Message);
+            var dw = new DialogWindow(Caption, $"{Ex.ToString()}\r\n{Ex.Detail.Message}");
             dw.ButtonConfig(DialogWindow.EbConfig.OK);
             dw.ShowDialog();
         }
