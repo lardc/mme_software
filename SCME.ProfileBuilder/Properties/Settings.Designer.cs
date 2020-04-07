@@ -100,7 +100,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\SCME_ResultsDB_Local.sqlite")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"C:\Users\Ivan\Desktop\Работа\mme_software_TS05\Debug\UIService\Db\SCME_ResultsDB_Local.sqlite")]
         public string SQLiteFileName {
             get {
                 return ((string)(this["SQLiteFileName"]));
@@ -109,7 +109,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MSSQL")]
+        [global::System.Configuration.DefaultSettingValueAttribute("SQLite")]
         public global::SCME.Types.TypeDb TypeDb {
             get {
                 return ((global::SCME.Types.TypeDb)(this["TypeDb"]));

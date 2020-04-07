@@ -20,6 +20,7 @@ using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
 using SCME.UIServiceConfig.Properties;
+using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.Commands;
 using SCME.WpfControlLibrary.CustomControls;
 using Brush = System.Windows.Media.Brush;
@@ -2958,7 +2959,8 @@ namespace SCME.UI.PagesUser
 
         internal void OnLeaveNotify()
         {
-            Cache.Net.StopHeating();
+            //US18
+            //Cache.Net.StopHeating();
         }
 
         private void EnabledPSDMode()
@@ -3118,6 +3120,11 @@ namespace SCME.UI.PagesUser
                 dw.ButtonConfig(DialogWindow.EbConfig.OK);
                 dw.ShowDialog();
             }
+        }
+
+        private void TbPseNumber_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+           ((ValidatingTextBox) sender).HideKeyboard();
         }
     }
 

@@ -20,6 +20,7 @@
   <ItemGroup>
     <None Remove="App.ico" />
     <None Remove="FodyWeavers.xml" />
+    <None Remove="AccountsConfig\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <Page Remove="ResourceDictionaries\ComboBoxResource.xaml" />
     <Page Remove="ResourceDictionaries\CommonResources.xaml" />
     <Page Remove="ResourceDictionaries\LabelResource.xaml" />
+    <Page Remove="AccountsConfig\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -194,6 +196,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Remove="AccountsConfig\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -330,6 +333,7 @@
     <EmbeddedResource Update="Properties\Resources.ru-RU.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Remove="AccountsConfig\**" />
   </ItemGroup>
 
 </Project>

@@ -85,7 +85,7 @@
             </Grid.ColumnDefinitions>
 
             <customControls:ValidatingTextBox x:Name="tbPseJob" Grid.Column="0" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="3" Text="{Binding PseJob, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <customControls:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
+            <customControls:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" LostFocus="TbPseNumber_OnLostFocus" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
             <TextBlock x:Name="tblIdentificationWarning" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="13" Foreground="{StaticResource xRed1}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource MIF2T}">
