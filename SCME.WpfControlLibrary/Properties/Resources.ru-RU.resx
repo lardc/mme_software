@@ -804,4 +804,10 @@
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>
   </data>
+  <data name="MaxIdsm_mA" xml:space="preserve">
+    <value>Max. IDSM, mA</value>
+  </data>
+  <data name="MaxIrsm_mA" xml:space="preserve">
+    <value>Max. IRSM, mA</value>
+  </data>
 </root>

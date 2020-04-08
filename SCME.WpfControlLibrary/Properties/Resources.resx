@@ -345,6 +345,9 @@
   <data name="MaxIdrm_mA" xml:space="preserve">
     <value>Max. IDRM, mA</value>
   </data>
+  <data name="MaxIdsm_mA" xml:space="preserve">
+    <value>Max. IDSM, mA</value>
+  </data>
   <data name="MaxIgt_mA" xml:space="preserve">
     <value>Max. IGT, mA</value>
   </data>
@@ -356,6 +359,9 @@
   </data>
   <data name="MaxIrrm_mA" xml:space="preserve">
     <value>Max. IRRM, mA</value>
+  </data>
+  <data name="MaxIrsm_mA" xml:space="preserve">
+    <value>Max. IRSM, mA</value>
   </data>
   <data name="MaxResistance_Ohm" xml:space="preserve">
     <value>Max. Rg, Ohm</value>
