@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.ProfileBuilder", "SCME.ProfileBuilder\SCME.ProfileBuilder.csproj", "{0EC33C36-CB54-4944-9CF0-2089A5D4EA4A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.UI", "SCME.UI\SCME.UI.csproj", "{AC4A1372-FAF8-4ECB-B826-772E4EB06CB2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{639B3BBE-C4E7-4036-AE98-7C70A69C23E5} = {639B3BBE-C4E7-4036-AE98-7C70A69C23E5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.SERVICE", "SCME.Service\SCME.SERVICE.csproj", "{639B3BBE-C4E7-4036-AE98-7C70A69C23E5}"
 EndProject
@@ -25,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.Agent", "SCME.Agent\SC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.UpdateServer", "SCME.UpdateServer\SCME.UpdateServer.csproj", "{D5724B00-AAD2-4CD9-B311-59BB1FB76DE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadLocalToServer", "LoadLocalToServer\LoadLocalToServer.csproj", "{513EF1BF-D87E-4FAD-AB72-7147BBC4287F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadLocalToServer", "LoadLocalToServer\LoadLocalToServer.csproj", "{513EF1BF-D87E-4FAD-AB72-7147BBC4287F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

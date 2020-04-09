@@ -364,3 +364,4 @@ MigrationBackup/
 /SCCI_IO.zip
 /DB/SCME_ResultsDB_Local - Copy.sqlite
 launchSettings.json
+/SCME.UpdateServer/appsettings - Copy.json
