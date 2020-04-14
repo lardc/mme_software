@@ -21,7 +21,6 @@ namespace SCME.UpdateServer
 
         public string ScmeCommonConfigName { get; set; }
 
-        public string ScmeUIExeName { get; set; }
         public MmeParameter[] MmeParameters { get; set; }
         
     }

@@ -161,13 +161,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram.cd" />
-    <None Include="Db\SCME_LogsDB.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Db\SCME_ResultsDB_LocalOld.sqlite" />
-    <None Include="Db\SCME_ResultsDB_Local.sqlite">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Db\SCME_LogsDB.sqlite" />
+    <None Include="Db\SCME_ResultsDB_Local.sqlite" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

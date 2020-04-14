@@ -57,7 +57,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AccountsPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">AccountsConfig\Accounts.xml</Value>
+      <Value Profile="(Default)">..\..\UIServiceData\Accounts.xml</Value>
     </Setting>
     <Setting Name="ClampIsVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>

@@ -412,6 +412,65 @@ namespace SCME.Service
             IsInitialized = false;
         }
 
+        internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        {
+            try
+            {
+                var res = m_IOGate.PulseCalibrationGate(Current);
+
+                return new Types.Gate.CalibrationResultGate { Current = res.Item1, Voltage = res.Item2 };
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                return new Types.Gate.CalibrationResultGate();
+            }
+        }
+
+
+        internal ushort GatePulseCalibrationMain(ushort Current)
+        {
+            try
+            {
+                return m_IOGate.PulseCalibrationMain(Current);
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                return 0;
+            }
+        }
+
+
+        internal void GateWriteCalibrationParams(Types.Gate.CalibrationParameters Parameters)
+        {
+            try
+            {
+                m_IOGate.WriteCalibrationParams(Parameters);
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+        }
+
+
+        internal Types.Gate.CalibrationParameters GateReadCalibrationParams()
+        {
+            var parameters = new Types.Gate.CalibrationParameters();
+
+            try
+            {
+                parameters = m_IOGate.ReadCalibrationParams();
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+
+            return parameters;
+        }
+        
         internal bool IsInitialized { get; private set; }
 
         public void SetSafetyMode(SafetyMode safetyMode) => m_IOCommutation.SetSafetyMode(safetyMode);

@@ -32,6 +32,8 @@ namespace SCME.UI
         private static ProfilesPage _profilesPage;
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
+        private static CalibrationPage _calibrationPage;
+        
 
 
         internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);
@@ -100,6 +102,11 @@ namespace SCME.UI
         #endregion
 
         #region Tech pages
+        
+        internal static CalibrationPage Calibration
+        {
+            get { return _calibrationPage ??= new CalibrationPage(); }
+        }
 
         internal static TechnicianPage Technician
         {

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Commutation;
+using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
@@ -154,7 +156,7 @@ namespace SCME.Types
             return Channel.RequestRemotePrinting(GroupName, CustomerName, DeviceType, Predicate);
         }
 
-        public bool StartDynamic(TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
+        public bool StartDynamic(Commutation.TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
                           QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {
@@ -189,6 +191,26 @@ namespace SCME.Types
         public void SetUserWorkMode(UserWorkMode userWorkMode)
         {
             Channel.SetUserWorkMode(userWorkMode);
+        }
+
+        public void GateWriteCalibrationParameters(CalibrationParameters Parameters)
+        {
+            Channel.GateWriteCalibrationParameters(Parameters);
+        }
+
+        public CalibrationParameters GateReadCalibrationParameters()
+        {
+            return Channel.GateReadCalibrationParameters();
+        }
+
+        public CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        {
+            return Channel.GatePulseCalibrationGate(Current);
+        }
+
+        public ushort GatePulseCalibrationMain(ushort Current)
+        {
+            return Channel.GatePulseCalibrationMain(Current);
         }
     }
 }

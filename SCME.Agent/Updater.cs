@@ -132,7 +132,7 @@ namespace SCME.Agent
                     xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "SCME.UIServiceConfig.dll.config"));
                     mmeCode = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>()
                         .Single(m => m.Attributes["name"].Value == "MMECode").InnerText;
-                    query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.ServiceAppPath).ProductVersion;
+                    query["currentVersion"] = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "Version.txt"));
                 }
 
                 query["mme"] = mmeCode;

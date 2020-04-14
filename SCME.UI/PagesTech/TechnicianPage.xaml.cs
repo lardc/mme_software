@@ -61,7 +61,7 @@ namespace SCME.UI.PagesTech
                     page = Cache.Selftest;
                     break;
                 case 5:
-                    //page = Cache.Calibration;
+                    page = Cache.Calibration;
                     break;
                 case 6:
                     page = Cache.Console;

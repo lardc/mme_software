@@ -47,7 +47,7 @@ namespace SCME.UpdateServer.Controllers
             var mmeParameter = _config.MmeParameters.SingleOrDefault(m => m.Name == mme);
             return mmeParameter == null
                 ? "null"
-                : (currentVersion == FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, mmeParameter.Folder, _config.ScmeUIExeName)).ProductVersion).ToString();
+                : (currentVersion == FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, mmeParameter.Folder, "Version.txt")).ProductVersion).ToString();
         }
 
         [HttpGet]

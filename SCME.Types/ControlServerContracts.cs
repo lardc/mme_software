@@ -51,6 +51,22 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
+        void GateWriteCalibrationParameters(Gate.CalibrationParameters Parameters);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        Gate.CalibrationParameters GateReadCalibrationParameters();
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        ushort GatePulseCalibrationMain(ushort Current);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
         InitializationResponse IsInitialized();
 
         [OperationContract]

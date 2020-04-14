@@ -164,6 +164,95 @@ namespace SCME.UI.IO
             }
         }
 
+        public void GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        {
+            try
+            {
+                m_ControlClient.GateWriteCalibrationParameters(Parameters);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+        }
+
+        public Types.Gate.CalibrationParameters GateReadCalibrationParameters()
+        {
+            var parameters = new Types.Gate.CalibrationParameters();
+            try
+            {
+                parameters = m_ControlClient.GateReadCalibrationParameters();
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+
+            return parameters;
+        }
+
+        public Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        {
+            try
+            {
+                return m_ControlClient.GatePulseCalibrationGate(Current);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+        }
+
+        public ushort GatePulseCalibrationMain(ushort Current)
+        {
+            try
+            {
+                return m_ControlClient.GatePulseCalibrationMain(Current);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+                return 0;
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+                return 0;
+            }
+        }
+
         private void DeinitializeInternal()
         {
             Exception savedEx = null;

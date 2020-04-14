@@ -105,6 +105,26 @@ namespace SCME.Service
 //            return initializationResponse;
         }
 
+        Types.Gate.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
+        {
+            return _IoMain.GatePulseCalibrationGate(Current);
+        }
+
+        ushort IExternalControl.GatePulseCalibrationMain(ushort Current)
+        {
+            return _IoMain.GatePulseCalibrationMain(Current);
+        }
+
+        void IExternalControl.GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        {
+            _IoMain.GateWriteCalibrationParams(Parameters);
+        }
+
+        Types.Gate.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
+        {
+            return _IoMain.GateReadCalibrationParams();
+        }
+
         bool IExternalControl.GetButtonState(ComplexButtons Button)
         {
             return _IoMain.GetButtonState(Button);
