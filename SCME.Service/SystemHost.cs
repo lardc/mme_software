@@ -173,6 +173,8 @@ namespace SCME.Service
                 }
                 catch (Exception ex)
                 {
+                    File.AppendAllText(@"SCME.Service error.txt",
+                    $"\n\n{DateTime.Now}\nEXCEPTION: {ex}\nINNER EXCEPTION: {ex.InnerException ?? new Exception("No additional information - InnerException is null")}\n");
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, $"SQLite database error: {ex?.InnerException?.ToString() ?? ex.ToString()}");
                     return false;
                 }
@@ -208,9 +210,10 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
+                File.AppendAllText(@"SCME.Service error.txt",
+                    $"\n\n{DateTime.Now}\nEXCEPTION: {ex}\nINNER EXCEPTION: {ex.InnerException ?? new Exception("No additional information - InnerException is null")}\n");
                 Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, ex.Message);
                 Journal.Close();
-
                 return false;
             }
         }
