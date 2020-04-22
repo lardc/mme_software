@@ -47,4 +47,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Styles\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

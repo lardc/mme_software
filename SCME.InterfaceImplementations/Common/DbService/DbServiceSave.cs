@@ -206,6 +206,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 })
                     bvtCondition.Add(i.Key, i.Value);
 
+                
+                switch (bvt.UdsmUrsmTestType)
+                {
+                    case Types.BVT.BVTTestType.Both:
+                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        break;
+                    case Types.BVT.BVTTestType.Direct:
+                        bvtCondition.Add("BVT_UdsmUrsm_VD", bvt.UdsmUrsmVoltageLimitD);
+                        break;
+                    case Types.BVT.BVTTestType.Reverse:
+                        bvtCondition.Add("BVT_UdsmUrsm_VR", bvt.UdsmUrsmVoltageLimitR);
+                        break;
+                }
+                
                 switch (bvt.UdsmUrsmTestType)
                 {
                     case Types.BVT.BVTTestType.Both:

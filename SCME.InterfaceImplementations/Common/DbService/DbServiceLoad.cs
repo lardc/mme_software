@@ -651,7 +651,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_UdsmUrsm_VR":
-                        switch (testParams.TestType)
+                        switch (testParams.UdsmUrsmTestType)
                         {
                             case BVTTestType.Both:
                             case BVTTestType.Reverse:
@@ -662,7 +662,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_UdsmUrsm_VD":
-                        switch (testParams.TestType)
+                        switch (testParams.UdsmUrsmTestType)
                         {
                             case BVTTestType.Both:
                             case BVTTestType.Direct:

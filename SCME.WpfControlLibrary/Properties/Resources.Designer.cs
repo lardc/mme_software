@@ -1348,6 +1348,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Профиль уже существует в одном из комплексов.
+        /// </summary>
+        public static string PprofileNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("PprofileNameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Print.
         /// </summary>
         public static string Print {
