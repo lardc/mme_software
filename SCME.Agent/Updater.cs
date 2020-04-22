@@ -113,11 +113,15 @@ namespace SCME.Agent
             {
                 bool currentVersionNotFound = false;
                 string mmeCode;
-                var uiServiceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
+                var serviceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
+                var versionFileName = Path.Combine(Path.GetDirectoryName(Program.ConfigData.UIAppPath), "Version.txt");
                 var uriBuilder = new UriBuilder(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), EQUAL_SOFTWARE_VERSION));
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
 
-                if (!File.Exists(Program.ConfigData.ServiceAppPath))
+                bool variantOne = File.Exists(Program.ConfigData.ServiceAppPath);
+                bool variantTwo = File.Exists(versionFileName);
+                
+                if (variantOne == false && variantTwo == false  )
                 {
                     mmeCode = Program.ConfigData.MMECode;
                     if (MessageBox.Show(@$"Current version not found, install latest version {mmeCode} ? {Environment.NewLine} No - Close program", @"Confirm", MessageBoxButtons.YesNo) ==
@@ -132,7 +136,11 @@ namespace SCME.Agent
                     xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "SCME.UIServiceConfig.dll.config"));
                     mmeCode = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>()
                         .Single(m => m.Attributes["name"].Value == "MMECode").InnerText;
-                    query["currentVersion"] = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "Version.txt"));
+                    if (variantTwo)
+                        query["currentVersion"] = File.ReadAllText(Path.Combine(versionFileName));
+                    else 
+                        query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion;
+                        
                 }
 
                 query["mme"] = mmeCode;
@@ -157,19 +165,19 @@ namespace SCME.Agent
                     if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
                         Directory.Delete(BACK_UI_SERVICE_DIRECTORY, true);
 
-                    DirectoryMove(uiServiceDirectory, BACK_UI_SERVICE_DIRECTORY, true);
+                    DirectoryMove(serviceDirectory, BACK_UI_SERVICE_DIRECTORY, true);
                 }
 
                 try
                 {
                     await using var memoryStream = new MemoryStream(newVersionBytes);
                     using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
-                    zipArchive.ExtractToDirectory(uiServiceDirectory, true);
+                    zipArchive.ExtractToDirectory(serviceDirectory, true);
                 }
                 catch (Exception ex)
                 {
                     if (!currentVersionNotFound)
-                        DirectoryMove(BACK_UI_SERVICE_DIRECTORY, uiServiceDirectory, true);
+                        DirectoryMove(BACK_UI_SERVICE_DIRECTORY, serviceDirectory, true);
                     throw;
                 }
             }

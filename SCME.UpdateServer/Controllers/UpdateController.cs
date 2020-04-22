@@ -45,9 +45,21 @@ namespace SCME.UpdateServer.Controllers
         public string EqualSoftwareVersion(string mme, string currentVersion)
         {
             var mmeParameter = _config.MmeParameters.SingleOrDefault(m => m.Name == mme);
-            return mmeParameter == null
-                ? "null"
-                : (currentVersion == FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, mmeParameter.Folder, "Version.txt")).ProductVersion).ToString();
+
+            if (mmeParameter == null)
+                return "null";
+            
+            string uiExeFileName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder, _config.ScmeUIExeName);
+            string versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
+            
+            bool variantOne = System.IO.File.Exists(uiExeFileName);
+            bool variantTwo = System.IO.File.Exists(versionFileName);
+            
+            
+            if(variantTwo)
+                return (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString();
+            else
+                return (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
         }
 
         [HttpGet]
