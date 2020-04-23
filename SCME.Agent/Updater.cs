@@ -91,6 +91,7 @@ namespace SCME.Agent
                     await using var memoryStream = new MemoryStream(newVersionBytes);
                     using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
                     zipArchive.ExtractToDirectory(Directory.GetCurrentDirectory(), true);
+                    File.Copy(Path.Combine(BACK_AGENT_DIRECTORY,"appsettings.json"), "appsettings.json", true);
                 }
                 catch
                 {
