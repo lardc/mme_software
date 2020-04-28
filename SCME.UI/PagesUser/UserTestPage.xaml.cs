@@ -2240,6 +2240,7 @@ namespace SCME.UI.PagesUser
                         {
                             ClearResultsTOU(element);
                         }
+                        
                     }
                 }
 
@@ -2292,6 +2293,7 @@ namespace SCME.UI.PagesUser
                         {
                             ClearResultsTOU(element);
                         }
+                        
                     }
                 }
 
@@ -2312,6 +2314,24 @@ namespace SCME.UI.PagesUser
             if (labelBvtFault1 != null)
                 labelBvtFault1.Visibility = Visibility.Collapsed;
 
+            var labelWithIndexBvtVdrmVResult1 = FindChild<LabelWithIndex>(presenter, "labelWithIndexBvtVdrmVResult1");
+            if (labelWithIndexBvtVdrmVResult1 != null)
+            {
+                if (Profile.Temperature < 60)
+                    labelWithIndexBvtVdrmVResult1.Content = Properties.Resources.Ub0;
+                else
+                    labelWithIndexBvtVdrmVResult1.Content = Properties.Resources.VdrmV;
+            }
+
+            var labelWithIndexBvtVrrmVResult1 = FindChild<LabelWithIndex>(presenter, "labelWithIndexBvtVrrmVResult1");
+            if(labelWithIndexBvtVrrmVResult1 != null)
+            {
+                if (Profile.Temperature < 60)
+                    labelWithIndexBvtVrrmVResult1.Content = Properties.Resources.Ubr;
+                else
+                    labelWithIndexBvtVrrmVResult1.Content = Properties.Resources.VrrmV;
+            }
+            
             var labelBvtVdrmResult1 = FindChild<Label>(presenter, "labelBvtVdrmResult1");
             if (labelBvtVdrmResult1 != null)
                 ResetLabel(labelBvtVdrmResult1);

@@ -2033,6 +2033,24 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ub0, В.
+        /// </summary>
+        public static string Ub0 {
+            get {
+                return ResourceManager.GetString("Ub0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ubr, В.
+        /// </summary>
+        public static string Ubr {
+            get {
+                return ResourceManager.GetString("Ubr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full scale.
         /// </summary>
         public static string UseFullScale {
@@ -2177,7 +2195,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VRRM, V.
+        ///   Looks up a localized string similar to VRRM, В.
         /// </summary>
         public static string VrrmV {
             get {

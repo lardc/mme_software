@@ -325,16 +325,13 @@
     <value>Значение</value>
   </data>
   <data name="VdrmV" xml:space="preserve">
-    <value>Ub0, В</value>
+    <value>VDRM, V</value>
   </data>
   <data name="Vgt" xml:space="preserve">
     <value>UGT</value>
   </data>
   <data name="VgtV" xml:space="preserve">
     <value>UGT, В</value>
-  </data>
-  <data name="VrrmV" xml:space="preserve">
-    <value>Ubr, В</value>
   </data>
   <data name="Vms" xml:space="preserve">
     <value>В / мс</value>
@@ -824,5 +821,11 @@
   </data>
   <data name="DeviceClass" xml:space="preserve">
     <value>Класс</value>
+  </data>
+  <data name="Ubr" xml:space="preserve">
+    <value>Ubr, В</value>
+  </data>
+  <data name="VrrmV" xml:space="preserve">
+    <value>VRRM, В</value>
   </data>
 </root>

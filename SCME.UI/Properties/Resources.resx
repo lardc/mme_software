@@ -338,7 +338,13 @@
     <value>VGT, mV</value>
   </data>
   <data name="VrrmV" xml:space="preserve">
-    <value>VRRM, V</value>
+    <value>VRRM, В</value>
+  </data>
+  <data name="Ubr" xml:space="preserve">
+    <value>Ubr, В</value>
+  </data>
+  <data name="Ub0" xml:space="preserve">
+    <value>Ub0, В</value>
   </data>
   <data name="Vms" xml:space="preserve">
     <value>V / ms</value>
