@@ -162,6 +162,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("ERR_NO_POT_SIGNAL", "There is no signal from the potential line", 43),
             ("ERR_OVERFLOW90", "90% Level Counter Overflow", 44),
             ("ERR_OVERFLOW10", "Overflow level counter 10%", 45),
+            ("ERR_IDSM", "IDSM out of range", 46),
+            ("ERR_IRSM", "IRSM out of range", 47),
         };
 
         private readonly (int id, string name)[] _testTypes =

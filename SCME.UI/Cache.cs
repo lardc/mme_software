@@ -32,7 +32,7 @@ namespace SCME.UI
         private static ProfilesPage _profilesPage;
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
-        private static CalibrationPage _calibrationPage;
+
         
 
 
@@ -103,10 +103,7 @@ namespace SCME.UI
 
         #region Tech pages
         
-        internal static CalibrationPage Calibration
-        {
-            get { return _calibrationPage ??= new CalibrationPage(); }
-        }
+        
 
         internal static TechnicianPage Technician
         {

@@ -30,6 +30,7 @@
     <Page Remove="ResourceDictionaries\CommonResources.xaml" />
     <Page Remove="ResourceDictionaries\LabelResource.xaml" />
     <Page Remove="AccountsConfig\**" />
+    <Page Remove="PagesTech\CalibrationPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,9 +127,6 @@
     <Compile Update="PagesTech\BvtPage.xaml.cs">
       <DependentUpon>BvtPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="PagesTech\CalibrationPage.xaml.cs">
-      <DependentUpon>CalibrationPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="PagesTech\ClampPage.xaml.cs">
       <DependentUpon>ClampPage.xaml</DependentUpon>
     </Compile>
@@ -197,6 +195,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Remove="AccountsConfig\**" />
+    <Compile Remove="PagesTech\CalibrationPage.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -257,9 +256,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PagesTech\BvtPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="PagesTech\CalibrationPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PagesTech\ClampPage.xaml">
