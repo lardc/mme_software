@@ -12,7 +12,7 @@ namespace SCME.ProfileBuilder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -34,7 +34,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("IVAN-PC\\SQLEXPRESS01")]
+        [global::System.Configuration.DefaultSettingValueAttribute("IVAN-PC\\SQLEXPRESS")]
         public string MSSQLServer {
             get {
                 return ((string)(this["MSSQLServer"]));
@@ -100,7 +100,8 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"C:\Users\Ivan\Desktop\Работа\mme_software_TS05\Debug\UIService\Db\SCME_ResultsDB_Local.sqlite")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\Работа\\mme_software_TS05\\Debug\\UIService\\Db\\SCME_ResultsDB_" +
+            "Local.sqlite")]
         public string SQLiteFileName {
             get {
                 return ((string)(this["SQLiteFileName"]));

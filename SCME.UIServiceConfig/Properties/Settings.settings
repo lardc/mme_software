@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.UIServiceConfig.Properties" GeneratedClassName="Settings1">
   <Profiles />
   <Settings>
@@ -291,7 +291,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MMECode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">A</Value>
+      <Value Profile="(Default)">MME008</Value>
     </Setting>
     <Setting Name="DebugUpdate" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
