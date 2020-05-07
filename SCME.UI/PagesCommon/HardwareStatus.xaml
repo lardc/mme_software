@@ -4,6 +4,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:my="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties" xmlns:customControls="clr-namespace:SCME.UI.CustomControl"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       x:Class="SCME.UI.PagesCommon.HardwareStatusPage"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944"
       Name="welcomeScreen"
@@ -64,7 +65,7 @@
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xYellow1}"
                                               Logo="{StaticResource CommutationPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="gateControl"
                                               Title="{x:Static res:Resources.Gate}"
@@ -72,7 +73,7 @@
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xOrange2}"
                                               Logo="{StaticResource GatePath}"
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="vtmControl"
                                               Title="{x:Static res:Resources.Vtm}"
@@ -80,7 +81,7 @@
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xRed1}"
                                               Logo="{StaticResource SinusPath}"
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="bvtControl"
                                               Title="{x:Static res:Resources.Bvt}"
@@ -88,7 +89,7 @@
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xBlue3}"
                                               Logo="{StaticResource BvtPath}"
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=BvtIsVisible, Converter={StaticResource B2V}}" />
             
             <customControls:HardwareItem x:Name="clampControl"
                                               Title="{x:Static res:Resources.Clamp}"
@@ -96,7 +97,7 @@
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xGreen2}"
                                               Logo="{StaticResource ClampPath}"
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="commutationControlEx"
                                               Title="{x:Static res:Resources.Commutation}"
@@ -104,7 +105,7 @@
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xYellow1}"
                                               Logo="{StaticResource CommutationPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=CommExIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommExIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="dVdtControl"
                                               Title="{x:Static res:Resources.dVdt}"
@@ -112,7 +113,7 @@
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xGreen3}"
                                               Logo="{StaticResource CurvePath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=dVdtIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="aTUControl"
                                               Title="{x:Static res:Resources.ATU}"
@@ -120,7 +121,7 @@
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xGreen4}"
                                               Logo="{StaticResource ATUPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ATUIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="qrrTqControl"
                                               Title="{x:Static res:Resources.QrrTq}"
@@ -128,7 +129,7 @@
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xGreen1}"
                                               Logo="{StaticResource QrrTqPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=QrrTqIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="rACControl"
                                               Title="{x:Static res:Resources.RAC}"
@@ -136,7 +137,7 @@
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xGreen3}"
                                               Logo="{StaticResource RACPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=RACIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="ihControl"
                                               Title="{x:Static res:Resources.IH}"
@@ -144,7 +145,7 @@
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xRed1}"
                                               Logo="" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=IHIsVisible, Converter={StaticResource B2V}}" />
 
             <customControls:HardwareItem x:Name="touControl"
                                               Title="{x:Static res:Resources.TOU}"
@@ -152,7 +153,7 @@
                                               DisableAvailable="True"                                             
                                               Backcolor="{StaticResource xGreen2}"
                                               Logo="{StaticResource TOUPath}" 
-                                              Visibility="{Binding Source={x:Static res:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}" />
+                                              Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TOUIsVisible, Converter={StaticResource B2V}}" />
 
         </UniformGrid>
 

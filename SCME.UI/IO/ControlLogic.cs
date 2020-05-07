@@ -16,6 +16,7 @@ using SCME.Types.TOU;
 using SCME.UI.CustomControl;
 using SCME.UI.PagesUser;
 using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using TestParameters = SCME.Types.Commutation.TestParameters;
 
 namespace SCME.UI.IO
@@ -55,29 +56,6 @@ namespace SCME.UI.IO
         }
 
         public InitializationResponse GetStateService => m_ControlClient.IsInitialized();
-        
-        public bool IsDBSync
-        {
-            get
-            {
-                var initState = m_ControlClient.IsInitialized();
-
-                return (initState.InitializationResult & InitializationResult.SyncedWithServer) == InitializationResult.SyncedWithServer;
-            }
-        }
-
-        public bool IsDBSyncInProgress(InitializationResult initState) => (initState & InitializationResult.SyncInProgress) == InitializationResult.SyncInProgress;
-
-        public bool IsModulesInitialized
-        {
-            get
-            {
-                //отвечает на вопрос: инициализация модулей (аппаратных, например BVT) выполнена?
-                InitializationResult initState = m_ControlClient.IsInitialized().InitializationResult;
-
-                return (initState & InitializationResult.ModulesInitialized) == InitializationResult.ModulesInitialized;
-            }
-        }
 
         public bool IsStopButtonPressed
         {
@@ -144,12 +122,9 @@ namespace SCME.UI.IO
                             else
                                 DatabaseClient.Close();
 
-                        m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
 
-                        m_ControlClient.Open();
-
-                        DatabaseClient.Open();
+                        m_ControlClient = new ControlServerProxy(new InstanceContext(m_CallbackHost), Settings.Default.ControlService);
+                        DatabaseClient = new DatabaseCommunicationProxy(Settings.Default.DatabaseService);
 
                         m_NetPingTimer.Start();
 
@@ -186,6 +161,95 @@ namespace SCME.UI.IO
                                                        DeviceConnectionState.ConnectionFailed,
                                                        ex.Message);
                 m_CallbackHost.AddCommonConnectionEvent(DeviceConnectionState.ConnectionFailed, ex.Message);
+            }
+        }
+
+        public void GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        {
+            try
+            {
+                m_ControlClient.GateWriteCalibrationParameters(Parameters);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+        }
+
+        public Types.Gate.CalibrationParameters GateReadCalibrationParameters()
+        {
+            var parameters = new Types.Gate.CalibrationParameters();
+            try
+            {
+                parameters = m_ControlClient.GateReadCalibrationParameters();
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+
+            return parameters;
+        }
+
+        public Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        {
+            try
+            {
+                return m_ControlClient.GatePulseCalibrationGate(Current);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+                return new Types.Gate.CalibrationResultGate();
+            }
+        }
+
+        public ushort GatePulseCalibrationMain(ushort Current)
+        {
+            try
+            {
+                return m_ControlClient.GatePulseCalibrationMain(Current);
+            }
+            catch (FaultException<FaultData> ex)
+            {
+                ShowFaultError("Calibration error", ex);
+                return 0;
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+                return 0;
             }
         }
 
@@ -259,7 +323,7 @@ namespace SCME.UI.IO
 
         private static void ShowFaultError(string Caption, FaultException<FaultData> Ex)
         {
-            var dw = new DialogWindow(Caption, Ex.Message);
+            var dw = new DialogWindow(Caption, $"{Ex.ToString()}\r\n{Ex.Detail.Message}");
             dw.ButtonConfig(DialogWindow.EbConfig.OK);
             dw.ShowDialog();
         }
@@ -276,7 +340,7 @@ namespace SCME.UI.IO
         {
             int? result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -300,7 +364,7 @@ namespace SCME.UI.IO
         {
             int? result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -353,11 +417,9 @@ namespace SCME.UI.IO
                             else
                                 DatabaseClient.Close();
 
-                        m_ControlClient = new ControlServerProxy(CONTROL_SERVER_ENDPOINT_NAME, m_CallbackHost);
-                        DatabaseClient = new DatabaseCommunicationProxy(DATABASE_SERVER_ENDPOINT_NAME);
+                        m_ControlClient = new ControlServerProxy(new InstanceContext( m_CallbackHost), Settings.Default.ControlService);
+                        DatabaseClient = new DatabaseCommunicationProxy(Settings.Default.DatabaseService);
 
-                        m_ControlClient.Open();
-                        DatabaseClient.Open();
                         m_ControlClient.Subscribe();
 
                         break;
@@ -863,7 +925,7 @@ namespace SCME.UI.IO
 
         public void WriteResultServer(ResultItem item, List<string> errors)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -904,7 +966,7 @@ namespace SCME.UI.IO
 
         public List<ProfileForSqlSelect> SaveProfilesToServer(List<ProfileItem> profileItems)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1059,7 +1121,7 @@ namespace SCME.UI.IO
 
         public List<string> ReadGroupsFromServer(DateTime? @from, DateTime? to)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1104,7 +1166,7 @@ namespace SCME.UI.IO
 
         public List<DeviceItem> ReadDevicesFromServer(string @group)
         {
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1176,7 +1238,7 @@ namespace SCME.UI.IO
             serviceConnected = true;
 
             List<ProfileItem> profiles = null;
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1234,7 +1296,7 @@ namespace SCME.UI.IO
             //получение профиля с именем profName, связанного с mmmeCode от SCME.DatabaseServer без использования SCME.Service
             ProfileItem Result = null;
 
-            using (var centralDbClient = new CentralDatabaseServiceClient())
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
                 try
                 {
@@ -1261,7 +1323,6 @@ namespace SCME.UI.IO
         }
     }
 
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
     public class ExternalControlCallbackHost : IClientCallback
     {
         private readonly QueueWorker m_QueueWorker;
@@ -1542,7 +1603,7 @@ namespace SCME.UI.IO
         }
 
 
-        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
+        public void TOUHandler(DeviceState State, TestResults Result)
         {
             m_QueueWorker.AddTOUEvent(State, Result);
         }
@@ -1587,7 +1648,7 @@ namespace SCME.UI.IO
             //UI не использует виртуальный блок RCC, его использует только комплекс АКИМ
         }
 
-        public void ClampingSwitchHandler(Types.Clamping.SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd)
+        public void ClampingSwitchHandler(SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd)
         {
             m_QueueWorker.AddClampingSwitchEvent(Up, ArrayF, ArrayFd);
         }

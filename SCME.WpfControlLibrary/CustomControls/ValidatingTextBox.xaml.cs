@@ -150,5 +150,11 @@ namespace SCME.WpfControlLibrary.CustomControls
             if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
                 window.ShowKeyboard(true, this);
         }
+
+        public void HideKeyboard()
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+                window.ShowKeyboard(false, this);
+        }
     }
 }

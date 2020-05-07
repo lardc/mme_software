@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using SCME.Types;
 
 namespace SCME.UI.PagesTech

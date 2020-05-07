@@ -13,6 +13,7 @@ using SCME.Logger;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Database;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {
@@ -79,11 +80,15 @@ namespace SCME.Service
                 JournalMode = SQLiteJournalModeEnum.Truncate,
                 FailIfMissing = true
             }.ToString())));
+             var behaviour = _SQLiteDbServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                behaviour.InstanceContextMode = InstanceContextMode.Single;
+
+            if (SCME.UIServiceConfig.Properties.Settings.Default.IsLocal)
             
-            if (Properties.Settings.Default.IsLocal)
+            if (UIServiceConfig.Properties.Settings.Default.IsLocal)
                 _dbService.Migrate();
             
-            _SQLiteDbServiceHost.Description.Behaviors.Add(new MyServiceBehavior());
+            
     
             try
             {
@@ -168,6 +173,8 @@ namespace SCME.Service
                 }
                 catch (Exception ex)
                 {
+                    File.AppendAllText(@"SCME.Service error.txt",
+                    $"\n\n{DateTime.Now}\nEXCEPTION: {ex}\nINNER EXCEPTION: {ex.InnerException ?? new Exception("No additional information - InnerException is null")}\n");
                     Journal.AppendLog(ComplexParts.Service, LogMessageType.Warning, $"SQLite database error: {ex?.InnerException?.ToString() ?? ex.ToString()}");
                     return false;
                 }
@@ -203,9 +210,10 @@ namespace SCME.Service
             }
             catch (Exception ex)
             {
+                File.AppendAllText(@"SCME.Service error.txt",
+                    $"\n\n{DateTime.Now}\nEXCEPTION: {ex}\nINNER EXCEPTION: {ex.InnerException ?? new Exception("No additional information - InnerException is null")}\n");
                 Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, ex.Message);
                 Journal.Close();
-
                 return false;
             }
         }

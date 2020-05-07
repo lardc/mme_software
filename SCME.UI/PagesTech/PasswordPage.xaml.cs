@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.UI.PagesTech
 {
@@ -39,6 +39,11 @@ namespace SCME.UI.PagesTech
         private void BtnCancel_OnClick(object Sender, RoutedEventArgs E)
         {
             NavigationService?.GoBack();
+        }
+
+        private void PasswordPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            lblIncorrect.Visibility = Visibility.Hidden;
         }
     }
 }

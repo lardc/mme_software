@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SCME.UI.IO;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using System.Windows.Navigation;
 using SCME.UI.CustomControl;
 using SCME.Types;

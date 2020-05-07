@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using SCME.Types;
 using SCME.Types.QrrTq;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using System.Drawing;

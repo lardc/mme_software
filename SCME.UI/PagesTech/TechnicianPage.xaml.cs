@@ -23,7 +23,6 @@ namespace SCME.UI.PagesTech
 
         internal void AreButtonsEnabled(TypeCommon.InitParams Param)
         {
-            btnGate.IsEnabled = Param.IsGateEnabled;
             btnVtm.IsEnabled = Param.IsSLEnabled;
             btnBvt.IsEnabled = Param.IsBVTEnabled;
             btndVdt.IsEnabled = Param.IsdVdtEnabled;

@@ -7,15 +7,10 @@ namespace SCME.Types
 {
     public class DatabaseCommunicationProxy : ClientBase<IDatabaseCommunicationService>, IDatabaseCommunicationService
     {
-        public DatabaseCommunicationProxy(string ServerEndpointConfigurationName)
-            : base(ServerEndpointConfigurationName)
+        public DatabaseCommunicationProxy(string uri) : base(WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(uri))
         {
         }
 
-        public DatabaseCommunicationProxy(string ServerEndpointConfigurationName, string RemoteAddress)
-            : base(ServerEndpointConfigurationName, RemoteAddress)
-        {
-        }
 
         public int? ReadDeviceRTClass(string devCode, string profName)
         {

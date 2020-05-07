@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using SCME.Types;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 //

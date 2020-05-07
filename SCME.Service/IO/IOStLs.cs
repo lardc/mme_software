@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {

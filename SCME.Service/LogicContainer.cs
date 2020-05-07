@@ -12,6 +12,7 @@ using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {
@@ -411,6 +412,65 @@ namespace SCME.Service
             IsInitialized = false;
         }
 
+        internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        {
+            try
+            {
+                var res = m_IOGate.PulseCalibrationGate(Current);
+
+                return new Types.Gate.CalibrationResultGate { Current = res.Item1, Voltage = res.Item2 };
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                return new Types.Gate.CalibrationResultGate();
+            }
+        }
+
+
+        internal ushort GatePulseCalibrationMain(ushort Current)
+        {
+            try
+            {
+                return m_IOGate.PulseCalibrationMain(Current);
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+                return 0;
+            }
+        }
+
+
+        internal void GateWriteCalibrationParams(Types.Gate.CalibrationParameters Parameters)
+        {
+            try
+            {
+                m_IOGate.WriteCalibrationParams(Parameters);
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+        }
+
+
+        internal Types.Gate.CalibrationParameters GateReadCalibrationParams()
+        {
+            var parameters = new Types.Gate.CalibrationParameters();
+
+            try
+            {
+                parameters = m_IOGate.ReadCalibrationParams();
+            }
+            catch (Exception ex)
+            {
+                ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+
+            return parameters;
+        }
+        
         internal bool IsInitialized { get; private set; }
 
         public void SetSafetyMode(SafetyMode safetyMode) => m_IOCommutation.SetSafetyMode(safetyMode);
@@ -884,7 +944,7 @@ namespace SCME.Service
 
             //наладчик в принципе не может запускать данную реализацию, но забыть включить систему безопасности он может, поэтому спасём оператора
             SetSafetyState(m_IOCommutation, true);
-            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            if (m_IOCommutation.IsSafetyAlarm() || SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
             {
                 SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
                 m_State = DeviceState.None;
@@ -1261,7 +1321,7 @@ namespace SCME.Service
             else m_IOActiveCommutation = m_IOCommutationEx;
 
             SetSafetyState(m_IOCommutation, true);
-            if (m_IOCommutation.IsSafetyAlarm() || Properties.Settings.Default.AlarmEmulation)
+            if (m_IOCommutation.IsSafetyAlarm() || SCME.UIServiceConfig.Properties.Settings.Default.AlarmEmulation)
             {
                 SystemHost.Journal.AppendLog(ComplexParts.Commutation, LogMessageType.Warning, "Safety alarm");
                 m_State = DeviceState.None;

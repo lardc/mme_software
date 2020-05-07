@@ -6,6 +6,7 @@ using System.ComponentModel;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.SCTU;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {

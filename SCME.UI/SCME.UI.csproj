@@ -1,394 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5B6A0272-3918-4896-A66C-8F8A5BE6375E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SCME.UI</RootNamespace>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
     <AssemblyName>SCME.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RootNamespace>SCME.UI</RootNamespace>
+	<Deterministic>false</Deterministic>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>..\Debug\UIService\UI</OutputPath>
+    <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>App.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>SCME.UI.App</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Debug\UIService\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\Release\UIService\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Label="SlowCheetah">
-    <SlowCheetahToolsPath>$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\..\packages\SlowCheetah.2.5.15\tools\))</SlowCheetahToolsPath>
-    <SlowCheetah_EnableImportFromNuGet Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='' ">true</SlowCheetah_EnableImportFromNuGet>
-    <SlowCheetah_NuGetImportPath Condition=" '$(SlowCheetah_NuGetImportPath)'=='' ">$([System.IO.Path]::GetFullPath( $(MSBuildProjectDirectory)\Properties\SlowCheetah\SlowCheetah.Transforms.targets ))</SlowCheetah_NuGetImportPath>
-    <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PB|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\PB\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PB|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\PB\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\DynamicDataDisplay.dll</HintPath>
-    </Reference>
-    <Reference Include="FTD2XX_NET, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\FTD2XX_NET.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="PropertyChanged, Version=3.0.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\packages\PropertyChanged.Fody.3.0.1\lib\net452\PropertyChanged.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <None Remove="App.ico" />
+    <None Remove="FodyWeavers.xml" />
+    <None Remove="AccountsConfig\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Accounts.cs" />
-    <Compile Include="Converters.cs" />
-    <Compile Include="CustomControl\ListBoxTestParameters.xaml.cs">
-      <DependentUpon>ListBoxTestParameters.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\ListViewResults.xaml.cs">
-      <DependentUpon>ListViewResults.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\ListViewTestParametersSelection.xaml.cs">
-      <DependentUpon>ListViewTestParametersSelection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IO\ProfilesDbLogic.cs" />
-    <Compile Include="LocalStorage.cs" />
-    <Compile Include="CustomControl\SimpleListBox.xaml.cs">
-      <DependentUpon>SimpleListBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\GridListBoxLogs.xaml.cs">
-      <DependentUpon>GridListBoxLogs.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\VirtualKeyboard.xaml.cs">
-      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\HardwareItem.xaml.cs">
-      <DependentUpon>HardwareItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IO\ControlLogic.cs" />
-    <Compile Include="IO\QueueWorker.cs" />
-    <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\TechnicianPageVm.cs" />
-    <Compile Include="ViewModels\TOUPageVM.cs" />
-    <Compile Include="ViewModels\UserWorkModePageVM.cs" />
-    <Compile Include="PagesTech\TOUPage.xaml.cs">
-      <DependentUpon>TOUPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\ATUPage.xaml.cs">
-      <DependentUpon>ATUPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\ClampPage.xaml.cs">
-      <DependentUpon>ClampPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\DVdtPage.xaml.cs">
-      <DependentUpon>DVdtPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\IHPage.xaml.cs">
-      <DependentUpon>IHPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\PasswordPage.xaml.cs">
-      <DependentUpon>PasswordPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\QrrTqPage.xaml.cs">
-      <DependentUpon>QrrTqPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesUser\LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesCommon\HardwareStatus.xaml.cs">
-      <DependentUpon>HardwareStatus.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Cache.cs" />
-    <Compile Include="PagesTech\BvtPage.xaml.cs">
-      <DependentUpon>BvtPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\ConsolePage.xaml.cs">
-      <DependentUpon>ConsolePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\GatePage.xaml.cs">
-      <DependentUpon>GatePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\VTMPage.xaml.cs">
-      <DependentUpon>SLPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesCommon\ResultsPage.xaml.cs">
-      <DependentUpon>ResultsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\SelftestPage.xaml.cs">
-      <DependentUpon>SelftestPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesUser\MeasureDialog.xaml.cs">
-      <DependentUpon>MeasureDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesUser\ProfileSelectionPage.xaml.cs">
-      <DependentUpon>ProfileSelectionPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesUser\UserTestPage.xaml.cs">
-      <DependentUpon>UserTestPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\ListBoxProfiles.xaml.cs">
-      <DependentUpon>ListBoxProfiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControl\DialogWindow.xaml.cs">
-      <DependentUpon>DialogWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesTech\ProfilePage.xaml.cs">
-      <DependentUpon>ProfilePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PagesUser\UserTestPageViewModel.cs" />
-    <Compile Include="PagesUser\UserWorkModePage.xaml.cs">
-      <DependentUpon>UserWorkModePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Page Include="CustomControl\ListBoxTestParameters.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\ListViewResults.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\ListViewTestParametersSelection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\SimpleListBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="CustomControl\GridListBoxLogs.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\VirtualKeyboard.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\HardwareItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\TOUPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PagesTech\ATUPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PagesTech\ClampPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\DVdtPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PagesTech\IHPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\PasswordPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\QrrTqPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesUser\LoginPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesCommon\HardwareStatus.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesUser\MeasureDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesUser\ProfileSelectionPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesUser\UserTestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesUser\UserWorkModePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\Constraints.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\ProgressBarResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PagesTech\BvtPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\ConsolePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\GatePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="PagesTech\SLPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesCommon\ResultsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PagesTech\SelftestPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Resource Include="ResourceDictionaries\LabelResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Page Include="CustomControl\ListBoxProfiles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CustomControl\DialogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Resource Include="ResourceDictionaries\ComboBoxResource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
+    <Page Remove="ResourceDictionaries\ButtonResource.xaml" />
+    <Page Remove="ResourceDictionaries\CheckBoxResource.xaml" />
+    <Page Remove="ResourceDictionaries\ComboBoxResource.xaml" />
+    <Page Remove="ResourceDictionaries\CommonResources.xaml" />
+    <Page Remove="ResourceDictionaries\LabelResource.xaml" />
+    <Page Remove="AccountsConfig\**" />
+    <Page Remove="PagesTech\CalibrationPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DynamicDataDisplay" Version="0.3.0.1" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj" />
+    <ProjectReference Include="..\SCME.Types\SCME.Types.csproj" />
+    <ProjectReference Include="..\SCME.UIServiceConfig\SCME.UIServiceConfig.csproj" />
+    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="App.ico" />
+    <Resource Include="FodyWeavers.xml" />
     <Resource Include="ResourceDictionaries\ButtonResource.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -397,146 +59,277 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="PagesTech\TechnicianPage.xaml">
+    <Resource Include="ResourceDictionaries\ComboBoxResource.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PagesTech\TechnicianPage.xaml.cs">
-      <DependentUpon>TechnicianPage.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </Resource>
     <Resource Include="ResourceDictionaries\CommonResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Page Include="PagesTech\ProfilePage.xaml">
+    <Resource Include="ResourceDictionaries\LabelResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\GridListBoxLogs.xaml.cs">
+      <DependentUpon>GridListBoxLogs.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\HardwareItem.xaml.cs">
+      <DependentUpon>HardwareItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\ListBoxProfiles.xaml.cs">
+      <DependentUpon>ListBoxProfiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\ListBoxTestParameters.xaml.cs">
+      <DependentUpon>ListBoxTestParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\ListViewResults.xaml.cs">
+      <DependentUpon>ListViewResults.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\ListViewTestParametersSelection.xaml.cs">
+      <DependentUpon>ListViewTestParametersSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\SimpleListBox.xaml.cs">
+      <DependentUpon>SimpleListBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="CustomControl\VirtualKeyboard.xaml.cs">
+      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesCommon\HardwareStatus.xaml.cs">
+      <DependentUpon>HardwareStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesCommon\ResultsPage.xaml.cs">
+      <DependentUpon>ResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\ATUPage.xaml.cs">
+      <DependentUpon>ATUPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\BvtPage.xaml.cs">
+      <DependentUpon>BvtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\ClampPage.xaml.cs">
+      <DependentUpon>ClampPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\ConsolePage.xaml.cs">
+      <DependentUpon>ConsolePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\DVdtPage.xaml.cs">
+      <DependentUpon>DVdtPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\GatePage.xaml.cs">
+      <DependentUpon>GatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\IHPage.xaml.cs">
+      <DependentUpon>IHPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\LogsPage.xaml.cs">
+      <DependentUpon>LogsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\PasswordPage.xaml.cs">
+      <DependentUpon>PasswordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\QrrTqPage.xaml.cs">
+      <DependentUpon>QrrTqPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\RACPage.xaml.cs">
+      <DependentUpon>RACPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\SelftestPage.xaml.cs">
+      <DependentUpon>SelftestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\TechnicianPage.xaml.cs">
+      <DependentUpon>TechnicianPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\TOUPage.xaml.cs">
+      <DependentUpon>TOUPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesTech\VTMPage.xaml.cs">
+      <DependentUpon>SLPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesUser\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesUser\MeasureDialog.xaml.cs">
+      <DependentUpon>MeasureDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesUser\ProfileSelectionPage.xaml.cs">
+      <DependentUpon>ProfileSelectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesUser\UserTestPage.xaml.cs">
+      <DependentUpon>UserTestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PagesUser\UserWorkModePage.xaml.cs">
+      <DependentUpon>UserWorkModePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Remove="AccountsConfig\**" />
+    <Compile Remove="PagesTech\CalibrationPage.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AccountsConfig\Accounts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="KeyboardLayouts\Keyboards.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="LocalStorage\Storage.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="CustomControl\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\GridListBoxLogs.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\HardwareItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\ListBoxProfiles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\ListBoxTestParameters.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\ListViewResults.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\ListViewTestParametersSelection.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\SimpleListBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomControl\VirtualKeyboard.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="App.config">
+    <Page Update="PagesCommon\HardwareStatus.xaml">
       <SubType>Designer</SubType>
-      <TransformOnBuild>true</TransformOnBuild>
-    </None>
-    <None Include="ClassDiagram.cd" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
+    </Page>
+    <Page Update="PagesCommon\ResultsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\ATUPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\BvtPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\ClampPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\ConsolePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\DVdtPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\GatePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\IHPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\LogsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\PasswordPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\QrrTqPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\RACPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\SelftestPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\SLPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\TechnicianPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesTech\TOUPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesUser\LoginPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesUser\MeasureDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesUser\ProfileSelectionPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesUser\UserTestPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="PagesUser\UserWorkModePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ResourceDictionaries\Constraints.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ResourceDictionaries\ProgressBarResources.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="Resources\PE_logo_1024.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\splashScreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.ru-RU.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ru-RU.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Remove="AccountsConfig\**" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SCME.InterfaceImplementations\SCME.InterfaceImplementations.csproj">
-      <Project>{41fad811-1a7a-4ac2-95e8-6195f905e1c6}</Project>
-      <Name>SCME.InterfaceImplementations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.TYPES\SCME.Types.csproj">
-      <Project>{af537bdd-6460-4cca-b894-added01e6b94}</Project>
-      <Name>SCME.Types</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj">
-      <Project>{75abf5ae-fb9f-42d3-9568-a49833ce61d3}</Project>
-      <Name>SCME.WpfControlLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="App.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LocalStorage\Storage.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AccountsConfig\Accounts.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="KeyboardLayouts\Keyboards.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Resource Include="FodyWeavers.xml" />
-    <Content Include="Lib\DynamicDataDisplay.SilverLight.dll" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
-  <Import Project="..\packages\Fody.5.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.6\build\Fody.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.5.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.5.0.6\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.0.1\build\PropertyChanged.Fody.props'))" />
-  </Target>
-  <PropertyGroup>
-    <PostBuildEvent>powershell New-Item -ItemType Directory -Path "../UIService/Logs" -Force
-</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

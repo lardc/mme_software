@@ -21,13 +21,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="LastSelectedMMECode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MME005</Value>
+      <Value Profile="(Default)">A</Value>
     </Setting>
     <Setting Name="MSSQLPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)">qwerty_123</Value>
     </Setting>
     <Setting Name="SQLiteFileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\Users\Ivan\Desktop\SCME_ResultsDB_Local.sqlite</Value>
+      <Value Profile="(Default)">C:\Users\Ivan\Desktop\Работа\mme_software_TS05\Debug\UIService\Db\SCME_ResultsDB_Local.sqlite</Value>
     </Setting>
     <Setting Name="TypeDb" Type="SCME.Types.TypeDb" Scope="Application">
       <Value Profile="(Default)">MSSQL</Value>

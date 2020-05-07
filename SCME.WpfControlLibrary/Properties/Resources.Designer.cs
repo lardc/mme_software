@@ -1051,6 +1051,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max. IDSM, mA.
+        /// </summary>
+        public static string MaxIdsm_mA {
+            get {
+                return ResourceManager.GetString("MaxIdsm_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max. IGT, mA.
         /// </summary>
         public static string MaxIgt_mA {
@@ -1083,6 +1092,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string MaxIrrm_mA {
             get {
                 return ResourceManager.GetString("MaxIrrm_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max. IRSM, mA.
+        /// </summary>
+        public static string MaxIrsm_mA {
+            get {
+                return ResourceManager.GetString("MaxIrsm_mA", resourceCulture);
             }
         }
         
@@ -1326,6 +1344,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Position_2 {
             get {
                 return ResourceManager.GetString("Position_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Профиль уже существует в одном из комплексов.
+        /// </summary>
+        public static string PprofileNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("PprofileNameAlreadyExists", resourceCulture);
             }
         }
         

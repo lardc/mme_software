@@ -9,6 +9,7 @@
       xmlns:thisPage="clr-namespace:SCME.UI.PagesUser"
       xmlns:dynamicDataDisplay="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay"
       xmlns:customControls="WpfControlLibrary"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d"
       d:DesignWidth="1280" d:DesignHeight="924"
       Name="userTestPage" 
@@ -84,7 +85,7 @@
             </Grid.ColumnDefinitions>
 
             <customControls:ValidatingTextBox x:Name="tbPseJob" Grid.Column="0" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="3" Text="{Binding PseJob, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <customControls:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
+            <customControls:ValidatingTextBox x:Name="tbPseNumber" Grid.Column="1" Grid.Row="0" FontSize="28" Margin="5,2" Padding="5,0" TextAlignment="Right" TabIndex="4" LostFocus="TbPseNumber_OnLostFocus" Text="{Binding PseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="tbPseNumber_TextChanged"/>
             <TextBlock x:Name="tblIdentificationWarning" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="13" Foreground="{StaticResource xRed1}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource MIF2T}">
@@ -136,7 +137,7 @@
                 <Grid.Visibility>
                     <MultiBinding Converter="{StaticResource MB2V}">
                         <Binding ElementName="userTestPage" Path="Profile.IsHeightMeasureEnabled" />
-                        <Binding Source="{x:Static res:Settings.Default}" Path="IsHeighMeasureEnable" />
+                        <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="IsHeighMeasureEnable" />
                     </MultiBinding>
                 </Grid.Visibility>
                 <Grid.ColumnDefinitions>
@@ -166,7 +167,7 @@
                 <Grid.Visibility>
                     <MultiBinding Converter="{StaticResource MB2V}">
                         <Binding ElementName="userTestPage" Path="Profile.IsHeightMeasureEnabled" />
-                        <Binding Source="{x:Static res:Settings.Default}" Path="IsHeighMeasureEnable" />
+                        <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="IsHeighMeasureEnable" />
                     </MultiBinding>
                 </Grid.Visibility>
                 <Grid.ColumnDefinitions>

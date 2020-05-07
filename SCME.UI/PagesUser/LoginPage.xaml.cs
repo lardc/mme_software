@@ -9,7 +9,7 @@ using System.Windows.Input;
 using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.UI.IO;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.Pages;
 
@@ -68,7 +68,7 @@ namespace SCME.UI.PagesUser
         {
             Cache.Main.VM.AccountNameIsVisibility = true;
             profilesPage.LoadTopProfiles();
-            profilesPage.Title = $"{SCME.UI.Properties.Resources.Total} {SCME.UI.Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
+            profilesPage.Title = $"{Properties.Resources.Total} {Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
 //            Cache.ProfilesPageSelectForTest.GoBackAction += () =>
 //            {
 //                var navigationService = Cache.ProfilesPageSelectForTest.NavigationService;

@@ -8,6 +8,7 @@ using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.Clamping;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {
@@ -101,7 +102,7 @@ namespace SCME.Service.IO
 
             _defaultForce = Settings.Default.DefaultForce;
             _longTimeForce = Settings.Default.LongTimeForce;
-            _defaultHeight = Settings.Default.DefaultHeight;
+            _defaultHeight = 0;
 
             m_Node = (ushort)Settings.Default.ClampingSystemNode;
             SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info, String.Format("Clamping created. Emulation mode: {0}", m_IsClampingEmulation));

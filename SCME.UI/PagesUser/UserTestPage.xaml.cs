@@ -19,7 +19,8 @@ using SCME.Types.BaseTestParams;
 using SCME.Types.Gate;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
+using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.Commands;
 using SCME.WpfControlLibrary.CustomControls;
 using Brush = System.Windows.Media.Brush;
@@ -2239,6 +2240,7 @@ namespace SCME.UI.PagesUser
                         {
                             ClearResultsTOU(element);
                         }
+                        
                     }
                 }
 
@@ -2291,6 +2293,7 @@ namespace SCME.UI.PagesUser
                         {
                             ClearResultsTOU(element);
                         }
+                        
                     }
                 }
 
@@ -2311,6 +2314,24 @@ namespace SCME.UI.PagesUser
             if (labelBvtFault1 != null)
                 labelBvtFault1.Visibility = Visibility.Collapsed;
 
+            var labelWithIndexBvtVdrmVResult1 = FindChild<LabelWithIndex>(presenter, "labelWithIndexBvtVdrmVResult1");
+            if (labelWithIndexBvtVdrmVResult1 != null)
+            {
+                if (Profile.Temperature < 60)
+                    labelWithIndexBvtVdrmVResult1.Content = Properties.Resources.Ub0;
+                else
+                    labelWithIndexBvtVdrmVResult1.Content = Properties.Resources.VdrmV;
+            }
+
+            var labelWithIndexBvtVrrmVResult1 = FindChild<LabelWithIndex>(presenter, "labelWithIndexBvtVrrmVResult1");
+            if(labelWithIndexBvtVrrmVResult1 != null)
+            {
+                if (Profile.Temperature < 60)
+                    labelWithIndexBvtVrrmVResult1.Content = Properties.Resources.Ubr;
+                else
+                    labelWithIndexBvtVrrmVResult1.Content = Properties.Resources.VrrmV;
+            }
+            
             var labelBvtVdrmResult1 = FindChild<Label>(presenter, "labelBvtVdrmResult1");
             if (labelBvtVdrmResult1 != null)
                 ResetLabel(labelBvtVdrmResult1);
@@ -2958,7 +2979,8 @@ namespace SCME.UI.PagesUser
 
         internal void OnLeaveNotify()
         {
-            Cache.Net.StopHeating();
+            //US18
+            //Cache.Net.StopHeating();
         }
 
         private void EnabledPSDMode()
@@ -3004,7 +3026,7 @@ namespace SCME.UI.PagesUser
             tbPsdSerialNumber.Text = "";
             tbPseNumber.Text = "";
             tbPseJob.Text = "";
-            lblDeviceClass.Content = SCME.UI.Properties.Resources.DeviceRTClass;
+            lblDeviceClass.Content = Properties.Resources.DeviceRTClass;
 
             ClearStatus(true, true);
 
@@ -3119,6 +3141,11 @@ namespace SCME.UI.PagesUser
                 dw.ShowDialog();
             }
         }
+
+        private void TbPseNumber_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+           ((ValidatingTextBox) sender).HideKeyboard();
+        }
     }
 
     public class MultiIdentificationFieldsToVisibilityConverter : IMultiValueConverter
@@ -3164,7 +3191,7 @@ namespace SCME.UI.PagesUser
                                     return null;
                                 break;
                             default:
-                                return Resources.ResultsWillNotBeSaved;
+                                return Properties.Resources.ResultsWillNotBeSaved;
                         }
                         break;
                     default:
@@ -3172,7 +3199,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            return Resources.ResultsWillNotBeSaved;
+            return Properties.Resources.ResultsWillNotBeSaved;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

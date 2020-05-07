@@ -23,9 +23,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 _profileByNameByMmeMaxTimestamp.Parameters["@MME_CODE"].Value = mmeCode;
                 _profileByNameByMmeMaxTimestamp.Parameters["@PROF_NAME"].Value = name;
-                using var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader();
-                var isRead = reader.Read();
-                return !isRead ? (null, false) : (new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4)), true);
+                using (var reader = _profileByNameByMmeMaxTimestamp.ExecuteReader())
+                {
+                    var isRead = reader.Read();
+                    return !isRead ? (null, false) : (new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4)), true);
+                }
             }
             catch (Exception e)
             {
@@ -48,8 +50,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
         public List<MyProfile> GetProfilesDeepByMmeCode(string mmeCode)
         {
+            int n = 0;
             var res = GetProfilesSuperficially(mmeCode).Select(m =>
             {
+                n++;
                 m.DeepData = LoadProfileDeepData(m);
                 return m;
             }).ToList();
@@ -95,20 +99,22 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     _cacheProfilesByMmeCode[mmeCode] = profiles = new List<MyProfile>();
                 }
 
-                using var reader = profileSelect.ExecuteReader();
-                while (reader.Read())
+                using (var reader = profileSelect.ExecuteReader())
                 {
-                    var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
-                    profiles.Add(readProfile);
-                    if (_enableCache)
-                        _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                    while (reader.Read())
+                    {
+                        var readProfile = new MyProfile(reader.GetInt32(0), reader.GetString(1), reader.GetGuid(2), reader.GetInt32(3), reader.GetDateTime(4));
+                        profiles.Add(readProfile);
+                        if (_enableCache)
+                            _cacheProfileById[readProfile.Id] = new ProfileCache(readProfile);
+                    }
                 }
 
                 return profiles.Select(m => m.Copy()).ToList();
             }
             catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw ex;
             }
         }
 
@@ -203,13 +209,13 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             _mmeCodesByProfile.Parameters["@PROFILE_ID"].Value = profileId;
             _mmeCodesByProfile.Transaction = dbTransaction;
-            using var reader = _mmeCodesByProfile.ExecuteReader();
-
             List<string> mmeCodes = new List<string>();
 
-            while (reader.Read())
-                mmeCodes.Add(reader.GetString(0));
-
+            using( var reader = _mmeCodesByProfile.ExecuteReader())
+            {
+                while (reader.Read())
+                    mmeCodes.Add(reader.GetString(0));
+            }
             return mmeCodes;
         }
 
@@ -479,6 +485,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Gate_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
                     case "Gate_IHEn":
                         testParams.IsIhEnabled = Boolean.Parse(result.Value.ToString());
                         break;
@@ -545,6 +554,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "BVT_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
+
                     case "BVT_UseUdsmUrsm":
                         testParams.UseUdsmUrsm = Convert.ToBoolean(result.Value);
                         break;
@@ -638,7 +651,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_UdsmUrsm_VR":
-                        switch (testParams.TestType)
+                        switch (testParams.UdsmUrsmTestType)
                         {
                             case BVTTestType.Both:
                             case BVTTestType.Reverse:
@@ -649,7 +662,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "BVT_UdsmUrsm_VD":
-                        switch (testParams.TestType)
+                        switch (testParams.UdsmUrsmTestType)
                         {
                             case BVTTestType.Both:
                             case BVTTestType.Direct:
@@ -731,6 +744,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "SL_En":
+                        testParams.IsEnabled = Convert.ToBoolean(result.Value);
+                        break;
                     case "SL_Type":
                         testParams.TestType = (Types.VTM.VTMTestType) (Enum.Parse(typeof(Types.VTM.VTMTestType), result.Value.ToString()));
                         break;

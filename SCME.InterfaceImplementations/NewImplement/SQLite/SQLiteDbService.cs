@@ -6,9 +6,6 @@ using SCME.InterfaceImplementations.Common;
 
 namespace SCME.InterfaceImplementations.NewImplement.SQLite
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
-        ConcurrencyMode = ConcurrencyMode.Single,
-        Namespace = "http://proton-electrotex.com/SCME")]
     public class SQLiteDbService : Common.DbService.DbService<SQLiteCommand, SQLiteConnection>
     {
         protected override string GetFreeProfileNameString => @"SELECT PROF_ID FROM PROFILES ORDER BY PROF_ID DESC LIMIT 1";

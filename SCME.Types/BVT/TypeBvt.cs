@@ -129,7 +129,6 @@ namespace SCME.Types.BVT
         [DataMember]
         public float IRSM { get; set; }
 
-
         [DataMember]
         public bool UseUdsmUrsm { get; set; }
         

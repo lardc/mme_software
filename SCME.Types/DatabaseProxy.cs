@@ -12,7 +12,7 @@ namespace SCME.Types
     {
   
         
-        public DatabaseProxy(string name) : base(name)
+        public DatabaseProxy(string uri) : base(WcfClientBindings.DefaultNetTcpBinding, new EndpointAddress(uri))
         {
         }
 

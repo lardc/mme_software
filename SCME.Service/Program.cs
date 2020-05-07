@@ -41,6 +41,8 @@ namespace SCME.Service
 
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+                UIServiceConfig.Settings.LoadSettings();
+
                 var ico = Resources.ServiceIcon;
                 ms_TrayIcon = new NotifyIcon
                 {
@@ -59,6 +61,7 @@ namespace SCME.Service
         {
             try
             {
+                File.WriteAllText("error.txt", Ex.ExceptionObject.ToString());
                 File.AppendAllText(@"SCME.Service UnhandledException.txt", $"{DateTime.Now} {Environment.NewLine} {Ex.ExceptionObject.ToString()}");
                 File.AppendAllText(@"SCME.Service error.txt",
                     String.Format("\n\n{0}\nEXCEPTION: {1}\nINNER EXCEPTION: {2}\n", DateTime.Now, Ex.ExceptionObject,
@@ -74,6 +77,7 @@ namespace SCME.Service
         {
             try
             {
+                File.WriteAllText("error.txt", Ex.Exception.ToString());
                 File.AppendAllText(@"SCME.Service ThreadException.txt", $"{DateTime.Now} {Environment.NewLine} {Ex.Exception.ToString()}");
                 File.AppendAllText(@"SCME.Service error.txt",
                     String.Format("\n\n{0}\nEXCEPTION: {1}\nINNER EXCEPTION: {2}\n", DateTime.Now, Ex.Exception,

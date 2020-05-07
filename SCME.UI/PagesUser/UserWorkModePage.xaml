@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:SCME.UI"
         xmlns:ui="clr-namespace:SCME.UI"
         xmlns:types="clr-namespace:SCME.Types;assembly=SCME.Types"
+        xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944"
         x:Name="userWorkModePage" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
         Title="{x:Static res:Resources.SelectWorkModePageTitle}" >
@@ -94,7 +95,7 @@
             </Grid>
         </Button>
 
-        <Button x:Name="OperatorBuildModeButton" Visibility="{Binding Source={x:Static res:Settings.Default}, Path = OperatorBuildModeIsEnabled, Converter={StaticResource B2V}}" CommandParameter="{x:Static types:UserWorkMode.OperatorBuildMode}" Grid.Column="2" Grid.Row="5" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
+        <Button x:Name="OperatorBuildModeButton" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path = OperatorBuildModeIsEnabled, Converter={StaticResource B2V}}" CommandParameter="{x:Static types:UserWorkMode.OperatorBuildMode}" Grid.Column="2" Grid.Row="5" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
             <Grid Background="{StaticResource xGreen1}">
                 <Label Content="{x:Static res:Resources.OperatorBuildMode}" Style="{StaticResource LabelIconButton}"  />
             </Grid>

@@ -7,8 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using SCME.Types;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using SCME.UI.CustomControl;
+using SCME.UI.Properties;
 
 namespace SCME.UI.IO
 {
@@ -65,9 +66,8 @@ namespace SCME.UI.IO
                         Cache.Main.VM.IsSafetyBreakIconVisible = !Cache.Net.GetButtonState(ComplexButtons.ButtonSC1);
 
                         var stateService = Cache.Net.GetStateService;
-                        Cache.Main.VM.SyncState = stateService.IsLocal ? "Local" : "Synced";
+                        Cache.Main.VM.SyncMode = stateService.SyncMode;
                         Cache.Main.VM.MmeCode = stateService.MmeCode;
-                        Cache.Main.VM.IsLocal = stateService.IsLocal;
 
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.DoWork += (sender, args) =>

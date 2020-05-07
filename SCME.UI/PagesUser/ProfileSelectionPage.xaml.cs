@@ -6,7 +6,7 @@ using System.Windows.Data;
 using SCME.Types;
 using SCME.Types.Profiles;
 using SCME.Types.DatabaseServer;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using System.Collections.Concurrent;
 using System.Windows.Threading;
 using System.Collections.Generic;
@@ -158,7 +158,7 @@ namespace SCME.UI.PagesUser
 
         private void OnTimerSyncSelectedProfileTick(object Sender, EventArgs E)
         {
-            if (Cache.Main.VM.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncMode == SyncMode.Sync)
                 //вызывается при истечении интервала времени, отсчитываемого таймером TimerSyncSelectedProfile
                 CheckSyncedSelectedProfile();
         }
@@ -691,7 +691,7 @@ namespace SCME.UI.PagesUser
 
         private void ProfileSelectionPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (Cache.Main.VM.SyncState == "SYNCED")
+            if (Cache.Main.VM.SyncMode == SyncMode.Sync)
             {
                 //чтобы пользователь не смог начать измерения с профилем, который ещё не синхронизирован
                 CheckSyncedSelectedProfile();

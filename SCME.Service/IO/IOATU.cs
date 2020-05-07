@@ -5,6 +5,7 @@ using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
 using SCME.Types.ATU;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
 {

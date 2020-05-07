@@ -8,6 +8,7 @@ using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
+using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service
 {
@@ -102,6 +103,26 @@ namespace SCME.Service
 //            initializationResponse.InitializationResult = (m_IOMain.IsInitialized ? InitializationResult.ModulesInitialized : InitializationResult.None) | initializationResponse.InitializationResult;
 //            
 //            return initializationResponse;
+        }
+
+        Types.Gate.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
+        {
+            return _IoMain.GatePulseCalibrationGate(Current);
+        }
+
+        ushort IExternalControl.GatePulseCalibrationMain(ushort Current)
+        {
+            return _IoMain.GatePulseCalibrationMain(Current);
+        }
+
+        void IExternalControl.GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        {
+            _IoMain.GateWriteCalibrationParams(Parameters);
+        }
+
+        Types.Gate.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
+        {
+            return _IoMain.GateReadCalibrationParams();
         }
 
         bool IExternalControl.GetButtonState(ComplexButtons Button)

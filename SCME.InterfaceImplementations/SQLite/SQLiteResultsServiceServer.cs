@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Linq;
 using System.ServiceModel;
 using SCME.Types;
 using SCME.Types.BVT;
@@ -137,7 +138,7 @@ namespace SCME.InterfaceImplementations
             }
              catch (Exception ex)
             {
-                throw new FaultException(ex.ToString());
+                throw new FaultException<FaultData>(new FaultData(){TimeStamp = DateTime.Now, Message =ex.ToString() });
             }
         }
 
@@ -217,7 +218,7 @@ namespace SCME.InterfaceImplementations
             devErrInsertCommand.Prepare();
             devErrInsertCommand.Transaction = trans;
             devErrInsertCommand.Parameters["@DEV_ID"].Value = devId;
-            foreach (var error in errors)
+            foreach (var error in errors.Distinct())
             {
                 devErrInsertCommand.Parameters["@ERR_ID"].Value = _errors[error];
                 devErrInsertCommand.ExecuteNonQuery();
@@ -289,8 +290,8 @@ namespace SCME.InterfaceImplementations
         private void InsertParameterValues(ResultItem result, long devId, SQLiteTransaction trans)
         {
             if (result.IsHeightMeasureEnabled)
-                InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, result.ProfileKey, 
-                    LookupPTT(LookupProfileId(result.ProfileKey, trans), Convert.ToInt32(_tests["Clamping"]), 1, trans), 1, trans);
+                InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, 
+                    LookupPTT(LookupProfileId(result.ProfileKey, trans), Convert.ToInt32(_tests["Clamping"]), 1, trans),  trans);
 
             InsertDvdtParameterValues(result, devId, trans);
             InsertGateParameterValues(result, devId, trans);
@@ -306,7 +307,7 @@ namespace SCME.InterfaceImplementations
             for (var i = 0; i < result.DvdTestParameterses.Length; i++)
             {
                 var order = result.DvdTestParameterses[i].Order;
-                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.ProfileKey, result.DVDT[i].TestTypeId , order, trans);
+                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.DVDT[i].TestTypeId , trans);
             }
         }
 
@@ -315,15 +316,15 @@ namespace SCME.InterfaceImplementations
             for (var i = 0; i < result.GateTestParameters.Length; i++)
             {
                 var order = result.GateTestParameters[i].Order;
-                InsertParameterValue(devId, "K", result.Gate[i].IsKelvinOk ? 1 : 0, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
-                InsertParameterValue(devId, "RG", result.Gate[i].Resistance, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
-                InsertParameterValue(devId, "IGT", result.Gate[i].IGT, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
-                InsertParameterValue(devId, "VGT", result.Gate[i].VGT, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                InsertParameterValue(devId, "K", result.Gate[i].IsKelvinOk ? 1 : 0, result.Gate[i].TestTypeId, trans);
+                InsertParameterValue(devId, "RG", result.Gate[i].Resistance, result.Gate[i].TestTypeId, trans);
+                InsertParameterValue(devId, "IGT", result.Gate[i].IGT, result.Gate[i].TestTypeId, trans);
+                InsertParameterValue(devId, "VGT", result.Gate[i].VGT, result.Gate[i].TestTypeId, trans);
 
                 if (result.GateTestParameters[i].IsIhEnabled)
-                    InsertParameterValue(devId, "IH", result.Gate[i].IH, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "IH", result.Gate[i].IH, result.Gate[i].TestTypeId, trans);
                 if (result.GateTestParameters[i].IsIlEnabled)
-                    InsertParameterValue(devId, "IL", result.Gate[i].IL, result.ProfileKey, result.Gate[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "IL", result.Gate[i].IL, result.Gate[i].TestTypeId, trans);
             }
         }
 
@@ -333,7 +334,7 @@ namespace SCME.InterfaceImplementations
             {
                 var order = result.VTMTestParameters[i].Order;
                 if (result.VTMTestParameters[i].IsEnabled)
-                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.ProfileKey, result.VTM[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "VTM", result.VTM[i].Voltage, result.VTM[i].TestTypeId, trans);
             }
         }
 
@@ -350,14 +351,14 @@ namespace SCME.InterfaceImplementations
                             switch (result.BVTTestParameters[i].TestType)
                             {
                                 case BVTTestType.Both:
-                                    InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                    InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.BVT[i].TestTypeId, trans);
+                                    InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.BVT[i].TestTypeId, trans);
                                     break;
                                 case BVTTestType.Direct:
-                                    InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "IDRM", result.BVT[i].IDRM, result.BVT[i].TestTypeId, trans);
                                     break;
                                 case BVTTestType.Reverse:
-                                    InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "IRRM", result.BVT[i].IRRM, result.BVT[i].TestTypeId, trans);
                                     break;
                             }
                             break;
@@ -365,14 +366,14 @@ namespace SCME.InterfaceImplementations
                             switch (result.BVTTestParameters[i].TestType)
                             {
                                 case BVTTestType.Both:
-                                    InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                    InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.BVT[i].TestTypeId, trans);
+                                    InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.BVT[i].TestTypeId, trans);
                                     break;
                                 case BVTTestType.Direct:
-                                    InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "VDRM", result.BVT[i].VDRM, result.BVT[i].TestTypeId, trans);
                                     break;
                                 case BVTTestType.Reverse:
-                                    InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                    InsertParameterValue(devId, "VRRM", result.BVT[i].VRRM, result.BVT[i].TestTypeId, trans);
                                     break;
                             }
                             break;
@@ -383,21 +384,21 @@ namespace SCME.InterfaceImplementations
                         switch (result.BVTTestParameters[i].TestType)
                         {
                             case BVTTestType.Both:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId, trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId, trans);
 
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId, trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId, trans);
                                 break;
 
                             case BVTTestType.Direct:
-                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "VDSM", result.BVT[i].VDSM, result.BVT[i].TestTypeId, trans);
+                                InsertParameterValue(devId, "IDSM", result.BVT[i].IDSM, result.BVT[i].TestTypeId, trans);
                                 break;
 
                             case BVTTestType.Reverse:
-                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
-                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.ProfileKey, result.BVT[i].TestTypeId, order, trans);
+                                InsertParameterValue(devId, "VRSM", result.BVT[i].VRSM, result.BVT[i].TestTypeId, trans);
+                                InsertParameterValue(devId, "IRSM", result.BVT[i].IRSM, result.BVT[i].TestTypeId, trans);
                                 break;
                         }
                     }
@@ -412,10 +413,10 @@ namespace SCME.InterfaceImplementations
                 var order = result.ATUTestParameters[i].Order;
                 if (result.ATUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "UBR", result.ATU[i].UBR, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "UPRSM", result.ATU[i].UPRSM, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "IPRSM", result.ATU[i].IPRSM, result.ProfileKey,  result.ATU[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "PRSM", result.ATU[i].PRSM, result.ProfileKey, result.ATU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "UBR", result.ATU[i].UBR, result.ATU[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "UPRSM", result.ATU[i].UPRSM, result.ATU[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "IPRSM", result.ATU[i].IPRSM,  result.ATU[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "PRSM", result.ATU[i].PRSM, result.ATU[i].TestTypeId, trans);
                 }
             }
         }
@@ -427,12 +428,12 @@ namespace SCME.InterfaceImplementations
                 var order = result.QrrTqTestParameters[i].Order;
                 if (result.QrrTqTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, result.ProfileKey, result.QrrTq[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, result.ProfileKey, result.QrrTq[i].TestTypeId,  order, trans);
+                    InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, result.QrrTq[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, result.QrrTq[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, result.QrrTq[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, result.QrrTq[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, result.QrrTq[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, result.QrrTq[i].TestTypeId,  trans);
                 }
             }
         }
@@ -444,8 +445,8 @@ namespace SCME.InterfaceImplementations
                 var order = result.TOUTestParameters[i].Order;
                 if (result.TOUTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.ProfileKey, result.TOU[i].TestTypeId, order, trans);
-                    InsertParameterValue(devId, "TOU_TGT", result.TOU[i].TGT, result.ProfileKey, result.TOU[i].TestTypeId, order, trans);
+                    InsertParameterValue(devId, "TOU_TGD", result.TOU[i].TGD, result.TOU[i].TestTypeId, trans);
+                    InsertParameterValue(devId, "TOU_TGT", result.TOU[i].TGT, result.TOU[i].TestTypeId, trans);
                 }
             }
         }
@@ -465,7 +466,7 @@ namespace SCME.InterfaceImplementations
         //    devParamInsertCommand.ExecuteNonQuery();
         //}
 
-          private void InsertParameterValue(long device, string name, float value, Guid profileKey, long testTypeId, int order, SQLiteTransaction trans)
+          private void InsertParameterValue(long device, string name, float value, long testTypeId,  SQLiteTransaction trans)
           {
               var devParamInsertCommand = new SQLiteCommand("INSERT INTO DEV_PARAM(DEV_ID, PARAM_ID, VALUE,TEST_TYPE_ID) VALUES(@DEV_ID, @PARAM_ID, @VALUE,@TEST_TYPE_ID)", _connection);
               devParamInsertCommand.Parameters.Add("@DEV_ID", DbType.Int64);

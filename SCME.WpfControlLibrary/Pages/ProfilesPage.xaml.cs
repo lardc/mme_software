@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
-using SCME.InterfaceImplementations.NewImplement.SQLite;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Database;
@@ -113,7 +108,7 @@ namespace SCME.WpfControlLibrary.Pages
                 return true;
             if (_dbService.ProfileNameExists(ProfileVm.SelectedProfileNameCopy) == false)
                 return true;
-            new DialogWindow(Properties.Resources.Error, "").ShowDialog();
+            new DialogWindow(Properties.Resources.Error, Properties.Resources.PprofileNameAlreadyExists).ShowDialog();
             return false;
         }
 
@@ -215,17 +210,16 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _dispatcherTimerFindProfile.Start();
+            ProfileVm.ProfilesSource.View.Refresh();
+            //_dispatcherTimerFindProfile.Start();
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             ProfileVm.SelectedProfile = null;
             ProfileVm.ProfileDeepDataCopy = null;
-            if (GoBackAction != null)
-                GoBackAction.Invoke();
-            else
-                NavigationService?.GoBack();
+            GoBackAction?.Invoke();
+            NavigationService?.GoBack();
         }
 
         private void ListViewProfiles_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

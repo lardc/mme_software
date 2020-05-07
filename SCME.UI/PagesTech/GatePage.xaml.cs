@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +8,7 @@ using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using SCME.Types;
-using SCME.UI.Properties;
+using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 
@@ -93,6 +94,34 @@ namespace SCME.UI.PagesTech
             }
         }
 
+        private void Pulse_Gate_Click(object Sender, RoutedEventArgs E)
+        {
+            try
+            {
+                var result = Cache.Net.GatePulseCalibrationGate(ushort.Parse(calibrationCurrent.Text));
+
+                actualCurrent.Content = result.Current.ToString(CultureInfo.InvariantCulture);
+                actualVoltage.Content = result.Voltage.ToString(CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+            }
+        }
+
+        private void Pulse_Main_Click(object Sender, RoutedEventArgs E)
+        {
+            try
+            {
+                var result = Cache.Net.GatePulseCalibrationMain(ushort.Parse(calibrationCurrent.Text));
+
+                actualCurrent.Content = result.ToString(CultureInfo.InvariantCulture);
+                actualVoltage.Content = "0";
+            }
+            catch
+            {
+            }
+        }
+        
         internal void SetResultIh(DeviceState State, float IH, IList<short> Array)
         {
             SetLabel(lblIH, State, string.Format("{0}", IH));

@@ -13,6 +13,7 @@
              xmlns:ui="clr-namespace:SCME.UI"
              xmlns:res="clr-namespace:SCME.UI.Properties"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
              VirtualizingStackPanel.IsVirtualizing="False"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" Background="Transparent" >
@@ -47,7 +48,7 @@
                     <Grid.Visibility>
                         <MultiBinding Converter="{StaticResource MB2V}">
                             <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="GateIsVisible" />
+                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="GateIsVisible" />
                         </MultiBinding>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -111,7 +112,7 @@
                     <Grid.Visibility>
                     <MultiBinding Converter="{StaticResource MB2V}">
                         <Binding Path="IsEnabled" />
-                        <Binding Source="{x:Static res:Settings.Default}" Path="SLIsVisible" />
+                        <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="SLIsVisible" />
                     </MultiBinding>
                 </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -149,7 +150,7 @@
                     <Grid.Visibility>
                     <MultiBinding Converter="{StaticResource MB2V}">
                         <Binding Path="IsEnabled" />
-                        <Binding Source="{x:Static res:Settings.Default}" Path="BvtIsVisible" />
+                        <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="BvtIsVisible" />
                     </MultiBinding>
                 </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -169,9 +170,9 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <customControls:LabelWithIndex Content="{x:Static res:Resources.VdrmV}" Grid.Column="0" Grid.Row="0"
+                    <customControls:LabelWithIndex Name="labelWithIndexBvtVdrmVResult1"  Grid.Column="0" Grid.Row="0"
                                                    Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}"
-                                                   Grid.ColumnSpan="2" Margin="10,2,0,1" />
+                                                   Grid.ColumnSpan="2"  />
                     <Label Name="labelBvtVdrmResult1"  Grid.Column="1" Grid.Row="0" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}"
                        Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}"
@@ -185,7 +186,7 @@
                        Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}"
                        />
 
-                    <customControls:LabelWithIndex Content="{x:Static res:Resources.VrrmV}" Grid.Column="0" Grid.Row="2"
+                    <customControls:LabelWithIndex Name="labelWithIndexBvtVrrmVResult1"   Grid.Column="0" Grid.Row="2"
                                                    Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=2}"
                                                    Grid.ColumnSpan="2" />
                     <Label Name="labelBvtVrrmResult1"  Grid.Column="1" Grid.Row="2" Content="0"
@@ -312,7 +313,7 @@
                     <Grid.Visibility>
                         <MultiBinding Converter="{StaticResource MB2V}">
                             <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="dVdtIsVisible" />
+                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="dVdtIsVisible" />
                         </MultiBinding>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -350,7 +351,7 @@
                     <Grid.Visibility>
                         <MultiBinding Converter="{StaticResource MB2V}">
                             <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="ATUIsVisible" />
+                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="ATUIsVisible" />
                         </MultiBinding>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -387,7 +388,7 @@
                     <Grid.Visibility>
                         <MultiBinding Converter="{StaticResource MB2V}">
                             <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="QrrTqIsVisible" />
+                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="QrrTqIsVisible" />
                         </MultiBinding>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>
@@ -450,7 +451,7 @@
                     <Grid.Visibility>
                         <MultiBinding Converter="{StaticResource MB2V}">
                             <Binding Path="IsEnabled" />
-                            <Binding Source="{x:Static res:Settings.Default}" Path="TOUIsVisible" />
+                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="TOUIsVisible" />
                         </MultiBinding>
                     </Grid.Visibility>
                     <Grid.ColumnDefinitions>

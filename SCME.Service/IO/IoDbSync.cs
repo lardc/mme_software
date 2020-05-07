@@ -13,6 +13,7 @@ using SCME.Types.Database;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
+using SCME.UIServiceConfig.Properties;
 
 // ReSharper disable InvertIf
 
@@ -37,7 +38,7 @@ namespace SCME.Service.IO
                 var connectionString = $"data source={databasePath};{databaseOptions}";
                 _mmeCode = mmeCode;
                 _sqLiteDbService = new SQLiteDbService(new SQLiteConnection(connectionString));
-                _msSqlDbService = new DatabaseProxy("SCME.CentralDatabase");
+                _msSqlDbService = new DatabaseProxy(Settings.Default.CentralDatabase);
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionInProcess, string.Empty);
 //                    AfterSyncWithServerRoutineHandler("Synchronization of the local database with a central database is prohibited by parameter DisableResultDB");
 //                else
@@ -55,18 +56,22 @@ namespace SCME.Service.IO
             {
                 var initializationResponse = new InitializationResponse()
                 {
-                    IsLocal = Settings.Default.IsLocal,
                     MmeCode = _mmeCode
                 };
 
                 try
                 {
-                    if (!initializationResponse.IsLocal)
+                    if (Settings.Default.IsLocal)
+                        initializationResponse.SyncMode = SyncMode.Local;
+                    else
+                    {
                         SyncProfiles();
+                        initializationResponse.SyncMode = SyncMode.Sync;
+                    }
                 }
                 catch (Exception e)
                 {
-                    initializationResponse.IsLocal = true;
+                    initializationResponse.SyncMode = SyncMode.NotSync;
                     _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
                     MessageBox.Show(e.ToString(), "Error sync, передайте сообщение разработчику");
                 }

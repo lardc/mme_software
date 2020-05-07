@@ -5,121 +5,119 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SCME.Agent.Properties;
+// ReSharper disable InvertIf
 
 namespace SCME.Agent
 {
     internal class Supervisor
     {
-        private readonly NotifyIcon m_TrayIcon;
-        private readonly Process m_PService, m_PUserInterface, m_PProxy;
-
+        private readonly Process _pService, _pUserInterface;
+        private bool _restartService = true;
+        public bool NeedRestart = false;
         internal Supervisor()
         {
             var ico = Resources.TrayIconPE;
-            m_TrayIcon = new NotifyIcon
-                {
-                    Text = @"SCME.Agent",
-                    Icon = new Icon(ico, ico.Width, ico.Height),
-                    ContextMenu = new ContextMenu(new[] {new MenuItem(@"Exit", OnExit)}),
-                    Visible = true
-                };
-
-            m_PProxy = new Process
-                {
-                    StartInfo =
-                        {
-                            FileName = Settings.Default.ProxyAppPath,
-                            WorkingDirectory =
-                                Path.GetDirectoryName(Settings.Default.ProxyAppPath) ??
-                                Environment.CurrentDirectory,
-                            ErrorDialog = false
-                        },
-                    EnableRaisingEvents = true
-                };
-            m_PProxy.Exited += PExited;
-
-            m_PService = new Process
-                {
-                    StartInfo =
-                        {
-                            FileName = Settings.Default.ServiceAppPath,
-                            WorkingDirectory =
-                                Path.GetDirectoryName(Settings.Default.ServiceAppPath) ??
-                                Environment.CurrentDirectory,
-                            ErrorDialog = false
-                        },
-                    EnableRaisingEvents = true
-                };
-            m_PService.Exited += PExited;
-
-            if (Settings.Default.IsUserInterfaceEnabled)
+            var toolStripButton = new ToolStripButton()
             {
-                m_PUserInterface = new Process
+                Text = @"Exit"
+            };
+            toolStripButton.Click += ToolStripButtonExit_Click;
+
+            var contextMenuStrip = new ContextMenuStrip();
+            contextMenuStrip.Items.Add(toolStripButton);
+            var notifyIcon = new NotifyIcon
+            {
+                Text = @"SCME.Agent",
+                Icon = new Icon(ico, ico.Width, ico.Height),
+                ContextMenuStrip = contextMenuStrip,
+                Visible = true
+            };
+
+
+            _pService = new Process
+            {
+                StartInfo =
+                {
+                    FileName = Program.ConfigData.ServiceAppPath,
+                    WorkingDirectory =
+                        Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ??
+                        Environment.CurrentDirectory,
+                    ErrorDialog = false
+                },
+                EnableRaisingEvents = true
+            };
+            _pService.Exited += PServiceOnExited;
+
+            if (Program.ConfigData.IsUserInterfaceEnabled)
+            {
+                _pUserInterface = new Process
                 {
                     StartInfo =
                     {
-                        FileName = Settings.Default.UIAppPath,
+                        FileName = Program.ConfigData.UIAppPath,
                         WorkingDirectory =
-                            (Path.GetDirectoryName(Settings.Default.UIAppPath)) ??
+                            (Path.GetDirectoryName(Program.ConfigData.UIAppPath)) ??
                             Environment.CurrentDirectory,
                         ErrorDialog = false
                     },
                     EnableRaisingEvents = true
                 };
 
-                m_PUserInterface.Exited += PExited;
+                _pUserInterface.Exited += PUserInterfaceOnExited;
             }
 
-            Application.ApplicationExit += Application_ApplicationExit;
+        }
+
+        private void ToolStripButtonExit_Click(object sender, EventArgs e)
+        {
+            _pService.Exited -= PServiceOnExited;
+            _pUserInterface.Exited -= PUserInterfaceOnExited;
+            _pService.Kill();
+            _pService.WaitForExit();
+            _pUserInterface.Kill();
+            _pUserInterface.WaitForExit();
+            Application.Exit();
+        }
+
+        private void PUserInterfaceOnExited(object sender, EventArgs e)
+        {
+            _restartService = false;
+            _pService.Kill();
+            _pService.WaitForExit();
+            NeedRestart = true;
+            Application.Exit();
+        }
+
+        private void PServiceOnExited(object sender, EventArgs e)
+        {
+            if(_restartService)
+                StartProcess(_pService);
         }
 
         internal void Start()
         {
-            if (Settings.Default.IsProxyEnabled)
-            {
-                StartProcess(m_PProxy);
-                Thread.Sleep(Settings.Default.ProxyInitDelayMs);
-            }
-            
-            StartProcess(m_PService);
-            
-            if (Settings.Default.IsUserInterfaceEnabled)
-                StartProcess(m_PUserInterface);
-        }
+            StartProcess(_pService);
 
-        private static void PExited(object Sender, EventArgs E)
-        {
-            var p = Sender as Process;
-            
-            StartProcess(p);
+            if (Program.ConfigData.IsUserInterfaceEnabled)
+                StartProcess(_pUserInterface);
         }
+        
 
-        private void OnExit(object Sender, EventArgs E)
-        {
-            m_TrayIcon.Visible = false;
-            Application.Exit();
-        }
-
-        private void Application_ApplicationExit(object Sender, EventArgs E)
-        {
-            m_TrayIcon.Visible = false;
-        }
-
-        private static void StartProcess(Process P)
+        private static void StartProcess(Process p)
         {
             try
             {
-                var pname = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(P.StartInfo.FileName));
+                var processesByName = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(p.StartInfo.FileName));
 
-                if (pname.Length == 0)
-                    P.Start();
+                if (processesByName.Length == 0)
+                    p.Start();
             }
             catch (Exception ex)
             {
-                var str = string.Format(Resources.Log_Message_Process_error, P.StartInfo.FileName, ex.Message);
+                var str = string.Format(Resources.Log_Message_Process_error, p.StartInfo.FileName, ex.Message);
 
                 MessageBox.Show(str, Resources.Error_Caption_Supervisor_error, MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                    MessageBoxIcon.Error);
 
                 Environment.Exit(1);
             }

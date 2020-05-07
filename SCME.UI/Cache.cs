@@ -33,8 +33,10 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
 
+        
 
-        internal static ProfilesPage ProfilesPage => _profilesPage ?? (_profilesPage = new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.IsCentral));
+
+        internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);
 
         internal static ProfilesPage ProfilesPageSelectForTest
         {
@@ -54,7 +56,7 @@ namespace SCME.UI
                                                                       
 
         public static MainWindow Main { get; set; }
-        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy("LocalDatabase");
+        public static readonly DatabaseProxy DatabaseProxy = new DatabaseProxy(UIServiceConfig.Properties.Settings.Default.LocalDatabase);
 
         internal static ControlLogic Net { get; set; }
 
@@ -100,6 +102,8 @@ namespace SCME.UI
         #endregion
 
         #region Tech pages
+        
+        
 
         internal static TechnicianPage Technician
         {

@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:myControls="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                     xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls">
 
     <ResourceDictionary.MergedDictionaries>
