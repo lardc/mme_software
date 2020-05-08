@@ -98,12 +98,7 @@
                 </Button>
            
            
-           <Button CommandParameter="5">
-               <Grid Background="{StaticResource xGreen1}">
-                   <Path Data="{StaticResource CalibrationPath}" />
-                   <Label Content="{x:Static res:Resources.Calibration}" />
-               </Grid>
-           </Button>
+
 
                 <Button CommandParameter="6">
                     <Grid Background="{StaticResource xOrange1}">
