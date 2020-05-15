@@ -743,6 +743,8 @@ namespace SCME.UI.PagesUser
                     if (DataForSave.IsSentToServer && tbNumber != null)
                         CalcDeviceClass(tbNumber, true);
                 }
+                if(_HasFault == true || needSave == false )
+                    File.AppendAllText("WriteResultTimeSpan.txt",$"{Environment.NewLine}can`t write result needSave={needSave}, _HasFault={_HasFault} {Environment.NewLine}");
 
                 if (paramsClamp.IsHeightMeasureEnabled)
                 {
