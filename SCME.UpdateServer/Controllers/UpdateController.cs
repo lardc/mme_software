@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -20,12 +19,6 @@ namespace SCME.UpdateServer.Controllers
             _config = config.Value;
         }
 
-        public class InMemoryFile
-        {
-            public string FileName { get; set; }
-            public byte[] Content { get; set; }
-        }
-
         public void Error()
         {
             var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
@@ -34,12 +27,36 @@ namespace SCME.UpdateServer.Controllers
 
         [HttpGet]
         public string DebugParameter() => _config.DebugParameter;
-        
+
         [HttpGet]
         public string GetAgentVersion() => FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName, _config.ScmeAgentExeName)).ProductVersion;
 
         [HttpGet]
-        public async Task<IActionResult> GetAgentFolder() =>  File((await ZipAndXmlHelper.GetZipStreamAsync(Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName))).ToArray(), "application/octet-stream");
+        public void GetAgentFolder()
+        {
+            var zipFileName = Guid.NewGuid().ToString();
+            try
+            {
+                var folderName = Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName);
+                FileStream fileStream;
+
+                using (fileStream = System.IO.File.Open(zipFileName, FileMode.Create, FileAccess.ReadWrite))
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true))
+                    foreach (var i in ZipAndXmlHelper.DirectorySearch(folderName))
+                        archive.CreateEntryFromFile(i, i.Substring(folderName.Length + 1));
+
+                ReturnFileInPars(zipFileName);
+
+                System.IO.File.Delete(zipFileName);
+            }
+            catch (Exception e)
+            {
+                if (System.IO.File.Exists(zipFileName))
+                    System.IO.File.Delete(zipFileName);
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
         [HttpGet]
         public string EqualSoftwareVersion(string mme, string currentVersion)
@@ -48,59 +65,81 @@ namespace SCME.UpdateServer.Controllers
 
             if (mmeParameter == null)
                 return "null";
-            
-            string uiExeFileName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder, _config.ScmeUIExeName);
-            string versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
-            
-            bool variantOne = System.IO.File.Exists(uiExeFileName);
-            bool variantTwo = System.IO.File.Exists(versionFileName);
-            
-            
-            if(variantTwo)
+
+            var uiExeFileName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder, _config.ScmeUIExeName);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
+
+            // ReSharper disable once UnusedVariable
+            var variantOne = System.IO.File.Exists(uiExeFileName);
+            var variantTwo = System.IO.File.Exists(versionFileName);
+
+
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if (variantTwo)
                 return (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString();
+            // ReSharper disable once RedundantIfElseBlock
             else
                 return (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetSoftwareFolder(string mme)
+        private void ReturnFileInPars(string fileName)
         {
-            var mmeParameter = _config.MmeParameters.Single(m => m.Name == mme);
+            using var fileStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
+            using var br = new BinaryReader(fileStream);
+            const int sizePacket = 1024 * 1024;
+            var length = (int) fileStream.Length;
 
-            var zipStreamAsync = await ZipAndXmlHelper.GetZipStreamAsync(Path.Combine(_config.DataPathRoot, mmeParameter.Folder));
+            Response.ContentType = "application/octet-stream";
 
-            //Чтобы в MemoryStream записались изменения должен быть вызван метод Dispose для ZipArchive
-            using (var zipArchive = new ZipArchive(zipStreamAsync, ZipArchiveMode.Update, true))
+            Response.ContentLength = length;
+            for (var i = 0; i < fileStream.Length; i += sizePacket)
             {
-                var oldEntry = zipArchive.Entries.Single(m => m.FullName== _config.ScmeCommonConfigName);
+                var countReadBytes = i + sizePacket < length ? sizePacket : length - i;
+                var bytes = br.ReadBytes(countReadBytes);
+                Response.Body.WriteAsync(bytes, 0, countReadBytes).Wait();
+            }
+        }
 
-                var newEntryBytes = await ZipAndXmlHelper.ReplaceConfig(oldEntry, mmeParameter);
+        [HttpGet]
+        public void GetSoftwareFolder(string mme)
+        {
+            var zipFileName = Guid.NewGuid().ToString();
+            try
+            {
+                var mmeParameter = _config.MmeParameters.Single(m => m.Name == mme);
+                var folderName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder);
 
-                oldEntry.Delete();
+                FileStream fileStream;
 
-                var modifiedEntry = zipArchive.CreateEntry(oldEntry.FullName);
-                await modifiedEntry.Open().WriteAsync(newEntryBytes);
+                using (fileStream = System.IO.File.Open(zipFileName, FileMode.Create, FileAccess.ReadWrite))
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true))
+                    foreach (var i in ZipAndXmlHelper.DirectorySearch(folderName))
+                    {
+                        var entryName = i.Substring(folderName.Length + 1);
+                        if (_config.ScmeCommonConfigName == entryName || $@"UI\{_config.ScmeCommonConfigName}" == entryName)
+                        {
+                            var entry = archive.CreateEntry(entryName);
+                            using var stream = entry.Open();
+                            stream.Write(new ReadOnlySpan<byte>(ZipAndXmlHelper.GetChangedConfig(i, mmeParameter)));
+                        }
+                        else
+                            archive.CreateEntryFromFile(i, entryName);
+                    }
+
+                ReturnFileInPars(zipFileName);
+                System.IO.File.Delete(zipFileName);
+            }
+            catch (Exception e)
+            {
+                if (System.IO.File.Exists(zipFileName))
+                    System.IO.File.Delete(zipFileName);
+                Console.WriteLine(e);
+                throw;
             }
 
-            using (var zipArchive = new ZipArchive(zipStreamAsync, ZipArchiveMode.Update, true))
-            {
-                var oldEntry = zipArchive.Entries.Single(m => m.FullName == $@"UI\{_config.ScmeCommonConfigName}");
-                if (oldEntry != null)
-                {
-                    var newEntryBytes = await ZipAndXmlHelper.ReplaceConfig(oldEntry, mmeParameter);
-
-                    oldEntry.Delete();
-
-                    var modifiedEntry = zipArchive.CreateEntry(oldEntry.FullName);
-                    await modifiedEntry.Open().WriteAsync(newEntryBytes);
-                }
-            }
-
-              
-
-
-            zipStreamAsync.Position = 0;
-            return File(zipStreamAsync, "application/octet-stream");
+            GC.Collect(2, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers();
         }
     }
 }
