@@ -35,6 +35,7 @@ namespace SCME.UpdateServer.Controllers
         public void GetAgentFolder()
         {
             var zipFileName = Guid.NewGuid().ToString();
+
             try
             {
                 var folderName = Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName);
@@ -46,16 +47,24 @@ namespace SCME.UpdateServer.Controllers
                         archive.CreateEntryFromFile(i, i.Substring(folderName.Length + 1));
 
                 ReturnFileInPars(zipFileName);
-
-                System.IO.File.Delete(zipFileName);
             }
             catch (Exception e)
             {
-                if (System.IO.File.Exists(zipFileName))
-                    System.IO.File.Delete(zipFileName);
                 Console.WriteLine(e);
                 throw;
             }
+			finally
+			{
+				try
+				{
+	                if (System.IO.File.Exists(zipFileName))
+	                    System.IO.File.Delete(zipFileName);
+				}
+		        catch (Exception e)
+		        {
+		            Console.WriteLine(e);
+		        }
+			}
         }
 
         [HttpGet]
@@ -70,6 +79,8 @@ namespace SCME.UpdateServer.Controllers
             // ReSharper disable once AssignNullToNotNullAttribute
             var versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
 
+
+			// А зачем так обширно? Это не добавляет читабельности :-)
             // ReSharper disable once UnusedVariable
             var variantOne = System.IO.File.Exists(uiExeFileName);
             var variantTwo = System.IO.File.Exists(versionFileName);
@@ -77,7 +88,7 @@ namespace SCME.UpdateServer.Controllers
 
             // ReSharper disable once ConvertIfStatementToReturnStatement
             if (variantTwo)
-                return (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString();
+                return (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString().Trim();
             // ReSharper disable once RedundantIfElseBlock
             else
                 return (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
@@ -87,17 +98,19 @@ namespace SCME.UpdateServer.Controllers
         {
             using var fileStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
             using var br = new BinaryReader(fileStream);
+			// Вынеси константу в параметры
             const int sizePacket = 1024 * 1024;
-            var bytes = new byte[sizePacket];
+			// Все начнет падать после 2Gb (а мы потом забудем про это)
             var length = (int) fileStream.Length;
 
             Response.ContentType = "application/octet-stream";
 
             Response.ContentLength = length;
+			// а отдавать будет при этом всю длину
             for (var i = 0; i < fileStream.Length; i += sizePacket)
             {
                 var countReadBytes = i + sizePacket < length ? sizePacket : length - i;
-                br.Read(bytes, 0, countReadBytes);
+                var bytes = br.ReadBytes(countReadBytes);
                 Response.Body.WriteAsync(bytes, 0, countReadBytes).Wait();
             }
         }
@@ -129,15 +142,24 @@ namespace SCME.UpdateServer.Controllers
                     }
 
                 ReturnFileInPars(zipFileName);
-                System.IO.File.Delete(zipFileName);
             }
             catch (Exception e)
             {
-                if (System.IO.File.Exists(zipFileName))
-                    System.IO.File.Delete(zipFileName);
                 Console.WriteLine(e);
                 throw;
             }
+			finally
+			{
+				try
+				{
+	                if (System.IO.File.Exists(zipFileName))
+	                    System.IO.File.Delete(zipFileName);
+				}
+	            catch (Exception e)
+	            {
+	                Console.WriteLine(e);
+	            }
+			}
 
             GC.Collect(2, GCCollectionMode.Forced, true);
             GC.WaitForPendingFinalizers();
