@@ -88,6 +88,7 @@ namespace SCME.UpdateServer.Controllers
             using var fileStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
             using var br = new BinaryReader(fileStream);
             const int sizePacket = 1024 * 1024;
+            var bytes = new byte[sizePacket];
             var length = (int) fileStream.Length;
 
             Response.ContentType = "application/octet-stream";
@@ -96,7 +97,7 @@ namespace SCME.UpdateServer.Controllers
             for (var i = 0; i < fileStream.Length; i += sizePacket)
             {
                 var countReadBytes = i + sizePacket < length ? sizePacket : length - i;
-                var bytes = br.ReadBytes(countReadBytes);
+                br.Read(bytes, 0, countReadBytes);
                 Response.Body.WriteAsync(bytes, 0, countReadBytes).Wait();
             }
         }
