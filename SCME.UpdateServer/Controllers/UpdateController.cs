@@ -12,6 +12,7 @@ namespace SCME.UpdateServer.Controllers
     [Route("{controller}/{action}")]
     public class UpdateController : ControllerBase
     {
+        private const int SIZE_PACKET = 1024 * 1024;
         private readonly UpdateDataConfig _config;
 
         public UpdateController(IOptionsSnapshot<UpdateDataConfig> config)
@@ -65,6 +66,9 @@ namespace SCME.UpdateServer.Controllers
 		            Console.WriteLine(e);
 		        }
 			}
+            
+            GC.Collect(2, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers();
         }
 
         [HttpGet]
@@ -79,37 +83,23 @@ namespace SCME.UpdateServer.Controllers
             // ReSharper disable once AssignNullToNotNullAttribute
             var versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
 
-
-			// А зачем так обширно? Это не добавляет читабельности :-)
-            // ReSharper disable once UnusedVariable
-            var variantOne = System.IO.File.Exists(uiExeFileName);
             var variantTwo = System.IO.File.Exists(versionFileName);
-
-
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (variantTwo)
-                return (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString().Trim();
-            // ReSharper disable once RedundantIfElseBlock
-            else
-                return (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
+            
+            return variantTwo ? (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString().Trim() : (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
         }
 
         private void ReturnFileInPars(string fileName)
         {
             using var fileStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
             using var br = new BinaryReader(fileStream);
-			// Вынеси константу в параметры
-            const int sizePacket = 1024 * 1024;
-			// Все начнет падать после 2Gb (а мы потом забудем про это)
-            var length = (int) fileStream.Length;
+            var length =  fileStream.Length;
 
             Response.ContentType = "application/octet-stream";
 
             Response.ContentLength = length;
-			// а отдавать будет при этом всю длину
-            for (var i = 0; i < fileStream.Length; i += sizePacket)
+            for (var i = 0; i < fileStream.Length; i += SIZE_PACKET)
             {
-                var countReadBytes = i + sizePacket < length ? sizePacket : length - i;
+                var countReadBytes = Convert.ToInt32(i + SIZE_PACKET < length ? SIZE_PACKET : length - i);
                 var bytes = br.ReadBytes(countReadBytes);
                 Response.Body.WriteAsync(bytes, 0, countReadBytes).Wait();
             }
