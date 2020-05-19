@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace SCME.UpdateServer
 {
     public static class ZipAndXmlHelper
     {
-        private static IEnumerable<string> DirectorySearch(string directory)
+        public static IEnumerable<string> DirectorySearch(string directory)
         {
             foreach (var f in Directory.GetFiles(directory))
                 yield return f;
@@ -23,38 +19,53 @@ namespace SCME.UpdateServer
             
         }
         
-        public static async Task<MemoryStream> GetZipStreamAsync(string folderName)
+
+
+        private static string PrintXml(string xml)
         {
-            var memoryStream = new MemoryStream();
+            var result = "";
 
-            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
-                foreach (var i in DirectorySearch(folderName))
-                {
-                    var entry = archive.CreateEntry(i.Substring(folderName.Length + 1));
-                    await using var entryStream = entry.Open();
-                    var bytes = await File.ReadAllBytesAsync(i);
-                    await entryStream.WriteAsync(bytes, CancellationToken.None);
-                }
+            var mStream = new MemoryStream();
+            var writer = new XmlTextWriter(mStream, Encoding.Unicode);
+            var document = new XmlDocument();
 
-            return memoryStream;
+            try
+            {
+                document.LoadXml(xml);
+                writer.Formatting = Formatting.Indented;
+
+                document.WriteContentTo(writer);
+                writer.Flush();
+                mStream.Flush();
+
+                mStream.Position = 0;
+
+                var sReader = new StreamReader(mStream);
+
+                var formattedXml = sReader.ReadToEnd();
+
+                result = formattedXml;
+            }
+            catch (XmlException)
+            {
+                // Handle the exception
+            }
+
+            mStream.Close();
+            writer.Close();
+
+            return result;
         }
 
-
-        public  static async Task<byte[]> ReplaceConfig(ZipArchiveEntry zipArchiveEntry, MmeParameter mmeParameter)
+        public static byte[] GetChangedConfig(string sourceFileName, MmeParameter mmeParameter)
         {
-            await using var zipStream = zipArchiveEntry.Open();
-            await using var memoryStream = new MemoryStream();
-            await zipStream.CopyToAsync(memoryStream);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-
+            using var sr = new StreamReader(sourceFileName);
             var xmlDocument = new XmlDocument();
-            xmlDocument.Load(memoryStream);
-
+            xmlDocument.Load(sr);
+            
             var appSettings = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().ToList();
-             
-            if (appSettings == null)
-                throw new Exception($"{nameof(ReplaceConfig)} {nameof(appSettings)} == null");
-            int n = 0;
+
+            var n = 0;
             foreach (var configurationSection in mmeParameter.Configs.GetChildren())
             {
                 n++;
@@ -68,10 +79,9 @@ namespace SCME.UpdateServer
                     xmlNode.AppendChild(newNode);
                 }
             }
+            sr.Close();
 
-            memoryStream.Position = 0;
-            xmlDocument.Save(memoryStream);
-            return memoryStream.ToArray();
+            return Encoding.UTF8.GetBytes(PrintXml(xmlDocument.OuterXml));
         }
     }
 }
