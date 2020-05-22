@@ -802,7 +802,7 @@
     <value>Нет результатов</value>
   </data>
   <data name="ErrorRealisation" xml:space="preserve">
-    <value>Ошибка реализации</value>
+    <value>Невозможно определить класс</value>
   </data>
   <data name="Sync" xml:space="preserve">
     <value>Синхронизация</value>

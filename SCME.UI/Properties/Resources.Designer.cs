@@ -583,7 +583,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error realisation.
+        ///   Looks up a localized string similar to Impossible to define class.
         /// </summary>
         public static string ErrorRealisation {
             get {
