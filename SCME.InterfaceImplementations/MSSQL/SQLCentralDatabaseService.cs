@@ -103,7 +103,16 @@ namespace SCME.InterfaceImplementations
         
         public int? ReadDeviceRTClass(string devCode, string profName)
         {
-            return _resultsService.ReadDeviceRTClass(devCode, profName);
+            try
+            {
+                return _resultsService.ReadDeviceRTClass(devCode, profName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
         public void SaveResults(ResultItem results, List<string> errors)
@@ -118,7 +127,16 @@ namespace SCME.InterfaceImplementations
         
             public int? ReadDeviceClass(string devCode, string profName)
         {
-            return _resultsService.ReadDeviceClass(devCode, profName);
+            try
+            {
+                return _resultsService.ReadDeviceClass(devCode, profName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
         public List<ProfileItem> GetProfileItemsByMme(string mmeCode)

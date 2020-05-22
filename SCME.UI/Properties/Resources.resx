@@ -842,7 +842,7 @@
     <value>No results</value>
   </data>
   <data name="ErrorRealisation" xml:space="preserve">
-    <value>Error realisation</value>
+    <value>Impossible to define class</value>
   </data>
   <data name="Sync" xml:space="preserve">
     <value>Synchronization</value>

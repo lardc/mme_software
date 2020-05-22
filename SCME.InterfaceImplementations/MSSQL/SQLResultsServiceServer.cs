@@ -163,30 +163,28 @@ namespace SCME.InterfaceImplementations
                     "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @RTProfName) AS DEVICECLASS" +
                     " FROM" +
                     " (" +
-                    "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                    "SELECT MAX(D.DEV_ID) AS DEV_ID, D.TS, P.PROF_ID" +
                     " FROM DEVICES D" +
                     "  INNER JOIN PROFILES P ON (" +
                     "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
                     "                            (P.PROF_NAME LIKE @ProfBody)" +
                     "                           )" +
                     " WHERE (D.CODE=@DevCode)" +
-                    " GROUP BY P.PROF_ID" +
-                    " ) AS z", _connection);
+                    "  GROUP BY P.PROF_ID, D.TS) AS z order by z.TS desc", _connection);
 
             _selectDevClassCommand =
                 new SqlCommand(
                     "SELECT dbo.DeviceClass(z.DEV_ID, dbo.DeviceTypeByProfileName(@ProfName), z.PROF_ID, @ProfName) AS DEVICECLASS" +
                     " FROM" +
                     " (" +
-                    "SELECT MAX(D.DEV_ID) AS DEV_ID, P.PROF_ID" +
+                    "SELECT MAX(D.DEV_ID) AS DEV_ID, D.TS, P.PROF_ID" +
                     " FROM DEVICES D" +
                     "  INNER JOIN PROFILES P ON (" +
                     "                            (D.PROFILE_ID=P.PROF_GUID) AND" +
                     "                            (P.PROF_NAME=@ProfName)" +
                     "                           )" +
                     " WHERE (D.CODE=@DevCode)" +
-                    " GROUP BY P.PROF_ID" +
-                    " ) AS z", _connection);
+                    "  GROUP BY P.PROF_ID, D.TS) AS z order by z.TS desc", _connection);
 
             _selectDevClassCommand.Parameters.Add("@ProfName", SqlDbType.NVarChar, 32);
             _selectDevClassCommand.Parameters.Add("@DevCode", SqlDbType.NVarChar, 64);
@@ -446,8 +444,6 @@ namespace SCME.InterfaceImplementations
             //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
             //            класс - целое положительное число - успешное вычисление класса
 
-            int? result = null;
-
             lock (MsLocker)
             {
                 if (_connection == null || _connection.State != ConnectionState.Open)
@@ -462,22 +458,16 @@ namespace SCME.InterfaceImplementations
                 {
                     int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
 
-                    int recordCount = 0;
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        object res = reader.GetInt32(deviceClassFieldID);
-                        result = (res == DBNull.Value) ? null : (int?)res;
-
-                        recordCount++;
+                        var res = reader.GetValue(deviceClassFieldID);
+                        return (res == DBNull.Value) ? -1 : (int?)res;
                     }
 
-                    //может быть считана либо одна запись, либо ни одной
-                    if (recordCount > 1)
-                        result = -1;
                 }
             }
 
-            return result;
+            return null;
         }
 
         public int? ReadDeviceClass(string devCode, string profileName)
@@ -487,8 +477,6 @@ namespace SCME.InterfaceImplementations
             //            null - по запрошенным devCode и profileName класс изделия вычислить не возможно;
             //            -1 - ошибка в данной реализации: вместо нуля записей или единственной записи считано более одной записи;
             //            класс - целое положительное число - успешное вычисление класса
-
-            int? result = null;
 
             lock (MsLocker)
             {
@@ -502,22 +490,16 @@ namespace SCME.InterfaceImplementations
                 {
                     int deviceClassFieldID = reader.GetOrdinal("DEVICECLASS");
 
-                    int recordCount = 0;
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        object res = reader.GetInt32(deviceClassFieldID);
-                        result = (res == DBNull.Value) ? null : (int?)res;
-
-                        recordCount++;
+                        var res = reader.GetValue(deviceClassFieldID);
+                        return (res == DBNull.Value) ? -1 : (int?)res;
                     }
 
-                    //может быть считана либо одна запись, либо ни одной
-                    if (recordCount > 1)
-                        result = -1;
                 }
             }
 
-            return result;
+            return null;
         }
 
         private long GetOrMakeGroupId(string groupName, SqlTransaction trans)
