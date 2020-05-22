@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -717,10 +718,13 @@ namespace SCME.UI.PagesUser
 
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
+                    DateTime beginTime;
                     try
                     {
+                        beginTime = DateTime.Now;
                         //сохраняем результаты измерений в центральную базу данных
                         Cache.Net.WriteResultServer(DataForSave, errors);
+                        File.AppendAllText("WriteResultTimeSpan.txt", $"{Environment.NewLine}{(DateTime.Now - beginTime).TotalMilliseconds} - write result to remote server MSSql {Environment.NewLine}");
                         DataForSave.IsSentToServer = true;
                     }
                     catch (Exception ex)
@@ -732,12 +736,15 @@ namespace SCME.UI.PagesUser
                     }
 
                     //сохраняем результаты измерений в локальную базу данных
+                    beginTime = DateTime.Now;
                     Cache.Net.WriteResultLocal(DataForSave, errors);
-
+                    File.AppendAllText("WriteResultTimeSpan.txt", $"{(DateTime.Now - beginTime).TotalMilliseconds} - write result to local server SQLite {Environment.NewLine}");
                     //вычисляем класс только что измеренного изделия и выводим его на форму
                     if (DataForSave.IsSentToServer && tbNumber != null)
                         CalcDeviceClass(tbNumber, true);
                 }
+                if(_HasFault == true || needSave == false )
+                    File.AppendAllText("WriteResultTimeSpan.txt",$"{Environment.NewLine}can`t write result needSave={needSave}, _HasFault={_HasFault} {Environment.NewLine}");
 
                 if (paramsClamp.IsHeightMeasureEnabled)
                 {

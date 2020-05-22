@@ -73,8 +73,16 @@
 
         
        <UniformGrid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Columns="3" Margin="80,20">
-                <Button CommandParameter="2" Name="btnVtm"
-                    Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}">
+           <Button CommandParameter="1" Name="btnGate"
+                   Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=GateIsVisible, Converter={StaticResource B2V}}">
+               <Grid Background="{StaticResource xOrange2}">
+                   <Path Data="{StaticResource GatePath}" />
+                   <Label Content="{x:Static res:Resources.Gate}" />
+               </Grid>
+           </Button>
+           
+           <Button CommandParameter="2" Name="btnVtm"
+                   Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=SLIsVisible, Converter={StaticResource B2V}}">
                     <Grid Background="{StaticResource xRed1}">
                         <Path Data="{StaticResource VtmPath}" />
                         <Label Content="{x:Static res:Resources.Vtm}" />
@@ -90,12 +98,7 @@
                 </Button>
            
            
-           <Button CommandParameter="5">
-               <Grid Background="{StaticResource xGreen1}">
-                   <Path Data="{StaticResource CalibrationPath}" />
-                   <Label Content="{x:Static res:Resources.Calibration}" />
-               </Grid>
-           </Button>
+
 
                 <Button CommandParameter="6">
                     <Grid Background="{StaticResource xOrange1}">
