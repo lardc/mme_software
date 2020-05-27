@@ -8,6 +8,7 @@ using SCME.Types;
 using SCME.Types.BVT;
 using SCME.Types.DataContracts;
 using SCME.Types.Interfaces;
+using SCME.Types.QrrTq;
 
 namespace SCME.InterfaceImplementations
 {
@@ -749,12 +750,24 @@ namespace SCME.InterfaceImplementations
                 var testTypeId = CalcTestTypeID(result.ProfileKey, "QrrTq", order, trans);
                 if (result.QrrTqTestParameters[i].IsEnabled)
                 {
-                    InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, testTypeId, trans);
-                    InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, testTypeId, trans);
-                    InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, testTypeId, trans);
-                    InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, testTypeId, trans);
-                    InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, testTypeId, trans);
-                    InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, testTypeId, trans);
+                    switch (result.QrrTq[i].Mode)
+                    {
+                        case TMode.Qrr:
+                            InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, testTypeId, trans);
+                            InsertParameterValue(devId, "QRR", result.QrrTq[i].Qrr, testTypeId, trans);
+                            InsertParameterValue(devId, "IRR", result.QrrTq[i].Irr, testTypeId, trans);
+                            InsertParameterValue(devId, "TRR", result.QrrTq[i].Trr, testTypeId, trans);
+                            InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, testTypeId, trans);
+                            break;
+                        case TMode.QrrTq:
+                            InsertParameterValue(devId, "duD/dtcrit", result.QrrTq[i].OsvRate, testTypeId, trans);
+                            InsertParameterValue(devId, "IDC", result.QrrTq[i].Idc, testTypeId, trans);
+                            InsertParameterValue(devId, "DCFactFallRate", result.QrrTq[i].DCFactFallRate, testTypeId, trans);
+                            InsertParameterValue(devId, "TQ", result.QrrTq[i].Tq, testTypeId, trans);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
             }
         }

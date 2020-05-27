@@ -112,6 +112,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             //("UdsmUrsm_IDRM", "UdsmUrsm_IDRM, A", false),
             //("UdsmUrsm_IRRM", "UdsmUrsm_IRRM, A", false),
 
+            ("duD/dtcrit", "duD/dtcrit, V/µs", false),
             ("IsHeightOk", "IsHeightOk", false),
             ("UBR", "UBR, V", false),
             ("UPRSM", "UPRSM, V", false),
