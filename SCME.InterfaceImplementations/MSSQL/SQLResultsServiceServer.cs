@@ -14,9 +14,9 @@ namespace SCME.InterfaceImplementations
     public class SQLResultsServiceServer : IResultsService
     {
         private readonly SqlConnection _connection;
-        private readonly Dictionary<string, long> _errors;
-        private readonly Dictionary<string, long> _params;
-        private readonly Dictionary<string, long> _tests;
+        private readonly Dictionary<string, long> _errors = new Dictionary<string, long>(64);
+        private readonly Dictionary<string, long> _params= new Dictionary<string, long>(64);
+        private readonly Dictionary<string, long> _tests= new Dictionary<string, long>(20);
         protected static readonly object MsLocker = new object();
 
         private SqlCommand _profileSelectCommand;
@@ -42,11 +42,14 @@ namespace SCME.InterfaceImplementations
         public SQLResultsServiceServer(string databasePath)
         {
             _connection = new SqlConnection(databasePath);
-            _errors = new Dictionary<string, long>(64);
-            _params = new Dictionary<string, long>(64);
-            _tests = new Dictionary<string, long>(20);
             _connection.Open();
-
+            PrepareQueries();
+            PopulateDictionaries();
+        }
+        
+        public SQLResultsServiceServer(SqlConnection sqlConnection)
+        {
+            _connection = sqlConnection;
             PrepareQueries();
             PopulateDictionaries();
         }

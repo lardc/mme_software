@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Globalization;
 using System.ServiceModel;
 using SCME.InterfaceImplementations.Common;
+using SCME.Types.DataContracts;
 
 namespace SCME.InterfaceImplementations.NewImplement.SQLite
 {
@@ -30,8 +34,10 @@ namespace SCME.InterfaceImplementations.NewImplement.SQLite
             return Convert.ToInt32(Connection.LastInsertRowId);
         }
 
+        public readonly SQLiteResultsServiceLocal SqLiteResultsServiceLocal;
         public SQLiteDbService(SQLiteConnection connection) : base(connection)
         {
+            SqLiteResultsServiceLocal = new SQLiteResultsServiceLocal(connection.ConnectionString);
         }
     }
 }
