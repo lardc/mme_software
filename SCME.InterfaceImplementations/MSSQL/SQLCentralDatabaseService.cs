@@ -125,7 +125,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception e)
             {
-                File.AppendAllText("TimeParserError.txt", $"{DateTime.Now} {e}");
+                File.AppendAllText("TimeParserError.txt", $"{DateTime.Now} --- {results.Timestamp} --- {e}");
                 throw;
             }
             _resultsService.WriteResults(results, errors);
