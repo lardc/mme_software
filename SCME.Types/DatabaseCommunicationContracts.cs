@@ -50,8 +50,10 @@ namespace SCME.Types
         [DataMember]
         public int Position { get; set; }
 
-        [DataMember]
+        
         public DateTime Timestamp { get; set; }
+        [DataMember]
+        public string TimestampString { get; set; }
 
         [DataMember]
         public string User { get; set; }

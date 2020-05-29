@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -117,6 +119,15 @@ namespace SCME.InterfaceImplementations
 
         public void SaveResults(ResultItem results, List<string> errors)
         {
+            try
+            {
+                results.Timestamp = DateTime.ParseExact(results.TimestampString, "yyyyMMddHHmmssFFF", CultureInfo.InvariantCulture);
+            }
+            catch (Exception e)
+            {
+                File.AppendAllText("TimeParserError.txt", $"{DateTime.Now} --- {results.Timestamp} --- {e}");
+                throw;
+            }
             _resultsService.WriteResults(results, errors);
         }
 
