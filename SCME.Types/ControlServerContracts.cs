@@ -319,7 +319,7 @@ namespace SCME.Types
         public ComplexParts Device { get; set; }
 
         [DataMember]
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         [DataMember]
         public string Message { get; set; }
