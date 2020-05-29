@@ -424,7 +424,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                throw new FaultException<FaultData>(new FaultData() { }, new FaultReason(ex.ToString()));
+                throw new FaultException<FaultData>(new FaultData() { Device = ComplexParts.Database, Message = ex.ToString()}, new FaultReason(ex.ToString()));
             }
         }
 
