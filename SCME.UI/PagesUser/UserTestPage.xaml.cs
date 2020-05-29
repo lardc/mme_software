@@ -717,6 +717,7 @@ namespace SCME.UI.PagesUser
                         IsHeightOk = HeightMeasureResult
                     };
 
+                    DataForSave.TimestampString = DataForSave.Timestamp.ToString("yyyyMMddHHmmssFFF", CultureInfo.InvariantCulture);
 
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
