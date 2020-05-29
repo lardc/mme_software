@@ -1720,6 +1720,8 @@ namespace SCME.UI.PagesUser
 
             if (m_CurrentPos == 1)
             {
+                ResultsQrrTq1[QrrTqCounter].Mode = result.Mode;
+                
                 ResultsQrrTq1[QrrTqCounter].OffStateVoltage = result.OffStateVoltage;
                 ResultsQrrTq1[QrrTqCounter].OsvRate = result.OsvRate;
 
@@ -1732,6 +1734,8 @@ namespace SCME.UI.PagesUser
             }
             else
             {
+                ResultsQrrTq2[QrrTqCounter].Mode = result.Mode;
+                
                 ResultsQrrTq2[QrrTqCounter].OffStateVoltage = result.OffStateVoltage;
                 ResultsQrrTq2[QrrTqCounter].OsvRate = result.OsvRate;
 
