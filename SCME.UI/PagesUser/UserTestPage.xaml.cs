@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -656,10 +657,12 @@ namespace SCME.UI.PagesUser
                             var subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(Profile.Name);
                             switch (subjectForMeasure)
                             {
+                                case SubjectForMeasure.FPE:
                                 case SubjectForMeasure.PSE:
                                     needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
                                     tbNumber = tbPseNumber;
                                     break;
+                                case SubjectForMeasure.FPD:
                                 case SubjectForMeasure.PSD:
                                     needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
                                     tbNumber = tbPsdSerialNumber;
@@ -717,10 +720,13 @@ namespace SCME.UI.PagesUser
 
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
+                    DateTime beginTime;
                     try
                     {
+                        beginTime = DateTime.Now;
                         //сохраняем результаты измерений в центральную базу данных
                         Cache.Net.WriteResultServer(DataForSave, errors);
+                        File.AppendAllText("WriteResultTimeSpan.txt", $"{Environment.NewLine}{(DateTime.Now - beginTime).TotalMilliseconds} - write result to remote server MSSql {Environment.NewLine}");
                         DataForSave.IsSentToServer = true;
                     }
                     catch (Exception ex)
@@ -732,12 +738,15 @@ namespace SCME.UI.PagesUser
                     }
 
                     //сохраняем результаты измерений в локальную базу данных
+                    beginTime = DateTime.Now;
                     Cache.Net.WriteResultLocal(DataForSave, errors);
-
+                    File.AppendAllText("WriteResultTimeSpan.txt", $"{(DateTime.Now - beginTime).TotalMilliseconds} - write result to local server SQLite {Environment.NewLine}");
                     //вычисляем класс только что измеренного изделия и выводим его на форму
                     if (DataForSave.IsSentToServer && tbNumber != null)
                         CalcDeviceClass(tbNumber, true);
                 }
+                if(_HasFault == true || needSave == false )
+                    File.AppendAllText("WriteResultTimeSpan.txt",$"{Environment.NewLine}can`t write result needSave={needSave}, _HasFault={_HasFault} {Environment.NewLine}");
 
                 if (paramsClamp.IsHeightMeasureEnabled)
                 {
@@ -2728,6 +2737,7 @@ namespace SCME.UI.PagesUser
 
                 switch (subjectForMeasure)
                 {
+                    case SubjectForMeasure.FPD:
                     case SubjectForMeasure.PSD:
                         tbPsdJob.BorderBrush = String.IsNullOrWhiteSpace(tbPsdJob.Text) ? Brushes.Tomato : m_TbBrush;
                         tbPsdJob.Text = tbPsdJob.Text.Replace(',', '.');
@@ -2736,6 +2746,7 @@ namespace SCME.UI.PagesUser
                         tbPsdSerialNumber.Text = tbPsdSerialNumber.Text.Replace(',', '.');
                         break;
 
+                    case SubjectForMeasure.FPE:
                     case SubjectForMeasure.PSE:
                         tbPseJob.BorderBrush = String.IsNullOrWhiteSpace(tbPseJob.Text) ? Brushes.Tomato : m_TbBrush;
                         tbPseJob.Text = tbPseJob.Text.Replace(',', '.');
@@ -2923,6 +2934,7 @@ namespace SCME.UI.PagesUser
                 SubjectForMeasure subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name);
                 switch (subjectForMeasure)
                 {
+                    case SubjectForMeasure.FPD:
                     case SubjectForMeasure.PSD:
                         tbPsdJob.BorderBrush = String.IsNullOrWhiteSpace(tbPsdJob.Text) ? Brushes.Tomato : m_TbBrush;
                         tbPsdJob.Text = tbPsdJob.Text.Replace(',', '.');
@@ -2931,6 +2943,7 @@ namespace SCME.UI.PagesUser
                         tbPsdSerialNumber.Text = tbPsdSerialNumber.Text.Replace(',', '.');
                         break;
 
+                    case SubjectForMeasure.FPE:
                     case SubjectForMeasure.PSE:
                         tbPseJob.BorderBrush = String.IsNullOrWhiteSpace(tbPseJob.Text) ? Brushes.Tomato : m_TbBrush;
                         tbPseJob.Text = tbPseJob.Text.Replace(',', '.');
@@ -3064,9 +3077,11 @@ namespace SCME.UI.PagesUser
                         SubjectForMeasure subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(this.Profile.Name);
                         switch (subjectForMeasure)
                         {
+                            case SubjectForMeasure.FPE:
                             case SubjectForMeasure.PSE:
                                 EnabledPSEMode();
                                 break;
+                            case SubjectForMeasure.FPD:
                             case SubjectForMeasure.PSD:
                                 EnabledPSDMode();
                                 break;
@@ -3182,10 +3197,12 @@ namespace SCME.UI.PagesUser
                         SubjectForMeasure subjectForMeasure = ProfileRoutines.CalcSubjectForMeasure(profileName);
                         switch (subjectForMeasure)
                         {
+                            case SubjectForMeasure.FPE:
                             case SubjectForMeasure.PSE:
                                 if (!string.IsNullOrEmpty(pseJob) && !string.IsNullOrEmpty(pseNumber))
                                     return null;
                                 break;
+                            case SubjectForMeasure.FPD:
                             case SubjectForMeasure.PSD:
                                 if (!string.IsNullOrEmpty(psdJob) && !string.IsNullOrEmpty(psdSerialNumber))
                                     return null;

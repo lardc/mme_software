@@ -135,8 +135,8 @@ namespace SCME.InterfaceImplementations
                             UserName = reader.GetString(ordUser),
                             MmeCode = reader.GetString(ordMmeCode),
                             Code = reader.GetString(ordCode),
-                            StructureOrd = reader.GetString(ordSn1),
-                            StructureId = reader.GetString(ordSn2),
+                            StructureOrd = reader.GetValue(ordSn1) == DBNull.Value ? null : reader.GetString(ordSn1) ,
+                            StructureId = reader.GetValue(ordSn2) == DBNull.Value ? null : reader.GetString(ordSn2) ,
                             Position = reader.GetBoolean(ordPos) ? 2 : 1,
                             Timestamp = DateTime.Parse(reader.GetString(ordTs), CultureInfo.InvariantCulture)
                         });

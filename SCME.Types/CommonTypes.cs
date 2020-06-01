@@ -273,7 +273,11 @@ namespace SCME.Types
         [EnumMember]        
         PSE = 1,
         [EnumMember]        
-        PSD = 2
+        PSD = 2,
+        [EnumMember]        
+        FPD = 3,
+        [EnumMember]        
+        FPE = 4,
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

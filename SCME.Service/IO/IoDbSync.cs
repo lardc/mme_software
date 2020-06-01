@@ -23,7 +23,7 @@ namespace SCME.Service.IO
     {
         private readonly BroadcastCommunication _communication;
         private string _mmeCode;
-        private IDbService _sqLiteDbService;
+        private SQLiteDbService _sqLiteDbService;
         private IDbService _msSqlDbService;
 
         public IoDbSync(BroadcastCommunication communication)
@@ -66,6 +66,7 @@ namespace SCME.Service.IO
                     else
                     {
                         SyncProfiles();
+                        SendUnSendedResult();
                         initializationResponse.SyncMode = SyncMode.Sync;
                     }
                 }
@@ -118,6 +119,14 @@ namespace SCME.Service.IO
             {
                 throw new Exception(string.Format("Error while syncing profiles from local database with a master: {0}", ex.ToString()));
             }
+        }
+
+        private void SendUnSendedResult()
+        {
+            using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
+                foreach (var unSendedDevice in _sqLiteDbService.SqLiteResultsServiceLocal.GetUnsendedDevices())
+                    if (centralDbClient.SendResultToServer(unSendedDevice))
+                        _sqLiteDbService.SqLiteResultsServiceLocal.SetResultSended(unSendedDevice.Id);
         }
 
         public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)

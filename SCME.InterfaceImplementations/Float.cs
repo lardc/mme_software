@@ -22,7 +22,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                File.AppendAllText("CreateCultureError", $"{DateTime.Now}{Environment.NewLine}{ex.ToString()}");
+                /*File.AppendAllText("CreateCultureError", $"{DateTime.Now}{Environment.NewLine}{ex.ToString()}");*/
                 return null;
             }
             
