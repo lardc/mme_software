@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
+using System.Text;
 using SCME.Types;
 using SCME.Types.BVT;
 using SCME.Types.DataContracts;
@@ -50,6 +53,31 @@ namespace SCME.InterfaceImplementations
 
             PrepareQueries();
             PopulateDictionaries();
+        }
+
+        private static readonly object Locker = new object();
+        private const string LOG_FILEPATH = "MSSqlTimeout.txt";
+        private void LogTimeout(string data)
+        {
+            lock (Locker)
+                using (var file = new FileStream(LOG_FILEPATH, FileMode.Append, FileAccess.Write, FileShare.Read))
+                    using (var writer = new StreamWriter(file, Encoding.Unicode))
+                        writer.Write(data);
+        }
+        
+        private void DebugTimeoutBegin(SqlCommand command, out DateTime begin , out Guid id, [CallerMemberName] string callingMethod = "", [CallerLineNumber] int callingFileLineNumber = 0)
+        {
+            var query = command.Parameters.Cast<SqlParameter>().Aggregate(command.CommandText, (current, p) => current.Replace(p.ParameterName, p.Value.ToString()));
+            var stackTrace = new System.Diagnostics.StackTrace();
+            begin = DateTime.Now;
+            id = Guid.NewGuid();
+            LogTimeout($"begin - {id} {begin}{Environment.NewLine}{query}{Environment.NewLine}{callingMethod} - {callingFileLineNumber}{Environment.NewLine}");
+        }
+        
+        private void DebugTimeoutEnd(DateTime begin, Guid id)
+        {
+            var end = DateTime.Now;
+            LogTimeout($"end   - {id} {end}{Environment.NewLine}{end - begin}{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}");
         }
 
         private void PrepareQueries()
@@ -511,13 +539,17 @@ namespace SCME.InterfaceImplementations
 
             _groupSelectCommand.Parameters["@GROUP_NAME"].Value = groupName;
             _groupSelectCommand.Transaction = trans;
+            DebugTimeoutBegin(_groupSelectCommand, out var begin, out var id);
             var possibleGroupId = _groupSelectCommand.ExecuteScalar();
+            DebugTimeoutEnd(begin, id);
 
             if (possibleGroupId == null)
             {
                 _groupInsertCommand.Parameters["@GROUP_NAME"].Value = groupName;
                 _groupInsertCommand.Transaction = trans;
+                DebugTimeoutBegin(_groupInsertCommand, out begin, out id);
                 groupId = (int) _groupInsertCommand.ExecuteScalar();
+                DebugTimeoutEnd(begin, id);
             }
             else
                 groupId = (int) possibleGroupId;
@@ -549,7 +581,9 @@ namespace SCME.InterfaceImplementations
             foreach (var error in errors.Distinct())
             {
                 _devErrInsertCommand.Parameters["@ERR_ID"].Value = _errors[error];
+                DebugTimeoutBegin(_devErrInsertCommand, out var begin, out var id);
                 _devErrInsertCommand.ExecuteNonQuery();
+                DebugTimeoutEnd(begin, id);
             }
         }
 
@@ -561,13 +595,17 @@ namespace SCME.InterfaceImplementations
             _deviceSelectCmd.Parameters["@POS"].Value = (result.Position == 2);
             _deviceSelectCmd.Parameters["@PROF_ID"].Value = profileId;
 
+            DebugTimeoutBegin(_deviceSelectCmd, out var begin, out var id);
             var devId = _deviceSelectCmd.ExecuteScalar();
+            DebugTimeoutEnd(begin, id);
 
             if (devId != null)
             {
                 _deviceDeleteCmd.Transaction = trans;
                 _deviceDeleteCmd.Parameters["@DEV_ID"].Value = devId;
+                DebugTimeoutBegin(_deviceDeleteCmd, out begin, out id);
                 _deviceDeleteCmd.ExecuteNonQuery();
+                DebugTimeoutEnd(begin, id);
             }
 
             _devInsertCommand.Transaction = trans;
@@ -581,7 +619,10 @@ namespace SCME.InterfaceImplementations
             _devInsertCommand.Parameters["@POS"].Value = (result.Position == 2);
             _devInsertCommand.Parameters["@MME_CODE"].Value = result.MmeCode;
 
-            return (int) _devInsertCommand.ExecuteScalar();
+            DebugTimeoutBegin(_devInsertCommand, out begin, out id);
+            var res = (int)_devInsertCommand.ExecuteScalar();
+            DebugTimeoutEnd(begin, id);
+            return res;
         }
 
         private void InsertParameterValues(ResultItem result, long devId, SqlTransaction trans)
@@ -793,7 +834,9 @@ namespace SCME.InterfaceImplementations
             _devParamInsertCommand.Parameters["@VALUE"].Value = value;
             _devParamInsertCommand.Parameters["@TEST_TYPE_ID"].Value = testTypeId;
             _devParamInsertCommand.Transaction = trans;
+            DebugTimeoutBegin(_devParamInsertCommand, out var begin, out var id);
             _devParamInsertCommand.ExecuteNonQuery();
+            DebugTimeoutEnd(begin , id);
         }
 
         /*private void InsertParameterValue(long device, string name, float value, long testTypeId, SqlTransaction trans)
