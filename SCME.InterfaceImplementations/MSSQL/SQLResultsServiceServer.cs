@@ -312,8 +312,17 @@ namespace SCME.InterfaceImplementations
             _devInsertCommand.Parameters["@GROUP_ID"].Value = groupId;
             _devInsertCommand.Parameters["@PROFILE_ID"].Value = localItem.ProfileKey;
             _devInsertCommand.Parameters["@CODE"].Value = localItem.Code;
-            _devInsertCommand.Parameters["@SIL_N_1"].Value = localItem.StructureOrd;
-            _devInsertCommand.Parameters["@SIL_N_2"].Value = localItem.StructureId;
+            
+            if (localItem.StructureOrd != null)
+                _devInsertCommand.Parameters["@SIL_N_1"].Value = localItem.StructureOrd;
+            else
+                _devInsertCommand.Parameters["@SIL_N_1"].Value = DBNull.Value;
+            
+            if (localItem.StructureId != null)
+                _devInsertCommand.Parameters["@SIL_N_2"].Value = localItem.StructureId;
+            else
+                _devInsertCommand.Parameters["@SIL_N_2"].Value = DBNull.Value;
+            
             _devInsertCommand.Parameters["@TS"].Value = localItem.Timestamp;
             _devInsertCommand.Parameters["@USR"].Value = localItem.UserName;
             _devInsertCommand.Parameters["@POS"].Value = (localItem.Position == 2);
