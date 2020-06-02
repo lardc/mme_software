@@ -85,7 +85,7 @@
 
             <customControls:HardwareItem x:Name="bvtControl"
                                               Title="{x:Static res:Resources.Bvt}"
-                                              InitializeTimeout="3000" OperationTimeout="25000"
+                                              InitializeTimeout="25000" OperationTimeout="25000"
                                               DisableAvailable="True"
                                               Backcolor="{StaticResource xBlue3}"
                                               Logo="{StaticResource BvtPath}"
