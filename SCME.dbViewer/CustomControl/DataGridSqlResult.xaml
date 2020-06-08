@@ -86,7 +86,7 @@
         </Style>
 
         <Style TargetType="DataGridColumnHeader" x:Key="DataGridColumnHeaderCustomStyle">
-            <!--на простом (не мульти) конвертере реализовать не получилось. пробовал передавать в него только DataGrid - получил странный эффект: header с наполовину серый и без столбцов=, столбцы созданные до измеренных условий и параметров не прорисовывались, а с мультиконвертером заработало сразу и как надо-->
+            <!--на простом (не мульти) конвертере реализовать не получилось. пробовал передавать в него только DataGrid - получил странный эффект: header наполовину серый и без столбцов, столбцы созданные до измеренных условий и параметров не прорисовывались, а с мультиконвертером заработало сразу и как надо-->
             <Setter Property="Visibility">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource headerVisibilityMultiConverter}">
@@ -204,6 +204,7 @@
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="SelectionUnit" Value="CellOrRowHeader"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
         </Style>
     </DataGrid.Style>
 </DataGrid>

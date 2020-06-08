@@ -46,6 +46,9 @@ namespace SCME.dbViewer
         }
     }
 
+
+
+
     /*
         public class TemperatureConditionToStrConverter : IValueConverter
         {        

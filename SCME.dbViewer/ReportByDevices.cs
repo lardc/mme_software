@@ -10,6 +10,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 using System.Collections;
 using SCME.dbViewer.CustomControl;
+using System.Globalization;
 
 namespace SCME.dbViewer.ForParameters
 {
@@ -209,15 +210,19 @@ namespace SCME.dbViewer.ForParameters
 
             //проверяем что мы считали значение температурного режима
             TemperatureCondition tc;
-            if (Enum.TryParse(temperatureCondition, out tc))
+            if (Enum.TryParse(temperatureCondition, true, out tc) && (Enum.IsDefined(typeof(TemperatureCondition), temperatureCondition)))
             {
-                //мы считали описание температурного режима
-                return columnName.Remove(cTemperatureConditionStart, cTemperatureConditionCount);
+                //мы считали корректное описание температурного режима
+                //имя условия/параметра стоит за разделителем Constants.cNameSeparator
+                int startNameIndex = columnName.IndexOf(Constants.cNameSeparator);
+
+                return (startNameIndex == -1) ? null : columnName.Substring(startNameIndex + Constants.cNameSeparator.Length);
             }
             else
             {
-                //мы не смогди считать описание температурного режима
+                //мы не смогли считать описание температурного режима
                 temperatureCondition = null;
+
                 return null;
             }
         }
@@ -230,16 +235,20 @@ namespace SCME.dbViewer.ForParameters
             string nameOfNrmMin = Routines.NameOfNrmMinParametersColumn(columnName);
             int indexOfNrmMin = this.Row.Table.Columns.IndexOf(nameOfNrmMin);
             if (indexOfNrmMin != -1)
-                result = string.Concat(this.Row[indexOfNrmMin].ToString(), "<", "x");
-
-            string nameOfNrmMax = Routines.NameOfNrmMaxParametersColumn(columnName);
-            int indexOfNrmMax = this.Row.Table.Columns.IndexOf(nameOfNrmMax);
-            if (indexOfNrmMax != -1)
             {
-                if (result == null)
-                    result = "x";
+                string nrmMin = this.Row[indexOfNrmMin].ToString();
+                result = (nrmMin == string.Empty) ? string.Empty : string.Concat(nrmMin, "<x");
+            }
 
-                result = string.Concat(result, "≤", this.Row[indexOfNrmMax].ToString());
+            if (result == null)
+            {
+                string nameOfNrmMax = Routines.NameOfNrmMaxParametersColumn(columnName);
+                int indexOfNrmMax = this.Row.Table.Columns.IndexOf(nameOfNrmMax);
+                if (indexOfNrmMax != -1)
+                {
+                    string nrmMax = this.Row[indexOfNrmMax].ToString();
+                    result = (nrmMax == string.Empty) ? string.Empty : string.Concat("x≤", nrmMax);
+                }
             }
 
             return result;
@@ -382,25 +391,25 @@ namespace SCME.dbViewer.ForParameters
                 int column = 1;
                 Range rng = null;
 
-                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 1);
                 rng.Merge();
                 rng.Value2 = "ПРОТОКОЛ ИСПЫТАНИЙ";
                 rng.HorizontalAlignment = -4108;
-                column += 3;
+                column += 2;
 
-                //выводим тело профиля с отрезанной температурной частью (символы с индексами 0, 1), символ 2 это пробел
+                //выводим тело профиля
                 rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
                 rng.Merge();
-                rng.Value2 = this.ProfileBody.Substring(3);
+                rng.Value2 = this.ProfileBody;
                 rng.HorizontalAlignment = -4108;
                 rowNum++;
                 column = 1;
 
-                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 1);
                 rng.Merge();
                 rng.Value2 = "Код ТМЦ";
                 rng.HorizontalAlignment = -4108;
-                column += 3;
+                column += 2;
 
                 rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
                 rng.Merge();
@@ -409,11 +418,11 @@ namespace SCME.dbViewer.ForParameters
                 rowNum++;
                 column = 1;
 
-                rng = this.range(exelApp, rowNum, column, rowNum, column + 2);
+                rng = this.range(exelApp, rowNum, column, rowNum, column + 1);
                 rng.Merge();
                 rng.Value2 = "№ ПЗ";
                 rng.HorizontalAlignment = -4108;
-                column += 3;
+                column += 2;
 
                 rng = this.range(exelApp, rowNum, column, rowNum, column + 3);
                 rng.Merge();
@@ -431,7 +440,7 @@ namespace SCME.dbViewer.ForParameters
                 Range rng = null;
                 int columnsCount = 0;
 
-                //идём столбцам условий и параметров 1-го температурного режима
+                //идём по столбцам условий и параметров 1-го температурного режима
                 for (int columnIndex = this.DataGrid.FirstCPColumnIndexInDataTable1; columnIndex <= this.DataGrid.LastCPColumnIndexInDataTable1; columnIndex++)
                 {
                     if (this.Row[columnIndex] != DBNull.Value)
@@ -443,7 +452,7 @@ namespace SCME.dbViewer.ForParameters
 
                         if (trueName != null)
                         {
-                            if ((this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (!trueName.Contains(Routines.HiddenMarker)))
+                            if ((this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (!trueName.Contains(Constants.HiddenMarker)))
                             {
                                 //выводим температуру при которой выполнено измерение данного параметра
                                 int columnIndexInExcel = column + columnsCount;
@@ -492,7 +501,7 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void HeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, int column, ref int columnEnd)
+        public void HeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, ref int rowNum, int column)
         {
             //вывод общего заголовка
             if ((exelApp != null) && (sheet != null))
@@ -503,12 +512,7 @@ namespace SCME.dbViewer.ForParameters
                 rng.Value2 = "Норма";
                 rng.HorizontalAlignment = -4108;
                 rowNum++;
-                column -= 2;
-
-                rng = this.range(exelApp, rowNum, column);
-                rng.Value2 = "№";
-                rng.HorizontalAlignment = -4108;
-                column++;
+                column--;
 
                 rng = this.range(exelApp, rowNum, column);
                 rng.Value2 = "№ ППЭ";
@@ -519,16 +523,6 @@ namespace SCME.dbViewer.ForParameters
                 rng.Value2 = "Класс";
                 rng.HorizontalAlignment = -4108;
                 column++;
-
-                rng = this.range(exelApp, rowNum, columnEnd);
-                rng.Value2 = "№ MME";
-                rng.HorizontalAlignment = -4108;
-                columnEnd++;
-
-                rng = this.range(exelApp, rowNum, columnEnd);
-                rng.Value2 = "Дата";
-                rng.HorizontalAlignment = -4108;
-                columnEnd++;
             }
         }
 
@@ -554,7 +548,7 @@ namespace SCME.dbViewer.ForParameters
 
                         if (trueName != null)
                         {
-                            if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (!trueName.Contains(Routines.HiddenMarker)))
+                            if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (!trueName.Contains(Constants.HiddenMarker)))
                             {
                                 //выводим температуру при которой выполнено измерение данного параметра
                                 int columnIndexInExcel = column + columnsCount;
@@ -603,27 +597,6 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void PairHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
-        {
-            if (PairExists())
-            {
-                if ((exelApp != null) && (sheet != null))
-                {
-                    Range rng = null;
-
-                    rng = this.range(exelApp, rowNum, column);
-                    rng.Value2 = "№ MME";
-                    rng.HorizontalAlignment = -4108;
-                    column++;
-
-                    rng = this.range(exelApp, rowNum, column);
-                    rng.Value2 = "Дата";
-                    rng.HorizontalAlignment = -4108;
-                    column++;
-                }
-            }
-        }
-
         public void StatusHeaderToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
         {
             //вывод наименований столбцов статуса и причины
@@ -642,18 +615,12 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void IdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int counter, int rowNum, ref int column)
+        public void IdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
         {
             //вывод идентификационные данные
             if ((exelApp != null) && (sheet != null))
             {
                 Range rng = null;
-
-                //выводим порядковый номер
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "0";
-                rng.Value2 = counter;
-                column++;
 
                 //выводим идентификационные данные   
                 rng = this.range(exelApp, rowNum, column);
@@ -684,7 +651,7 @@ namespace SCME.dbViewer.ForParameters
                     string temperatureCondition;
                     string trueName = this.ParseColumnName(name, out temperatureCondition);
 
-                    if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (trueName != null) && (!trueName.Contains(Routines.HiddenMarker)))
+                    if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (trueName != null) && (!trueName.Contains(Constants.HiddenMarker)))
                     {
                         //выводим значение параметра
                         string value = this.Row[columnIndex].ToString().TrimEnd();
@@ -730,13 +697,24 @@ namespace SCME.dbViewer.ForParameters
                             rng.HorizontalAlignment = -4108;
 
                             //проверяем входит ли выведенное значение параметра в норматив
-                            if (this.DataGrid.IsInNrm(this.Row, this.Row.Table.Columns[columnIndex].ColumnName) == CheckNrmStatus.Defective)
+                            string columnName = this.Row.Table.Columns[columnIndex].ColumnName;
+                            if (this.DataGrid.IsInNrm(this.Row, columnName) == CheckNrmStatus.Defective)
                             {
                                 //выведенное значение за пределами норм - красим его
                                 rng.Interior.Pattern = 1; //xlSolid
                                 rng.Interior.PatternColorIndex = -4105; //xlAutomatic
                                 rng.Interior.Color = 255;
                                 rng.Font.Bold = true;
+                            }
+                            else
+                            {
+                                //если выведенное значение принадлежит параметру из списка важных для пользователя параметров - красим его серым
+                                if (this.Owner.FListOfImportantNamesInReport.Contains(columnName))
+                                {
+                                    rng.Interior.Pattern = 1; //xlSolid
+                                    rng.Interior.PatternColorIndex = -4105; //xlAutomatic
+                                    rng.Interior.Color = Int32.Parse("EEEEEE", NumberStyles.HexNumber); //#EEEEEE - цвет в 16-тиричном формате
+                                }
                             }
 
                             columnsCount++;
@@ -745,29 +723,6 @@ namespace SCME.dbViewer.ForParameters
                 }
 
                 column += columnsCount;
-            }
-        }
-
-        public void EndIdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, ref int column)
-        {
-            //вывод конечных идентификационных данных
-            if ((exelApp != null) && (sheet != null))
-            {
-                Range rng = null;
-
-                //выводим код MME
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "@";
-                rng.Value2 = this.MmeCode;
-                rng.HorizontalAlignment = -4108;
-                column++;
-
-                //выводим дату выполнения измерений
-                rng = this.range(exelApp, rowNum, column);
-                rng.NumberFormat = "dd/mm/yy;@";
-                rng.Value2 = this.Ts;
-                rng.HorizontalAlignment = -4108;
-                column++;
             }
         }
 
@@ -788,7 +743,7 @@ namespace SCME.dbViewer.ForParameters
                     string temperatureCondition;
                     string trueName = this.ParseColumnName(name, out temperatureCondition);
 
-                    if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (trueName != null) && (!trueName.Contains(Routines.HiddenMarker)))
+                    if ((this.Row[columnIndex] != DBNull.Value) && (this.Owner.FListOfBannedNamesForUseInReport.Use(trueName)) && (trueName != null) && (!trueName.Contains(Constants.HiddenMarker)))
                     {
                         //выводим значение параметра
                         string value = this.Row[columnIndex].ToString().TrimEnd();
@@ -834,13 +789,24 @@ namespace SCME.dbViewer.ForParameters
                             rng.HorizontalAlignment = -4108;
 
                             //проверяем входит ли выведенное значение параметра в норматив
-                            if (this.DataGrid.IsInNrm(this.Row, this.Row.Table.Columns[columnIndex].ColumnName) == CheckNrmStatus.Defective)
+                            string columnName = this.Row.Table.Columns[columnIndex].ColumnName;
+                            if (this.DataGrid.IsInNrm(this.Row, columnName) == CheckNrmStatus.Defective)
                             {
                                 //выведенное значение за пределами норм - красим его
                                 rng.Interior.Pattern = 1; //xlSolid
                                 rng.Interior.PatternColorIndex = -4105; //xlAutomatic
                                 rng.Interior.Color = 255;
                                 rng.Font.Bold = true;
+                            }
+                            else
+                            {
+                                //если выведенное значение принадлежит параметру из списка важных для пользователя параметров - красим его серым
+                                if (this.Owner.FListOfImportantNamesInReport.Contains(columnName))
+                                {
+                                    rng.Interior.Pattern = 1; //xlSolid
+                                    rng.Interior.PatternColorIndex = -4105; //xlAutomatic
+                                    rng.Interior.Color = Int32.Parse("EEEEEE", NumberStyles.HexNumber); //#EEEEEE - цвет в 16-тиричном формате
+                                }
                             }
 
                             columnsCount++;
@@ -852,41 +818,15 @@ namespace SCME.dbViewer.ForParameters
             }
         }
 
-        public void PairIdentityToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column)
-        {
-            if (PairExists())
-            {
-                //вывод идентификационных данных Pair
-                if ((exelApp != null) && (sheet != null))
-                {
-                    Range rng = null;
-
-                    //выводим код MME
-                    rng = this.range(exelApp, rowNum, column);
-                    rng.NumberFormat = "@";
-                    rng.Value2 = this.PairMmeCode;
-                    rng.HorizontalAlignment = -4108;
-                    column++;
-
-                    //выводим дату выполнения измерений
-                    rng = this.range(exelApp, rowNum, column);
-                    rng.NumberFormat = "dd/mm/yy;@";
-                    rng.Value2 = this.PairTs;
-                    rng.HorizontalAlignment = -4108;
-                    column++;
-                }
-            }
-        }
-
         public int StatusToExcel(Excel.Application exelApp, Excel.Worksheet sheet, int rowNum, int column, ref bool? isStatusOK)
         {
             //считываем значение итогового статуса
             string resultStatus = this.Status;
 
-            if (resultStatus == "OK")
+            if (resultStatus == Constants.GoodSatatus)
                 isStatusOK = true;
             else
-                isStatusOK = (resultStatus == "Fault") ? false : (bool?)null;
+                isStatusOK = (resultStatus == Constants.FaultSatatus) ? false : (bool?)null;
 
             //в this.CodeOfNonMatch имеем уже слитые в одну строку коды НП
             this.statusToExcel(exelApp, sheet, resultStatus, this.CodeOfNonMatch, rowNum, column);
@@ -1076,6 +1016,7 @@ namespace SCME.dbViewer.ForParameters
         private Excel.Worksheet sheet = null;
 
         public ListOfBannedNamesForUseInReport FListOfBannedNamesForUseInReport = new ListOfBannedNamesForUseInReport();
+        public ListOfImportantNamesInReport FListOfImportantNamesInReport = new ListOfImportantNamesInReport();
 
         public ReportData(System.Data.DataTable source, DataGridSqlResult dataGrid)
         {
@@ -1166,9 +1107,6 @@ namespace SCME.dbViewer.ForParameters
                 int rowNumBeg;
                 int columnEnd = 0;
 
-                //счётчик выведенных записей
-                int counter = 0;
-
                 //храним здесь сколько шапок было выведено
                 int needHeaderCount = 0;
 
@@ -1193,7 +1131,7 @@ namespace SCME.dbViewer.ForParameters
 
                     if (needHeader)
                     {
-                        columnEnd = column + 3;
+                        columnEnd = column + 2;
 
                         //выводим самую верхнюю часть шапки
                         p.TopHeaderToExcel(this.exelApp, this.sheet, ref rowNum);
@@ -1202,13 +1140,10 @@ namespace SCME.dbViewer.ForParameters
                         p.Tc1HeaderToExcel(this.exelApp, this.sheet, ref rowNum, ref columnEnd);
 
                         //выводим шапку идентификационных данных
-                        p.HeaderToExcel(this.exelApp, this.sheet, ref rowNum, column + 2, ref columnEnd);
+                        p.HeaderToExcel(this.exelApp, this.sheet, ref rowNum, column + 1);
 
                         //выводим шапку условий и измеренных параметров 2-го температурного режима
                         p.Tc2HeaderToExcel(this.exelApp, this.sheet, rowNumBeg + 3, ref columnEnd);
-
-                        //выводим шапку идентификационных данных Pair
-                        p.PairHeaderToExcel(this.exelApp, this.sheet, rowNum, ref columnEnd);
 
                         //выводим шапку статуса
                         p.StatusHeaderToExcel(this.exelApp, this.sheet, rowNum, columnEnd);
@@ -1218,20 +1153,13 @@ namespace SCME.dbViewer.ForParameters
                     }
 
                     //выводим идентификационные данные
-                    counter++;
-                    p.IdentityToExcel(this.exelApp, this.sheet, counter, rowNum, ref column);
+                    p.IdentityToExcel(this.exelApp, this.sheet, rowNum, ref column);
 
                     //выводим тело 1-го температурного режима
                     p.Tc1BodyToExcel(this.exelApp, this.sheet, listOfCalculatorsMinMax, rowNum, ref column);
 
-                    //выводим конечные идентификационные данные
-                    p.EndIdentityToExcel(this.exelApp, this.sheet, rowNum, ref column);
-
                     //выводим тело pair
                     p.Tc2BodyToExcel(this.exelApp, this.sheet, listOfCalculatorsMinMax, rowNum, ref column);
-
-                    //выводим идентификационные данные pair
-                    p.PairIdentityToExcel(this.exelApp, this.sheet, rowNum, column);
 
                     //выводим статус
                     bool? isStatusOK = null;
@@ -2014,14 +1942,43 @@ namespace SCME.dbViewer.ForParameters
             this.Add("UBRmax");
             this.Add("UDSM");
             this.Add("URSM");
+            this.Add("BVT_I");
             this.Add("ATU_PowerValue");
         }
 
-        public bool Use(string Name)
+        public bool Use(string name)
         {
             //true - разрешено использование данного имени conditions/parameters в отчёте
             //false - в отчёте данное имя conditions/parameters использовать нельзя
-            return !this.Contains(Name);
+            return !this.Contains(name);
+        }
+    }
+
+    public class ListOfImportantNamesInReport : List<string>
+    {
+        //тут храним список имён conditions и parameters которые важны для пользователя
+        public ListOfImportantNamesInReport()
+        {
+            this.Add("RTUTM");
+            this.Add("TMUTM");
+
+            this.Add("RTUBO");
+            this.Add("TMUBO");
+
+            this.Add("RTUBR");
+            this.Add("TMUBR");
+
+            this.Add("RTIDRM");
+            this.Add("TMIDRM");
+
+            this.Add("RTIRRM");
+            this.Add("TMIRRM");
+
+            this.Add("RTIDSM");
+            this.Add("TMIDSM");
+
+            this.Add("RTIRSM");
+            this.Add("TMIRSM");
         }
     }
 }

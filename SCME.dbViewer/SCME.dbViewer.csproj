@@ -31,10 +31,10 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -86,12 +86,18 @@
     <Compile Include="CustomControl\DatePickerCustom.xaml.cs">
       <DependentUpon>DatePickerCustom.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DBConnections.cs" />
-    <Compile Include="DbRoutines.cs" />
     <Compile Include="DCUsersList.xaml.cs">
       <DependentUpon>DCUsersList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dictionaries.cs" />
     <Compile Include="ForSorting\CustomComparer.cs" />
+    <Compile Include="ManualInputParamValueEditor.xaml.cs">
+      <DependentUpon>ManualInputParamValueEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManualInputParamEditor.xaml.cs">
+      <DependentUpon>ManualInputParamEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mapper.cs" />
     <Compile Include="Properties\Resources.ru-RU.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,6 +105,12 @@
     </Compile>
     <Compile Include="ReportByDevices.cs" />
     <Compile Include="Routines.cs" />
+    <Compile Include="WorkWithComments.xaml.cs">
+      <DependentUpon>WorkWithComments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManualInputParams.xaml.cs">
+      <DependentUpon>ManualInputParams.xaml</DependentUpon>
+    </Compile>
     <Page Include="AuthenticationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,7 +160,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ManualInputParamValueEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManualInputParamEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResourceDictionaries\CommonResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkWithComments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManualInputParams.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

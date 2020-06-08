@@ -1,0 +1,10 @@
+ALTER TABLE ManualInputDevParam
+ADD CONSTRAINT FK_DEV_ID_For_ManualInputDevParam FOREIGN KEY (DEV_ID)
+REFERENCES DEVICES (DEV_ID)
+
+ALTER TABLE ManualInputDevParam
+ADD CONSTRAINT FK_ManualInputParamID_For_ManualInputDevParam FOREIGN KEY (ManualInputParamID)
+REFERENCES ManualInputParams (ManualInputParamID)
+
+ALTER TABLE ManualInputDevParam
+ADD CONSTRAINT UNIQUE_DEV_ID_ManualInputParamID_For_ManualInputDevParam UNIQUE(DEV_ID, ManualInputParamID)

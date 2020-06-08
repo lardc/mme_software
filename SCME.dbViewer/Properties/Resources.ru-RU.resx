@@ -151,7 +151,7 @@
     <value>Работа с данными, собранными средствами КИП СПП в центральной базе данных</value>
   </data>
   <data name="MmeCode" xml:space="preserve">
-    <value>Стенд</value>
+    <value>КИП СПП</value>
   </data>
   <data name="NoData" xml:space="preserve">
     <value>Нет данных</value>
@@ -251,5 +251,152 @@
   </data>
   <data name="UserCredentials" xml:space="preserve">
     <value>Ввод учётных данных пользователя</value>
+  </data>
+  <data name="SetUserPermissions" xml:space="preserve">
+    <value>Установка разрешений пользователя</value>
+  </data>
+  <data name="BuildAssemblyProtocol" xml:space="preserve">
+    <value>Формирование протокола сборки</value>
+  </data>
+  <data name="ChangeDeviceStatus" xml:space="preserve">
+    <value>Изменение статуса изделия</value>
+  </data>
+  <data name="ReadCreateComment" xml:space="preserve">
+    <value>Чтение и создание комментария</value>
+  </data>
+  <data name="CreateParameter" xml:space="preserve">
+    <value>Создание параметра</value>
+  </data>
+  <data name="DropAssemblyProtocol" xml:space="preserve">
+    <value>Расформирование протокола сборки</value>
+  </data>
+  <data name="EditParameter" xml:space="preserve">
+    <value>Редактирование параметра</value>
+  </data>
+  <data name="ReadingComments" xml:space="preserve">
+    <value>Чтение комментариев</value>
+  </data>
+  <data name="RepositioningTheDevice" xml:space="preserve">
+    <value>Изменение положения изделия</value>
+  </data>
+  <data name="SelectDevices" xml:space="preserve">
+    <value>Выбор изделий</value>
+  </data>
+  <data name="DeletePermissionsOfUser" xml:space="preserve">
+    <value>Удалить разрешения пользователя</value>
+  </data>
+  <data name="UserSelected" xml:space="preserve">
+    <value>Выбран пользователь</value>
+  </data>
+  <data name="ManageBySelfPermissions" xml:space="preserve">
+    <value>Управлять своими разрешениями</value>
+  </data>
+  <data name="ManagePermissionsOfUser" xml:space="preserve">
+    <value>Управлять разрешениями пользователя</value>
+  </data>
+  <data name="DeviceComments" xml:space="preserve">
+    <value>Комментарии к изделию</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
+  <data name="CommentToAdd" xml:space="preserve">
+    <value>Комментарий для добавления</value>
+  </data>
+  <data name="RecordDate" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="DescrEN" xml:space="preserve">
+    <value>Описание на английском</value>
+  </data>
+  <data name="DescrRU" xml:space="preserve">
+    <value>Описание на русском</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="TemperatureCondition" xml:space="preserve">
+    <value>Состояние температуры</value>
+  </data>
+  <data name="Um" xml:space="preserve">
+    <value>Ед. изм.</value>
+  </data>
+  <data name="WorkWithManualInputParams" xml:space="preserve">
+    <value>Работа с параметрами введёнными вручную</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создание</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактирование</value>
+  </data>
+  <data name="ManualInputParams" xml:space="preserve">
+    <value>Параметры введённые вручную</value>
+  </data>
+  <data name="WorkWithComments" xml:space="preserve">
+    <value>Работа с комментариями</value>
+  </data>
+  <data name="ManualInputParamEditor" xml:space="preserve">
+    <value>Редактор параметров созданных вручную</value>
+  </data>
+  <data name="DataWillNotBeSaved" xml:space="preserve">
+    <value>Данные не будут сохранены.</value>
+  </data>
+  <data name="ParameterNameNotDefined" xml:space="preserve">
+    <value>Имя параметра не определено.</value>
+  </data>
+  <data name="UnitMeasureIsNotDefined" xml:space="preserve">
+    <value>Единица измерения не определена.</value>
+  </data>
+  <data name="NoEditingObjectSelected" xml:space="preserve">
+    <value>Объект редактирования не выбран.</value>
+  </data>
+  <data name="ObjectForDeleteNotSelected" xml:space="preserve">
+    <value>Объект для удаления не выбран.</value>
+  </data>
+  <data name="ConfirmationMessForDeleteManualInputParam" xml:space="preserve">
+    <value>Параметр '{0}' и все его сохранённые значения будут безвозвратно удалены. Продолжить?</value>
+  </data>
+  <data name="WorkWithValueOfManualInputParam" xml:space="preserve">
+    <value>Работа со значением введенного вручную параметра</value>
+  </data>
+  <data name="ValueOfManuallyEnteredParam" xml:space="preserve">
+    <value>Значение введенного вручную параметра</value>
+  </data>
+  <data name="EditValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Редатирование значения введенного вручную параметра</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="SelectedParameterIsNotEditable" xml:space="preserve">
+    <value>Выбранный параметр '{0}' недоступен для редактирования. Значение данного параметра может быть получено только путём измерения на оборудовании.</value>
+  </data>
+  <data name="DeleteParameter" xml:space="preserve">
+    <value>Удаление параметра</value>
+  </data>
+  <data name="DeleteValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Удаление значения введенного вручную параметра</value>
+  </data>
+  <data name="CreateValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Создание значения вручную введенного параметра</value>
+  </data>
+  <data name="SelectedParameterIsNotDeletable" xml:space="preserve">
+    <value>Выбранный параметр '{0}' недоступен для удаления.</value>
+  </data>
+  <data name="PasswordIncorrect" xml:space="preserve">
+    <value>Неправильный пароль</value>
+  </data>
+  <data name="PasswordIsIncorrect" xml:space="preserve">
+    <value>Введённый пароль неверен, либо пользователя DC '{0}' не существует</value>
+  </data>
+  <data name="UserIisNotAnApplicationUser" xml:space="preserve">
+    <value>Пользователь '{0}' не является пользователем приложения '{1}'</value>
   </data>
 </root>

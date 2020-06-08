@@ -9,7 +9,10 @@
         xmlns:customControl="clr-namespace:SCME.dbViewer.CustomControl"
         mc:Ignorable="d"
         x:Name="Main"
-        Title="{x:Static res:Resources.MainWindowTitle}" Height="800" Width="1290" WindowState="Maximized" PreviewKeyUp="Window_PreviewKeyUp">
+        Title="{x:Static res:Resources.MainWindowTitle}"
+        Height="800" Width="1290"
+        WindowState="Maximized"
+        PreviewKeyUp="Window_PreviewKeyUp">
 
     <Window.Resources>
         <local:IntToVisibilityConverter x:Key="I2V"/>
@@ -19,13 +22,13 @@
     <Grid x:Name="grdParent">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
@@ -59,8 +62,15 @@
                 <MenuItem Header="{x:Static res:Resources.Session}">
                     <MenuItem Header="{x:Static res:Resources.Begin}" Click="mnuBeginSessionClick"/>
                     <MenuItem Header="{x:Static res:Resources.Close}" Click="mnuCloseSessionClick"/>
-                    <MenuItem x:Name="mnuSelectDCUser" Header="{x:Static res:Resources.SelectDCUser}" Visibility="Collapsed" Click="mnuSelectDCUserClick"/>
-                    <MenuItem x:Name="mnuBitCalculator" Header="{x:Static res:Resources.BitCalculator}" Visibility="Collapsed" Click="mnuBitCalculatorClick"/>
+                    <MenuItem x:Name="mnuManageBySelfPermissions" Header="{x:Static res:Resources.ManageBySelfPermissions}" Visibility="Collapsed" Click="mnuManageBySelfPermissionsClick"/>
+                    <MenuItem x:Name="mnuManagePermissionsOfUser" Header="{x:Static res:Resources.ManagePermissionsOfUser}" Visibility="Collapsed" Click="mnuManagePermissionsOfUserClick"/>
+                    <MenuItem x:Name="mnuDeletePermissionsOfUser" Header="{x:Static res:Resources.DeletePermissionsOfUser}" Visibility="Collapsed" Click="mnuDeletePermissionsOfUserClick"/>
+                </MenuItem>
+
+                <MenuItem Name="mnuParameters" Header="{x:Static res:Resources.Parameters}" Visibility="Collapsed" SubmenuOpened="mnuParameters_SubmenuOpened">
+                    <MenuItem x:Name="mnuCreateValueOfManuallyEnteredParameter" Header="{x:Static res:Resources.CreateValueOfManuallyEnteredParameter}" Visibility="Collapsed" Click="mnuCreateValueOfManuallyEnteredParameterClick"/>
+                    <MenuItem x:Name="mnuEditValueOfManuallyEnteredParameter" Header="{x:Static res:Resources.EditValueOfManuallyEnteredParameter}" Visibility="Collapsed" Click="mnuEditValueOfManuallyEnteredParameterClick"/>                    
+                    <MenuItem x:Name="mnuDeleteValueOfManuallyEnteredParameter" Header="{x:Static res:Resources.DeleteValueOfManuallyEnteredParameter}" Visibility="Collapsed" Click="mnuDeleteValueOfManuallyEnteredParameterClick"/>                    
                 </MenuItem>
             </Menu>
 
@@ -69,10 +79,10 @@
                 <Run Text="{Binding ElementName=dgDevices, Path=Items.Count, Mode=OneWay}" FontWeight="Bold"/>
             </TextBlock>
 
-            <Button x:Name="btRefresh" Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Refresh}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" Click="btRefresh_Click"/>
+            <Button x:Name="btRefresh" Grid.Row="1" Grid.Column="2" Content="{x:Static res:Resources.Refresh}" Click="btRefresh_Click"/>
             <Label x:Name="lbBottomRecordCount" Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
-            <Button x:Name="btReport" Grid.Row="1" Grid.Column="13" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Report}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" Click="btReport_Click"/>
-            <Button x:Name="btReportPrint" Grid.Row="1" Grid.Column="19" Grid.ColumnSpan="2" Content="{x:Static res:Resources.Print}" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Top" Click="btReportPrint_Click"/>
+            <Button x:Name="btReport" Grid.Row="1" Grid.Column="14" Content="{x:Static res:Resources.Report}" Click="btReport_Click"/>
+            <Button x:Name="btReportPrint" Grid.Row="1" Grid.Column="20" Content="{x:Static res:Resources.Print}"  Click="btReportPrint_Click"/>
 
             <Label x:Name="lbFromDate" Grid.Row="2" Grid.Column="0" Content="{x:Static res:Resources.FromDate}" FontSize="16" HorizontalAlignment="Center"/>
             <customControl:DatePickerCustom Grid.Row="3" Grid.Column="0" x:Name="dpBegin" FontSize="16"/>
@@ -140,7 +150,7 @@
             <TextBox x:Name="tb_Usr" Grid.Row="3" Grid.Column="20" FontSize="16"/>
         </Grid>
 
-        <customControl:DataGridSqlResult x:Name="dgDevices" Grid.Row="4" ColumnHeaderHeight="60" SelectionChanged="dgDevices_SelectionChanged" LoadingRow="dgDevices_LoadingRow"/>
+        <customControl:DataGridSqlResult x:Name="dgDevices" Grid.Row="4" ColumnHeaderHeight="60" SelectedCellsChanged="dgDevices_SelectedCellsChanged" SelectionChanged="dgDevices_SelectionChanged" LoadingRow="dgDevices_LoadingRow" MouseDoubleClick="dgDevices_MouseDoubleClick"/>
     </Grid>
 </Window>
 

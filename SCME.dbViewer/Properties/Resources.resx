@@ -252,4 +252,151 @@
   <data name="UserCredentials" xml:space="preserve">
     <value>User credentials</value>
   </data>
+  <data name="SetUserPermissions" xml:space="preserve">
+    <value>Set user permissions</value>
+  </data>
+  <data name="BuildAssemblyProtocol" xml:space="preserve">
+    <value>Build assembly protocol</value>
+  </data>
+  <data name="ChangeDeviceStatus" xml:space="preserve">
+    <value>Change device status</value>
+  </data>
+  <data name="ReadCreateComment" xml:space="preserve">
+    <value>Read and create comment</value>
+  </data>
+  <data name="CreateParameter" xml:space="preserve">
+    <value>Create parameter</value>
+  </data>
+  <data name="DropAssemblyProtocol" xml:space="preserve">
+    <value>Drop of the assembly protocol</value>
+  </data>
+  <data name="EditParameter" xml:space="preserve">
+    <value>Edit parameter</value>
+  </data>
+  <data name="ReadingComments" xml:space="preserve">
+    <value>Reading comments</value>
+  </data>
+  <data name="RepositioningTheDevice" xml:space="preserve">
+    <value>Repositioning the device</value>
+  </data>
+  <data name="SelectDevices" xml:space="preserve">
+    <value>Select devices</value>
+  </data>
+  <data name="DeletePermissionsOfUser" xml:space="preserve">
+    <value>Delete permissions of user</value>
+  </data>
+  <data name="UserSelected" xml:space="preserve">
+    <value>User selected</value>
+  </data>
+  <data name="ManageBySelfPermissions" xml:space="preserve">
+    <value>Manage by self permissions</value>
+  </data>
+  <data name="ManagePermissionsOfUser" xml:space="preserve">
+    <value>Manage permissions of user</value>
+  </data>
+  <data name="DeviceComments" xml:space="preserve">
+    <value>Device comments</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="CommentToAdd" xml:space="preserve">
+    <value>Сomment to add</value>
+  </data>
+  <data name="RecordDate" xml:space="preserve">
+    <value>Record date</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="DescrEN" xml:space="preserve">
+    <value>Description in english</value>
+  </data>
+  <data name="DescrRU" xml:space="preserve">
+    <value>Description in russian</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TemperatureCondition" xml:space="preserve">
+    <value>Condition of Temperature</value>
+  </data>
+  <data name="Um" xml:space="preserve">
+    <value>Um</value>
+  </data>
+  <data name="WorkWithManualInputParams" xml:space="preserve">
+    <value>Work with manually entered parameters</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="ManualInputParams" xml:space="preserve">
+    <value>Manually entered parameters</value>
+  </data>
+  <data name="WorkWithComments" xml:space="preserve">
+    <value>Work with comments</value>
+  </data>
+  <data name="ManualInputParamEditor" xml:space="preserve">
+    <value>Manual input param editor</value>
+  </data>
+  <data name="DataWillNotBeSaved" xml:space="preserve">
+    <value>Data will not be saved.</value>
+  </data>
+  <data name="ParameterNameNotDefined" xml:space="preserve">
+    <value>Parameter name not defined.</value>
+  </data>
+  <data name="UnitMeasureIsNotDefined" xml:space="preserve">
+    <value>Unit measure is not defined.</value>
+  </data>
+  <data name="NoEditingObjectSelected" xml:space="preserve">
+    <value>No editing object selected.</value>
+  </data>
+  <data name="ObjectForDeleteNotSelected" xml:space="preserve">
+    <value>Object for delete not selected.</value>
+  </data>
+  <data name="ConfirmationMessForDeleteManualInputParam" xml:space="preserve">
+    <value>Parameter '{0}' and all its saved values ​​will be permanently deleted. Proceed?</value>
+  </data>
+  <data name="WorkWithValueOfManualInputParam" xml:space="preserve">
+    <value>Work with value of manually entered parameter</value>
+  </data>
+  <data name="ValueOfManuallyEnteredParam" xml:space="preserve">
+    <value>Value of manually entered parameter</value>
+  </data>
+  <data name="EditValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Edit value of manually entered parameter</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="SelectedParameterIsNotEditable" xml:space="preserve">
+    <value>The selected parameter '{0}' is not editable. The value of this parameter can be obtained by measuring on equipment.</value>
+  </data>
+  <data name="DeleteParameter" xml:space="preserve">
+    <value>Delete parameter</value>
+  </data>
+  <data name="DeleteValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Delete value of manually entered parameter</value>
+  </data>
+  <data name="CreateValueOfManuallyEnteredParameter" xml:space="preserve">
+    <value>Create value of manually entered parameter</value>
+  </data>
+  <data name="SelectedParameterIsNotDeletable" xml:space="preserve">
+    <value>The selected parameter '{0}' is not deletable.</value>
+  </data>
+  <data name="PasswordIncorrect" xml:space="preserve">
+    <value>The password is incorrect</value>
+  </data>
+  <data name="PasswordIsIncorrect" xml:space="preserve">
+    <value>The password is incorrect or the DC user '{0}' does not exist</value>
+  </data>
+  <data name="UserIisNotAnApplicationUser" xml:space="preserve">
+    <value>User '{0}' is not an application user '{1}'</value>
+  </data>
 </root>

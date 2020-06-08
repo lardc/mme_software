@@ -106,6 +106,24 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build assembly protocol.
+        /// </summary>
+        public static string BuildAssemblyProtocol {
+            get {
+                return ResourceManager.GetString("BuildAssemblyProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change device status.
+        /// </summary>
+        public static string ChangeDeviceStatus {
+            get {
+                return ResourceManager.GetString("ChangeDeviceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To close.
         /// </summary>
         public static string Close {
@@ -133,6 +151,33 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comments.
+        /// </summary>
+        public static string Comments {
+            get {
+                return ResourceManager.GetString("Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сomment to add.
+        /// </summary>
+        public static string CommentToAdd {
+            get {
+                return ResourceManager.GetString("CommentToAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter &apos;{0}&apos; and all its saved values ​​will be permanently deleted. Proceed?.
+        /// </summary>
+        public static string ConfirmationMessForDeleteManualInputParam {
+            get {
+                return ResourceManager.GetString("ConfirmationMessForDeleteManualInputParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Constructive.
         /// </summary>
         public static string Constructive {
@@ -151,6 +196,51 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create parameter.
+        /// </summary>
+        public static string CreateParameter {
+            get {
+                return ResourceManager.GetString("CreateParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create value of manually entered parameter.
+        /// </summary>
+        public static string CreateValueOfManuallyEnteredParameter {
+            get {
+                return ResourceManager.GetString("CreateValueOfManuallyEnteredParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data will not be saved..
+        /// </summary>
+        public static string DataWillNotBeSaved {
+            get {
+                return ResourceManager.GetString("DataWillNotBeSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete all filters.
         /// </summary>
         public static string DeleteAllFilters {
@@ -160,11 +250,65 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete parameter.
+        /// </summary>
+        public static string DeleteParameter {
+            get {
+                return ResourceManager.GetString("DeleteParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete permissions of user.
+        /// </summary>
+        public static string DeletePermissionsOfUser {
+            get {
+                return ResourceManager.GetString("DeletePermissionsOfUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete value of manually entered parameter.
+        /// </summary>
+        public static string DeleteValueOfManuallyEnteredParameter {
+            get {
+                return ResourceManager.GetString("DeleteValueOfManuallyEnteredParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description in english.
+        /// </summary>
+        public static string DescrEN {
+            get {
+                return ResourceManager.GetString("DescrEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description in russian.
+        /// </summary>
+        public static string DescrRU {
+            get {
+                return ResourceManager.GetString("DescrRU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class.
         /// </summary>
         public static string DeviceClass {
             get {
                 return ResourceManager.GetString("DeviceClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device comments.
+        /// </summary>
+        public static string DeviceComments {
+            get {
+                return ResourceManager.GetString("DeviceComments", resourceCulture);
             }
         }
         
@@ -183,6 +327,42 @@ namespace SCME.dbViewer.Properties {
         public static string DevID {
             get {
                 return ResourceManager.GetString("DevID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drop of the assembly protocol.
+        /// </summary>
+        public static string DropAssemblyProtocol {
+            get {
+                return ResourceManager.GetString("DropAssemblyProtocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit parameter.
+        /// </summary>
+        public static string EditParameter {
+            get {
+                return ResourceManager.GetString("EditParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit value of manually entered parameter.
+        /// </summary>
+        public static string EditValueOfManuallyEnteredParameter {
+            get {
+                return ResourceManager.GetString("EditValueOfManuallyEnteredParameter", resourceCulture);
             }
         }
         
@@ -241,11 +421,56 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Work with the data collected by means of MME hardware in the central database.
         /// </summary>
         public static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage by self permissions.
+        /// </summary>
+        public static string ManageBySelfPermissions {
+            get {
+                return ResourceManager.GetString("ManageBySelfPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage permissions of user.
+        /// </summary>
+        public static string ManagePermissionsOfUser {
+            get {
+                return ResourceManager.GetString("ManagePermissionsOfUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual input param editor.
+        /// </summary>
+        public static string ManualInputParamEditor {
+            get {
+                return ResourceManager.GetString("ManualInputParamEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manually entered parameters.
+        /// </summary>
+        public static string ManualInputParams {
+            get {
+                return ResourceManager.GetString("ManualInputParams", resourceCulture);
             }
         }
         
@@ -268,6 +493,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data.
         /// </summary>
         public static string NoData {
@@ -277,11 +511,65 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No editing object selected..
+        /// </summary>
+        public static string NoEditingObjectSelected {
+            get {
+                return ResourceManager.GetString("NoEditingObjectSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object for delete not selected..
+        /// </summary>
+        public static string ObjectForDeleteNotSelected {
+            get {
+                return ResourceManager.GetString("ObjectForDeleteNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter name not defined..
+        /// </summary>
+        public static string ParameterNameNotDefined {
+            get {
+                return ResourceManager.GetString("ParameterNameNotDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        public static string Parameters {
+            get {
+                return ResourceManager.GetString("Parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password is incorrect.
+        /// </summary>
+        public static string PasswordIncorrect {
+            get {
+                return ResourceManager.GetString("PasswordIncorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password is incorrect or the DC user &apos;{0}&apos; does not exist.
+        /// </summary>
+        public static string PasswordIsIncorrect {
+            get {
+                return ResourceManager.GetString("PasswordIsIncorrect", resourceCulture);
             }
         }
         
@@ -322,11 +610,38 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read and create comment.
+        /// </summary>
+        public static string ReadCreateComment {
+            get {
+                return ResourceManager.GetString("ReadCreateComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading comments.
+        /// </summary>
+        public static string ReadingComments {
+            get {
+                return ResourceManager.GetString("ReadingComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reason.
         /// </summary>
         public static string Reason {
             get {
                 return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record date.
+        /// </summary>
+        public static string RecordDate {
+            get {
+                return ResourceManager.GetString("RecordDate", resourceCulture);
             }
         }
         
@@ -367,11 +682,47 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repositioning the device.
+        /// </summary>
+        public static string RepositioningTheDevice {
+            get {
+                return ResourceManager.GetString("RepositioningTheDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select DC user.
         /// </summary>
         public static string SelectDCUser {
             get {
                 return ResourceManager.GetString("SelectDCUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select devices.
+        /// </summary>
+        public static string SelectDevices {
+            get {
+                return ResourceManager.GetString("SelectDevices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected parameter &apos;{0}&apos; is not deletable..
+        /// </summary>
+        public static string SelectedParameterIsNotDeletable {
+            get {
+                return ResourceManager.GetString("SelectedParameterIsNotDeletable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected parameter &apos;{0}&apos; is not editable. The value of this parameter can be obtained by measuring on equipment..
+        /// </summary>
+        public static string SelectedParameterIsNotEditable {
+            get {
+                return ResourceManager.GetString("SelectedParameterIsNotEditable", resourceCulture);
             }
         }
         
@@ -390,6 +741,15 @@ namespace SCME.dbViewer.Properties {
         public static string SetAdministrator {
             get {
                 return ResourceManager.GetString("SetAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set user permissions.
+        /// </summary>
+        public static string SetUserPermissions {
+            get {
+                return ResourceManager.GetString("SetUserPermissions", resourceCulture);
             }
         }
         
@@ -421,6 +781,15 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Condition of Temperature.
+        /// </summary>
+        public static string TemperatureCondition {
+            get {
+                return ResourceManager.GetString("TemperatureCondition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To date.
         /// </summary>
         public static string ToDate {
@@ -435,6 +804,24 @@ namespace SCME.dbViewer.Properties {
         public static string Ts {
             get {
                 return ResourceManager.GetString("Ts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Um.
+        /// </summary>
+        public static string Um {
+            get {
+                return ResourceManager.GetString("Um", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit measure is not defined..
+        /// </summary>
+        public static string UnitMeasureIsNotDefined {
+            get {
+                return ResourceManager.GetString("UnitMeasureIsNotDefined", resourceCulture);
             }
         }
         
@@ -457,11 +844,65 @@ namespace SCME.dbViewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User &apos;{0}&apos; is not an application user &apos;{1}&apos;.
+        /// </summary>
+        public static string UserIisNotAnApplicationUser {
+            get {
+                return ResourceManager.GetString("UserIisNotAnApplicationUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User selected.
+        /// </summary>
+        public static string UserSelected {
+            get {
+                return ResourceManager.GetString("UserSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operator.
         /// </summary>
         public static string Usr {
             get {
                 return ResourceManager.GetString("Usr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value of manually entered parameter.
+        /// </summary>
+        public static string ValueOfManuallyEnteredParam {
+            get {
+                return ResourceManager.GetString("ValueOfManuallyEnteredParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work with comments.
+        /// </summary>
+        public static string WorkWithComments {
+            get {
+                return ResourceManager.GetString("WorkWithComments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work with manually entered parameters.
+        /// </summary>
+        public static string WorkWithManualInputParams {
+            get {
+                return ResourceManager.GetString("WorkWithManualInputParams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work with value of manually entered parameter.
+        /// </summary>
+        public static string WorkWithValueOfManualInputParam {
+            get {
+                return ResourceManager.GetString("WorkWithValueOfManualInputParam", resourceCulture);
             }
         }
     }
