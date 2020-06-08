@@ -252,17 +252,38 @@ namespace SCME.InterfaceImplementations
             return _connection.LastInsertRowId;
         }
 
+        private bool IsProfileLinkedToMme(long profileId, long mmeCodeId)
+        {
+            //отвечает на вопрос о наличии связи между профилем profileId с кодом MME mmeCodeId
+            SQLiteCommand selectCommand = new SQLiteCommand("SELECT COUNT(*) FROM MME_CODES_TO_PROFILES WHERE ((PROFILE_ID=@PROFILE_ID) AND (MME_CODE_ID=@MME_CODE_ID))", _connection);
+            selectCommand.Parameters.Add("@MME_CODE_ID", DbType.Int64);
+            selectCommand.Parameters.Add("@PROFILE_ID", DbType.Int64);
+            selectCommand.Prepare();
+
+            selectCommand.Parameters["@PROFILE_ID"].Value = profileId;
+            selectCommand.Parameters["@MME_CODE_ID"].Value = mmeCodeId;
+            var linksQuantity = selectCommand.ExecuteScalar();
+
+            if (linksQuantity == null)
+                throw new ArgumentException(@"Null links profiles with MME has been found", "profileId");
+
+            return ((int)linksQuantity == 0) ? false : true;
+        }
+
         public void SaveProfileItem(ProfileItem profileItem, string mmeCode)
         {
-            var profileId = SaveProfileItem(profileItem);
-            var mmeCodeId = GetMmeCodeId(mmeCode);
+            long? profId = TryGetProfileId(profileItem.ProfileKey);
+            long profileId;
 
-            //профиль либо новый - не существующий в БД, либо старый - существующий в БД и не требующий привязки к коду MME, т.к. на данный момент она уже создана
-            if (!profileItem.Exists)
+            profileId = (profId == null) ? SaveProfileItem(profileItem) : (long)profId;
+
+            long mmeCodeId = GetMmeCodeId(mmeCode);
+
+            //профиль либо создан в процессе синхронизации и его надо привязать к коду MME, либо мы имеем дело со старым профилем, который создан до выполнения синхронизации. он может быть как привязанным к коду MME, так и не привязанным к коду MME
+            if (!profileItem.ExistsBeforeSync || IsProfileLinkedToMme(profileId, mmeCodeId))
             {
-                //имеем дело с новым профилем - создаём связь профиля с кодом MME
-                var codesInsertCommand =
-                  new SQLiteCommand("INSERT INTO MME_CODES_TO_PROFILES (MME_CODE_ID,PROFILE_ID) VALUES (@MME_CODE_ID,@PROFILE_ID)", _connection);
+                //создаём связь профиля с кодом MME
+                var codesInsertCommand = new SQLiteCommand("INSERT INTO MME_CODES_TO_PROFILES (MME_CODE_ID, PROFILE_ID) VALUES (@MME_CODE_ID, @PROFILE_ID)", _connection);
                 codesInsertCommand.Parameters.Add("@MME_CODE_ID", DbType.Int64);
                 codesInsertCommand.Parameters.Add("@PROFILE_ID", DbType.Int64);
                 codesInsertCommand.Prepare();
@@ -278,7 +299,7 @@ namespace SCME.InterfaceImplementations
         {
             try
             {
-                //случай редактирования существующего профиля. если профиль редактируется, то создаётся новый профиль, версия которого на 1 больше редактируемого с новым значением GUID. ибо любая версия профиля имеют уникальный GUID
+                //случай редактирования существующего профиля. если профиль редактируется, то создаётся новый профиль, версия которого на 1 больше редактируемого с новым значением GUID. ибо любая версия профиля должна иметь уникальный GUID
                 var profileId = GetProfileId(profile.ProfileKey);
 
                 var profileVersionSelect = new SQLiteCommand("SELECT P.PROF_VERS FROM PROFILES P WHERE P.PROF_ID = @PROF_ID", _connection);
@@ -352,11 +373,22 @@ namespace SCME.InterfaceImplementations
             var possibleProfileId = profileSelectCommand.ExecuteScalar();
 
             if (possibleProfileId == null)
-                throw new ArgumentException(@"No such baseTestParametersAndNormatives has been found", "profileKey");
+                throw new ArgumentException(@"No such profiles has been found", "profileKey");
 
             return (long)possibleProfileId;
         }
 
+        private long? TryGetProfileId(Guid profileKey)
+        {
+            try
+            {
+                return GetProfileId(profileKey);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         #endregion
 
@@ -675,7 +707,7 @@ namespace SCME.InterfaceImplementations
             InsertParameter(testTypeId, profileId, "UBR", atuTestParameters.UBR, DBNull.Value);
             InsertParameter(testTypeId, profileId, "UPRSM", atuTestParameters.UPRSM, DBNull.Value);
             InsertParameter(testTypeId, profileId, "IPRSM", atuTestParameters.IPRSM, DBNull.Value);
-            InsertParameter(testTypeId, profileId, "PRSM", atuTestParameters.PRSM_Min, atuTestParameters.PRSM_Max);
+            InsertParameter(testTypeId, profileId, "PRSM", atuTestParameters.PRSM, DBNull.Value);
         }
 
         private void InsertQrrTqParameters(Types.QrrTq.TestParameters qrrTqTestParameters, long testTypeId, long profileId)

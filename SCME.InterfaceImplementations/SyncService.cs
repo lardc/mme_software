@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using SCME.Types;
 using SCME.Types.DatabaseServer;
 using SCME.Types.Interfaces;
+using System.ComponentModel;
 
 namespace SCME.InterfaceImplementations
 {
@@ -28,7 +29,7 @@ namespace SCME.InterfaceImplementations
             _resultsService = new SQLiteResultsServiceLocal(databasePath);
         }
 
-        private void SyncResultsWorkerHandler(InputWorkerParameters WorkerParameters)
+        private void SyncResultsWorkerHandler(DoWorkEventArgs workerParameters)
         {
             try
             {
@@ -49,17 +50,17 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private void SyncResultsCompletedHandler(string Error)
+        private void SyncResultsCompletedHandler(string error)
         {
             //этот код выполняется в потоке диспетчера, поэтому как обычно обращаемся к разделяемым данным и пользовательскому интерфейсу, не порождая никаких проблем
             //в принятом Error передаётся описание ошибки синхронизации профилей, если Error пуст - значит синхронизация была успешной
             if (this.FAfterSyncResultsRoutine != null)
-                this.FAfterSyncResultsRoutine(Error);
+                this.FAfterSyncResultsRoutine(error);
         }
 
         public void SyncResults(AfterSyncResultsRoutine afterSyncResultsRoutine)
         {
-            //синхронизация результатов измерений выполняется продолжительное время, поэтому чтобы не получить ContextSwitchDeadlock выполняем её в отдельном потоке, при успешном завершению которого будет вызвана реализация afterSyncResultsRoutine
+            //синхронизация результатов измерений выполняется продолжительное время, поэтому чтобы не получить ContextSwitchDeadlock выполняем её в отдельном потоке, при успешном завершении которого будет вызвана реализация afterSyncResultsRoutine
             LongTimeRoutineWorker Worker = new LongTimeRoutineWorker(SyncResultsWorkerHandler, SyncResultsCompletedHandler);
 
             //запоминаем что нам надо вызвать когда LongTimeRoutineWorker успешно выполнит свою работу
@@ -69,7 +70,7 @@ namespace SCME.InterfaceImplementations
             Worker.Run(null);
         }
 
-        private void SyncProfilesWorkerHandler(InputWorkerParameters WorkerParameters)
+        private void SyncProfilesWorkerHandler(DoWorkEventArgs workerParameters)
         {
             try
             {

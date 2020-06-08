@@ -34,19 +34,6 @@ namespace SCME.DatabaseServer
                 LogCriticalErrorMessage(ex);
                 return;
             }
-            
-            try
-            {
-                SQLDatabaseService dbForMigration = new SQLDatabaseService(SQLCentralDatabaseService.GetConnectionStringFromSettings(Settings.Default));
-                dbForMigration.Open();
-                dbForMigration.Migrate();
-                dbForMigration.Close();
-            }
-            catch (Exception ex)
-            {
-                Journal.AppendLog("Central DB SQL SERVER migration", LogJournalMessageType.Error, String.Format("Migrate database error: {0}", ex.Message));
-                return;
-            }
 
             try
             {

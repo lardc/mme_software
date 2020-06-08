@@ -420,7 +420,6 @@ namespace SCME.InterfaceImplementations
 
                 case (int)TestParametersType.ATU:
                     var atuParams = FillAtuConditions(testTypeId);
-                    FillAtuParameters(atuParams, testTypeId);
                     profile.TestParametersAndNormatives.Add(atuParams);
                     break;
 
@@ -512,23 +511,6 @@ namespace SCME.InterfaceImplementations
             }
 
             return testParams;
-        }
-        
-        private void FillAtuParameters(Types.ATU.TestParameters parameters, long testTypeId)
-        {
-            var results = new List<Tuple<string, float?, float?>>();
-            FillParametersResults(testTypeId, results);
-
-            foreach (var result in results)
-            {
-                switch (result.Item1)
-                {
-                    case "PRSM":
-                        parameters.PRSM_Min = result.Item2 ?? 0;
-                        parameters.PRSM_Max = result.Item3 ?? 0;
-                        break;
-                }
-            }
         }
 
         private Types.QrrTq.TestParameters FillQrrTqConditions(long testTypeId)

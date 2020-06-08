@@ -215,14 +215,15 @@ namespace SCME.InterfaceImplementations
                                           FROM (
                                                  SELECT MAX(PR.PROF_ID) AS MAX_PROF_ID
                                                  FROM PROFILES PR
+                                                  INNER JOIN MME_CODES_TO_PROFILES MCP ON (MCP.PROFILE_ID=PR.PROF_ID)
+                                                  INNER JOIN MME_CODES MC ON (
+                                                                              (MC.MME_CODE_ID=MCP.MME_CODE_ID) AND
+	                                                                          (MC.MME_CODE=@MME_CODE)
+                                                                             )
                                                  GROUP BY PR.PROF_NAME
 	                                           ) PP
-                                           INNER JOIN PROFILES P ON (P.PROF_ID=PP.MAX_PROF_ID)
-                                           INNER JOIN MME_CODES_TO_PROFILES MCP ON (MCP.PROFILE_ID=P.PROF_ID)
-                                           INNER JOIN MME_CODES MC ON (
-                                                                       (MC.MME_CODE_ID=MCP.MME_CODE_ID) AND
-	                                                                   (MC.MME_CODE=@MME_CODE)
-                                                                      )";
+                                           INNER JOIN PROFILES P ON (P.PROF_ID=PP.MAX_PROF_ID)";
+
 
                 var profilesDict = new List<Tuple<long, string, Guid, DateTime>>();
 
@@ -359,7 +360,6 @@ namespace SCME.InterfaceImplementations
 
                 case (int)TestParametersType.ATU:
                     var atuParams = FillAtuConditions(testTypeId);
-                    FillAtuParameters(atuParams, testTypeId);
                     profile.TestParametersAndNormatives.Add(atuParams);
                     break;
 
@@ -452,23 +452,6 @@ namespace SCME.InterfaceImplementations
             }
 
             return testParams;
-        }
-        
-        private void FillAtuParameters(Types.ATU.TestParameters parameters, long testTypeId)
-        {
-            var results = new List<Tuple<string, float?, float?>>();
-            FillParametersResults(testTypeId, results);
-
-            foreach (var result in results)
-            {
-                switch (result.Item1)
-                {
-                    case "PRSM":
-                        parameters.PRSM_Min = result.Item2 ?? 0;
-                        parameters.PRSM_Max = result.Item3 ?? 0;
-                        break;
-                }
-            }
         }
 
         private Types.QrrTq.TestParameters FillQrrTqConditions(long testTypeId)

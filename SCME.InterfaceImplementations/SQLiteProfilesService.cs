@@ -47,20 +47,26 @@ namespace SCME.InterfaceImplementations
 
         public void SaveProfilesFromMme(List<ProfileItem> profileItems, string mmeCode)
         {
-            var dbProfiles = GetProfileItemsByMme(mmeCode);
+            List<ProfileItem> dbProfiles = null;
 
-            var profilesToDelete = GetProfilesToDelete(profileItems, dbProfiles);
-            _saveProfileService.DeleteProfiles(profilesToDelete, mmeCode);
+            //флаг: в локальной базе данных КИП обнаружены профили с такими GUID, которых нет в центральной базе данных. синхронизация таких профилей не имеет смысла и результаты измерений, хранящиеся в локальной базе данных по таким профилям не имеет смысла передавать в центральную базу данных
+            bool garbageProfilesExist = true;
 
-            //строим dbProfiles заново только если построенный список профилей для удаления не пуст
-            if (profilesToDelete.Count != 0)
+            while (garbageProfilesExist)
+            {
                 dbProfiles = GetProfileItemsByMme(mmeCode);
 
-            var profilesToSave = GetProfilesToChange(profileItems, dbProfiles);
-            foreach (var profileItem in profilesToSave)
-            {
-                _saveProfileService.SaveProfileItem(profileItem, mmeCode);
+                var profilesToDelete = GetProfilesToDelete(profileItems, dbProfiles);
+                garbageProfilesExist = (profilesToDelete.Count != 0);
+
+                if (garbageProfilesExist)
+                    _saveProfileService.DeleteProfiles(profilesToDelete, mmeCode);
             }
+
+            var profilesToSave = GetProfilesToChange(profileItems, dbProfiles);
+
+            foreach (var profileItem in profilesToSave)
+                _saveProfileService.SaveProfileItem(profileItem, mmeCode);
         }
 
         private static IEnumerable<ProfileItem> GetProfilesToChange(IEnumerable<ProfileItem> profilesToSave, List<ProfileItem> dbProfileItems)
@@ -71,12 +77,12 @@ namespace SCME.InterfaceImplementations
                 var oldProfile = dbProfileItems.Find(db => db.Equals(profileItem));
                 if (oldProfile == null)
                 {
-                    profileItem.Exists = false;
+                    profileItem.ExistsBeforeSync = false;
                     profilesToChange.Add(profileItem);
                 }
                 else if (profileItem.HasChanges(oldProfile))
                 {
-                    profileItem.Exists = true;
+                    profileItem.ExistsBeforeSync = true;
                     profilesToChange.Add(profileItem);
                 }
             }

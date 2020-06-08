@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace SCME.InterfaceImplementations
 {
-    class LongTimeRoutineWorker
+    public class LongTimeRoutineWorker
     {
         private BackgroundWorker FWorker = null;
 
-        public delegate void LongTimeRoutineDelegate(InputWorkerParameters WorkerParameters);
-        public delegate void CompletedRoutineDelegate(string Error);
+        public delegate void LongTimeRoutineDelegate(DoWorkEventArgs e);
+        public delegate void CompletedRoutineDelegate(string error);
 
         private LongTimeRoutineDelegate FLongTimeRoutineHandler = null;
         private CompletedRoutineDelegate FCompletedRoutineHandler = null;
 
-        public void Run(InputWorkerParameters Parameters)
+        public void Run(object argument)
         {
             //запуск продолжительно выполняющегося кода с передачей для его исполнения входных параметров Parameters
-            this.FWorker.RunWorkerAsync(Parameters);
+            this.FWorker.RunWorkerAsync(argument);
         }
 
         public LongTimeRoutineWorker(LongTimeRoutineDelegate LongTimeRoutineHandler, CompletedRoutineDelegate CompletedRoutineHandler)
@@ -45,10 +45,10 @@ namespace SCME.InterfaceImplementations
             if (this.FLongTimeRoutineHandler != null)
             {
                 //извлекаем параметры, которые нужны для исполнения потоковой функции
-                InputWorkerParameters WorkerParameters = (InputWorkerParameters)e.Argument;
+                //InputWorkerParameters WorkerParameters = (InputWorkerParameters)e.Argument;
 
                 //запускаем потоковую функцию
-                this.FLongTimeRoutineHandler(WorkerParameters);
+                this.FLongTimeRoutineHandler(e);
             }
         }
 
@@ -58,30 +58,17 @@ namespace SCME.InterfaceImplementations
             //раз мы здесь - потоковая функция как-то исполнена - возможно успешно, а возможно с ошибкой
             if (this.FCompletedRoutineHandler != null)
             {
-                //передаём в вызываемую реализацию текст ошибки, чтобы она могла понять чем закончилась синхронизация
-                string Error;
-
-                switch (e.Error == null)
-                {
-                    case (true):
-                        Error = "";
-                        break;
-
-                    default:
-                        Error = e.Error.ToString();
-                        break;
-                }
-
-                this.FCompletedRoutineHandler(Error);
+                //передаём в вызываемую реализацию текст ошибки, чтобы она могла понять чем закончился вызов потоковой функции
+                string error = (e.Error == null) ? string.Empty : e.Error.ToString();
+                this.FCompletedRoutineHandler(error);
             }
         }
     }
 
-    class InputWorkerParameters
+    public class InputWorkerParameters
     {
         //описание входных параметров для BackGround Worker
-        public int Timeout
-        { get; set; }
+        public int Timeout { get; set; }
 
         public InputWorkerParameters(int timeout)
         {

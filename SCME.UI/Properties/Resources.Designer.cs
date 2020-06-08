@@ -403,6 +403,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string DeviceClass {
+            get {
+                return ResourceManager.GetString("DeviceClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Class by RT.
         /// </summary>
         public static string DeviceRTClass {
@@ -1291,24 +1300,6 @@ namespace SCME.UI.Properties {
         public static string Profiles {
             get {
                 return ResourceManager.GetString("Profiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PRSM max, kW.
-        /// </summary>
-        public static string PRSM_Max {
-            get {
-                return ResourceManager.GetString("PRSM_Max", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PRSM min, kW.
-        /// </summary>
-        public static string PRSM_Min {
-            get {
-                return ResourceManager.GetString("PRSM_Min", resourceCulture);
             }
         }
         

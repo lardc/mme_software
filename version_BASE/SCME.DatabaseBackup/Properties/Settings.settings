@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.DatabaseBackup.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ServerIPAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.239</Value>
+    </Setting>
+    <Setting Name="ServerAddressTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">net.tcp://{0}:801/SCME/SCME.IO.DatabaseService</Value>
+    </Setting>
+    <Setting Name="DBTemplateName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SCME_ResultsDB_Template.sqlite</Value>
+    </Setting>
+    <Setting Name="DBOptions" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">synchronous=Off;failifmissing=True;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

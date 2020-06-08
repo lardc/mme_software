@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.ProfileServer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LogPathTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Logs\ProfileServer_{0}.log</Value>
+    </Setting>
+    <Setting Name="ProfileDictionaryPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ProfileDictionary.xml</Value>
+    </Setting>
+    <Setting Name="ConfigurationListPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ConfigurationList.xml</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

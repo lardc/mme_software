@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SCME.ProfileServer.Configuration">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ConfigurationList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SCME.ProfileServer.ConfigurationList">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="m_Doc" Hidden="true" />
+      <Field Name="m_Path" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgIIAAABAAAAAAIAAAAAAACAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>ConfigurationList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SCME.ProfileServer.ProfileServer" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAIAAAAAAAAAAAAAAIQAAAAAABAAQAAAAAAA=</HashCode>
+      <FileName>ProfileServer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SCME.ProfileServer.ProfileService">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="OnStart" Hidden="true" />
+      <Method Name="OnStop" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAEACAAAACAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>ProfileService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SCME.ProfileServer.SystemHost">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="InitializeInternal" Hidden="true" />
+      <Field Name="ms_ServiceHost" Hidden="true" />
+      <Method Name="ShutdownInternal" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAgAAgABAAACAAAAgFBAAAAAAAAAAAAA=</HashCode>
+      <FileName>SystemHost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

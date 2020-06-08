@@ -802,10 +802,7 @@
   <data name="ErrorRealisation" xml:space="preserve">
     <value>Error realisation</value>
   </data>
-  <data name="PRSM_Min">
-    <value>PRSM min, kW</value>
-  </data>
-  <data name="PRSM_Max">
-    <value>PRSM max, kW</value>
+  <data name="DeviceClass" xml:space="preserve">
+    <value>Class</value>
   </data>
 </root>

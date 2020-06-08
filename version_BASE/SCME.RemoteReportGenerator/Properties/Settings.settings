@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SCME.RemoteReportGenerator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TemplateTabDev" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Templates\TemplateReportDevRT1.xls</Value>
+    </Setting>
+    <Setting Name="ServerAddressTemplate" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">net.tcp://{0}:801/SCME/SCME.IO.DatabaseService</Value>
+    </Setting>
+    <Setting Name="TemplateModDev" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Templates\TemplateReportModRT1.xls</Value>
+    </Setting>
+    <Setting Name="MMEList" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MMEList.xml</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -75,9 +75,6 @@ namespace SCME.Types
 
         [DataMember]
         public RAC.TestResults[] RAC { get; set; }
-        
-        [DataMember]
-        public dVdt.TestResults[] DVDT { get; set; }
 
         [DataMember]
         public TestParameters[] GateTestParameters { get; set; }
@@ -169,7 +166,7 @@ namespace SCME.Types
 
         [DataMember]
         //флаг, позволяющий различать существующие в БД профили от создаваемых в процессе синхронизации профилей
-        public bool Exists { get; set; }
+        public bool ExistsBeforeSync { get; set; }
 
         public override bool Equals(object obj)
         {

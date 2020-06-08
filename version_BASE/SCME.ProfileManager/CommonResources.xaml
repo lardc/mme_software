@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:bvt="clr-namespace:SCME.Types.BVT;assembly=SCME.Types">
+
+    <ObjectDataProvider x:Key="DataFromMeasurementModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="bvt:BVTMeasurementMode"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="DataFromFreqRateEnum" MethodName="GetRates" ObjectType="{x:Type bvt:BVTRates}">
+    </ObjectDataProvider>
+
+    <ObjectDataProvider x:Key="DataFromTestBvtTypeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="bvt:BVTTestType"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
+</ResourceDictionary>

@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace SCME.Types.Profiles
 {
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum TemperatureCondition
     {
+        [EnumMember]
         None = 0,
+        [EnumMember]
         RT = 1,
+        [EnumMember]
         TM = 2
     }
 
@@ -16,7 +21,7 @@ namespace SCME.Types.Profiles
     {
         public static SubjectForMeasure CalcSubjectForMeasure(string profileName)
         {
-            //вычисляет по коду профиля profileName предмет измерения
+            //вычисляет по коду профиля profileName предмет измерения (см. описание SubjectForMeasure)
             var result = Types.SubjectForMeasure.Unknown;
 
             if (profileName != null)
@@ -33,7 +38,16 @@ namespace SCME.Types.Profiles
             return result;
         }
 
-        private static TemperatureCondition TemperatureConditionByProfileName(string profileName)
+        public static string StringTemperatureConditionByProfileName(string profileName)
+        {
+            //'PSERT Т123 320 16 A2'
+            if ((profileName == null) || (profileName == string.Empty))
+                return null;
+
+            return profileName.Substring(3, 2);
+        }
+
+        public static TemperatureCondition TemperatureConditionByProfileName(string profileName)
         {
             TemperatureCondition result = TemperatureCondition.None;
 
@@ -49,33 +63,38 @@ namespace SCME.Types.Profiles
 
         public static string ProfileBodyByProfileName(string profileName)
         {
-            //вычисляем тело по принятому profileName
-            string result = profileName.ToUpper();
+            //вычисляем тело профиля по принятому profileName. пример профиль: 'PSERT Т123 320 16 A2'. тело '* Т123 320 * A2'
+            string result = string.Empty;
 
-            int start = result.IndexOf(" ", 0);
-            if (start == -1)
-                return string.Empty;
+            if (profileName != null)
+            {
+                result = profileName.ToUpper();
 
-            start = result.IndexOf(" ", start + 1);
-            if (start == -1)
-                return string.Empty;
+                //получаем индекс 1-го встреченного пробела
+                int start = result.IndexOf(" ", 0);
+                if (start == -1)
+                    return string.Empty;
 
-            start = result.IndexOf(" ", start + 1);
-            if (start == -1)
-                return string.Empty;
+                //получаем индекс 2-го встреченного пробела
+                int i = result.IndexOf(" ", start + 1);
+                if (i == -1)
+                    return string.Empty;
 
-            //вычисляем индекс 4-го пробела (за которым начинается спецтребование)
-            int specialReqStart = result.IndexOf(" ", start + 1);
+                //получаем индекс 3-го встреченного пробела
+                i = result.IndexOf(" ", i + 1);
+                if (i == -1)
+                    return string.Empty;
 
-            string specialReq = string.Empty;
+                //вычисляем индекс 4-го пробела (за которым начинается спецтребование)
+                int specialReqStart = result.IndexOf(" ", i + 1);
 
-            if (specialReqStart != -1)
-                specialReq = result.Substring(specialReqStart);
+                string specialReq = string.Empty;
 
-            result = "*" + result.Substring(3, start - 3) + " *";
+                if (specialReqStart != -1)
+                    specialReq = result.Substring(specialReqStart);
 
-            if (specialReq != string.Empty)
-                result += specialReq;
+                result = "* " + result.Substring(start + 1, i - start) + " *" + specialReq;
+            }
 
             return result;
         }
@@ -93,74 +112,81 @@ namespace SCME.Types.Profiles
                 return string.Empty;
             }
             else return profileBody.Substring(start);
-
         }
 
+        /*
         public static string SpecialMarkByProfileName(string profileName)
         {
             //извлекает обозначение спецмаркировки из обозначения профиля ProfileName. она начинается после 4-го пробела
             //PSETm Т253 1390 24 GvA 03 08
             return string.Empty;
-
         }
+        */
 
         public static string MakeRT(string profileName)
         {
+            //меняет в принятом обозначении профиля profileName либо TM на RT, либо Th на RT - что найдёт, то и заменит на RT
             return System.Text.RegularExpressions.Regex.Replace(profileName, "TM", "RT", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
         public static string MakeTM(string profileName)
         {
-            return System.Text.RegularExpressions.Regex.Replace(profileName, "RT", "TM", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //меняет в принятом обозначении профиля profileName либо RT на TM, либо Th на TM - что найдёт, то и заменит на TM
+            return System.Text.RegularExpressions.Regex.Replace(profileName, "(RT)", "TM", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
-        public static string ProfileRTBodyByProfileName(string profileName)
+        public static string ProfileRTBodyByProfileBody(string profileBody)
         {
-            string result = ProfileBodyByProfileName(profileName);
+            string result = string.Empty;
 
-            switch (TemperatureConditionByProfileName(result))
+            switch (TemperatureConditionByProfileName(profileBody))
             {
                 case TemperatureCondition.TM:
-                    //меняем TM на RT
-                    result = MakeRT(result);
+                    //меняем в profileBody TM на RT
+                    result = MakeRT(profileBody);
                     break;
             }
 
             return result;
         }
 
-        public static string ProfileTMBodyByProfileName(string profileName)
+        public static string ProfileTMBodyByProfileBody(string profileBody)
         {
-            string result = ProfileBodyByProfileName(profileName);
+            string result = string.Empty;
 
-            switch (TemperatureConditionByProfileName(result))
+            switch (TemperatureConditionByProfileName(profileBody))
             {
                 case TemperatureCondition.RT:
-                    //меняем в profName RT на TM
-                    result = MakeTM(result);
+                    //меняем в profileBody RT на TM
+                    result = MakeTM(profileBody);
                     break;
             }
 
             return result;
         }
 
-        public static string PairProfileBodyByProfileName(string profileName)
+        /*
+        public static string PairProfileBodyByProfileName(string profileName, out string profileBody)
         {
-            //вычисляет тело-пару по принятому profileName
+            //пара всегда есть связка RT-TM или TM-RT. порядок внутри пары (двойки) может быть любым
+            //вычисляет тело пары по принятому profileName. в out profileBody возвращает тело профиля с тем же температурным режимом, что и у принятого profileName
+            profileBody = ProfileBodyByProfileName(profileName);
+
             switch (TemperatureConditionByProfileName(profileName))
             {
                 case TemperatureCondition.RT:
-                    //меняем в profName RT на TM
-                    return ProfileTMBodyByProfileName(profileName);
+                    //меняем в вычисленном profileBody RT на TM
+                    return ProfileTMBodyByProfileBody(profileBody);
 
                 case TemperatureCondition.TM:
-                    //меняем TM на RT
-                    return ProfileRTBodyByProfileName(profileName); ;
+                    //меняем в вычисленном profileBody TM на RT
+                    return ProfileRTBodyByProfileBody(profileBody); ;
 
                 default:
-                    return ProfileBodyByProfileName(profileName);
+                    return profileBody;
             }
         }
+        */
 
         public static int? DeviceClassByProfileName(string profileName)
         {

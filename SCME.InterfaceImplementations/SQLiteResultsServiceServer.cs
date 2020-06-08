@@ -211,7 +211,6 @@ namespace SCME.InterfaceImplementations
             if (result.IsHeightMeasureEnabled)
                 InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, 0);
 
-            InsertDvdtParameterValues(result, devId);
             InsertGateParameterValues(result, devId);
             InsertVtmParameterValues(result, devId);
             InsertBvtParameterValues(result, devId);
@@ -220,13 +219,6 @@ namespace SCME.InterfaceImplementations
             InsertRacParameterValues(result, devId);
         }
 
-        private void InsertDvdtParameterValues(ResultItem result, long devId)
-        {
-            for (var i = 0; i < result.DvdTestParameterses.Length; i++)
-            {
-                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.DVDT[i].TestTypeId);
-            }
-        }
         private void InsertGateParameterValues(ResultItem result, long devId)
         {
             for (var i = 0; i < result.GateTestParameters.Length; i++)

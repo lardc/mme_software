@@ -279,6 +279,7 @@ namespace SCME.InterfaceImplementations
             try
             {
                 var deviceId = InsertDevice(localDevice, trans);
+
                 InsertErrors(localDevice.ErrorCodes, deviceId, trans);
                 InsertParameters(localDevice.DeviceParameters, deviceId, trans);
 
@@ -288,6 +289,7 @@ namespace SCME.InterfaceImplementations
             catch (Exception)
             {
                 trans.Rollback();
+
                 return false;
             }
         }
@@ -516,7 +518,6 @@ namespace SCME.InterfaceImplementations
             if (result.IsHeightMeasureEnabled)
                 InsertParameterValue(devId, "IsHeightOk", result.IsHeightOk ? 1 : 0, result.ProfileKey, "Height", trans);
 
-            InsertDvdtParameterValues(result, devId, trans);
             InsertGateParameterValues(result, devId, trans);
             InsertVtmParameterValues(result, devId, trans);
             InsertBvtParameterValues(result, devId, trans);
@@ -525,14 +526,6 @@ namespace SCME.InterfaceImplementations
             InsertRacParameterValues(result, devId, trans);
         }
 
-        private void InsertDvdtParameterValues(ResultItem result, long devId, SqlTransaction trans)
-        {
-            for (var i = 0; i < result.DvdTestParameterses.Length; i++)
-            {
-                InsertParameterValue(devId, "DVDT_OK", result.DVDT[i].Passed ? 1 : 0, result.ProfileKey, "Dvdt", trans);
-            }
-        }
-        
         private void InsertGateParameterValues(ResultItem result, long devId, SqlTransaction trans)
         {
             for (var i = 0; i < result.GateTestParameters.Length; i++)
@@ -856,7 +849,7 @@ namespace SCME.InterfaceImplementations
 
                 _selectDevRTClassCommand.Parameters["@ProfName"].Value = profileName;
                 _selectDevRTClassCommand.Parameters["@RTProfName"].Value = SCME.Types.Profiles.ProfileRoutines.MakeRT(profileName);
-                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName).Replace('*', '%');  //string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
+                _selectDevRTClassCommand.Parameters["@ProfBody"].Value = SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileBody(SCME.Types.Profiles.ProfileRoutines.ProfileBodyByProfileName(profileName)).Replace('*', '%');  //string.Format("%{0}%", SCME.Types.Profiles.ProfileRoutines.ProfileRTBodyByProfileName(profileName));
                 _selectDevRTClassCommand.Parameters["@DevCode"].Value = devCode;
 
                 using (var reader = _selectDevRTClassCommand.ExecuteReader())

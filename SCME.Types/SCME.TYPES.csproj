@@ -36,7 +36,7 @@
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
@@ -82,6 +82,7 @@
     <Compile Include="DataContracts\DeviceParameterLocal.cs" />
     <Compile Include="DataContracts\MmeCode.cs" />
     <Compile Include="DataContracts\ProfileMme.cs" />
+    <Compile Include="DatabaseRoutines.cs" />
     <Compile Include="dVdt\HALTypedVdt.cs" />
     <Compile Include="dVdt\TypedVdt.cs" />
     <Compile Include="IH\TypeIH.cs" />
