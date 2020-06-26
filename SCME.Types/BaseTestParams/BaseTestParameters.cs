@@ -11,6 +11,7 @@ using DvDtParameters = SCME.Types.dVdt.TestParameters;
 using AtuParameters = SCME.Types.ATU.TestParameters;
 using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
 using TOUParameters = SCME.Types.TOU.TestParameters;
+using OutputLeakageCurrentParameters = SCME.Types.OutputLeakageCurrent.TestParameters;
 
 namespace SCME.Types.BaseTestParams
 {
@@ -51,7 +52,10 @@ namespace SCME.Types.BaseTestParams
         RCC = 12,
 
         [EnumMember]
-        TOU = 13
+        TOU = 13,
+
+        [EnumMember]
+        OutputLeakageCurrent = 14
     }
 
     [KnownType(typeof(ATU.TestParameters))]
@@ -95,6 +99,8 @@ namespace SCME.Types.BaseTestParams
                     return new QrrTqParameters();
                 case TestParametersType.TOU:
                     return new TOUParameters();
+                case TestParametersType.OutputLeakageCurrent:
+                    return new OutputLeakageCurrentParameters();
                 default:
                     throw new NotImplementedException("CreateParametersByType");
             }
