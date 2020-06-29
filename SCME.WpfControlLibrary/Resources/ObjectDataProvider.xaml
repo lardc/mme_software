@@ -22,8 +22,13 @@
     <ObjectDataProvider x:Key="ClampingForceTypes" MethodName="GetClampingForceTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TypeManagement" MethodName="GetTypeManagement" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="NumberPosition" MethodName="GetNumberPosition" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="ApplicationPolarityConstantSwitchingVoltage" MethodName="GetApplicationPolarityConstantSwitchingVoltage" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="PolarityDCSwitchingVoltageApplication" MethodName="GetPolarityDCSwitchingVoltageApplication" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+
     
-    
+
     <ObjectDataProvider x:Key="FrequencyDivisors" MethodName="GetFrequencyDivisors" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VoltageFrequency" MethodName="GetVoltageFrequency" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     

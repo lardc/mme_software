@@ -3,6 +3,35 @@ using System.Runtime.Serialization;
 
 namespace SCME.Types
 {
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum TypeManagement
+    {
+        [EnumMember]
+        ACVoltage,
+        [EnumMember]
+        DCVoltage,
+        [EnumMember]
+        DCAmperage
+    }
+
+    public enum ApplicationPolarityConstantSwitchingVoltage
+    {
+        [EnumMember]
+        ACVoltage,
+        [EnumMember]
+        DCVoltage
+    }
+
+    public enum PolarityDCSwitchingVoltageApplication
+    {
+        [EnumMember]
+        Direct,
+        [EnumMember]
+        Reverse
+    }
+
+    
+
     public enum TypeDb
     {
         MSSQL,

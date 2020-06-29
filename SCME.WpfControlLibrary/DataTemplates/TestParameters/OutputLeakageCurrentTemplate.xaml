@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-             xmlns:atu="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=atu:TestParameters}"
+             xmlns:outputLeakageCurrent="clr-namespace:SCME.Types.OutputLeakageCurrent;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=outputLeakageCurrent:TestParameters}"
              d:DesignWidth="800">
     <Grid.Resources>
         <ResourceDictionary>
@@ -36,65 +36,70 @@
         <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
-        <ComboBox Grid.Column="1" Grid.Row="0"   />
+    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
-        <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" StringFormat="{}{0:N1}"/>
+    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage}" StringFormat="{}{0:N1}"/>
 
         <Label Grid.Column="0" Grid.Row="2" >
             <TextBlock>
                 Тип комм. напряжения<LineBreak/>при измерении утечки</TextBlock>
         </Label>
-        <ComboBox Grid.Column="1" Grid.Row="2"    x:Name="PrsmMin" />
+    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Source={StaticResource ApplicationPolarityConstantSwitchingVoltage}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding ApplicationPolarityConstantSwitchingVoltage}" />
 
     <Label Grid.Column="0" Grid.Row="3" Content="Коммутируемый ток, мА" ></Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
 
     <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 1, В
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
 
     <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 2, В
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="0" Grid.Row="3" Content="Коммутируемый ток, мА" ></Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+  
 
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TypeManagement}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TypeManagement}"  />
 
-    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
 
     <TextBlock Grid.Column="3" Grid.Row="2" >
         <TextBlock>
                 Полярность приложения<LineBreak/>пост. комм. напряжения
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />
 
     <Label Grid.Column="3" Grid.Row="3" Content="Коммутируемое напр., В"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage}"   StringFormat="N2"/>
 
     <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
         <TextBlock>
                 Ток вспомогательного<LineBreak/>питания 1, мА
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
     <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
         <TextBlock>
                 Ток вспомогательного<LineBreak/>питания 1, мА
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding PRSM_Min}"  Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
+
+    <Label Grid.Column="0" Grid.Row="6" Content="Ток утечки мин, мА" ></Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
+
+    <Label Grid.Column="3" Grid.Row="6" Content="Ток утечки макс, мА" ></Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
 
 
 </Grid>

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.BVT;
 using SCME.Types.Clamping;
 using SCME.Types.Commutation;
 using SCME.Types.dVdt;
+using SCME.Types.OutputLeakageCurrent;
 using SCME.Types.QrrTq;
 using SCME.Types.VTM;
 using SCME.WpfControlLibrary.Properties;
@@ -190,5 +192,48 @@ namespace SCME.WpfControlLibrary.DataProviders
                 50,60
             };
         }
+
+        public static Dictionary<string, TypeManagement> GetTypeManagement()
+        {
+            return new Dictionary<string, TypeManagement>
+            {
+                {"Переменное напр.", TypeManagement.ACVoltage },
+                {"Постоянное напр.", TypeManagement.DCVoltage },
+                {"Постоянный ток", TypeManagement.DCAmperage },
+            };
+        }
+
+        public static Dictionary<string, int> GetNumberPosition()
+        {
+            return new Dictionary<string, int>
+            {
+                {"1", 1 },
+                {"2", 2 },
+                {"3", 3 },
+            };
+        }
+
+        public static Dictionary<string, ApplicationPolarityConstantSwitchingVoltage> GetApplicationPolarityConstantSwitchingVoltage()
+        {
+            return new Dictionary<string, ApplicationPolarityConstantSwitchingVoltage>
+            {
+                {"Переменное", ApplicationPolarityConstantSwitchingVoltage.ACVoltage },
+                {"Постоянное", ApplicationPolarityConstantSwitchingVoltage.DCVoltage },
+            };
+        }
+
+        public static Dictionary<string, PolarityDCSwitchingVoltageApplication> GetPolarityDCSwitchingVoltageApplication()
+        {
+            return new Dictionary<string, PolarityDCSwitchingVoltageApplication>
+            {
+                {"Прямая", PolarityDCSwitchingVoltageApplication.Direct },
+                {"Обратная", PolarityDCSwitchingVoltageApplication.Reverse },
+            };
+        }
+        
+
+
+
+
     }
 }
