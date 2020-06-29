@@ -30,7 +30,14 @@ namespace SCME.Types
         Reverse
     }
 
-    
+    public enum SwitchingCurrentPulseShape
+    {
+        [EnumMember]
+        Trapezoid,
+        [EnumMember]
+        Sinus
+    }
+
 
     public enum TypeDb
     {

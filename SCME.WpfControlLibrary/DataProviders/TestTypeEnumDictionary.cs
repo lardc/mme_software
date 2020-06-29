@@ -152,7 +152,8 @@ namespace SCME.WpfControlLibrary.DataProviders
                 new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
                 new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
                 new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
-                new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток измерения на выходе")
+                new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток измерения на выходе"),
+                new TestParameter(TestParametersType.OutputResidualVoltage, typeof(Types.OutputResidualVoltage.TestParameters), "Выходное остаточное напряжение")
             };
         }
 
@@ -230,10 +231,17 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {"Обратная", PolarityDCSwitchingVoltageApplication.Reverse },
             };
         }
+
+        public static Dictionary<string, SwitchingCurrentPulseShape> GetSwitchingCurrentPulseShape()
+        {
+            return new Dictionary<string, SwitchingCurrentPulseShape>
+            {
+                {"Синус", SwitchingCurrentPulseShape.Sinus },
+                {"Трапеция", SwitchingCurrentPulseShape.Trapezoid },
+            };
+        }
+
         
-
-
-
 
     }
 }

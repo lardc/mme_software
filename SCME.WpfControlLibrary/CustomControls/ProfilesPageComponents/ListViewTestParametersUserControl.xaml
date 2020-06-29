@@ -17,6 +17,7 @@
              xmlns:atuParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
              xmlns:qrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
              xmlns:outputLeakageCurrent="clr-namespace:SCME.Types.OutputLeakageCurrent;assembly=SCME.Types"
+             xmlns:outputResidualVoltage="clr-namespace:SCME.Types.OutputResidualVoltage;assembly=SCME.Types"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              mc:Ignorable="d" Name="ThisListViewTestParametersUserControl"
@@ -46,6 +47,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type outputLeakageCurrent:TestParameters}" >
                 <testResultDataTemplate:OutputLeakageCurrentTemplate />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type outputResidualVoltage:TestParameters}" >
+                <testResultDataTemplate:OutputResidualVoltage />
             </DataTemplate>
             <DataTemplate DataType="{x:Type vtmParameters:TestParameters}" >
                 <testResultDataTemplate:VTMDataTemplate/>
