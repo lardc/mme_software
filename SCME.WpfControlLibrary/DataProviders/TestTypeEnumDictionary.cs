@@ -145,13 +145,13 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return new List<TestParameter>()
             {
-                new TestParameter(TestParametersType.Gate, typeof(Types.Gate.TestParameters), "GTU"),
-                new TestParameter(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters), "SL"),
-                new TestParameter(TestParametersType.Bvt, typeof(Types.BVT.TestParameters), "BVT"),
-                new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters), "dVdt"),
-                new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
-                new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
-                new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
+                //new TestParameter(TestParametersType.Gate, typeof(Types.Gate.TestParameters), "GTU"),
+                //new TestParameter(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters), "SL"),
+                //new TestParameter(TestParametersType.Bvt, typeof(Types.BVT.TestParameters), "BVT"),
+                //new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters), "dVdt"),
+                //new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
+                //new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
+                //new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
                 new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток измерения на выходе"),
                 new TestParameter(TestParametersType.OutputResidualVoltage, typeof(Types.OutputResidualVoltage.TestParameters), "Выходное остаточное напряжение")
             };
