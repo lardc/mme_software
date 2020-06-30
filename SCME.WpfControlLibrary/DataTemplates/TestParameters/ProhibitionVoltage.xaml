@@ -1,0 +1,114 @@
+﻿<Grid x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.ProhibitionVoltageTemplate"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:prohibitionVoltage="clr-namespace:SCME.Types.ProhibitionVoltage;assembly=SCME.Types"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=prohibitionVoltage:TestParameters}"
+             d:DesignWidth="800">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
+    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
+
+    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage}" StringFormat="{}{0:N1}"/>
+
+    <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding IsDC, Converter={StaticResource B2V}}">
+            <TextBlock>
+                Тип комм. напряжения<LineBreak/>при измерении утечки</TextBlock>
+        </Label>
+    <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Source={StaticResource ApplicationPolarityConstantSwitchingVoltage}}" Visibility="{Binding IsDC, Converter={StaticResource B2V}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding ApplicationPolarityConstantSwitchingVoltage}" />
+
+    <Label Grid.Column="0" Grid.Row="3" Content="Коммутируемый ток, мА" ></Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
+
+    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap">
+        <TextBlock>
+                Напряжение вспом.<LineBreak/>питания 1, В
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
+
+    <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap">
+        <TextBlock>
+                Напряжение вспом.<LineBreak/>питания 2, В
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
+
+    <Label Grid.Column="0" Grid.Row="6" >
+        <TextBlock>
+            Напряжение запрета<LineBreak/> мин, мА
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding ProhibitionVoltageMinimum}" StringFormat="N2"/>
+
+    
+    
+    <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
+    <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TypeManagement}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TypeManagement}"  />
+
+    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
+
+    <TextBlock Grid.Column="3" Grid.Row="2" Visibility="{Binding IsDC, Converter={StaticResource B2V}}">
+        <TextBlock>
+                Полярность приложения<LineBreak/>пост. комм. напряжения
+        </TextBlock>
+    </TextBlock>
+    <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" Visibility="{Binding IsDC, Converter={StaticResource B2V}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />
+
+    <Label Grid.Column="3" Grid.Row="3" Content="Коммутируемое напр., В"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage}"   StringFormat="N2"/>
+
+    <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
+        <TextBlock>
+                Ток вспомогательного<LineBreak/>питания 1, мА
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
+    
+    <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
+        <TextBlock>
+                Ток вспомогательного<LineBreak/>питания 2, мА
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
+
+    <Label Grid.Column="3" Grid.Row="6" >
+        <TextBlock>
+            Напряжение запрета<LineBreak/> макс, мА
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding ProhibitionVoltageMaximum}" StringFormat="N2"/>
+
+
+</Grid>
