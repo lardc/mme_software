@@ -18,6 +18,8 @@
              xmlns:qrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
              xmlns:outputLeakageCurrent="clr-namespace:SCME.Types.OutputLeakageCurrent;assembly=SCME.Types"
              xmlns:outputResidualVoltage="clr-namespace:SCME.Types.OutputResidualVoltage;assembly=SCME.Types"
+             xmlns:inputOptions="clr-namespace:SCME.Types.InputOptions;assembly=SCME.Types"
+             xmlns:prohibitionVoltage="clr-namespace:SCME.Types.ProhibitionVoltage;assembly=SCME.Types"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              mc:Ignorable="d" Name="ThisListViewTestParametersUserControl"
@@ -51,8 +53,15 @@
             <DataTemplate DataType="{x:Type outputResidualVoltage:TestParameters}" >
                 <testResultDataTemplate:OutputResidualVoltage />
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type vtmParameters:TestParameters}" >
                 <testResultDataTemplate:VTMDataTemplate/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type inputOptions:TestParameters}" >
+                <testResultDataTemplate:InputOptionsTemplate/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type prohibitionVoltage:TestParameters}" >
+                <testResultDataTemplate:ProhibitionVoltageTemplate/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type bvtParameters:TestParameters}" >
                 <StackPanel>

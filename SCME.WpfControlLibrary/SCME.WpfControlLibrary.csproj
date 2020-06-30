@@ -48,6 +48,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="DataTemplates\TestParameters\InputOptions.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DataTemplates\TestParameters\ProhibitionVoltage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="DataTemplates\TestParameters\OutputResidualVoltage.xaml">
       <SubType>Designer</SubType>
     </Page>

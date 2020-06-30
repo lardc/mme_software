@@ -13,6 +13,8 @@ using QrrTqParameters = SCME.Types.QrrTq.TestParameters;
 using TOUParameters = SCME.Types.TOU.TestParameters;
 using OutputLeakageCurrentParameters = SCME.Types.OutputLeakageCurrent.TestParameters;
 using OutputResidualVoltageParameters = SCME.Types.OutputResidualVoltage.TestParameters;
+using InputOptionsParameters = SCME.Types.InputOptions.TestParameters;
+using ProhibitionVoltageParameters = SCME.Types.ProhibitionVoltage.TestParameters;
 
 
 namespace SCME.Types.BaseTestParams
@@ -60,7 +62,13 @@ namespace SCME.Types.BaseTestParams
         OutputLeakageCurrent = 14,
 
         [EnumMember]
-        OutputResidualVoltage = 15
+        OutputResidualVoltage = 15,
+
+        [EnumMember]
+        InputOptions = 16,
+
+        [EnumMember]
+        ProhibitionVoltage = 17
     }
 
     [KnownType(typeof(ATU.TestParameters))]
@@ -108,6 +116,10 @@ namespace SCME.Types.BaseTestParams
                     return new OutputLeakageCurrentParameters();
                 case TestParametersType.OutputResidualVoltage:
                     return new OutputResidualVoltageParameters();
+                case TestParametersType.InputOptions:
+                    return new InputOptionsParameters();
+                case TestParametersType.ProhibitionVoltage:
+                    return new ProhibitionVoltageParameters();
                 default:
                     throw new NotImplementedException("CreateParametersByType");
             }
