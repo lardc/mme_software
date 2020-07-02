@@ -60,6 +60,16 @@
     <Page Update="Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ImpulsePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\ImpulsePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

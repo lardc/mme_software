@@ -26,6 +26,7 @@ namespace SCME.UI
         private static ClampPage ms_ClampPage;
         private static DVdtPage ms_DVdtPage;
         private static TOUPage ms_TOUPage;
+        private static ImpulsePage _impulsePage;
         private static ATUPage ms_ATUPage;
         private static QrrTqPage ms_QrrTqPage;
         private static IHPage ms_IHPage;
@@ -173,6 +174,12 @@ namespace SCME.UI
         {
             get { return ms_TOUPage ?? (ms_TOUPage = new TOUPage()); }
             set { ms_TOUPage = value; }
+        }
+
+        internal static ImpulsePage Impulse
+        {
+            get { return _impulsePage ?? (_impulsePage = new ImpulsePage()); }
+            set { _impulsePage = value; }
         }
 
         internal static ATUPage ATU

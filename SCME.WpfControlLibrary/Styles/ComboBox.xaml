@@ -105,7 +105,7 @@
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
                             <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                <Border x:Name="DropDownBorder" Background="{StaticResource ListViewItemTestParametersBrush}"  BorderBrush="{StaticResource xGray1}">
+                                <Border x:Name="DropDownBorder" Background="{TemplateBinding Background}"  BorderBrush="{StaticResource xGray1}">
                                     <ScrollViewer Margin="4,6,4,6" UseLayoutRounding="True"  x:Name="ScrollViewerComboBoxItems" Style="{StaticResource DefaultScrollViewer}" >
                                         <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" x:Name="StackPanelComboBoxItemsContainer"  />
                                 </ScrollViewer>

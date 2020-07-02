@@ -35,10 +35,10 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
+    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Text="Номер позиции" VerticalAlignment="Center"/>
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
-    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
+    <TextBlock Grid.Column="0" Grid.Row="1" Text="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage}" StringFormat="{}{0:N1}"/>
 
     <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap">
@@ -49,38 +49,32 @@
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
 
     <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap">
-        <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 2, В
-        </TextBlock>
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="0" Grid.Row="6" Content="Ток входа мин, мА" ></Label>
+    <TextBlock Grid.Column="0" Grid.Row="6" Text="Ток входа мин, мА" ></TextBlock>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding InputCurrentMinimum}" StringFormat="N2"/>
 
-    
-    
-    <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
+
+
+    <TextBlock Grid.Column="3" Grid.Row="0" Text="Тип управления"/>
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TypeManagement}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TypeManagement}"  />
 
-    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
+    <TextBlock Grid.Column="3" Grid.Row="1" Text="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
 
     <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
-        <TextBlock>
                 Ток вспомогательного<LineBreak/>питания 1, мА
-        </TextBlock>
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
     
     <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
-        <TextBlock>
                 Ток вспомогательного<LineBreak/>питания 2, мА
-        </TextBlock>
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="3" Grid.Row="6" Content="Ток входа макс, мА" ></Label>
+    <TextBlock Grid.Column="3" Grid.Row="6" Text="Ток входа макс, мА" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding InputCurrentMaximum}" StringFormat="N2"/>
 
 
