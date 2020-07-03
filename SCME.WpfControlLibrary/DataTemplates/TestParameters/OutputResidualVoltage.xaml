@@ -13,16 +13,16 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
-                
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ImpulseOverwrite.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+        <ColumnDefinition Width="*"  />
+        <ColumnDefinition Width="1.1*" />
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+        <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1.1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -79,14 +79,15 @@
     <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
 
-    <TextBlock Grid.Column="3" Grid.Row="2" >
-        <TextBlock>
-                Полярность приложения<LineBreak/>пост. комм. напряжения
-        </TextBlock>
-    </TextBlock>
+    
+    <Label Grid.Column="3" Grid.Row="2" >
+        <TextBlock TextWrapping="Wrap" Text="Полярность приложения пост. комм. напряжения"/>
+    </Label>
     <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />
 
-    <Label Grid.Column="3" Grid.Row="3" Content="Коммутируемое напр., В"/>
+    <Label Grid.Column="3" Grid.Row="3" >
+        <TextBlock TextWrapping="Wrap">Коммутируем. напр., В</TextBlock>
+    </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage}"   StringFormat="N2"/>
 
     <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">

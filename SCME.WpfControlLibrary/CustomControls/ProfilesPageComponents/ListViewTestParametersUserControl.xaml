@@ -31,6 +31,7 @@
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/NumericUpDown.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/DataTemplateForTestParameters.xaml"/>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ImpulseOverwrite.xaml"/>
                 
                 
             </ResourceDictionary.MergedDictionaries>

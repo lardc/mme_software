@@ -21,7 +21,7 @@ namespace SCME.Types.InputOptions
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;
 
 
-        public int NumberPosition { get; set; }
+        public int NumberPosition { get; set; } = 1;
         public TypeManagement TypeManagement { get; set; }
 
         public double ControlVoltage { get; set; }
@@ -37,6 +37,10 @@ namespace SCME.Types.InputOptions
         public double InputCurrentMinimum { get; set; }
         public double InputCurrentMaximum { get; set; }
 
+        public double InputVoltageMinimum { get; set; }
+        public double InputVoltageMaximum { get; set; }
+
+        
 
         public object Clone()
         {

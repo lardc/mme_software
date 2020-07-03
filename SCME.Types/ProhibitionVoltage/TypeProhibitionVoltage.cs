@@ -24,14 +24,11 @@ namespace SCME.Types.ProhibitionVoltage
         public bool IsDC => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.DCAmperage;
 
 
-        public int NumberPosition { get; set; }
+        public int NumberPosition { get; set; } = 1;
         public TypeManagement TypeManagement { get; set; }
 
         public double ControlVoltage { get; set; }
         public double ControlCurrent { get; set; }
-
-        public ApplicationPolarityConstantSwitchingVoltage ApplicationPolarityConstantSwitchingVoltage { get; set; }
-        public PolarityDCSwitchingVoltageApplication PolarityDCSwitchingVoltageApplication { get; set; }
 
         public double SwitchedAmperage { get; set; }
         public double SwitchedVoltage { get; set; }

@@ -75,7 +75,7 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Background" Value="White"/>
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="ItemContainerStyle" >
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}">
@@ -83,7 +83,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ComboBoxItem}">
                                 <Border Name="border" Background="Transparent" Margin="1">
-                                    <ContentPresenter IsHitTestVisible="False" Margin="5,0,5,0"
+                                    <ContentPresenter x:Name="contentPresenter"  IsHitTestVisible="False" Margin="5,0,5,0"
                                                       VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 </Border>
     </ControlTemplate>
@@ -100,8 +100,8 @@
                                       IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                       ClickMode="Press"/>
 
-                        <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                        <ContentPresenter Name="contentPresenter" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"  VerticalAlignment="Center" HorizontalAlignment="Right" />
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
                             <Grid Name="DropDown" UseLayoutRounding="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
@@ -130,14 +130,14 @@
                             <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="3,3,40,3"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEnabled" Value="False"/>
                                 <Condition Property="Tag" Value="M"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="ContentSite" Property="Margin" Value="3,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="3,3,40,3"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

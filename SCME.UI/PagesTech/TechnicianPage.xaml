@@ -188,7 +188,7 @@
                 <Grid Background="{StaticResource xGreen2}">
                     <Label>
                     <TextBlock TextAlignment="Center">
-                        Выходное<LineBreak/>остаточ. напряжение
+                        Выходное<LineBreak/>остаточное напряжение
                     </TextBlock>
                     </Label>
                 </Grid>
