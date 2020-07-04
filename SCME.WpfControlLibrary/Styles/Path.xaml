@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="Path" x:Key="PathIcon">
-        <Setter Property="Fill" Value="Black" />
+        <Setter Property="Fill" Value="#1D241E" />
         <Setter Property="Stretch" Value="Uniform" />
         <Setter Property="UseLayoutRounding" Value="False" />
         <Style.Triggers>
