@@ -33,7 +33,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 
     <Style TargetType="Label" x:Key="LabelIconButton" BasedOn="{StaticResource {x:Type Label}}">

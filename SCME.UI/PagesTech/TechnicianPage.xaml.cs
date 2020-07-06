@@ -65,6 +65,7 @@ namespace SCME.UI.PagesTech
                     break;
                 case 7:
                     page = Cache.ProfilesPage;
+                    page.Margin = new Thickness(0, 0, 0, 0);
                     break;
                 case 9:
                     page = Cache.Results;
@@ -110,18 +111,22 @@ namespace SCME.UI.PagesTech
                 case 18:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent);
                     page = Cache.Impulse;
+                    page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 19:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage);
                     page = Cache.Impulse;
+                    page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 20:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.InputOptions);
                     page = Cache.Impulse;
+                    page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 21:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage);
                     page = Cache.Impulse;
+                    page.Margin = new Thickness(10, 0, 10, 0);
                     break;
             }
 

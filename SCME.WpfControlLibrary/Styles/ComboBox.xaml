@@ -112,7 +112,7 @@
                                 </Border>
                             </Grid>
                         </Popup>
-                        <Border BorderThickness="1" Name="MainBorder"  BorderBrush="Gray"></Border>
+                        <Border BorderThickness="0" Name="MainBorder"  BorderBrush="Gray"></Border>
                     </Grid>
                     <ControlTemplate.Triggers>
     

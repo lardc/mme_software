@@ -6,6 +6,7 @@ namespace SCME.WpfControlLibrary.Pages
 {
     public partial class ImpulsePage : Page
     {
+        public object ItemVM { get; set; }
 
         public ImpulsePage()
         {
@@ -18,18 +19,22 @@ namespace SCME.WpfControlLibrary.Pages
             switch (testParametersType)
             {
                 case TestParametersType.OutputLeakageCurrent:
+                    ItemVM = new SCME.Types.OutputLeakageCurrent.TestParameters();
                     MainTabControl.SelectedIndex = 2;
                     TextBlockValueName.Text = "Ток утечки";
                     break;
                 case TestParametersType.OutputResidualVoltage:
+                    ItemVM = new SCME.Types.OutputResidualVoltage.TestParameters();
                     MainTabControl.SelectedIndex = 1;
                     TextBlockValueName.Text = "Остаточное напряжение";
                     break;
                 case TestParametersType.InputOptions:
+                    ItemVM = new SCME.Types.InputOptions.TestParameters();
                     MainTabControl.SelectedIndex = 0;
                     TextBlockValueName.Text = "Параметры входа";
                     break;
                 case TestParametersType.ProhibitionVoltage:
+                    ItemVM = new SCME.Types.ProhibitionVoltage.TestParameters();
                     MainTabControl.SelectedIndex = 3;
                     TextBlockValueName.Text = "Напряжение запрета";
                     break;

@@ -179,15 +179,15 @@
                 </Button>
 
             <Button CommandParameter="18" >
-                <Grid Background="{StaticResource xGreen2}">
+                <Grid Background="{StaticResource xRed1}">
                     <Label Content="Ток утечки на выходе" />
                 </Grid>
             </Button>
 
             <Button CommandParameter="19" >
-                <Grid Background="{StaticResource xGreen2}">
+                <Grid Background="{StaticResource xRed2}">
                     <Label>
-                    <TextBlock TextAlignment="Center">
+                    <TextBlock TextAlignment="Right">
                         Выходное<LineBreak/>остаточное напряжение
                     </TextBlock>
                     </Label>
@@ -195,14 +195,14 @@
             </Button>
 
             <Button CommandParameter="20" >
-                <Grid Background="{StaticResource xGreen2}">
+                <Grid Background="{StaticResource xBlue1}">
                     <Label Content="Параметры входа " />
                 </Grid>
             </Button>
 
             <Button CommandParameter="21" >
-                <Grid Background="{StaticResource xGreen2}">
-                    <Label Content="Напряже-ние запрета" />
+                <Grid Background="{StaticResource xGray1}">
+                    <Label Content="Напряжение запрета" />
                 </Grid>
             </Button>
 

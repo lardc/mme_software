@@ -6,6 +6,24 @@
         <StaticResource ResourceKey="xGray3" />
     </AlternationConverter>
 
+    <SolidColorBrush x:Key="xBlue1"         Color="#00A7FF"/>
+    <SolidColorBrush x:Key="xBlue2"         Color="#0073C6"/>
+    <SolidColorBrush x:Key="xBlue3"         Color="#008298"/>
+    <SolidColorBrush x:Key="xBlue4"         Color="#00A7FF" Opacity="0.5"/>
+
+    <SolidColorBrush x:Key="xGreen1"        Color="#70C123"/>
+    <SolidColorBrush x:Key="xGreen2"        Color="#339933"/>
+    <SolidColorBrush x:Key="xGreen3"        Color="#03B3B1"/>
+    <SolidColorBrush x:Key="xGreen4"        Color="#FF178382"/>
+
+    <SolidColorBrush x:Key="xOrange1"       Color="#FF7D23"/>
+    <SolidColorBrush x:Key="xOrange2"       Color="#FFAD19"/>
+
+    <SolidColorBrush x:Key="xYellow1"       Color="#E0DE34"/>
+
+    <SolidColorBrush x:Key="xRed1"          Color="#D94A38"/>
+    <SolidColorBrush x:Key="xRed2"          Color="#AE2831"/>
+    
     <Color x:Key="Purple1">#FF8C0095</Color>
     <Color x:Key="Purple2">#FF9F40DE</Color>
     <Color x:Key="Purple3">#FFB100BA</Color>

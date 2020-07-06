@@ -19,7 +19,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ImpulseOverwrite.xaml"/>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ProfilePageStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
