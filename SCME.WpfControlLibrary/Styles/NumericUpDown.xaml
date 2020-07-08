@@ -47,7 +47,7 @@
                             </RepeatButton.Style>
                         </RepeatButton>
                         <RepeatButton Grid.Column="1" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="0, 1, 5, 1">
-                            <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" />
+                            <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" Stretch="Fill" Height="3" Width="18"/>
                             <RepeatButton.Style>
                                 <Style TargetType="{x:Type RepeatButton}">
                                     <Setter Property="Background" Value="Transparent" />

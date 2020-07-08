@@ -1,0 +1,66 @@
+﻿<Grid x:Class="SCME.WpfControlLibrary.CustomControls.ImpulseResultPageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+             xmlns:vm="clr-namespace:SCME.WpfControlLibrary.ViewModels"
+            xmlns:converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters"
+             mc:Ignorable="d" d:DataContext="{d:DesignData vm:ImpulseResultComponentVM}"
+             >
+        <Grid.Resources>
+            <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ImpulsePageStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:ImpulseResultConverter x:Key="DN2S"/>
+            <converters:BoolToBrush x:Key="B2B" NullBrush="Transparent" TrueBrush="{StaticResource xGreen1}" FalseBrush="{StaticResource xRed1}"/>
+            <Style TargetType="Border">
+                    <Setter Property="Margin" Value="10,0,0,0"/>
+                    <Setter Property="Height" Value="64"/>
+                    <Setter Property="Width" Value="114"/>
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
+        Позиция <Run Text="{Binding Postition}"/>
+    </TextBlock>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="1" Text="Ток утечки, мА" />
+    <Border Grid.Column="1" Grid.Row="1" Background="{Binding LeakageCurrentIsOk, Converter={StaticResource B2B}}" >
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding LeakageCurrent, Converter={StaticResource DN2S}}" HorizontalAlignment="Center"/>
+        </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="2" Text="Выходное остаточное напряжение, мВ" />
+    <Border Grid.Column="1" Grid.Row="2" Background="{Binding ResidualVoltageIsOk, Converter={StaticResource B2B}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage, Converter={StaticResource DN2S}}" HorizontalAlignment="Center"/>
+        </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="3" Text="Ток входа, мА" />
+    <Border Grid.Column="2" Grid.Row="3" Background="{Binding InputAmperageIsOk, Converter={StaticResource B2B}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding InputAmperage, Converter={StaticResource DN2S}}" HorizontalAlignment="Center"/>
+        </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="4" Text="Напряжение входа, мВ" />
+    <Border Grid.Column="1" Grid.Row="4" Background="{Binding InputVoltageIsOk, Converter={StaticResource B2B}}" >
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding InputVoltage, Converter={StaticResource DN2S}}" HorizontalAlignment="Center"/>
+        </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Напряжение запрета, мВ" />
+    <Border Grid.Column="1" Grid.Row="5"  Background="{Binding ProhibitionVoltageIsOk, Converter={StaticResource B2B}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ProhibitionVoltage, Converter={StaticResource DN2S}}" HorizontalAlignment="Center"/>
+        </Border>
+
+</Grid>

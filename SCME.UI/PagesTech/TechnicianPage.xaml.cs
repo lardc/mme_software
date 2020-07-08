@@ -110,21 +110,25 @@ namespace SCME.UI.PagesTech
                     break;
                 case 18:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent);
+                    Cache.Main.VM.TopTitle = "Ток утечки";
                     page = Cache.Impulse;
                     page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 19:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage);
+                    Cache.Main.VM.TopTitle = "Остаточное напряжение";
                     page = Cache.Impulse;
                     page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 20:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.InputOptions);
+                    Cache.Main.VM.TopTitle = "Параметры входа";
                     page = Cache.Impulse;
                     page.Margin = new Thickness(10, 0, 10, 0);
                     break;
                 case 21:
                     Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage);
+                    Cache.Main.VM.TopTitle = "Напряжение запрета";
                     page = Cache.Impulse;
                     page.Margin = new Thickness(10, 0, 10, 0);
                     break;

@@ -13,6 +13,8 @@ namespace SCME.WpfControlLibrary.IValueConverters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (TypesToString.ContainsKey(value.GetType()) == false)
+                return null;
             if (value != null) return TypesToString[value.GetType()];
             throw new ArgumentNullException();
         }

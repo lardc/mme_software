@@ -30,7 +30,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCME.UpdateServer", "SCME.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadLocalToServer", "LoadLocalToServer\LoadLocalToServer.csproj", "{513EF1BF-D87E-4FAD-AB72-7147BBC4287F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{08531C19-A93B-44E9-8883-BA2FD29091DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{08531C19-A93B-44E9-8883-BA2FD29091DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWpf", "TestWpf\TestWpf.csproj", "{7B01A167-66A6-455C-B079-479C5909492B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +92,10 @@ Global
 		{08531C19-A93B-44E9-8883-BA2FD29091DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08531C19-A93B-44E9-8883-BA2FD29091DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08531C19-A93B-44E9-8883-BA2FD29091DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B01A167-66A6-455C-B079-479C5909492B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B01A167-66A6-455C-B079-479C5909492B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B01A167-66A6-455C-B079-479C5909492B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B01A167-66A6-455C-B079-479C5909492B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

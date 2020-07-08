@@ -73,17 +73,17 @@
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
 
     <Label Grid.Column="3" Grid.Row="3" >
-        <TextBlock Text="Коммутируем. напр., В" TextWrapping="Wrap"/>
+        <TextBlock Text="Ком. напр., В" TextWrapping="Wrap"/>
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage}"   StringFormat="N2"/>
 
         <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
-                Ток вспомогательного<LineBreak/>питания 1, мА
+                Ток вспом. питания 1, мА
         </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
 
     <TextBlock  Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
-                Ток вспомогательного питания 2, мА
+                Ток вспом. питания 2, мА
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
 

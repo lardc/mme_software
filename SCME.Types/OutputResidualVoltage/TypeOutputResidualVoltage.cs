@@ -13,7 +13,7 @@ namespace SCME.Types.OutputResidualVoltage
     [AddINotifyPropertyChangedInterface]
     [DataContract(Name = "Tou.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     [KnownType(typeof(BaseTestParametersAndNormatives))]
-    public class TestParameters : BaseTestParametersAndNormatives, ICloneable
+    public class TestParameters : BaseTestParametersAndNormativesImpulse, ICloneable
     {
 
         [DependsOn(nameof(TypeManagement))]
@@ -22,7 +22,6 @@ namespace SCME.Types.OutputResidualVoltage
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;
 
 
-        public int NumberPosition { get; set; } = 1;
         public TypeManagement TypeManagement { get; set; }
 
         public double ControlVoltage { get; set; }

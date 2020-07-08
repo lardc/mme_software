@@ -42,8 +42,9 @@
             </Grid.RowDefinitions>
             <Border Background="{Binding ElementName=userControlItem, Path=Backcolor}"
                     Grid.RowSpan="3" OpacityMask="White" Opacity="0.05" />
-            <Label Grid.Row="0" Content="{Binding ElementName=userControlItem, Path=Title}"
-                   FontSize="{StaticResource FontSize32}" Margin="10,0" />
+            <Label Grid.Row="0"  FontSize="{StaticResource FontSize32}" Margin="10,0" >
+                <TextBlock Text="{Binding ElementName=userControlItem, Path=Title}" TextWrapping="Wrap"/>
+            </Label>
 
             <Label Grid.Row="0" Content="{x:Static res:Resources.Disabled}" FontSize="{StaticResource FontSize22}"
                    Margin="10,0"

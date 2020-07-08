@@ -16,17 +16,30 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Border" Background="{TemplateBinding Background}" >
+                        <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+            <!--<Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
                         <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                     </Grid>
                 </ControlTemplate>
-            </Setter.Value>
+            </Setter.Value>-->
         </Setter>
     </Style>
 
     <Style x:Key="BaseFlatButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontSize" Value="{DynamicResource BaseFontSize}" />
+        <Setter Property="FontSize" Value="36" />
+        <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Height" Value="80" />
@@ -40,15 +53,15 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
+           <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="DarkGray" />
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="True">
+             </Trigger>
+            <!--<Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="DarkGray" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Gray" />
-            </Trigger>
+            </Trigger>-->
         </Style.Triggers>
     </Style>
     
@@ -79,17 +92,22 @@
         <Setter Property="Background" Value="{StaticResource BlueBrush}" />
     </Style>
 
+    <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Background" Value="{StaticResource xBlue1}" />
+    </Style>
+    
     <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="Red" />
+        <Setter Property="Background" Value="{StaticResource xRed1}" />
     </Style>
 
     <Style x:Key="StartButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="GreenYellow" />
+        <Setter Property="Background" Value="{StaticResource xGreen1}" />
     </Style>
 
     <Style x:Key="PurpleButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
         <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="Background" Value="{StaticResource PurpleBrush1}" />
     </Style>
+
 
 </ResourceDictionary>

@@ -71,13 +71,13 @@
 
 
     <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
-                Ток вспомогательного<LineBreak/>питания 1, мА
+                Ток вспом. питания 1, мА
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
 
-        <TextBlock  Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
-                Ток вспомогательного питания 2, мА
-        </TextBlock>
+    <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
+                Ток вспом. питания 2, мА
+    </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
 
     <Label Grid.Column="3" Grid.Row="6" Content="Ток входа макс, мА" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}"/>

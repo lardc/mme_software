@@ -45,7 +45,7 @@
                                          Backcolor="{StaticResource xBlue2}"
                                          Logo="{StaticResource SyncPath}" />
 
-            <customControls:HardwareItem x:Name="adapterControl"
+            <customControls:HardwareItem x:Name="adapterControl" Visibility="Collapsed"
                                               Title="{x:Static res:Resources.Adapter}" Margin="10"
                                               InitializeTimeout="3000" OperationTimeout="5000"
                                               DisableAvailable="False"
@@ -60,7 +60,7 @@
                                               Logo="{StaticResource GatewayPath}" />
 
             <customControls:HardwareItem x:Name="commutationControl"
-                                              Title="{x:Static res:Resources.Commutation}"
+                                              Title="Блок измерения твёрдотельных реле"
                                               InitializeTimeout="3000" OperationTimeout="0"
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xYellow1}"

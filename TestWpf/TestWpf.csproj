@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SCME.Types\SCME.Types.csproj" />
+    <ProjectReference Include="..\SCME.WpfControlLibrary\SCME.WpfControlLibrary.csproj" />
+  </ItemGroup>
+
+</Project>
