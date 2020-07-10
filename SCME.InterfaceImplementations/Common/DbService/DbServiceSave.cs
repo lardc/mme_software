@@ -339,6 +339,121 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("TOU", touCondition, touParameters);
         }
 
+
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.InputOptions.TestParameters data)
+        {
+            var condition = new Dictionary<string, object>()
+            {
+                {"Im_Position", data.NumberPosition},
+                {"Im_TypeManagement", (int)data.TypeManagement},
+                {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
+                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
+                {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
+                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
+            };
+
+            if (data.ShowVoltage)
+                condition.Add("Im_ControlVoltage", data.ControlVoltage);
+            else
+                condition.Add("Im_ControlCurrent", data.ControlCurrent);
+
+            var parameters = new Dictionary<string, (object Min, object Max)>();
+            if (data.ShowAmperage)
+                parameters.Add("Im_InputVoltage", (data.InputVoltageMinimum, data.InputVoltageMaximum));
+            else
+                parameters.Add("Im_InputAmperage", (data.InputCurrentMinimum, data.InputCurrentMaximum));
+
+            return ("InputOptions", condition, parameters);
+        }
+
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.OutputLeakageCurrent.TestParameters data)
+        {
+            var condition = new Dictionary<string, object>()
+            {
+                {"Im_Position", data.NumberPosition},
+                {"Im_TypeManagement", (int)data.TypeManagement},
+                {"Im_ApplicationPolarityConstantSwitchingVoltage", (int)data.ApplicationPolarityConstantSwitchingVoltage},
+                {"Im_PolarityDCSwitchingVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
+                {"Im_SwitchedAmperage", data.SwitchedAmperage},
+                {"Im_SwitchedVoltage", data.SwitchedVoltage},
+                {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
+                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
+                {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
+                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
+            };
+
+            if (data.ShowVoltage)
+                condition.Add("Im_ControlVoltage", data.ControlVoltage);
+            else
+                condition.Add("Im_ControlCurrent", data.ControlCurrent);
+
+            var parameters = new Dictionary<string, (object Min, object Max)>()
+            {
+                { "Im_LeakageCurrent", (data.LeakageCurrentMinimum,data.LeakageCurrentMaximum)}
+            };
+
+            return ("LeakageCurrent", condition, parameters);
+        }
+
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.OutputResidualVoltage.TestParameters data)
+        {
+            var condition = new Dictionary<string, object>()
+            {
+                {"Im_Position", data.NumberPosition},
+                {"Im_TypeManagement", (int)data.TypeManagement},
+                {"Im_PolarityDCSwitchingVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
+                {"Im_SwitchedAmperage", data.SwitchedAmperage},
+                {"Im_SwitchedVoltage", data.SwitchedVoltage},
+                {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
+                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
+                {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
+                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
+                {"Im_SwitchingCurrentPulseShape", (int)data.SwitchingCurrentPulseShape},
+                {"Im_SwitchingCurrentPulseDuration", data.SwitchingCurrentPulseDuration},
+            };
+
+            if (data.ShowVoltage)
+                condition.Add("Im_ControlVoltage", data.ControlVoltage);
+            else
+                condition.Add("Im_ControlCurrent", data.ControlCurrent);
+
+            var parameters = new Dictionary<string, (object Min, object Max)>()
+            {
+                { "Im_ResidualVoltage", (data.OutputResidualVoltageMinimum,data.OutputResidualVoltageMaximum)}
+            };
+
+            return ("ResidualVoltage", condition, parameters);
+        }
+
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.ProhibitionVoltage.TestParameters data)
+        {
+            var condition = new Dictionary<string, object>()
+            {
+                {"Im_Position", data.NumberPosition},
+                {"Im_TypeManagement", (int)data.TypeManagement},
+                {"Im_SwitchedAmperage", data.SwitchedAmperage},
+                {"Im_SwitchedVoltage", data.SwitchedVoltage},
+                {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
+                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
+                {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
+                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
+            };
+
+            if (data.ShowVoltage)
+                condition.Add("Im_ControlVoltage", data.ControlVoltage);
+            else
+                condition.Add("Im_ControlCurrent", data.ControlCurrent);
+
+            var parameters = new Dictionary<string, (object Min, object Max)>()
+            {
+                { "Im_ProhibitionVoltage", (data.ProhibitionVoltageMinimum,data.ProhibitionVoltageMaximum)}
+            };
+
+            return ("ProhibitionVoltage", condition, parameters);
+        }
+
+
+
         public void RemoveMmeCode(string mmeCode)
         {
             _dbTransaction = Connection.BeginTransaction();
@@ -472,6 +587,18 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
                     case Types.TOU.TestParameters tou:
                         _inserter.Insert(TypeConditionsParameters(tou));
+                        break;
+                    case Types.InputOptions.TestParameters io:
+                        _inserter.Insert(TypeConditionsParameters(io));
+                        break;
+                    case Types.OutputLeakageCurrent.TestParameters lc:
+                        _inserter.Insert(TypeConditionsParameters(lc));
+                        break;
+                    case Types.OutputResidualVoltage.TestParameters rv:
+                        _inserter.Insert(TypeConditionsParameters(rv));
+                        break;
+                    case Types.ProhibitionVoltage.TestParameters pv:
+                        _inserter.Insert(TypeConditionsParameters(pv));
                         break;
                     default:
                         throw new NotImplementedException("SaveProfile switch");

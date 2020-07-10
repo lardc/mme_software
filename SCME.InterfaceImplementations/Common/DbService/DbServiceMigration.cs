@@ -7,7 +7,7 @@ using System.Linq;
 using System.Resources;
 using System.ServiceModel.Channels;
 using SCME.Types;
-
+using SCME.Types.BaseTestParams;
 
 namespace SCME.InterfaceImplementations.Common.DbService
 {
@@ -89,7 +89,42 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("RAC_ResVoltage", "RAC_ResVoltage", true),
             ("TOU_En", "TOU_En", true),
             ("TOU_ITM", "TOU_ITM", true),
+
+
+
+
+            ("Im_Position", "Im_Position", true),
+            ("Im_TypeManagement", "Im_TypeManagement", true),
+            ("Im_ControlVoltage", "Im_ControlVoltage", true),
+            ("Im_ControlCurrent", "Im_ControlCurrent", true),
+            ("Im_AuxiliaryVoltagePowerSupply1", "Im_AuxiliaryVoltagePowerSupply1", true),
+            ("Im_AuxiliaryVoltagePowerSupply2", "Im_AuxiliaryVoltagePowerSupply2", true),
+            ("Im_AuxiliaryCurrentPowerSupply1", "Im_AuxiliaryCurrentPowerSupply1", true),
+            ("Im_AuxiliaryCurrentPowerSupply2", "Im_AuxiliaryCurrentPowerSupply2", true),
+            ("Im_ApplicationPolarityConstantSwitchingVoltage", "Im_ApplicationPolarityConstantSwitchingVoltage", true),
+            ("Im_PolarityDCSwitchingVoltageApplication", "Im_PolarityDCSwitchingVoltageApplication", true),
+            ("Im_SwitchedAmperage", "Im_SwitchedAmperage", true),
+            ("Im_SwitchedVoltage", "Im_SwitchedVoltage", true),
+            ("Im_SwitchingCurrentPulseShape", "Im_SwitchingCurrentPulseShape", true),
+            ("Im_SwitchingCurrentPulseDuration", "Im_SwitchingCurrentPulseDuration", true),
+
+
+            //("Im_ProhibitionVoltageMinimum", "Im_ProhibitionVoltageMinimum", true),
+            //("Im_ProhibitionVoltageMaximum", "Im_ProhibitionVoltageMaximum", true),
+
+            //("Im_OutputResidualVoltageMinimum", "Im_OutputResidualVoltageMinimum", true),
+            //("Im_OutputResidualVoltageMaximum", "Im_OutputResidualVoltageMaximum", true),
+
+            //("Im_LeakageCurrentMinimum", "Im_LeakageCurrentMinimum", true),
+            //("Im_LeakageCurrentMaximum", "Im_LeakageCurrentMaximum", true),
+
+            //("Im_InputCurrentMinimum", "Im_InputCurrentMinimum", true),
+            //("Im_InputCurrentMaximum", "Im_InputCurrentMaximum", true),
+            //("Im_InputVoltageMinimum", "Im_InputVoltageMinimum", true),
+            //("Im_InputVoltageMaximum", "Im_InputVoltageMaximum", true)
+
         };
+
 
         private readonly (string name, string localName, bool isTech)[] _paramsList =
         {
@@ -132,6 +167,12 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("BVT_IRSM", "BVT_IRSM, A", false),
 
             ("DVDT_OK", "DVDT_OK", false),
+
+            ("Im_InputAmperage", "Im_InputAmperage", false),
+            ("Im_InputVoltage", "Im_InputVoltage", false),
+            ("Im_LeakageCurrent", "Im_LeakageCurrent", false),
+            ("Im_ResidualVoltage", "Im_ResidualVoltage", false),
+            ("Im_ProhibitionVoltage", "Im_ProhibitionVoltage", false),
         };
 
         private readonly (string name, string localName, int code)[] _errorsList =
@@ -178,7 +219,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
             (8, "ATU"),
             (9, "QrrTq"),
             (10, "RAC"),
-            (13, "TOU")
+            (13, "TOU"),
+            ((int)TestParametersType.InputOptions, "InputOptions"),
+            ((int)TestParametersType.OutputLeakageCurrent, "LeakageCurrent"),
+            ((int)TestParametersType.OutputResidualVoltage, "ResidualVoltage"),
+            ((int)TestParametersType.ProhibitionVoltage, "ProhibitionVoltage")
         };
 
         private DbCommand CreateCountCmdCount(string tableName, string columnName)

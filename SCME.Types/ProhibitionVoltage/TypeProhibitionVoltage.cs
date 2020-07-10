@@ -11,9 +11,9 @@ namespace SCME.Types.ProhibitionVoltage
 {
 
     [AddINotifyPropertyChangedInterface]
-    [DataContract(Name = "Tou.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "Tou.ProhibitionVoltage", Namespace = "http://proton-electrotex.com/SCME")]
     [KnownType(typeof(BaseTestParametersAndNormatives))]
-    public class TestParameters : BaseTestParametersAndNormativesImpulse, ICloneable
+    public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
 
         [DependsOn(nameof(TypeManagement))]
@@ -23,25 +23,39 @@ namespace SCME.Types.ProhibitionVoltage
         [DependsOn(nameof(TypeManagement))]
         public bool IsDC => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.DCAmperage;
 
-
+        [DataMember]
         public TypeManagement TypeManagement { get; set; }
 
+        [DataMember]
         public double ControlVoltage { get; set; }
+        [DataMember]
         public double ControlCurrent { get; set; }
 
+        [DataMember]
         public double SwitchedAmperage { get; set; }
+        [DataMember]
         public double SwitchedVoltage { get; set; }
 
+        [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }
+        [DataMember]
         public double AuxiliaryCurrentPowerSupply1 { get; set; }
 
+        [DataMember]
         public double AuxiliaryVoltagePowerSupply2 { get; set; }
+        [DataMember]
         public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
+        [DataMember]
         public double ProhibitionVoltageMinimum { get; set; }
+        [DataMember]
         public double ProhibitionVoltageMaximum { get; set; }
 
-
+        public TestParameters()
+        {
+            TestParametersType = TestParametersType.ProhibitionVoltage;
+            TypeManagement = TypeManagement.ACVoltage;
+        }
         public object Clone()
         {
             return MemberwiseClone();

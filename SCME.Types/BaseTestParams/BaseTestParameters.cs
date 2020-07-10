@@ -59,16 +59,16 @@ namespace SCME.Types.BaseTestParams
         TOU = 13,
 
         [EnumMember]
-        OutputLeakageCurrent = 14,
+        InputOptions = 101,
 
         [EnumMember]
-        OutputResidualVoltage = 15,
+        OutputLeakageCurrent = 102,
 
         [EnumMember]
-        InputOptions = 16,
+        OutputResidualVoltage = 103,
 
         [EnumMember]
-        ProhibitionVoltage = 17
+        ProhibitionVoltage = 104
     }
 
     [KnownType(typeof(ATU.TestParameters))]
@@ -78,9 +78,17 @@ namespace SCME.Types.BaseTestParams
     [KnownType(typeof(QrrTq.TestParameters))]
     [KnownType(typeof(TOU.TestParameters))]
     [KnownType(typeof(VTM.TestParameters))]
+    [KnownType(typeof(InputOptions.TestParameters))]
+    [KnownType(typeof(OutputLeakageCurrent.TestParameters))]
+    [KnownType(typeof(OutputResidualVoltage.TestParameters))]
+    [KnownType(typeof(ProhibitionVoltage.TestParameters))]
+
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public abstract class BaseTestParametersAndNormatives
     {
+        [DataMember]
+        public int NumberPosition { get; set; } = 1;
+
         [DataMember]
         public TestParametersType TestParametersType { get; set; }
 

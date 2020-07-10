@@ -34,7 +34,7 @@ namespace SCME.WpfControlLibrary.Pages
             InitializeComponent();
         }
 
-        public ImpulseResultPage(BaseTestParametersAndNormativesImpulse[] parameters)
+        public ImpulseResultPage(BaseTestParametersAndNormatives[] parameters)
         {
             InitializeComponent();
             Dictionary<int, ImpulseResultComponentVM> q = new Dictionary<int, ImpulseResultComponentVM>();

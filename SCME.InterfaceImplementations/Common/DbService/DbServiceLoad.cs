@@ -263,6 +263,26 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 case TestParametersType.Commutation:
                     FillComutationConditions(data, testTypeId);
                     break;
+                case TestParametersType.InputOptions:
+                    var inputParams = FillInputOptionsConditions(testTypeId);
+                    FillInputOptionsParameters(inputParams, testTypeId);
+                    data.TestParametersAndNormatives.Add(inputParams);
+                    break;
+                case TestParametersType.OutputLeakageCurrent:
+                    var leakageCurrent = FillLeakageCurrentConditions(testTypeId);
+                    FillLeakageCurrentParameters(leakageCurrent, testTypeId);
+                    data.TestParametersAndNormatives.Add(leakageCurrent);
+                    break;
+                case TestParametersType.OutputResidualVoltage:
+                    var residualVoltage = FillResidualVoltageConditions(testTypeId);
+                    FillResidualVoltageParameters(residualVoltage, testTypeId);
+                    data.TestParametersAndNormatives.Add(residualVoltage);
+                    break;
+                case TestParametersType.ProhibitionVoltage:
+                    var prohibitionVoltage = FillProhibitionVoltageConditions(testTypeId);
+                    FillProhibitionVoltageParameters(prohibitionVoltage, testTypeId);
+                    data.TestParametersAndNormatives.Add(prohibitionVoltage);
+                    break;
             }
         }
 
@@ -435,6 +455,268 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             return testParams;
         }
+
+        private Types.InputOptions.TestParameters FillInputOptionsConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.InputOptions.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "Im_Position":
+                        testParams.NumberPosition = int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_TypeManagement":
+                        testParams.TypeManagement =  (TypeManagement)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltage":
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrent":
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply1":
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply1":
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply2":
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply2":
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
+        private Types.OutputLeakageCurrent.TestParameters FillLeakageCurrentConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.OutputLeakageCurrent.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "Im_Position":
+                        testParams.NumberPosition = int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_TypeManagement":
+                        testParams.TypeManagement = (TypeManagement)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltage":
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrent":
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedAmperage":
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedVoltage":
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ApplicationPolarityConstantSwitchingVoltage":
+                        testParams.ApplicationPolarityConstantSwitchingVoltage = (ApplicationPolarityConstantSwitchingVoltage)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_PolarityDCSwitchingVoltageApplication":
+                        testParams.PolarityDCSwitchingVoltageApplication = (PolarityDCSwitchingVoltageApplication)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply1":
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply1":
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply2":
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply2":
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
+
+        private Types.OutputResidualVoltage.TestParameters FillResidualVoltageConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.OutputResidualVoltage.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "Im_Position":
+                        testParams.NumberPosition = int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_TypeManagement":
+                        testParams.TypeManagement = (TypeManagement)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltage":
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrent":
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedAmperage":
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedVoltage":
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_PolarityDCSwitchingVoltageApplication":
+                        testParams.PolarityDCSwitchingVoltageApplication = (PolarityDCSwitchingVoltageApplication)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply1":
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply1":
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply2":
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply2":
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchingCurrentPulseShape":
+                        testParams.SwitchingCurrentPulseShape = (SwitchingCurrentPulseShape)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchingCurrentPulseDuration":
+                        testParams.SwitchingCurrentPulseDuration = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                }
+            }
+
+            return testParams;
+        }
+
+
+        private Types.ProhibitionVoltage.TestParameters FillProhibitionVoltageConditions(long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.ProhibitionVoltage.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "Im_Position":
+                        testParams.NumberPosition = int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_TypeManagement":
+                        testParams.TypeManagement = (TypeManagement)int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltage":
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrent":
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedAmperage":
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_SwitchedVoltage":
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply1":
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply1":
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply2":
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupply2":
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
+      
+
 
         private void FillComutationConditions(ProfileDeepData data, long testTypeId)
         {
@@ -827,6 +1109,78 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "VTM":
                         if (result.Item3.HasValue)
                             parameters.VTM = result.Item3.Value;
+                        break;
+                }
+            }
+        }
+
+        private void FillInputOptionsParameters(Types.InputOptions.TestParameters parameters, long testTypeId)
+        {
+            var results = new List<Tuple<string, float?, float?>>();
+            FillParametersResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Item1)
+                {
+                    case "Im_InputAmperage":
+                        parameters.InputCurrentMinimum = result.Item2.Value;
+                        parameters.InputCurrentMaximum = result.Item3.Value;
+                        break;
+                    case "Im_InputVoltage":
+                        parameters.InputVoltageMinimum = result.Item2.Value;
+                        parameters.InputVoltageMaximum = result.Item3.Value;
+                        break;
+                }
+            }
+        }
+
+        private void FillLeakageCurrentParameters(Types.OutputLeakageCurrent.TestParameters parameters, long testTypeId)
+        {
+            var results = new List<Tuple<string, float?, float?>>();
+            FillParametersResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Item1)
+                {
+                    case "Im_LeakageCurrent":
+                        parameters.LeakageCurrentMinimum = result.Item2.Value;
+                        parameters.LeakageCurrentMaximum = result.Item3.Value;
+                        break;
+                }
+            }
+        }
+
+        private void FillResidualVoltageParameters(Types.OutputResidualVoltage.TestParameters parameters, long testTypeId)
+        {
+            var results = new List<Tuple<string, float?, float?>>();
+            FillParametersResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Item1)
+                {
+                    case "Im_ResidualVoltage":
+                        parameters.OutputResidualVoltageMinimum = result.Item2.Value;
+                        parameters.OutputResidualVoltageMaximum = result.Item3.Value;
+                        break;
+                }
+            }
+        }
+
+        private void FillProhibitionVoltageParameters(Types.ProhibitionVoltage.TestParameters parameters, long testTypeId)
+        {
+            var results = new List<Tuple<string, float?, float?>>();
+            FillParametersResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Item1)
+                {
+                    case "Im_ProhibitionVoltage":
+                        parameters.ProhibitionVoltageMinimum = result.Item2.Value;
+                        parameters.ProhibitionVoltageMaximum = result.Item3.Value;
                         break;
                 }
             }

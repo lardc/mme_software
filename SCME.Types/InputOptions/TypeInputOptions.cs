@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 namespace SCME.Types.InputOptions
 {
     [AddINotifyPropertyChangedInterface]
-    [DataContract(Name = "Tou.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "InputOptions.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     [KnownType(typeof(BaseTestParametersAndNormatives))]
-    public class TestParameters : BaseTestParametersAndNormativesImpulse, ICloneable
+    [KnownType(typeof(BaseTestParametersAndNormativesImpulse))]
+    public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
 
         [DependsOn(nameof(TypeManagement))]
@@ -21,26 +22,39 @@ namespace SCME.Types.InputOptions
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;
 
 
-        
+        [DataMember]
         public TypeManagement TypeManagement { get; set; }
 
+        [DataMember]
         public double ControlVoltage { get; set; }
+        [DataMember]
         public double ControlCurrent { get; set; }
 
-
+        [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }
+        [DataMember]
         public double AuxiliaryCurrentPowerSupply1 { get; set; }
 
+        [DataMember]
         public double AuxiliaryVoltagePowerSupply2 { get; set; }
+        [DataMember]
         public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
+        [DataMember]
         public double InputCurrentMinimum { get; set; }
+        [DataMember]
         public double InputCurrentMaximum { get; set; }
 
+        [DataMember]
         public double InputVoltageMinimum { get; set; }
+        [DataMember]
         public double InputVoltageMaximum { get; set; }
 
-        
+        public TestParameters()
+        {
+            TestParametersType = TestParametersType.InputOptions;
+            TypeManagement = TypeManagement.ACVoltage;
+        }
 
         public object Clone()
         {

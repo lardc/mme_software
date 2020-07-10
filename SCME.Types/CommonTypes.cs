@@ -7,35 +7,38 @@ namespace SCME.Types
     public enum TypeManagement
     {
         [EnumMember]
-        ACVoltage,
+        ACVoltage = 1,
         [EnumMember]
-        DCVoltage,
+        DCVoltage = 2,
         [EnumMember]
-        DCAmperage
+        DCAmperage = 3
     }
 
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ApplicationPolarityConstantSwitchingVoltage
     {
         [EnumMember]
-        ACVoltage,
+        ACVoltage = 1,
         [EnumMember]
-        DCVoltage
+        DCVoltage = 2
     }
 
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum PolarityDCSwitchingVoltageApplication
     {
         [EnumMember]
-        Direct,
+        Direct = 1,
         [EnumMember]
-        Reverse
+        Reverse = 2
     }
 
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum SwitchingCurrentPulseShape
     {
         [EnumMember]
-        Trapezoid,
+        Trapezoid = 1,
         [EnumMember]
-        Sinus
+        Sinus = 2
     }
 
 
