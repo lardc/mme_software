@@ -26,19 +26,19 @@ namespace SCME.Types.InputOptions
         public TypeManagement TypeManagement { get; set; }
 
         [DataMember]
-        public double ControlVoltage { get; set; }
+        public ushort ControlVoltage { get; set; }
         [DataMember]
-        public double ControlCurrent { get; set; }
+        public ushort ControlCurrent { get; set; }
 
         [DataMember]
-        public double AuxiliaryVoltagePowerSupply1 { get; set; }
+        public ushort AuxiliaryVoltagePowerSupply1 { get; set; }
         [DataMember]
-        public double AuxiliaryCurrentPowerSupply1 { get; set; }
+        public ushort AuxiliaryCurrentPowerSupply1 { get; set; }
 
         [DataMember]
-        public double AuxiliaryVoltagePowerSupply2 { get; set; }
+        public ushort AuxiliaryVoltagePowerSupply2 { get; set; }
         [DataMember]
-        public double AuxiliaryCurrentPowerSupply2 { get; set; }
+        public ushort AuxiliaryCurrentPowerSupply2 { get; set; }
 
         [DataMember]
         public double InputCurrentMinimum { get; set; }

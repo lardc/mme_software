@@ -6,7 +6,7 @@ namespace SCME.WpfControlLibrary.Pages
 {
     public partial class ImpulsePage : Page
     {
-        public object ItemVM { get; set; }
+        public BaseTestParametersAndNormatives ItemVM { get; set; }
 
         public ImpulsePage()
         {
@@ -41,6 +41,8 @@ namespace SCME.WpfControlLibrary.Pages
                 default:
                     break;
             }
+
+            ItemVM.HideMinMax = true;
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

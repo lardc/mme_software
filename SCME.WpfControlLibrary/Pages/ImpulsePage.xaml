@@ -75,7 +75,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource BackButton}"  Margin="0,0,10,0"  Grid.Column="0" Content="Назад" Click="Back_Click"/>
+            <Button Style="{StaticResource PrimaryButton}"  Margin="0,0,10,0"  Grid.Column="0" Content="Назад" Click="Back_Click"/>
             <Button Style="{StaticResource StopButton}" IsEnabled="False" Margin="10,0,10,0" Grid.Column="1" Content="Стоп" />
             <Button Style="{StaticResource StartButton}" IsEnabled="False" Margin="10,0,0,0" Grid.Column="2" Content="Старт" />
         </Grid>

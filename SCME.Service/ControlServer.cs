@@ -4,6 +4,7 @@ using System.ServiceModel;
 using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.Types.BaseTestParams;
 using SCME.Types.Commutation;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
@@ -309,6 +310,11 @@ namespace SCME.Service
         public void SetUserWorkMode(UserWorkMode userWorkMode)
         {
             _IoMain.SetUserWorkMode(userWorkMode);
+        }
+
+        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        {
+            return _IoMain.StartImpulse(parameters, dutPackageType);
         }
 
 

@@ -57,12 +57,12 @@
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="0" Grid.Row="6" >
+    <Label Grid.Column="0" Grid.Row="6" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
         <TextBlock>
             Напряжение запрета<LineBreak/> мин, мА
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding ProhibitionVoltageMinimum}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding ProhibitionVoltageMinimum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
     
     
@@ -87,12 +87,12 @@
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="3" Grid.Row="6" >
+    <Label Grid.Column="3" Grid.Row="6" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
         <TextBlock>
             Напряжение запрета<LineBreak/> макс, мА
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding ProhibitionVoltageMaximum}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding ProhibitionVoltageMaximum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
 
 </Grid>

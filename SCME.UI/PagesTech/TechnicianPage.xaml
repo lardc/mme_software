@@ -64,11 +64,10 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         
@@ -211,7 +210,7 @@
         <Button Grid.Column="0" Grid.Row="1"
                 Content="{x:Static res:Resources.Back}"
                 Click="BtnBack_Click"
-                Margin="0,0,0,0"
-                Style="{StaticResource CButtonStyle}" />
+                Margin="0,0,10,0"
+                Style="{StaticResource PrimaryButton}" />
     </Grid>
 </Page>

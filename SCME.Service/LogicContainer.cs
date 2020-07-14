@@ -36,6 +36,7 @@ namespace SCME.Service
         private readonly ThreadService m_Thread;
         private readonly IOTOU m_IOTOU;
         public readonly IoDbSync IoDbSync;
+        public readonly IOImpulse _ioImpulse;
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
@@ -107,6 +108,7 @@ namespace SCME.Service
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
             IoDbSync = new IoDbSync(m_Communication);
+            _ioImpulse = new IOImpulse(m_IOAdapter, m_Communication);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -199,6 +201,9 @@ namespace SCME.Service
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
                     state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
+
+                if (state == DeviceConnectionState.ConnectionSuccess)
+                    state = _ioImpulse.Initialize(m_Param.IsImpulseEnabled, m_Param.TimeoutImpulse);
 
                 InitializationResponse = taskSync.Result;
                 
@@ -411,6 +416,8 @@ namespace SCME.Service
 
             IsInitialized = false;
         }
+
+     
 
         internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
         {
@@ -661,6 +668,8 @@ namespace SCME.Service
             return res;
         }
 
+   
+
         public string NotReadyDevicesToStartDynamic()
         {
             
@@ -883,6 +892,30 @@ namespace SCME.Service
 
         #region Test sequence
 
+        internal bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        {
+            m_Stop = false;
+
+            m_State = DeviceState.InProcess;
+            m_Communication.PostTestAllEvent(m_State, "Starting tests");
+
+            try
+            {
+                m_Thread.StartSingle(Dummy =>
+                {
+                    foreach (var i in parameters)
+                        _ioImpulse.Start(i, dutPackageType);
+                }
+                );
+            }
+            catch (Exception e)
+            {
+                ThrowFaultException(ComplexParts.None, e.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name), false);
+            }
+
+            return true;
+        }
+
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             m_Stop = false;
@@ -937,6 +970,25 @@ namespace SCME.Service
 
             return true;
         }
+
+        //public bool Start(BaseTestParametersAndNormatives[] impulseParameters, DutPackageType dutPackageType)
+        //{
+        //    try
+        //    {
+        //        m_Thread.StartSingle(Dummy =>
+        //        {
+        //            foreach(var i in impulseParameters)
+        //            _ioImpulse.Start(i, dutPackageType)
+        //        });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ThrowFaultException(ComplexParts.None, e.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name), false);
+        //    }
+
+        //    return true;
+        //}
+
 
         public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {

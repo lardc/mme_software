@@ -91,6 +91,10 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
+        bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType);
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
         void Stop();
 
         [OperationContract]
@@ -252,11 +256,16 @@ namespace SCME.Types
         void DvDtHandler(DeviceState State, dVdt.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
-        void DvDtNotificationHandler(dVdt.HWWarningReason Warning, dVdt.HWFaultReason Fault,
-                                    dVdt.HWDisableReason Disable);
+        void DvDtNotificationHandler(dVdt.HWWarningReason Warning, dVdt.HWFaultReason Fault, dVdt.HWDisableReason Disable);
+
+        [OperationContract(IsOneWay = true)]
+        void ImpulseHandler(DeviceState State, Types.Impulse.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
         void TOUHandler(DeviceState State, TOU.TestResults Result);
+
+        [OperationContract(IsOneWay = true)]
+        void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
         void TOUNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
@@ -272,6 +281,9 @@ namespace SCME.Types
 
         [OperationContract(IsOneWay = true)]
         void QrrTqNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
+
+        [OperationContract(IsOneWay = true)]
+        void PostAlarmEvent(ComplexParts complexParts, string message);
 
         [OperationContract(IsOneWay = true)]
         void QrrTqKindOfFreezingHandler(ushort KindOfFreezing);

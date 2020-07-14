@@ -15,7 +15,7 @@ using OutputLeakageCurrentParameters = SCME.Types.OutputLeakageCurrent.TestParam
 using OutputResidualVoltageParameters = SCME.Types.OutputResidualVoltage.TestParameters;
 using InputOptionsParameters = SCME.Types.InputOptions.TestParameters;
 using ProhibitionVoltageParameters = SCME.Types.ProhibitionVoltage.TestParameters;
-
+using System.Xml.Serialization;
 
 namespace SCME.Types.BaseTestParams
 {
@@ -86,6 +86,9 @@ namespace SCME.Types.BaseTestParams
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public abstract class BaseTestParametersAndNormatives
     {
+        [IgnoreDataMember]
+        public bool HideMinMax { get; set; }
+
         [DataMember]
         public int NumberPosition { get; set; } = 1;
 

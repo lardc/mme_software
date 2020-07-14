@@ -1,4 +1,5 @@
 ﻿using SCME.Types;
+using SCME.Types.BaseTestParams;
 using SCME.WpfControlLibrary.DataTemplates.TestParameters;
 using SCME.WpfControlLibrary.Pages;
 using System;
@@ -32,14 +33,14 @@ namespace TestWpf
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var q = new BaseTestParametersAndNormativesImpulse[]
+            var q = new BaseTestParametersAndNormatives[]
             {
                 new SCME.Types.InputOptions.TestParameters(){NumberPosition = 1, TypeManagement = TypeManagement.ACVoltage, InputCurrentMinimum = 3, InputCurrentMaximum = 5},
                 new SCME.Types.InputOptions.TestParameters(){NumberPosition = 2, TypeManagement = TypeManagement.DCAmperage, InputVoltageMinimum = 3, InputVoltageMaximum = 4},
                 new SCME.Types.OutputLeakageCurrent.TestParameters(){NumberPosition = 3, LeakageCurrentMinimum = 1, LeakageCurrentMaximum = 4}
 
             };
-            MainFrame.Navigate(new ImpulseResultPage(q));
+            MainFrame.Navigate(new ImpulseResultPage(null));
         }
     }
 }

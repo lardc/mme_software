@@ -63,13 +63,13 @@
         </TextBlock>
     </Label>
     <ComboBox Grid.Column="1" Grid.Row="6" ItemsSource="{Binding Source={StaticResource SwitchingCurrentPulseShape}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding SwitchingCurrentPulseShape}" />
-    
-    <Label Grid.Column="0" Grid.Row="7" >
+
+    <Label Grid.Column="0" Grid.Row="7" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
         <TextBlock>
             Выходное остаточное<LineBreak/>напряжение мин., В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="7"   Value="{Binding OutputResidualVoltageMinimum}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="7"   Value="{Binding OutputResidualVoltageMinimum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
 
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
@@ -107,11 +107,11 @@
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding SwitchingCurrentPulseDuration}" StringFormat="N2"/>
 
-    <Label Grid.Column="3" Grid.Row="7" >
+    <Label Grid.Column="3" Grid.Row="7" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
         <TextBlock>
             Выходное остаточное<LineBreak/>напряжение макс., В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7"   Value="{Binding OutputResidualVoltageMaximum}" StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7"   Value="{Binding OutputResidualVoltageMaximum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
 </Grid>

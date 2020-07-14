@@ -12,5 +12,7 @@ namespace SCME.WpfControlLibrary.ViewModels
 
         [DependsOn(nameof(CanStart))]
         public bool CanCanselMeasument => !CanStart;
+
+        
     }
 }

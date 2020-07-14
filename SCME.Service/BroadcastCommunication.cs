@@ -196,6 +196,12 @@ namespace SCME.Service
             EnumerateClients(Client => Client.QrrTqHandler(State, Result));
         }
 
+        
+        public void PostImpulseEvent(DeviceState State, Types.Impulse.TestResults Result)
+        {
+            EnumerateClients(Client => Client.ImpulseHandler(State, Result));
+        }
+
         public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
         {
             EnumerateClients(Client => Client.TOUHandler(State, Result));
@@ -236,6 +242,19 @@ namespace SCME.Service
         {
             EnumerateClients(Client => Client.QrrTqKindOfFreezingHandler(KindOfFreezing));
         }
+
+        
+        public void PostAlarmEvent(ComplexParts complexParts, string message)
+        {
+            EnumerateClients(Client => Client.PostAlarmEvent(complexParts, message));
+        }
+
+
+        public void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        {
+            EnumerateClients(Client => Client.PostImpulseNotificationEvent(Problem, Warning, Fault, Disable));
+        }
+
 
         public void PostTOUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {

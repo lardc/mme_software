@@ -64,6 +64,8 @@ namespace SCME.UI.PagesUser
             tbPassword.Text = string.Empty;
         }
 
+
+
         public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage)
         {
             Cache.Main.VM.AccountNameIsVisibility = true;
@@ -77,19 +79,29 @@ namespace SCME.UI.PagesUser
 //            };
             profilesPage.ProfileVm.NextAction = () =>
             {
-                
-                Cache.UserTest.Profile = profilesPage.ProfileVm.SelectedProfile.ToProfile();
-                Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Cache.UserTest.Profile;
-                //запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
-                Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
-
                 var navigationService = profilesPage.NavigationService;
+                var page = new ImpulseResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
+                    () => Cache.Net.StartImpulse(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1))
+                {
+                    Title = $"Тестирование, профиль: {profilesPage.ProfileVm.SelectedProfile.Name}",
 
-                Cache.UserTest.InitSorting();
-                Cache.UserTest.InitTemp();
+                };
+                Cache.ImpulseHandler = page.ImpulseHandler;
+                navigationService.Navigate(page);
+
+
+                //Cache.UserTest.Profile = profilesPage.ProfileVm.SelectedProfile.ToProfile();
+                //Cache.UserTest.Title = Properties.Resources.UserTestPage_Title + ", " + Properties.Resources.Profile.ToLower() + ": " + "\n" + Cache.UserTest.Profile;
+                ////запоминаем в UserTest флаг 'Режим специальных измерений' для возможности корректной работы её MultiIdentificationFieldsToVisibilityConverter 
+                //Cache.UserTest.SpecialMeasureMode = (Cache.WorkMode == UserWorkMode.SpecialMeasure);
+
+                //var navigationService = profilesPage.NavigationService;
+
+                //Cache.UserTest.InitSorting();
+                //Cache.UserTest.InitTemp();
                     
-                Debug.Assert(navigationService != null, "navigationService != null");
-                navigationService.Navigate(Cache.UserTest);
+                //Debug.Assert(navigationService != null, "navigationService != null");
+                //navigationService.Navigate(Cache.UserTest);
             };
             
         }

@@ -3,15 +3,16 @@ using System.Runtime.Serialization;
 
 namespace SCME.Types
 {
+
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum TypeManagement
     {
         [EnumMember]
-        ACVoltage = 1,
+        DCAmperage = 1,
         [EnumMember]
         DCVoltage = 2,
         [EnumMember]
-        DCAmperage = 3
+        ACVoltage = 3
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -72,6 +73,41 @@ namespace SCME.Types
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum DutPackageType
+    {
+        [EnumMember]
+        A1 = 1,
+        [EnumMember]
+        I1 = 2,
+        [EnumMember]
+        I2 = 3,
+        [EnumMember]
+        B1 = 4,
+        [EnumMember]
+        B2 = 5,
+        [EnumMember]
+        B3 = 6,
+        [EnumMember]
+        B5 = 7,
+        [EnumMember]
+        V1 = 8,
+        [EnumMember]
+        V2 = 9,
+        [EnumMember]
+        V108 = 10,
+        [EnumMember]
+        L1 = 11,
+        [EnumMember]
+        L2 = 12,
+        [EnumMember]
+        D1 = 13,
+        [EnumMember]
+        D2 = 14,
+        [EnumMember]
+        D192 = 15
+    }
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ComplexParts
     {
         [EnumMember]
@@ -114,6 +150,8 @@ namespace SCME.Types
         RCC = 18,
         [EnumMember]
         TOU = 19,
+        [EnumMember]
+        Impulse = 101,
         [EnumMember]
         Database = 255,
         [EnumMember]
@@ -336,6 +374,8 @@ namespace SCME.Types
 
             [DataMember]
             public int TimeoutGate { get; set; }
+            [DataMember]
+            public int TimeoutImpulse { get; set; }
 
             [DataMember]
             public bool IsSLEnabled { get; set; }
@@ -410,6 +450,8 @@ namespace SCME.Types
             public int TimeoutRCC { get; set; }
             [DataMember]
             public bool IsTOUEnabled { get; set; }
+            [DataMember]
+            public bool IsImpulseEnabled { get; set; }
 
             [DataMember]
             public SafetyMode SafetyMode { get; set; }

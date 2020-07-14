@@ -157,10 +157,15 @@ namespace SCME.Types
         }
 
         public bool StartDynamic(Commutation.TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
-                          BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
-                          QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
+                         BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
+                         QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {
             return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersSctu, parametersTOU);
+        }
+
+        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        {
+            return Channel.StartImpulse(parameters, dutPackageType);
         }
 
         public bool StartHeating(int temperature)

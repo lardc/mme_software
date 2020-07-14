@@ -63,8 +63,8 @@
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="0" Grid.Row="6" Content="Ток утечки мин, мА" ></Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding LeakageCurrentMinimum}" StringFormat="N2"/>
+    <Label Grid.Column="0" Grid.Row="6" Content="Ток утечки мин, мА" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"></Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding LeakageCurrentMinimum}" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}" StringFormat="N2"/>
 
     
     
@@ -96,8 +96,8 @@
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
 
-    <Label Grid.Column="3" Grid.Row="6" Content="Ток утечки макс, мА" ></Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding LeakageCurrentMaximum}" StringFormat="N2"/>
+    <Label Grid.Column="3" Grid.Row="6" Content="Ток утечки макс, мА" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"></Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding LeakageCurrentMaximum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
 
 </Grid>

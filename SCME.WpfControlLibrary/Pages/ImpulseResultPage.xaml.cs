@@ -1,10 +1,12 @@
 ﻿using SCME.Types;
 using SCME.Types.BaseTestParams;
+using SCME.Types.Profiles;
 using SCME.WpfControlLibrary.DataTemplates.TestParameters;
 using SCME.WpfControlLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,25 +27,32 @@ namespace SCME.WpfControlLibrary.Pages
     /// </summary>
     public partial class ImpulseResultPage : Page
     {
+
+
+        private Action _start;
+
         public ImpulseResultVM VM { get; set; } = new ImpulseResultVM();
         public ImpulseResultComponentVM VMPosition1 { get; set; } = new ImpulseResultComponentVM() { Postition = 1};
         public ImpulseResultComponentVM VMPosition2 { get; set; } = new ImpulseResultComponentVM() { Postition = 2 };
         public ImpulseResultComponentVM VMPosition3 { get; set; } = new ImpulseResultComponentVM() { Postition = 3 };
+
+        public Dictionary<int, ImpulseResultComponentVM> VMByPosition{ get; set; }
         public ImpulseResultPage()
         {
             InitializeComponent();
         }
 
-        public ImpulseResultPage(BaseTestParametersAndNormatives[] parameters)
+        public ImpulseResultPage(Profile profile, Action start )
         {
             InitializeComponent();
-            Dictionary<int, ImpulseResultComponentVM> q = new Dictionary<int, ImpulseResultComponentVM>();
-            q[1] = VMPosition1;
-            q[2] = VMPosition2;
-            q[3] = VMPosition3;
-            foreach (var i in parameters)
+            _start = start;
+            VMByPosition = new Dictionary<int, ImpulseResultComponentVM>();
+            VMByPosition[1] = VMPosition1;
+            VMByPosition[2] = VMPosition2;
+            VMByPosition[3] = VMPosition3;
+            foreach (var i in profile.TestParametersAndNormatives)
             {
-                var impulseResultComponentVM = q[i.NumberPosition];
+                var impulseResultComponentVM = VMByPosition[i.NumberPosition];
                 switch (i)
                 {
                     case SCME.Types.InputOptions.TestParameters j:
@@ -81,6 +90,32 @@ namespace SCME.WpfControlLibrary.Pages
             }
         }
 
+        public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)
+        {
+            var q = VMByPosition[testResults.NumberPosition];
+
+            switch (testResults.TestParametersType)
+            {
+                case TestParametersType.InputOptions:
+                    if (testResults.InputOptionsIsAmperage)
+                        q.InputAmperage = testResults.Value;
+                    else
+                        q.InputVoltage = testResults.Value;
+                    break;
+                case TestParametersType.OutputLeakageCurrent:
+                    q.LeakageCurrent = testResults.Value;
+                    break;
+                case TestParametersType.OutputResidualVoltage:
+                    q.ResidualVoltage = testResults.Value;
+                    break;
+                case TestParametersType.ProhibitionVoltage:
+                    q.ProhibitionVoltage = testResults.Value;
+                    break;
+                default:
+                    break;
+            }
+
+        }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
@@ -95,7 +130,17 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+
+            _start();
+            return;
             VM.CanStart = false;
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(1000);
+                
+                VM.CanStart = true;
+            });
+            return;
             Random random = new Random(DateTime.Now.Millisecond);
             Task.Factory.StartNew(() =>
             {

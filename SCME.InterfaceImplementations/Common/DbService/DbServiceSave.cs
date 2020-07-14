@@ -359,9 +359,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             var parameters = new Dictionary<string, (object Min, object Max)>();
             if (data.ShowAmperage)
-                parameters.Add("Im_InputVoltage", (data.InputVoltageMinimum, data.InputVoltageMaximum));
+                parameters.Add("InputVoltage", (data.InputVoltageMinimum, data.InputVoltageMaximum));
             else
-                parameters.Add("Im_InputAmperage", (data.InputCurrentMinimum, data.InputCurrentMaximum));
+                parameters.Add("InputAmperage", (data.InputCurrentMinimum, data.InputCurrentMaximum));
 
             return ("InputOptions", condition, parameters);
         }
@@ -372,8 +372,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
-                {"Im_ApplicationPolarityConstantSwitchingVoltage", (int)data.ApplicationPolarityConstantSwitchingVoltage},
-                {"Im_PolarityDCSwitchingVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
+                {"Im_AppPolSwitchingVoltage", (int)data.ApplicationPolarityConstantSwitchingVoltage},
+                {"Im_PolDCSwVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
@@ -389,7 +389,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             var parameters = new Dictionary<string, (object Min, object Max)>()
             {
-                { "Im_LeakageCurrent", (data.LeakageCurrentMinimum,data.LeakageCurrentMaximum)}
+                { "LeakageCurrent", (data.LeakageCurrentMinimum,data.LeakageCurrentMaximum)}
             };
 
             return ("LeakageCurrent", condition, parameters);
@@ -401,7 +401,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
-                {"Im_PolarityDCSwitchingVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
+                {"Im_PolDCSwVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
@@ -419,7 +419,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             var parameters = new Dictionary<string, (object Min, object Max)>()
             {
-                { "Im_ResidualVoltage", (data.OutputResidualVoltageMinimum,data.OutputResidualVoltageMaximum)}
+                { "ResidualVoltage", (data.OutputResidualVoltageMinimum,data.OutputResidualVoltageMaximum)}
             };
 
             return ("ResidualVoltage", condition, parameters);
@@ -446,7 +446,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             var parameters = new Dictionary<string, (object Min, object Max)>()
             {
-                { "Im_ProhibitionVoltage", (data.ProhibitionVoltageMinimum,data.ProhibitionVoltageMaximum)}
+                { "ProhVoltage", (data.ProhibitionVoltageMinimum,data.ProhibitionVoltageMaximum)}
             };
 
             return ("ProhibitionVoltage", condition, parameters);

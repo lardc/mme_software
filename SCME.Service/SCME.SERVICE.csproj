@@ -117,6 +117,7 @@
     <Compile Include="BroadcastCommunication.cs" />
     <Compile Include="IO\IOATU.cs" />
     <Compile Include="IO\IoDbSync.cs" />
+    <Compile Include="IO\IOImpulse.cs" />
     <Compile Include="IO\IOTOU.cs" />
     <Compile Include="IO\IOdVdt.cs" />
     <Compile Include="IO\IoIH.cs" />

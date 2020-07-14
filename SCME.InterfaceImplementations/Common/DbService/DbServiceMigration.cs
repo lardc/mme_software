@@ -101,8 +101,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Im_AuxiliaryVoltagePowerSupply2", "Im_AuxiliaryVoltagePowerSupply2", true),
             ("Im_AuxiliaryCurrentPowerSupply1", "Im_AuxiliaryCurrentPowerSupply1", true),
             ("Im_AuxiliaryCurrentPowerSupply2", "Im_AuxiliaryCurrentPowerSupply2", true),
-            ("Im_ApplicationPolarityConstantSwitchingVoltage", "Im_ApplicationPolarityConstantSwitchingVoltage", true),
-            ("Im_PolarityDCSwitchingVoltageApplication", "Im_PolarityDCSwitchingVoltageApplication", true),
+            ("Im_AppPolSwitchingVoltage", "Im_ApplicationPolarityConstantSwitchingVoltage", true),
+            ("Im_PolDCSwVoltageApplication", "Im_PolDCSwVoltageApplication", true),
             ("Im_SwitchedAmperage", "Im_SwitchedAmperage", true),
             ("Im_SwitchedVoltage", "Im_SwitchedVoltage", true),
             ("Im_SwitchingCurrentPulseShape", "Im_SwitchingCurrentPulseShape", true),
@@ -168,11 +168,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
             ("DVDT_OK", "DVDT_OK", false),
 
-            ("Im_InputAmperage", "Im_InputAmperage", false),
-            ("Im_InputVoltage", "Im_InputVoltage", false),
-            ("Im_LeakageCurrent", "Im_LeakageCurrent", false),
-            ("Im_ResidualVoltage", "Im_ResidualVoltage", false),
-            ("Im_ProhibitionVoltage", "Im_ProhibitionVoltage", false),
+            ("InputAmperage", "Im_InputAmperage", false),
+            ("InputVoltage", "Im_InputVoltage", false),
+            ("LeakageCurrent", "Im_LeakageCurrent", false),
+            ("ResidualVoltage", "Im_ResidualVoltage", false),
+            ("ProhVoltage", "Im_ProhibitionVoltage", false),
         };
 
         private readonly (string name, string localName, int code)[] _errorsList =

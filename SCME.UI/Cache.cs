@@ -6,6 +6,7 @@ using SCME.UI.PagesUser;
 using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.CustomControls;
 using SCME.WpfControlLibrary.Pages;
+using System;
 
 namespace SCME.UI
 {
@@ -34,8 +35,14 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
 
-        
 
+
+        public static Action<DeviceState, Types.Impulse.TestResults> ImpulseHandler;
+
+        public static Action<ushort, ushort, ushort, ushort> PostImpulseNotificationEvent;
+
+        public static Action<ComplexParts, string> PostAlarmEvent;
+        
 
         internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);
 
@@ -100,11 +107,14 @@ namespace SCME.UI
             set { ms_UserTestPage = value; }
         }
 
+      
+
+
         #endregion
 
         #region Tech pages
-        
-        
+
+
 
         internal static TechnicianPage Technician
         {

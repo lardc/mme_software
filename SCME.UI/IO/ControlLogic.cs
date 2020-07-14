@@ -481,6 +481,8 @@ namespace SCME.UI.IO
 
         #region ExternalControl members
 
+
+
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
                           Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
@@ -594,6 +596,41 @@ namespace SCME.UI.IO
                 }
 
                 result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
+
+                return result;
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+
+            return false;
+        }
+
+        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        {
+            if (!IsServerConnected)
+                return false;
+
+            try
+            {
+                if (parameters.Count == 0)
+                {
+                    var dw = new DialogWindow(Resources.Information,
+                                              Resources.CanNotStartTest + Environment.NewLine +
+                                              Resources.AllUnitsAreDisabled);
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+
+                    return false;
+                }
+
+                bool result = false;
+                result = m_ControlClient.StartImpulse(parameters, dutPackageType);
 
                 return result;
             }
@@ -1603,7 +1640,7 @@ namespace SCME.UI.IO
         }
 
 
-        public void TOUHandler(DeviceState State, TestResults Result)
+        public void TOUHandler(DeviceState State, Types.TOU.TestResults Result)
         {
             m_QueueWorker.AddTOUEvent(State, Result);
         }
@@ -1663,6 +1700,21 @@ namespace SCME.UI.IO
 
             if (Fault != Types.Clamping.HWFaultReason.None)
                 m_QueueWorker.AddClampingFaultEvent(Fault);
+        }
+
+        public void ImpulseHandler(DeviceState State, Types.Impulse.TestResults Result)
+        {
+            Cache.ImpulseHandler?.Invoke(State, Result);
+        }
+
+        public void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        {
+            Cache.PostImpulseNotificationEvent?.Invoke(Problem, Warning, Fault, Disable);
+        }
+
+        public void PostAlarmEvent(ComplexParts complexParts, string message)
+        {
+            Cache.PostAlarmEvent?.Invoke(complexParts, message);
         }
 
 
