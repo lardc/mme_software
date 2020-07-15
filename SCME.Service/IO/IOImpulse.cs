@@ -304,6 +304,11 @@ namespace SCME.Service.IO
 
                     var randValue = rand.Next(0, 2);
 
+                    if (parameters is Types.InputOptions.TestParameters)
+                        if ((parameters as Types.InputOptions.TestParameters).ShowVoltage)
+                            _Result.InputOptionsIsAmperage = true;
+                            
+
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     _State = DeviceState.Success;
@@ -388,10 +393,13 @@ namespace SCME.Service.IO
                     {
                         case Types.InputOptions.TestParameters io:
                             testResults.TestParametersType = TestParametersType.InputOptions;
-                            if (io.TypeManagement == TypeManagement.DCAmperage)
+                            if (io.ShowAmperage)
                                 testResults.Value = ReadRegister(REG_RESULT_CONTROL_VOLTAGE);
                             else
+                            {
                                 testResults.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
+                                testResults.InputOptionsIsAmperage = true;
+                            }
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             testResults.TestParametersType = TestParametersType.OutputLeakageCurrent;
