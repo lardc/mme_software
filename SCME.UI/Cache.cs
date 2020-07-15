@@ -41,7 +41,7 @@ namespace SCME.UI
 
         public static Action<ushort, ushort, ushort, ushort> PostImpulseNotificationEvent;
 
-        public static Action<ComplexParts, string> PostAlarmEvent;
+        public static Action PostAlarmEvent;
         
 
         internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);

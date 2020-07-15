@@ -244,9 +244,9 @@ namespace SCME.Service
         }
 
         
-        public void PostAlarmEvent(ComplexParts complexParts, string message)
+        public void PostAlarmEvent()
         {
-            EnumerateClients(Client => Client.PostAlarmEvent(complexParts, message));
+            EnumerateClients(Client => Client.PostAlarmEvent());
         }
 
 

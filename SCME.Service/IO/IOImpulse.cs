@@ -44,32 +44,6 @@ namespace SCME.Service.IO
 
 
 
-        private void CheckDevStateThrow(HWDeviceState devState)
-        {
-            //if (devState == HWDeviceState.Fault)
-            //    throw new Exception(string.Format("TOU is in fault state, reason: {0}",
-            //                                      (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-            //if (devState == HWDeviceState.Disabled)
-            //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}",
-            //                                      (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
-
-            if (devState == HWDeviceState.Fault)
-            {
-                var faultReason = ReadRegister(REG_FAULT_REASON);
-                FireNotificationEvent(0, 0, faultReason,0);
-
-                throw new Exception(string.Format("TOU is in fault state, reason: {0}", faultReason));
-            }
-
-            //if (devState == HWDeviceState.Disabled)
-            //{
-            //    var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-            //    FireNotificationEvent(HWWarningReason.None,
-            //                          HWFaultReason.None, disableReason);
-
-            //    throw new Exception(string.Format("TOU is in disabled state, reason: {0}", disableReason));
-            //}
-        }
 
         private void WaitState(HWDeviceState needState)
         {
@@ -212,6 +186,12 @@ namespace SCME.Service.IO
             return MeasurementLogicRoutine(parameters, dutPackageType);
         }
 
+        private void CheckDevStateThrow(HWDeviceState devState)
+        {
+            //if((HWDeviceState)ReadRegister(REG_DEV_STATE) == HWDeviceState.Disabled ||)
+            //throw new NotImplementedException();
+        }
+
         internal void Stop()
         {
             CallAction(ACT_STOP);
@@ -285,6 +265,12 @@ namespace SCME.Service.IO
 
         private bool MeasurementLogicRoutine(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
         {
+            //FireAlarmEvent("Нарушен периметр безопасности");
+            //return false;
+
+            //FireNotificationEvent();
+            //return false;
+
             try
             {
                 //_State = DeviceState.InProcess;
@@ -428,161 +414,6 @@ namespace SCME.Service.IO
             return true;
         }
 
-        //internal short ReadRegisterS(ushort Address, bool SkipJournal = false)
-        //{
-        //    short value = 0;
-
-        //    if (!m_IsTOUEmulation)
-        //        value = m_IOAdapter.Read16S(m_Node, Address);
-
-        //    if (!SkipJournal)
-        //        SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-        //                                 string.Format("TOU @ReadRegisterS, address {0}, value {1}", Address, value));
-
-        //    return value;
-        //}
-        //internal void WriteCalibrationParams(CalibrationParams Parameters)
-        //{
-        //    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-        //                                 "TOU @WriteCalibrationParams begin");
-
-        //    //WriteRegister(REG_V_FINE_N, Parameters.VFineN, true);
-        //    //WriteRegister(REG_V_FINE_D, Parameters.VFineD, true);
-
-        //    //WriteRegister(REG_G500, Parameters.V500, true);
-        //    //WriteRegister(REG_G1000, Parameters.V1000, true);
-        //    //WriteRegister(REG_G1500, Parameters.V1500, true);
-        //    //WriteRegister(REG_G2000, Parameters.V2000, true);
-        //    //WriteRegister(REG_G2500, Parameters.V2500, true);
-
-        //    //if (!m_IsdVdtEmulation)
-        //    //    m_IOAdapter.Call(m_Node, ACT_SAVE_TO_ROM);
-
-        //    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-        //                                 "TOU @WriteCalibrationParams end");
-        //}
-
-        //internal CalibrationParams ReadCalibrationParams()
-        //{
-        //    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-        //                                 "TOU @ReadCalibrationParams begin");
-
-        //    var parameters = new CalibrationParams
-        //    {
-        //        //VFineN = ReadRegister(REG_V_FINE_N, true),
-        //        //VFineD = ReadRegister(REG_V_FINE_D, true),
-
-        //        //V500 = ReadRegister(REG_G500, true),
-        //        //V1000 = ReadRegister(REG_G1000, true),
-        //        //V1500 = ReadRegister(REG_G1500, true),
-        //        //V2000 = ReadRegister(REG_G2000, true),
-        //        //V2500 = ReadRegister(REG_G2500, true)
-        //    };
-
-        //    SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-        //                                 "TOU @ReadCalibrationParams end");
-
-        //    return parameters;
-        //}
-
-
-        //private void PrepareSteps(List<ushort> Steps)
-        //{
-        //    //формирует в принятом Steps список шагов роста напряжения на которых прибор тестируется на открытие
-        //    if (Steps != null)
-        //    {
-        //        if (m_Parameters.VoltageRateOffSet <= 0) throw new Exception("scme.service.io.iotou.cs PrepareSteps. m_Parameters.VoltageRateOffSet<=0.");
-
-        //        //очищаем содержимое Steps
-        //        Steps.Clear();
-
-        //        //исходная точка от которой вычисляется значение роста напряжения есть 500 В/мкс. на 20.04.2017 это ограничено аппаратными возможностями блока dVdt
-        //        ushort VoltageRateStart = 500;
-        //        Steps.Add(VoltageRateStart);
-
-        //        //значение роста напряжения на любом последующем шаге отличается от текщего шага на величину смещения VoltageRateOffSet, но итоговое значение роста напряжения не должно превысить ограничения роста напряжения VoltageRateLimit
-        //        int VoltageRate = VoltageRateStart;
-        //        int CalcedVoltageRate = 0;
-
-        //        while (true)
-        //        {
-        //            CalcedVoltageRate = VoltageRate + m_Parameters.VoltageRateOffSet;
-
-        //            if (CalcedVoltageRate >= m_Parameters.VoltageRateLimit)
-        //            {
-        //                //CalcedVoltageRate вылезает за VoltageRateLimit. поэтому пишем вместо него VoltageRateLimit
-        //                Steps.Add(m_Parameters.VoltageRateLimit);
-
-        //                break;
-        //            }
-        //            else
-        //            {
-        //                VoltageRate = CalcedVoltageRate;
-        //                Steps.Add((ushort)VoltageRate);
-        //            }
-
-        //        }
-
-        //    }
-        //}
-
-
-        //private DeviceState WaitForEndOfTest()
-        //{
-        //    var timeStamp = Environment.TickCount + m_Timeout;
-
-        //    while (Environment.TickCount < timeStamp)
-        //    {
-
-        //        var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE, true);
-
-        //        if (devState == HWDeviceState.Fault)
-        //        {
-        //            var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
-
-        //            FireNotificationEvent(HWWarningReason.None, faultReason,
-        //                                  HWDisableReason.None);
-        //            throw new Exception(string.Format("TOU device is in fault state, reason: {0}", faultReason));
-        //        }
-
-        //        if (devState == HWDeviceState.Disabled)
-        //        {
-        //            var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
-
-        //            FireNotificationEvent(HWWarningReason.None,
-        //                                  HWFaultReason.None, disableReason);
-        //            throw new Exception(string.Format("TOU device is in disabled state, reason: {0}", disableReason));
-        //        }
-
-        //        if (devState != HWDeviceState.InProcess)
-        //        {
-        //            ushort finish = ReadRegister(REG_TEST_FINISHED);
-        //            if(finish != OPRESULT_OK)
-        //                throw new Exception(string.Format("TOU device state != InProcess and register 197 = : {0}", finish));
-
-        //            var warning = (HWWarningReason)ReadRegister(REG_WARNING);
-
-        //            if (warning != HWWarningReason.None)
-        //            {
-        //                FireNotificationEvent(warning, HWFaultReason.None,
-        //                                      HWDisableReason.None);
-        //                ClearWarning();
-        //            }
-
-        //            break;
-        //        }
-
-        //        Thread.Sleep(REQUEST_DELAY_MS);
-        //    }
-
-        //    if (Environment.TickCount > timeStamp)
-        //    {
-        //        FireExceptionEvent("Timeout while waiting for TOU test to end");
-        //        throw new Exception("Timeout while waiting for TOU test to end");
-        //    }
-
-        //    return DeviceState.Success;
-        //}
 
         #region Events
 
@@ -603,14 +434,16 @@ namespace SCME.Service.IO
             _Communication.PostImpulseEvent(State, Result);
         }
 
-        private void FireNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
+        private void FireNotificationEvent()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Warning,
-                                         string.Format(
-                                             "Impulse device notification: problem None, warning {0}, fault {1}, disable {2}",
-                                             warning, fault, disable));
+            var fault = ReadRegister(REG_FAULT_REASON);
+            var disable = ReadRegister(REG_DISABLE_REASON);
+            var warning = ReadRegister(REG_WARNING);
+            var problem = ReadRegister(REG_PROBLEM);
 
-            _Communication.PostImpulseNotificationEvent((ushort)problem, (ushort)warning, (ushort)fault, (ushort)disable);
+            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Warning,$"Impulse device notification: problem {problem} warning {warning}, fault {fault}, disable {disable}");
+
+            _Communication.PostImpulseNotificationEvent(problem, warning, fault, disable);
         }
 
         private void FireExceptionEvent(string Message)
@@ -622,7 +455,7 @@ namespace SCME.Service.IO
         private void FireAlarmEvent(string Message)
         {
             SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, Message);
-            _Communication.PostAlarmEvent(ComplexParts.Impulse, Message);
+            _Communication.PostAlarmEvent();
         }
 
         #endregion

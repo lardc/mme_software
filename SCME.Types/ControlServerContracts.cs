@@ -283,7 +283,7 @@ namespace SCME.Types
         void QrrTqNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
-        void PostAlarmEvent(ComplexParts complexParts, string message);
+        void PostAlarmEvent();
 
         [OperationContract(IsOneWay = true)]
         void QrrTqKindOfFreezingHandler(ushort KindOfFreezing);

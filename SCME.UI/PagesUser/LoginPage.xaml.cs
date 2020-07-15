@@ -87,6 +87,8 @@ namespace SCME.UI.PagesUser
 
                 };
                 Cache.ImpulseHandler = page.ImpulseHandler;
+                Cache.PostAlarmEvent = page.PostAlarmEvent;
+                Cache.PostImpulseNotificationEvent = page.PostImpulseNotificationEvent;
                 navigationService.Navigate(page);
 
 

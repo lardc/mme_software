@@ -1,6 +1,7 @@
 ﻿using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Profiles;
+using SCME.WpfControlLibrary.CustomControls;
 using SCME.WpfControlLibrary.DataTemplates.TestParameters;
 using SCME.WpfControlLibrary.ViewModels;
 using System;
@@ -88,6 +89,25 @@ namespace SCME.WpfControlLibrary.Pages
                         break;
                 }
             }
+        }
+
+        public void PostImpulseNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var dialogWindow = new DialogWindow("Ошибка оборудования", $"problem {problem} warning {warning}, fault {fault}, disable {disable}"); ;
+                dialogWindow.ShowDialog();
+            }));
+        }
+    
+
+        public void PostAlarmEvent()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var dialogWindow = new DialogWindow("Внимание", "Нарушен периметр безопасности");
+                dialogWindow.ShowDialog();
+            }));
         }
 
         public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)

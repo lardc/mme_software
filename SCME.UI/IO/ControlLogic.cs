@@ -1712,9 +1712,9 @@ namespace SCME.UI.IO
             Cache.PostImpulseNotificationEvent?.Invoke(Problem, Warning, Fault, Disable);
         }
 
-        public void PostAlarmEvent(ComplexParts complexParts, string message)
+        public void PostAlarmEvent()
         {
-            Cache.PostAlarmEvent?.Invoke(complexParts, message);
+            Cache.PostAlarmEvent?.Invoke();
         }
 
 
