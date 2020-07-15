@@ -60,12 +60,20 @@
                                               Logo="{StaticResource GatewayPath}" />
 
             <customControls:HardwareItem x:Name="commutationControl"
-                                              Title="Блок измерения твёрдотельных реле"
+                                              Title="Комутация"
                                               InitializeTimeout="3000" OperationTimeout="0"
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xYellow1}"
                                               Logo="{StaticResource CommutationPath}" 
                                               Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
+                                         
+            <customControls:HardwareItem x:Name="impulseControl"
+                                              Title="Блок измерения твёрдотельных реле"
+                                              InitializeTimeout="3000" OperationTimeout="0"
+                                              DisableAvailable="False"
+                                              Backcolor="{StaticResource xYellow1}"
+                                              Logo="{StaticResource CommutationPath}" 
+                                              />
 
             <customControls:HardwareItem x:Name="gateControl"
                                               Title="{x:Static res:Resources.Gate}"

@@ -19,7 +19,7 @@ namespace SCME.Service.IO
         private readonly ushort _Node;
         private bool _IsImpulseEmulation;
         private DeviceConnectionState _connectionState;
-        private volatile DeviceState _State;
+        //private volatile DeviceState _State;
         private volatile TestResults _Result;
         internal IOCommutation ActiveCommutation { get; set; }
 
@@ -129,7 +129,6 @@ namespace SCME.Service.IO
             {
                 _connectionState = DeviceConnectionState.ConnectionSuccess;
                 FireConnectionEvent(_connectionState, "Impulse initialized");
-
                 return _connectionState;
             }
 
@@ -194,11 +193,8 @@ namespace SCME.Service.IO
             }
         }
 
-        internal DeviceState Start(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
+        internal bool Start(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
         {
-            if (_State == DeviceState.InProcess)
-                throw new Exception("TOU test is already started");
-
             if (!_IsImpulseEmulation)
             {
                 //Считываем регистр состояния
@@ -213,15 +209,13 @@ namespace SCME.Service.IO
                 }
             }
 
-            MeasurementLogicRoutine(parameters, dutPackageType);
-
-            return _State;
+            return MeasurementLogicRoutine(parameters, dutPackageType);
         }
 
         internal void Stop()
         {
             CallAction(ACT_STOP);
-            _State = DeviceState.Stopped;
+            //_State = DeviceState.Stopped;
         }
 
 
@@ -289,11 +283,11 @@ namespace SCME.Service.IO
 
         #endregion
 
-        private void MeasurementLogicRoutine(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
+        private bool MeasurementLogicRoutine(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
         {
             try
             {
-                _State = DeviceState.InProcess;
+                //_State = DeviceState.InProcess;
                 CallAction(ACT_CLR_WARNING);
                 _Result = new TestResults();
                 _Result.NumberPosition = parameters.NumberPosition;
@@ -311,8 +305,8 @@ namespace SCME.Service.IO
 
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
-                    _State = DeviceState.Success;
-                    FireImpulseEvent(_State, _Result);
+                    //_State = DeviceState.Success;
+                    FireImpulseEvent(DeviceState.Success, _Result);
                 }
                 else
                 {
@@ -382,7 +376,10 @@ namespace SCME.Service.IO
 
                     CallAction(ACT_SET_INACTIVE);
                     if (alarm)
+                    {
                         FireAlarmEvent("Нарушен периметр безопасности");
+                        return false;
+                    }
 
                     if (res != -1)
                         throw new Exception($"Ошибка измерения, код{res}");
@@ -415,8 +412,8 @@ namespace SCME.Service.IO
                             break;
                     }
 
-                    _State = DeviceState.Success;
-                    FireImpulseEvent(_State, testResults);
+                    //_State = DeviceState.Success;
+                    FireImpulseEvent(DeviceState.Success, testResults);
 
                 }
 
@@ -424,14 +421,11 @@ namespace SCME.Service.IO
 
             catch (Exception ex)
             {
-                ActiveCommutation.Switch(Types.Commutation.CommutationMode.None);
-                _State = DeviceState.Fault;
-                FireImpulseEvent(_State, _Result);
                 FireExceptionEvent(ex.Message);
-
-                throw;
+                return false;
             }
 
+            return true;
         }
 
         //internal short ReadRegisterS(ushort Address, bool SkipJournal = false)

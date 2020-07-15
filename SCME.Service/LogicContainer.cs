@@ -904,7 +904,8 @@ namespace SCME.Service
                 m_Thread.StartSingle(Dummy =>
                 {
                     foreach (var i in parameters)
-                        _ioImpulse.Start(i, dutPackageType);
+                        if (!_ioImpulse.Start(i, dutPackageType))
+                            break;
                 }
                 );
             }
