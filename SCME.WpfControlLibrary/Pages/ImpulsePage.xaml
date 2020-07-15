@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:testParameters="clr-namespace:SCME.WpfControlLibrary.DataTemplates.TestParameters"
       xmlns:properties="clr-namespace:SCME.WpfControlLibrary.Properties"
-      mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944"
+      xmlns:local="clr-namespace:SCME.WpfControlLibrary.Pages" Loaded="Page_Loaded"
+      mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="944" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"  
       xmlns:myControls="clr-namespace:SCME.WpfControlLibrary.CustomControls">
     <Page.Resources>
         <ResourceDictionary>
@@ -66,7 +67,7 @@
                 <ColumnDefinition Width="1.1*" />
             </Grid.ColumnDefinitions>
             <TextBlock Name="TextBlockValueName" />
-            <TextBlock Grid.Column="1" HorizontalAlignment="Right" Name="LabelValue" Text="0"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Right" Name="LabelValue" Text="{Binding Result, StringFormat=N1}"/>
         </Grid>
 
         <Grid Grid.Row="5" >
@@ -75,9 +76,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource PrimaryButton}"  Margin="0,0,10,0"  Grid.Column="0" Content="Назад" Click="Back_Click"/>
-            <Button Style="{StaticResource StopButton}" IsEnabled="False" Margin="10,0,10,0" Grid.Column="1" Content="Стоп" />
-            <Button Style="{StaticResource StartButton}" IsEnabled="False" Margin="10,0,0,0" Grid.Column="2" Content="Старт" />
+            <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}"  Margin="0,0,10,0" Grid.Column="0" Content="Назад" Click="Back_Click"/>
+            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" Margin="10,0,10,0" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
+            <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
         </Grid>
         
     </Grid>

@@ -195,6 +195,7 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP);
+
             //_State = DeviceState.Stopped;
         }
 

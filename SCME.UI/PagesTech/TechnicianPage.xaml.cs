@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,7 +40,6 @@ namespace SCME.UI.PagesTech
             var btn = (Button)Sender;
 
             Page page = null;
-
             switch (Convert.ToUInt16(btn.CommandParameter))
             {
                 case 1:
@@ -109,26 +109,42 @@ namespace SCME.UI.PagesTech
                     page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 18:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent);
+                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent , 
+                        () =>Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1));
                     Cache.Main.VM.TopTitle = "Ток утечки на выходе";
+                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
+                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
+                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
                     page = Cache.Impulse;
                     page.Margin = new Thickness(0);
                     break;
                 case 19:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage);
+                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage,
+                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1));
                     Cache.Main.VM.TopTitle = "Выходное остаточное напряжение";
+                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
+                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
+                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
                     page = Cache.Impulse;
                     page.Margin = new Thickness(0);
                     break;
                 case 20:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.InputOptions);
+                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.InputOptions,
+                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1));
                     Cache.Main.VM.TopTitle = "Параметры входа";
+                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
+                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
+                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
                     page = Cache.Impulse;
                     page.Margin = new Thickness(0);
                     break;
                 case 21:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage);
+                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage,
+                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1));
                     Cache.Main.VM.TopTitle = "Напряжение запрета";
+                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
+                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
+                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
                     page = Cache.Impulse;
                     page.Margin = new Thickness(0);
                     break;
