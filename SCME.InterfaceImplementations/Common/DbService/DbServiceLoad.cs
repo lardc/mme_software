@@ -481,27 +481,27 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_ControlVoltage":
-                        testParams.ControlVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_ControlCurrent":
-                        testParams.ControlCurrent = ushort.Parse(result.Value.ToString());
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply1":
-                        testParams.AuxiliaryVoltagePowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply2":
-                        testParams.AuxiliaryVoltagePowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }
@@ -534,19 +534,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_ControlVoltage":
-                        testParams.ControlVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_ControlCurrent":
-                        testParams.ControlCurrent = ushort.Parse(result.Value.ToString());
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedAmperage":
-                        testParams.SwitchedAmperage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
-                        testParams.SwitchedVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AppPolSwitchingVoltage":
@@ -558,19 +558,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply1":
-                        testParams.AuxiliaryVoltagePowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply2":
-                        testParams.AuxiliaryVoltagePowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }
@@ -604,19 +604,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_ControlVoltage":
-                        testParams.ControlVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_ControlCurrent":
-                        testParams.ControlCurrent = ushort.Parse(result.Value.ToString());
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedAmperage":
-                        testParams.SwitchedAmperage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
-                        testParams.SwitchedVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_PolDCSwVoltageApplication":
@@ -624,19 +624,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply1":
-                        testParams.AuxiliaryVoltagePowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply2":
-                        testParams.AuxiliaryVoltagePowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchingCurrentPulseShape":
@@ -644,7 +644,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_SwitchingCurrentPulseDuration":
-                        testParams.SwitchingCurrentPulseDuration = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchingCurrentPulseDuration = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                 }
@@ -679,35 +679,35 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_ControlVoltage":
-                        testParams.ControlVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.ControlVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_ControlCurrent":
-                        testParams.ControlCurrent = ushort.Parse(result.Value.ToString());
+                        testParams.ControlCurrent = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedAmperage":
-                        testParams.SwitchedAmperage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
-                        testParams.SwitchedVoltage = ushort.Parse(result.Value.ToString());
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply1":
-                        testParams.AuxiliaryVoltagePowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryVoltagePowerSupply2":
-                        testParams.AuxiliaryVoltagePowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = ushort.Parse(result.Value.ToString());
+                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }

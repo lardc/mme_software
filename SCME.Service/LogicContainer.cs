@@ -892,6 +892,7 @@ namespace SCME.Service
 
         #region Test sequence
 
+        private bool _impulseStopBeforeStop = false;
         internal bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
             m_Stop = false;
@@ -901,11 +902,24 @@ namespace SCME.Service
 
             try
             {
+                _impulseStopBeforeStop = true;
                 m_Thread.StartSingle(Dummy =>
                 {
-                    foreach (var i in parameters)
-                        if (!_ioImpulse.Start(i, dutPackageType))
-                            break;
+                    try
+                    {
+                        _ioImpulse.PressStop = false;
+                        foreach (var i in parameters)
+                            if (!_ioImpulse.Start(i, dutPackageType))
+                                break;
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        _impulseStopBeforeStop = false;
+                    }
                 }
                 );
             }
@@ -916,6 +930,15 @@ namespace SCME.Service
 
             return true;
         }
+        internal void StopImpulse()
+        {
+            while (_impulseStopBeforeStop == false)
+                Thread.Sleep(10);
+            _ioImpulse.PressStop = true;
+            _impulseStopBeforeStop = false;
+        }
+            
+
 
         public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {

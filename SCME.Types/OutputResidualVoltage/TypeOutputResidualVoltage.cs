@@ -25,32 +25,32 @@ namespace SCME.Types.OutputResidualVoltage
         public TypeManagement TypeManagement { get; set; }
 
         [DataMember]
-        public ushort ControlVoltage { get; set; }
+        public double ControlVoltage { get; set; }
         [DataMember]
-        public ushort ControlCurrent { get; set; }
+        public double ControlCurrent { get; set; }
 
         [DataMember]
         public PolarityDCSwitchingVoltageApplication PolarityDCSwitchingVoltageApplication { get; set; }
 
         [DataMember]
-        public ushort SwitchedAmperage { get; set; }
+        public double SwitchedAmperage { get; set; }
         [DataMember]
-        public ushort SwitchedVoltage { get; set; }
+        public double SwitchedVoltage { get; set; }
 
         [DataMember]
-        public ushort AuxiliaryVoltagePowerSupply1 { get; set; }
+        public double AuxiliaryVoltagePowerSupply1 { get; set; }
         [DataMember]
-        public ushort AuxiliaryCurrentPowerSupply1 { get; set; }
+        public double AuxiliaryCurrentPowerSupply1 { get; set; }
 
         [DataMember]
-        public ushort AuxiliaryVoltagePowerSupply2 { get; set; }
+        public double AuxiliaryVoltagePowerSupply2 { get; set; }
         [DataMember]
-        public ushort AuxiliaryCurrentPowerSupply2 { get; set; }
+        public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
         [DataMember]
         public SwitchingCurrentPulseShape SwitchingCurrentPulseShape { get; set; }
         [DataMember]
-        public ushort SwitchingCurrentPulseDuration { get; set; }
+        public double SwitchingCurrentPulseDuration { get; set; }
 
         [DataMember]
         public double OutputResidualVoltageMinimum {get;set;}

@@ -22,7 +22,7 @@ namespace SCME.Service.IO
         //private volatile DeviceState _State;
         private volatile TestResults _Result;
         internal IOCommutation ActiveCommutation { get; set; }
-
+        public bool PressStop { get; set; } = false;
 
         private int _timeoutImpulse = 25000;
 
@@ -48,7 +48,7 @@ namespace SCME.Service.IO
         private void WaitState(HWDeviceState needState)
         {
             var timeStamp = Environment.TickCount + _timeoutImpulse;
-            HWDeviceState devState;
+            HWDeviceState devState = HWDeviceState.None;
             while (Environment.TickCount < timeStamp)
             {
                 Thread.Sleep(100);
@@ -63,13 +63,13 @@ namespace SCME.Service.IO
             }
 
             if (Environment.TickCount > timeStamp)
-                throw new Exception("Timeout while waiting for device to power up");
+                throw new Exception($"Timeout expired: expected state {needState} but actual is still {devState}");
         }
 
         private (bool alarm, int error) WaitStateWithSafety()
         {
             var timeStamp = Environment.TickCount + _timeoutImpulse;
-            HWDeviceState devState;
+            HWDeviceState devState = HWDeviceState.None;
             while (Environment.TickCount < timeStamp)
             {
                 Thread.Sleep(100);
@@ -89,7 +89,7 @@ namespace SCME.Service.IO
                 CheckDevStateThrow(devState);
             }
 
-            throw new Exception("Timeout while waiting for device to power up");
+            throw new Exception($"Timeout expired: REG_DEV_STATE = {devState} , wait state alarm or success");
         }
 
         internal DeviceConnectionState Initialize(bool enable, int timeoutImpulse)
@@ -113,24 +113,37 @@ namespace SCME.Service.IO
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
 
-                //Если блок в состоянии None то просто подаём сигнал включения
-                if (devState == HWDeviceState.None)
-                    CallAction(ACT_ENABLE_POWER);
-                else if (devState != HWDeviceState.Ready)//Если какое то друго состояние отличное от готовного 
+                if (devState == HWDeviceState.Fault)
                 {
-                    //Выключаем питание
-                    CallAction(ACT_DISABLE_POWER);
-                    //Ждём перехода в выключенное состояние
-                    WaitState(HWDeviceState.None);
-                    //Включаем питание
-                    CallAction(ACT_ENABLE_POWER);
+                    ClearFault();
+                    devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
+                    if (devState == HWDeviceState.Fault)
+                        throw new Exception("Impulse не удалось сбросить fault");
                 }
 
-                //Ждём когда блок будет готов
-                WaitState(HWDeviceState.Ready);
+                switch (devState)
+                {
+                    case HWDeviceState.None:
+                        CallAction(ACT_ENABLE_POWER);
+                        WaitState(HWDeviceState.Ready);
+                        break;
+                    case HWDeviceState.Fault:
+                        break;
+                    case HWDeviceState.Disabled:
+                        throw new Exception("Impulse требуется перезагрузка питания");
+                    case HWDeviceState.Ready:
+                        break;
+                    case HWDeviceState.InProcess:
+                        WaitState(HWDeviceState.Ready);
+                        break;
+                    case HWDeviceState.Alarm:
+                        throw new Exception("Impulse Alarn логика не прописана");
+                        break;
+                    default:
+                        break;
+                }
 
                 _connectionState = DeviceConnectionState.ConnectionSuccess;
-
                 FireConnectionEvent(_connectionState, "Impulse initialized");
             }
             catch (Exception ex)
@@ -169,6 +182,8 @@ namespace SCME.Service.IO
 
         internal bool Start(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
         {
+            if (PressStop)
+                return false;
             if (!_IsImpulseEmulation)
             {
                 //Считываем регистр состояния
@@ -195,7 +210,7 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP);
-
+            PressStop = true;
             //_State = DeviceState.Stopped;
         }
 
@@ -205,14 +220,14 @@ namespace SCME.Service.IO
 
         internal void ClearFault()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU fault cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, "Impulse fault cleared");
 
             CallAction(ACT_CLR_FAULT);
         }
 
         private void ClearWarning()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note, "TOU warning cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, "Impulse warning cleared");
 
             CallAction(ACT_CLR_WARNING);
         }
@@ -225,8 +240,8 @@ namespace SCME.Service.IO
                 value = _IOAdapter.Read16(_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-                                         string.Format("TOU @ReadRegister, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
+                                         string.Format("Impulse @ReadRegister, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -234,8 +249,8 @@ namespace SCME.Service.IO
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-                                         string.Format("TOU @WriteRegister, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
+                                         string.Format("Impulse @WriteRegister, address {0}, value {1}", Address, Value));
 
             if (_IsImpulseEmulation)
                 return;
@@ -246,8 +261,8 @@ namespace SCME.Service.IO
         internal void CallAction(ushort Action, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Note,
-                                         string.Format("TOU @Call, action {0}", Action));
+                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
+                                         string.Format("Impulse @Call, action {0}", Action));
 
             if (_IsImpulseEmulation)
                 return;
@@ -258,11 +273,13 @@ namespace SCME.Service.IO
             }
             catch (Exception ex)
             {
-                SystemHost.Journal.AppendLog(ComplexParts.TOU, LogMessageType.Error, ex.ToString());
+                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Error, ex.ToString());
             }
         }
 
         #endregion
+
+
 
         private bool MeasurementLogicRoutine(BaseTestParametersAndNormatives parameters, DutPackageType dutPackageType)
         {
@@ -281,6 +298,7 @@ namespace SCME.Service.IO
 
                 if (_IsImpulseEmulation)
                 {
+                    Thread.Sleep(1000);
                     Random rand = new Random(DateTime.Now.Millisecond);
 
                     var randValue = rand.Next(0, 2);
@@ -305,53 +323,53 @@ namespace SCME.Service.IO
                         case Types.InputOptions.TestParameters io:
                             WriteRegister(REG_MEASUREMENT_TYPE, 3);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)io.TypeManagement);
-                            WriteRegister(REG_AUX_1_VOLTAGE, io.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, io.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, io.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, io.AuxiliaryCurrentPowerSupply2);
-                            WriteRegister(REG_CONTROL_CURRENT, io.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, io.ControlVoltage);
+                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply1);
+                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply2);
+                            WriteRegister(REG_AUX_1_CURRENT, (ushort)io.AuxiliaryCurrentPowerSupply1);
+                            WriteRegister(REG_AUX_2_CURRENT, (ushort)io.AuxiliaryCurrentPowerSupply2);
+                            WriteRegister(REG_CONTROL_CURRENT, (ushort)io.ControlCurrent);
+                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)io.ControlVoltage);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             WriteRegister(REG_MEASUREMENT_TYPE, 1);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)lc.TypeManagement);
-                            WriteRegister(REG_AUX_1_VOLTAGE, lc.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, lc.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, lc.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, lc.AuxiliaryCurrentPowerSupply2);
-                            WriteRegister(REG_CONTROL_CURRENT, lc.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, lc.ControlVoltage);
-                            WriteRegister(REG_COMMUTATION_CURRENT, lc.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, lc.SwitchedVoltage);
+                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply1);
+                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply2);
+                            WriteRegister(REG_AUX_1_CURRENT, (ushort)lc.AuxiliaryCurrentPowerSupply1);
+                            WriteRegister(REG_AUX_2_CURRENT, (ushort)lc.AuxiliaryCurrentPowerSupply2);
+                            WriteRegister(REG_CONTROL_CURRENT, (ushort)lc.ControlCurrent);
+                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)lc.ControlVoltage);
+                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)lc.SwitchedAmperage);
+                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)lc.SwitchedVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)lc.PolarityDCSwitchingVoltageApplication);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 2);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)rv.TypeManagement);
-                            WriteRegister(REG_CONTROL_CURRENT, rv.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, rv.ControlVoltage);
+                            WriteRegister(REG_CONTROL_CURRENT, (ushort)rv.ControlCurrent);
+                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)rv.ControlVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
-                            WriteRegister(REG_COMMUTATION_CURRENT, rv.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, rv.SwitchedVoltage);
-                            WriteRegister(REG_AUX_1_VOLTAGE, rv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, rv.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, rv.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, rv.AuxiliaryCurrentPowerSupply2);
+                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)rv.SwitchedAmperage);
+                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)rv.SwitchedVoltage);
+                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply1);
+                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply2);
+                            WriteRegister(REG_AUX_1_CURRENT, (ushort)rv.AuxiliaryCurrentPowerSupply1);
+                            WriteRegister(REG_AUX_2_CURRENT, (ushort)rv.AuxiliaryCurrentPowerSupply2);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
-                            WriteRegister(REG_COMMUTATION_CURRENT_TIME, rv.SwitchingCurrentPulseDuration);
+                            WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 4);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)pv.TypeManagement);
-                            WriteRegister(REG_CONTROL_CURRENT, pv.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, pv.ControlVoltage);
-                            WriteRegister(REG_COMMUTATION_CURRENT, pv.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, pv.SwitchedVoltage);
-                            WriteRegister(REG_AUX_1_VOLTAGE, pv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, pv.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, pv.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, pv.AuxiliaryCurrentPowerSupply2);
+                            WriteRegister(REG_CONTROL_CURRENT, (ushort)pv.ControlCurrent);
+                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)pv.ControlVoltage);
+                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)pv.SwitchedAmperage);
+                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)pv.SwitchedVoltage);
+                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply1);
+                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply2);
+                            WriteRegister(REG_AUX_1_CURRENT, (ushort)pv.AuxiliaryCurrentPowerSupply1);
+                            WriteRegister(REG_AUX_2_CURRENT, (ushort)pv.AuxiliaryCurrentPowerSupply2);
                             break;
                     }
 
@@ -359,9 +377,23 @@ namespace SCME.Service.IO
                     CallAction(ACT_CLR_WARNING);
                     CallAction(ACT_SET_ACTIVE);
                     CallAction(ACT_START_TEST);
-                    var (alarm, res) = WaitStateWithSafety();
 
-                    CallAction(ACT_SET_INACTIVE);
+                    bool alarm;
+                    int res;
+
+                    try
+                    {
+                        (alarm, res) = WaitStateWithSafety();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        CallAction(ACT_SET_INACTIVE);
+                    }
+                    
                     if (alarm)
                     {
                         FireAlarmEvent("Нарушен периметр безопасности");

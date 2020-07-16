@@ -73,6 +73,11 @@ namespace SCME.Types
             Channel.Stop();
         }
 
+        public void StopImpulse()
+        {
+            Channel.StopImpulse();
+        }
+
         public void StopByButtonStop()
         {
             Channel.StopByButtonStop();
@@ -168,6 +173,7 @@ namespace SCME.Types
             return Channel.StartImpulse(parameters, dutPackageType);
         }
 
+   
         public bool StartHeating(int temperature)
         {
             return Channel.StartHeating(temperature);
@@ -216,6 +222,11 @@ namespace SCME.Types
         public ushort GatePulseCalibrationMain(ushort Current)
         {
             return Channel.GatePulseCalibrationMain(Current);
+        }
+
+        void IExternalControl.StopImpulse()
+        {
+            Channel.StopImpulse();
         }
     }
 }

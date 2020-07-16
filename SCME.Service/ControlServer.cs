@@ -317,6 +317,13 @@ namespace SCME.Service
             return _IoMain.StartImpulse(parameters, dutPackageType);
         }
 
+        public void StopImpulse()
+        {
+            _IoMain.StopImpulse();
+        }
+
+
+
 
 
         #endregion

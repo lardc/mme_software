@@ -31,6 +31,8 @@ namespace SCME.WpfControlLibrary.Pages
 
 
         private Action _start;
+        private Action _stop;
+        private Profile _profile;
 
         public ImpulseResultVM VM { get; set; } = new ImpulseResultVM();
         public ImpulseResultComponentVM VMPosition1 { get; set; } = new ImpulseResultComponentVM() { Postition = 1};
@@ -43,10 +45,12 @@ namespace SCME.WpfControlLibrary.Pages
             InitializeComponent();
         }
 
-        public ImpulseResultPage(Profile profile, Action start )
+        public ImpulseResultPage(Profile profile, Action start, Action stop)
         {
             InitializeComponent();
             _start = start;
+            _profile = profile;
+            _stop = stop;
             VMByPosition = new Dictionary<int, ImpulseResultComponentVM>();
             VMByPosition[1] = VMPosition1;
             VMByPosition[2] = VMPosition2;
@@ -110,6 +114,7 @@ namespace SCME.WpfControlLibrary.Pages
             }));
         }
 
+        private int countEndingTests;
         public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)
         {
             var q = VMByPosition[testResults.NumberPosition];
@@ -134,7 +139,8 @@ namespace SCME.WpfControlLibrary.Pages
                 default:
                     break;
             }
-
+            if (++countEndingTests == _profile.TestParametersAndNormatives.Count)
+                VM.CanStart = true;
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
@@ -145,12 +151,14 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
+            _stop();
             VM.CanStart = true;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-
+            VM.CanStart = false;
+            countEndingTests = 0;
             _start();
             return;
             VM.CanStart = false;

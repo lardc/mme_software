@@ -15,16 +15,18 @@ namespace SCME.WpfControlLibrary.Pages
         public BaseTestParametersAndNormatives ItemVM { get; set; }
 
         private Action _start;
+        private Action _stop;
 
         public ImpulsePage()
         {
             InitializeComponent();
         }
 
-        public ImpulsePage(TestParametersType testParametersType, Action start)
+        public ImpulsePage(TestParametersType testParametersType, Action start, Action stop)
         {
             InitializeComponent();
             _start = start;
+            _stop = stop;
             switch (testParametersType)
             {
                 case TestParametersType.OutputLeakageCurrent:
@@ -75,6 +77,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)
         {
+            VM.CanStart = true;
             VM.Result = testResults.Value;
         }
 
@@ -87,12 +90,13 @@ namespace SCME.WpfControlLibrary.Pages
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             VM.CanStart = true;
+            _stop();
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+            VM.CanStart = false;
             _start();
-            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -493,9 +493,7 @@ namespace SCME.UI.IO
             {
                 if (!ParametersGate.IsEnabled && !ParametersVtm.IsEnabled && !ParametersBvt.IsEnabled && !ParametersAtu.IsEnabled && !ParametersQrrTq.IsEnabled && !ParametersIH.IsEnabled && !ParametersRCC.IsEnabled && !ParametersTOU.IsEnabled)
                 {
-                    var dw = new DialogWindow(Resources.Information,
-                                              Resources.CanNotStartTest + Environment.NewLine +
-                                              Resources.AllUnitsAreDisabled);
+                    var dw = new DialogWindow(Resources.Information, $"{Resources.CanNotStartTest}{Environment.NewLine}{Resources.AllUnitsAreDisabled}");
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
 
@@ -695,6 +693,25 @@ namespace SCME.UI.IO
             try
             {
                 m_ControlClient.Stop();
+            }
+            catch (CommunicationException ex)
+            {
+                ProcessCommunicationException(ex);
+            }
+            catch (Exception ex)
+            {
+                ProcessGeneralException(ex);
+            }
+        }
+
+        public void StopImpulse()
+        {
+            if (!IsServerConnected)
+                return;
+
+            try
+            {
+                m_ControlClient.StopImpulse();
             }
             catch (CommunicationException ex)
             {

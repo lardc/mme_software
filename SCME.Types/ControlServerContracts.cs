@@ -95,6 +95,10 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
+        void StopImpulse();
+
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
         void Stop();
 
         [OperationContract]

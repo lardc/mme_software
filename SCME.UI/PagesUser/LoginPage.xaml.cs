@@ -81,7 +81,8 @@ namespace SCME.UI.PagesUser
             {
                 var navigationService = profilesPage.NavigationService;
                 var page = new ImpulseResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
-                    () => Cache.Net.StartImpulse(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1))
+                    () => Cache.Net.StartImpulse(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1),
+                    Cache.Net.StopImpulse)
                 {
                     Title = $"Тестирование, профиль: {profilesPage.ProfileVm.SelectedProfile.Name}",
 
