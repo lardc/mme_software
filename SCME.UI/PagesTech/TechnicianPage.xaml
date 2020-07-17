@@ -66,7 +66,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
@@ -116,7 +116,7 @@
                     </Grid>
                 </Button>
 
-                <Button CommandParameter="9">
+                <Button CommandParameter="9" Visibility="Collapsed">
                     <Grid Background="{StaticResource xGreen2}">
                         <Path Data="{StaticResource ResultsPath}" />
                         <Label Content="{x:Static res:Resources.Results}" />
@@ -207,10 +207,10 @@
 
         </UniformGrid>
        
-        <Button Grid.Column="0" Grid.Row="1"
+        <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"
                 Content="{x:Static res:Resources.Back}"
                 Click="BtnBack_Click"
-                Margin="0,0,10,0"
+                
                 Style="{StaticResource PrimaryButton}" />
     </Grid>
 </Page>

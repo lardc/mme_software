@@ -31,6 +31,7 @@
         <Setter Property="Height" Value="37.5"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="Margin" Value="5,5,0,5"/>
         <Setter Property="BorderThickness" Value="0"/>
         

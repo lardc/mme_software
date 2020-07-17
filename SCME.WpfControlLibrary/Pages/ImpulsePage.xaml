@@ -76,9 +76,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}"  Margin="0,0,10,0" Grid.Column="0" Content="Назад" Click="Back_Click"/>
-            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" Margin="10,0,10,0" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
-            <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
+            <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}"  Grid.Column="0" Content="Назад" Click="Back_Click" HorizontalAlignment="Left"/>
+            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" Grid.Column="1" Content="Стоп" Click="Stop_Click" HorizontalAlignment="Center"/>
+            <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" Grid.Column="2" Content="Старт" Click="Start_Click" HorizontalAlignment="Right"/>
         </Grid>
         
     </Grid>

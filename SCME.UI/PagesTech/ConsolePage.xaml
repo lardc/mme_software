@@ -110,7 +110,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
 
@@ -241,7 +241,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Grid.Row="0"
+            <Button Grid.Column="0" Grid.Row="0" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"
                     Content="{x:Static res:Resources.Back}"
                     Click="Back_Click"
                     Margin="0,0,0,0" />

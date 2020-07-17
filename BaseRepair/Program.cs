@@ -24,15 +24,15 @@ namespace BaseRepair
                     InitialCatalog = @"SCME_ResultsDB",
                     IntegratedSecurity = false,
                     UserID = "sa",
-                    Password = "dfgdfg",
+                    Password = "йцу",
                     ConnectTimeout = 15
                 };
             var  mssqlDbService = new MSSQLDbService(new  SqlConnection(q.ToString()));
 
-            var msSqlDbServiceProxy = new DatabaseProxy("SCME.CentralDatabase");
+            var msSqlDbServiceProxy = new MSSQLDbService(new SqlConnection(q.ToString()));
 
-            var centralProfiles = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
-            var centralProfiles1 = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
+                var centralProfiles = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME002");
+            var centralProfiles1 = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME002");
 
             
                 foreach (var i in centralProfiles1)
@@ -48,7 +48,7 @@ namespace BaseRepair
 
                 foreach (var i in w)
                 {
-                    mssqlDbService.InsertUpdateProfile(i.oldP, i.newP, "MME007");
+                    mssqlDbService.InsertUpdateProfile(i.oldP, i.newP, "MME002");
                 qwe++;
                 }
             }

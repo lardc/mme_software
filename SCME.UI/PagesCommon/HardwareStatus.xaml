@@ -25,7 +25,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="90*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <UniformGrid Grid.Column="0" Grid.Row="0" Columns="2">
@@ -172,15 +172,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnBack" x:FieldModifier="private"
-                    Grid.Column="0" Grid.Row="0"
+            <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
+                    Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"
                     Content="{x:Static res:Resources.Back}"
                     Click="Back_Click"
                     Margin="0,0,0,0" />
-            <Button x:Name="btnRestart" x:FieldModifier="private"
-                    Grid.Column="3" Grid.Row="0"
+            <Button x:Name="btnRestart" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
+                    Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right"
                     Content="{x:Static res:Resources.Restart}"
-                    Margin="5,0,0,0" />
+                     />
         </Grid>
     </Grid>
 

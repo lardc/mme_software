@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SCME.WpfControlLibrary.Pages"
       xmlns:controls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
       mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
-      Height="800" Width="1280"
+      
       Title="ImpulseResultPage">
     <Page.Resources>
         <ResourceDictionary>
@@ -45,9 +45,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}"  Margin="0,0,10,0" Grid.Column="0" Content="Назад" Click="Back_Click"/>
-            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" Margin="10,0,10,0" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
-            <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
+            <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}" HorizontalAlignment="Left" Grid.Column="0" Content="Назад" Click="Back_Click"/>
+            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" HorizontalAlignment="Center" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
+            <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" HorizontalAlignment="Right" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
         </Grid>
     </Grid>
 </Page>

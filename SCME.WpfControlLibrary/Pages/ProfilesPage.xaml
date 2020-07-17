@@ -66,7 +66,7 @@
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Name="BackButton"
                     Style="{StaticResource PrimaryButton}" Click="GoBack_Click" />
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="0" Background="{StaticResource PurpleBrush1}">
+        <Grid Grid.Column="1" Grid.Row="0" Background="{StaticResource xGray2}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" SharedSizeGroup="ColumnMmeAndName" />
                 <RowDefinition Height="auto" />
@@ -137,7 +137,7 @@
                 </Grid>
             </customControls:ScrollViewerLeftMouseButtonScroll>
 
-            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" Width="{Binding ElementName=BackButton, Path=ActualWidth}"
+            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Right" 
                     Content="{x:Static res:Resources.Next}"
                     Visibility="{Binding ButtonNextIsVisible, Converter={StaticResource B2V}}"
                     Command="{Binding ButtonNextRelayCommand}" />
