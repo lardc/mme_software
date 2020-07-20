@@ -774,13 +774,13 @@ namespace SCME.Service.IO
             Result.VoltageData.Clear();
 
             if (!_isSctuEmulation)
-                Result.VoltageData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_V).ToList();
+                Result.VoltageData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_V).Select(m=> m *10).ToList();
 
             //читаем массив данных для построения графика тока
             Result.CurrentData.Clear();
 
             if (!_isSctuEmulation)
-                Result.CurrentData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_I).ToList();
+                Result.CurrentData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_I).Select(m => m * 10).ToList();
 
             SystemHost.Journal.AppendLog(ComplexParts.Sctu, LogMessageType.Note, "SCTU @ReadArrays end");
         }

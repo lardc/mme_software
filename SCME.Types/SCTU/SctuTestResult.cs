@@ -29,18 +29,18 @@ namespace SCME.Types.SCTU
         /// Данные для построения графика напряжения
         /// </summary>
         [DataMember]
-        public List<short> VoltageData { get; set; }
+        public List<int> VoltageData { get; set; }
 
         /// <summary>
         /// Данные для построения графика тока
         /// </summary>
         [DataMember]
-        public List<short> CurrentData { get; set; }
+        public List<int> CurrentData { get; set; }
 
         public SctuTestResults()
         {
-            VoltageData = new List<short>();
-            CurrentData = new List<short>();
+            VoltageData = new List<int>();
+            CurrentData = new List<int>();
         }
     }
 }

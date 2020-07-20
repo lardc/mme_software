@@ -123,7 +123,7 @@ namespace SCME.UI.PagesUser
             Cache.Net.Start(commPar, ClampParameters, parameters);
         }
 
-        private void Plot(string LineName, Color LineColor, IEnumerable<short> UPoints)
+        private void Plot(string LineName, Color LineColor, IEnumerable<int> UPoints)
         {
             var points = UPoints.Select((Time, Value) => new PointF(Value, Time)).ToList();
             var dataSource = new EnumerableDataSource<PointF>(points);
