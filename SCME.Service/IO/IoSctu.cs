@@ -33,7 +33,7 @@ namespace SCME.Service.IO
         //private volatile bool _stop;
 
         private int _timeout;
-
+        internal IOCommutation ActiveCommutation;
         private const int ChargeTimeout = 120000;
         #endregion
 
@@ -475,6 +475,7 @@ namespace SCME.Service.IO
                                 }
 
                                 FiredSctuEvent(devState, _testResults);
+                                ActiveCommutation.SetSafetyOff();
                             }
 
                             finally

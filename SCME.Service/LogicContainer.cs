@@ -112,6 +112,7 @@ namespace SCME.Service
             m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOIH.ActiveCommutation = m_IOCommutation;
             m_IORCC.ActiveCommutation = m_IOCommutation;
+            _ioSctu.ActiveCommutation = m_IOCommutation;
         }
 
         void Thread_FinishedHandler(object Sender, ThreadFinishedEventArgs E)
