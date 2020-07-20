@@ -1456,10 +1456,8 @@ namespace SCME.UI.IO
         {
             if (channel == HeatingChannel.Top)
                 m_QueueWorker.AddClampingTopTempEvent(temeprature);
-            else
-            {
+            else if(channel == HeatingChannel.Bottom)
                 m_QueueWorker.AddClampingBottomTempEvent(temeprature);
-            }
         }
 
         public void GatewayButtonPressHandler(ComplexButtons Button, bool State)
