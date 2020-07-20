@@ -27,7 +27,7 @@ namespace SCME.UI
         private static ClampPage ms_ClampPage;
         private static DVdtPage ms_DVdtPage;
         private static TOUPage ms_TOUPage;
-        private static ImpulsePage _impulsePage;
+        private static SSRTUPage _sSRTUPage;
         private static ATUPage ms_ATUPage;
         private static QrrTqPage ms_QrrTqPage;
         private static IHPage ms_IHPage;
@@ -37,9 +37,9 @@ namespace SCME.UI
 
 
 
-        public static Action<DeviceState, Types.Impulse.TestResults> ImpulseHandler;
+        public static Action<DeviceState, Types.SSRTU.TestResults> SSRTUHandler;
 
-        public static Action<ushort, ushort, ushort, ushort> PostImpulseNotificationEvent;
+        public static Action<ushort, ushort, ushort, ushort> PostSSRTUNotificationEvent;
 
         public static Action PostAlarmEvent;
         
@@ -186,10 +186,10 @@ namespace SCME.UI
             set { ms_TOUPage = value; }
         }
 
-        internal static ImpulsePage Impulse
+        internal static SSRTUPage SSRTU
         {
-            get { return _impulsePage ?? (_impulsePage = new ImpulsePage()); }
-            set { _impulsePage = value; }
+            get { return _sSRTUPage ?? (_sSRTUPage = new SSRTUPage()); }
+            set { _sSRTUPage = value; }
         }
 
         internal static ATUPage ATU

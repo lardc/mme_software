@@ -7,7 +7,7 @@ using SCME.WpfControlLibrary.Properties;
 
 namespace SCME.WpfControlLibrary.IValueConverters
 {
-    public class ImpulseResultConverter : IValueConverter
+    public class SSRTUResultConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

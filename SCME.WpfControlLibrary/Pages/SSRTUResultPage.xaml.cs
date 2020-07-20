@@ -24,9 +24,9 @@ using System.Windows.Shapes;
 namespace SCME.WpfControlLibrary.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ImpulseResultPage.xaml
+    /// Логика взаимодействия для SSRTUResultPage.xaml
     /// </summary>
-    public partial class ImpulseResultPage : Page
+    public partial class SSRTUResultPage : Page
     {
 
 
@@ -34,60 +34,60 @@ namespace SCME.WpfControlLibrary.Pages
         private Action _stop;
         private Profile _profile;
 
-        public ImpulseResultVM VM { get; set; } = new ImpulseResultVM();
-        public ImpulseResultComponentVM VMPosition1 { get; set; } = new ImpulseResultComponentVM() { Postition = 1};
-        public ImpulseResultComponentVM VMPosition2 { get; set; } = new ImpulseResultComponentVM() { Postition = 2 };
-        public ImpulseResultComponentVM VMPosition3 { get; set; } = new ImpulseResultComponentVM() { Postition = 3 };
+        public SSRTUResultVM VM { get; set; } = new SSRTUResultVM();
+        public SSRTUResultComponentVM VMPosition1 { get; set; } = new SSRTUResultComponentVM() { Postition = 1};
+        public SSRTUResultComponentVM VMPosition2 { get; set; } = new SSRTUResultComponentVM() { Postition = 2 };
+        public SSRTUResultComponentVM VMPosition3 { get; set; } = new SSRTUResultComponentVM() { Postition = 3 };
 
-        public Dictionary<int, ImpulseResultComponentVM> VMByPosition{ get; set; }
-        public ImpulseResultPage()
+        public Dictionary<int, SSRTUResultComponentVM> VMByPosition{ get; set; }
+        public SSRTUResultPage()
         {
             InitializeComponent();
         }
 
-        public ImpulseResultPage(Profile profile, Action start, Action stop)
+        public SSRTUResultPage(Profile profile, Action start, Action stop)
         {
             InitializeComponent();
             _start = start;
             _profile = profile;
             _stop = stop;
-            VMByPosition = new Dictionary<int, ImpulseResultComponentVM>();
+            VMByPosition = new Dictionary<int, SSRTUResultComponentVM>();
             VMByPosition[1] = VMPosition1;
             VMByPosition[2] = VMPosition2;
             VMByPosition[3] = VMPosition3;
             foreach (var i in profile.TestParametersAndNormatives)
             {
-                var impulseResultComponentVM = VMByPosition[i.NumberPosition];
+                var sSRTUResultComponentVM = VMByPosition[i.NumberPosition];
                 switch (i)
                 {
                     case SCME.Types.InputOptions.TestParameters j:
                         if (j.TypeManagement == Types.TypeManagement.DCAmperage)
                         {
-                            impulseResultComponentVM.InputVoltageMin = j.InputVoltageMinimum;
-                            impulseResultComponentVM.InputVoltageMax = j.InputVoltageMaximum;
-                            impulseResultComponentVM.InputVoltage = 0;
+                            sSRTUResultComponentVM.InputVoltageMin = j.InputVoltageMinimum;
+                            sSRTUResultComponentVM.InputVoltageMax = j.InputVoltageMaximum;
+                            sSRTUResultComponentVM.InputVoltage = 0;
                         }
                         else
                         {
-                            impulseResultComponentVM.InputAmperageMin = j.InputCurrentMinimum;
-                            impulseResultComponentVM.InputAmperageMax = j.InputCurrentMaximum;
-                            impulseResultComponentVM.InputAmperage = 0;
+                            sSRTUResultComponentVM.InputAmperageMin = j.InputCurrentMinimum;
+                            sSRTUResultComponentVM.InputAmperageMax = j.InputCurrentMaximum;
+                            sSRTUResultComponentVM.InputAmperage = 0;
                         }
                         break;
                     case SCME.Types.OutputLeakageCurrent.TestParameters j:
-                        impulseResultComponentVM.LeakageCurrentMin = j.LeakageCurrentMinimum;
-                        impulseResultComponentVM.LeakageCurrentMax = j.LeakageCurrentMaximum;
-                        impulseResultComponentVM.LeakageCurrent = 0;
+                        sSRTUResultComponentVM.LeakageCurrentMin = j.LeakageCurrentMinimum;
+                        sSRTUResultComponentVM.LeakageCurrentMax = j.LeakageCurrentMaximum;
+                        sSRTUResultComponentVM.LeakageCurrent = 0;
                         break;
                     case SCME.Types.OutputResidualVoltage.TestParameters j:
-                        impulseResultComponentVM.ResidualVoltageMin = j.OutputResidualVoltageMinimum;
-                        impulseResultComponentVM.ResidualVoltageMax = j.OutputResidualVoltageMaximum;
-                        impulseResultComponentVM.ResidualVoltage = 0;
+                        sSRTUResultComponentVM.ResidualVoltageMin = j.OutputResidualVoltageMinimum;
+                        sSRTUResultComponentVM.ResidualVoltageMax = j.OutputResidualVoltageMaximum;
+                        sSRTUResultComponentVM.ResidualVoltage = 0;
                         break;
                     case SCME.Types.ProhibitionVoltage.TestParameters j:
-                        impulseResultComponentVM.ProhibitionVoltageMin = j.ProhibitionVoltageMinimum;
-                        impulseResultComponentVM.ProhibitionVoltageMax = j.ProhibitionVoltageMaximum;
-                        impulseResultComponentVM.ProhibitionVoltage = 0;
+                        sSRTUResultComponentVM.ProhibitionVoltageMin = j.ProhibitionVoltageMinimum;
+                        sSRTUResultComponentVM.ProhibitionVoltageMax = j.ProhibitionVoltageMaximum;
+                        sSRTUResultComponentVM.ProhibitionVoltage = 0;
                         break;
                     default:
                         break;
@@ -95,7 +95,7 @@ namespace SCME.WpfControlLibrary.Pages
             }
         }
 
-        public void PostImpulseNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
+        public void PostSSRTUNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -115,7 +115,7 @@ namespace SCME.WpfControlLibrary.Pages
         }
 
         private int countEndingTests;
-        public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)
+        public void SSRTUHandler(DeviceState deviceState, Types.SSRTU.TestResults testResults)
         {
             var q = VMByPosition[testResults.NumberPosition];
 

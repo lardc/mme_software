@@ -197,9 +197,9 @@ namespace SCME.Service
         }
 
         
-        public void PostImpulseEvent(DeviceState State, Types.Impulse.TestResults Result)
+        public void PostSSRTUEvent(DeviceState State, Types.SSRTU.TestResults Result)
         {
-            EnumerateClients(Client => Client.ImpulseHandler(State, Result));
+            EnumerateClients(Client => Client.SSRTUHandler(State, Result));
         }
 
         public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
@@ -250,9 +250,9 @@ namespace SCME.Service
         }
 
 
-        public void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        public void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {
-            EnumerateClients(Client => Client.PostImpulseNotificationEvent(Problem, Warning, Fault, Disable));
+            EnumerateClients(Client => Client.PostSSRTUNotificationEvent(Problem, Warning, Fault, Disable));
         }
 
 

@@ -91,11 +91,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType);
+        bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void StopImpulse();
+        void StopSSRTU();
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -263,13 +263,13 @@ namespace SCME.Types
         void DvDtNotificationHandler(dVdt.HWWarningReason Warning, dVdt.HWFaultReason Fault, dVdt.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
-        void ImpulseHandler(DeviceState State, Types.Impulse.TestResults Result);
+        void SSRTUHandler(DeviceState State, Types.SSRTU.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
         void TOUHandler(DeviceState State, TOU.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
-        void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
+        void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
         void TOUNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);

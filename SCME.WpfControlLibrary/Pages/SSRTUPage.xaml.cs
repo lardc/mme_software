@@ -9,20 +9,20 @@ using System.Windows.Controls;
 
 namespace SCME.WpfControlLibrary.Pages
 {
-    public partial class ImpulsePage : Page
+    public partial class SSRTUPage : Page
     {
-        public ImpulseVM VM { get; set; } = new ImpulseVM();
+        public SSRTUVM VM { get; set; } = new SSRTUVM();
         public BaseTestParametersAndNormatives ItemVM { get; set; }
 
         private Action _start;
         private Action _stop;
 
-        public ImpulsePage()
+        public SSRTUPage()
         {
             InitializeComponent();
         }
 
-        public ImpulsePage(TestParametersType testParametersType, Action start, Action stop)
+        public SSRTUPage(TestParametersType testParametersType, Action start, Action stop)
         {
             InitializeComponent();
             _start = start;
@@ -56,7 +56,7 @@ namespace SCME.WpfControlLibrary.Pages
             ItemVM.HideMinMax = true;
         }
 
-        public void PostImpulseNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
+        public void PostSSRTUNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -75,7 +75,7 @@ namespace SCME.WpfControlLibrary.Pages
             }));
         }
 
-        public void ImpulseHandler(DeviceState deviceState, Types.Impulse.TestResults testResults)
+        public void SSRTUHandler(DeviceState deviceState, Types.SSRTU.TestResults testResults)
         {
             VM.CanStart = true;
             VM.Result = testResults.Value;

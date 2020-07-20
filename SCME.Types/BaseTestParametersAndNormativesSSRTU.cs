@@ -13,7 +13,7 @@ namespace SCME.Types
     [KnownType(typeof(OutputResidualVoltage.TestParameters))]
     [KnownType(typeof(ProhibitionVoltage.TestParameters))]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class BaseTestParametersAndNormativesImpulse : BaseTestParametersAndNormatives
+    public class BaseTestParametersAndNormativesSSRTU : BaseTestParametersAndNormatives
     {
         [DataMember]
         public int NumberPosition { get; set; } = 1;

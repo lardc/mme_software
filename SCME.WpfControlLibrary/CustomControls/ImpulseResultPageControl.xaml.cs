@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace SCME.WpfControlLibrary.CustomControls
 {
     /// <summary>
-    /// Логика взаимодействия для ImpulseResultPageControl.xaml
+    /// Логика взаимодействия для SSRTUResultPageControl.xaml
     /// </summary>
-    public partial class ImpulseResultPageControl : Grid
+    public partial class SSRTUResultPageControl : Grid
     {
-        public ImpulseResultPageControl()
+        public SSRTUResultPageControl()
         {
             InitializeComponent();
         }

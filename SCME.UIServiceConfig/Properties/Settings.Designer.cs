@@ -866,9 +866,9 @@ namespace SCME.UIServiceConfig.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ImpulseEmulation {
+        public bool SSRTUEmulation {
             get {
-                return ((bool)(this["ImpulseEmulation"]));
+                return ((bool)(this["SSRTUEmulation"]));
             }
         }
         
@@ -884,9 +884,9 @@ namespace SCME.UIServiceConfig.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("101")]
-        public int ImpulseNode {
+        public int SSRTUNode {
             get {
-                return ((int)(this["ImpulseNode"]));
+                return ((int)(this["SSRTUNode"]));
             }
         }
         

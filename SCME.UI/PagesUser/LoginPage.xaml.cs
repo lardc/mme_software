@@ -80,16 +80,16 @@ namespace SCME.UI.PagesUser
             profilesPage.ProfileVm.NextAction = () =>
             {
                 var navigationService = profilesPage.NavigationService;
-                var page = new ImpulseResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
-                    () => Cache.Net.StartImpulse(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1),
-                    Cache.Net.StopImpulse)
+                var page = new SSRTUResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
+                    () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1),
+                    Cache.Net.StopSSRTU)
                 {
                     Title = $"Тестирование, профиль: {profilesPage.ProfileVm.SelectedProfile.Name}",
 
                 };
-                Cache.ImpulseHandler = page.ImpulseHandler;
+                Cache.SSRTUHandler = page.SSRTUHandler;
                 Cache.PostAlarmEvent = page.PostAlarmEvent;
-                Cache.PostImpulseNotificationEvent = page.PostImpulseNotificationEvent;
+                Cache.PostSSRTUNotificationEvent = page.PostSSRTUNotificationEvent;
                 navigationService.Navigate(page);
 
 

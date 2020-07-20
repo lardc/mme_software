@@ -57,20 +57,20 @@
     <Page Update="DataTemplates\TestParameters\OutputResidualVoltage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\ImpulsePageStyle.xaml">
+    <Page Update="Styles\SSRTUPageStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\ImpulsePage.xaml">
+    <Page Update="Pages\SSRTUPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\ImpulsePage.xaml.cs">
+    <Compile Update="Pages\SSRTUPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -609,7 +609,7 @@ namespace SCME.UI.IO
             return false;
         }
 
-        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        public bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
             if (!IsServerConnected)
                 return false;
@@ -628,7 +628,7 @@ namespace SCME.UI.IO
                 }
 
                 bool result = false;
-                result = m_ControlClient.StartImpulse(parameters, dutPackageType);
+                result = m_ControlClient.StartSSRTU(parameters, dutPackageType);
 
                 return result;
             }
@@ -704,14 +704,14 @@ namespace SCME.UI.IO
             }
         }
 
-        public void StopImpulse()
+        public void StopSSRTU()
         {
             if (!IsServerConnected)
                 return;
 
             try
             {
-                m_ControlClient.StopImpulse();
+                m_ControlClient.StopSSRTU();
             }
             catch (CommunicationException ex)
             {
@@ -1719,14 +1719,14 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddClampingFaultEvent(Fault);
         }
 
-        public void ImpulseHandler(DeviceState State, Types.Impulse.TestResults Result)
+        public void SSRTUHandler(DeviceState State, Types.SSRTU.TestResults Result)
         {
-            Cache.ImpulseHandler?.Invoke(State, Result);
+            Cache.SSRTUHandler?.Invoke(State, Result);
         }
 
-        public void PostImpulseNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        public void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {
-            Cache.PostImpulseNotificationEvent?.Invoke(Problem, Warning, Fault, Disable);
+            Cache.PostSSRTUNotificationEvent?.Invoke(Problem, Warning, Fault, Disable);
         }
 
         public void PostAlarmEvent()

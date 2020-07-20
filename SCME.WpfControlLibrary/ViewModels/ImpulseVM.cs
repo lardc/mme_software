@@ -6,7 +6,7 @@ using System.Text;
 namespace SCME.WpfControlLibrary.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class ImpulseVM
+    public class SSRTUVM
     {
         public bool CanStart { get; set; } = true;
 

@@ -40,7 +40,7 @@ namespace TestWpf
                 new SCME.Types.OutputLeakageCurrent.TestParameters(){NumberPosition = 3, LeakageCurrentMinimum = 1, LeakageCurrentMaximum = 4}
 
             };
-            //MainFrame.Navigate(new ImpulseResultPage(null));
+            //MainFrame.Navigate(new SSRTUResultPage(null));
         }
     }
 }

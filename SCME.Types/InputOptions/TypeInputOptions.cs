@@ -12,7 +12,7 @@ namespace SCME.Types.InputOptions
     [AddINotifyPropertyChangedInterface]
     [DataContract(Name = "InputOptions.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     [KnownType(typeof(BaseTestParametersAndNormatives))]
-    [KnownType(typeof(BaseTestParametersAndNormativesImpulse))]
+    [KnownType(typeof(BaseTestParametersAndNormativesSSRTU))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
 

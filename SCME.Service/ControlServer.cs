@@ -312,14 +312,14 @@ namespace SCME.Service
             _IoMain.SetUserWorkMode(userWorkMode);
         }
 
-        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        public bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
-            return _IoMain.StartImpulse(parameters, dutPackageType);
+            return _IoMain.StartSSRTU(parameters, dutPackageType);
         }
 
-        public void StopImpulse()
+        public void StopSSRTU()
         {
-            _IoMain.StopImpulse();
+            _IoMain.StopSSRTU();
         }
 
 

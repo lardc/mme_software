@@ -36,7 +36,7 @@ namespace SCME.Service
         private readonly ThreadService m_Thread;
         private readonly IOTOU m_IOTOU;
         public readonly IoDbSync IoDbSync;
-        public readonly IOImpulse _ioImpulse;
+        public readonly IOSSRTU _ioSSRTU;
         private readonly bool m_ClampingSystemConnected;
 
         private Types.Gate.TestParameters m_ParametersGate;
@@ -108,7 +108,7 @@ namespace SCME.Service
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
             IoDbSync = new IoDbSync(m_Communication);
-            _ioImpulse = new IOImpulse(m_IOAdapter, m_Communication);
+            _ioSSRTU = new IOSSRTU(m_IOAdapter, m_Communication);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -203,7 +203,7 @@ namespace SCME.Service
                     state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
 
                 if (state == DeviceConnectionState.ConnectionSuccess)
-                    state = _ioImpulse.Initialize(m_Param.IsImpulseEnabled, m_Param.TimeoutImpulse);
+                    state = _ioSSRTU.Initialize(m_Param.IsSSRTUEnabled, m_Param.TimeoutSSRTU);
 
                 InitializationResponse = taskSync.Result;
                 
@@ -892,8 +892,8 @@ namespace SCME.Service
 
         #region Test sequence
 
-        private bool _impulseStopBeforeStop = false;
-        internal bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        private bool _sSRTUStopBeforeStop = false;
+        internal bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
             m_Stop = false;
 
@@ -902,14 +902,14 @@ namespace SCME.Service
 
             try
             {
-                _impulseStopBeforeStop = true;
+                _sSRTUStopBeforeStop = true;
                 m_Thread.StartSingle(Dummy =>
                 {
                     try
                     {
-                        _ioImpulse.PressStop = false;
+                        _ioSSRTU.PressStop = false;
                         foreach (var i in parameters)
-                            if (!_ioImpulse.Start(i, dutPackageType))
+                            if (!_ioSSRTU.Start(i, dutPackageType))
                                 break;
                     }
                     catch
@@ -918,7 +918,7 @@ namespace SCME.Service
                     }
                     finally
                     {
-                        _impulseStopBeforeStop = false;
+                        _sSRTUStopBeforeStop = false;
                     }
                 }
                 );
@@ -930,12 +930,12 @@ namespace SCME.Service
 
             return true;
         }
-        internal void StopImpulse()
+        internal void StopSSRTU()
         {
-            while (_impulseStopBeforeStop == false)
+            while (_sSRTUStopBeforeStop == false)
                 Thread.Sleep(10);
-            _ioImpulse.PressStop = true;
-            _impulseStopBeforeStop = false;
+            _ioSSRTU.PressStop = true;
+            _sSRTUStopBeforeStop = false;
         }
             
 
@@ -995,24 +995,7 @@ namespace SCME.Service
             return true;
         }
 
-        //public bool Start(BaseTestParametersAndNormatives[] impulseParameters, DutPackageType dutPackageType)
-        //{
-        //    try
-        //    {
-        //        m_Thread.StartSingle(Dummy =>
-        //        {
-        //            foreach(var i in impulseParameters)
-        //            _ioImpulse.Start(i, dutPackageType)
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ThrowFaultException(ComplexParts.None, e.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name), false);
-        //    }
-
-        //    return true;
-        //}
-
+   
 
         public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {

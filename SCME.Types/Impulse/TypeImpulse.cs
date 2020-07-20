@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCME.Types.Impulse
+namespace SCME.Types.SSRTU
 {
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState

@@ -7,7 +7,7 @@ using System.Windows.Documents;
 namespace SCME.WpfControlLibrary.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
-    public class ImpulseResultComponentVM
+    public class SSRTUResultComponentVM
     {
         public int Postition { get; set; }
 

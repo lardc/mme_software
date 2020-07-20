@@ -151,7 +151,7 @@ namespace SCME.Types
         [EnumMember]
         TOU = 19,
         [EnumMember]
-        Impulse = 101,
+        SSRTU = 101,
         [EnumMember]
         Database = 255,
         [EnumMember]
@@ -375,7 +375,7 @@ namespace SCME.Types
             [DataMember]
             public int TimeoutGate { get; set; }
             [DataMember]
-            public int TimeoutImpulse { get; set; }
+            public int TimeoutSSRTU { get; set; }
 
             [DataMember]
             public bool IsSLEnabled { get; set; }
@@ -451,7 +451,7 @@ namespace SCME.Types
             [DataMember]
             public bool IsTOUEnabled { get; set; }
             [DataMember]
-            public bool IsImpulseEnabled { get; set; }
+            public bool IsSSRTUEnabled { get; set; }
 
             [DataMember]
             public SafetyMode SafetyMode { get; set; }

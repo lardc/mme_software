@@ -109,44 +109,44 @@ namespace SCME.UI.PagesTech
                     page.Margin = new Thickness(0,0,10,0);
                     break;
                 case 18:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent , 
-                        () =>Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1),
-                        Cache.Net.StopImpulse);
+                    Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent , 
+                        () =>Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Ток утечки на выходе";
-                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
-                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
-                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
-                    page = Cache.Impulse;
+                    Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
+                    Cache.PostAlarmEvent = Cache.SSRTU.PostAlarmEvent;
+                    Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
+                    page = Cache.SSRTU;
                     break;
                 case 19:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage,
-                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1),
-                        Cache.Net.StopImpulse);
+                    Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage,
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Выходное остаточное напряжение";
-                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
-                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
-                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
-                    page = Cache.Impulse;
+                    Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
+                    Cache.PostAlarmEvent = Cache.SSRTU.PostAlarmEvent;
+                    Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
+                    page = Cache.SSRTU;
                     break;
                 case 20:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.InputOptions,
-                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1),
-                        Cache.Net.StopImpulse);
+                    Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.InputOptions,
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Параметры входа";
-                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
-                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
-                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
-                    page = Cache.Impulse;
+                    Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
+                    Cache.PostAlarmEvent = Cache.SSRTU.PostAlarmEvent;
+                    Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
+                    page = Cache.SSRTU;
                     break;
                 case 21:
-                    Cache.Impulse = new ImpulsePage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage,
-                        () => Cache.Net.StartImpulse(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.Impulse.ItemVM }, DutPackageType.A1),
-                        Cache.Net.StopImpulse);
+                    Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage,
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Напряжение запрета";
-                    Cache.ImpulseHandler = Cache.Impulse.ImpulseHandler;
-                    Cache.PostAlarmEvent = Cache.Impulse.PostAlarmEvent;
-                    Cache.PostImpulseNotificationEvent = Cache.Impulse.PostImpulseNotificationEvent;
-                    page = Cache.Impulse;
+                    Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
+                    Cache.PostAlarmEvent = Cache.SSRTU.PostAlarmEvent;
+                    Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
+                    page = Cache.SSRTU;
                     break;
             }
 

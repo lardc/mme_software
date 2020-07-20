@@ -5,39 +5,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SCME.Types.Impulse;
+using SCME.Types.SSRTU;
 using System.Threading;
 using SCME.Types.BaseTestParams;
 
 namespace SCME.Service.IO
 {
-    public class IOImpulse
+    public class IOSSRTU
     {
         private const int REQUEST_DELAY_MS = 50;
         private readonly BroadcastCommunication _Communication;
         private readonly IOAdapter _IOAdapter;
         private readonly ushort _Node;
-        private bool _IsImpulseEmulation;
+        private bool _IsSSRTUEmulation;
         private DeviceConnectionState _connectionState;
         //private volatile DeviceState _State;
         private volatile TestResults _Result;
         internal IOCommutation ActiveCommutation { get; set; }
         public bool PressStop { get; set; } = false;
 
-        private int _timeoutImpulse = 25000;
+        private int _timeoutSSRTU = 25000;
 
-        internal IOImpulse(IOAdapter Adapter, BroadcastCommunication Communication)
+        internal IOSSRTU(IOAdapter Adapter, BroadcastCommunication Communication)
         {
             _IOAdapter = Adapter;
             _Communication = Communication;
             //Устанавливаем режим эмуляции
-            _IsImpulseEmulation = Settings.Default.ImpulseEmulation;
+            _IsSSRTUEmulation = Settings.Default.SSRTUEmulation;
             ///////////////////////////////////////////////////////////
             _Node = (ushort)Settings.Default.TOUNode;
             //_Result = new TestResults();
 
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Info,
-                                         String.Format("Impulse created. Emulation mode: {0}", _IsImpulseEmulation));
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info,
+                                         String.Format("SSRTU created. Emulation mode: {0}", _IsSSRTUEmulation));
         }
 
 
@@ -47,7 +47,7 @@ namespace SCME.Service.IO
 
         private void WaitState(HWDeviceState needState)
         {
-            var timeStamp = Environment.TickCount + _timeoutImpulse;
+            var timeStamp = Environment.TickCount + _timeoutSSRTU;
             HWDeviceState devState = HWDeviceState.None;
             while (Environment.TickCount < timeStamp)
             {
@@ -68,7 +68,7 @@ namespace SCME.Service.IO
 
         private (bool alarm, int error) WaitStateWithSafety()
         {
-            var timeStamp = Environment.TickCount + _timeoutImpulse;
+            var timeStamp = Environment.TickCount + _timeoutSSRTU;
             HWDeviceState devState = HWDeviceState.None;
             while (Environment.TickCount < timeStamp)
             {
@@ -77,7 +77,10 @@ namespace SCME.Service.IO
                 devState = (HWDeviceState) ReadRegister(REG_DEV_STATE);
 
                 if (devState == HWDeviceState.Alarm)
+                {
+                    CallAction(ACT_CLR_SAFETY);
                     return (true, -1);
+                }
 
                 var res = (HWFinishedState)ReadRegister(REG_FINISHED);
                 if (res == HWFinishedState.Success)
@@ -92,23 +95,23 @@ namespace SCME.Service.IO
             throw new Exception($"Timeout expired: REG_DEV_STATE = {devState} , wait state alarm or success");
         }
 
-        internal DeviceConnectionState Initialize(bool enable, int timeoutImpulse)
+        internal DeviceConnectionState Initialize(bool enable, int timeoutSSRTU)
         {
-            _timeoutImpulse = timeoutImpulse;
+            _timeoutSSRTU = timeoutSSRTU;
 
             _connectionState = DeviceConnectionState.ConnectionInProcess;
-            FireConnectionEvent(_connectionState, "Impulse initializing");
+            FireConnectionEvent(_connectionState, "SSRTU initializing");
 
-            if (_IsImpulseEmulation)
+            if (_IsSSRTUEmulation)
             {
                 _connectionState = DeviceConnectionState.ConnectionSuccess;
-                FireConnectionEvent(_connectionState, "Impulse initialized");
+                FireConnectionEvent(_connectionState, "SSRTU initialized");
                 return _connectionState;
             }
 
             try
             {
-                var timeStamp = Environment.TickCount + _timeoutImpulse;
+                var timeStamp = Environment.TickCount + _timeoutSSRTU;
                 ClearWarning();
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
@@ -118,7 +121,7 @@ namespace SCME.Service.IO
                     ClearFault();
                     devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
                     if (devState == HWDeviceState.Fault)
-                        throw new Exception("Impulse не удалось сбросить fault");
+                        throw new Exception("SSRTU не удалось сбросить fault");
                 }
 
                 switch (devState)
@@ -130,26 +133,26 @@ namespace SCME.Service.IO
                     case HWDeviceState.Fault:
                         break;
                     case HWDeviceState.Disabled:
-                        throw new Exception("Impulse требуется перезагрузка питания");
+                        throw new Exception("SSRTU требуется перезагрузка питания");
                     case HWDeviceState.Ready:
                         break;
                     case HWDeviceState.InProcess:
                         WaitState(HWDeviceState.Ready);
                         break;
                     case HWDeviceState.Alarm:
-                        throw new Exception("Impulse Alarn логика не прописана");
+                        CallAction(ACT_CLR_SAFETY);
                         break;
                     default:
                         break;
                 }
 
                 _connectionState = DeviceConnectionState.ConnectionSuccess;
-                FireConnectionEvent(_connectionState, "Impulse initialized");
+                FireConnectionEvent(_connectionState, "SSRTU initialized");
             }
             catch (Exception ex)
             {
                 _connectionState = DeviceConnectionState.ConnectionFailed;
-                FireConnectionEvent(_connectionState, String.Format("Impulse initialization error: {0}", ex.Message));
+                FireConnectionEvent(_connectionState, String.Format("SSRTU initialization error: {0}", ex.Message));
             }
 
             return _connectionState;
@@ -160,23 +163,23 @@ namespace SCME.Service.IO
             var oldState = _connectionState;
 
             _connectionState = DeviceConnectionState.DisconnectionInProcess;
-            FireConnectionEvent(DeviceConnectionState.DisconnectionInProcess, "Impulse disconnecting");
+            FireConnectionEvent(DeviceConnectionState.DisconnectionInProcess, "SSRTU disconnecting");
 
             try
             {
-                if (!_IsImpulseEmulation && oldState == DeviceConnectionState.ConnectionSuccess)
+                if (!_IsSSRTUEmulation && oldState == DeviceConnectionState.ConnectionSuccess)
                 {
                     Stop();
                     CallAction(ACT_DISABLE_POWER);
                 }
 
                 _connectionState = DeviceConnectionState.DisconnectionSuccess;
-                FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "Impulse disconnected");
+                FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "SSRTU disconnected");
             }
             catch (Exception)
             {
                 _connectionState = DeviceConnectionState.DisconnectionError;
-                FireConnectionEvent(DeviceConnectionState.DisconnectionError, "Impulse disconnection error");
+                FireConnectionEvent(DeviceConnectionState.DisconnectionError, "SSRTU disconnection error");
             }
         }
 
@@ -184,7 +187,7 @@ namespace SCME.Service.IO
         {
             if (PressStop)
                 return false;
-            if (!_IsImpulseEmulation)
+            if (!_IsSSRTUEmulation)
             {
                 //Считываем регистр состояния
                 var devState = (HWDeviceState)ReadRegister(REG_DEV_STATE);
@@ -192,8 +195,8 @@ namespace SCME.Service.IO
                 CheckDevStateThrow(devState);
                 if (devState != HWDeviceState.Ready)
                 {
-                    string error = "Launch test, Impulse State not Ready, function Start";
-                    SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, error);
+                    string error = "Launch test, SSRTU State not Ready, function Start";
+                    SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, error);
                     throw new Exception(error);
                 }
             }
@@ -220,14 +223,14 @@ namespace SCME.Service.IO
 
         internal void ClearFault()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, "Impulse fault cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, "SSRTU fault cleared");
 
             CallAction(ACT_CLR_FAULT);
         }
 
         private void ClearWarning()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, "Impulse warning cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, "SSRTU warning cleared");
 
             CallAction(ACT_CLR_WARNING);
         }
@@ -236,12 +239,12 @@ namespace SCME.Service.IO
         {
             ushort value = 0;
 
-            if (!_IsImpulseEmulation)
+            if (!_IsSSRTUEmulation)
                 value = _IOAdapter.Read16(_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
-                                         string.Format("Impulse @ReadRegister, address {0}, value {1}", Address, value));
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                                         string.Format("SSRTU @ReadRegister, address {0}, value {1}", Address, value));
 
             return value;
         }
@@ -249,10 +252,10 @@ namespace SCME.Service.IO
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
-                                         string.Format("Impulse @WriteRegister, address {0}, value {1}", Address, Value));
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                                         string.Format("SSRTU @WriteRegister, address {0}, value {1}", Address, Value));
 
-            if (_IsImpulseEmulation)
+            if (_IsSSRTUEmulation)
                 return;
 
             _IOAdapter.Write16(_Node, Address, Value);
@@ -261,10 +264,10 @@ namespace SCME.Service.IO
         internal void CallAction(ushort Action, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note,
-                                         string.Format("Impulse @Call, action {0}", Action));
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                                         string.Format("SSRTU @Call, action {0}", Action));
 
-            if (_IsImpulseEmulation)
+            if (_IsSSRTUEmulation)
                 return;
 
             try
@@ -273,7 +276,7 @@ namespace SCME.Service.IO
             }
             catch (Exception ex)
             {
-                SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Error, ex.ToString());
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Error, ex.ToString());
             }
         }
 
@@ -296,7 +299,7 @@ namespace SCME.Service.IO
                 _Result = new TestResults();
                 _Result.NumberPosition = parameters.NumberPosition;
 
-                if (_IsImpulseEmulation)
+                if (_IsSSRTUEmulation)
                 {
                     Thread.Sleep(1000);
                     Random rand = new Random(DateTime.Now.Millisecond);
@@ -311,7 +314,7 @@ namespace SCME.Service.IO
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
-                    FireImpulseEvent(DeviceState.Success, _Result);
+                    FireSSRTUEvent(DeviceState.Success, _Result);
                 }
                 else
                 {
@@ -432,7 +435,7 @@ namespace SCME.Service.IO
                     }
 
                     //_State = DeviceState.Success;
-                    FireImpulseEvent(DeviceState.Success, testResults);
+                    FireSSRTUEvent(DeviceState.Success, testResults);
 
                 }
 
@@ -452,19 +455,19 @@ namespace SCME.Service.IO
 
         private void FireConnectionEvent(DeviceConnectionState State, string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Info, Message);
-            _Communication.PostDeviceConnectionEvent(ComplexParts.Impulse, State, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, Message);
+            _Communication.PostDeviceConnectionEvent(ComplexParts.SSRTU, State, Message);
         }
 
-        private void FireImpulseEvent(DeviceState State, TestResults Result)
+        private void FireSSRTUEvent(DeviceState State, TestResults Result)
         {
-            var message = string.Format("Impulse test state {0}", State);
+            var message = string.Format("SSRTU test state {0}", State);
 
             if (State == DeviceState.Success)
-                message = string.Format("Impulse test result {0}", Result.Value);
+                message = string.Format("SSRTU test result {0}", Result.Value);
 
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Info, message);
-            _Communication.PostImpulseEvent(State, Result);
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, message);
+            _Communication.PostSSRTUEvent(State, Result);
         }
 
         private void FireNotificationEvent()
@@ -474,20 +477,20 @@ namespace SCME.Service.IO
             var warning = ReadRegister(REG_WARNING);
             var problem = ReadRegister(REG_PROBLEM);
 
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Warning,$"Impulse device notification: problem {problem} warning {warning}, fault {fault}, disable {disable}");
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Warning,$"SSRTU device notification: problem {problem} warning {warning}, fault {fault}, disable {disable}");
 
-            _Communication.PostImpulseNotificationEvent(problem, warning, fault, disable);
+            _Communication.PostSSRTUNotificationEvent(problem, warning, fault, disable);
         }
 
         private void FireExceptionEvent(string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Error, Message);
-            _Communication.PostExceptionEvent(ComplexParts.Impulse, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Error, Message);
+            _Communication.PostExceptionEvent(ComplexParts.SSRTU, Message);
         }
 
         private void FireAlarmEvent(string Message)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Impulse, LogMessageType.Note, Message);
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, Message);
             _Communication.PostAlarmEvent();
         }
 
@@ -501,6 +504,7 @@ namespace SCME.Service.IO
             ACT_DISABLE_POWER = 2, // Disable
             ACT_CLR_FAULT = 3, // Clear fault
             ACT_CLR_WARNING = 4, // Clear warning
+            ACT_CLR_SAFETY =5, // Clear safety state
 
             ACT_START_TEST = 100, // Start test with defined parameters / Запуск процесса измерения
             ACT_STOP = 101, // Stop test sequence / Принудительная остановка процесса измерения

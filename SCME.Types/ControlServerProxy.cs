@@ -73,9 +73,9 @@ namespace SCME.Types
             Channel.Stop();
         }
 
-        public void StopImpulse()
+        public void StopSSRTU()
         {
-            Channel.StopImpulse();
+            Channel.StopSSRTU();
         }
 
         public void StopByButtonStop()
@@ -168,9 +168,9 @@ namespace SCME.Types
             return Channel.StartDynamic(paramsComm, paramsClamp, parametersGate, parametersVtm, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersSctu, parametersTOU);
         }
 
-        public bool StartImpulse(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
+        public bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
-            return Channel.StartImpulse(parameters, dutPackageType);
+            return Channel.StartSSRTU(parameters, dutPackageType);
         }
 
    
@@ -224,9 +224,9 @@ namespace SCME.Types
             return Channel.GatePulseCalibrationMain(Current);
         }
 
-        void IExternalControl.StopImpulse()
+        void IExternalControl.StopSSRTU()
         {
-            Channel.StopImpulse();
+            Channel.StopSSRTU();
         }
     }
 }

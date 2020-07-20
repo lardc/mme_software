@@ -281,13 +281,13 @@
     <Setting Name="TOUEmulation" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
     </Setting>
-	<Setting Name="ImpulseEmulation" Type="System.Boolean" Scope="Application">
+	<Setting Name="SSRTUEmulation" Type="System.Boolean" Scope="Application">
 		  <Value Profile="(Default)">True</Value>
 	  </Setting>
     <Setting Name="TOUNode" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">11</Value>
     </Setting>
-	  <Setting Name="ImpulseNode" Type="System.Int32" Scope="Application">
+	  <Setting Name="SSRTUNode" Type="System.Int32" Scope="Application">
 		  <Value Profile="(Default)">101</Value>
 	  </Setting>
     <Setting Name="IsWriteSafetyRegister" Type="System.Boolean" Scope="Application">

@@ -66,8 +66,8 @@
                                               Backcolor="{StaticResource xYellow1}"
                                               Logo="{StaticResource CommutationPath}" 
                                               Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=CommIsVisible, Converter={StaticResource B2V}}" />
-                                         
-            <customControls:HardwareItem x:Name="impulseControl"
+
+            <customControls:HardwareItem x:Name="sSRTUControl"
                                               Title="Блок измерения твёрдотельных реле"
                                               InitializeTimeout="3000" OperationTimeout="0"
                                               DisableAvailable="False"

@@ -99,8 +99,8 @@ namespace SCME.UI.PagesCommon
                 case ComplexParts.TOU:
                     touControl.SetConnectionStatus(connectionState, message);
                     break;
-                case ComplexParts.Impulse:
-                    impulseControl.SetConnectionStatus(connectionState, message);
+                case ComplexParts.SSRTU:
+                    sSRTUControl.SetConnectionStatus(connectionState, message);
                     break;
             }
         }
@@ -141,8 +141,8 @@ namespace SCME.UI.PagesCommon
                     return !ihControl.IsDisabled;
                 case ComplexParts.TOU:
                     return !touControl.IsDisabled;
-                case ComplexParts.Impulse:
-                    return !impulseControl.IsDisabled;
+                case ComplexParts.SSRTU:
+                    return !sSRTUControl.IsDisabled;
                 default:
                     return false;
             }
@@ -184,8 +184,8 @@ namespace SCME.UI.PagesCommon
                     return ihControl.OperationTimeout;
                 case ComplexParts.TOU:
                     return touControl.OperationTimeout;
-                case ComplexParts.Impulse:
-                    return impulseControl.OperationTimeout;
+                case ComplexParts.SSRTU:
+                    return sSRTUControl.OperationTimeout;
                 default:
                     return 10000;
             }
