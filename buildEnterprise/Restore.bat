@@ -1,0 +1,3 @@
+cd ..\ 
+nuget restore
+pause
