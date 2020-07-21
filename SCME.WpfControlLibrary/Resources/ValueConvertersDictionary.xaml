@@ -27,7 +27,8 @@
     <Converters:BvtVdrmToVisibilityConverter x:Key="Vdrm2V" />
     <Converters:BvtIrrmToVisibilityConverter x:Key="Irrm2V" />
     <Converters:BvtIdrmToVisibilityConverter x:Key="Idrm2V" />
-    <Converters:BvtUdsmUrsmIdrmToVisibilityConverter x:Key="IdrmUdsmUrsm2V" />
+    <Converters:BvtUdsmUrsmIrsmToVisibilityConverter x:Key="bvtUdsmUrsmIrsmToVisibilityConverter" />
+    <Converters:BvtUdsmUrsmIdsmToVisibilityConverter x:Key="bvtUdsmUrsmIdsmToVisibilityConverter" />
 
 
 </ResourceDictionary>

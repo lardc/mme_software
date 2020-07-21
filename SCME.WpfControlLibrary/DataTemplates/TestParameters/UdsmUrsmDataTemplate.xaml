@@ -56,10 +56,10 @@
         <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}" />
         <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource FrequencyDivisors}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding UdsmUrsmFrequencyDivisor}" />
 
-        <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MaxIdsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource IdrmUdsmUrsm2V}}" />
-    <customControls:NumericUpDown Grid.Column="1" Interval="0.5" Grid.Row="5" Value="{Binding IDSM}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource IdrmUdsmUrsm2V}}" StringFormat="{}{0:N1}"/>
+    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MaxIdsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIdsmToVisibilityConverter}}" />
+    <customControls:NumericUpDown Grid.Column="1" Interval="0.5" Grid.Row="5" Value="{Binding IDSM}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIdsmToVisibilityConverter}}" StringFormat="{}{0:N1}"/>
 
 
-        <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MaxIrsm_mA}" />
-        <customControls:NumericUpDown Grid.Column="4" Interval="0.5" Grid.Row="5" Value="{Binding IRSM}" StringFormat="{}{0:N1}"/>
+    <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MaxIrsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIrsmToVisibilityConverter}}"/>
+    <customControls:NumericUpDown Grid.Column="4" Interval="0.5" Grid.Row="5" Value="{Binding IRSM}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIrsmToVisibilityConverter}}" StringFormat="{}{0:N1}"/>
 </Grid>
