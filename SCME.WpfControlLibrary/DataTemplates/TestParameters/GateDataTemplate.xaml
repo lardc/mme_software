@@ -42,7 +42,7 @@
         <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.MaxResistance_Ohm}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Resistance}" StringFormat="{}{0:N0}"/>
         <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.MaxVgt_V}" />
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding VGT }" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding VGT }" StringFormat="{}{0:N1}"/>
 
         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.MinIgt_mA}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}" StringFormat="{}{0:N0}"/>
