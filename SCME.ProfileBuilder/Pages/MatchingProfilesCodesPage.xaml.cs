@@ -91,7 +91,7 @@ namespace SCME.ProfileBuilder.Pages
         
         private void OnDispatcherTimerFindProfileForMmeCodeOnTick(object sender, EventArgs e)
         {
-            Vm.ProfilesForMmeCode?.View.Refresh();
+            Vm.ProfilesForMmeCode?.View?.Refresh();
         }
         
         #endregion
