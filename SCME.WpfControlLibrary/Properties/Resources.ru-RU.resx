@@ -379,7 +379,7 @@
     <value>Мин. Ub0, В</value>
   </data>
   <data name="MinVrrm_V" xml:space="preserve">
-    <value>Мин. Ub0, В</value>
+    <value>Мин. Ubr, В</value>
   </data>
   <data name="Mode" xml:space="preserve">
     <value>Режим</value>
@@ -741,13 +741,13 @@
   <data name="ProfileExists" xml:space="preserve">
     <value>Профиль с таким именем уже существует</value>
   </data>
-  <data name="AddMmeCode">
+  <data name="AddMmeCode" xml:space="preserve">
     <value>Добавить mme code</value>
   </data>
-  <data name="Confirmation">
+  <data name="Confirmation" xml:space="preserve">
     <value>Подтверждение</value>
   </data>
-  <data name="Inactive">
+  <data name="Inactive" xml:space="preserve">
     <value>Неактивные</value>
   </data>
   <data name="EditProfiles" xml:space="preserve">
@@ -762,43 +762,43 @@
   <data name="Profiles" xml:space="preserve">
     <value>Профили</value>
   </data>
-  <data name="RemoveMmeCode">
+  <data name="RemoveMmeCode" xml:space="preserve">
     <value>Удалить mme code</value>
   </data>
-  <data name="ActiveProfiles">
+  <data name="ActiveProfiles" xml:space="preserve">
     <value>Активные профили</value>
   </data>
-  <data name="InactiveProfiles">
+  <data name="InactiveProfiles" xml:space="preserve">
     <value>Неактивные профили</value>
   </data>
-  <data name="ActiveMmeCodes">
+  <data name="ActiveMmeCodes" xml:space="preserve">
     <value>Активные MME коды</value>
   </data>
-  <data name="InactiveMmeCodes">
+  <data name="InactiveMmeCodes" xml:space="preserve">
     <value>Неактивные MME коды</value>
   </data>
-  <data name="UseUdsmUrsm">
+  <data name="UseUdsmUrsm" xml:space="preserve">
     <value>Использовать Udsm Ursm</value>
   </data>
-  <data name="Navigation">
+  <data name="Navigation" xml:space="preserve">
     <value>Навигация</value>
   </data>
-  <data name="LinkMmeAndProfiles">
+  <data name="LinkMmeAndProfiles" xml:space="preserve">
     <value>Связь КИП и Профилей</value>
   </data>
-  <data name="ProfilesSelectedForMme">
+  <data name="ProfilesSelectedForMme" xml:space="preserve">
     <value>Профили выбранные для КИП</value>
   </data>
-  <data name="AvailableProfiles">
+  <data name="AvailableProfiles" xml:space="preserve">
     <value>Доступные профили</value>
   </data>
   <data name="ListMME" xml:space="preserve">
     <value>Список КИП</value>
   </data>
-  <data name="AtuPrsmMin">
+  <data name="AtuPrsmMin" xml:space="preserve">
     <value>PRSM min, kW</value>
   </data>
-  <data name="AtuPrsmMax">
+  <data name="AtuPrsmMax" xml:space="preserve">
     <value>PRSM max, kW</value>
   </data>
   <data name="Search" xml:space="preserve">

@@ -83,8 +83,22 @@
         </customControls:NumericUpDown.Visibility>
     </customControls:NumericUpDown>
 
-    <Label Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.MinVrrm_V}" Visibility="{Binding MeasurementMode, Converter={StaticResource Vrrm2V}}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding VRRM}" Visibility="{Binding MeasurementMode, Converter={StaticResource Vrrm2V}}" />
+    <Label Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.MinVrrm_V}" >
+        <Label.Visibility>
+            <MultiBinding Converter="{StaticResource Vrrm2V}">
+                <Binding Path="MeasurementMode" />
+                <Binding Path="TestType" />
+            </MultiBinding>
+        </Label.Visibility>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding VRRM}" >
+        <customControls:NumericUpDown.Visibility>
+            <MultiBinding Converter="{StaticResource Vrrm2V}">
+                <Binding Path="MeasurementMode" />
+                <Binding Path="TestType" />
+            </MultiBinding>
+        </customControls:NumericUpDown.Visibility>
+    </customControls:NumericUpDown>
 
 
     <Label Grid.Column="0" Grid.Row="7" Content="{x:Static res:Resources.MaxIdrm_mA}">
@@ -104,8 +118,22 @@
         </customControls:NumericUpDown.Visibility>
     </customControls:NumericUpDown>
 
-    <Label Grid.Column="3" Grid.Row="7" Content="{x:Static res:Resources.MaxIrrm_mA}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" Visibility="{Binding MeasurementMode, Converter={StaticResource Irrm2V}}" StringFormat="{}{0:N0}" />
+    <Label Grid.Column="3" Grid.Row="7" Content="{x:Static res:Resources.MaxIrrm_mA}">
+        <Label.Visibility>
+            <MultiBinding Converter="{StaticResource Irrm2V}">
+                <Binding Path="MeasurementMode" />
+                <Binding Path="TestType" />
+            </MultiBinding>
+        </Label.Visibility>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" StringFormat="{}{0:N0}" >
+        <customControls:NumericUpDown.Visibility>
+            <MultiBinding Converter="{StaticResource Irrm2V}">
+                <Binding Path="MeasurementMode" />
+                <Binding Path="TestType" />
+            </MultiBinding>
+        </customControls:NumericUpDown.Visibility>
+    </customControls:NumericUpDown>
 
 
     <CheckBox Grid.Column="0" Margin="5,5,5,0" Grid.Row="8" Grid.ColumnSpan="2"  Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}" />

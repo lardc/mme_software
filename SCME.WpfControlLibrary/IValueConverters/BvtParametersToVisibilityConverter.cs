@@ -15,16 +15,12 @@ namespace SCME.WpfControlLibrary.IValueConverters
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
-
-    public class BvtVrrmToVisibilityConverter : IValueConverter
+    public class BvtVrrmToVisibilityConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            Debug.Assert(value != null, nameof(value) + " != null");
-            return (BVTMeasurementMode)value == BVTMeasurementMode.ModeV ? Visibility.Visible : Visibility.Collapsed;
-        }
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture) =>
+           (BVTMeasurementMode)value[0] == BVTMeasurementMode.ModeV && (BVTTestType)value[1] != BVTTestType.Direct ? Visibility.Visible : Visibility.Collapsed;
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
     public class BvtIdrmToVisibilityConverter : IMultiValueConverter
@@ -35,15 +31,12 @@ namespace SCME.WpfControlLibrary.IValueConverters
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
-    public class BvtIrrmToVisibilityConverter : IValueConverter
+    public class BvtIrrmToVisibilityConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            Debug.Assert(value != null, nameof(value) + " != null");
-            return (BVTMeasurementMode)value == BVTMeasurementMode.ModeI ? Visibility.Visible : Visibility.Collapsed;
-        }
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture) =>
+            (BVTMeasurementMode)value[0] == BVTMeasurementMode.ModeI && (BVTTestType)value[1] != BVTTestType.Direct ? Visibility.Visible : Visibility.Collapsed;
 
-        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
     public class BvtUdsmUrsmIrsmToVisibilityConverter : IValueConverter
