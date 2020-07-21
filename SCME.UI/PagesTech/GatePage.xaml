@@ -173,7 +173,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90*" />
@@ -196,7 +196,7 @@
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="190" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -309,9 +309,9 @@
                        Visibility="{Binding ElementName=CbIsIlEnabled,Path=IsChecked, Converter={StaticResource B2V}}"
                        Margin="0,0,0,1" />
 
-                    <Label Grid.Column="1" Grid.Row="18" Margin="10"  Content="Nominal current, mA" />
-                    <Label Grid.Column="1" Grid.Row="19" Margin="10" Content="Actual current, mA" />
-                    <Label Grid.Column="1" Grid.Row="20" Margin="10" Content="Actual voltage, mV" />
+                    <Label Grid.Column="1" Grid.Row="18"  Content="Nominal current, mA" />
+                    <Label Grid.Column="1" Grid.Row="19"  Content="Actual current, mA" />
+                    <Label Grid.Column="1" Grid.Row="20"  Content="Actual voltage, mV" />
                     
                     <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="18" Margin="10,5"
                                                       x:Name="calibrationCurrent" x:FieldModifier="private"
