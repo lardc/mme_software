@@ -775,7 +775,7 @@ namespace SCME.Service.IO
             Result.VoltageData.Clear();
 
             if (!_isSctuEmulation)
-                Result.VoltageData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_V).Select(m=> m *10).ToList();
+                Result.VoltageData = _ioAdapter.ReadArrayFast16S(_node, ARR_SCOPE_V).Select(m=> (int)m).ToList();
 
             //читаем массив данных для построения графика тока
             Result.CurrentData.Clear();
