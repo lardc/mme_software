@@ -55,7 +55,7 @@
             <Setter Property="Foreground" Value="{StaticResource xWhite1}" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
         <Style TargetType="{x:Type Path}">
             <Setter Property="Margin" Value="6" />

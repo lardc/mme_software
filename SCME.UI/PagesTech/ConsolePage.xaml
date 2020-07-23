@@ -20,7 +20,7 @@
             <Setter Property="FontSize" Value="{StaticResource FontSize32}" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
         <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="TextBlock.TextAlignment" Value="Right" />

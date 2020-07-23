@@ -39,7 +39,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
             <Setter Property="Margin" Value="10,0" />
         </Style>
 
@@ -151,27 +151,26 @@
               X1="0" Y1="0" X2="0" Y2="{Binding ElementName=rGrid, Path=ActualHeight}"
               Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />
 
-        <Button x:Name="btnBack" x:FieldModifier="private"
-                Grid.Column="0" Grid.Row="1"
+        <Button x:Name="btnBack" x:FieldModifier="private" 
+                Grid.Column="0" Grid.Row="1" Style="{StaticResource BackButton}"
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"
                 Visibility="{Binding IsRunning, Converter={StaticResource B2VI}}"
                 Margin="6" />
 
-        <Button x:Name="btnTemp" x:FieldModifier="private"
+        <Button x:Name="btnTemp" x:FieldModifier="private" VerticalAlignment="Bottom"
                 Grid.Column="1" Grid.Row="1"
                 Content="{x:Static res:Resources.SetTemp}"
                 Click="BtnTemp_OnClick"
                 Margin="6" />
-        
-        <Button Grid.Column="2" Grid.Row="1"
+
+        <Button Grid.Column="2" Grid.Row="1" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Stop}"
-                Click="Stop_Click"
+                Click="Stop_Click" 
                 Visibility="{Binding IsRunning, Converter={StaticResource B2V}}"
                 Margin="6" Background="{StaticResource xRed1}" />
-        
-        <Button x:Name="btnStart"
-                Grid.Column="3" Grid.Row="1"
+
+        <Button x:Name="btnStart" VerticalAlignment="Bottom" Grid.Column="3" Grid.Row="1"
                 Content="{x:Static res:Resources.Start}"
                 Click="BtnStart_OnClick"
                  Margin="6" Background="{StaticResource xGreen1}" />

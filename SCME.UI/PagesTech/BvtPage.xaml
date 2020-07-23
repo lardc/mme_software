@@ -42,7 +42,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
             <Setter Property="Margin" Value="10,0" />
         </Style>
 
@@ -54,7 +54,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
@@ -216,7 +216,7 @@
               Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />
 
         <Button x:Name="btnBack" x:FieldModifier="private"
-                Grid.Column="0" Grid.Row="1"
+                Grid.Column="0" Grid.Row="1" Style="{StaticResource BackButton}"
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"
                 Margin="6" />

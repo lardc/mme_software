@@ -28,7 +28,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -93,7 +93,7 @@
                 <Label Grid.Column="1" Grid.Row="10" Content="0" x:Name="BotTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right"  />
             </Grid>
         </Border>
-        <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
+        <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource BackButton}"
                 Grid.Column="0" Grid.Row="2" 
                 Content="{x:Static res:Resources.Back}"
                 Click="btnBack_OnClick"

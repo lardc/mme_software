@@ -23,14 +23,14 @@
             <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
             <Setter Property="Margin" Value="10,0" />
         </Style>
     </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -89,20 +89,20 @@
             </Grid>
         </Border>
 
-        <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6"                 
+        <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}"   VerticalAlignment="Bottom"             
                 Content="{x:Static res:Resources.Back}"
                 Click="btnBack_OnClick"/>
 
-        <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"               
+        <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"    VerticalAlignment="Bottom"           
                 Content="{x:Static res:Resources.SetTemp}"
                 Click="btnTemperature_OnClick"/>
 
-        <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}"
+        <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Stop}"
                 Click="btnStop_OnClick"/>
 
-        <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}"
-                Content="{x:Static res:Resources.Start}"
+        <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}" VerticalAlignment="Bottom"
+                Content="{x:Static res:Resources.Start}" 
                 Click="btnStart_OnClick"/>
     </Grid>
 </Page>

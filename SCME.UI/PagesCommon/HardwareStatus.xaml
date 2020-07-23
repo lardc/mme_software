@@ -18,7 +18,7 @@
             <Setter Property="Margin" Value="10" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
     </Page.Resources>
 
@@ -46,7 +46,7 @@
                                          Logo="{StaticResource SyncPath}" />
 
             <customControls:HardwareItem x:Name="adapterControl"
-                                              Title="{x:Static res:Resources.Adapter}" Margin="10"
+                                              Title="{x:Static res:Resources.Adapter}"
                                               InitializeTimeout="3000" OperationTimeout="5000"
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xGreen3}"
@@ -164,15 +164,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnBack" x:FieldModifier="private"
-                    Grid.Column="0" Grid.Row="0"
+            <Button x:Name="btnBack" x:FieldModifier="private" HorizontalAlignment="Left"
+                    Grid.Column="0" Grid.Row="0" Style="{StaticResource BackButton}"
                     Content="{x:Static res:Resources.Back}"
                     Click="Back_Click"
-                    Margin="0,0,0,0" />
+                    Margin="10,0,0,6" />
             <Button x:Name="btnRestart" x:FieldModifier="private"
                     Grid.Column="3" Grid.Row="0"
                     Content="{x:Static res:Resources.Restart}"
-                    Margin="5,0,0,0" />
+                    Margin="0,0,10,6" />
         </Grid>
     </Grid>
 

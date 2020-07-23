@@ -15,7 +15,7 @@
             <Setter Property="VerticalContentAlignment" Value="Bottom" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
         <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource CProgressBarStyle}" />
 

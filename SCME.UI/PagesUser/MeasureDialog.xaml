@@ -12,7 +12,7 @@
             <Setter Property="Foreground" Value="{StaticResource xWhite1}" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
     </Window.Resources>
     <Grid Background="{StaticResource xPurple1}">

@@ -23,7 +23,7 @@
             <Setter Property="Height" Value="62" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}">
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
             <Setter Property="Margin" Value="10,0" />
         </Style>
 
@@ -35,7 +35,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
@@ -157,7 +157,7 @@
         </Border>
 
         <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6"                 
-                Content="{x:Static res:Resources.Back}"
+                Content="{x:Static res:Resources.Back}" Style="{StaticResource BackButton}"
                 Click="btnBack_OnClick"/>
 
         <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"               

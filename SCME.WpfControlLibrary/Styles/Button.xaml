@@ -69,6 +69,10 @@
         <Setter Property="Background" Value="{StaticResource BlueBrush}" />
     </Style>
 
+    <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+        <Setter Property="Width" Value="290" />
+    </Style>
+    
     <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
         <Setter Property="Background" Value="Red" />
     </Style>

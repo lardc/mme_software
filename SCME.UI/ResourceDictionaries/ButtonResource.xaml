@@ -13,7 +13,7 @@
     <DropShadowEffect   x:Key="Effect" ShadowDepth="0" Direction="330" Color="White" Opacity="0.8" BlurRadius="4"/>
 
 
-    <Style x:Key="CButtonStyle" TargetType="{x:Type Button}">
+    <Style x:Key="PrimaryButton" TargetType="{x:Type Button}">
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Background" Value="{StaticResource xBlue1}"/>
         <Setter Property="Foreground" Value="{StaticResource xWhite1}"/>

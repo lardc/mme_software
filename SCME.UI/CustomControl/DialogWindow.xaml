@@ -40,8 +40,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Name="btnOk" Grid.Column="0" IsDefault="True" Margin="2" Click="BtnOk_Click"
-                    Style="{StaticResource CButtonStyle}" Content="{x:Static res:Resources.Ok}" />
-            <Button Name="btnCancel" Grid.Column="1" IsCancel="True" Margin="2" Style="{StaticResource CButtonStyle}"
+                    Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Ok}" />
+            <Button Name="btnCancel" Grid.Column="1" IsCancel="True" Margin="2" Style="{StaticResource PrimaryButton}"
                     Content="{x:Static res:Resources.Cancel}" />
         </Grid>
 

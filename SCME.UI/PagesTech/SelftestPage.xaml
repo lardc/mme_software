@@ -27,7 +27,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource CButtonStyle}" />
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}" />
 
         <Style TargetType="{x:Type TabControl}">
             <Setter Property="TabStripPlacement" Value="Top" />

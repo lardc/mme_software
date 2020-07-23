@@ -14,6 +14,10 @@
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Styles\ProfilesPage.xaml.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
