@@ -123,7 +123,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     
-                    <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"  Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
+                    <StackPanel Grid.Column="1" Grid.Row="1"   Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}">
                         <Border IsEnabled="{Binding IsEditModeActive}" BorderThickness="1" BorderBrush="AliceBlue"
                                     Margin="10">
                             <profilesPageComponents:AddTestParameterUserControl Background="{StaticResource ListViewTestParametersBrush}"
@@ -141,7 +141,7 @@
                         </Border>
                     </StackPanel>
 
-                    <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" 
+                    <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="1" Grid.Row="2" 
                             ContentIsEnabled="{Binding IsEditModeActive}"
                             ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
                             PreviewMouseWheel="TestParametersListView_OnPreviewMouseWheel"

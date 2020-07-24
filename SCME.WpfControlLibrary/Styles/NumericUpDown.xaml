@@ -11,7 +11,7 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    
+
 
     <Style TargetType="{x:Type myControls:NumericUpDown}">
         <Setter Property="Template">
@@ -23,15 +23,55 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <RepeatButton Grid.Column="0" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" >
-                            <Path Data="{StaticResource Plus}" Style="{StaticResource PathIcon}" />
+                        <RepeatButton Grid.Column="0" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" Margin="5, 1, 5, 1" >
+                            <Path Data="{StaticResource Plus}" Style="{StaticResource PathIcon}"/>
+                            <RepeatButton.Style>
+                                <Style TargetType="{x:Type RepeatButton}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border x:Name="Border" Background="{TemplateBinding Background}" Padding="9">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RepeatButton.Style>
                         </RepeatButton>
-                        <RepeatButton Grid.Column="1" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="5,0">
-                            <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" />
+                        <RepeatButton Grid.Column="1" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="0, 1, 5, 1">
+                            <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" Stretch="Fill" Height="3" Width="18"/>
+                            <RepeatButton.Style>
+                                <Style TargetType="{x:Type RepeatButton}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                <Border x:Name="Border" Background="{TemplateBinding Background}" Padding="9">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="Transparent" TargetName="Border" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RepeatButton.Style>
                         </RepeatButton>
                         <Label Grid.Column="2" x:Name="LabelValue" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                         <TextBox Grid.Column="2" x:Name="TextBoxValue" TextAlignment="Right" BorderThickness="0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                    </Grid>          
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonUp" Property="Visibility" Value="Collapsed"></Setter>
