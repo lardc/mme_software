@@ -475,7 +475,8 @@ namespace SCME.Service.IO
                                 }
 
                                 FiredSctuEvent(devState, _testResults);
-                                ActiveCommutation.SetSafetyOff();
+                                //Из за этого, возможно, постоянно срабатывала шторка безопасности
+                                //ActiveCommutation.SetSafetyOff();
                             }
 
                             finally
