@@ -296,6 +296,7 @@ namespace SCME.Service.IO
 
         internal void SetSafetyOn()
         {
+            LogicContainer.ShowDiagnosticMessage(m_SafetyType, true);
             if ((m_SafetyType == ComplexSafety.Optical) && (m_ID == ComplexParts.Commutation))
             {
                 //активация оптического датчика безопасности
@@ -322,6 +323,7 @@ namespace SCME.Service.IO
 
         internal void SetSafetyOff()
         {
+            LogicContainer.ShowDiagnosticMessage(m_SafetyType, false);
             if ((m_SafetyType == ComplexSafety.Optical) && (m_ID == ComplexParts.Commutation))
             {
                 //деактивация датчика безопасности

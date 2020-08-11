@@ -466,6 +466,8 @@ namespace SCME.Service.IO
 
         internal void SetSafetyOn()
         {
+            LogicContainer.ShowDiagnosticMessage(m_SafetyType, true);
+
             //установка признака 'тест начался' для случая, когда применяется механический датчик безопасности или SCTU шторка безопасности
             switch (m_SafetyType)
             {
@@ -483,6 +485,8 @@ namespace SCME.Service.IO
 
         internal void SetSafetyOff()
         {
+            LogicContainer.ShowDiagnosticMessage(m_SafetyType, false);
+
             //сброс признака 'тест начался' для случая, когда применяется механический датчик безопасности или SCTU шторка безопасности
             switch (m_SafetyType)
             {

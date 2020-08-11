@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
+using System.Windows.Forms;
 using SCME.Service.IO;
 using SCME.Service.Properties;
 using SCME.Types;
@@ -112,7 +113,6 @@ namespace SCME.Service
             m_IORAC.ActiveCommutation = m_IOCommutation;
             m_IOIH.ActiveCommutation = m_IOCommutation;
             m_IORCC.ActiveCommutation = m_IOCommutation;
-            _ioSctu.ActiveCommutation = m_IOCommutation;
         }
 
         void Thread_FinishedHandler(object Sender, ThreadFinishedEventArgs E)
@@ -398,6 +398,12 @@ namespace SCME.Service
         }
 
         internal bool IsInitialized { get; private set; }
+
+        public static void ShowDiagnosticMessage(ComplexSafety _safetyType, bool value)
+        {
+            MessageBox.Show($@"Сработала система безопасности, m_SafetyType={_safetyType} m_SafetyOn={value})"
+                            + $@"{Environment.NewLine} {new System.Diagnostics.StackTrace()}", "Уведомление безопасности");
+        }
 
         private void SetSafetyState(IOCommutation Commutation, bool Safety)
         {
@@ -1180,6 +1186,7 @@ namespace SCME.Service
                         }
                         finally
                         {
+                            SetSafetyState(m_IOActiveCommutation, false);
                             //после разжатия пресса выполняем ряд действий, которые необходимо выполнить именно после его разжатия
                             AfterUnsqueezeRoutine();
                         }
