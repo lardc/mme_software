@@ -40,6 +40,8 @@ namespace SCME.UI.PagesUser
         private const int RoomTemperature = 25;
         public int Temperature { get; set; }
 
+        ViewportAxesRangeRestriction restr = new ViewportAxesRangeRestriction();
+
         public SCTU()
         {
             Parameters = new SctuTestParameters()
@@ -64,8 +66,9 @@ namespace SCME.UI.PagesUser
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
 
             //ограничиваем координату X от 0 до 11000 мкс
-            ViewportAxesRangeRestriction restr = new ViewportAxesRangeRestriction();
-            restr.XRange = new DisplayRange(0, 11000);
+            
+            restr.XRange = new DisplayRange(0, 0);
+            restr.YRange = new DisplayRange(0, 0);
             chartPlotter.Viewport.Restrictions.Add(restr);
 
             ClearStatus();
@@ -126,12 +129,29 @@ namespace SCME.UI.PagesUser
         private void Plot(string LineName, Color LineColor, IEnumerable<int> UPoints)
         {
             var points = UPoints.Select((Time, Value) => new PointF(Value, Time)).ToList();
+
+            if(LineName != Properties.Resources.Graph_V)
+            {
+                restr.YRange.End = points.Max(m => m.Y) * 1.01;
+                
+            }
+
+            restr.XRange.End = Math.Max(restr.XRange.End, points.Max(m => m.X) * 1.01 * TIME_STEP) ;
+
             var dataSource = new EnumerableDataSource<PointF>(points);
             dataSource.SetXMapping(P => P.X * TIME_STEP);
-            dataSource.SetYMapping(P => P.Y);
+            if (LineName != Properties.Resources.Graph_V)
+                dataSource.SetYMapping(P => P.Y);
+            else
+            {
+                var coefficient = restr.YRange.End / points.Max(m => m.Y) / 1.01;
+                dataSource.SetYMapping(P => P.Y * coefficient);
+            }
 
             chartPlotter.AddLineGraph(dataSource, LineColor, 3, LineName);
             chartPlotter.FitToView();
+
+            
         }
 
         public void SetResults(SctuHwState state, SctuTestResults results)

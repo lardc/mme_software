@@ -415,11 +415,11 @@ namespace SCME.Service.IO
                     {
                         //эмуляция графика тока
                         for (int i = 1; i <= 11000; i++)
-                            _testResults.CurrentData.Add(10);
+                            _testResults.CurrentData.Add(i * 2);
 
                         //эмуляция графика напряжения
                         for (int i = 1; i <= 11000; i++)
-                            _testResults.VoltageData.Add(30);
+                            _testResults.VoltageData.Add((int)(i / 1.300 * new Random(DateTime.Now.Millisecond).NextDouble()));
                     }
 
                     FiredSctuEvent(_deviseState, _testResults);
