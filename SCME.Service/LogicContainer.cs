@@ -401,8 +401,8 @@ namespace SCME.Service
 
         public static void ShowDiagnosticMessage(ComplexSafety _safetyType, bool value)
         {
-            MessageBox.Show($@"Сработала система безопасности, m_SafetyType={_safetyType} m_SafetyOn={value})"
-                            + $@"{Environment.NewLine} {new System.Diagnostics.StackTrace()}", "Уведомление безопасности");
+            /*MessageBox.Show($@"Сработала система безопасности, m_SafetyType={_safetyType} m_SafetyOn={value})"
+                            + $@"{Environment.NewLine} {new System.Diagnostics.StackTrace()}", "Уведомление безопасности");*/
         }
 
         private void SetSafetyState(IOCommutation Commutation, bool Safety)
