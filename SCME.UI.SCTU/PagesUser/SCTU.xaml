@@ -73,6 +73,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Тип прибора" />
@@ -127,7 +128,7 @@
                           TextBlock.TextAlignment="Right" Maximum="200" Minimum="0"
                           IsNumeric="True"                        
                           Text="{Binding ElementName=sctuPage, Path=Temperature}" />
-                <CheckBox x:Name="cb_TemperatureOnOff" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Visibility="{Binding Source={x:Static res:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}" Checked="cb_TemperatureOnOff_Checked" Unchecked="cb_TemperatureOnOff_Unchecked"/>
+
                 
                 <Label Content="Напряжение, мВ" Grid.Column="0"  Grid.Row="8"  />
                 <Label Name="labelResultVoltage" Grid.Column="1" Grid.Row="8" Margin="0,0,7,0"
@@ -140,9 +141,33 @@
                 <Label Content="Коэффициент усиления" Grid.Column="0" Grid.Row="10"  />
                 <Label Name="labelMeasureGain" Grid.Column="1" Grid.Row="10" Margin="0,0,7,0"
                         FontSize="{StaticResource FontSize26}" HorizontalContentAlignment="Right" />
-                
-                <Label Name="lblFault" x:FieldModifier="private" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" Background="Tomato" Height="Auto" Padding="10" Content="Fault" />
-                <Label Name="lblWarning" x:FieldModifier="private" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" Background="Gold" Height="Auto" Padding="10" Content="Warning" />
+
+                <Grid  Grid.Row="11" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TopTempName}" />
+                    <Label Name="TopTempLabel"  Background="Tomato" Height="Auto" Padding="10" 
+                           Grid.Column="1" Grid.Row="0" Content="0"  />
+
+                    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.BotTempName}" />
+                    <Label Name="BotTempLabel"  Background="Tomato" Height="Auto" Padding="10" 
+                           Grid.Column="1" Grid.Row="1" Content="0"  />
+
+                    <Button Grid.Column="2" Grid.Row="0" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Click="StartHeating_Click" Content="Н" Background="{StaticResource xRed1}"/>
+                    <Button Grid.Column="2" Grid.Row="1" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Click="StotHeating_Click" Content="О" Background="{StaticResource xGreen3}"/>
+                    
+                </Grid>
+
+                <Label Name="lblFault" x:FieldModifier="private" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" Background="Tomato" Height="Auto" Padding="10" Content="Fault" />
+                <Label Name="lblWarning" x:FieldModifier="private" Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="2" Background="Gold" Height="Auto" Padding="10" Content="Warning" />
             </Grid>
         </Border>
 

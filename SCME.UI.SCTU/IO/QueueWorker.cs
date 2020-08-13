@@ -638,6 +638,8 @@ namespace SCME.UI.IO
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
                     Cache.UserTest.SetTopTemp(temeprature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.SctuPage))
+                    Cache.SctuPage.SetTopTemp(temeprature);
                 else
                     Cache.Clamp.SetTopTemp(temeprature);
 
@@ -650,6 +652,8 @@ namespace SCME.UI.IO
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
                     Cache.UserTest.SetBottomTemp(temeprature);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.SctuPage))
+                    Cache.SctuPage.SetBottomTemp(temeprature);
                 else
                     Cache.Clamp.SetBottomTemp(temeprature);
             });

@@ -153,6 +153,35 @@ namespace SCME.UI.PagesUser
 
             
         }
+        public void SetTopTemp(int temeprature)
+        {
+            TopTempLabel.Content = temeprature;
+            var bottomTemp = Temperature - 2;
+            var topTemp = Temperature + 2;
+            if (temeprature < bottomTemp || temeprature > topTemp)
+            {
+                TopTempLabel.Background = System.Windows.Media.Brushes.Tomato;
+            }
+            else
+            {
+                TopTempLabel.Background = System.Windows.Media.Brushes.LightGreen;
+            }
+        }
+
+        public void SetBottomTemp(int temeprature)
+        {
+            BotTempLabel.Content = temeprature;
+            var bottomTemp = Temperature - 2;
+            var topTemp = Temperature + 2;
+            if (temeprature < bottomTemp || temeprature > topTemp)
+            {
+                BotTempLabel.Background = System.Windows.Media.Brushes.Tomato;
+            }
+            else
+            {
+                BotTempLabel.Background = System.Windows.Media.Brushes.LightGreen;
+            }
+        }
 
         public void SetResults(SctuHwState state, SctuTestResults results)
         {
@@ -206,20 +235,14 @@ namespace SCME.UI.PagesUser
                 NavigationService.Navigate(page);
         }
 
-        private void cb_TemperatureOnOff_Checked(object sender, RoutedEventArgs e)
+        private void StartHeating_Click(object sender, RoutedEventArgs e)
         {
-            CheckBox cb = (CheckBox)sender;
-
-            if (cb != null)
-                Cache.Net.StartHeating(Temperature);
+            Cache.Net.StartHeating(Temperature);
         }
 
-        private void cb_TemperatureOnOff_Unchecked(object sender, RoutedEventArgs e)
+        private void StotHeating_Click(object sender, RoutedEventArgs e)
         {
-            CheckBox cb = (CheckBox)sender;
-
-            if (cb != null)
-                Cache.Net.StopHeating();
+            Cache.Net.StopHeating();
         }
 
         private void btnWorkPlaceIsFree_OnClick(object sender, RoutedEventArgs e)
