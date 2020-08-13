@@ -5,7 +5,7 @@
     <system:Single x:Key="MaxITM">12500</system:Single>
     <system:Single x:Key="MaxIxRM">300</system:Single>
 
-    <system:Single x:Key="SctuShockCurrentSinusoidalMax">80000</system:Single>
-    <system:Single x:Key="SctuShockCurrentTrapeziumMax">15000</system:Single>
+    <system:Single x:Key="SctuShockCurrentSinusoidalMax">120000</system:Single>
+    <system:Single x:Key="SctuShockCurrentTrapeziumMax">16000</system:Single>
     
 </ResourceDictionary>

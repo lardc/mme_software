@@ -128,13 +128,13 @@ namespace SCME.UI.PagesUser
 
         private void Plot(string LineName, Color LineColor, IEnumerable<int> UPoints)
         {
+            if (UPoints.Count() == 0)
+                return;
+
             var points = UPoints.Select((Time, Value) => new PointF(Value, Time)).ToList();
 
             if(LineName != Properties.Resources.Graph_V)
-            {
                 restr.YRange.End = points.Max(m => m.Y) * 1.01;
-                
-            }
 
             restr.XRange.End = Math.Max(restr.XRange.End, points.Max(m => m.X) * 1.01 * TIME_STEP) ;
 
