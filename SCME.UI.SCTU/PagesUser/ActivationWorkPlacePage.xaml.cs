@@ -200,12 +200,16 @@ namespace SCME.UI.PagesUser
                     //поток работает до момента активации рабочего места, т.е. как только рабочее место активировано - он завершает свою работу
                     while (ActivationWorkPlaceThreadWorker() != Types.SCTU.SctuWorkPlaceActivationStatuses.WORKPLACE_IN_USE)
                     {
-                        Thread.Sleep(REQUEST_DELAY_MS);
+                        try
+                        {
+                            Thread.Sleep(REQUEST_DELAY_MS);
+                        }
+                        catch { }
                     }
                 }
                 catch (Exception ex)
                 {
-                    AddShowMessageEvent(ex.Message);
+                    AddShowMessageEvent(ex.ToString());
                 }
             });
 
