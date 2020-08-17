@@ -22,7 +22,7 @@ using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.SCTU;
 using SCME.UI.Properties;
-
+using SCME.Types.Clamping;
 
 namespace SCME.UI.PagesUser
 {
@@ -102,8 +102,11 @@ namespace SCME.UI.PagesUser
                 ClearStatus();
         }
 
+        int countSetResult = 0;
+
         private void BtnStart_OnClick(object sender, RoutedEventArgs e)
         {
+            countSetResult = 0;
             UserSettings.Default.ShuntResistance = TextBoxResistance.Text;
             UserSettings.Default.Save();
             StartButtonEnabled(false);
@@ -189,6 +192,7 @@ namespace SCME.UI.PagesUser
             {
                 //данные готовы при состоянии SCTU WaitTimeOut
                 case SctuHwState.WaitTimeOut:
+                    countSetResult++;
                     labelResultVoltage.Content = results.VoltageValue;//((double)results.VoltageValue / 1000).ToString("0.00");
                     labelResultCurrent.Content = results.CurrentValue;
                     labelMeasureGain.Content = Math.Round(results.MeasureGain, 3).ToString();
@@ -252,6 +256,12 @@ namespace SCME.UI.PagesUser
 
             //открываем ActivationWorkPage, она прочитает REG_WORKPLACE_ACTIVATION_STATUS и покажет то, что должна показать
             Cache.Main.mainFrame.Navigate(Cache.ActivationWorkPage);
+        }
+
+        internal void ClampDownAfterAlarm(SqueezingState state)
+        {
+            if (state == SqueezingState.Down && countSetResult == 0)
+                StartButtonEnabled(true);
         }
     }
 

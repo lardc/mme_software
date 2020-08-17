@@ -327,6 +327,9 @@ namespace SCME.Types
         void RCCNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
+        void ClampingAlarmHandler();
+
+        [OperationContract(IsOneWay = true)]
         void ClampingSwitchHandler(Clamping.SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd);
 
         [OperationContract(IsOneWay = true)]

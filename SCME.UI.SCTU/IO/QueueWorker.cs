@@ -557,6 +557,24 @@ namespace SCME.UI.IO
                 });
         }
 
+        public void ClampingAlarmHandler()
+        {
+            m_ActionQueue.Enqueue(delegate
+            {
+                Cache.Main.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var dw = new DialogWindow("Внимание", "Сработала система безопасности");
+
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+                    Cache.Net.Unsqueeze(new Types.Clamping.TestParameters()
+                    {
+                        SkipClamping = false
+                    });
+                }));
+            });
+        }
+
         public void AddClampingSwitchEvent(Types.Clamping.SqueezingState State, IList<float> ArrayF, IList<float> ArrayFd)
         {
             m_ActionQueue.Enqueue(delegate
@@ -565,6 +583,8 @@ namespace SCME.UI.IO
 
                 if (Cache.Main.mainFrame.Content.Equals(Cache.Clamp))
                     Cache.Clamp.SetResult(State, ArrayF, ArrayFd);
+                else if (Cache.Main.mainFrame.Content.Equals(Cache.SctuPage))
+                    Cache.SctuPage.ClampDownAfterAlarm(State);
             });
         }
 

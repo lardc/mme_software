@@ -784,7 +784,11 @@ namespace SCME.Service.IO
 
                 //если сработала система безопасности - прижим остановится и перейдёт в состояние Halt
                 if (devState == HWDeviceState.Halt)
+                {
+                    Clear_Halt();
+                    FireAlarmEvent();
                     return DeviceState.Stopped;
+                }
 
                 //перед выдачей команды на разжатие убедимся, что пресс готов обработать эту команду, а если не готов - подождём пока пресс станет готов
                 if ((devState == HWDeviceState.Ready) || (ReadDeviceState(Types.Clamping.HWDeviceState.ClampingDone, 30000) == (ushort)Types.Clamping.HWDeviceState.ClampingDone))
@@ -951,6 +955,12 @@ namespace SCME.Service.IO
             SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Warning, string.Format("Clamping device notification: warning {0}, problem {1}, fault {2}", Warning, Problem, Fault));
 
             m_Communication.PostClampingNotificationEvent(Warning, Problem, Fault);
+        }
+
+        private void FireAlarmEvent()
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info, "Alarm event");
+            m_Communication.ClampingAlarmHandler();
         }
 
         private void FireSwitchEvent(SqueezingState SQState, IList<float> ArrayF, IList<float> ArrayFd)

@@ -1676,6 +1676,11 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddDVdtFaultEvent(Fault);
         }
 
+        public void ClampingAlarmHandler()
+        {
+            m_QueueWorker.ClampingAlarmHandler();
+        }
+
         public void ClampingSwitchHandler(Types.Clamping.SqueezingState Up, IList<float> ArrayF, IList<float> ArrayFd)
         {
             m_QueueWorker.AddClampingSwitchEvent(Up, ArrayF, ArrayFd);

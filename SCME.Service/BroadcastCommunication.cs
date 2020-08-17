@@ -158,6 +158,11 @@ namespace SCME.Service
             EnumerateClients(Client => Client.BVTUdsmUrsmReverseHandler(State, Result));
         }
 
+        public void ClampingAlarmHandler()
+        {
+            EnumerateClients(Client => Client.ClampingAlarmHandler());
+        }
+
         public void PostClampingSwitchEvent(Types.Clamping.SqueezingState SQState, IList<float> ArrayF, IList<float> ArrayFd)
         {
             EnumerateClients(Client => Client.ClampingSwitchHandler(SQState, ArrayF, ArrayFd));
