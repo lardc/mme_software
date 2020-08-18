@@ -281,7 +281,7 @@ namespace SCME.InterfaceImplementations
             {
                 var deviceId = InsertDevice(localDevice, trans);
                 InsertErrors(localDevice.ErrorCodes, deviceId, trans);
-                InsertParameters(localDevice.DeviceParameters, deviceId, trans);
+                InsertParameters(localDevice.DeviceParameters, localDevice.ProfileKey, deviceId, trans);
 
                 trans.Commit();
                 return true;
@@ -346,18 +346,13 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private void InsertParameters(IEnumerable<DeviceParameterLocal> deviceParameters, long devId, SqlTransaction trans)
+        private void InsertParameters(Dictionary<TestTypeLocalItem, List<DeviceParametersLocalItem>> deviceParameters,Guid profileKey, long devId, SqlTransaction trans)
         {
-            _devParamInsertCommand.Parameters["@DEV_ID"].Value = devId;
-            _devParamInsertCommand.Transaction = trans;
-
-            foreach (var devParam in deviceParameters)
+            foreach(var i in deviceParameters)
             {
-                _devParamInsertCommand.Parameters["@PARAM_ID"].Value = _params[devParam.Name]; //devParam.ParameterId;
-                _devParamInsertCommand.Parameters["@VALUE"].Value = (decimal)devParam.Value;
-                _devParamInsertCommand.Parameters["@TEST_TYPE_ID"].Value = devParam.TestTypeId;
-
-                _devParamInsertCommand.ExecuteNonQuery();
+                var testTypeId = CalcTestTypeID(profileKey, i.Key.Name, i.Key.Order, trans);
+                foreach(var j in i.Value)
+                    InsertParameterValue(devId, j.Name, j.Value, testTypeId, trans);
             }
         }
 
