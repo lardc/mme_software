@@ -695,20 +695,20 @@ namespace SCME.InterfaceImplementations
 
         public virtual void SetResultSended(long deviceId) { }
 
-        public bool SaveResults(DeviceLocalItem localDevice)
-        {
-            try
-            {
-                var deviceId = InsertDevice(localDevice);
-                InsertErrors(localDevice.ErrorCodes, deviceId);
-                InsertParameters(localDevice.DeviceParameters, deviceId);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+        //public bool SaveResults(DeviceLocalItem localDevice)
+        //{
+        //    try
+        //    {
+        //        var deviceId = InsertDevice(localDevice);
+        //        InsertErrors(localDevice.ErrorCodes, deviceId);
+        //        InsertParameters(localDevice.DeviceParameters, deviceId);
+        //        return true;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         private long InsertDevice(DeviceLocalItem localItem)
         {
@@ -776,6 +776,11 @@ namespace SCME.InterfaceImplementations
         {
             if (_connection != null && _connection.State == ConnectionState.Open)
                 _connection.Close();
+        }
+
+        public bool SaveResults(DeviceLocalItem localDevice)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Linq;
 using SCME.Types;
 using SCME.Types.DataContracts;
 
@@ -83,7 +84,7 @@ namespace SCME.InterfaceImplementations
             foreach (var deviceLocalItem in unsendedDevices)
             {
                 deviceLocalItem.ErrorCodes = GetDeviceErrors(deviceLocalItem.Id);
-                deviceLocalItem.DeviceParameters = GetDeviceParameters(deviceLocalItem.Id);
+                deviceLocalItem.DeviceParameters = GetDeviceParameters(deviceLocalItem.ProfileKey, deviceLocalItem.Id);
             }
 
             return unsendedDevices;
@@ -168,41 +169,80 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private IEnumerable<DeviceParameterLocal> GetDeviceParameters(long deviceId)
+        private Dictionary<TestTypeLocalItem, List<DeviceParametersLocalItem>> GetDeviceParameters(Guid profileKey, long devId)
         {
             lock (MsLocker)
             {
-                var list = new List<DeviceParameterLocal>();
-                if (_connection == null || _connection.State != ConnectionState.Open)
-                    return list;
+                var list = new List<(long TestTypeId, string Name, long Order)>();
+                var result = new Dictionary<TestTypeLocalItem, List<DeviceParametersLocalItem>>();
 
-                //var devParamsSelectCommand = new SQLiteCommand("SELECT PARAM_ID, VALUE, TEST_TYPE_ID FROM DEV_PARAM  WHERE DEV_ID = @DEV_ID", _connection);
-                var devParamsSelectCommand = new SQLiteCommand("SELECT DP.PARAM_ID, DP.VALUE, DP.TEST_TYPE_ID, P.PARAM_NAME " +
-                                                               "FROM DEV_PARAM DP, PARAMS P " +
-                                                               "WHERE ( " +
-                                                               "       (DP.DEV_ID = @DEV_ID) AND " +
-                                                               "       (P.PARAM_ID = DP.PARAM_ID) " +
-                                                               "      )", _connection);
+                var select_PROF_TEST_TYPE = new SQLiteCommand("SELECT PTT.ID, TT.NAME, PTT.\"ORDER\" " +
+                    "FROM PROF_TEST_TYPE as PTT " +
+                    "INNER JOIN TEST_TYPE TT " +
+                    "ON PTT.TEST_TYPE_ID = TT.ID " +
+                    "WHERE PTT.PROF_ID = " +
+                    "(SELECT PROF_ID FROM PROFILES WHERE PROF_GUID = @PROF_GUID ) " +
+                    "ORDER by PTT.ID", _connection);
+                select_PROF_TEST_TYPE.Parameters.AddWithValue("@PROF_GUID", profileKey);
+                select_PROF_TEST_TYPE.Prepare();
 
-                devParamsSelectCommand.Parameters.Add("@DEV_ID", DbType.Int64);
-                devParamsSelectCommand.Prepare();
-                devParamsSelectCommand.Parameters["@DEV_ID"].Value = deviceId;
-
-                using (var reader = devParamsSelectCommand.ExecuteReader())
-                {
+                using (var reader = select_PROF_TEST_TYPE.ExecuteReader())
                     while (reader.Read())
+                        list.Add((reader.GetInt64(0), reader.GetString(1), reader.GetInt64(2)));
+
+                foreach (var i in list)
+                {
+                    var select_DEV_PARAM = new SQLiteCommand("SELECT VALUE, PARAM_NAME FROM DEV_PARAM AS DP INNER JOIN PARAMS P ON DP.PARAM_ID = P.PARAM_ID WHERE DP.TEST_TYPE_ID = @TEST_TYPE_ID AND DP.DEV_ID = @DEV_ID", _connection);
+                    select_DEV_PARAM.Parameters.AddWithValue("@TEST_TYPE_ID", i.TestTypeId);
+                    select_DEV_PARAM.Parameters.AddWithValue("@DEV_ID", devId);
+                    select_DEV_PARAM.Prepare();
+                    var j = result[new TestTypeLocalItem()
                     {
-                        list.Add(new DeviceParameterLocal
-                        {
-                            ParameterId = reader.GetInt64(0),
-                            Value = reader.GetFloat(1),
-                            TestTypeId = reader.GetInt64(2),
-                            Name = reader.GetString(3)
-                        });
-                    }
+                        Name = i.Name,
+                        Order = Convert.ToInt32(i.Order)
+
+                    }] = new List<DeviceParametersLocalItem>();
+
+                    using (var reader = select_DEV_PARAM.ExecuteReader())
+                        while (reader.Read())
+                            j.Add(new DeviceParametersLocalItem()
+                            {
+                                Name = reader.GetString(1),
+                                Value = reader.GetFloat(0)
+                            });
                 }
 
-                return list;
+                result = result.Where(m => m.Value.Count > 0).ToDictionary(m=> m.Key, m=> m.Value);
+
+                return result;
+
+                ////var devParamsSelectCommand = new SQLiteCommand("SELECT PARAM_ID, VALUE, TEST_TYPE_ID FROM DEV_PARAM  WHERE DEV_ID = @DEV_ID", _connection);
+                //var devParamsSelectCommand = new SQLiteCommand("SELECT DP.PARAM_ID, DP.VALUE, DP.TEST_TYPE_ID, P.PARAM_NAME " +
+                //                                               "FROM DEV_PARAM DP, PARAMS P " +
+                //                                               "WHERE ( " +
+                //                                               "       (DP.DEV_ID = @DEV_ID) AND " +
+                //                                               "       (P.PARAM_ID = DP.PARAM_ID) " +
+                //                                               "      )", _connection);
+
+                //devParamsSelectCommand.Parameters.Add("@DEV_ID", DbType.Int64);
+                //devParamsSelectCommand.Prepare();
+                //devParamsSelectCommand.Parameters["@DEV_ID"].Value = deviceId;
+
+                //using (var reader = devParamsSelectCommand.ExecuteReader())
+                //{
+                //    while (reader.Read())
+                //    {
+                //        list.Add(new DeviceParameterLocal
+                //        {
+                //            ParameterId = reader.GetInt64(0),
+                //            Value = reader.GetFloat(1),
+                //            TestTypeId = reader.GetInt64(2),
+                //            Name = reader.GetString(3)
+                //        });
+                //    }
+                //}
+
+                //return list;
             }
         }
     }

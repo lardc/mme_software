@@ -1,9 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 
 namespace SCME.Types.DataContracts
 {
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public class TestTypeLocalItem
+    {
+        [DataMember]
+        public int Order { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+    }
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public class DeviceParametersLocalItem
+    {
+        [DataMember]
+        public float Value { get; set; }
+
+        [DataMember]
+        public string Name { get; set; }
+    }
+
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class DeviceLocalItem
     {
@@ -41,7 +62,7 @@ namespace SCME.Types.DataContracts
         public IEnumerable<long> ErrorCodes { get; set; }
 
         [DataMember]
-        public IEnumerable<DeviceParameterLocal> DeviceParameters { get; set; } 
+        public Dictionary<TestTypeLocalItem, List<DeviceParametersLocalItem>> DeviceParameters { get; set; } 
         
     }
 }
