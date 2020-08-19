@@ -207,6 +207,8 @@ namespace SCME.UI.PagesUser
                         catch { }
                     }
                 }
+                catch(ThreadAbortException)
+                { }
                 catch (Exception ex)
                 {
                     AddShowMessageEvent(ex.ToString());
