@@ -17,7 +17,7 @@
         Background="{StaticResource xGray2}"
         Closing="MainWindow_Closing"
         Closed="MainWindow_OnClosed"
-        Icon="App.ico"
+        Icon="App.ico" Loaded="MainWindow_OnLoaded"
         PreviewGotKeyboardFocus="MyWindow_PreviewGotKeyboardFocus"
         MouseDown="MyWindow_MouseDown">
 

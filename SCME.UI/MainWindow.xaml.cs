@@ -132,6 +132,68 @@ namespace SCME.UI
             
             mainFrame.Navigated += MainFrameOnNavigated;
             mainFrame.Navigating += MainFrameOnNavigating;
+            
+        }
+        
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var emulationMessages = new List<string>();
+            
+            if(Settings.Default.CommutationEmulation && Settings.Default.CommIsVisible)
+                emulationMessages.Add(Properties.Resources.Commutation);
+            
+            if(Settings.Default.dVdtEmulation && Settings.Default.dVdtIsVisible)
+                emulationMessages.Add(Properties.Resources.dVdt);
+            
+            /*if(Settings.Default.SctuEmulation && Settings.Default.sctu)
+                emulationMessages.Add("SCTU");*/
+            
+            if(Settings.Default.CommutationExEmulation && Settings.Default.CommExIsVisible)
+                emulationMessages.Add(Properties.Resources.Commutation + "2");
+            
+            if(Settings.Default.IHEmulation && Settings.Default.IHIsVisible)
+                emulationMessages.Add(Properties.Resources.IH);
+            
+            if(Settings.Default.QrrTqEmulation && Settings.Default.QrrTqIsVisible)
+                emulationMessages.Add(Properties.Resources.QrrTq);
+            
+            if(Settings.Default.SLEmulation && Settings.Default.SLIsVisible)
+                emulationMessages.Add(Properties.Resources.Vtm);
+            
+            if(Settings.Default.ATUEmulation && Settings.Default.ATUIsVisible)
+                emulationMessages.Add(Properties.Resources.ATU);
+            
+            if(Settings.Default.BVTEmulation && Settings.Default.BvtIsVisible)
+                emulationMessages.Add(Properties.Resources.Bvt);
+            
+            if(Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
+                emulationMessages.Add(Properties.Resources.RAC);
+            
+            /*if(Settings.Default.RCCEmulation)
+                emulationMessages.Add("RCC");*/
+            
+            if(Settings.Default.TOUEmulation && Settings.Default.TOUIsVisible)
+                emulationMessages.Add(Properties.Resources.TOU);
+            
+            if(Settings.Default.AdapterEmulation )
+                emulationMessages.Add(Properties.Resources.Adapter);
+            
+            if(Settings.Default.GateEmulation && Settings.Default.GateIsVisible)
+                emulationMessages.Add(Properties.Resources.Gate);
+            
+            if(Settings.Default.GatewayEmulation )
+                emulationMessages.Add(Properties.Resources.Gateway);
+            
+            if(Settings.Default.ClampingSystemEmulation && Settings.Default.ClampIsVisible)
+                emulationMessages.Add(Properties.Resources.Clamp);
+
+            var emulationMessage = string.Join(", ", emulationMessages);
+            if (!string.IsNullOrEmpty(emulationMessage))
+            {
+                var dialogWindow = new DialogWindow(Properties.Resources.Warning, $"{Properties.Resources.WarningEmulation}:{Environment.NewLine}{emulationMessage}");
+                dialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
+                dialogWindow.ShowDialog();
+            }
         }
 
         private void MainFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
@@ -439,6 +501,7 @@ namespace SCME.UI
         }
 
         #endregion
+
 
     }
 
