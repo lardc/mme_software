@@ -856,4 +856,7 @@
   <data name="ErrorWriteResult" xml:space="preserve">
     <value>Error sending results to server</value>
   </data>
+  <data name="WarningEmulation" xml:space="preserve">
+    <value>Blocks in emulation mode</value>
+  </data>
 </root>
