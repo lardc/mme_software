@@ -8,6 +8,7 @@
       xmlns:dynamicDataDisplay="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay"
       xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="924"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       Name="bvtPage" Title="{x:Static res:Resources.Bvt}">
 
     <Page.Resources>
@@ -50,6 +51,136 @@
             <Setter Property="Foreground" Value="{StaticResource xBlack1}" />
             <Setter Property="Padding" Value="0,0" />
         </Style>
+
+        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="Red" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" CornerRadius="2" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Grid Name="border">
+                            <Border Background="{StaticResource xPurple1}" Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Width}" CornerRadius="2">
+                                <Path Name="path" Stretch="Uniform" Margin="5"
+                                      Stroke="{StaticResource xWhite1}" StrokeThickness="6"
+                                      Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource xPurple1}" />
+                                <Setter TargetName="path" Property="Margin" Value="12" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ScrollContentPresenter Margin="1,0,1,0" />
+
+                            <ScrollBar Name="PART_VerticalScrollBar"
+                                       Background="White"
+                                       Opacity="0.66"
+                                       HorizontalAlignment="Left"
+                                       OverridesDefaultStyle="True"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
+                                <ScrollBar.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="{StaticResource ListBoxScrollWidth}" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand"
+                                                          Content="M 0 1 L 1 0 L 2 1"
+                                                          Margin="0,0,0,1" Style="{StaticResource ScrollBarLineButton}"
+                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"
+                                                          Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ScrollBarButtonIsVisible, Converter={StaticResource B2V}}" />
+                                            <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton Style="{StaticResource ScrollBarPageButton}"
+                                                                  Command="ScrollBar.PageUpCommand" />
+                                                </Track.DecreaseRepeatButton>
+                                                <Track.Thumb>
+                                                    <Thumb Background="{StaticResource xPurple1}"
+                                                           Style="{StaticResource ScrollBarThumb}" />
+                                                </Track.Thumb>
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton Style="{StaticResource ScrollBarPageButton}"
+                                                                  Command="ScrollBar.PageDownCommand" />
+                                                </Track.IncreaseRepeatButton>
+                                            </Track>
+                                            <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand"
+                                                          Content="M 0 0 L 1 1 L 2 0"
+                                                          Margin="0,1,0,0" Style="{StaticResource ScrollBarLineButton}"
+                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"
+                                                          Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ScrollBarButtonIsVisible, Converter={StaticResource B2V}}" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollBar.Template>
+                            </ScrollBar>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="{StaticResource DisableOpacity}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -73,8 +204,8 @@
             <dynamicDataDisplay:VerticalAxisTitle Content="{x:Static res:Resources.Graph_ImA}" />
             <dynamicDataDisplay:AxisGrid Visibility="Hidden" />
         </dynamicDataDisplay:ChartPlotter>
-        <ScrollViewer x:Name="ScrollViewer" Grid.Column="3" Grid.Row="0"  Style="{StaticResource DefaultScrollViewer}">
-            <Border Name="borderParams"  Margin="10,0,0,0">
+        <ScrollViewer x:Name="ScrollViewer" Grid.Column="3" Grid.Row="0" Style="{StaticResource ScrollViewerStyle}"  >
+            <Border Name="borderParams" Margin="50,0,0,0">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
