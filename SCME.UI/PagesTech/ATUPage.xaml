@@ -24,6 +24,10 @@
             <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
         </Style>
 
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Margin" Value="10,0" />
+        </Style>
+
     </Page.Resources>
 
     <Grid>
@@ -93,25 +97,32 @@
                 <Label Grid.Column="1" Grid.Row="10" Content="0" x:Name="BotTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right"  />
             </Grid>
         </Border>
-        <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource BackButton}"
-                Grid.Column="0" Grid.Row="2" 
+        
+        <Grid Grid.Row="2" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}"   VerticalAlignment="Bottom"             
                 Content="{x:Static res:Resources.Back}"
-                Click="btnBack_OnClick"
-               Margin="6" />
-        <Button x:Name="btnTemperature" x:FieldModifier="private" Style="{StaticResource PrimaryButton}"
-                Grid.Column="1" Grid.Row="2"
+                Click="btnBack_OnClick"/>
+
+            <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"    VerticalAlignment="Bottom"           
                 Content="{x:Static res:Resources.SetTemp}"
-                Click="btnTemperature_OnClick"
-                Margin="6" />
-        <Button Grid.Column="2" Grid.Row="2"
-                Content="{x:Static res:Resources.Stop}" Style="{StaticResource StopButton}"
-                Click="btnStop_OnClick"
-                Margin="6" Background="{StaticResource xRed1}" />
-        <Button x:Name="btnStart" x:FieldModifier="private"
-                Grid.Column="3" Grid.Row="2"
-                Content="{x:Static res:Resources.Start}" Style="{StaticResource StartButton}"
-                Click="btnStart_OnClick"
-                Margin="6" Background="{StaticResource xGreen1}" />
+                Click="btnTemperature_OnClick"/>
+
+            <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
+                Content="{x:Static res:Resources.Stop}"
+                Click="btnStop_OnClick"/>
+
+            <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}" VerticalAlignment="Bottom"
+                Content="{x:Static res:Resources.Start}" 
+                Click="btnStart_OnClick"/>
+        </Grid>
+        
 
         <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="10,0,0,0">
             <Grid >

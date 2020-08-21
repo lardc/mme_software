@@ -115,18 +115,18 @@ namespace SCME.UI.PagesTech
             }
         }
 
-        private void Stop_Click(object Sender, RoutedEventArgs E)
+        private void btnStop_OnClick(object Sender, RoutedEventArgs E)
         {
             Cache.Net.StopByButtonStop();
         }
 
-        private void Back_Click(object Sender, RoutedEventArgs E)
+        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
         }
 
-        private void BtnStart_OnClick(object sender, RoutedEventArgs e)
+        private void btnStart_OnClick(object sender, RoutedEventArgs e)
         {
             if (IsRunning)
                 return;
@@ -149,7 +149,7 @@ namespace SCME.UI.PagesTech
             IsRunning = true;
         }
 
-        private void BtnTemp_OnClick(object sender, RoutedEventArgs e)
+        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
         {
             Cache.Net.StartHeating(Temperature);
         }
@@ -183,5 +183,7 @@ namespace SCME.UI.PagesTech
                 BotTempLabel.Background = Brushes.LightGreen;
             }
         }
+
+ 
     }
 }
