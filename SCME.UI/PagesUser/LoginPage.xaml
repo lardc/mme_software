@@ -36,7 +36,7 @@
                 Background="{StaticResource xPurple1}"
                 Margin="0,0,0,0" />
 
-        <customControls:ListViewMouseLeftButtonScroll x:Name="accountsListBox"
+        <customControls:ListViewMouseLeftButtonScroll x:Name="accountsListBox" ScrollViewer.CanContentScroll="False"
                                 Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Style="{StaticResource DefaultListView}"
                                 SelectionChanged="AccountsListBox_OnSelectionChanged">
             <ListView.ItemTemplate>
