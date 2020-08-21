@@ -8,7 +8,7 @@
       xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
       xmlns:customControls="WpfControlLibrary"
       mc:Ignorable="d" x:Name="clampPage" 
-      d:DesignWidth="1280" d:DesignHeight="924" Title="{x:Static res:Resources.Clamp}">
+      d:DesignWidth="1280"  Title="{x:Static res:Resources.Clamp}">
 
     <Page.Resources>
 
@@ -27,7 +27,7 @@
             <Setter Property="Height" Value="50" />
             <Setter Property="Padding" Value="10,0" />
         </Style>
-        
+
         <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CCheckBoxStyle}">
             <Setter Property="Foreground" Value="{StaticResource xBlack1}" />
             <Setter Property="Margin" Value="20,20" />
@@ -35,33 +35,31 @@
         </Style>
 
     </Page.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="0.7*" />
-            <ColumnDefinition Width="1.3*" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90*" />
-            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <d3:ChartPlotter Name="chartPlotter" Grid.Column="0" Grid.Row="0"
-                         Grid.ColumnSpan="3"
-                         Margin="0,0,10,20"
+                         HorizontalAlignment="Left"
+                         Margin="0,0,0,20"
                          Background="Transparent" Foreground="{StaticResource xBlack1}"
-                         BorderBrush="Transparent">
+                         BorderBrush="Transparent" >
             <d3:HorizontalAxisTitle Content="{x:Static res:Resources.Graph_TimeMs}" />
             <d3:VerticalAxisTitle Content="F" />
             <d3:AxisGrid Visibility="Hidden" />
         </d3:ChartPlotter>
 
-        <Border Grid.Column="3" Grid.Row="0" Margin="10,0,0,0">
-            <Grid >
+        <Border Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" Grid.RowSpan="3">
+            <Grid HorizontalAlignment="Right" >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -84,7 +82,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Force}" />
+                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" />
 
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10" Padding="5"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
@@ -103,10 +101,10 @@
                 <Label Name="lblWarning" x:FieldModifier="private" Background="Gold" Height="Auto" Padding="10"
                        Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Content="Warning" />
 
-                <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" x:Name="btnClamp" Content="{x:Static res:Resources.DoClamp}"
+                <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" x:Name="btnClamp" Content="{x:Static res:Resources.DoClamp}" Width="auto"
                         Padding="10" Margin="0,10,0,0" Background="{StaticResource xGreen1}" Click="Clamp_Click"/>
 
-                <Button Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" x:Name="btnUnclamp" Content="{x:Static res:Resources.DoUnclamp}"
+                <Button Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" x:Name="btnUnclamp" Content="{x:Static res:Resources.DoUnclamp}" Width="auto"
                         Padding="10" Margin="0,10,0,0" Background="{StaticResource xGreen2}" Click="Unclamp_Click"/>
 
                 <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.Temp}" />
@@ -116,45 +114,54 @@
                           IsNumeric="True" 
                           Text="{Binding ElementName=clampPage, Path=Temperature}" />
 
-                <Button Grid.Column="0" Grid.Row="10" x:Name="btnSetTemp" Content="{x:Static res:Resources.SetTemp}"
+                <Button Grid.Column="0" Grid.Row="10" x:Name="btnSetTemp" Content="{x:Static res:Resources.SetTemp}" Width="auto"
                         Padding="10" Click="BtnSetTemp_OnClick" Margin="0,10,5,0" Background="{StaticResource xRed1}"/>
 
-                <Button Grid.Column="1" Grid.Row="10" x:Name="btnCool" Content="{x:Static res:Resources.SetCool}"
-                        Padding="10" Click="BtnCool_OnClick" Margin="5,10,0,0" Background="{StaticResource xGreen3}" FontSize="32"/>
+                <Button Grid.Column="1" Grid.Row="10" x:Name="btnCool" Content="{x:Static res:Resources.SetCool}" Width="{Binding ElementName=btnSetTemp, Path=ActualWidth}"
+                        Padding="10" Click="BtnCool_OnClick" Margin="5,10,0,0" Background="{StaticResource xGreen3}" />
 
                 <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.TopTempName}" />
                 <Label Name="lblTop" Background="Tomato" Height="Auto" Padding="10" Margin="5,10,0,0"
                        Grid.Column="1" Grid.Row="11" Content="0"/>
-                
+
                 <Label Grid.Column="0" Grid.Row="12" Content="{x:Static res:Resources.BotTempName}" />
                 <Label Name="lblBot" Background="Tomato" Height="Auto" Padding="10" Margin="5,10,0,0"
                        Grid.Column="1" Grid.Row="12" Content="0"/>
 
-                <Button Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="2" x:Name="btnSafetySystemOff" Content="{x:Static res:Resources.SafetySystemOff}"
+                <Button Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="2" x:Name="btnSafetySystemOff" Content="{x:Static res:Resources.SafetySystemOff}" Width="auto"
                         Padding="10" Margin="0,10,0,0" Click="btnSafetySystemOff_OnClick" Background="{StaticResource xRed1}" FontSize="32"/>
 
-                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="btnSafetySystemOn" Content="{x:Static res:Resources.SafetySystemOn}" Visibility="Hidden"
+                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="btnSafetySystemOn" Content="{x:Static res:Resources.SafetySystemOn}" Visibility="Hidden" Width="auto"
                         Padding="10" Margin="0,10,0,0" Click="btnSafetySystemOn_OnClick" Background="{StaticResource xGreen2}" FontSize="32"/>
 
-                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="SafetySystemInternalButton" Content="{x:Static res:Resources.SafetySystemInternal}"
+                <Button Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2" x:Name="SafetySystemInternalButton" Content="{x:Static res:Resources.SafetySystemInternal}" Width="auto"
                         Padding="10" Margin="0,10,0,0" Click="SafetySystemInternalButton_Click" Background="{StaticResource xGreen2}" FontSize="32"/>
 
-                <Button Grid.Column="0" Grid.Row="15" Grid.ColumnSpan="2" x:Name="SafetySystemExternalButton" Content="{x:Static res:Resources.SafetySystemExternal}"
+                <Button Grid.Column="0" Grid.Row="15" Grid.ColumnSpan="2" x:Name="SafetySystemExternalButton" Content="{x:Static res:Resources.SafetySystemExternal}" Width="auto"
                         Padding="10" Margin="0,10,0,0" Click="SafetySystemExternalButton_Click" Background="{StaticResource xGreen2}" FontSize="32"/>
             </Grid>
         </Border>
 
-        <Line HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
+        <!--<Line HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
               X1="0" Y1="0" X2="0" Y2="{Binding ElementName=rGrid, Path=ActualHeight}"
-              Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />
+              Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />-->
 
-        <Button x:Name="btnBack" x:FieldModifier="private"
-                Grid.Column="0" Grid.Row="1" Style="{StaticResource BackButton}" Margin="6"
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}" HorizontalAlignment="Left"   VerticalAlignment="Bottom"             
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"/>
-        <Button Grid.Column="2" Grid.Row="1"
+
+            <Button Grid.Column="1" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Stop}"
-                Click="Stop_Click"
-                Margin="0,0,10,0" Background="{StaticResource xRed1}" />
+                Click="Stop_Click"/>
+
+        </Grid>
     </Grid>
 </Page>

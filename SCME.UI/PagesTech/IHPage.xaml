@@ -89,20 +89,31 @@
             </Grid>
         </Border>
 
-        <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}"   VerticalAlignment="Bottom"             
+        <Grid Grid.Row="2" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}"   VerticalAlignment="Bottom"             
                 Content="{x:Static res:Resources.Back}"
                 Click="btnBack_OnClick"/>
 
-        <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"    VerticalAlignment="Bottom"           
+            <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"    VerticalAlignment="Bottom"           
                 Content="{x:Static res:Resources.SetTemp}"
                 Click="btnTemperature_OnClick"/>
 
-        <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
+            <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Stop}"
                 Click="btnStop_OnClick"/>
 
-        <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}" VerticalAlignment="Bottom"
+            <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Start}" 
                 Click="btnStart_OnClick"/>
+        </Grid>
+        
+       
     </Grid>
 </Page>
