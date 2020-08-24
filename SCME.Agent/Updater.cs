@@ -104,7 +104,7 @@ namespace SCME.Agent
             catch (Exception ex)
             {
                 File.WriteAllText(ERROR_FILE, ex.ToString());
-                return false;
+                throw;
             }
         }
 
@@ -186,7 +186,7 @@ namespace SCME.Agent
             {
                 MessageBox.Show(ex.ToString(), @"Error");
                 File.WriteAllText(ERROR_FILE, ex.ToString());
-                return false;
+                throw;
             }
 
             return true;
