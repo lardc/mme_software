@@ -559,7 +559,7 @@ namespace SCME.UI.IO
 
         public void ClampingAlarmHandler()
         {
-            m_ActionQueue.Enqueue(delegate
+            try
             {
                 Cache.Main.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -567,12 +567,25 @@ namespace SCME.UI.IO
 
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
-                    Cache.Net.Unsqueeze(new Types.Clamping.TestParameters()
+                    try
                     {
-                        SkipClamping = false
-                    });
+                        Cache.Net.Unsqueeze(new Types.Clamping.TestParameters()
+                        {
+                            SkipClamping = false
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        dw = new DialogWindow("Error", e.ToString());
+                        dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                        dw.ShowDialog();
+                    }
                 }));
-            });
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         public void AddClampingSwitchEvent(Types.Clamping.SqueezingState State, IList<float> ArrayF, IList<float> ArrayFd)
