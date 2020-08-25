@@ -91,6 +91,7 @@ namespace SCME.UI.IO
 
                             Cache.Welcome.IsBackEnable = true;
                             Cache.Main.mainFrame.Navigate(Cache.UserWorkMode);
+                            Cache.Main.VM.WaitProgressBarIsShow = false;
                         };
                         worker.RunWorkerAsync();
                         

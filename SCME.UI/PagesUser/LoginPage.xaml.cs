@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -43,9 +44,29 @@ namespace SCME.UI.PagesUser
 
         private void ButtonNext_OnClick(object Sender, RoutedEventArgs E)
         {
-//            if (!Cache.Main.IsProfilesParsed)
-//                ProfilesDbLogic.ImportProfilesFromDb();
-            
+            double left = Cache.Main.GetWaitProgressBarPoint.X + Cache.Main.Left;
+            double top = Cache.Main.GetWaitProgressBarPoint.Y + Cache.Main.Top;
+            double width = Cache.Main.GetWaitProgressBarSize.X;
+            double  height = Cache.Main.GetWaitProgressBarSize.Y;
+            Thread newWindowThread = new Thread(new ThreadStart(() =>
+            {
+                loadingAnimationWindow = new WpfControlLibrary.CustomControls.LoadingAnimationWindow();
+                loadingAnimationWindow.Left = left;
+                loadingAnimationWindow.Top = top;
+                loadingAnimationWindow.Width = width;
+                loadingAnimationWindow.Height = height;
+                loadingAnimationWindow.Show();
+                System.Windows.Threading.Dispatcher.Run();
+            }));
+            newWindowThread.SetApartmentState(ApartmentState.STA);
+            newWindowThread.IsBackground = true;
+            newWindowThread.Start();
+
+
+
+            //            if (!Cache.Main.IsProfilesParsed)
+            //                ProfilesDbLogic.ImportProfilesFromDb();
+
             if (tbPassword.Text == CurrentAccount.Password && NavigationService != null)
             {
                 lblIncorrect.Content = "";
@@ -55,6 +76,8 @@ namespace SCME.UI.PagesUser
 //                Cache.ProfileSelection.InitSorting();
                 //NavigationService.Navigate(Cache.ProfileSelection);
                 PrepareMoveToSelectProfilePage(Cache.ProfilesPageSelectForTest);
+                Cache.ProfilesPageSelectForTest.AfterLoadAction -= ProfilesPageSelectForTest_AfterLoadAction;
+                Cache.ProfilesPageSelectForTest.AfterLoadAction += ProfilesPageSelectForTest_AfterLoadAction;
                 Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
                 NavigationService.Navigate(Cache.ProfilesPageSelectForTest);
             }
@@ -62,6 +85,14 @@ namespace SCME.UI.PagesUser
                 lblIncorrect.Content = Properties.Resources.PasswordIncorrect;
 
             tbPassword.Text = string.Empty;
+        }
+
+        private void ProfilesPageSelectForTest_AfterLoadAction()
+        {
+            loadingAnimationWindow.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                loadingAnimationWindow.Close();
+            }));
         }
 
         public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage)
