@@ -8,6 +8,7 @@
         xmlns:props="clr-namespace:SCME.UI.Properties"
         xmlns:ui="clr-namespace:SCME.UI"
         xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
+        xmlns:customControls="WpfControlLibrary"
         DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
         Name="mainWindow" Title="SCME.UI"
         WindowStyle="None"
@@ -87,11 +88,28 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0"
+                    <Grid Grid.Column="0" Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <customControls:LoadingAnimation x:Name="WaitProgressBar" Visibility="{Binding WaitProgressBarIsShow, Converter={StaticResource B2V}}" RenderTransformOrigin="0,0"  >
+                            <customControls:LoadingAnimation.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </customControls:LoadingAnimation.RenderTransform>
+                        </customControls:LoadingAnimation>
+                        <Label Grid.Column="1"
                         Content="{Binding TopTitle}"
                        FontSize="28" 
                        HorizontalAlignment="Center" Width="auto" 
                        VerticalContentAlignment="Center"/>
+                    </Grid>
+
 
                     <Label Grid.Column="1" Grid.Row="0"
                        Name="deviceLable" Content="{Binding MmeCode}"

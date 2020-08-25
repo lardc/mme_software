@@ -39,5 +39,7 @@ namespace SCME.UI.ViewModels
 
         public string Version { get; set; } = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
 
+        public bool WaitProgressBarIsShow { get; set; } = false;
+
     }
 }

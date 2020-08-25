@@ -134,9 +134,14 @@ namespace SCME.UI
             mainFrame.Navigating += MainFrameOnNavigating;
             
         }
-        
+
+        public Point GetWaitProgressBarPoint => WaitProgressBar.TransformToAncestor(this).Transform(new Point(0,0));
+        public Point GetWaitProgressBarSize => new Point(WaitProgressBar.Width, WaitProgressBar.Height);
+
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            VM.WaitProgressBarIsShow = true;
+
             var emulationMessages = new List<string>();
             
             if(Settings.Default.CommutationEmulation && Settings.Default.CommIsVisible)
