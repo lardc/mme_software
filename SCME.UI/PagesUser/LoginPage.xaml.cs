@@ -12,6 +12,7 @@ using SCME.Types.Profiles;
 using SCME.UI.IO;
 using SCME.UIServiceConfig.Properties;
 using SCME.WpfControlLibrary;
+using SCME.WpfControlLibrary.CustomControls;
 using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI.PagesUser
@@ -42,6 +43,8 @@ namespace SCME.UI.PagesUser
                 NavigationService?.Navigate(Cache.UserWorkMode);
         }
 
+
+        private LoadingAnimationWindow loadingAnimationWindow;
         private void ButtonNext_OnClick(object Sender, RoutedEventArgs E)
         {
             double left = Cache.Main.GetWaitProgressBarPoint.X + Cache.Main.Left;
