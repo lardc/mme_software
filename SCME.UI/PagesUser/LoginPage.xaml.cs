@@ -102,7 +102,7 @@ namespace SCME.UI.PagesUser
         {
             Cache.Main.VM.AccountNameIsVisibility = true;
             profilesPage.LoadTopProfiles();
-            profilesPage.Title = $"{Properties.Resources.Total} {Properties.Resources.Profiles}: {profilesPage.ProfileVm.Profiles.Count}";
+            profilesPage.Title = $"{Properties.Resources.AllProfiles}: {profilesPage.ProfileVm.Profiles.Count}";
 //            Cache.ProfilesPageSelectForTest.GoBackAction += () =>
 //            {
 //                var navigationService = Cache.ProfilesPageSelectForTest.NavigationService;

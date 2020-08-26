@@ -39,7 +39,6 @@ namespace SCME.UI
 
         private string _state = "LOCAL";
         private string _TopTitle = "Title";
-        private readonly object m_InitialClampLabelContent;
         private readonly SolidColorBrush m_XRed, m_XOrange;
         private bool m_IsSafetyBreakIconVisible;
         private bool m_IsKeyboardShown;
@@ -76,7 +75,6 @@ namespace SCME.UI
 
             InitializeComponent();
 
-            m_InitialClampLabelContent = clampLabel.Content;
 
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
@@ -310,12 +308,10 @@ namespace SCME.UI
         {
             if (Warning == Types.Clamping.HWWarningReason.None)
             {
-                clampLabel.Content = m_InitialClampLabelContent;
                 clampPath.Stroke = m_NominalClampPathStroke;
             }
             else
             {
-                clampLabel.Content = Warning.ToString();
                 clampPath.Stroke = Brushes.Tomato;
             }
         }
@@ -324,12 +320,10 @@ namespace SCME.UI
         {
             if (Fault == Types.Clamping.HWFaultReason.None)
             {
-                clampLabel.Content = m_InitialClampLabelContent;
                 clampPath.Stroke = m_NominalClampPathStroke;
             }
             else
             {
-                clampLabel.Content = Fault.ToString();
                 clampPath.Stroke = Brushes.Tomato;
             }
         }

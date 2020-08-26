@@ -840,4 +840,7 @@
   <data name="Sunc." xml:space="preserve">
     <value>Синхр.</value>
   </data>
+  <data name="AllProfiles" xml:space="preserve">
+    <value>Всего профилей</value>
+  </data>
 </root>
