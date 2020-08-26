@@ -170,6 +170,9 @@ namespace SCME.Types
         [OperationContract]
         [FaultContract(typeof(FaultData))]
         void SetPermissionToUseCanDataBus(bool PermissionToUseCanDataBus);
+        [OperationContract]
+        [FaultContract(typeof(FaultData))]
+        void WriteJournal(ComplexParts device, LogMessageType type, DateTime dateTime, string message);
     }
 
     [ServiceContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -319,7 +322,7 @@ namespace SCME.Types
         public ComplexParts Device { get; set; }
 
         [DataMember]
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.Now;
 
         [DataMember]
         public string Message { get; set; }

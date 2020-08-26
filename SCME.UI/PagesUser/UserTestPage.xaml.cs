@@ -595,6 +595,8 @@ namespace SCME.UI.PagesUser
         }
         */
 
+
+        private bool _firstSend = true;
         internal void SetResultAll(DeviceState State)
         {
             if (State == DeviceState.None || State == DeviceState.Heating)
@@ -721,20 +723,36 @@ namespace SCME.UI.PagesUser
                     List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
 
                     DateTime beginTime;
-                    try
+                    if (Cache.Main.VM.SyncMode != SyncMode.Local)
                     {
-                        beginTime = DateTime.Now;
-                        //сохраняем результаты измерений в центральную базу данных
-                        Cache.Net.WriteResultServer(DataForSave, errors);
-                        File.AppendAllText("WriteResultTimeSpan.txt", $"{Environment.NewLine}{(DateTime.Now - beginTime).TotalMilliseconds} - write result to remote server MSSql {Environment.NewLine}");
-                        DataForSave.IsSentToServer = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        var dw = new DialogWindow(Properties.Resources.ErrorWriteResult, ex.ToString());
-                        dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                        dw.ShowDialog();
-                        DataForSave.IsSentToServer = false;
+                        try
+                        {
+                            beginTime = DateTime.Now;
+                            //сохраняем результаты измерений в центральную базу данных
+                            Cache.Net.WriteResultServer(DataForSave, errors);
+                            File.AppendAllText("WriteResultTimeSpan.txt", $"{Environment.NewLine}{(DateTime.Now - beginTime).TotalMilliseconds} - write result to remote server MSSql {Environment.NewLine}");
+                            DataForSave.IsSentToServer = true;
+                            _firstSend = true;
+                            Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushSync;
+                            Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometrySync;
+                            Cache.Main.VM.ConnectStateText = Properties.Resources.Sunc_;
+                        }
+                        catch (Exception ex)
+                        {
+                            Cache.Net.WriteJournal(ComplexParts.Database, LogMessageType.Error, DateTime.Now, ex.ToString());
+
+                            if (_firstSend)
+                            {
+                                var dw = new DialogWindow(Properties.Resources.ErrorWriteResult, "Нет связи с сервером. Класс не будет показываться. Комплекс работает в автономном режиме. Все результаты измерений, полученные в автономном режиме будут отправлены на сервер при следующей удачной синхронизации.");
+                                dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                                dw.ShowDialog();
+                                _firstSend = false;
+                            }
+                            DataForSave.IsSentToServer = false;
+                            Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushNoLink;
+                            Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometryNoLink;
+                            Cache.Main.VM.ConnectStateText = Properties.Resources.NoLink;
+                        }
                     }
 
                     //сохраняем результаты измерений в локальную базу данных

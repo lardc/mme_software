@@ -952,6 +952,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Local.
+        /// </summary>
+        public static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Login.
         /// </summary>
         public static string LoginPage_Title {
@@ -1119,6 +1128,15 @@ namespace SCME.UI.Properties {
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No link.
+        /// </summary>
+        public static string NoLink {
+            get {
+                return ResourceManager.GetString("NoLink", resourceCulture);
             }
         }
         
@@ -1885,6 +1903,15 @@ namespace SCME.UI.Properties {
         public static string Successful {
             get {
                 return ResourceManager.GetString("Successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sunc..
+        /// </summary>
+        public static string Sunc_ {
+            get {
+                return ResourceManager.GetString("Sunc.", resourceCulture);
             }
         }
         
