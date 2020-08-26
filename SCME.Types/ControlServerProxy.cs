@@ -212,5 +212,10 @@ namespace SCME.Types
         {
             return Channel.GatePulseCalibrationMain(Current);
         }
+
+        public void WriteJournal(ComplexParts device, LogMessageType type, DateTime dateTime, string message)
+        {
+            Channel.WriteJournal(device, type, dateTime, message);
+        }
     }
 }

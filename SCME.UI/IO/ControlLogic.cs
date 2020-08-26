@@ -927,21 +927,27 @@ namespace SCME.UI.IO
         {
             using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
             {
-                try
-                {
-                    centralDbClient.SaveResults(item, errors);
-                }
-                catch (FaultException<FaultData> ex)
-                {
-                    ShowFaultError("Write database error", ex);
-                }
-                catch (CommunicationException ex)
-                {
-                    var dw = new DialogWindow("Write database error", ex.ToString());
-                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                    dw.ShowDialog();
-                }
+                centralDbClient.SaveResults(item, errors);
+                //try
+                //{
+                //    centralDbClient.SaveResults(item, errors);
+                //}
+                //catch (FaultException<FaultData> ex)
+                //{
+                //    ShowFaultError("Write database error", ex);
+                //}
+                //catch (CommunicationException ex)
+                //{
+                //    var dw = new DialogWindow("Write database error", ex.ToString());
+                //    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                //    dw.ShowDialog();
+                //}
             }
+        }
+
+        public void WriteJournal(ComplexParts device, LogMessageType type, DateTime dateTime, string message)
+        {
+            m_ControlClient.WriteJournal(device, type, dateTime, message);
         }
 
         public void WriteResultLocal(ResultItem item, List<string> errors)

@@ -132,6 +132,12 @@
                                VerticalContentAlignment="Center" />
                             </StackPanel>
                         </Border>
+
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                            <Path  Width="39" Height="48" Stretch="uniform" Stroke="#ff95989a" Fill="{Binding ConnectStateBrush}" Data="{Binding ConnectStateGeometry}" />
+                            <TextBlock Text="{Binding ConnectStateText}" TextAlignment="center" FontFamily="Segoe UI"  FontSize="10"/>
+                        </StackPanel>
+                        
                         <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
                            VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed"/>
                         <Path Data="{StaticResource CircutBrakePath}"
