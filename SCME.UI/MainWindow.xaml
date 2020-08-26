@@ -128,8 +128,7 @@
                                 <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
                                   StrokeThickness="5" VerticalAlignment="Center"
                                   Stretch="UniformToFill" Margin="0, 5, 20, 10"/>
-                                <Label x:Name="clampLabel" Content="{x:Static props:Resources.Clamp}" FontSize="28" HorizontalAlignment="Right"
-                               VerticalContentAlignment="Center" />
+   
                             </StackPanel>
                         </Border>
 
@@ -159,7 +158,6 @@
                         <Label Grid.Column="1"  Content="{Binding AccountName}"   FontSize="24" HorizontalAlignment="Left"
                            Visibility="{Binding AccountNameIsVisibility, Converter={StaticResource B2V}}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
-                            <TextBlock Text="{Binding Version}" FontSize="12" Grid.Row="1" Grid.ColumnSpan="2"/>
                         </Grid>
 
                         <Button Click="Logout_Click"

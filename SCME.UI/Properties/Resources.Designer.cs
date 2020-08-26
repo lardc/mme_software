@@ -106,6 +106,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на All profiles.
+        /// </summary>
+        public static string AllProfiles {
+            get {
+                return ResourceManager.GetString("AllProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на All units are disabled.
         /// </summary>
         public static string AllUnitsAreDisabled {

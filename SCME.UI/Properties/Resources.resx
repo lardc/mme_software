@@ -868,4 +868,7 @@
   <data name="Sunc." xml:space="preserve">
     <value>Sunc.</value>
   </data>
+  <data name="AllProfiles" xml:space="preserve">
+    <value>All profiles</value>
+  </data>
 </root>
