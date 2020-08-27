@@ -700,11 +700,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
                     case "IRRM":
                         if (result.Item3.HasValue)
-                            parameters.IRRM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IRRM = Convert.ToSingle(result.Item3.Value);
                         break;
                     case "IDRM":
                         if (result.Item3.HasValue)
-                            parameters.IDRM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IDRM = Convert.ToSingle(result.Item3.Value);
                         break;
 
                     case "VRSM":
@@ -717,11 +717,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
                     case "IRSM":
                         if (result.Item3.HasValue)
-                            parameters.IRSM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IRSM = Convert.ToSingle(result.Item3.Value);
                         break;
                     case "IDSM":
                         if (result.Item3.HasValue)
-                            parameters.IDSM = Convert.ToUInt16(result.Item3.Value);
+                            parameters.IDSM = Convert.ToSingle(result.Item3.Value);
                         break;
 
                   
