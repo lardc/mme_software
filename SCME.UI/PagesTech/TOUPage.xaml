@@ -40,7 +40,7 @@
         </Style>
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
-            <Setter Property="Margin" Value="10,0" />
+           
         </Style>
 
         <!--</ResourceDictionary>-->
@@ -151,29 +151,21 @@
               X1="0" Y1="0" X2="0" Y2="{Binding ElementName=rGrid, Path=ActualHeight}"
               Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />
 
-        <Grid Grid.Row="2" Grid.ColumnSpan="4">
+        <Grid Grid.Row="2" Grid.ColumnSpan="4" Margin="0,0,-10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}"   VerticalAlignment="Bottom"             
-                Content="{x:Static res:Resources.Back}"
-                Click="btnBack_OnClick"/>
-
-            <Button x:Name="btnTemperature" Grid.Column="1" Grid.Row="2" x:FieldModifier="private" Margin="6"    VerticalAlignment="Bottom"           
-                Content="{x:Static res:Resources.SetTemp}"
-                Click="btnTemperature_OnClick"/>
-
-            <Button Grid.Column="2" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
-                Content="{x:Static res:Resources.Stop}"
-                Click="btnStop_OnClick"/>
-
-            <Button x:Name="btnStart" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right" x:FieldModifier="private" Margin="6" Background="{StaticResource xGreen1}" VerticalAlignment="Bottom"
-                Content="{x:Static res:Resources.Start}" 
-                Click="btnStart_OnClick"/>
+            <Button Grid.Column="0" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Back}" x:Name="btnBack" Click="btnBack_OnClick" />
+            <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{x:Static res:Resources.SetTemp}" x:Name="btnTemperature" Click="btnTemperature_OnClick"/>
+            <Button Grid.Column="4" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Stop}" Background="{StaticResource xRed1}" Click="btnStop_OnClick" />
+            <Button Grid.Column="6" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Start}" Background="{StaticResource xGreen1}" x:Name="btnStart" Click="btnStart_OnClick"/>
         </Grid>
     </Grid>
 </Page>

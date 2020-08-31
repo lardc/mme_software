@@ -245,24 +245,24 @@ namespace SCME.UI.PagesTech
             IsRunning = true;
         }
 
-        private void Start_Click(object Sender, RoutedEventArgs E)
+        private void btnStart_OnClick(object Sender, RoutedEventArgs E)
         {
             ScrollViewer.ScrollToBottom();
             Start();
         }
 
-        private void Stop_Click(object Sender, RoutedEventArgs E)
+        private void btnStop_OnClick(object Sender, RoutedEventArgs E)
         {
             Cache.Net.StopByButtonStop();
         }
 
-        private void Back_Click(object Sender, RoutedEventArgs E)
+        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
         }
 
-        private void BtnTemp_OnClick(object sender, RoutedEventArgs e)
+        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
         {
             Cache.Net.StartHeating(Temperature);
         }
