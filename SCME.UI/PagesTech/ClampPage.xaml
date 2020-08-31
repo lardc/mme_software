@@ -154,11 +154,11 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="btnBack" Grid.Column="0" Grid.Row="2" x:FieldModifier="private" Margin="6" Style="{StaticResource BackButton}" HorizontalAlignment="Left"   VerticalAlignment="Bottom"             
+            <Button x:Name="btnBack" Grid.Column="0"  Style="{StaticResource BackButton}" HorizontalAlignment="Left"   VerticalAlignment="Bottom"             
                 Content="{x:Static res:Resources.Back}"
                 Click="Back_Click"/>
 
-            <Button Grid.Column="1" Grid.Row="2" Margin="6" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
+            <Button Grid.Column="1" Background="{StaticResource xRed1}" VerticalAlignment="Bottom"
                 Content="{x:Static res:Resources.Stop}"
                 Click="Stop_Click"/>
 

@@ -10,10 +10,10 @@
     <customControls:LoadingAnimation x:Name="WaitProgressBar"  RenderTransformOrigin="0,0"  Visibility="{Binding WaitProgressBarIsShow, Converter={StaticResource B2V}}"  >
         <customControls:LoadingAnimation.RenderTransform>
             <TransformGroup>
-                <ScaleTransform ScaleY="0.8" ScaleX="0.8"/>
+                <ScaleTransform ScaleX="0.625" ScaleY="0.625"/>
                 <SkewTransform/>
                 <RotateTransform/>
-                <TranslateTransform/>
+                <TranslateTransform X="0" Y="0"/>
             </TransformGroup>
         </customControls:LoadingAnimation.RenderTransform>
     </customControls:LoadingAnimation>

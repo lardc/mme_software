@@ -164,15 +164,15 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnBack" x:FieldModifier="private" HorizontalAlignment="Left"
+            <Button x:Name="btnBack" x:FieldModifier="private" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                     Grid.Column="0" Grid.Row="0" Style="{StaticResource BackButton}"
                     Content="{x:Static res:Resources.Back}"
                     Click="Back_Click"
-                    Margin="10,0,0,6" />
-            <Button x:Name="btnRestart" x:FieldModifier="private"
+                     />
+            <Button x:Name="btnRestart" x:FieldModifier="private" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Grid.Column="3" Grid.Row="0"
                     Content="{x:Static res:Resources.Restart}"
-                    Margin="0,0,10,6" />
+                     />
         </Grid>
     </Grid>
 
