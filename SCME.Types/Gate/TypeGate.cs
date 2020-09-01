@@ -103,6 +103,9 @@ namespace SCME.Types.Gate
     {
         [DataMember]
         public bool IsCurrentEnabled { get; set; }
+        
+        [DataMember]
+        public ushort Itm { get; set; }
 
         [DataMember]
         public bool IsIhEnabled { get; set; }
@@ -139,6 +142,7 @@ namespace SCME.Types.Gate
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
+            Itm = 0;
             TestParametersType = TestParametersType.Gate;
         }
 
@@ -165,6 +169,8 @@ namespace SCME.Types.Gate
             if (IH.CompareTo(oldParameters.IH) != 0)
                 return true;
             if (IL.CompareTo(oldParameters.IL) != 0)
+                return true;
+            if (Itm.CompareTo(oldParameters.Itm) != 0)
                 return true;
 
             return false;

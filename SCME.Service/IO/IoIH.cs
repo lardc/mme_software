@@ -346,6 +346,76 @@ namespace SCME.Service.IO
                 throw;
             }
         }
+        
+        public TestResults MeasurementLogicRoutineGOST(Types.Commutation.TestParameters Commutation, TestParameters parameters)
+        {
+            try
+            {
+                m_Parameters = parameters;
+                m_Result = new TestResults();
+                m_State = DeviceState.InProcess;
+
+                //уведомляем UI о том, что мы находимся в состоянии m_State с результатами измерений m_Result
+                m_IOCommutation.CallAction(IOCommutation.ACT_COMM_IH);
+
+                try
+                {
+                    m_IOGate.WriteRegister(130, 1);
+
+                    try
+                    {
+                        m_IOGate.CallAction(IOGate.ACT_START_IH);//102
+
+                        m_IOStLs.WriteRegister(128, 1);
+                        m_IOStLs.WriteRegister(140, m_Parameters.Itm);
+                        m_IOStLs.WriteRegister(141, 10000);
+                        m_IOStLs.WriteRegister(160, 1);
+                        m_IOStLs.CallAction(100);
+
+                        if (m_IsEmulation)
+                        {
+                            //эмулируем успешный результат измерений
+                            m_State = DeviceState.Success;
+                            m_Result.Ih = 10;
+                        }
+                        else
+                        {
+                            if (WaitForEndOfSLTest() == DeviceState.Success)
+                            {
+                                WaitForEndOfGateTest();
+
+                                //тесты в обоих блоках завершились успешно, поэтому читаем регистры результатов
+                                m_State = DeviceState.Success;
+                                m_Result.Ih = m_IOGate.ReadRegister(201);
+                            }
+                        }
+                    }
+
+                    finally
+                    {
+                        //регистр 130 не зависимо от результата измерения надо выставить в ноль
+                        m_IOGate.WriteRegister(130, 0);
+                    }
+                }
+
+                finally
+                {
+                    //выполняем команду 110 на блоке коммутации
+                    m_IOCommutation.CallAction(110);
+                }
+            }
+
+            catch (Exception e)
+            {
+                m_State = DeviceState.Fault;
+                FireEvent(m_State, m_Result);
+                FireExceptionEvent(e.Message);
+
+                throw;
+            }
+
+            return m_Result;
+        }
 
         #region Standart API
         internal void ClearFault()
