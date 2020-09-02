@@ -27,6 +27,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -36,21 +37,24 @@
         <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding IsCurrentEnabled}" Content="{x:Static res:Resources.PureVgt}"/>
         <CheckBox Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingCurrent}"  IsChecked="{Binding IsIhEnabled}"/>
 
-        <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding IsIhStrikeCurrentEnabled}" />
-        <CheckBox Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}"  />
+        <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Content="{x:Static res:Resources.IHItm}" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Value="{Binding IGT}" StringFormat="{}{0:N0}" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
+        
+        <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding IsIhStrikeCurrentEnabled}" />
+        <CheckBox Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="2" Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}"  />
 
-        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.MaxResistance_Ohm}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding Resistance}" StringFormat="{}{0:N0}"/>
-        <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.MaxVgt_V}" />
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding VGT }" StringFormat="{}{0:N1}"/>
+        <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.MaxResistance_Ohm}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding Resistance}" StringFormat="{}{0:N0}"/>
+        <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.MaxVgt_V}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding VGT }" StringFormat="{}{0:N1}"/>
 
-        <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.MinIgt_mA}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding MinIGT}" StringFormat="{}{0:N0}"/>
-        <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.MaxIgt_mA}" />
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding IGT}" StringFormat="{}{0:N0}"/>
+        <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MinIgt_mA}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding MinIGT}" StringFormat="{}{0:N0}"/>
+        <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.MaxIgt_mA}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IGT}" StringFormat="{}{0:N0}"/>
 
-    <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.MaxIh_mA}" />
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding IH }" StringFormat="{}{0:N0}"/>
-        <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.MaxIl_mA}" />
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding IL}" StringFormat="{}{0:N0}"/>
+    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MaxIh_mA}" />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="5" Value="{Binding IH }" StringFormat="{}{0:N0}"/>
+        <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MaxIl_mA}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="5" Value="{Binding IL}" StringFormat="{}{0:N0}"/>
 </Grid>

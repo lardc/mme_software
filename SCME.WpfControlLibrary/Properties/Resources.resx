@@ -813,4 +813,7 @@
   <data name="PprofileNameAlreadyExists" xml:space="preserve">
     <value>Профиль уже существует в одном из комплексов</value>
   </data>
+  <data name="IHItm" xml:space="preserve">
+    <value>Force current, A</value>
+  </data>
 </root>
