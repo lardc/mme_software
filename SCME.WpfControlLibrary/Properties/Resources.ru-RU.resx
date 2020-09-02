@@ -810,4 +810,7 @@
   <data name="MaxIrsm_mA" xml:space="preserve">
     <value>Max. IRSM, mA</value>
   </data>
+  <data name="IHItm" xml:space="preserve">
+    <value>Форсирующий ток, А</value>
+  </data>
 </root>
