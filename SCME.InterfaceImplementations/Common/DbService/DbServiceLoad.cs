@@ -491,6 +491,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "Gate_IHEn":
                         testParams.IsIhEnabled = Boolean.Parse(result.Value.ToString());
                         break;
+                    case "Gate_ITM":
+                        testParams.Itm = Convert.ToUInt16(result.Value.ToString());
+                        break;
                     case "Gate_ILEn":
                         testParams.IsIlEnabled = Boolean.Parse(result.Value.ToString());
                         break;
