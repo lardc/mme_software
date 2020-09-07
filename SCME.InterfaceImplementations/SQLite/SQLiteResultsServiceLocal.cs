@@ -81,10 +81,12 @@ namespace SCME.InterfaceImplementations
         {
             var unsendedDevices = GetDeviceLocalItems();
 
+            int n = 0;
             foreach (var deviceLocalItem in unsendedDevices)
             {
                 deviceLocalItem.ErrorCodes = GetDeviceErrors(deviceLocalItem.Id);
                 deviceLocalItem.DeviceParameters = GetDeviceParameters(deviceLocalItem.ProfileKey, deviceLocalItem.Id);
+                n++;
             }
 
             return unsendedDevices;
@@ -153,7 +155,7 @@ namespace SCME.InterfaceImplementations
             {
                 var list = new List<long>();
                 if (_connection == null || _connection.State != ConnectionState.Open) return list;
-                var devErrorsSelectCommand = new SQLiteCommand("SELECT ERR_ID FROM DEV_ERR WHERE DEV_ID = @DEV_ID", _connection);
+                var devErrorsSelectCommand = new SQLiteCommand("SELECT ER.ERR_CODE FROM ERRORS ER INNER JOIN DEV_ERR as DE ON DE.ERR_ID = ER.ERR_ID WHERE DE.DEV_ID = @DEV_ID", _connection);
                 devErrorsSelectCommand.Parameters.Add("@DEV_ID", DbType.Int64);
                 devErrorsSelectCommand.Prepare();
                 devErrorsSelectCommand.Parameters["@DEV_ID"].Value = deviceId;
@@ -161,7 +163,7 @@ namespace SCME.InterfaceImplementations
                 {
                     while (reader.Read())
                     {
-                        list.Add((long)reader[0]);
+                        list.Add(Convert.ToInt64(reader[0]));
                     }
                 }
 
