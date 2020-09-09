@@ -111,8 +111,8 @@
                 <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.CommutationType}"  HorizontalAlignment="Left"/>
 
                 <ComboBox Grid.Column="1" Grid.Row="8"  MaxDropDownHeight="1500" VerticalAlignment="Center"
-                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
-                          SelectedItem="{Binding CommutationType, Converter={StaticResource E2S}}"  />
+                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}" SelectedValuePath="Value" DisplayMemberPath="Key"
+                          SelectedValue="{Binding CommutationType}"  />
 
                 <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.Position}"  HorizontalAlignment="Left"/>
 
@@ -120,13 +120,13 @@
                           ItemsSource="{Binding Source={StaticResource DataFromModulePositionEnum}}"
                           SelectedItem="{Binding Position, Converter={StaticResource E2S}}" />
 
-                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10" 
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding Clamping.Height}" />
 
-                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11"
+                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding Clamping.CustomForce}" />
@@ -136,10 +136,10 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}" 
                           Text="{Binding Temperature}" />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="13" Content="{x:Static res:Resources.TopTempName}" HorizontalAlignment="Left" />
-                    <Label Grid.Column="1" Grid.Row="13" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right"  />
+                    <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="13" Content="{Binding Source={StaticResource TopTempName}}" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}" />
+                    <Label Grid.Column="1" Grid.Row="13" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"  />
 
-                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="14" Content="{x:Static res:Resources.BotTempName}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="14" Content="{Binding Source={StaticResource BottomTempName}}" HorizontalAlignment="Left"/>
                     <Label Grid.Column="1" x:Name="BotTempLabel" Grid.Row="14" Content="0" Background="LightGreen" HorizontalContentAlignment="Right"  />
                 
                 

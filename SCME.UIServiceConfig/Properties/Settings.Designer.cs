@@ -958,5 +958,14 @@ namespace SCME.UIServiceConfig.Properties {
                 return ((bool)(this["IHGOST"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("kN100")]
+        public global::SCME.Types.Clamping.ClampingSystemType ClampingSystemType {
+            get {
+                return ((global::SCME.Types.Clamping.ClampingSystemType)(this["ClampingSystemType"]));
+            }
+        }
     }
 }

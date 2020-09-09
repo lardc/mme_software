@@ -36,6 +36,7 @@
   <ItemGroup>
     <PackageReference Include="DynamicDataDisplay" Version="0.3.0.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.0" />
@@ -189,10 +190,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\SettingsUI.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsUI.settings</DependentUpon>
     </Compile>
     <Compile Remove="AccountsConfig\**" />
     <Compile Remove="PagesTech\CalibrationPage.xaml.cs" />
@@ -208,9 +209,9 @@
     <None Update="LocalStorage\Storage.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Properties\Settings.settings">
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Update="Properties\SettingsUI.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SettingsUI.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

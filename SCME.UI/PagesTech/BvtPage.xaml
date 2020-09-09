@@ -293,9 +293,10 @@
                     <Label Grid.Column="0" Grid.Row="9" Content="{x:Static res:Resources.CommutationType}" />
 
                     <ComboBox Grid.Column="1" Grid.Row="9" Margin="8" Padding="2" MaxDropDownHeight="1500" 
-                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
-                          SelectedItem="{Binding ElementName=bvtPage, Path=CommType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource E2S}}"
-                           />
+                           ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}" SelectedValuePath="Value" DisplayMemberPath="Key"
+                        SelectedValue="{Binding ElementName=bvtPage, Path=CommType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
 
                     <Label Grid.Column="0" Grid.Row="10" Content="{x:Static res:Resources.Position}" />
 
@@ -303,14 +304,14 @@
                           ItemsSource="{Binding Source={StaticResource DataFromModulePositionEnum}}"
                           SelectedItem="{Binding ElementName=bvtPage, Path=ModPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource E2S}}"
                            />
-                    
-                    <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="11" />
-                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11"  
+
+                    <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="11" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="11"  Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding ClampParameters.Height, ElementName=bvtPage}" />
 
-                    <Label Grid.Column="0" Grid.Row="12" Content="{x:Static res:Resources.Force}" />
-                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="12"  
+                    <Label Grid.Column="0" Grid.Row="12" Content="{x:Static res:Resources.Force}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
+                    <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="12"  Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=bvtPage, Path=ClampParameters.CustomForce}" />
@@ -320,10 +321,10 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=bvtPage}" />
 
-                    <Label Grid.Column="0" Grid.Row="14" Content="{x:Static res:Resources.TopTempName}" />
-                    <Label Grid.Column="1" Grid.Row="14" Content="0" x:Name="TopTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right" />
+                    <Label Grid.Column="0" Grid.Row="14" Content="{Binding Source={StaticResource TopTempName}}" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
+                    <Label Grid.Column="1" Grid.Row="14" Content="0" x:Name="TopTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
 
-                    <Label Grid.Column="0" Grid.Row="15" Content="{x:Static res:Resources.BotTempName}"/>
+                    <Label Grid.Column="0" Grid.Row="15" Content="{Binding Source={StaticResource BottomTempName}}"/>
                     <Label Grid.Column="1" x:Name="BotTempLabel"  Grid.Row="15"  Content="0" Background="LightGreen" HorizontalContentAlignment="Right" />
 
                     <Label Name="labelDirect" x:FieldModifier="private" HorizontalContentAlignment="Right"

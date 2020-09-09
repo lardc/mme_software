@@ -27,8 +27,8 @@ namespace BaseRepair
 
                 var msSqlDbServiceProxy = new MSSQLDbService(new SqlConnection(q.ToString()));
 
-                var centralProfiles = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME006");
-                var centralProfiles1 = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME006");
+                var centralProfiles = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
+                var centralProfiles1 = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
 
 
                 foreach (var i in centralProfiles1)
@@ -45,7 +45,7 @@ namespace BaseRepair
 
                 foreach (var i in w)
                 {
-                    mssqlDbService.InsertUpdateProfile(i.oldP, i.newP, "MME006");
+                    mssqlDbService.InsertUpdateProfile(i.oldP, i.newP, "MME007");
                     qwe++;
                 }
             }
@@ -95,7 +95,8 @@ namespace BaseRepair
         {
             try
             {
-                ReSaveForGateItm();
+                //ReSaveForGateItm();
+                ReSaveProfiles();
             }
             catch (Exception ex)
             {

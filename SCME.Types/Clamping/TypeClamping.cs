@@ -2,6 +2,15 @@ using System.Runtime.Serialization;
 
 namespace SCME.Types.Clamping
 {
+
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum ClampingSystemType
+    {
+        [EnumMember] kN100 = 0,
+        [EnumMember] Studs = 1,
+        [EnumMember] Modules = 2
+    }
+    
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {

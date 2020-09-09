@@ -108,14 +108,14 @@
                           Visibility="{Binding Parameters.Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="8" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="0" Maximum="100000" Text="{Binding ClampParameters.Height, ElementName=qrrTqPage}" />
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="8" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8" Padding="5" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="0" Maximum="100000" Text="{Binding ClampParameters.Height, ElementName=qrrTqPage}" />
 
                 <Label Content="{x:Static res:Resources.Temp}" Grid.Column="0" Grid.Row="9" />
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="9" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="0" Maximum="200" Text="{Binding Temperature, ElementName=qrrTqPage}" />
 
-                <Label Content="{x:Static res:Resources.Force}" Grid.Column="0" Grid.Row="10" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10"  Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0" Text="{Binding ClampParameters.CustomForce, ElementName=qrrTqPage}" />
+                <Label Content="{x:Static res:Resources.Force}" Grid.Column="0" Grid.Row="10" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="10"  Padding="5" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0" Text="{Binding ClampParameters.CustomForce, ElementName=qrrTqPage}" />
 
                 <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12">
                     <Grid.ColumnDefinitions>
@@ -213,11 +213,11 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <Label x:Name="lblTitleTop" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Left" Content="{x:Static res:Resources.TopTempName}" />
+
+                    <Label x:Name="lblTitleTop" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Left" Content="{Binding Source={StaticResource TopTempName}}" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}" />
                     <Label x:Name="TopTempLabel" Grid.Column="2" Grid.Row="0" Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalAlignment="Center" Background="LightGreen" Padding="0,0,10,0"/>
 
-                    <Label x:Name="lblTitleBot" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Left" Content="{x:Static res:Resources.BotTempName}" />
+                    <Label x:Name="lblTitleBot" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Left" Content="{Binding Source={StaticResource BottomTempName}}" />
                     <Label x:Name="BotTempLabel" Grid.Column="2" Grid.Row="1" Content="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalAlignment="Center" Background="LightGreen" Padding="0,0,10,0"/>
 
                 </Grid>

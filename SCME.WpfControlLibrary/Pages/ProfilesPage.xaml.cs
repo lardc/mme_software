@@ -65,10 +65,10 @@ namespace SCME.WpfControlLibrary.Pages
 
 
             _dispatcherTimerFindProfile.Tick += OnDispatcherTimerFindProfileOnTick;
-            _dispatcherTimerFindProfile.Interval = new TimeSpan(0, 0, 1);
+            _dispatcherTimerFindProfile.Interval = new TimeSpan(9, 0, 0, 1, 500);
         }
 
-        private void OnDispatcherTimerFindProfileOnTick(object o1, EventArgs args1)
+        private void OnDispatcherTimerFindProfileOnTick(object o, EventArgs args)
         {
             _dispatcherTimerFindProfile.Stop();
             ProfileVm.ProfilesSource.View.Refresh();
@@ -210,8 +210,8 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ProfileVm.ProfilesSource.View.Refresh();
-            //_dispatcherTimerFindProfile.Start();
+            //ProfileVm.ProfilesSource.View.Refresh();
+            _dispatcherTimerFindProfile.Start();
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)

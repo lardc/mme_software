@@ -141,8 +141,8 @@
 
 
 
-                <Label Content="{x:Static res:Resources.Height_Prof}"   Grid.Column="0"  Grid.Row="6" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="6" 
+                <Label Content="{x:Static res:Resources.Height_Prof}"   Grid.Column="0"  Grid.Row="6" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
+                <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="6" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="100000" Minimum="0"
                           Text="{Binding ClampParameters.Height, ElementName=dVdtPage}" />
 
@@ -151,15 +151,15 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="5"
                           Text="{Binding Temperature, ElementName=dVdtPage}" />
 
-                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"
+                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="200" Minimum="0"
                           Text="{Binding ClampParameters.CustomForce, ElementName=dVdtPage}" />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{x:Static res:Resources.TopTempName}" HorizontalAlignment="Left" />
-                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel" Background="LightGreen" />
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{Binding Source={StaticResource TopTempName}}" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
+                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel" Background="LightGreen" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}" />
 
-                <Label Grid.Column="0"  x:Name="lblTitleBot" Grid.Row="10" Content="{x:Static res:Resources.BotTempName}" HorizontalAlignment="Left" />
+                <Label Grid.Column="0"  x:Name="lblTitleBot" Grid.Row="10" Content="{Binding Source={StaticResource BottomTempName}}" HorizontalAlignment="Left" />
                 <Label Grid.Column="1" x:Name="BotTempLabel"  Grid.Row="10" Content="0" Background="LightGreen" Height="Auto"  />
 
                 <Label Content="Результат" Grid.Column="0"  Grid.Row="11" HorizontalAlignment="Left"  />

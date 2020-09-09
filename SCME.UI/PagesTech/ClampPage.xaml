@@ -82,16 +82,16 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" />
+                <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Force}" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
 
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10" Padding="5"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10" Padding="5" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=clampPage, Path=ClampParameters.CustomForce}" />
 
-                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Height}" />
+                <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Height}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
 
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10" Padding="5"
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10" Padding="5" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           IsNumeric="True" 
                           Text="{Binding ElementName=clampPage, Path=ClampParameters.Height}" />
@@ -120,8 +120,8 @@
                 <Button Grid.Column="1" Grid.Row="10" x:Name="btnCool" Content="{x:Static res:Resources.SetCool}" Width="{Binding ElementName=btnSetTemp, Path=ActualWidth}"
                         Padding="10" Click="BtnCool_OnClick" Margin="5,10,0,0" Background="{StaticResource xGreen3}" />
 
-                <Label Grid.Column="0" Grid.Row="11" Content="{x:Static res:Resources.TopTempName}" />
-                <Label Name="lblTop" Background="Tomato" Height="Auto" Padding="10" Margin="5,10,0,0"
+                <Label Grid.Column="0" Grid.Row="11" Content="{Binding Source={StaticResource TopTempName}}" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
+                <Label Name="lblTop" Background="Tomato" Height="Auto" Padding="10" Margin="5,10,0,0" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"
                        Grid.Column="1" Grid.Row="11" Content="0"/>
 
                 <Label Grid.Column="0" Grid.Row="12" Content="{x:Static res:Resources.BotTempName}" />
