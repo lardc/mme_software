@@ -816,4 +816,16 @@
   <data name="IHItm" xml:space="preserve">
     <value>Force current, A</value>
   </data>
+  <data name="Housing" xml:space="preserve">
+    <value>Housing</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="BotTempName" xml:space="preserve">
+    <value>Chanel 2 temp, C</value>
+  </data>
+  <data name="TopTempName" xml:space="preserve">
+    <value>Chanel 1 temp, C</value>
+  </data>
 </root>

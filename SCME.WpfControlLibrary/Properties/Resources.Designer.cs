@@ -223,6 +223,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Chanel 2 temp, C.
+        /// </summary>
+        public static string BotTempName {
+            get {
+                return ResourceManager.GetString("BotTempName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Browse.
         /// </summary>
         public static string Browse {
@@ -853,6 +862,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Housing.
+        /// </summary>
+        public static string Housing {
+            get {
+                return ResourceManager.GetString("Housing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на IDRM, mA.
         /// </summary>
         public static string Idrm_mA {
@@ -1263,6 +1281,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Output.
+        /// </summary>
+        public static string Output {
+            get {
+                return ResourceManager.GetString("Output", resourceCulture);
             }
         }
         
@@ -1911,6 +1938,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string Today {
             get {
                 return ResourceManager.GetString("Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Chanel 1 temp, C.
+        /// </summary>
+        public static string TopTempName {
+            get {
+                return ResourceManager.GetString("TopTempName", resourceCulture);
             }
         }
         

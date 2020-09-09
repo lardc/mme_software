@@ -33,7 +33,8 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
 
-        
+        public static bool ClampingSystemTypeShow => UIServiceConfig.Properties.Settings.Default.ClampingSystemType == Types.Clamping.ClampingSystemType.kN100;
+
 
 
         internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);

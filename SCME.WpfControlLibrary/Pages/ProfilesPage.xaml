@@ -56,11 +56,11 @@
 
             <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles"  ScrollViewer.CanContentScroll="False"
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
-               <ListView.ItemTemplate>
+               <!--<ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">
                      <Label Name="label" Content="{Binding Path=Name}" Foreground="{TemplateBinding TextBlock.Foreground}" />
                    </DataTemplate>
-               </ListView.ItemTemplate>
+               </ListView.ItemTemplate>-->
             </customControls:ListViewMouseLeftButtonScroll>
 
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Name="BackButton"
