@@ -210,7 +210,8 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ProfileVm.ProfilesSource.View.Refresh();
+            if((sender as ValidatingTextBox).Text == ProfileVm.SearchingName)
+                ProfileVm.ProfilesSource.View.Refresh();
             //_dispatcherTimerFindProfile.Start();
         }
 
