@@ -210,8 +210,8 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //ProfileVm.ProfilesSource.View.Refresh();
-            _dispatcherTimerFindProfile.Start();
+            ProfileVm.ProfilesSource.View.Refresh();
+            //_dispatcherTimerFindProfile.Start();
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
