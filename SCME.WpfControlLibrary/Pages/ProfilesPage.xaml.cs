@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using SCME.Types;
@@ -210,8 +211,9 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if((sender as ValidatingTextBox).Text == ProfileVm.SearchingName)
-                ProfileVm.ProfilesSource.View.Refresh();
+            if ((sender as ValidatingTextBox).Text != ProfileVm.SearchingName)
+                return;
+            ProfileVm.ProfilesSource.View.Refresh();
             //_dispatcherTimerFindProfile.Start();
         }
 

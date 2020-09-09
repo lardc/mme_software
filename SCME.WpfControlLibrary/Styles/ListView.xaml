@@ -6,7 +6,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style  TargetType="ListView" x:Key="DefaultListView">
-        <Setter Property="AlternationCount" Value="2"></Setter>
+        <Setter Property="AlternationCount" Value="2"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListViewItem">
