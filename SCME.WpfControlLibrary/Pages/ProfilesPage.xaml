@@ -56,9 +56,9 @@
 
       
             
-            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles" 
+            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles" MouseMove="ListViewProfiles_MouseMove"
                                                           VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.CacheLengthUnit="Pixel"
-                                                          VirtualizingStackPanel.CacheLength="1000" 
+                                                          VirtualizingStackPanel.CacheLength="1000" ScrollViewer.CanContentScroll="False"
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                <ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">
@@ -66,7 +66,7 @@
                    </DataTemplate>
                </ListView.ItemTemplate>
             </customControls:ListViewMouseLeftButtonScroll>
-
+            
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Name="BackButton"
                     Style="{StaticResource PrimaryButton}" Click="GoBack_Click" />
         </Grid>

@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
@@ -213,6 +214,8 @@ namespace SCME.WpfControlLibrary.Pages
         {
             if ((sender as ValidatingTextBox).Text != ProfileVm.SearchingName)
                 return;
+            ProfileVm.CountViewProfielsN = 0;
+            ProfileVm.CountViewProfiels = 100;
             ProfileVm.ProfilesSource.View.Refresh();
             //_dispatcherTimerFindProfile.Start();
         }
@@ -255,5 +258,30 @@ namespace SCME.WpfControlLibrary.Pages
             parent.RaiseEvent(eventArg);
         }
 
+        private static TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
+        {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (child is TChildItem item)
+                    return item;
+
+                var childOfChild = FindVisualChild<TChildItem>(child);
+                if (childOfChild != null)
+                    return childOfChild;
+            }
+            return null;
+        }
+
+        private void ListViewProfiles_MouseMove(object sender, MouseEventArgs e)
+        {
+            var sv = FindVisualChild<ScrollViewer>((sender as ListViewMouseLeftButtonScroll));
+            if ((sv.ExtentHeight - sv.VerticalOffset) / sv.ExtentHeight < 0.1)
+            {
+                ProfileVm.CountViewProfielsN = 0;
+                ProfileVm.CountViewProfiels += 100;
+                ProfileVm.ProfilesSource.View.Refresh();
+            }
+        }
     }
 }
