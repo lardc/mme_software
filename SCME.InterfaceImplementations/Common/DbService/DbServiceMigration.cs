@@ -18,6 +18,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Gate_En", "Gate_En", true),
             ("Gate_EnableCurrent", "Gate_EnableCurrent", false),
             ("Gate_IHEn", "Gate_IHEn", true),
+            ("Gate_ITM", "Gate_ITM", true),
             ("Gate_ILEn", "Gate_ILEn", true),
             ("Gate_EnableIHStrike", "Gate_EnableIHStrike", true),
             ("SL_En", "SL_En", true),

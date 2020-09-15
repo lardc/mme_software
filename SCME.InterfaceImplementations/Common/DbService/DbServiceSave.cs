@@ -71,6 +71,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Gate_ILEn", gate.IsIlEnabled},
                 {"Gate_EnableIHStrike", gate.IsIhStrikeCurrentEnabled},
             };
+            
+            if (gate.IsIhEnabled)
+                gateCondtions.Add("Gate_ITM", gate.Itm);
 
             var gateParameters = new Dictionary<string, (object Min, object Max)>
             {

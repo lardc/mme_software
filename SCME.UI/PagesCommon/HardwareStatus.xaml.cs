@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using SCME.Types;
+using SCME.UI.CustomControl;
 using SCME.UI.IO;
 
 namespace SCME.UI.PagesCommon
@@ -140,6 +141,61 @@ namespace SCME.UI.PagesCommon
                     return !touControl.IsDisabled;
                 default:
                     return false;
+            }
+        }
+        
+        internal void DeviceSetEnabled(ComplexParts device, bool value)
+        {
+            switch (device)
+            {
+                case ComplexParts.Service:
+                    serviceControl.IsDisabled = value;
+                    break;
+                case ComplexParts.Sync:
+                     syncControl.IsDisabled= value;
+                    break;
+                case ComplexParts.Adapter:
+                     adapterControl.IsDisabled= value;
+                    break;
+                case ComplexParts.Gateway:
+                     gatewayControl.IsDisabled= value;
+                    break;
+                case ComplexParts.Commutation:
+                     commutationControl.IsDisabled= value;
+                     break;
+                case ComplexParts.Gate:
+                     gateControl.IsDisabled= value;
+                     break;
+                case ComplexParts.SL:
+                     vtmControl.IsDisabled= value;
+                     break;
+                case ComplexParts.BVT:
+                     bvtControl.IsDisabled= value;
+                     break;
+                case ComplexParts.Clamping:
+                     clampControl.IsDisabled= value;
+                     break;
+                case ComplexParts.CommutationEx:
+                     commutationControlEx.IsDisabled= value;
+                     break;
+                case ComplexParts.DvDt:
+                     dVdtControl.IsDisabled= value;
+                     break;
+                case ComplexParts.ATU:
+                     aTUControl.IsDisabled= value;
+                     break;
+                case ComplexParts.QrrTq:
+                     qrrTqControl.IsDisabled= value;
+                     break;
+                case ComplexParts.RAC:
+                     rACControl.IsDisabled= value;
+                     break;
+                case ComplexParts.IH:
+                     ihControl.IsDisabled= value;
+                     break;
+                case ComplexParts.TOU:
+                     touControl.IsDisabled= value;
+                     break;
             }
         }
 

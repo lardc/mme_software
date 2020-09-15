@@ -27,6 +27,20 @@
     <ObjectDataProvider x:Key="FrequencyDivisors" MethodName="GetFrequencyDivisors" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VoltageFrequency" MethodName="GetVoltageFrequency" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
+    <ObjectDataProvider x:Key="DataFromCommutationModeEnum" MethodName="GetDataFromCommutationModeEnum" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VisibilityHeightForce" MethodName="GetVisibilityHeightForce" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VisibilityTopTemp" MethodName="GetVisibilityTopTemp" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="TopTempName" MethodName="GetTopTempName" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="BottomTempName" MethodName="GetBottomTempName" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+
+
+    
+
+    <!--<ObjectDataProvider x:Key="DataFromCommutationModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="commutation:ModuleCommutationType"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>-->
     
     
     <ObjectDataProvider x:Key="MinWidthForListViewMmeCode" MethodName="MeasureString" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}">
@@ -68,11 +82,7 @@
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 
-    <ObjectDataProvider x:Key="DataFromCommutationModeEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
-        <ObjectDataProvider.MethodParameters>
-            <x:Type TypeName="commutation:ModuleCommutationType"/>
-        </ObjectDataProvider.MethodParameters>
-    </ObjectDataProvider>
+   
 
     <ObjectDataProvider x:Key="DataFromModulePositionEnum" MethodName="GetNames" ObjectType="{x:Type sys:Enum}">
         <ObjectDataProvider.MethodParameters>

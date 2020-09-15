@@ -22,16 +22,16 @@
     </UserControl.Resources>
 
     <DockPanel>
-        <Grid Background="{Binding ElementName=userControlItem, Path=Backcolor}"
+        <Grid Background="{Binding ElementName=userControlItem, Path=Backcolor}" MouseDown="Path_MouseDown"
               Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
             <Path Data="{Binding ElementName=userControlItem, Path=Logo}"
                   Stretch="Uniform" Stroke="{StaticResource xWhite1}"
                   StrokeThickness="4" Margin="10" />
-            <Button VerticalAlignment="Bottom" Height="40"
+            <!--<Button VerticalAlignment="Bottom" Height="40"
                     Visibility="{Binding ElementName=userControlItem, Path=DisableButtonVisibility}"
                     Content="{Binding ElementName=userControlItem, Path=DisableButtonContent}"
                     FontSize="{StaticResource FontSize22}"
-                    Click="ButtonDisable_Click" />
+                    Click="ButtonDisable_Click" />-->
         </Grid>
 
         <Grid>

@@ -80,10 +80,10 @@ namespace SCME.InterfaceImplementations
             _groupInsertCommand.Parameters.Add("@GROUP_NAME", SqlDbType.NChar, 32);
             _groupInsertCommand.Prepare();
 
-            _devErrInsertCommand = new SqlCommand("INSERT INTO [dbo].[DEV_ERR](DEV_ID, ERR_ID) VALUES(@DEV_ID, @ERR_ID)",
+            _devErrInsertCommand = new SqlCommand("INSERT INTO [dbo].[DEV_ERR](DEV_ID, ERR_ID) VALUES(@DEV_ID, (SELECT ERR_ID FROM ERRORS  WHERE ERR_CODE = @ERR_CODE))",
                 _connection);
             _devErrInsertCommand.Parameters.Add("@DEV_ID", SqlDbType.Int);
-            _devErrInsertCommand.Parameters.Add("@ERR_ID", SqlDbType.Int);
+            _devErrInsertCommand.Parameters.Add("@ERR_CODE", SqlDbType.Int);
             _devErrInsertCommand.Prepare();
 
             _deviceSelectCmd =
@@ -339,10 +339,17 @@ namespace SCME.InterfaceImplementations
             _devErrInsertCommand.Parameters["@DEV_ID"].Value = devId;
             _devErrInsertCommand.Transaction = trans;
 
-            foreach (var errorCode in errorCodes)
+            foreach (var errorCode in errorCodes.Distinct())
             {
-                _devErrInsertCommand.Parameters["@ERR_ID"].Value = errorCode;
-                _devErrInsertCommand.ExecuteNonQuery();
+                _devErrInsertCommand.Parameters["@ERR_CODE"].Value = errorCode;
+                try
+                {
+                    _devErrInsertCommand.ExecuteNonQuery();
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 

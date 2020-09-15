@@ -209,6 +209,11 @@ namespace SCME.UI.CustomControl
             ProgressBarBackground = FindResource("xRed1") as SolidColorBrush;
         }
 
+        private void Path_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            IsDisabled = !IsDisabled;
+        }
+
         private void ButtonDisable_Click(object Sender, RoutedEventArgs E)
         {
             IsDisabled = !IsDisabled;
