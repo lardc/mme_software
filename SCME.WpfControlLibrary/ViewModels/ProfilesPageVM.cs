@@ -23,6 +23,9 @@ namespace SCME.WpfControlLibrary.ViewModels
     {
         private readonly IDbService _dbService;
 
+        public int CountViewProfielsN { get; set; } = 0;
+        public int CountViewProfiels { get; set; } = 100;
+
         public ProfilesPageProfileVm(IDbService dbService)
         {
             _dbService = dbService;
@@ -30,7 +33,19 @@ namespace SCME.WpfControlLibrary.ViewModels
             ProfilesSource.Filter += (sender, args) =>
             {
                 var profile = (MyProfile) args.Item;
-                args.Accepted = profile.Name.ToUpper().Contains(SearchingName.ToUpper());
+
+                if (!profile.Name.ToUpper().Contains(SearchingName.ToUpper()))
+                {
+                    args.Accepted = false;
+                    return;
+                }
+                if (CountViewProfielsN >= CountViewProfiels)
+                {
+                    args.Accepted = false;
+                    return;
+                }
+                    
+                CountViewProfielsN++;
             };
         }
 
