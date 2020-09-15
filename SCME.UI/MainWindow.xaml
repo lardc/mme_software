@@ -8,6 +8,7 @@
         xmlns:props="clr-namespace:SCME.UI.Properties"
         xmlns:ui="clr-namespace:SCME.UI"
         xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
+        xmlns:customControls="WpfControlLibrary"
         DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
         Name="mainWindow" Title="SCME.UI"
         WindowStyle="None"
@@ -17,7 +18,7 @@
         Background="{StaticResource xGray2}"
         Closing="MainWindow_Closing"
         Closed="MainWindow_OnClosed"
-        Icon="App.ico"
+        Icon="App.ico" Loaded="MainWindow_OnLoaded"
         PreviewGotKeyboardFocus="MyWindow_PreviewGotKeyboardFocus"
         MouseDown="MyWindow_MouseDown">
 
@@ -87,33 +88,50 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0"
+                    <Grid Grid.Column="0" Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition  Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <customControls:LoadingAnimation Grid.Column="1" x:Name="WaitProgressBar" Visibility="{Binding WaitProgressBarIsShow, Converter={StaticResource B2V}}" RenderTransformOrigin="0.5,0.5"  >
+                            <customControls:LoadingAnimation.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="0.625" ScaleY="0.625"/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </customControls:LoadingAnimation.RenderTransform>
+                        </customControls:LoadingAnimation>
+                        <Label Grid.Column="0"
                         Content="{Binding TopTitle}"
                        FontSize="28" 
                        HorizontalAlignment="Center" Width="auto" 
                        VerticalContentAlignment="Center"/>
+                    </Grid>
+
 
                     <Label Grid.Column="1" Grid.Row="0"
                        Name="deviceLable" Content="{Binding MmeCode}"
                        FontSize="28" Margin="0,0,15,0"
                        HorizontalAlignment="Right" />
 
-                    <Label Grid.Column="2" Grid.Row="0"
-                       Name="stateLable" Content="{Binding SyncMode}"
-                       FontSize="28"
-                       HorizontalAlignment="Right" />
-
                     <StackPanel Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Border Margin="0,5,30,5" Padding="10, 0, 10, 0"
+                        <Border Margin="0,5,15,5" Padding="10, 0, 10, 0"
                             Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                 <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
                                   StrokeThickness="5" VerticalAlignment="Center"
                                   Stretch="UniformToFill" Margin="0, 5, 20, 10"/>
-                                <Label x:Name="clampLabel" Content="{x:Static props:Resources.Clamp}" FontSize="28" HorizontalAlignment="Right"
-                               VerticalContentAlignment="Center" />
+
                             </StackPanel>
                         </Border>
+
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
+                            <Path  Width="39" Height="48" Stretch="uniform"  Fill="{Binding ConnectStateBrush}" Data="{Binding ConnectStateGeometry}" />
+                            <TextBlock Text="{Binding ConnectStateText}" TextAlignment="center" FontFamily="Segoe UI"  FontSize="10"/>
+                        </StackPanel>
+
                         <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
                            VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed"/>
                         <Path Data="{StaticResource CircutBrakePath}"
@@ -130,12 +148,11 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                        
-                        <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
-                        <Label Grid.Column="1"  Content="{Binding AccountName}"   FontSize="24" HorizontalAlignment="Left"
+
+                            <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
+                            <Label Grid.Column="1"  Content="{Binding AccountName}"   FontSize="24" HorizontalAlignment="Left"
                            Visibility="{Binding AccountNameIsVisibility, Converter={StaticResource B2V}}"
                            VerticalContentAlignment="Center" Margin="0,0,30,0" />
-                            <TextBlock Text="{Binding Version}" FontSize="12" Grid.Row="1" Grid.ColumnSpan="2"/>
                         </Grid>
 
                         <Button Click="Logout_Click"
@@ -156,7 +173,7 @@
                             Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ExitButtonIsVisible, Converter={StaticResource B2V}}" />
                     </StackPanel>
                 </Grid>
-             
+
 
                 <Frame x:Name="mainFrame" Grid.Column="0" Grid.Row="1"
                        NavigationUIVisibility="Hidden"

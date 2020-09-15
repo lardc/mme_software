@@ -108,6 +108,6 @@
             </Grid>
         </Button>
 
-        <Button x:Name="BackButton" Grid.Column="0" Margin="6" Grid.Row="7" Style="{StaticResource BackButton}" Content="{x:Static res:Resources.Back}" Click="BackButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button x:Name="BackButton" Grid.Column="0" Grid.Row="7" Style="{StaticResource BackButton}" Content="{x:Static res:Resources.Back}" Click="BackButton_Click" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
     </Grid>
 </Page>

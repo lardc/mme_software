@@ -828,4 +828,19 @@
   <data name="VrrmV" xml:space="preserve">
     <value>VRRM, В</value>
   </data>
+  <data name="WarningEmulation" xml:space="preserve">
+    <value>Блоки находящиеся в режиме умуляции</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Автономно</value>
+  </data>
+  <data name="NoLink" xml:space="preserve">
+    <value>Нет связи</value>
+  </data>
+  <data name="Sunc." xml:space="preserve">
+    <value>Синхр.</value>
+  </data>
+  <data name="AllProfiles" xml:space="preserve">
+    <value>Всего профилей</value>
+  </data>
 </root>

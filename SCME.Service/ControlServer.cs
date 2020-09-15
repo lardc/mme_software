@@ -311,6 +311,11 @@ namespace SCME.Service
             _IoMain.SetUserWorkMode(userWorkMode);
         }
 
+        public void WriteJournal(ComplexParts device, LogMessageType type, DateTime dateTime, string message)
+        {
+            SystemHost.Journal.AppendLog(device, type, $"{dateTime}: {message}");
+        }
+
 
 
         #endregion

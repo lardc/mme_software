@@ -39,7 +39,6 @@ namespace SCME.UI
 
         private string _state = "LOCAL";
         private string _TopTitle = "Title";
-        private readonly object m_InitialClampLabelContent;
         private readonly SolidColorBrush m_XRed, m_XOrange;
         private bool m_IsSafetyBreakIconVisible;
         private bool m_IsKeyboardShown;
@@ -76,7 +75,6 @@ namespace SCME.UI
 
             InitializeComponent();
 
-            m_InitialClampLabelContent = clampLabel.Content;
 
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
@@ -132,6 +130,73 @@ namespace SCME.UI
             
             mainFrame.Navigated += MainFrameOnNavigated;
             mainFrame.Navigating += MainFrameOnNavigating;
+            
+        }
+
+        public Point GetWaitProgressBarPoint => WaitProgressBar.TransformToAncestor(this).Transform(new Point(0,0));
+        public Point GetWaitProgressBarSize => new Point(WaitProgressBar.Width, WaitProgressBar.Height);
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            VM.WaitProgressBarIsShow = true;
+
+            var emulationMessages = new List<string>();
+            
+            if(Settings.Default.CommutationEmulation && Settings.Default.CommIsVisible)
+                emulationMessages.Add(Properties.Resources.Commutation);
+            
+            if(Settings.Default.dVdtEmulation && Settings.Default.dVdtIsVisible)
+                emulationMessages.Add(Properties.Resources.dVdt);
+            
+            /*if(Settings.Default.SctuEmulation && Settings.Default.sctu)
+                emulationMessages.Add("SCTU");*/
+            
+            if(Settings.Default.CommutationExEmulation && Settings.Default.CommExIsVisible)
+                emulationMessages.Add(Properties.Resources.Commutation + "2");
+            
+            if(Settings.Default.IHEmulation && Settings.Default.IHIsVisible)
+                emulationMessages.Add(Properties.Resources.IH);
+            
+            if(Settings.Default.QrrTqEmulation && Settings.Default.QrrTqIsVisible)
+                emulationMessages.Add(Properties.Resources.QrrTq);
+            
+            if(Settings.Default.SLEmulation && Settings.Default.SLIsVisible)
+                emulationMessages.Add(Properties.Resources.Vtm);
+            
+            if(Settings.Default.ATUEmulation && Settings.Default.ATUIsVisible)
+                emulationMessages.Add(Properties.Resources.ATU);
+            
+            if(Settings.Default.BVTEmulation && Settings.Default.BvtIsVisible)
+                emulationMessages.Add(Properties.Resources.Bvt);
+            
+            if(Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
+                emulationMessages.Add(Properties.Resources.RAC);
+            
+            /*if(Settings.Default.RCCEmulation)
+                emulationMessages.Add("RCC");*/
+            
+            if(Settings.Default.TOUEmulation && Settings.Default.TOUIsVisible)
+                emulationMessages.Add(Properties.Resources.TOU);
+            
+            if(Settings.Default.AdapterEmulation )
+                emulationMessages.Add(Properties.Resources.Adapter);
+            
+            if(Settings.Default.GateEmulation && Settings.Default.GateIsVisible)
+                emulationMessages.Add(Properties.Resources.Gate);
+            
+            if(Settings.Default.GatewayEmulation )
+                emulationMessages.Add(Properties.Resources.Gateway);
+            
+            if(Settings.Default.ClampingSystemEmulation && Settings.Default.ClampIsVisible)
+                emulationMessages.Add(Properties.Resources.Clamp);
+
+            var emulationMessage = string.Join(", ", emulationMessages);
+            if (!string.IsNullOrEmpty(emulationMessage))
+            {
+                var dialogWindow = new DialogWindow(Properties.Resources.Warning, $"{Properties.Resources.WarningEmulation}:{Environment.NewLine}{emulationMessage}");
+                dialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
+                dialogWindow.ShowDialog();
+            }
         }
 
         private void MainFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
@@ -243,12 +308,10 @@ namespace SCME.UI
         {
             if (Warning == Types.Clamping.HWWarningReason.None)
             {
-                clampLabel.Content = m_InitialClampLabelContent;
                 clampPath.Stroke = m_NominalClampPathStroke;
             }
             else
             {
-                clampLabel.Content = Warning.ToString();
                 clampPath.Stroke = Brushes.Tomato;
             }
         }
@@ -257,12 +320,10 @@ namespace SCME.UI
         {
             if (Fault == Types.Clamping.HWFaultReason.None)
             {
-                clampLabel.Content = m_InitialClampLabelContent;
                 clampPath.Stroke = m_NominalClampPathStroke;
             }
             else
             {
-                clampLabel.Content = Fault.ToString();
                 clampPath.Stroke = Brushes.Tomato;
             }
         }
@@ -365,11 +426,8 @@ namespace SCME.UI
 
         private void MyWindow_PreviewGotKeyboardFocus(object Sender, KeyboardFocusChangedEventArgs E)
         {
-            Control control = E.NewFocus as ValidatingTextBox;
-            if (control == null)
-                control = E.NewFocus as NumericUpDown;
-            if (control != null) 
-                ShowKeyboard(control != null && !Settings.Default.NormalWindow, control);
+            if (E.NewFocus is ValidatingTextBox validatingTextBox)
+                ShowKeyboard(!Settings.Default.NormalWindow, validatingTextBox);
         }
 
         private void MyWindow_MouseDown(object Sender, MouseButtonEventArgs E)
@@ -439,6 +497,7 @@ namespace SCME.UI
         }
 
         #endregion
+
 
     }
 

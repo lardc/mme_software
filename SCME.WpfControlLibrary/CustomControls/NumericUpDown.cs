@@ -143,8 +143,12 @@ namespace SCME.WpfControlLibrary.CustomControls
         public NumericUpDown()
         {
             Loaded +=OnLoaded;
-            
-             
+        }
+
+        private void NumericUpDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+                window.ShowKeyboard(false, this);
         }
 
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -152,12 +156,23 @@ namespace SCME.WpfControlLibrary.CustomControls
             if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
                 window.ShowKeyboard(true, this);
         }
+        private void TextBoxValue_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+                window.ShowKeyboard(true, this);
+        }
+
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             var textBoxValue = FindChild<TextBox>(this,"TextBoxValue");
             if (textBoxValue != null)
-                textBoxValue.PreviewMouseDown+=OnPreviewMouseDown; 
+            {
+                textBoxValue.PreviewMouseDown += OnPreviewMouseDown;
+                textBoxValue.LostFocus += NumericUpDown_LostFocus;
+                textBoxValue.GotKeyboardFocus += TextBoxValue_GotKeyboardFocus;
+
+            }
             if (textBoxValue != null && !string.IsNullOrEmpty(StringFormat))
                 {
                     
@@ -170,7 +185,8 @@ namespace SCME.WpfControlLibrary.CustomControls
                     });
                 }
         }
-        
+
+    
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             //get parent item

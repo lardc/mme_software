@@ -14,18 +14,22 @@
 
     <Page.Resources>
 
-        <ui:BooleanToVisibilityConverter x:Key="B2V" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ScrollBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <ui:BooleanToVisibilityConverter x:Key="B2V" />
         <ui:VtmTestTypeToVisibilityConverter x:Key="VT2V" />
         <ui:EnumValueToString x:Key="E2S" />
 
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
-            <Setter Property="Padding" Value="5,0,0,0" />
-            <Setter Property="Height" Value="62" />
-        </Style>
+                <Setter Property="Padding" Value="5,0,0,0" />
+                <Setter Property="Margin" Value="10"></Setter>
+            </Style>
 
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
-            <Setter Property="Margin" Value="10,0" />
-        </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PrimaryButton}">
+            </Style>
 
         <Style TargetType="{x:Type customControls:ValidatingTextBox}">
             <Setter Property="Margin" Value="0,10" />
@@ -48,7 +52,7 @@
 
         <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
 
-        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <!--<Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="Red" />
             <Setter Property="IsTabStop" Value="False" />
@@ -176,8 +180,9 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
 
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
@@ -202,12 +207,12 @@
             <dynamicDataDisplay:AxisGrid Visibility="Hidden" />
         </dynamicDataDisplay:ChartPlotter>
 
-        <ScrollViewer x:Name="ScrollViewer" Grid.Column="3" Grid.Row="0"  Style="{StaticResource ScrollViewerStyle}">
-            <Border Margin="10,0,0,0">
-                <Grid Name="rGrid" Margin="0">
+        <customControls:ScrollViewerLeftMouseButtonScroll x:Name="ScrollViewer" Grid.Column="3" Grid.Row="0"  Style="{StaticResource DefaultScrollViewer}">
+            <Border Margin="0,0,5,0">
+                <Grid Name="rGrid" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="210" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -234,7 +239,7 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="1" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
-                    <ComboBox Grid.Column="2" Grid.Row="0" Padding="5" Margin="10"
+                    <ComboBox Grid.Column="2" Grid.Row="0" Padding="5" Margin="10" Name="comboBoxTestType"
                           ItemsSource="{Binding Source={StaticResource DataFromTestVtmTypeEnum}}"
                           SelectedItem="{Binding ElementName=stlsPage, Path=Parameters.TestType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource E2S}}"
                           Style="{StaticResource CComboboxStyle}" />
@@ -254,15 +259,15 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10" 
                                             TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
-                                            IsNumeric="True"
+                                            IsNumeric="True" Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
                         <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="10000" Minimum="200"
-                                            IsNumeric="True"
+                                            IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
@@ -273,7 +278,7 @@
                         <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.HeatCurrent_A}"
                            IsEnabled="{Binding ElementName=cbIsHeatEnabled, Path=IsChecked}"
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
-                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
+                        <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             TextBlock.TextAlignment="Right" Maximum="1000" Minimum="100"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampOpeningCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -284,7 +289,7 @@
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
                         <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10"
                                             TextBlock.TextAlignment="Right" Maximum="5000" Minimum="50"
-                                            IsNumeric="True"
+                                            IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampOpeningTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
@@ -304,13 +309,13 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
-                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.SinusCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
-                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
+                            <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 TextBlock.TextAlignment="Right" Maximum="15000" Minimum="4000"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.SinusTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -334,26 +339,26 @@
                             <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Current_A}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="0" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxITM}" Minimum="{StaticResource MinITM}"
-                                                IsNumeric="True"
+                                                IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxTimeITM}" Minimum="{StaticResource MinTimeITM}"
-                                                IsNumeric="True"
+                                                IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.CurveFactor}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
-                                                IsNumeric="True"
+                                                IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.AdditionalTime_us}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
                                                 TextBlock.TextAlignment="Right" Maximum="5000" Minimum="0"
-                                                IsNumeric="True"
+                                                IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveAddTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </Grid>
@@ -363,7 +368,7 @@
 
                     <Label Content="{x:Static res:Resources.Count}" Grid.Column="1" Grid.Row="7" />
                     <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="7" Maximum="{StaticResource MaxPulsesITM}" Minimum="{StaticResource MinPulsesITM}"
-                                        IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10"
+                                        IsNumeric="True" TextBlock.TextAlignment="Right" Margin="10" 
                                         Text="{Binding ElementName=stlsPage, Path=Parameters.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Label Grid.Column="1" Grid.Row="8" Content="{x:Static res:Resources.CommutationType}" />
@@ -396,11 +401,11 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=stlsPage}" />
 
-                    <Label Grid.Column="1" x:Name="lblTitleTop" Grid.Row="13" Content="{x:Static res:Resources.TopTempName}" />
-                    <Label Grid.Column="2" Grid.Row="13" Content="0" x:Name="TopTempLabel" HorizontalAlignment="Right" Background="LightGreen" Margin="0,0,7,0"   />
+                    <Label Grid.Column="1" Grid.Row="13" x:Name="lblTitleTop"  Content="{x:Static res:Resources.TopTempName}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="2" Grid.Row="13" x:Name="TopTempLabel" Content="0" Background="LightGreen" HorizontalContentAlignment="Right"   />
 
-                    <Label Grid.Column="1" x:Name="lblTitleBot" Grid.Row="14" Content="{x:Static res:Resources.BotTempName}"/>
-                    <Label Grid.Column="2" x:Name="BotTempLabel" Grid.Row="14" HorizontalAlignment="Right" Content="0" Background="LightGreen" Height="Auto"  Margin="0,0,7,0"  />
+                    <Label Grid.Column="1" Grid.Row="14" x:Name="lblTitleBot"  Content="{x:Static res:Resources.BotTempName}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="2" Grid.Row="14" x:Name="BotTempLabel" Content="0" Background="LightGreen" HorizontalContentAlignment="Right"  />
 
                     <Label Style="{StaticResource StLblStyle}" Content="Vtm, mV" Grid.Column="1" Grid.Row="15" />
                     <Label Style="{StaticResource StLblStyle}" Name="lblVtm" x:FieldModifier="private" Content="0" Grid.Column="2" Grid.Row="15" FontSize="28" HorizontalContentAlignment="Right" />
@@ -413,31 +418,28 @@
                 </Grid>
 
             </Border>
-        </ScrollViewer>
+        </customControls:ScrollViewerLeftMouseButtonScroll>
 
 
         <Line HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
               X1="0" Y1="0" X2="0" Y2="{Binding ElementName=rGrid, Path=ActualHeight}"
               Grid.Column="3" Grid.Row="0" Margin="0,20,0,20" />
 
-        <Button x:Name="btnBack" x:FieldModifier="private" Style="{StaticResource BackButton}"
-                Grid.Column="0" Grid.Row="1"
-                Content="{x:Static res:Resources.Back}"
-                Click="Back_Click"
-                Margin="6"/>
-        <Button x:Name="btnTemp" x:FieldModifier="private"
-                Grid.Column="1" Grid.Row="1"
-                Content="{x:Static res:Resources.SetTemp}"
-                Click="BtnTemp_OnClick"
-                Margin="6" />
-        <Button Grid.Column="2" Grid.Row="1"
-                Content="{x:Static res:Resources.Stop}"
-                Click="Stop_Click"
-               Margin="6" Background="{StaticResource xRed1}" />
-        <Button x:Name="btnStart" x:FieldModifier="private"
-                Grid.Column="3" Grid.Row="1"
-                Content="{x:Static res:Resources.Start}"
-                Click="Start_Click"
-                Margin="6,6,6,0" Background="{StaticResource xGreen1}" Height="80" VerticalAlignment="Top" />
+        <Grid Grid.Row="2" Grid.ColumnSpan="4" Margin="0,0,-10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Back}" x:Name="btnBack" Click="btnBack_OnClick" />
+            <Button Grid.Column="2" VerticalAlignment="Bottom" Content="{x:Static res:Resources.SetTemp}" x:Name="btnTemperature" Click="btnTemperature_OnClick"/>
+            <Button Grid.Column="4" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Stop}" Background="{StaticResource xRed1}" Click="btnStop_OnClick" />
+            <Button Grid.Column="6" VerticalAlignment="Bottom" Content="{x:Static res:Resources.Start}" Background="{StaticResource xGreen1}" x:Name="btnStart" Click="btnStart_OnClick"/>
+        </Grid>
     </Grid>
 </Page>

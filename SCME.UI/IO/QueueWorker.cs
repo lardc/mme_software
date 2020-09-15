@@ -69,6 +69,25 @@ namespace SCME.UI.IO
                         Cache.Main.VM.SyncMode = stateService.SyncMode;
                         Cache.Main.VM.MmeCode = stateService.MmeCode;
 
+                        switch (Cache.Main.VM.SyncMode)
+                        {
+                            case SyncMode.Local:
+                                Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushLocal;
+                                Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometryLocal;
+                                Cache.Main.VM.ConnectStateText = Resources.Local;
+                                break;
+                            case SyncMode.Sync:
+                                Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushSync;
+                                Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometrySync;
+                                Cache.Main.VM.ConnectStateText = Resources.Sunc_;
+                                break;
+                            case SyncMode.NotSync:
+                                Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushNoLink;
+                                Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometryNoLink;
+                                Cache.Main.VM.ConnectStateText = Resources.NoLink;
+                                break;
+                        }
+
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.DoWork += (sender, args) =>
                         {
@@ -91,6 +110,7 @@ namespace SCME.UI.IO
 
                             Cache.Welcome.IsBackEnable = true;
                             Cache.Main.mainFrame.Navigate(Cache.UserWorkMode);
+                            Cache.Main.VM.WaitProgressBarIsShow = false;
                         };
                         worker.RunWorkerAsync();
                         

@@ -856,4 +856,19 @@
   <data name="ErrorWriteResult" xml:space="preserve">
     <value>Error sending results to server</value>
   </data>
+  <data name="WarningEmulation" xml:space="preserve">
+    <value>Blocks in emulation mode</value>
+  </data>
+  <data name="Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="NoLink" xml:space="preserve">
+    <value>No link</value>
+  </data>
+  <data name="Sunc." xml:space="preserve">
+    <value>Sunc.</value>
+  </data>
+  <data name="AllProfiles" xml:space="preserve">
+    <value>All profiles</value>
+  </data>
 </root>

@@ -58,16 +58,23 @@ namespace SCME.Agent
                 return;
             }
 
-            var updater = new Updater();
-            var agentIsUpdated = updater.UpdateAgent().Result;
-            if (agentIsUpdated)
+            try
             {
-                Process.Start(Path.ChangeExtension(Application.ExecutablePath, "exe"));
-                return;
-            }
+                var updater = new Updater();
+                var agentIsUpdated = updater.UpdateAgent().Result;
+                if (agentIsUpdated)
+                {
+                    Process.Start(Path.ChangeExtension(Application.ExecutablePath, "exe"));
+                    return;
+                }
 
-            if(!updater.UpdateUiService().Result)
-                return;
+                if (!updater.UpdateUiService().Result)
+                    return;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Возникла одна или несколько ошибок при обновлении ПО, попытка запуска.{Environment.NewLine}{ex}", "Ошибка");
+            }
             
             using (mutex)
             {

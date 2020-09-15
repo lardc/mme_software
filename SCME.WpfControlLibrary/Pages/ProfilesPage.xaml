@@ -54,7 +54,7 @@
                                                 Height="60"  
                                               TextChanged="TextBoxFind_TextChanged" />
 
-            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles"  
+            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles"  ScrollViewer.CanContentScroll="False"
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                <ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">

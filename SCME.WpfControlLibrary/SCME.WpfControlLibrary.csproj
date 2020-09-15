@@ -55,6 +55,12 @@
     <Page Update="Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="CustomControls\Block.xaml">
+      <Generator></Generator>
+    </Page>
+    <Page Update="CustomControls\LoadingAnimation.xaml">
+      <Generator></Generator>
+    </Page>
   </ItemGroup>
 
 </Project>
