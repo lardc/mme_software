@@ -103,6 +103,7 @@ namespace SCME.Service
             m_IOAtu = new IOATU(m_IOAdapter, m_Communication);
             m_IOQrrTq = new IOQrrTq(m_IOAdapter, m_Communication);
             m_IOIH = new IOIH(m_IOGate, m_IOStls, m_Communication);
+            m_IOGate.IH = m_IOIH;
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);

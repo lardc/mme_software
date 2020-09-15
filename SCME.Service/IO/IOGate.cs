@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using SCME.Service.Properties;
 using SCME.Types;
+using SCME.Types.Commutation;
 using SCME.UIServiceConfig.Properties;
 
 namespace SCME.Service.IO
@@ -34,6 +35,7 @@ namespace SCME.Service.IO
         private volatile bool m_Stop;
 
         private int m_Timeout = DEFAULT_TIMEOUT;
+        public IOIH IH;
 
         internal IOGate(IOAdapter Adapter, BroadcastCommunication Communication)
         {
@@ -303,7 +305,10 @@ namespace SCME.Service.IO
                 {
                     Resistance();
                     IgtVgt();
-                    Ih();
+                    if(Settings.Default.IHGOST)
+                        IhGOST(Commutation);
+                    else
+                        Ih();
                     Il();
                 }
 
@@ -536,6 +541,20 @@ namespace SCME.Service.IO
             return parameters;
         }
 
+        private void IhGOST(TestParameters commutation)
+        {
+            if (m_Stop)
+                return;
+            if (!m_Parameter.IsIhEnabled)
+                return;
+
+            var ihParameters = new Types.IH.TestParameters {Itm = m_Parameter.Itm};
+            FireIHEvent(DeviceState.InProcess, m_Result);
+            var result = IH.MeasurementLogicRoutineGOST(commutation, ihParameters);
+            m_Result.IH = result.Ih;
+            FireIHEvent(DeviceState.Success, m_Result);
+        }
+        
         private void Ih()
         {
             if (m_Stop)
