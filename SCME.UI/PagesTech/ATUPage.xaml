@@ -63,10 +63,10 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.AtuPrePulseValue}" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0"   IsNumeric="True" Minimum="15" Maximum="250" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0"   IsNumeric="True" Minimum="{StaticResource MinPrePulseValue}" Maximum="{StaticResource MaxPrePulseValue}" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}"  HorizontalAlignment="Left"/>
-                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1"   IsNumeric="True" IsFloat="True" Minimum="2" Maximum="75" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1"   IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinPowerValue}" Maximum="{StaticResource MaxPowerValue}" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuUBR}"  HorizontalAlignment="Left"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbAtuUBR" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
@@ -80,19 +80,19 @@
                 <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.AtuPRSM}"  HorizontalAlignment="Left"/>
                 <Label Grid.Column="1" Grid.Row="5" Content="0" x:Name="lbAtuPRSM" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />
 
-                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="6"  HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="6"   IsNumeric="True" Minimum="0" Maximum="100000" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Text="{Binding ClampParameters.Height, ElementName=aTUPage}" />
+                <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="0" Grid.Row="6"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="6"   IsNumeric="True" Minimum="{StaticResource MinHeightCS}" Maximum="{StaticResource MaxHeightCS}" Text="{Binding ClampParameters.Height, ElementName=aTUPage}" />
 
                 <Label Content="{x:Static res:Resources.Temp}"  Grid.Column="0"  Grid.Row="7"  HorizontalAlignment="Left"/>
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7"   IsNumeric="True" Minimum="0" Maximum="200" Text="{Binding Temperature, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="7"   IsNumeric="True" Minimum="{StaticResource MinTempCS}" Maximum="{StaticResource MaxTempCS}" Text="{Binding Temperature, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8"  HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
-                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"    IsNumeric="True"   Maximum="200" Minimum="0" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Text="{Binding ClampParameters.CustomForce, ElementName=aTUPage}" />
+                <Label Content="{x:Static res:Resources.Force}"  Grid.Column="0"  Grid.Row="8"  HorizontalAlignment="Left"/>
+                <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="8"    IsNumeric="True"   Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}" Text="{Binding ClampParameters.CustomForce, ElementName=aTUPage}" />
 
-                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{Binding Source={StaticResource TopTempName}}"  HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
-                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
+                <Label Grid.Column="0" x:Name="lblTitleTop" Grid.Row="9" Content="{x:Static res:Resources.TopTempName}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="1" Grid.Row="9" Content="0" x:Name="TopTempLabel"  Background="LightGreen"  HorizontalContentAlignment="Right" />
 
-                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="10" Content="{Binding Source={StaticResource BottomTempName}}"  HorizontalAlignment="Left"/>
+                <Label Grid.Column="0" x:Name="lblTitleBot" Grid.Row="10" Content="{x:Static res:Resources.BotTempName}"  HorizontalAlignment="Left"/>
                 <Label Grid.Column="1" Grid.Row="10" Content="0" x:Name="BotTempLabel"  Background="LightGreen" HorizontalContentAlignment="Right"  />
             </Grid>
         </Border>

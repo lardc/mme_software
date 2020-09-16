@@ -54,4 +54,63 @@
     <system:Single x:Key="MaxIlGate">1000</system:Single>
     <system:Single x:Key="MinIlGate">0</system:Single>
 
+    <system:Single x:Key="MaxDirectCurrent">500</system:Single>
+    <system:Single x:Key="MinDirectCurrent">50</system:Single>
+
+    <system:Single x:Key="MaxDCPulseWidth">5000</system:Single>
+    <system:Single x:Key="MinDCPulseWidth">500</system:Single>
+
+    <system:Single x:Key="MaxDCRiseRate">5</system:Single>
+    <system:Single x:Key="MinDCRiseRate">0.2</system:Single>
+
+    <system:Single x:Key="MaxOffStateVoltage">5</system:Single>
+    <system:Single x:Key="MinOffStateVoltage">0.2</system:Single>
+
+    <system:Single x:Key="MaxRampTime">10000</system:Single>
+    <system:Single x:Key="MinRampTime">200</system:Single>
+
+    <system:Single x:Key="MaxRampOpeningCurrent">1000</system:Single>
+    <system:Single x:Key="MinRampOpeningCurrent">100</system:Single>
+
+    <system:Single x:Key="MaxRampOpeningTime">5000</system:Single>
+    <system:Single x:Key="MinRampOpeningTime">50</system:Single>
+
+    <system:Single x:Key="MaxSinusTime">15000</system:Single>
+    <system:Single x:Key="MinSinusTime">4000</system:Single>
+
+    <system:Single x:Key="MaxCurveFactor">100</system:Single>
+    <system:Single x:Key="MinCurveFactor">1</system:Single>
+
+    <system:Single x:Key="MaxCurveAddTime">5000</system:Single>
+    <system:Single x:Key="MinCurveAddTime">0</system:Single>
+
+    <system:Single x:Key="MaxCurrentAmplitudeMax">1250</system:Single>
+    <system:Single x:Key="MinCurrentAmplitudeMax">160</system:Single>
+
+    <system:Single x:Key="MaxItmIH">2000</system:Single>
+    <system:Single x:Key="MinItmIH">500</system:Single>
+
+    <system:Single x:Key="MaxCalibrationCurrent">65535</system:Single>
+    <system:Single x:Key="MinCalibrationCurrent">0</system:Single>
+
+    <system:Single x:Key="MaxVoltage">10000</system:Single>
+    <system:Single x:Key="MinVoltage">0</system:Single>
+
+    <system:Single x:Key="MaxVoltageRateOffSet">2000</system:Single>
+    <system:Single x:Key="MinVoltageRateOffSet">50</system:Single>
+
+    <system:Single x:Key="MaxConfirmationCount">100</system:Single>
+    <system:Single x:Key="MinConfirmationCount">1</system:Single>
+
+    <system:Single x:Key="MaxVoltageRateLimit">2500</system:Single>
+    <system:Single x:Key="MinVoltageRateLimit">500</system:Single>
+
+    <system:Single x:Key="MaxPrePulseValue">250</system:Single>
+    <system:Single x:Key="MinPrePulseValue">15</system:Single>
+
+    <system:Single x:Key="MaxPowerValue">75</system:Single>
+    <system:Single x:Key="MinPowerValue">2</system:Single>
+
+
+
 </ResourceDictionary>

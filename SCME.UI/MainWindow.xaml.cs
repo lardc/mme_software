@@ -27,9 +27,7 @@ using SCME.WpfControlLibrary;
 using SCME.WpfControlLibrary.CustomControls;
 using DialogWindow = SCME.UI.CustomControl.DialogWindow;
 using System.Reflection;
-using System.Xml.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
+using System.Collections;
 
 namespace SCME.UI
 {
@@ -50,22 +48,36 @@ namespace SCME.UI
         private Brush m_NominalClampPathStroke;
 
         public MainWindowVM VM { get; set; } = new MainWindowVM();
+
+        private void LoadConstraints()
+        {
+            string constraintsPath = Path.Combine(Path.GetDirectoryName(Settings.Default.AccountsPath), "Constraints.xaml");
+
+            if (File.Exists(constraintsPath) == false)
+                return;
+
+            ResourceDictionary resourceDictionaryUser;
+            using (FileStream fs = new FileStream(constraintsPath, FileMode.Open))
+                resourceDictionaryUser = XamlReader.Load(fs) as ResourceDictionary;
+
+            var resourceDictionaryApplication = Application.Current.Resources.MergedDictionaries.First(m=> m.Source.AbsolutePath.Contains("Constraints.xaml"));
+
+            foreach (var i in resourceDictionaryUser)
+            {
+                var dictionaryEntry = (DictionaryEntry)i;
+                resourceDictionaryApplication.Remove(dictionaryEntry.Key);
+                resourceDictionaryApplication.Add(dictionaryEntry.Key, dictionaryEntry.Value);
+            }
+
+        }
+
         public MainWindow()
         {
-            try
-            {
-                foreach (var (key, value) in JsonConvert.DeserializeObject<Dictionary<ComplexParts, bool>>(Properties.SettingsUI.Default.ComplexPartsIsDisabled))
-                    Cache.Welcome.DeviceSetEnabled(key, !value);
-            }
-            catch
-            {
-                // ignored
-            }
-
-
             string s = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
             Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+            LoadConstraints();
 
             try
             {
@@ -350,14 +362,6 @@ namespace SCME.UI
         private void MainWindow_Closing(object Sender, CancelEventArgs E)
         {
             IsNeedToRestart = false;
-
-            var complexPartsIsDisabled = new Dictionary<ComplexParts, bool>();
-
-            foreach (var i in (ComplexParts[])Enum.GetValues(typeof(ComplexParts)))
-                complexPartsIsDisabled[i] = Cache.Welcome.IsDeviceEnabled(i);
-
-            Properties.SettingsUI.Default.ComplexPartsIsDisabled = JsonConvert.SerializeObject(complexPartsIsDisabled);
-            Properties.SettingsUI.Default.Save();
 
             if (Cache.Net != null)
                 Cache.Net.Deinitialize();
