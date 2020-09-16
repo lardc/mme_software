@@ -266,7 +266,7 @@
 
                         <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
                         <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"
-                                            TextBlock.TextAlignment="Right" Maximum="10000" Minimum="200"
+                                            TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxRampTime}" Minimum="{StaticResource MinRampTime}"
                                             IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -279,7 +279,7 @@
                            IsEnabled="{Binding ElementName=cbIsHeatEnabled, Path=IsChecked}"
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
                         <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
-                                            TextBlock.TextAlignment="Right" Maximum="1000" Minimum="100"
+                                            TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxRampOpeningCurrent}" Minimum="{StaticResource MinRampOpeningCurrent}"
                                             IsNumeric="True"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampOpeningCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
@@ -288,7 +288,7 @@
                            IsEnabled="{Binding ElementName=cbIsHeatEnabled, Path=IsChecked}"
                            Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}" />
                         <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4" Margin="10"
-                                            TextBlock.TextAlignment="Right" Maximum="5000" Minimum="50"
+                                            TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxRampOpeningTime}" Minimum="{StaticResource MinRampOpeningTime}"
                                             IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                             Visibility="{Binding ElementName=stlsPage, Path=Parameters.IsRampOpeningEnabled, Converter={StaticResource B2V}}"
                                             Text="{Binding ElementName=stlsPage, Path=Parameters.RampOpeningTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -316,7 +316,7 @@
 
                             <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" Margin="10"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
-                                                TextBlock.TextAlignment="Right" Maximum="15000" Minimum="4000"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxSinusTime}" Minimum="{StaticResource MinSinusTime}"
                                                 IsNumeric="True"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.SinusTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
@@ -351,13 +351,13 @@
 
                             <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.CurveFactor}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="2" Margin="10"
-                                                TextBlock.TextAlignment="Right" Maximum="100" Minimum="1"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxCurveFactor}" Minimum="{StaticResource MinCurveFactor}"
                                                 IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                             <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.AdditionalTime_us}" />
                             <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" Margin="10"
-                                                TextBlock.TextAlignment="Right" Maximum="5000" Minimum="0"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxCurveAddTime}" Minimum="{StaticResource MinCurveAddTime}"
                                                 IsNumeric="True"  Width="{Binding ElementName=comboBoxTestType, Path=ActualWidth}" HorizontalAlignment="Right"
                                                 Text="{Binding ElementName=stlsPage, Path=Parameters.CurveAddTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>

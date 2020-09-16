@@ -88,8 +88,8 @@
                 <Label Content="{x:Static res:Resources.Amperage}"   Grid.Column="0"  Grid.Row="0" HorizontalAlignment="Left"/>
                 <customControls:ValidatingTextBox Grid.Column="1"  Grid.Row="0" 
                           TextBlock.TextAlignment="Right" IsNumeric="True" 
-                                                 Minimum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMin}}" 
-                                                 Maximum="{Binding Source={x:Static TOUTypes:TestParameters.CurrentAmplitudeMax}}" 
+                                                 Minimum="{StaticResource MinCurrentAmplitudeMax}" 
+                                                 Maximum="{StaticResource MaxCurrentAmplitudeMax}" 
                           Text="{Binding TOU.CurrentAmplitude}" />
 
                 <Label Content="Результат"   Grid.Column="0"  Grid.Row="2" HorizontalAlignment="Left"/>
