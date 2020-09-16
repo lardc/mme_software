@@ -128,8 +128,8 @@
                     <Label Grid.Column="1" Grid.Row="6" Content="{x:Static res:Resources.CommutationType}" />
 
                     <ComboBox Grid.Column="2" Grid.Row="6" Margin="10" Padding="5" MaxDropDownHeight="1500"
-                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}" SelectedValuePath="Value" DisplayMemberPath="Key"
-                          SelectedValue="{Binding ElementName=gatePage, Path=CommType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}"
+                          SelectedItem="{Binding ElementName=gatePage, Path=CommType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource E2S}}"
                           Style="{StaticResource CComboboxStyle}" 
                           />
 
@@ -141,13 +141,13 @@
                           Style="{StaticResource CComboboxStyle}"
                           />
 
-                    <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="1" Grid.Row="8" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
-                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="8" Padding="5" Margin="10" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
+                    <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Column="1" Grid.Row="8" />
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="8" Padding="5" Margin="10"
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxHeightCS}" Minimum="{StaticResource MinHeightCS}"
                           Text="{Binding ClampParameters.Height, ElementName=gatePage}" />
 
-                    <Label Grid.Column="1" Grid.Row="9" Content="{x:Static res:Resources.Force}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"/>
-                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" Padding="5" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}"
+                    <Label Grid.Column="1" Grid.Row="9" Content="{x:Static res:Resources.Force}" />
+                    <customControls:ValidatingTextBox Grid.Column="2" Grid.Row="9" Margin="10" Padding="5"
                           TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxForceCS}" Minimum="{StaticResource MinForceCS}"
                           IsNumeric="True" IsFloat="True"
                           Text="{Binding ElementName=gatePage, Path=ClampParameters.CustomForce}" />
@@ -157,10 +157,10 @@
                           TextBlock.TextAlignment="Right" IsNumeric="True" Maximum="{StaticResource MaxTempCS}" Minimum="{StaticResource MinTempCS}"
                           Text="{Binding Temperature, ElementName=gatePage}" />
 
-                    <Label Grid.Column="1" x:Name="lblTitleTop" Grid.Row="11" Content="{Binding Source={StaticResource TopTempName}}" HorizontalAlignment="Left" Visibility="{Binding Source={StaticResource VisibilityTopTemp}}"/>
-                    <Label Grid.Column="2" Grid.Row="11" x:Name="TopTempLabel"  Content="0" Background="LightGreen" HorizontalContentAlignment="Right"  Visibility="{Binding Source={StaticResource VisibilityTopTemp}}" />
+                    <Label Grid.Column="1" x:Name="lblTitleTop" Grid.Row="11" Content="{x:Static res:Resources.TopTempName}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="2" Grid.Row="11" x:Name="TopTempLabel"  Content="0" Background="LightGreen" HorizontalContentAlignment="Right"   />
 
-                    <Label Grid.Column="1"  x:Name="lblTitleBot"  Grid.Row="12" Content="{Binding Source={StaticResource BottomTempName}}" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="1"  x:Name="lblTitleBot"  Grid.Row="12" Content="{x:Static res:Resources.BotTempName}" HorizontalAlignment="Left"/>
                     <Label Grid.Column="2" x:Name="BotTempLabel" Grid.Row="12" Content="0" Background="LightGreen" HorizontalContentAlignment="Right"  />
                     
                     
