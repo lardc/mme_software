@@ -63,10 +63,10 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.AtuPrePulseValue}" HorizontalAlignment="Left" />
-                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0"   IsNumeric="True" Minimum="{StaticResource MinPrePulseValue}" Maximum="{StaticResource MaxPrePulseValue}" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox x:Name="lbAtuPrePulseValue" Grid.Column="1" Grid.Row="0"   IsNumeric="True" Minimum="{StaticResource MinPrePulseValue_ATU}" Maximum="{StaticResource MaxPrePulseValue_ATU}" Text="{Binding Parameters.PrePulseValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}"  HorizontalAlignment="Left"/>
-                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1"   IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinPowerValue}" Maximum="{StaticResource MaxPowerValue}" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox x:Name="lbAtuPowerValue" Grid.Column="1" Grid.Row="1"   IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinPowerValue_ATU}" Maximum="{StaticResource MaxPowerValue_ATU}" Text="{Binding Parameters.PowerValue, ElementName=aTUPage, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuUBR}"  HorizontalAlignment="Left"/>
                 <Label Grid.Column="1" Grid.Row="2" Content="0" x:Name="lbAtuUBR" FontSize="{StaticResource FontSize26}"  Height="Auto" HorizontalContentAlignment="Right" />

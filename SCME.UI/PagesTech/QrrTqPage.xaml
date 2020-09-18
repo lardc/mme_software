@@ -83,13 +83,13 @@
                 <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding Parameters.TrrMeasureBy9050Method, ElementName=qrrTqPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="" Visibility="{Binding Parameters.Mode, ConverterParameter=TrrMeasureBy9050Method, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.QrrTqDirectCurrent}" />
-                <customControls:ValidatingTextBox x:Name="vtbDirectCurrent" Grid.Column="2" Grid.Row="2" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinDirectCurrent}" Maximum="{StaticResource MaxDirectCurrent}" Text="{Binding Parameters.DirectCurrent, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}" />
+                <customControls:ValidatingTextBox x:Name="vtbDirectCurrent" Grid.Column="2" Grid.Row="2" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinDirectCurrent_QRRTQ}" Maximum="{StaticResource MaxDirectCurrent_QRRTQ}" Text="{Binding Parameters.DirectCurrent, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}" />
 
                 <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.QrrTqDCPulseWidth}"/>
-                <customControls:ValidatingTextBox x:Name="lbDCPulseWidth" Grid.Column="1" Grid.Row="3" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinDCPulseWidth}" Maximum="{StaticResource MaxDCPulseWidth}" Text="{Binding Parameters.DCPulseWidth, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
+                <customControls:ValidatingTextBox x:Name="lbDCPulseWidth" Grid.Column="1" Grid.Row="3" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinDCPulseWidth_QRRTQ}" Maximum="{StaticResource MaxDCPulseWidth_QRRTQ}" Text="{Binding Parameters.DCPulseWidth, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}"/>
-                <customControls:ValidatingTextBox x:Name="lbDCRiseRate" Grid.Column="1" Grid.Row="4" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinDCRiseRate}" Maximum="{StaticResource MaxDCRiseRate}" Text="{Binding Parameters.DCRiseRate, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
+                <customControls:ValidatingTextBox x:Name="lbDCRiseRate" Grid.Column="1" Grid.Row="4" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinDCRiseRate_QRRTQ}" Maximum="{StaticResource MaxDCRiseRate_QRRTQ}" Text="{Binding Parameters.DCRiseRate, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.QrrTqDCFallRate}"/>
                 <ComboBox Grid.Column="1" Grid.Row="5" Padding="5" Margin="10,9,10,10"
@@ -98,7 +98,7 @@
                           Style="{StaticResource CComboboxStyle}"/>
 
                 <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" Visibility="{Binding Parameters.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
-                <customControls:ValidatingTextBox x:Name="lbOffStateVoltage" Grid.Column="1" Grid.Row="6" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinOffStateVoltage}" Maximum="{StaticResource MaxOffStateVoltage}" Text="{Binding Parameters.OffStateVoltage, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Parameters.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
+                <customControls:ValidatingTextBox x:Name="lbOffStateVoltage" Grid.Column="1" Grid.Row="6" Padding="5" Margin="10,9,10,10" TextBlock.TextAlignment="Right" IsNumeric="True" Minimum="{StaticResource MinOffStateVoltage_QRRTQ}" Maximum="{StaticResource MaxOffStateVoltage_QRRTQ}" Text="{Binding Parameters.OffStateVoltage, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Parameters.Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Column="0" Grid.Row="7" Content="{x:Static res:Resources.QrrTqOsvRate}" Visibility="{Binding Parameters.Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, ElementName=qrrTqPage, UpdateSourceTrigger=PropertyChanged}"/>
                 <ComboBox Grid.Column="1" Grid.Row="7" Padding="5" Margin="10,9,10,10"

@@ -98,7 +98,7 @@
 
                 <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.DvDtVoltage}" HorizontalAlignment="Left" />
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="1" 
-                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltage}" Minimum="{StaticResource MinVoltage}"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltage_DVDT}" Minimum="{StaticResource MinVoltage_DVDT}"
                                                 IsNumeric="True"
                                                 Text="{Binding Parameters.Voltage, ElementName=dVdtPage, UpdateSourceTrigger=PropertyChanged}" />
                
@@ -117,7 +117,7 @@
 
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="3" 
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltageRateOffSet}" Minimum="{StaticResource MinVoltageRateOffSet}"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltageRateOffSet_DVDT}" Minimum="{StaticResource MinVoltageRateOffSet_DVDT}"
                                                 IsNumeric="True"
                                                 Text="{Binding Parameters.VoltageRateOffSet, ElementName=dVdtPage, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -125,7 +125,7 @@
                         Visibility="{Binding ElementName=dVdtPage,Path=Parameters.Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="4"
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2V}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxConfirmationCount}" Minimum="{StaticResource MinConfirmationCount}"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxConfirmationCount_DVDT}" Minimum="{StaticResource MinConfirmationCount_DVDT}"
                                                 IsNumeric="True"
                                                 Text="{Binding Parameters.ConfirmationCount, ElementName=dVdtPage, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -133,7 +133,7 @@
                         Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <customControls:ValidatingTextBox Grid.Column="1" Grid.Row="5" 
                                                 Visibility="{Binding ElementName=dVdtPage, Path=Parameters.Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltageRateLimit}" Minimum="{StaticResource MinVoltageRateLimit}"
+                                                TextBlock.TextAlignment="Right" Maximum="{StaticResource MaxVoltageRateLimit_DVDT}" Minimum="{StaticResource MinVoltageRateLimit_DVDT}"
                                                 IsNumeric="True"
                                                 Text="{Binding Parameters.VoltageRateLimit, ElementName=dVdtPage, UpdateSourceTrigger=PropertyChanged}" />
 
