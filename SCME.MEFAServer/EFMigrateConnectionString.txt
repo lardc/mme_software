@@ -1,0 +1,1 @@
+Server=IVAN-PC\SQLEXPRESS;Database=SCME_ResultsDB;User Id=sa;Password=qwerty_123

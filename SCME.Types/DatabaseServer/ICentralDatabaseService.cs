@@ -75,7 +75,7 @@ namespace SCME.Types.DatabaseServer
         /// <param name="errors"></param>
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void SaveResults(ResultItem results, List<string> errors);
+        long SaveResults(ResultItem results, List<string> errors);
 
         
         /// <summary>

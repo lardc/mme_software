@@ -317,5 +317,8 @@
     <Setting Name="ClampingSystemType" Type="SCME.Types.Clamping.ClampingSystemType" Scope="Application">
       <Value Profile="(Default)">kN100</Value>
     </Setting>
+    <Setting Name="MEFAUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://127.0.0.1:740</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

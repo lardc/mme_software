@@ -115,9 +115,9 @@ namespace SCME.InterfaceImplementations
             
         }
 
-        public void SaveResults(ResultItem results, List<string> errors)
+        public long SaveResults(ResultItem results, List<string> errors)
         {
-            _resultsService.WriteResults(results, errors);
+            return _resultsService.WriteResults(results, errors);
         }
 
         public List<ProfileItem> GetProfileItems()

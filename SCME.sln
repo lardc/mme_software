@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseRepair", "BaseRepair\BaseRepair.csproj", "{6ED42F57-394F-4BAE-BEDE-34649922946E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.MEFAServer", "SCME.MEFAServer\SCME.MEFAServer.csproj", "{1FB8C827-EB12-4735-91A6-99BDBFA33915}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ED42F57-394F-4BAE-BEDE-34649922946E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB8C827-EB12-4735-91A6-99BDBFA33915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB8C827-EB12-4735-91A6-99BDBFA33915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB8C827-EB12-4735-91A6-99BDBFA33915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB8C827-EB12-4735-91A6-99BDBFA33915}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

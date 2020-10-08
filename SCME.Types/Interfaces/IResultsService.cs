@@ -11,7 +11,7 @@ namespace SCME.Types.Interfaces
         /// </summary>
         /// <param name="result"></param>
         /// <param name="errors"></param>
-        void WriteResults(ResultItem result, IEnumerable<string> errors);
+        long WriteResults(ResultItem result, IEnumerable<string> errors);
 
         /// <summary>
         /// Return groups

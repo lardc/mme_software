@@ -22,13 +22,15 @@ namespace SCME.Service.IO
     internal class IoDbSync
     {
         private readonly BroadcastCommunication _communication;
+        private readonly MonitoringSender _monitoringSender;
         private string _mmeCode;
         private SQLiteDbService _sqLiteDbService;
         private IDbService _msSqlDbService;
 
-        public IoDbSync(BroadcastCommunication communication)
+        public IoDbSync(BroadcastCommunication communication, MonitoringSender monitoringSender)
         {
             _communication = communication;
+            _monitoringSender = monitoringSender;
         }
 
         internal void Initialize(string databasePath, string databaseOptions, string mmeCode = null)
@@ -65,7 +67,7 @@ namespace SCME.Service.IO
                         initializationResponse.SyncMode = SyncMode.Local;
                     else
                     {
-                        SyncProfiles();
+                        _monitoringSender.Sync(SyncProfiles());
                         SendUnSendedResult();
                         initializationResponse.SyncMode = SyncMode.Sync;
                     }
@@ -83,7 +85,7 @@ namespace SCME.Service.IO
             });
         }
 
-        private void SyncProfiles()
+        private int SyncProfiles()
         {
             try
             {
@@ -114,6 +116,8 @@ namespace SCME.Service.IO
                     //i.DeepData = _msSqlDbService.LoadProfileDeepData(i);
                     _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
                 }
+
+                return addingProfiles.Count;
             }
             catch (Exception ex)
             {

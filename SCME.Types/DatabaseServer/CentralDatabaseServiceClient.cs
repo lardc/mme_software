@@ -32,9 +32,9 @@ namespace SCME.Types.DatabaseServer
             Channel.Check();
         }
 
-        public void SaveResults(ResultItem results, List<string> errors)
+        public long SaveResults(ResultItem results, List<string> errors)
         {
-            Channel.SaveResults(results, errors);
+            return Channel.SaveResults(results, errors);
         }
 
         public List<ProfileItem> GetProfileItems()

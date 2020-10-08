@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
+using System.Threading.Tasks;
 using SCME.Service.IO;
 using SCME.Service.Properties;
 using SCME.Types;
@@ -64,9 +66,16 @@ namespace SCME.Service
         private ComplexSafety m_SafetyType;
         private UserWorkMode _UserWorkMode;
         public InitializationResponse InitializationResponse { get; private set; }
+
+        private MonitoringSender _monitoringSender;
+
+        private readonly bool _isDebug = Path.GetFileName(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)) == "Debug";
+        private readonly DateTime _lastUpdate = File.GetCreationTime(System.Reflection.Assembly.GetExecutingAssembly().Location);
         
         public LogicContainer(BroadcastCommunication Communication)
         {
+            _monitoringSender = new MonitoringSender(Settings.Default.MEFAUri, Settings.Default.MMECode, _isDebug, _lastUpdate);
+            
             m_ClampingSystemConnected = Settings.Default.IsClampingSystemConnected;
 
             if (!Enum.TryParse(Settings.Default.SafetyType, out m_SafetyType))
@@ -107,7 +116,7 @@ namespace SCME.Service
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
-            IoDbSync = new IoDbSync(m_Communication);
+            IoDbSync = new IoDbSync(m_Communication, _monitoringSender);
 
             m_IOGate.ActiveCommutation = m_IOCommutation;
             m_IOStls.ActiveCommutation = m_IOCommutation;
@@ -202,6 +211,17 @@ namespace SCME.Service
                     state = m_IOTOU.Initialize(m_Param.IsTOUEnabled, m_Param.TimeoutTOU);
 
                 InitializationResponse = taskSync.Result;
+                
+                _monitoringSender.Start();
+
+                Task.Factory.StartNew(() => 
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(new TimeSpan(0,1,0));
+                        _monitoringSender.HeartBeat();
+                    }
+                });
                 
                 //при инициализации оборудования необходимо включить зеленый светодиод (запись 1 в регистр 128 gateway)
                 if (state == DeviceConnectionState.ConnectionSuccess)
@@ -1580,7 +1600,9 @@ namespace SCME.Service
                     {
                         try
                         {
-                            SystemHost.Results.WriteResult(Item, Errors);
+                            var devId = SystemHost.Results.WriteResult(Item, Errors);
+                            _monitoringSender.Test(Item.ProfileKey, devId);
+                            
                         }
                         catch (Exception ex)
                         {
@@ -1884,6 +1906,7 @@ namespace SCME.Service
 
             var message = string.Format(Resources.Error_LogicContainer_Main_testing_state_exception, m_State, Exception);
             SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, message);
+            _monitoringSender.HardwareError(message);
 
             var fd = new FaultData { Device = Device, Message = message, TimeStamp = DateTime.Now };
             throw new FaultException<FaultData>(fd, Func);

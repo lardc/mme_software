@@ -94,11 +94,11 @@ namespace SCME.Logger
 
         #region Write implementation
 
-        public void WriteResult(ResultItem result, IEnumerable<string> errors)
+        public long WriteResult(ResultItem result, IEnumerable<string> errors)
         {
             lock (ms_Locker)
             {
-                _resultsService.WriteResults(result, errors);
+                return _resultsService.WriteResults(result, errors);
             }
         }
 

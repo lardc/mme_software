@@ -967,5 +967,14 @@ namespace SCME.UIServiceConfig.Properties {
                 return ((global::SCME.Types.Clamping.ClampingSystemType)(this["ClampingSystemType"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://127.0.0.1:740")]
+        public string MEFAUri {
+            get {
+                return ((string)(this["MEFAUri"]));
+            }
+        }
     }
 }

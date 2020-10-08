@@ -401,7 +401,7 @@ namespace SCME.InterfaceImplementations
 
         #region WriteResults
 
-        public void WriteResults(ResultItem result, IEnumerable<string> errors)
+        public long WriteResults(ResultItem result, IEnumerable<string> errors)
         {
             try
             {
@@ -426,6 +426,7 @@ namespace SCME.InterfaceImplementations
                         InsertParameterValues(result, devId, trans);
 
                         trans.Commit();
+                        return devId;
                     }
                     catch
                     {
@@ -433,6 +434,7 @@ namespace SCME.InterfaceImplementations
                         throw;
                     }
                 }
+                throw new Exception("Connection null or not open");
             }
             catch (Exception ex)
             {
