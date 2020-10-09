@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SCME.MEFAServer.Migrations
+namespace SCME.MEFADB.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -40,7 +40,12 @@ namespace SCME.MEFAServer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MonitoringEventTypeId = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false)
+                    MmeCode = table.Column<string>(nullable: true),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Data1 = table.Column<long>(nullable: false),
+                    Data2 = table.Column<long>(nullable: false),
+                    Data3 = table.Column<long>(nullable: false),
+                    Data4 = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,6 +78,28 @@ namespace SCME.MEFAServer.Migrations
                         principalTable: "MonitoringStatTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "MonitoringEventTypes",
+                columns: new[] { "Id", "EventName" },
+                values: new object[,]
+                {
+                    { 1, "MME_ERROR" },
+                    { 2, "MME_START" },
+                    { 3, "MME_SYNC" },
+                    { 4, "MME_TEST" },
+                    { 5, "MME_HEART_BEAT" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MonitoringStatTypes",
+                columns: new[] { "Id", "StatName" },
+                values: new object[,]
+                {
+                    { 1, "DAY_HOURS" },
+                    { 2, "TOTAL_HOURS" },
+                    { 3, "LAST_START_HOURS" }
                 });
 
             migrationBuilder.CreateIndex(

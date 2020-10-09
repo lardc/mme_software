@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SCME.MEFAServer;
+using SCME.MEFADB;
 
-namespace SCME.MEFAServer.Migrations
+namespace SCME.MEFADB.Migrations
 {
     [DbContext(typeof(MonitoringContext))]
-    [Migration("20201008132020_Data1234")]
-    partial class Data1234
+    [Migration("20201009113337_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace SCME.MEFAServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringEvent", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringEvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,6 +40,9 @@ namespace SCME.MEFAServer.Migrations
                     b.Property<string>("Data4")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MmeCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("MonitoringEventTypeId")
                         .HasColumnType("int");
 
@@ -53,7 +56,7 @@ namespace SCME.MEFAServer.Migrations
                     b.ToTable("MonitoringEvents");
                 });
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringEventType", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringEventType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,9 +69,36 @@ namespace SCME.MEFAServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MonitoringEventTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EventName = "MME_ERROR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EventName = "MME_START"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EventName = "MME_SYNC"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EventName = "MME_TEST"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            EventName = "MME_HEART_BEAT"
+                        });
                 });
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringStat", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringStat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,7 +124,7 @@ namespace SCME.MEFAServer.Migrations
                     b.ToTable("MonitoringStats");
                 });
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringStatType", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringStatType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,20 +137,37 @@ namespace SCME.MEFAServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MonitoringStatTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StatName = "DAY_HOURS"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StatName = "TOTAL_HOURS"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            StatName = "LAST_START_HOURS"
+                        });
                 });
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringEvent", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringEvent", b =>
                 {
-                    b.HasOne("SCME.MEFAServer.Tables.MonitoringEventType", "MonitoringEventType")
+                    b.HasOne("SCME.MEFADB.Tables.MonitoringEventType", "MonitoringEventType")
                         .WithMany()
                         .HasForeignKey("MonitoringEventTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SCME.MEFAServer.Tables.MonitoringStat", b =>
+            modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringStat", b =>
                 {
-                    b.HasOne("SCME.MEFAServer.Tables.MonitoringStatType", "MonitoringStatType")
+                    b.HasOne("SCME.MEFADB.Tables.MonitoringStatType", "MonitoringStatType")
                         .WithMany()
                         .HasForeignKey("MonitoringStatTypeId")
                         .OnDelete(DeleteBehavior.Cascade)

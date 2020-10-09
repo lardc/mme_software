@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SCME.MEFADB;
 using SCME.MEFAServer.Controllers;
 
 namespace SCME.MEFAServer
@@ -36,7 +37,6 @@ namespace SCME.MEFAServer
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MonitoringContext db)
         {
             db.Database.Migrate();
-            db.AddDataToTableType();
             /*if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

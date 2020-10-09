@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SCME.MEFAServer.Tables
+namespace SCME.MEFADB.Tables
 {
     public class MonitoringEvent
     {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using SCME.MEFAServer.Tables;
+using SCME.MEFADB;
+using SCME.MEFADB.Tables;
 
 namespace SCME.MEFAServer.Controllers
 {
@@ -23,7 +24,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.StartEventName),
+                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.START_EVENT_NAME),
             });
             _db.SaveChanges();
         }
@@ -34,7 +35,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.TestEventName),
+                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.TEST_EVENT_NAME),
                 Data2 = devId,
                 Data4 = profileGuid.ToString("N")
             });
@@ -47,7 +48,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.ErrorEventName),
+                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.ERROR_EVENT_NAME),
                 Data4 = error
             });
             _db.SaveChanges();
@@ -59,7 +60,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.SyncEventName),
+                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.SYNC_EVENT_NAME),
                 Data1 = profilesCount
             });
             _db.SaveChanges();
@@ -71,7 +72,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.HeartBeatEventName),
+                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.HEART_BEAT_EVENT_NAME),
             });
             _db.SaveChanges();
         }

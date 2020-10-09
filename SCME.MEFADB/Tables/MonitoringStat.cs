@@ -1,4 +1,4 @@
-﻿namespace SCME.MEFAServer.Tables
+﻿namespace SCME.MEFADB.Tables
 {
     public class MonitoringStat
     {
