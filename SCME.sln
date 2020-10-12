@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.MEFAServer", "SCME.MEF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.MEFADB", "SCME.MEFADB\SCME.MEFADB.csproj", "{1C2B2891-A889-4AE2-BB21-7F31867C6E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCME.MEFAViewer", "SCME.MEFAViewer\SCME.MEFAViewer.csproj", "{31C15379-CCEB-45B1-A7DC-AB21B1B211CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{1C2B2891-A889-4AE2-BB21-7F31867C6E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C2B2891-A889-4AE2-BB21-7F31867C6E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C2B2891-A889-4AE2-BB21-7F31867C6E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C15379-CCEB-45B1-A7DC-AB21B1B211CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C15379-CCEB-45B1-A7DC-AB21B1B211CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C15379-CCEB-45B1-A7DC-AB21B1B211CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C15379-CCEB-45B1-A7DC-AB21B1B211CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

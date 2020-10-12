@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,9 @@ namespace SCME.MEFADB
         public DbSet<MonitoringEventType> MonitoringEventTypes { get; set; }
         public DbSet<MonitoringStat> MonitoringStats { get; set; }
         public DbSet<MonitoringStatType> MonitoringStatTypes { get; set; }
+        
+        [NotMapped]
+        public DbSet<MmeCode> MmeCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

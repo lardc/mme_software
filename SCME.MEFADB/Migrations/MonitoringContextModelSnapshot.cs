@@ -19,6 +19,23 @@ namespace SCME.MEFADB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SCME.MEFADB.Tables.MmeCode", b =>
+                {
+                    b.Property<int>("MmeCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("MME_CODE_ID")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnName("MME_CODE")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MmeCodeId");
+
+                    b.ToTable("MME_CODES");
+                });
+
             modelBuilder.Entity("SCME.MEFADB.Tables.MonitoringEvent", b =>
                 {
                     b.Property<int>("Id")
