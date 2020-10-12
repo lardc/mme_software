@@ -15,14 +15,14 @@
     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="TextAlignment" Value="left"/>
     </Style>
 
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
 
@@ -31,7 +31,7 @@
         <Setter Property="Height" Value="37.5"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Margin" Value="5,5,0,5"/>
         <Setter Property="BorderThickness" Value="0"/>
         
@@ -40,7 +40,7 @@
     <Style TargetType="{x:Type myControls:NumericUpDown}" BasedOn="{StaticResource {x:Type myControls:NumericUpDown}}">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>

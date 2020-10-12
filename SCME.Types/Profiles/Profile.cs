@@ -142,6 +142,8 @@ namespace SCME.Types.Profiles
         [DataMember]
         public Commutation.ModuleCommutationType ParametersComm { get; set; }
         [DataMember]
+        public DutPackageType DutPackageType { get; set; }
+        [DataMember]
         public float ParametersClamp { get; set; }
         [DataMember]
         public bool IsHeightMeasureEnabled { get; set; }

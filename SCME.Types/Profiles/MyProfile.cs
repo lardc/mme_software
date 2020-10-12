@@ -20,7 +20,9 @@ namespace SCME.Types.Profiles
 
         #region Comutation
         [DataMember]
-        public Commutation.ModuleCommutationType CommutationType { get; set; }
+        public Commutation.ModuleCommutationType CommutationType { get; set; } = Commutation.ModuleCommutationType.Direct;
+        [DataMember]
+        public DutPackageType DutPackageType { get; set; } = DutPackageType.A1;
         #endregion
         #region Clamping
         [DataMember]
@@ -97,6 +99,7 @@ namespace SCME.Types.Profiles
             Height = DeepData.Height,
             Temperature = DeepData.Temperature,
             ParametersComm = DeepData.CommutationType,
+            DutPackageType = DeepData.DutPackageType,
             
             TestParametersAndNormatives = DeepData.TestParametersAndNormatives
         };

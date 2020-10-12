@@ -42,6 +42,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"CLAMP_HeightMeasure", data.IsHeightMeasureEnabled},
                 {"CLAMP_HeightValue", data.Height},
                 {"CLAMP_Temperature", data.Temperature},
+                {"DutPackageType", data.DutPackageType},
             };
 
             var clampingParameters = new Dictionary<string, (object Min, object Max)>();

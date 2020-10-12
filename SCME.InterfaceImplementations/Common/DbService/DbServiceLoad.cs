@@ -750,6 +750,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "CLAMP_Temperature":
                         data.Temperature = ushort.Parse(result.Value.ToString());
                         break;
+                    case "DutPackageType":
+                        data.DutPackageType = (DutPackageType)Enum.Parse(typeof(DutPackageType), result.Value.ToString());
+                        break;
                 }
             }
         }

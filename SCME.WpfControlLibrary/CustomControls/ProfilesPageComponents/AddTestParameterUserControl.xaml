@@ -35,8 +35,8 @@
 
         <Label Grid.Column="0" Grid.Row="0"  Content="Тип корпуса"/>
         <ComboBox Grid.Column="1" Grid.Row="0"  Grid.ColumnSpan="3"  Margin="5,5,5,5"
-                                      ItemsSource="{Binding Source={StaticResource ModuleCommutationTypes}}"
-                                      SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" />
+                  ItemsSource="{Binding Source={StaticResource DutPackageType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DutPackageType}"
+                                       />
 
 
         <Label Grid.Column="0" Grid.Row="2" Content="Тип измерения" 
