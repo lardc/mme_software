@@ -53,6 +53,7 @@ namespace SCME.Types.ProhibitionVoltage
 
         public TestParameters()
         {
+            DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.ProhibitionVoltage;
             TypeManagement = TypeManagement.ACVoltage;
         }

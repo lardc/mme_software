@@ -58,6 +58,7 @@ namespace SCME.Types.OutputLeakageCurrent
 
         public TestParameters()
         {
+            DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.OutputLeakageCurrent;
             ApplicationPolarityConstantSwitchingVoltage = ApplicationPolarityConstantSwitchingVoltage.ACVoltage;
             PolarityDCSwitchingVoltageApplication = PolarityDCSwitchingVoltageApplication.Direct;

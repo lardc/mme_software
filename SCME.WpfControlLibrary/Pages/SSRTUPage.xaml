@@ -36,7 +36,8 @@
                 <ColumnDefinition Width="1.1*" />
             </Grid.ColumnDefinitions>
             <Label Content="Тип корпуса"/>
-            <ComboBox Grid.Column="1"/>
+            <ComboBox Grid.Column="1" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM}"
+                      ItemsSource="{Binding Source={StaticResource DutPackageType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DutPackageType}"/>
         </Grid>
         <TabControl Grid.Row="2" Background="Transparent" Name="MainTabControl" BorderThickness="0">
             <TabControl.Resources>

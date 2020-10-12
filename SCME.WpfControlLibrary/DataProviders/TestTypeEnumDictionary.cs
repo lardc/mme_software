@@ -243,6 +243,28 @@ namespace SCME.WpfControlLibrary.DataProviders
             };
         }
 
+        public static Dictionary<string, DutPackageType> GetDutPackageType()
+        {
+            return new Dictionary<string, DutPackageType>
+            {
+                {nameof(DutPackageType.A1), DutPackageType.A1 },
+                {nameof(DutPackageType.B1), DutPackageType.B1 },
+                {nameof(DutPackageType.B2), DutPackageType.B2 },
+                {nameof(DutPackageType.B3), DutPackageType.B3 },
+                {nameof(DutPackageType.B5), DutPackageType.B5 },
+                {nameof(DutPackageType.D1), DutPackageType.D1 },
+                {nameof(DutPackageType.D192), DutPackageType.D192 },
+                {nameof(DutPackageType.D2), DutPackageType.D2 },
+                {nameof(DutPackageType.I1), DutPackageType.I1 },
+                {nameof(DutPackageType.I2), DutPackageType.I2 },
+                {nameof(DutPackageType.L1), DutPackageType.L1 },
+                {nameof(DutPackageType.L2), DutPackageType.L2 },
+                {nameof(DutPackageType.V1), DutPackageType.V1 },
+                {nameof(DutPackageType.V108), DutPackageType.V108 },
+                {nameof(DutPackageType.V2), DutPackageType.V2 },
+            };
+        }
+
         
 
     }

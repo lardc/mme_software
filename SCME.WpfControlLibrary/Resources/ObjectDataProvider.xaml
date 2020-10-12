@@ -27,6 +27,7 @@
     <ObjectDataProvider x:Key="ApplicationPolarityConstantSwitchingVoltage" MethodName="GetApplicationPolarityConstantSwitchingVoltage" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="PolarityDCSwitchingVoltageApplication" MethodName="GetPolarityDCSwitchingVoltageApplication" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="SwitchingCurrentPulseShape" MethodName="GetSwitchingCurrentPulseShape" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="DutPackageType" MethodName="GetDutPackageType" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
     
 

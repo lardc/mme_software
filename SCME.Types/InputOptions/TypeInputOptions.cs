@@ -52,6 +52,7 @@ namespace SCME.Types.InputOptions
 
         public TestParameters()
         {
+            DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.InputOptions;
             TypeManagement = TypeManagement.ACVoltage;
         }

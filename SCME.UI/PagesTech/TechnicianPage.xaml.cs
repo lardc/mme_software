@@ -110,7 +110,7 @@ namespace SCME.UI.PagesTech
                     break;
                 case 18:
                     Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.OutputLeakageCurrent , 
-                        () =>Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        () =>Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, Cache.SSRTU.ItemVM.DutPackageType),
                         Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Ток утечки на выходе";
                     Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
@@ -120,7 +120,7 @@ namespace SCME.UI.PagesTech
                     break;
                 case 19:
                     Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.OutputResidualVoltage,
-                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, Cache.SSRTU.ItemVM.DutPackageType),
                         Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Выходное остаточное напряжение";
                     Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
@@ -130,7 +130,7 @@ namespace SCME.UI.PagesTech
                     break;
                 case 20:
                     Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.InputOptions,
-                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, Cache.SSRTU.ItemVM.DutPackageType),
                         Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Параметры входа";
                     Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
@@ -140,7 +140,7 @@ namespace SCME.UI.PagesTech
                     break;
                 case 21:
                     Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.ProhibitionVoltage,
-                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, DutPackageType.A1),
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, Cache.SSRTU.ItemVM.DutPackageType),
                         Cache.Net.StopSSRTU);
                     Cache.Main.VM.TopTitle = "Напряжение запрета";
                     Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;

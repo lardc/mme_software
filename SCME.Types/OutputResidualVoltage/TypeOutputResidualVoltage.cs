@@ -59,6 +59,7 @@ namespace SCME.Types.OutputResidualVoltage
 
         public TestParameters()
         {
+            DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.OutputResidualVoltage;
             PolarityDCSwitchingVoltageApplication = PolarityDCSwitchingVoltageApplication.Direct;
             SwitchingCurrentPulseShape = SwitchingCurrentPulseShape.Sinus;
