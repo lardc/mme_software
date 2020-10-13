@@ -10,6 +10,8 @@ namespace SCME.MEFAViewer
     {
         public ObservableCollection<MmeTile> MmeTiles { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        
+        public MmeTile SelectedMmeTile { get; set; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

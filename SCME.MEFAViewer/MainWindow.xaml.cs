@@ -36,6 +36,7 @@ namespace SCME.MEFAViewer
             var q = _db.MmeCodes.ToList();
             Vm.MmeTiles = new ObservableCollection<MmeTile>(q.Select(m => new MmeTile()
             {
+                Id = m.MmeCodeId,
                 Name = m.Name
             }));
             InitializeComponent();
@@ -78,16 +79,32 @@ namespace SCME.MEFAViewer
                     if (_db.MonitoringEvents.FirstOrDefault(m => m.MonitoringEventType.EventName == MonitoringEventType.HEART_BEAT_EVENT_NAME && m.MmeCode == i.Name &&
                                                                   m.Timestamp > limitDateTime) != null)
                     {
-                        if (_db.MonitoringEvents.FirstOrDefault(m => m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME && m.MmeCode == i.Name &&
-                                                                     m.Timestamp > limitDateTime) != null)
-                            brush = Brushes.Orange;
-                        else
-                            brush = Brushes.Green;
+                        brush = _db.MonitoringEvents.FirstOrDefault(m => m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME && m.MmeCode == i.Name &&
+                                                                         m.Timestamp > limitDateTime) != null ? Brushes.Orange : Brushes.Green;
                     }
 
                     i.Color = brush;
                 }
             }
+        }
+
+        private void MmeTile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var mmeTile = Vm.SelectedMmeTile;
+            var monitoringEventsStart = _db.MonitoringEvents.Where(m=> m.MonitoringEventType.EventName == MonitoringEventType.START_EVENT_NAME);
+
+            mmeTile.LastStartTimestamp = _db.MonitoringEvents.Where(m => m.MonitoringEventType.EventName == MonitoringEventType.START_EVENT_NAME).OrderByDescending(m => m.Timestamp).FirstOrDefault()?.Timestamp;
+            var dateTime = _db.MonitoringEvents.Where(m => m.MonitoringEventType.EventName == MonitoringEventType.START_EVENT_NAME).OrderByDescending(m => m.Timestamp).FirstOrDefault()?.Data1;
+            if(dateTime != null)
+                mmeTile.LastSWUpdateTimestamp = DateTime.FromBinary(dateTime.Value);
+            
+                
+            mmeTile.LastTestTimestamp = _db.MonitoringEvents.Where(m => m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME).OrderByDescending(m => m.Timestamp).FirstOrDefault()?.Timestamp;
+            mmeTile.TestCounterTotal = _db.MonitoringEvents.Count(m => m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME);
+            
+            mmeTile.HardwareErrorCounterTotal = _db.MonitoringEvents.Count(m => m.MonitoringEventType.EventName == MonitoringEventType.ERROR_EVENT_NAME);
+
+            mmeTile.ActiveProfilesCount = _db.MonitoringEvents.Where(m => m.MonitoringEventType.EventName == MonitoringEventType.SYNC_EVENT_NAME).OrderByDescending(m => m.Timestamp).FirstOrDefault()?.Data1;
         }
     }
 }

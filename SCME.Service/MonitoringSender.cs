@@ -33,7 +33,7 @@ namespace SCME.Service
             }));
         }
 
-        public void Sync(int countSyncProfiles)
+        public void Sync(int profilesCount)
         {
             var client = new HttpClient();
             var uri = new Uri(_baseUri, "Event/Sync");
@@ -41,7 +41,7 @@ namespace SCME.Service
             {
                 new KeyValuePair<string, string>("mme", _mme),
                 new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
-                new KeyValuePair<string, string>("profilesCount", countSyncProfiles.ToString())
+                new KeyValuePair<string, string>("profilesCount", profilesCount.ToString())
             }));
         }
         

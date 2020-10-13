@@ -11,7 +11,7 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding MmeTiles}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListView ItemsSource="{Binding MmeTiles}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedMmeTile}" SelectionChanged="MmeTile_OnSelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel  Orientation="Horizontal" />
@@ -25,5 +25,37 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid Grid.Column="1" DataContext="{Binding SelectedMmeTile}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="LastStartTimestamp"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="TestCounterTotal"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="HardwareErrorCounterTotal"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="LastTestTimestamp"/>
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="LastSWUpdateTimestamp"/>
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="ActiveProfilesCount"/>
+            
+            
+            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding LastStartTimestamp}" TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TestCounterTotal}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding HardwareErrorCounterTotal}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding LastTestTimestamp}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding LastSWUpdateTimestamp}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding ActiveProfilesCount}"  TextAlignment="Right"/>
+            
+            
+            
+        </Grid>
+        
     </Grid>
 </Window>
