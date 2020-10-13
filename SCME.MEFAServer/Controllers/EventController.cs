@@ -24,6 +24,7 @@ namespace SCME.MEFAServer.Controllers
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
+                Data1 = lastUpdate.ToBinary(),
                 MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.START_EVENT_NAME),
             });
             _db.SaveChanges();
