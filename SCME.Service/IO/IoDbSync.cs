@@ -117,7 +117,7 @@ namespace SCME.Service.IO
                     _sqLiteDbService.InsertUpdateProfile(null, i, _mmeCode);
                 }
 
-                return addingProfiles.Count;
+                return localProfiles.Count - deletingProfiles.Count + addingProfiles.Count;
             }
             catch (Exception ex)
             {
