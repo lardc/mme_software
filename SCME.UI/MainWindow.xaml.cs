@@ -303,7 +303,8 @@ namespace SCME.UI
                 IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
                 IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
                 TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
-                SafetyMode = VM.SafetyMode
+                SafetyMode = VM.SafetyMode,
+                SoftVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()
             };
 
             if (!Equals(mainFrame.Content, Cache.Welcome))

@@ -212,7 +212,7 @@ namespace SCME.Service
 
                 InitializationResponse = taskSync.Result;
                 
-                _monitoringSender.Start();
+                _monitoringSender.Start(Params.SoftVersion);
 
                 Task.Factory.StartNew(() => 
                 {

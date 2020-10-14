@@ -18,13 +18,14 @@ namespace SCME.MEFAServer.Controllers
         }
 
         [HttpPost]
-        public void Start(string mme, DateTime timestamp, bool debug, DateTime lastUpdate)
+        public void Start(string mme, DateTime timestamp, bool debug, DateTime lastUpdate, string softVersion)
         {
             _db.MonitoringEvents.Add(new MonitoringEvent()
             {
                 MmeCode = mme,
                 Timestamp = timestamp,
                 Data1 = lastUpdate.ToBinary(),
+                Data4 = softVersion,
                 MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.START_EVENT_NAME),
             });
             _db.SaveChanges();

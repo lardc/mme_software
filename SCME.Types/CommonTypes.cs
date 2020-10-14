@@ -287,6 +287,9 @@ namespace SCME.Types
         public class InitParams
         {
             [DataMember]
+            public string SoftVersion { get; set; }
+            
+            [DataMember]
             public int TimeoutService { get; set; }
 
             [DataMember]

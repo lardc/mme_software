@@ -20,7 +20,7 @@ namespace SCME.Service
             _baseUri = new Uri(baseUri);
         }
         
-        public void Start()
+        public void Start(string softVersion)
         {
             var client = new HttpClient();
             var uri = new Uri(_baseUri, "Event/Start");
@@ -30,6 +30,7 @@ namespace SCME.Service
                 new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
                 new KeyValuePair<string, string>("debug", _debug.ToString()),
                 new KeyValuePair<string, string>("lastUpdate", _lastUpdate.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("softVersion", softVersion),
             }));
         }
 

@@ -37,7 +37,6 @@ namespace SCME.MEFAServer
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MonitoringContext db)
         {
             db.Database.Migrate();
-            var q = db.MmeCodes.ToList();
             /*if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
