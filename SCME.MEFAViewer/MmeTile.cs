@@ -12,15 +12,23 @@ namespace SCME.MEFAViewer
         public string Name { get; set; }
         public Brush Color { get; set; }
 
+        public string SoftVersion { get; set; }
         public DateTime? LastStartTimestamp { get; set; }
         public long? TestCounterTotal { get; set; }
         public long? HardwareErrorCounterTotal { get; set; }
         public DateTime? LastTestTimestamp { get; set; }
         public DateTime? LastSWUpdateTimestamp { get; set; }
         public long? ActiveProfilesCount { get; set; }
+        public long? TestCounter { get; set; }
+        public long? HardwareErrorCounter { get; set; }
         
+        public DateTime TestCounterBeginDateTime { get; set; } =  DateTime.Now - new TimeSpan(7, 0, 0, 0);
+        public DateTime TestCounterEndDateTime { get; set; } = DateTime.Now;
         
+        public DateTime HardwareErrorCounterBeginDateTime { get; set; }= DateTime.Now - new TimeSpan(7, 0, 0, 0);
+        public DateTime HardwareErrorCounterEndDateTime { get; set; } =DateTime.Now;
 
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
