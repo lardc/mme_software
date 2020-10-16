@@ -295,12 +295,13 @@ namespace SCME.Service.IO
             //FireNotificationEvent();
             //return false;
 
+            _Result = new TestResults();
+            _Result.NumberPosition = parameters.NumberPosition;
+            
             try
             {
                 //_State = DeviceState.InProcess;
                 CallAction(ACT_CLR_WARNING);
-                _Result = new TestResults();
-                _Result.NumberPosition = parameters.NumberPosition;
 
                 if (_IsSSRTUEmulation)
                 {
@@ -409,36 +410,35 @@ namespace SCME.Service.IO
                     if (res != -1)
                         throw new Exception($"Ошибка измерения, код{res}");
 
-                    TestResults testResults = new TestResults();
 
                     switch (parameters)
                     {
                         case Types.InputOptions.TestParameters io:
-                            testResults.TestParametersType = TestParametersType.InputOptions;
+                            _Result.TestParametersType = TestParametersType.InputOptions;
                             if (io.ShowAmperage)
-                                testResults.Value = ReadRegister(REG_RESULT_CONTROL_VOLTAGE);
+                                _Result.Value = ReadRegister(REG_RESULT_CONTROL_VOLTAGE);
                             else
                             {
-                                testResults.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
-                                testResults.InputOptionsIsAmperage = true;
+                                _Result.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
+                                _Result.InputOptionsIsAmperage = true;
                             }
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
-                            testResults.TestParametersType = TestParametersType.OutputLeakageCurrent;
-                            testResults.Value = ReadRegister(REG_RESULT_LEAKAGE_CURRENT);
+                            _Result.TestParametersType = TestParametersType.OutputLeakageCurrent;
+                            _Result.Value = ReadRegister(REG_RESULT_LEAKAGE_CURRENT);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
-                            testResults.TestParametersType = TestParametersType.OutputResidualVoltage;
-                            testResults.Value = ReadRegister(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE);
+                            _Result.TestParametersType = TestParametersType.OutputResidualVoltage;
+                            _Result.Value = ReadRegister(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
-                            testResults.TestParametersType = TestParametersType.ProhibitionVoltage;
-                            testResults.Value = ReadRegister(REG_RESULT_PROHIBITION_VOLTAGE);
+                            _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
+                            _Result.Value = ReadRegister(REG_RESULT_PROHIBITION_VOLTAGE);
                             break;
                     }
 
                     //_State = DeviceState.Success;
-                    FireSSRTUEvent(DeviceState.Success, testResults);
+                    FireSSRTUEvent(DeviceState.Success, _Result);
 
                 }
 
