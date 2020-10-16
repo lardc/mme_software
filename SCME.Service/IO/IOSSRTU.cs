@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SCME.Types.SSRTU;
 using System.Threading;
 using SCME.Types.BaseTestParams;
+using System.Windows.Forms;
 
 namespace SCME.Service.IO
 {
@@ -33,7 +34,7 @@ namespace SCME.Service.IO
             //Устанавливаем режим эмуляции
             _IsSSRTUEmulation = Settings.Default.SSRTUEmulation;
             ///////////////////////////////////////////////////////////
-            _Node = (ushort)Settings.Default.TOUNode;
+            _Node = (ushort)Settings.Default.SSRTUNode;
             //_Result = new TestResults();
 
             SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info,
@@ -49,7 +50,7 @@ namespace SCME.Service.IO
         {
             var timeStamp = Environment.TickCount + _timeoutSSRTU;
             HWDeviceState devState = HWDeviceState.None;
-            while (Environment.TickCount < timeStamp)
+            while (Environment.TickCount <= timeStamp)
             {
                 Thread.Sleep(100);
 
@@ -70,7 +71,7 @@ namespace SCME.Service.IO
         {
             var timeStamp = Environment.TickCount + _timeoutSSRTU;
             HWDeviceState devState = HWDeviceState.None;
-            while (Environment.TickCount < timeStamp)
+            while (Environment.TickCount <= timeStamp)
             {
                 Thread.Sleep(100);
 
@@ -111,6 +112,8 @@ namespace SCME.Service.IO
 
             try
             {
+                ReadRegister(0);
+                
                 var timeStamp = Environment.TickCount + _timeoutSSRTU;
                 ClearWarning();
 
@@ -196,7 +199,7 @@ namespace SCME.Service.IO
                 if (devState != HWDeviceState.Ready)
                 {
                     string error = "Launch test, SSRTU State not Ready, function Start";
-                    SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, error);
+                    SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, error);
                     throw new Exception(error);
                 }
             }
@@ -223,14 +226,14 @@ namespace SCME.Service.IO
 
         internal void ClearFault()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, "SSRTU fault cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, "SSRTU fault cleared");
 
             CallAction(ACT_CLR_FAULT);
         }
 
         private void ClearWarning()
         {
-            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note, "SSRTU warning cleared");
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, "SSRTU warning cleared");
 
             CallAction(ACT_CLR_WARNING);
         }
@@ -243,7 +246,7 @@ namespace SCME.Service.IO
                 value = _IOAdapter.Read16(_Node, Address);
 
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info,
                                          string.Format("SSRTU @ReadRegister, address {0}, value {1}", Address, value));
 
             return value;
@@ -252,7 +255,7 @@ namespace SCME.Service.IO
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info,
                                          string.Format("SSRTU @WriteRegister, address {0}, value {1}", Address, Value));
 
             if (_IsSSRTUEmulation)
@@ -264,7 +267,7 @@ namespace SCME.Service.IO
         internal void CallAction(ushort Action, bool SkipJournal = false)
         {
             if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Note,
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info,
                                          string.Format("SSRTU @Call, action {0}", Action));
 
             if (_IsSSRTUEmulation)

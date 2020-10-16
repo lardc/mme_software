@@ -199,7 +199,8 @@ namespace SCME.UI
                 IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
                 IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
                 TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
-                
+                TimeoutSSRTU = Cache.Welcome.GetTimeout(ComplexParts.SSRTU),
+
                 SafetyMode = VM.SafetyMode
             };
 

@@ -107,6 +107,7 @@ namespace SCME.Service
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
+            
             IoDbSync = new IoDbSync(m_Communication);
             _ioSSRTU = new IOSSRTU(m_IOAdapter, m_Communication);
 
@@ -399,6 +400,17 @@ namespace SCME.Service
             try
             {
                 m_IOTOU.Deinitialize();
+            }
+            catch (Exception ex)
+            {
+                var message = string.Format(Resources.Error_LogicContainer_Exception, ex.Message);
+                SystemHost.Journal.AppendLog(ComplexParts.Service, LogMessageType.Error, message);
+                savedEx = ex;
+            }
+            
+            try
+            {
+                _ioSSRTU.Deinitialize();
             }
             catch (Exception ex)
             {

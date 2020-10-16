@@ -69,7 +69,7 @@
 
             <customControls:HardwareItem x:Name="sSRTUControl"
                                               Title="Блок измерения твёрдотельных реле"
-                                              InitializeTimeout="3000" OperationTimeout="0"
+                                              InitializeTimeout="3000" OperationTimeout="25000"
                                               DisableAvailable="False"
                                               Backcolor="{StaticResource xYellow1}"
                                               Logo="{StaticResource CommutationPath}" 
