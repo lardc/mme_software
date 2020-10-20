@@ -492,17 +492,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
-                        break;
                 }
             }
 
@@ -561,17 +554,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
-                        break;
                 }
             }
 
@@ -627,16 +613,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
-                    case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchingCurrentPulseShape":
@@ -698,16 +676,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
-                    case "Im_AuxiliaryCurrentPowerSupply1":
-                        testParams.AuxiliaryCurrentPowerSupply1 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
-                        break;
-
-                    case "Im_AuxiliaryCurrentPowerSupply2":
-                        testParams.AuxiliaryCurrentPowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }
@@ -1133,6 +1103,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "InputVoltage":
                         parameters.InputVoltageMinimum = result.Item2.Value;
                         parameters.InputVoltageMaximum = result.Item3.Value;
+                        break;
+                    case "AuxCurrentPower1":
+                        parameters.AuxiliaryCurrentPowerSupplyMinimum1 = result.Item2.Value;
+                        parameters.AuxiliaryCurrentPowerSupplyMaximum1 = result.Item3.Value;
+                        break;
+                    case "AuxCurrentPower2":
+                        parameters.AuxiliaryCurrentPowerSupplyMinimum2 = result.Item2.Value;
+                        parameters.AuxiliaryCurrentPowerSupplyMaximum2 = result.Item3.Value;
                         break;
                 }
             }

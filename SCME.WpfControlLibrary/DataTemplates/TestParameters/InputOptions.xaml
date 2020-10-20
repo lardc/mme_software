@@ -40,23 +40,19 @@
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage}" StringFormat="{}{0:N1}"/>
 
-    <Label Grid.Column="0" Grid.Row="4" >
+    <Label Grid.Column="0" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 1, В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"/>
 
-    <Label Grid.Column="0" Grid.Row="5" >
+    <Label Grid.Column="3" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 2, В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
-
-
-
-
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply2}" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  StringFormat="N2"/>
 
 
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
@@ -66,7 +62,7 @@
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}"  StringFormat="N2"/>
 
 
-    <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
+    <!--<TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
                 Ток вспом. питания 1, мА
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
@@ -74,7 +70,7 @@
     <TextBlock Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
                 Ток вспом. питания 2, мА
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>-->
 
 
 
@@ -87,6 +83,8 @@
             <ColumnDefinition Width="1.1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -108,5 +106,26 @@
             </TextBlock>
         </Label>
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding InputVoltageMaximum}" StringFormat="N2"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
+            Ток вспомогательного<LineBreak/>питания 1 мин
+        </TextBlock>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryCurrentPowerSupplyMinimum1}" StringFormat="N2"/>
+
+        <TextBlock Grid.Column="3" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
+            Ток вспомогательного<LineBreak/>питания 1 макс
+        </TextBlock>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}" Value="{Binding AuxiliaryCurrentPowerSupplyMaximum1}" StringFormat="N2"/>
+
+        
+        <TextBlock Grid.Column="0" Grid.Row="3"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}">
+            Ток вспомогательного<LineBreak/>питания 2 мин
+        </TextBlock>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryCurrentPowerSupplyMinimum2}" StringFormat="N2"/>
+
+        <TextBlock Grid.Column="3" Grid.Row="3" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}">
+            Ток вспомогательного<LineBreak/>питания 2 макс
+        </TextBlock>
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}" Value="{Binding AuxiliaryCurrentPowerSupplyMaximum2}" StringFormat="N2"/>
     </Grid>
 </Grid>

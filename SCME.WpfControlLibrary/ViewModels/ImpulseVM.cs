@@ -14,6 +14,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         public bool CanCanselMeasument => !CanStart;
 
         public double Result { get; set; }
+        public double ShowAuxiliaryCurrentPowerSupply1 { get; set; }
+        public double ShowAuxiliaryCurrentPowerSupply2 { get; set; }
 
     }
 }

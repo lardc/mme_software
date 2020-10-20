@@ -49,19 +49,19 @@
     <Label Grid.Column="0" Grid.Row="3" Content="Ком. ток, мА" ></Label>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
 
-    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap">
+    <TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2VC}}">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 1, В
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"   Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2VC}}" Value="{Binding AuxiliaryVoltagePowerSupply1}"   StringFormat="N2"/>
 
-    <TextBlock Grid.Column="0" Grid.Row="5" TextWrapping="Wrap">
+    <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2VC}}">
         <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 2, В
         </TextBlock>
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="5"   Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2VC}}"  Value="{Binding AuxiliaryVoltagePowerSupply2}"   StringFormat="N2"/>
 
     <Label Grid.Column="0" Grid.Row="6" Content="Ток утечки мин, мА" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"></Label>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="6"   Value="{Binding LeakageCurrentMinimum}" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}" StringFormat="N2"/>
@@ -86,7 +86,7 @@
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage}"   StringFormat="N2"/>
 
 
-    <TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
+    <!--<TextBlock Grid.Column="3" Grid.Row="4" TextWrapping="Wrap">
                 Ток вспом. питания 1, мА
     </TextBlock>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4"   Value="{Binding AuxiliaryCurrentPowerSupply1}"   StringFormat="N2"/>
@@ -94,7 +94,7 @@
     <TextBlock  Grid.Column="3" Grid.Row="5" TextWrapping="Wrap">
                 Ток вспом. питания 2, мА
     </TextBlock>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding AuxiliaryCurrentPowerSupply2}"   StringFormat="N2"/>-->
 
     <Label Grid.Column="3" Grid.Row="6" Content="Ток утечки макс, мА" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"></Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6"   Value="{Binding LeakageCurrentMaximum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>

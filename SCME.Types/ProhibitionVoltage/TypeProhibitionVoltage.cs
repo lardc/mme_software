@@ -39,12 +39,7 @@ namespace SCME.Types.ProhibitionVoltage
         [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }
         [DataMember]
-        public double AuxiliaryCurrentPowerSupply1 { get; set; }
-
-        [DataMember]
         public double AuxiliaryVoltagePowerSupply2 { get; set; }
-        [DataMember]
-        public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
         [DataMember]
         public double ProhibitionVoltageMinimum { get; set; }

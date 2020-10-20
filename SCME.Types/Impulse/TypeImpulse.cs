@@ -49,5 +49,10 @@ namespace SCME.Types.SSRTU
         public float Value { get; set; }
         [DataMember]
         public TestParametersType TestParametersType { get; set; } = TestParametersType.InputOptions;
+
+        [DataMember]
+        public float AuxiliaryCurrentPowerSupply1 { get; set; }
+        [DataMember]
+        public float AuxiliaryCurrentPowerSupply2 { get; set; }
     }
 }

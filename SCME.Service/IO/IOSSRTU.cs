@@ -316,6 +316,8 @@ namespace SCME.Service.IO
                             
 
                     _Result.Value = (float)rand.NextDouble() * 1000;
+                    _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.NextDouble() * 1000;
+                    _Result.AuxiliaryCurrentPowerSupply2 = (float)rand.NextDouble() * 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
                     FireSSRTUEvent(DeviceState.Success, _Result);
@@ -332,8 +334,6 @@ namespace SCME.Service.IO
                             WriteRegister(REG_CONTROL_TYPE, (ushort)io.TypeManagement);
                             WriteRegister(REG_AUX_1_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply1);
                             WriteRegister(REG_AUX_2_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, (ushort)io.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, (ushort)io.AuxiliaryCurrentPowerSupply2);
                             WriteRegister(REG_CONTROL_CURRENT, (ushort)io.ControlCurrent);
                             WriteRegister(REG_CONTROL_VOLTAGE, (ushort)io.ControlVoltage);
                             break;
@@ -342,8 +342,6 @@ namespace SCME.Service.IO
                             WriteRegister(REG_CONTROL_TYPE, (ushort)lc.TypeManagement);
                             WriteRegister(REG_AUX_1_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply1);
                             WriteRegister(REG_AUX_2_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, (ushort)lc.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, (ushort)lc.AuxiliaryCurrentPowerSupply2);
                             WriteRegister(REG_CONTROL_CURRENT, (ushort)lc.ControlCurrent);
                             WriteRegister(REG_CONTROL_VOLTAGE, (ushort)lc.ControlVoltage);
                             WriteRegister(REG_COMMUTATION_CURRENT, (ushort)lc.SwitchedAmperage);
@@ -361,8 +359,6 @@ namespace SCME.Service.IO
                             WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)rv.SwitchedVoltage);
                             WriteRegister(REG_AUX_1_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply1);
                             WriteRegister(REG_AUX_2_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, (ushort)rv.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, (ushort)rv.AuxiliaryCurrentPowerSupply2);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
                             WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
                             break;
@@ -375,8 +371,6 @@ namespace SCME.Service.IO
                             WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)pv.SwitchedVoltage);
                             WriteRegister(REG_AUX_1_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply1);
                             WriteRegister(REG_AUX_2_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_AUX_1_CURRENT, (ushort)pv.AuxiliaryCurrentPowerSupply1);
-                            WriteRegister(REG_AUX_2_CURRENT, (ushort)pv.AuxiliaryCurrentPowerSupply2);
                             break;
                     }
 
@@ -422,6 +416,8 @@ namespace SCME.Service.IO
                                 _Result.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
                                 _Result.InputOptionsIsAmperage = true;
                             }
+                            _Result.AuxiliaryCurrentPowerSupply1 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY1);
+                            _Result.AuxiliaryCurrentPowerSupply2 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY2);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             _Result.TestParametersType = TestParametersType.OutputLeakageCurrent;
@@ -586,7 +582,10 @@ namespace SCME.Service.IO
             REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE = 199, // Residual output voltage / Остаточное напряжение на выходе(mV / мВ)
             REG_RESULT_CONTROL_CURRENT = 200, // Control current / Ток управления(mA / мА)
             REG_RESULT_CONTROL_VOLTAGE = 201, // Control voltage / Напряжение управления(mV / мВ)
-            REG_RESULT_PROHIBITION_VOLTAGE = 202 // Prohibition voltage / Напряжение запрета(mV / мВ)
+            REG_RESULT_PROHIBITION_VOLTAGE = 202, // Prohibition voltage / Напряжение запрета(mV / мВ)
+
+            AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
+            AUXILARY_CURRENT_POWER_SUPPLY2 = 204
             ;
         #endregion
     }

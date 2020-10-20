@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -84,16 +86,22 @@ namespace SCME.Types.BaseTestParams
     [KnownType(typeof(ProhibitionVoltage.TestParameters))]
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public abstract class BaseTestParametersAndNormatives
+    public abstract class BaseTestParametersAndNormatives: INotifyPropertyChanged
     {
+        public bool ShowAuxiliaryVoltagePowerSupply1 => DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108;
+
+        public bool ShowAuxiliaryVoltagePowerSupply2 => DutPackageType == DutPackageType.V108;
+
+
         [IgnoreDataMember]
         public bool HideMinMax { get; set; }
 
         [DataMember]
         public int NumberPosition { get; set; } = 1;
 
+        
         [DataMember]
-        public DutPackageType DutPackageType { get; set; }
+        public DutPackageType DutPackageType { get; set; }  
 
         [DataMember]
         public TestParametersType TestParametersType { get; set; }
@@ -137,6 +145,14 @@ namespace SCME.Types.BaseTestParams
                 default:
                     throw new NotImplementedException("CreateParametersByType");
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

@@ -43,12 +43,7 @@ namespace SCME.Types.OutputLeakageCurrent
         [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }
         [DataMember]
-        public double AuxiliaryCurrentPowerSupply1 { get; set; }
-
-        [DataMember]
         public double AuxiliaryVoltagePowerSupply2 { get; set; }
-        [DataMember]
-        public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
         [DataMember]
         public double LeakageCurrentMinimum { get; set; }

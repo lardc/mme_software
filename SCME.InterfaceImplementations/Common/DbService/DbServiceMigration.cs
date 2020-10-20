@@ -100,8 +100,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Im_ControlCurrent", "Im_ControlCurrent", true),
             ("Im_AuxiliaryVoltagePowerSupply1", "Im_AuxiliaryVoltagePowerSupply1", true),
             ("Im_AuxiliaryVoltagePowerSupply2", "Im_AuxiliaryVoltagePowerSupply2", true),
-            ("Im_AuxiliaryCurrentPowerSupply1", "Im_AuxiliaryCurrentPowerSupply1", true),
-            ("Im_AuxiliaryCurrentPowerSupply2", "Im_AuxiliaryCurrentPowerSupply2", true),
             ("Im_AppPolSwitchingVoltage", "Im_ApplicationPolarityConstantSwitchingVoltage", true),
             ("Im_PolDCSwVoltageApplication", "Im_PolDCSwVoltageApplication", true),
             ("Im_SwitchedAmperage", "Im_SwitchedAmperage", true),
@@ -174,6 +172,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("LeakageCurrent", "Im_LeakageCurrent", false),
             ("ResidualVoltage", "Im_ResidualVoltage", false),
             ("ProhVoltage", "Im_ProhibitionVoltage", false),
+            ("AuxCurrentPower1", "AuxCurrentPower1", true),
+            ("AuxCurrentPower2", "AuxCurrentPower2", true),
         };
 
         private readonly (string name, string localName, int code)[] _errorsList =

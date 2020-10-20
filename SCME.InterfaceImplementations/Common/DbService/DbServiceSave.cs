@@ -348,9 +348,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
-                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
-                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
             };
 
             if (data.ShowVoltage)
@@ -363,6 +361,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 parameters.Add("InputVoltage", (data.InputVoltageMinimum, data.InputVoltageMaximum));
             else
                 parameters.Add("InputAmperage", (data.InputCurrentMinimum, data.InputCurrentMaximum));
+
+            if(data.ShowAuxiliaryVoltagePowerSupply1)
+                parameters.Add("AuxCurrentPower1", (data.AuxiliaryCurrentPowerSupplyMinimum1, data.AuxiliaryCurrentPowerSupplyMaximum1));
+            if (data.ShowAuxiliaryVoltagePowerSupply1)
+                parameters.Add("AuxCurrentPower2", (data.AuxiliaryCurrentPowerSupplyMinimum2, data.AuxiliaryCurrentPowerSupplyMaximum2));
 
             return ("InputOptions", condition, parameters);
         }
@@ -378,9 +381,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
-                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
-                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
             };
 
             if (data.ShowVoltage)
@@ -406,9 +407,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
-                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
-                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
                 {"Im_SwitchingCurrentPulseShape", (int)data.SwitchingCurrentPulseShape},
                 {"Im_SwitchingCurrentPulseDuration", data.SwitchingCurrentPulseDuration},
             };
@@ -435,9 +434,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
-                {"Im_AuxiliaryCurrentPowerSupply1", data.AuxiliaryCurrentPowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
-                {"Im_AuxiliaryCurrentPowerSupply2", data.AuxiliaryCurrentPowerSupply2},
             };
 
             if (data.ShowVoltage)

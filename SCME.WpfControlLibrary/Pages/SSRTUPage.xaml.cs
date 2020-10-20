@@ -52,7 +52,6 @@ namespace SCME.WpfControlLibrary.Pages
                 default:
                     break;
             }
-
             ItemVM.HideMinMax = true;
         }
 
@@ -79,6 +78,7 @@ namespace SCME.WpfControlLibrary.Pages
         {
             VM.CanStart = true;
             VM.Result = testResults.Value;
+            VM.ShowAuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

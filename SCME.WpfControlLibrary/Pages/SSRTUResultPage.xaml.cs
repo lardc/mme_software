@@ -55,6 +55,9 @@ namespace SCME.WpfControlLibrary.Pages
             VMByPosition[1] = VMPosition1;
             VMByPosition[2] = VMPosition2;
             VMByPosition[3] = VMPosition3;
+            foreach (var i in VMByPosition)
+                i.Value.DutPackageType = profile.DutPackageType;
+
             foreach (var i in profile.TestParametersAndNormatives)
             {
                 var sSRTUResultComponentVM = VMByPosition[i.NumberPosition];
@@ -72,6 +75,18 @@ namespace SCME.WpfControlLibrary.Pages
                             sSRTUResultComponentVM.InputAmperageMin = j.InputCurrentMinimum;
                             sSRTUResultComponentVM.InputAmperageMax = j.InputCurrentMaximum;
                             sSRTUResultComponentVM.InputAmperage = 0;
+                        }
+                        if(j.ShowAuxiliaryVoltagePowerSupply1)
+                        {
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = 0;
+                        }
+                        if (j.ShowAuxiliaryVoltagePowerSupply2)
+                        {
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
+                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = 0;
                         }
                         break;
                     case SCME.Types.OutputLeakageCurrent.TestParameters j:
@@ -126,6 +141,10 @@ namespace SCME.WpfControlLibrary.Pages
                         q.InputAmperage = testResults.Value;
                     else
                         q.InputVoltage = testResults.Value;
+                    if(q.ShowAuxiliaryCurrentPowerSupply1)
+                        q.AuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
+                    if(q.ShowAuxiliaryCurrentPowerSupply2)
+                        q.AuxiliaryCurrentPowerSupply2 = testResults.AuxiliaryCurrentPowerSupply2;
                     break;
                 case TestParametersType.OutputLeakageCurrent:
                     q.LeakageCurrent = testResults.Value;

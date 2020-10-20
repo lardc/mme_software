@@ -33,12 +33,7 @@ namespace SCME.Types.InputOptions
         [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }
         [DataMember]
-        public double AuxiliaryCurrentPowerSupply1 { get; set; }
-
-        [DataMember]
         public double AuxiliaryVoltagePowerSupply2 { get; set; }
-        [DataMember]
-        public double AuxiliaryCurrentPowerSupply2 { get; set; }
 
         [DataMember]
         public double InputCurrentMinimum { get; set; }
@@ -49,6 +44,17 @@ namespace SCME.Types.InputOptions
         public double InputVoltageMinimum { get; set; }
         [DataMember]
         public double InputVoltageMaximum { get; set; }
+
+
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMinimum1 { get; set; }
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMaximum1 { get; set; }
+
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMinimum2 { get; set; }
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMaximum2 { get; set; }
 
         public TestParameters()
         {

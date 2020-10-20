@@ -3,11 +3,15 @@ using SCME.Types.BaseTestParams;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using SCME.Types.Annotations;
+using System.Xml.Serialization;
 
 namespace SCME.Types.Profiles
 {
@@ -15,14 +19,55 @@ namespace SCME.Types.Profiles
     [AddINotifyPropertyChangedInterface]
     public class ProfileDeepData
     {
+        [XmlIgnore]
+        public ObservableCollection<BaseTestParametersAndNormatives> _testParametersAndNormatives { get; set; } = new ObservableCollection<BaseTestParametersAndNormatives>();
+
         [DataMember]
-        public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives { get; set; } = new ObservableCollection<BaseTestParametersAndNormatives>();
+        public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives
+        {
+            get
+            {
+                return _testParametersAndNormatives;
+            }
+            set
+            {
+                _testParametersAndNormatives = value;
+                if(_testParametersAndNormatives == null)
+                    return;
+                foreach (var i in _testParametersAndNormatives)
+                    i.DutPackageType = _dutPackageType;
+            }
+        }
 
         #region Comutation
         [DataMember]
         public Commutation.ModuleCommutationType CommutationType { get; set; } = Commutation.ModuleCommutationType.Direct;
+
+        //[DataMember]
+        //public DutPackageType DutPackageType { get; set; }
+
+        [XmlIgnore]
+        private DutPackageType _dutPackageType;
+
         [DataMember]
-        public DutPackageType DutPackageType { get; set; } = DutPackageType.A1;
+        public DutPackageType DutPackageType
+        {
+            get
+            {
+                if ((int)_dutPackageType == 0)
+                    _dutPackageType = DutPackageType.A1;
+                return _dutPackageType;
+            }
+            set
+            {
+                _dutPackageType = value;
+                if (TestParametersAndNormatives == null)
+                    return;
+                foreach (var i in TestParametersAndNormatives)
+                    i.DutPackageType = value;
+            }
+        }
+
         #endregion
         #region Clamping
         [DataMember]
@@ -36,6 +81,7 @@ namespace SCME.Types.Profiles
         [DataMember]
         public int Temperature { get; set; }
         #endregion
+    
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
