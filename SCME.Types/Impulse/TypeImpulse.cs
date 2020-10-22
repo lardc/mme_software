@@ -54,5 +54,8 @@ namespace SCME.Types.SSRTU
         public float AuxiliaryCurrentPowerSupply1 { get; set; }
         [DataMember]
         public float AuxiliaryCurrentPowerSupply2 { get; set; }
+
+        [DataMember]
+        public float OpenResistance { get; set; }
     }
 }

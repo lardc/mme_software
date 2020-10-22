@@ -106,7 +106,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Im_SwitchedVoltage", "Im_SwitchedVoltage", true),
             ("Im_SwitchingCurrentPulseShape", "Im_SwitchingCurrentPulseShape", true),
             ("Im_SwitchingCurrentPulseDuration", "Im_SwitchingCurrentPulseDuration", true),
-
+            ("Im_OpenState", "Im_OpenState", true),
 
             //("Im_ProhibitionVoltageMinimum", "Im_ProhibitionVoltageMinimum", true),
             //("Im_ProhibitionVoltageMaximum", "Im_ProhibitionVoltageMaximum", true),
@@ -174,6 +174,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("ProhVoltage", "Im_ProhibitionVoltage", false),
             ("AuxCurrentPower1", "AuxCurrentPower1", true),
             ("AuxCurrentPower2", "AuxCurrentPower2", true),
+            ("OpenResistance", "OpenResistance", true),
+            
         };
 
         private readonly (string name, string localName, int code)[] _errorsList =

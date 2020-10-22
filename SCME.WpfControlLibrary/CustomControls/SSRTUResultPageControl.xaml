@@ -31,6 +31,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -73,6 +74,13 @@
     <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" Text="Ток вспомогательного питания2, мА" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}"/>
     <Border Grid.Column="1" Grid.Row="7"  Background="{Binding AuxiliaryCurrentPowerSupply2IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply2, Converter={StaticResource DN2S}, StringFormat=N1}" HorizontalAlignment="Center"/>
+    </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="8" Visibility="{Binding OpenState, Converter={StaticResource B2V}}">
+        Сопр. в открытом <LineBreak/>состоянии мин.
+    </TextBlock>
+    <Border Grid.Column="1" Grid.Row="8"  Background="{Binding OpenResistanceIsOk, Converter={StaticResource B2B}}" Visibility="{Binding OpenState, Converter={StaticResource B2V}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding OpenResistance, Converter={StaticResource DN2S}, StringFormat=N1}" HorizontalAlignment="Center"/>
     </Border>
 
 </Grid>

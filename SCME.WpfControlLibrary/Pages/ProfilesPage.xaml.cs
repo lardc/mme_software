@@ -169,6 +169,7 @@ namespace SCME.WpfControlLibrary.Pages
             var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
             var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(ProfileVm.SelectedTestParametersType);
+            newTestParameter.DutPackageType = ProfileVm.ProfileDeepDataCopy.DutPackageType;
             newTestParameter.IsEnabled = true;
             newTestParameter.Order = maxOrder + 1;
             testParametersAndNormatives.Add(newTestParameter);

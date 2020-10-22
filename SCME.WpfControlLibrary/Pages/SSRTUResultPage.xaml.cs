@@ -98,6 +98,12 @@ namespace SCME.WpfControlLibrary.Pages
                         sSRTUResultComponentVM.ResidualVoltageMin = j.OutputResidualVoltageMinimum;
                         sSRTUResultComponentVM.ResidualVoltageMax = j.OutputResidualVoltageMaximum;
                         sSRTUResultComponentVM.ResidualVoltage = 0;
+                        if (j.OpenState)
+                        {
+                            sSRTUResultComponentVM.OpenResistanceMin = j.OpenResistanceMinimum;
+                            sSRTUResultComponentVM.OpenResistanceMax = j.OpenResistanceMaximum;
+                            sSRTUResultComponentVM.OpenResistance = 0;
+                        }
                         break;
                     case SCME.Types.ProhibitionVoltage.TestParameters j:
                         sSRTUResultComponentVM.ProhibitionVoltageMin = j.ProhibitionVoltageMinimum;
@@ -151,6 +157,7 @@ namespace SCME.WpfControlLibrary.Pages
                     break;
                 case TestParametersType.OutputResidualVoltage:
                     q.ResidualVoltage = testResults.Value;
+                    q.OpenResistance = testResults.OpenResistance;
                     break;
                 case TestParametersType.ProhibitionVoltage:
                     q.ProhibitionVoltage = testResults.Value;

@@ -410,6 +410,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
                 {"Im_SwitchingCurrentPulseShape", (int)data.SwitchingCurrentPulseShape},
                 {"Im_SwitchingCurrentPulseDuration", data.SwitchingCurrentPulseDuration},
+                {"Im_OpenState", data.OpenState }
             };
 
             if (data.ShowVoltage)
@@ -421,6 +422,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 { "ResidualVoltage", (data.OutputResidualVoltageMinimum,data.OutputResidualVoltageMaximum)}
             };
+
+            if (data.OpenState)
+                parameters.Add("OpenResistance", (data.OpenResistanceMinimum, data.OpenResistanceMaximum));
 
             return ("ResidualVoltage", condition, parameters);
         }

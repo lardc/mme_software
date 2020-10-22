@@ -25,8 +25,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         public double? ProhibitionVoltage { get; set; }
         public double? AuxiliaryCurrentPowerSupply1 { get; set; }
         public double? AuxiliaryCurrentPowerSupply2 { get; set; }
+        public double? OpenResistance { get; set; }
 
-        
 
         public double? LeakageCurrentMin { get; set; }
         public double? InputAmperageMin { get; set; }
@@ -35,8 +35,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         public double? ProhibitionVoltageMin { get; set; }
         public double? AuxiliaryCurrentPowerSupplyMin1 { get; set; }
         public double? AuxiliaryCurrentPowerSupplyMin2 { get; set; }
+        public double? OpenResistanceMin { get; set; }
 
-        
 
 
         public double? LeakageCurrentMax { get; set; }
@@ -46,6 +46,7 @@ namespace SCME.WpfControlLibrary.ViewModels
         public double? ProhibitionVoltageMax { get; set; }
         public double? AuxiliaryCurrentPowerSupplyMax1 { get; set; }
         public double? AuxiliaryCurrentPowerSupplyMax2 { get; set; }
+        public double? OpenResistanceMax { get; set; }
 
 
         [DependsOn(nameof(LeakageCurrent), nameof(LeakageCurrentMin), nameof(LeakageCurrentMax))]
@@ -74,6 +75,10 @@ namespace SCME.WpfControlLibrary.ViewModels
 
         [DependsOn(nameof(AuxiliaryCurrentPowerSupply2), nameof(AuxiliaryCurrentPowerSupplyMin2), nameof(AuxiliaryCurrentPowerSupplyMax2))]
         public bool? AuxiliaryCurrentPowerSupply2IsOk => AuxiliaryCurrentPowerSupplyMin2 == null ? (bool?)null : AuxiliaryCurrentPowerSupplyMin2 < AuxiliaryCurrentPowerSupply2 && AuxiliaryCurrentPowerSupply2 < AuxiliaryCurrentPowerSupplyMax2;
+
+
+        [DependsOn(nameof(OpenResistance), nameof(OpenResistanceMin), nameof(OpenResistanceMax))]
+        public bool? OpenResistanceIsOk => OpenResistanceMin == null ? (bool?)null : OpenResistanceMin < OpenResistance && OpenResistance < OpenResistanceMax;
 
     }
 }

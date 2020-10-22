@@ -495,7 +495,6 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
-
                 }
             }
 
@@ -625,6 +624,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         testParams.SwitchingCurrentPulseDuration = Double.ParseInternationally(result.Value.ToString());
                         break;
 
+                    case "Im_OpenState":
+                        testParams.OpenState = bool.Parse(result.Value.ToString());
+                        break;
                 }
             }
 
@@ -1145,6 +1147,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "ResidualVoltage":
                         parameters.OutputResidualVoltageMinimum = result.Item2.Value;
                         parameters.OutputResidualVoltageMaximum = result.Item3.Value;
+                        break;
+                    case "OpenResistance":
+                        parameters.OpenResistanceMinimum = result.Item2.Value;
+                        parameters.OpenResistanceMaximum = result.Item3.Value;
                         break;
                 }
             }

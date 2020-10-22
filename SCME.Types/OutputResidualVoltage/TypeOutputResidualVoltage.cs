@@ -25,6 +25,9 @@ namespace SCME.Types.OutputResidualVoltage
         public TypeManagement TypeManagement { get; set; }
 
         [DataMember]
+        public bool OpenState { get; set; }
+
+        [DataMember]
         public double ControlVoltage { get; set; }
         [DataMember]
         public double ControlCurrent { get; set; }
@@ -51,6 +54,11 @@ namespace SCME.Types.OutputResidualVoltage
         public double OutputResidualVoltageMinimum {get;set;}
         [DataMember]
         public double OutputResidualVoltageMaximum { get; set; }
+
+        [DataMember]
+        public double OpenResistanceMinimum { get; set; }
+        [DataMember]
+        public double OpenResistanceMaximum { get; set; }
 
         public TestParameters()
         {

@@ -33,12 +33,19 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage}" StringFormat="{}{0:N1}"/>
+
+    <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Padding="10,0,0,0" IsChecked="{Binding OpenState}">
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right">
+            Измерение сопротивления<LineBreak/>в открытом состоянии
+        </TextBlock>
+    </CheckBox>
 
     <Label Grid.Column="0" Grid.Row="3" Content="Ком. ток, мА" ></Label>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage}" StringFormat="N2"/>
@@ -70,6 +77,13 @@
         </TextBlock>
     </Label>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="7"   Value="{Binding OutputResidualVoltageMinimum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
+
+    <TextBlock Grid.Column="0" Grid.Row="8" TextWrapping="Wrap" Visibility="{Binding OpenState, Converter={StaticResource B2V}}">
+        <TextBlock>
+                Сопр. в открытом <LineBreak/>состоянии мин.
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="8" Visibility="{Binding OpenState, Converter={StaticResource B2V}}"  Value="{Binding OpenResistanceMinimum}"   StringFormat="N2"/>
 
 
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
@@ -113,5 +127,12 @@
         </TextBlock>
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="7"   Value="{Binding OutputResidualVoltageMaximum}" StringFormat="N2" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
+
+    <TextBlock Grid.Column="3" Grid.Row="8" TextWrapping="Wrap" Visibility="{Binding OpenState, Converter={StaticResource B2V}}">
+        <TextBlock>
+                Сопр. в открытом <LineBreak/>состоянии макс.
+        </TextBlock>
+    </TextBlock>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="8" Visibility="{Binding OpenState, Converter={StaticResource B2V}}"  Value="{Binding OpenResistanceMaximum}"   StringFormat="N2"/>
 
 </Grid>

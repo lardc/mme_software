@@ -318,6 +318,7 @@ namespace SCME.Service.IO
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.NextDouble() * 1000;
                     _Result.AuxiliaryCurrentPowerSupply2 = (float)rand.NextDouble() * 1000;
+                    _Result.OpenResistance = (float)rand.NextDouble() * 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
                     FireSSRTUEvent(DeviceState.Success, _Result);
@@ -416,8 +417,10 @@ namespace SCME.Service.IO
                                 _Result.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
                                 _Result.InputOptionsIsAmperage = true;
                             }
-                            _Result.AuxiliaryCurrentPowerSupply1 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY1);
-                            _Result.AuxiliaryCurrentPowerSupply2 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY2);
+                            if(io.ShowAuxiliaryVoltagePowerSupply1)
+                                _Result.AuxiliaryCurrentPowerSupply1 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY1);
+                            if (io.ShowAuxiliaryVoltagePowerSupply2)
+                                _Result.AuxiliaryCurrentPowerSupply2 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY2);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             _Result.TestParametersType = TestParametersType.OutputLeakageCurrent;
@@ -426,6 +429,8 @@ namespace SCME.Service.IO
                         case Types.OutputResidualVoltage.TestParameters rv:
                             _Result.TestParametersType = TestParametersType.OutputResidualVoltage;
                             _Result.Value = ReadRegister(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE);
+                            if (rv.OpenState)
+                                _Result.OpenResistance = ReadRegister(OPEN_RESISTANCE);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
@@ -585,7 +590,8 @@ namespace SCME.Service.IO
             REG_RESULT_PROHIBITION_VOLTAGE = 202, // Prohibition voltage / Напряжение запрета(mV / мВ)
 
             AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
-            AUXILARY_CURRENT_POWER_SUPPLY2 = 204
+            AUXILARY_CURRENT_POWER_SUPPLY2 = 204,
+            OPEN_RESISTANCE = 205
             ;
         #endregion
     }
