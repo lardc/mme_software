@@ -61,8 +61,8 @@
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding InputVoltage, Converter={StaticResource DN2S}, StringFormat=N1}" HorizontalAlignment="Center"/>
         </Border>
 
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Напряжение запрета, мВ" />
-    <Border Grid.Column="1" Grid.Row="5"  Background="{Binding ProhibitionVoltageIsOk, Converter={StaticResource B2B}}">
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Напряжение запрета, мВ"  Visibility="Collapsed"/>
+    <Border Grid.Column="1" Grid.Row="5"  Background="{Binding ProhibitionVoltageIsOk, Converter={StaticResource B2B}}" Visibility="Collapsed">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ProhibitionVoltage, Converter={StaticResource DN2S}, StringFormat=N1}" HorizontalAlignment="Center"/>
         </Border>
 

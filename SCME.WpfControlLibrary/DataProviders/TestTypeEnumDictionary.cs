@@ -155,7 +155,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток измерения на выходе"),
                 new TestParameter(TestParametersType.OutputResidualVoltage, typeof(Types.OutputResidualVoltage.TestParameters), "Выходное остаточное напряжение"),
                 new TestParameter(TestParametersType.InputOptions, typeof(Types.InputOptions.TestParameters), "Параметры входа"),
-                new TestParameter(TestParametersType.ProhibitionVoltage, typeof(Types.ProhibitionVoltage.TestParameters), "Напряжение запрета")
+                /*new TestParameter(TestParametersType.ProhibitionVoltage, typeof(Types.ProhibitionVoltage.TestParameters), "Напряжение запрета")*/
             };
         }
 
