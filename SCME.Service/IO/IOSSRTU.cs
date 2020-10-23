@@ -273,14 +273,7 @@ namespace SCME.Service.IO
             if (_IsSSRTUEmulation)
                 return;
 
-            try
-            {
                 _IOAdapter.Call(_Node, Action);
-            }
-            catch (Exception ex)
-            {
-                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Error, ex.ToString());
-            }
         }
 
         #endregion
@@ -313,7 +306,8 @@ namespace SCME.Service.IO
                     if (parameters is Types.InputOptions.TestParameters)
                         if ((parameters as Types.InputOptions.TestParameters).ShowVoltage)
                             _Result.InputOptionsIsAmperage = true;
-                            
+
+                    throw new Exception("System.Exception: Operation - @Call, Node - 0, Address - 100, Message - SCCI protocol error: code - UserError, details - 5");
 
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.NextDouble() * 1000;

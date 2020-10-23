@@ -196,5 +196,10 @@ namespace SCME.UI.PagesCommon
             if (NavigationService != null)
                 NavigationService.GoBack();
         }
+
+        private void welcomeScreen_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

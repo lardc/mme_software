@@ -156,11 +156,15 @@ namespace SCME.UI
             set { ms_SelftestPage = value; }
         }
 
-        internal static ResultsPage Results
+        internal static ResultsPage ResultsPage
         {
             get { return ms_ResultsPage ?? (ms_ResultsPage = new ResultsPage()); }
             set { ms_ResultsPage = value; }
         }
+
+        internal static SSRTUResultPage SSRTUResultPage { get; set; }
+
+        
 
         internal static ConsolePage Console
         {

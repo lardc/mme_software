@@ -135,6 +135,28 @@ namespace SCME.UI.IO
 
         public void AddExceptionEvent(ComplexParts Device, string Message)
         {
+            if(Device == ComplexParts.SSRTU && Message.Contains("code - UserError, details - 5"))
+            {
+                Cache.Main.Dispatcher.BeginInvoke(() =>
+                {
+                    var dw = new DialogWindow("Ошибка", "Неверная комбинация параметров (тип корпуса, номер позиции)");
+                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    dw.ShowDialog();
+
+                    if (Cache.Main.mainFrame.Content == Cache.SSRTU)
+                    {
+                        Cache.SSRTU.Stop.Invoke();
+                        Cache.SSRTU.VM.CanStart = true;
+                    }
+                    else if (Cache.Main.mainFrame.Content == Cache.SSRTUResultPage)
+                    {
+                        Cache.SSRTUResultPage.Stop.Invoke();
+                        Cache.SSRTUResultPage.VM.CanStart = true;
+                    }
+                });
+                
+                return;
+            }
             m_ActionQueue.Enqueue(delegate
             {
                 Cache.Welcome.IsBackEnable = false;

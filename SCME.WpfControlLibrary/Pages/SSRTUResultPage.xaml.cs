@@ -31,7 +31,7 @@ namespace SCME.WpfControlLibrary.Pages
 
 
         private Action _start;
-        private Action _stop;
+        public Action Stop { get; set; }
         private Profile _profile;
 
         public SSRTUResultVM VM { get; set; } = new SSRTUResultVM();
@@ -50,7 +50,7 @@ namespace SCME.WpfControlLibrary.Pages
             InitializeComponent();
             _start = start;
             _profile = profile;
-            _stop = stop;
+            Stop = stop;
             VMByPosition = new Dictionary<int, SSRTUResultComponentVM>();
             VMByPosition[1] = VMPosition1;
             VMByPosition[2] = VMPosition2;
@@ -177,7 +177,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            _stop();
+            Stop();
             VM.CanStart = true;
         }
 

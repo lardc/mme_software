@@ -15,7 +15,7 @@ namespace SCME.WpfControlLibrary.Pages
         public BaseTestParametersAndNormatives ItemVM { get; set; }
 
         private Action _start;
-        private Action _stop;
+        public Action Stop { get; set; }
 
         public SSRTUPage()
         {
@@ -26,7 +26,7 @@ namespace SCME.WpfControlLibrary.Pages
         {
             InitializeComponent();
             _start = start;
-            _stop = stop;
+            Stop = stop;
             switch (testParametersType)
             {
                 case TestParametersType.OutputLeakageCurrent:
@@ -90,7 +90,7 @@ namespace SCME.WpfControlLibrary.Pages
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             VM.CanStart = true;
-            _stop();
+            Stop();
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)

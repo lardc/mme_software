@@ -2,7 +2,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:my="clr-namespace:SCME.UI"
+      xmlns:my="clr-namespace:SCME.UI" Loaded="welcomeScreen_Loaded"
       xmlns:res="clr-namespace:SCME.UI.Properties" xmlns:customControls="clr-namespace:SCME.UI.CustomControl"
       xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       x:Class="SCME.UI.PagesCommon.HardwareStatusPage"

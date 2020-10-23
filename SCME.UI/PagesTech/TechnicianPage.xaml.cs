@@ -68,7 +68,7 @@ namespace SCME.UI.PagesTech
                     page.Margin = new Thickness(0, 0, 0, 0);
                     break;
                 case 9:
-                    page = Cache.Results;
+                    page = Cache.ResultsPage;
                     break;
                 case 10:
                     Cache.Welcome.IsBackEnable = true;

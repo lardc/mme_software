@@ -917,21 +917,11 @@ namespace SCME.Service
                 _sSRTUStopBeforeStop = true;
                 m_Thread.StartSingle(Dummy =>
                 {
-                    try
-                    {
                         _ioSSRTU.PressStop = false;
                         foreach (var i in parameters)
                             if (!_ioSSRTU.Start(i, dutPackageType))
-                                break;
-                    }
-                    catch
-                    {
-                        throw;
-                    }
-                    finally
-                    {
+                                return;
                         _sSRTUStopBeforeStop = false;
-                    }
                 }
                 );
             }

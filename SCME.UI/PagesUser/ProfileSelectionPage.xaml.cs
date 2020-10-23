@@ -217,7 +217,7 @@ namespace SCME.UI.PagesUser
         private void Results_Click(object Sender, RoutedEventArgs E)
         {
             if (NavigationService != null)
-                NavigationService.Navigate(Cache.Results);
+                NavigationService.Navigate(Cache.ResultsPage);
         }
 
         private void FilterTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
