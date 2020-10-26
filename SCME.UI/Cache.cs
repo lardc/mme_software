@@ -42,6 +42,8 @@ namespace SCME.UI
         public static Action<ushort, ushort, ushort, ushort> PostSSRTUNotificationEvent;
 
         public static Action PostAlarmEvent;
+        public static Action<uint, uint> FireSSRTUAttestation { get; set; }
+
         
 
         internal static ProfilesPage ProfilesPage => _profilesPage ??= new ProfilesPage(DatabaseProxy, Main.VM.MmeCode, true, true, Main.VM.SyncMode != SyncMode.Local);

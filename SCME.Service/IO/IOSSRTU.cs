@@ -448,6 +448,40 @@ namespace SCME.Service.IO
             return true;
         }
 
+        internal void StartAttestation(int parameter, AttestationType attestationType, uint value)
+        {
+            uint formedValue;
+            uint measuredValue;
+
+            if (_IsSSRTUEmulation)
+            {
+                Random rnd = new Random(DateTime.Now.Millisecond);
+                formedValue = (uint)(Math.Abs(rnd.Next()) * 2);
+                measuredValue = (uint)(Math.Abs(rnd.Next()) * 2);
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation emulation formedValue: {formedValue}, measuredValue: {measuredValue}");
+                _Communication.FireSSRTUAttestation(formedValue, measuredValue);
+                return;
+            }
+
+            WriteRegister(NODE_CODE, (ushort)parameter);
+            WriteRegister(CAL_TYPE, (ushort)attestationType);
+            WriteRegister(CAL_VALUE_LOW, (ushort)(value & 0xffff));
+            WriteRegister(CAL_VALUE_HIGHT, (ushort)(value >> 16));
+
+            CallAction(ACT_CALIBRATE);
+
+            formedValue = ReadRegister(REG_CALIBRATION_GENERATED_VALUE_HIGHT);
+            formedValue <<= 16;
+            formedValue += ReadRegister(REG_CALIBRATION_GENERATED_VALUE_LOW);
+
+            measuredValue = ReadRegister(REG_CALIBRATION_MEASURED_VALUE_HIGHT);
+            measuredValue <<= 16;
+            measuredValue += ReadRegister(REG_CALIBRATION_MEASURED_VALUE_LOW);
+
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation formedValue: {formedValue}, measuredValue: {measuredValue}");
+            _Communication.FireSSRTUAttestation(formedValue, measuredValue);
+        }
+
 
         #region Events
 
@@ -508,6 +542,7 @@ namespace SCME.Service.IO
             ACT_STOP = 101, // Stop test sequence / Принудительная остановка процесса измерения
             ACT_SET_ACTIVE = 102, // Switch safety circuit to active mode / Активация системы безопасности
             ACT_SET_INACTIVE = 103, // Switch safety circuit to inactive mode / Деактивация системы безопасности
+            ACT_CALIBRATE = 104,
 
             REG_MEASUREMENT_TYPE = 128, // Measurement type / Тип измерения
             //1 – Ток утечки на выходе
@@ -559,7 +594,12 @@ namespace SCME.Service.IO
             REG_AUX_1_CURRENT = 141, // Auxiliary power supply 1 current(in mA / мА)
             REG_AUX_2_VOLTAGE = 142, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
             REG_AUX_2_CURRENT = 143, // Auxiliary power supply 1 current(in mA / мА)
-            
+
+            NODE_CODE = 150,
+            CAL_TYPE = 151,
+            CAL_VALUE_LOW = 152,
+            CAL_VALUE_HIGHT = 153,
+
             REG_DEV_STATE = 192, // Device state / Текущее состояние
             //0 – состояние после включения питания
             //1 – состояние fault(состояние ошибки, которое можно сбросить)
@@ -585,7 +625,13 @@ namespace SCME.Service.IO
 
             AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
             AUXILARY_CURRENT_POWER_SUPPLY2 = 204,
-            OPEN_RESISTANCE = 205
+            OPEN_RESISTANCE = 205,
+
+            REG_CALIBRATION_GENERATED_VALUE_LOW = 230,
+            REG_CALIBRATION_GENERATED_VALUE_HIGHT = 231,
+            REG_CALIBRATION_MEASURED_VALUE_LOW = 232,
+            REG_CALIBRATION_MEASURED_VALUE_HIGHT = 233
+
             ;
         #endregion
     }

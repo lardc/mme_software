@@ -609,6 +609,11 @@ namespace SCME.UI.IO
             return false;
         }
 
+        public void StartAttestation(int parameter, AttestationType attestationType, uint value)
+        {
+            m_ControlClient.StartAttestation(parameter, attestationType, value);
+        }
+
         public bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
         {
             if (!IsServerConnected)
@@ -1732,6 +1737,11 @@ namespace SCME.UI.IO
         public void PostAlarmEvent()
         {
             Cache.PostAlarmEvent?.Invoke();
+        }
+
+        public void FireSSRTUAttestation(uint formedValue, uint measuredValue)
+        {
+            Cache.FireSSRTUAttestation?.Invoke(formedValue, measuredValue);
         }
 
 

@@ -148,6 +148,9 @@ namespace SCME.UI.PagesTech
                     Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
                     page = Cache.SSRTU;
                     break;
+                case 22:
+                    page = new AttestationSelectPage();
+                    break;
             }
 
             

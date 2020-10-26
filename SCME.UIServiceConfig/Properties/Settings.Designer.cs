@@ -12,7 +12,7 @@ namespace SCME.UIServiceConfig.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -926,63 +926,57 @@ namespace SCME.UIServiceConfig.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/SCME.IO.ControlService")]
         public string ControlService {
             get {
                 return ((string)(this["ControlService"]));
             }
-            set {
-                this["ControlService"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/SCME.IO.DatabaseService")]
         public string DatabaseService {
             get {
                 return ((string)(this["DatabaseService"]));
             }
-            set {
-                this["DatabaseService"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:800/SCME/LocalDatabase")]
         public string LocalDatabase {
             get {
                 return ((string)(this["LocalDatabase"]));
             }
-            set {
-                this["LocalDatabase"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:730/SCME/SCME.IO.CentralDatabaseService")]
         public string CentralDatabaseService {
             get {
                 return ((string)(this["CentralDatabaseService"]));
             }
-            set {
-                this["CentralDatabaseService"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:730/SCME/CentralDatabase")]
         public string CentralDatabase {
             get {
                 return ((string)(this["CentralDatabase"]));
             }
-            set {
-                this["CentralDatabase"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AttestationIsVisibly {
+            get {
+                return ((bool)(this["AttestationIsVisibly"]));
             }
         }
     }

@@ -202,6 +202,13 @@ namespace SCME.Service
             EnumerateClients(Client => Client.SSRTUHandler(State, Result));
         }
 
+        public void FireSSRTUAttestation(uint formedValue, uint measuredValue)
+        {
+            EnumerateClients(Client => Client.FireSSRTUAttestation(formedValue, measuredValue));
+        }
+
+        
+
         public void PostTOUEvent(DeviceState State, Types.TOU.TestResults Result)
         {
             EnumerateClients(Client => Client.TOUHandler(State, Result));

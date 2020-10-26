@@ -205,6 +205,12 @@
                 </Grid>
             </Button>
 
+            <Button CommandParameter="22" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=AttestationIsVisibly, Converter={StaticResource B2V}}">
+                <Grid Background="{StaticResource xPurple2}">
+                    <Label Content="Атестация" />
+                </Grid>
+            </Button>
+
         </UniformGrid>
        
         <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"

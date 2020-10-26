@@ -265,7 +265,16 @@ namespace SCME.WpfControlLibrary.DataProviders
             };
         }
 
-        
+        public static Dictionary<string, AttestationType> GetAttestationType()
+        {
+            return new Dictionary<string, AttestationType>
+            {
+                { "Ток", AttestationType.Current },
+                { "Напряжение", AttestationType.Voltage }
+            };
+        }
+
+            
 
     }
 }
