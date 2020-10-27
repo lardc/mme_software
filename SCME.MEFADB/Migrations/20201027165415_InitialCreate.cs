@@ -7,6 +7,19 @@ namespace SCME.MEFADB.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            /*migrationBuilder.CreateTable(
+                name: "MME_CODES",
+                columns: table => new
+                {
+                    MME_CODE_ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MME_CODE = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MME_CODES", x => x.MME_CODE_ID);
+                });*/
+
             migrationBuilder.CreateTable(
                 name: "MonitoringEventTypes",
                 columns: table => new
@@ -66,8 +79,8 @@ namespace SCME.MEFADB.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MonitoringStatTypeId = table.Column<int>(nullable: false),
                     MmeCode = table.Column<string>(nullable: true),
-                    KeyData = table.Column<int>(nullable: false),
-                    ValueData = table.Column<string>(nullable: true)
+                    KeyData = table.Column<DateTime>(nullable: false),
+                    ValueData = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,9 +100,8 @@ namespace SCME.MEFADB.Migrations
                 {
                     { 1, "MME_ERROR" },
                     { 2, "MME_START" },
-                    { 3, "MME_SYNC" },
-                    { 4, "MME_TEST" },
-                    { 5, "MME_HEART_BEAT" }
+                    { 3, "MME_TEST" },
+                    { 4, "MME_SYNC" }
                 });
 
             migrationBuilder.InsertData(
@@ -115,6 +127,9 @@ namespace SCME.MEFADB.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            /*migrationBuilder.DropTable(
+                name: "MME_CODES");*/
+
             migrationBuilder.DropTable(
                 name: "MonitoringEvents");
 

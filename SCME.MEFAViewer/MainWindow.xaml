@@ -44,22 +44,28 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" Text="LastStartTimestamp"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="TestCounterTotal"/>
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="TestCounter"/>            
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="HardwareErrorCounterTotal"/>
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="HardwareErrorCounter"/>
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="LastTestTimestamp"/>
-            <TextBlock Grid.Column="0" Grid.Row="6" Text="LastSWUpdateTimestamp"/>
-            <TextBlock Grid.Column="0" Grid.Row="7" Text="ActiveProfilesCount"/>
-            <TextBlock Grid.Column="0" Grid.Row="8" Text="SoftVersion"/>
-            
-            
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="SWVersionAtLastStart"/>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="TestCounterSinceLastStart"/>            
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="TestCounterTotal"/>
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="TestCounter"/>
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="WorkingHoursSinceLastStart"/>
+            <TextBlock Grid.Column="0" Grid.Row="6" Text="WorkingHoursTotal"/>
+            <TextBlock Grid.Column="0" Grid.Row="7" Text="WorkingHours"/>
+            <TextBlock Grid.Column="0" Grid.Row="8" Text="HardwareErrorCounterTotal"/>
+            <TextBlock Grid.Column="0" Grid.Row="9" Text="HardwareErrorCounter"/>
+            <TextBlock Grid.Column="0" Grid.Row="10" Text="LastTestTimestamp"/>
+            <TextBlock Grid.Column="0" Grid.Row="11" Text="LastState"/>
+            <TextBlock Grid.Column="0" Grid.Row="12" Text="ActiveProfilesCount"/>
+            <TextBlock Grid.Column="0" Grid.Row="13" Text="LastSWUpdateTimestamp"/>
             
             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding LastStartTimestamp}" TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TestCounterTotal}"  TextAlignment="Right"/>
-            <Grid Grid.Column="1" Grid.Row="2">
+            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SWVersionAtLastStart}" TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding TestCounterSinceLastStart}" TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding TestCounterTotal}" TextAlignment="Right"/>
+            <Grid Grid.Column="1" Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -69,22 +75,33 @@
                 <DatePicker Grid.Column="1" SelectedDate="{Binding TestCounterEndDateTime}"/>
                 <TextBlock Grid.Column="2" Text="{Binding TestCounter}"/>
             </Grid>
-            
-            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding HardwareErrorCounterTotal}"  TextAlignment="Right"/>
-            <Grid Grid.Column="1" Grid.Row="4">
+            <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding WorkingHoursSinceLastStart}" TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding WorkingHoursTotal}" TextAlignment="Right"/>
+            <Grid Grid.Column="1" Grid.Row="7">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <DatePicker Grid.Column="0" SelectedDate="{Binding WorkingHoursBeginDateTime}" />
+                <DatePicker Grid.Column="1" SelectedDate="{Binding WorkingHoursEndDateTime}"/>
+                <TextBlock Grid.Column="2" Text="{Binding WorkingHours}"/>
+            </Grid>
+            <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding HardwareErrorCounterTotal}" TextAlignment="Right"/>
+            <Grid Grid.Column="1" Grid.Row="9">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <DatePicker Grid.Column="0" SelectedDate="{Binding HardwareErrorCounterBeginDateTime}" />
                 <DatePicker Grid.Column="1" SelectedDate="{Binding HardwareErrorCounterEndDateTime}"/>
+                <TextBlock Grid.Column="2" Text="{Binding HardwareErrorCounter}"/>
             </Grid>
-            <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding LastTestTimestamp}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding LastSWUpdateTimestamp}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="7" Text="{Binding ActiveProfilesCount}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding SoftVersion}"  TextAlignment="Right"/>
-            
-            
+            <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding LastTestTimestamp}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding LastState}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding ActiveProfilesCount}"  TextAlignment="Right"/>
+            <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding LastSwUpdateTimestamp}"  TextAlignment="Right"/>
             
         </Grid>
         

@@ -12,22 +12,39 @@ namespace SCME.MEFAViewer
         public string Name { get; set; }
         public Brush Color { get; set; }
 
-        public string SoftVersion { get; set; }
-        public DateTime? LastStartTimestamp { get; set; }
-        public long? TestCounterTotal { get; set; }
-        public long? HardwareErrorCounterTotal { get; set; }
-        public DateTime? LastTestTimestamp { get; set; }
-        public DateTime? LastSWUpdateTimestamp { get; set; }
-        public long? ActiveProfilesCount { get; set; }
-        public long? TestCounter { get; set; }
-        public long? HardwareErrorCounter { get; set; }
         
-        public DateTime TestCounterBeginDateTime { get; set; } =  DateTime.Now - new TimeSpan(7, 0, 0, 0);
+        public DateTime? LastStartTimestamp { get; set; }
+        
+        public string SWVersionAtLastStart { get; set; }
+        
+        public long? TestCounterSinceLastStart { get; set; }
+        public long? TestCounterTotal { get; set; }
+        public long? TestCounter { get; set; }
+        public DateTime TestCounterBeginDateTime { get; set; } = DateTime.Now.AddDays(-7);
         public DateTime TestCounterEndDateTime { get; set; } = DateTime.Now;
         
-        public DateTime HardwareErrorCounterBeginDateTime { get; set; }= DateTime.Now - new TimeSpan(7, 0, 0, 0);
-        public DateTime HardwareErrorCounterEndDateTime { get; set; } =DateTime.Now;
 
+        public long? WorkingHoursSinceLastStart { get; set; }
+        public long? WorkingHoursTotal { get; set; }
+        public long? WorkingHours { get; set; }
+        public DateTime WorkingHoursBeginDateTime { get; set; } = DateTime.Now.AddDays(-7);
+        public DateTime WorkingHoursEndDateTime { get; set; } = DateTime.Now;
+        
+        
+        public long? HardwareErrorCounterTotal { get; set; }
+        public long? HardwareErrorCounter { get; set; }
+        public DateTime HardwareErrorCounterBeginDateTime { get; set; }= DateTime.Now.AddDays(-7);
+        public DateTime HardwareErrorCounterEndDateTime { get; set; } =DateTime.Now;
+        
+        public DateTime? LastTestTimestamp { get; set; }
+        public DateTime? LastState { get; set; }
+        
+        public long? ActiveProfilesCount { get; set; }
+        
+        public DateTime? LastSwUpdateTimestamp { get; set; }
+        
+        
+        
         
         public event PropertyChangedEventHandler PropertyChanged;
 

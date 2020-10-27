@@ -99,17 +99,12 @@ namespace SCME.MEFADB.Migrations
                         new
                         {
                             Id = 3,
-                            EventName = "MME_SYNC"
-                        },
-                        new
-                        {
-                            Id = 4,
                             EventName = "MME_TEST"
                         },
                         new
                         {
-                            Id = 5,
-                            EventName = "MME_HEART_BEAT"
+                            Id = 4,
+                            EventName = "MME_SYNC"
                         });
                 });
 
@@ -120,8 +115,8 @@ namespace SCME.MEFADB.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("KeyData")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("KeyData")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MmeCode")
                         .HasColumnType("nvarchar(max)");
@@ -129,8 +124,8 @@ namespace SCME.MEFADB.Migrations
                     b.Property<int>("MonitoringStatTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ValueData")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ValueData")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

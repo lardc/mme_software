@@ -17,9 +17,34 @@ namespace SCME.MEFAServer.Controllers
             _db = db;
         }
 
+        private MonitoringStat GetLastDay(string mme, DateTime timestamp)
+        {
+            var day = _db.MonitoringStats.SingleOrDefault(m => m.MmeCode == mme && m.MonitoringStatType.StatName == MonitoringStatType.DAY_HOURS && m.KeyData.Date == timestamp.Date);
+            if (day != null) 
+                return day;
+            {
+                day = new MonitoringStat()
+                {
+                    KeyData = timestamp.Date,
+                    MmeCode = mme,
+                    ValueData = 0,
+                    MonitoringStatType = _db.MonitoringStatTypes.Single(m => m.StatName == MonitoringStatType.DAY_HOURS)
+                };
+                _db.MonitoringStats.Add(day);
+            }
+
+            return day;
+        }
+
         [HttpPost]
         public void Start(string mme, DateTime timestamp, bool debug, DateTime lastUpdate, string softVersion)
         {
+            var last = _db.MonitoringStats.Single(m => m.MmeCode == mme && m.MonitoringStatType.StatName == MonitoringStatType.LAST_START_HOURS);
+            last.KeyData = timestamp;
+            last.ValueData = 0;
+
+            GetLastDay(mme, timestamp);
+            
             _db.MonitoringEvents.Add(new MonitoringEvent()
             {
                 MmeCode = mme,
@@ -70,12 +95,12 @@ namespace SCME.MEFAServer.Controllers
         
         public void HeartBeat(string mme, DateTime timestamp)
         {
-            _db.MonitoringEvents.Add(new MonitoringEvent()
-            {
-                MmeCode = mme,
-                Timestamp = timestamp,
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m => m.EventName == MonitoringEventType.HEART_BEAT_EVENT_NAME),
-            });
+            foreach (var i in  _db.MonitoringStats.Where(m => m.MmeCode == mme && (m.MonitoringStatType.StatName == MonitoringStatType.TOTAL_HOURS || m.MonitoringStatType.StatName == MonitoringStatType.LAST_START_HOURS)))
+                i.ValueData++;
+            
+            var day =  GetLastDay(mme, timestamp);
+            day.ValueData++;
+       
             _db.SaveChanges();
         }
         

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +37,19 @@ namespace SCME.MEFAServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MonitoringContext db)
         {
-            db.Database.Migrate();
+            try
+            {
+                db.Database.Migrate();
+                db.CreateMonitoringStates();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                File.WriteAllText("error migrate.txt", e.ToString());
+                throw;
+            }
+            
+            
             /*if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
