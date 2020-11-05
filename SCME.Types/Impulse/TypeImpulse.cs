@@ -46,7 +46,7 @@ namespace SCME.Types.SSRTU
         [DataMember]
         public bool InputOptionsIsAmperage { get; set; }
         [DataMember]
-        public float Value { get; set; }
+        public double Value { get; set; }
         [DataMember]
         public TestParametersType TestParametersType { get; set; } = TestParametersType.InputOptions;
 

@@ -364,5 +364,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             _loadConditions = CreateCommand(LoadConditionsString, new List<DbCommandParameter>());
             _loadParameters = CreateCommand(LoadParametersString, new List<DbCommandParameter>());
         }
+
+      
     }
 }

@@ -48,6 +48,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="CustomControls\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="DataTemplates\TestParameters\InputOptions.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -70,6 +74,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="CustomControls\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\SSRTUPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

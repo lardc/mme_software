@@ -181,7 +181,7 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void StartAttestation(int parameter, AttestationType attestationType, uint value);
+        void StartAttestation(int position, int parameter, AttestationType attestationType, uint value);
     }
 
     [ServiceContract(Namespace = "http://proton-electrotex.com/SCME")]
@@ -225,7 +225,7 @@ namespace SCME.Types
         void GateKelvinHandler(DeviceState state, bool isKelvinOk, IList<short> array, long testTypeId);
 
         [OperationContract(IsOneWay = true)]
-        void FireSSRTUAttestation(uint formedValue, uint measuredValue);
+        void FireSSRTUAttestation(double formedValue, double measuredValue);
 
         [OperationContract(IsOneWay = true)]
         void GateResistanceHandler(DeviceState state, float resistance, long testTypeId);

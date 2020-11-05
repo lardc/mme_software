@@ -616,7 +616,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 _dbTransaction = Connection.BeginTransaction();
                 RemoveMmeCodeToProfile(profile.Id, mmeCode, _dbTransaction);
-                _cacheProfileById.Remove(profile.Id);
+                if(_cacheProfileById.ContainsKey(profile.Id))
+                    _cacheProfileById.Remove(profile.Id);
                 _dbTransaction.Commit();
 
 //                _cacheProfileByKey.Remove(profile.Key);
@@ -670,6 +671,17 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 _dbTransaction.Rollback();
                 throw;
             }
+        }
+
+        public void DeletingByRenaming(MyProfile profile)
+        {
+            var command = new System.Data.SQLite.SQLiteCommand(@"UPDATE PROFILES SET PROF_NAME = @NEW_NAME WHERE PROF_NAME = @PROF_NAME", Connection as System.Data.SQLite.SQLiteConnection);
+            command.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@PROF_NAME", profile.Name));
+            command.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@NEW_NAME", $"$DELETING_{Guid.NewGuid()}_{profile.Name}"));
+            command.Prepare();
+            command.ExecuteReader();
+            foreach (var i in GetMmeCodesByProfile(profile.Id).Where(m => m != "IsActive"))
+                RemoveProfile(profile, i);
         }
     }
 }

@@ -264,6 +264,48 @@ namespace SCME.Service.IO
             _IOAdapter.Write16(_Node, Address, Value);
         }
 
+        private double ReadRegisterFrom1616To32(ushort addressLow, bool skipJournal = false)
+        {
+            return ReadRegisterFrom1616To32(addressLow, (ushort) (addressLow + 1), skipJournal);
+        }
+        
+        private double ReadRegisterFrom1616To32(ushort addressLow, ushort addressHigh,  bool skipJournal = false)
+        {
+            if (_IsSSRTUEmulation)
+                return 0;
+
+            uint valueUl = ReadRegister(REG_CALIBRATION_GENERATED_VALUE_HIGHT);
+            valueUl <<= 16;
+            valueUl += ReadRegister(REG_CALIBRATION_GENERATED_VALUE_LOW);
+            
+            if (!skipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU @ReadRegister, addressLow {addressLow}, addressHigh {addressHigh}, value {valueUl} ");
+
+            return Math.Round(valueUl / Math.Pow(10,6), 6);
+        }
+        
+        private void WriteRegisterFrom32To1616(ushort addressLow, double value, bool skipJournal = false)
+        {
+            WriteRegisterFrom32To1616(addressLow, addressLow, value, skipJournal);
+        }
+        
+        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, double value, bool skipJournal = false)
+        {
+            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10,6)), skipJournal);
+        }
+
+        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, uint value, bool skipJournal = false)
+        {
+            if (!skipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU @WriteRegister32, addressLow {addressLow}, addressHigh {addressHigh}, value: {value}");
+
+            if (_IsSSRTUEmulation)
+                return;
+
+            _IOAdapter.Write16(_Node, addressLow, (ushort)(value & 0xffff));
+            _IOAdapter.Write16(_Node, addressHigh, (ushort)(value >> 16));
+        }
+
         internal void CallAction(ushort Action, bool SkipJournal = false)
         {
             if (!SkipJournal)
@@ -307,7 +349,7 @@ namespace SCME.Service.IO
                         if ((parameters as Types.InputOptions.TestParameters).ShowVoltage)
                             _Result.InputOptionsIsAmperage = true;
 
-                    throw new Exception("System.Exception: Operation - @Call, Node - 0, Address - 100, Message - SCCI protocol error: code - UserError, details - 5");
+                    //throw new Exception("System.Exception: Operation - @Call, Node - 0, Address - 100, Message - SCCI protocol error: code - UserError, details - 5");
 
                     _Result.Value = (float)rand.NextDouble() * 1000;
                     _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.NextDouble() * 1000;
@@ -327,45 +369,45 @@ namespace SCME.Service.IO
                         case Types.InputOptions.TestParameters io:
                             WriteRegister(REG_MEASUREMENT_TYPE, 3);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)io.TypeManagement);
-                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)io.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_CONTROL_CURRENT, (ushort)io.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)io.ControlVoltage);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply1);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, io.ControlCurrent);
+                            WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, io.ControlVoltage);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             WriteRegister(REG_MEASUREMENT_TYPE, 1);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)lc.TypeManagement);
-                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)lc.AuxiliaryVoltagePowerSupply2);
-                            WriteRegister(REG_CONTROL_CURRENT, (ushort)lc.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)lc.ControlVoltage);
-                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)lc.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)lc.SwitchedVoltage);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply1);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, lc.ControlCurrent);
+                            WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage);
+                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, lc.SwitchedAmperage);
+                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)lc.PolarityDCSwitchingVoltageApplication);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 2);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)rv.TypeManagement);
-                            WriteRegister(REG_CONTROL_CURRENT, (ushort)rv.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)rv.ControlVoltage);
+                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, rv.ControlCurrent);
+                            WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
-                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)rv.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)rv.SwitchedVoltage);
-                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)rv.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
+                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply1);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply2);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
-                            WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
+                            WriteRegisterFrom32To1616(REG_COMMUTATION_CURRENT_TIME, rv.SwitchingCurrentPulseDuration);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 4);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)pv.TypeManagement);
-                            WriteRegister(REG_CONTROL_CURRENT, (ushort)pv.ControlCurrent);
-                            WriteRegister(REG_CONTROL_VOLTAGE, (ushort)pv.ControlVoltage);
-                            WriteRegister(REG_COMMUTATION_CURRENT, (ushort)pv.SwitchedAmperage);
-                            WriteRegister(REG_COMMUTATION_VOLTAGE, (ushort)pv.SwitchedVoltage);
-                            WriteRegister(REG_AUX_1_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegister(REG_AUX_2_VOLTAGE, (ushort)pv.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, pv.ControlCurrent);
+                            WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, pv.ControlVoltage);
+                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, pv.SwitchedAmperage);
+                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, pv.SwitchedVoltage);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply1);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply2);
                             break;
                     }
 
@@ -405,10 +447,10 @@ namespace SCME.Service.IO
                         case Types.InputOptions.TestParameters io:
                             _Result.TestParametersType = TestParametersType.InputOptions;
                             if (io.ShowAmperage)
-                                _Result.Value = ReadRegister(REG_RESULT_CONTROL_VOLTAGE);
+                                _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_VOLTAGE_LOW, REG_RESULT_CONTROL_VOLTAGE_HIGH);
                             else
                             {
-                                _Result.Value = ReadRegister(REG_RESULT_CONTROL_CURRENT);
+                                _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_CURRENT_LOW, REG_RESULT_CONTROL_CURRENT_HIGH);
                                 _Result.InputOptionsIsAmperage = true;
                             }
                             if(io.ShowAuxiliaryVoltagePowerSupply1)
@@ -418,17 +460,17 @@ namespace SCME.Service.IO
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             _Result.TestParametersType = TestParametersType.OutputLeakageCurrent;
-                            _Result.Value = ReadRegister(REG_RESULT_LEAKAGE_CURRENT);
+                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_LEAKAGE_CURRENT_LOW, REG_RESULT_LEAKAGE_CURRENT_HIGH);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             _Result.TestParametersType = TestParametersType.OutputResidualVoltage;
-                            _Result.Value = ReadRegister(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE);
+                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_LOW, REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_HIGH);
                             if (rv.OpenState)
                                 _Result.OpenResistance = ReadRegister(OPEN_RESISTANCE);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
-                            _Result.Value = ReadRegister(REG_RESULT_PROHIBITION_VOLTAGE);
+                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_PROHIBITION_VOLTAGE_LOW, REG_RESULT_PROHIBITION_VOLTAGE_HIGH);
                             break;
                     }
 
@@ -448,10 +490,10 @@ namespace SCME.Service.IO
             return true;
         }
 
-        internal void StartAttestation(int parameter, AttestationType attestationType, uint value)
+        internal void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
         {
-            uint formedValue;
-            uint measuredValue;
+            double formedValue;
+            double measuredValue;
 
             if (_IsSSRTUEmulation)
             {
@@ -463,20 +505,15 @@ namespace SCME.Service.IO
                 return;
             }
 
+            WriteRegister(REG_DUT_POSITION, (ushort)parameter);
             WriteRegister(NODE_CODE, (ushort)parameter);
             WriteRegister(CAL_TYPE, (ushort)attestationType);
-            WriteRegister(CAL_VALUE_LOW, (ushort)(value & 0xffff));
-            WriteRegister(CAL_VALUE_HIGHT, (ushort)(value >> 16));
+            WriteRegisterFrom32To1616(CAL_VALUE_LOW, CAL_VALUE_HIGHT, value);
 
             CallAction(ACT_CALIBRATE);
 
-            formedValue = ReadRegister(REG_CALIBRATION_GENERATED_VALUE_HIGHT);
-            formedValue <<= 16;
-            formedValue += ReadRegister(REG_CALIBRATION_GENERATED_VALUE_LOW);
-
-            measuredValue = ReadRegister(REG_CALIBRATION_MEASURED_VALUE_HIGHT);
-            measuredValue <<= 16;
-            measuredValue += ReadRegister(REG_CALIBRATION_MEASURED_VALUE_LOW);
+            formedValue = ReadRegisterFrom1616To32(REG_CALIBRATION_MEASURED_VALUE_LOW);
+            measuredValue = ReadRegisterFrom1616To32(REG_CALIBRATION_MEASURED_VALUE_HIGHT);
 
             SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation formedValue: {formedValue}, measuredValue: {measuredValue}");
             _Communication.FireSSRTUAttestation(formedValue, measuredValue);
@@ -576,9 +613,14 @@ namespace SCME.Service.IO
             //2 – Постоянное напряжение
             //3 – Переменное напряжение
 
-            REG_CONTROL_VOLTAGE = 132, // Control voltage / Напряжение управления(in mV / мВ)
-            REG_CONTROL_CURRENT = 133, // Control current / Ток управления(in mA / мА)
+            REG_CONTROL_VOLTAGE_LOW = 132, // Control voltage / Напряжение управления(in mV / мВ)
+            REG_CONTROL_VOLTAGE_HIGH = 150,
+
+            REG_CONTROL_CURRENT_LOW = 133, // Control current / Ток управления(in mA / мА)
+            REG_CONTROL_CURRENT_HIGH = 151,
+
             REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE = 134, // Commutation voltage type while leakage measurements / Тип коммутируемого напряжения при измерении утечки
+
             //1 – Постоянное
             //2 – Переменное
             REG_COMMUTATION_VOLTAGE_POLARITY = 135, // Commutation voltage polarity / Полярность приложения постоянного коммутируемого напряжения
@@ -588,17 +630,21 @@ namespace SCME.Service.IO
             //1 – Трапеция
             //2 - Синус
             REG_COMMUTATION_CURRENT_TIME = 137, // Commutation current time / Длительность импульса коммутируемого тока(in ms /мс)
-            REG_COMMUTATION_CURRENT = 138, // Commutation current / Коммутируемый ток(in mA / мА)
-            REG_COMMUTATION_VOLTAGE = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
-            REG_AUX_1_VOLTAGE = 140, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
+            REG_COMM_CURRENT_LOW = 138, // Commutation current / Коммутируемый ток(in mA / мА)
+            REG_COMM_CURRENT_HIGH = 152,
+            REG_COMM_VOLTAGE_LOW = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
+            REG_COMM_VOLTAGE_HIGH = 153,
+            REG_AUX_PS1_VOLTAGE_LOW = 140, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
+            REG_AUX_PS1_VOLTAGE_HIGH = 154,
             REG_AUX_1_CURRENT = 141, // Auxiliary power supply 1 current(in mA / мА)
-            REG_AUX_2_VOLTAGE = 142, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
+            REG_AUX_PS2_VOLTAGE_LOW = 142, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
+            REG_AUX_PS2_VOLTAGE_HIGH = 156,
             REG_AUX_2_CURRENT = 143, // Auxiliary power supply 1 current(in mA / мА)
 
             NODE_CODE = 150,
-            CAL_TYPE = 151,
-            CAL_VALUE_LOW = 152,
-            CAL_VALUE_HIGHT = 153,
+            CAL_TYPE = 161,
+            CAL_VALUE_LOW = 162,
+            CAL_VALUE_HIGHT = 163,
 
             REG_DEV_STATE = 192, // Device state / Текущее состояние
             //0 – состояние после включения питания
@@ -617,11 +663,17 @@ namespace SCME.Service.IO
             //3 - Operation failed
 
 
-            REG_RESULT_LEAKAGE_CURRENT = 198, // Leakage current / Ток утечки на выходе(mA / мА)
-            REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE = 199, // Residual output voltage / Остаточное напряжение на выходе(mV / мВ)
-            REG_RESULT_CONTROL_CURRENT = 200, // Control current / Ток управления(mA / мА)
-            REG_RESULT_CONTROL_VOLTAGE = 201, // Control voltage / Напряжение управления(mV / мВ)
-            REG_RESULT_PROHIBITION_VOLTAGE = 202, // Prohibition voltage / Напряжение запрета(mV / мВ)
+            REG_RESULT_LEAKAGE_CURRENT_LOW = 198, // Leakage current / Ток утечки на выходе(mA / мА)
+            REG_RESULT_LEAKAGE_CURRENT_HIGH = 230,
+            REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_LOW = 199, // Residual output voltage / Остаточное напряжение на выходе(mV / мВ)
+            REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_HIGH = 231,
+            REG_RESULT_CONTROL_CURRENT_LOW = 200, // Control current / Ток управления(mA / мА)
+            REG_RESULT_CONTROL_CURRENT_HIGH = 232,
+            REG_RESULT_CONTROL_VOLTAGE_LOW = 201, // Control voltage / Напряжение управления(mV / мВ)
+            REG_RESULT_CONTROL_VOLTAGE_HIGH = 201, // Control voltage / Напряжение управления(mV / мВ)
+            REG_RESULT_PROHIBITION_VOLTAGE_LOW = 202, // Prohibition voltage / Напряжение запрета(mV / мВ)
+            REG_RESULT_PROHIBITION_VOLTAGE_HIGH = 234, // Prohibition voltage / Напряжение запрета(mV / мВ)
+
 
             AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
             AUXILARY_CURRENT_POWER_SUPPLY2 = 204,

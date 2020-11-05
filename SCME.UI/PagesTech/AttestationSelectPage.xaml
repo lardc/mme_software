@@ -4,12 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SCME.UI.PagesTech"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"  Title="Атестация"
        xmlns:res="clr-namespace:SCME.UI.Properties"
        xmlns:my="clr-namespace:SCME.UI"
        xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Attestation">
+      >
     <Page.Resources>
         <my:BooleanToVisibilityConverter x:Key="B2V" />
         <my:TryBooleanToVisibilityConverter x:Key="BooleanToVisibility" />
@@ -80,5 +80,6 @@
                     <Label Content="CB"  />
             </Button>
         </UniformGrid>
+        <Button Style="{StaticResource BackButton}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Content="Назад" Click="Back_Click" />
     </Grid>
 </Page>

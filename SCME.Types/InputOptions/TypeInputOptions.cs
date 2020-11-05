@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SCME.Types.InputOptions
 {
@@ -15,12 +16,15 @@ namespace SCME.Types.InputOptions
     [KnownType(typeof(BaseTestParametersAndNormativesSSRTU))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-
         [DependsOn(nameof(TypeManagement))]
         public bool ShowVoltage => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.ACVoltage;
         [DependsOn(nameof(TypeManagement))]
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;
 
+
+
+        [XmlIgnore]
+        public bool OpenState { get; set; }
 
         [DataMember]
         public TypeManagement TypeManagement { get; set; }

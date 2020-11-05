@@ -15,9 +15,10 @@ namespace SCME.UI.ViewModels
         public AttestationType AttestationType { get; set; } = AttestationType.Current;
         public int Parameter { get; set; }
         public uint Value { get; set; }
+        public int NumberPosition { get; set; } = 1;
 
-        public uint FormedValue { get; set; }
-        public uint MeasuredValue { get; set; }
+        public double FormedValue { get; set; }
+        public double MeasuredValue { get; set; }
 
     }
 }

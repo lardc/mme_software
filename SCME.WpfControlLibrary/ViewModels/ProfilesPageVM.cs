@@ -22,15 +22,29 @@ namespace SCME.WpfControlLibrary.ViewModels
     public class ProfilesPageProfileVm : EditProfileVm
     {
         private readonly IDbService _dbService;
+        public int CountViewProfielsN { get; set; } = 0;
+        public int CountViewProfiels { get; set; } = 100;
 
         public ProfilesPageProfileVm(IDbService dbService)
         {
             _dbService = dbService;
-            ProfilesSource = new CollectionViewSource() {SortDescriptions = {new SortDescription(nameof(MyProfile.Name), ListSortDirection.Ascending)}};
+            ProfilesSource = new CollectionViewSource() { SortDescriptions = { new SortDescription(nameof(MyProfile.Name), ListSortDirection.Ascending) } };
             ProfilesSource.Filter += (sender, args) =>
             {
-                var profile = (MyProfile) args.Item;
-                args.Accepted = profile.Name.ToUpper().Contains(SearchingName.ToUpper());
+                var profile = (MyProfile)args.Item;
+
+                if (!profile.Name.ToUpper().Contains(SearchingName.ToUpper()))
+                {
+                    args.Accepted = false;
+                    return;
+                }
+                if (CountViewProfielsN >= CountViewProfiels)
+                {
+                    args.Accepted = false;
+                    return;
+                }
+
+                CountViewProfielsN++;
             };
         }
 

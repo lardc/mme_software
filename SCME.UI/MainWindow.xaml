@@ -91,7 +91,7 @@
                     <Label Grid.Column="0" Grid.Row="0"
                         Content="{Binding TopTitle}"
                        FontSize="28" 
-                       HorizontalAlignment="Left" Margin="107,0,20,0" Width="auto" 
+                       HorizontalAlignment="Left" Margin="10,0,20,0" Width="auto" 
                        VerticalContentAlignment="Center"/>
 
                     <Label Grid.Column="1" Grid.Row="0" 

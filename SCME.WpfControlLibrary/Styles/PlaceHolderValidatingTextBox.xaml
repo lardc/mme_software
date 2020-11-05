@@ -9,11 +9,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate >
-                        <Grid>
+                    <Grid Background="{TemplateBinding Background}">
                         <TextBox
-                            Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="{TemplateBinding Padding}"
                             x:Name="textSource" Background="Transparent" Panel.ZIndex="2" BorderThickness="0" VerticalContentAlignment="Center" />
-                        <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" VerticalContentAlignment="Center"
+                        <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" VerticalContentAlignment="Center" Margin="{TemplateBinding Padding}"
                                  Panel.ZIndex="1" FontSize="{DynamicResource SCME.BaseFontSize}" BorderThickness="0" >
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}">

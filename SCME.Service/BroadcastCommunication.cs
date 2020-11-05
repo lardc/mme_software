@@ -202,7 +202,7 @@ namespace SCME.Service
             EnumerateClients(Client => Client.SSRTUHandler(State, Result));
         }
 
-        public void FireSSRTUAttestation(uint formedValue, uint measuredValue)
+        public void FireSSRTUAttestation(double formedValue, double measuredValue)
         {
             EnumerateClients(Client => Client.FireSSRTUAttestation(formedValue, measuredValue));
         }

@@ -80,5 +80,9 @@ namespace SCME.Types.Database
         [FaultContract(typeof(Exception))]
         [OperationContract]
         bool Migrate();
+
+        [FaultContract(typeof(Exception))]
+        [OperationContract]
+        void DeletingByRenaming(MyProfile profile);
     }
 }

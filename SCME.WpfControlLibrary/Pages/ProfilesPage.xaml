@@ -42,24 +42,26 @@
                       DisplayMemberPath="Key" ItemsSource="{Binding MmeCodes}" Tag="M"
                       SelectionChanged="ComboBox_SelectionChanged"
                       Visibility="{Binding IsSingleMmeCode, Converter={StaticResource B2VI}}" />
-            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}"
+            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource PrimaryButton}"  Height="60"
                     IsEnabled="{Binding IsEditModeInActive}"
                     Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}"
                     Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
                     Background="{StaticResource PurpleBrush1}" />
 
             
-            <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}"
+            <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}" Padding="10,0,0,0"
                      Style="{StaticResource PlaceholderTextBox}"
                                               Text="{Binding SearchingName, UpdateSourceTrigger=PropertyChanged}" Background="White"
                                                 Height="60"  
                                               TextChanged="TextBoxFind_TextChanged" />
 
-            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles"  
+            <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles" MouseMove="ListViewProfiles_MouseMove"
+                                                          VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.CacheLengthUnit="Pixel"
+                                                          VirtualizingStackPanel.CacheLength="1000" ScrollViewer.CanContentScroll="False"
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                <ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">
-                     <Label Name="label" Content="{Binding Path=Name}" Foreground="{TemplateBinding TextBlock.Foreground}" />
+                        <Label Name="label" Content="{Binding Path=Name}"  Foreground="{TemplateBinding TextBlock.Foreground}" Margin="10,0,0,0" />
                    </DataTemplate>
                </ListView.ItemTemplate>
             </customControls:ListViewMouseLeftButtonScroll>
@@ -76,22 +78,24 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0" Grid.Row="0" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2V}}" Background="White">
-                <TextBlock Text="{Binding SelectedProfileNameCopy}" HorizontalAlignment="Center"> </TextBlock>
+            <Grid Grid.Column="0" Grid.Row="0"  Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Background="White">
+                <TextBlock Text="{Binding SelectedProfileNameCopy}"  HorizontalAlignment="Center"> </TextBlock>
             </Grid>
-            
-            <Grid Grid.Column="0" Grid.Row="0" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Background="White">
+
+            <Grid Grid.Column="0" Grid.Row="0" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}" Background="White" Margin="10,0,0,0" Height="60"> 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" BorderThickness="0" 
+                <customControls:ValidatingTextBox Grid.Column="0"  Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" BorderThickness="0" 
                          VerticalContentAlignment="Center"
                          IsEnabled="{Binding IsEditModeActive}" />
                 <!--<Border BorderThickness="1" Grid.Column="0" Grid.Row="0" BorderBrush="Gray"   />-->
+               
                 <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}" 
                         Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
@@ -103,6 +107,10 @@
                 <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"
                         Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Save}" Style="{StaticResource PathIcon}"/>
+                </Button>
+                <Button Grid.Column="4" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}" 
+                        Click="DeleteProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                    <Path Data="{StaticResource Delete}" Style="{StaticResource PathIcon}"/>
                 </Button>
             </Grid>
 

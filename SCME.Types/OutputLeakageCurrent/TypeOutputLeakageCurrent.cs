@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SCME.Types.OutputLeakageCurrent
 {
@@ -32,6 +33,11 @@ namespace SCME.Types.OutputLeakageCurrent
 
         [DataMember]
         public ApplicationPolarityConstantSwitchingVoltage ApplicationPolarityConstantSwitchingVoltage { get; set; }
+
+        [XmlIgnore]
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public bool PolarityDCSwitchingVoltageApplicationIsVisible => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.DCVoltage;
+
         [DataMember]
         public PolarityDCSwitchingVoltageApplication PolarityDCSwitchingVoltageApplication { get; set; }
 
@@ -50,6 +56,8 @@ namespace SCME.Types.OutputLeakageCurrent
         [DataMember]
         public double LeakageCurrentMaximum { get; set; }
 
+        [XmlIgnore]
+        public bool OpenState { get; set; }
 
         public TestParameters()
         {

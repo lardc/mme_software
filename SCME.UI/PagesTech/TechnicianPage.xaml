@@ -199,11 +199,11 @@
                 </Grid>
             </Button>
 
-            <Button CommandParameter="21" >
+            <!--<Button CommandParameter="21" >
                 <Grid Background="{StaticResource xGray1}">
                     <Label Content="Напряжение запрета" />
                 </Grid>
-            </Button>
+            </Button>-->
 
             <Button CommandParameter="22" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=AttestationIsVisibly, Converter={StaticResource B2V}}">
                 <Grid Background="{StaticResource xPurple2}">

@@ -69,12 +69,16 @@ namespace SCME.WpfControlLibrary.Pages
                             sSRTUResultComponentVM.InputVoltageMin = j.InputVoltageMinimum;
                             sSRTUResultComponentVM.InputVoltageMax = j.InputVoltageMaximum;
                             sSRTUResultComponentVM.InputVoltage = 0;
+                            foreach (var t in VMByPosition.Values)
+                                t.ShowInputAmperage = true;
                         }
                         else
                         {
                             sSRTUResultComponentVM.InputAmperageMin = j.InputCurrentMinimum;
                             sSRTUResultComponentVM.InputAmperageMax = j.InputCurrentMaximum;
                             sSRTUResultComponentVM.InputAmperage = 0;
+                            foreach (var t in VMByPosition.Values)
+                                t.ShowInputAmperage = false;
                         }
                         if(j.ShowAuxiliaryVoltagePowerSupply1)
                         {

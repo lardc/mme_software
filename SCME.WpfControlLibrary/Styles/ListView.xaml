@@ -6,7 +6,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style  TargetType="ListView" x:Key="DefaultListView">
-        <Setter Property="AlternationCount" Value="2"></Setter>
+        <Setter Property="AlternationCount" Value="2"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListViewItem">
@@ -18,14 +18,14 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem" >
                                 <Grid Background="{TemplateBinding Background}">
-                                    <Polygon Name="polygon" Stretch="Fill" Fill="Transparent" Points="0,0 190,0 200,10 190,20 0,20" />
+                                    <Grid Name="background"  Background="Transparent"  />
                                     <ContentPresenter Content="{TemplateBinding ContentControl.Content}" Height="60" x:Name="ContentPresenter"
                                                       TextBlock.Foreground="Black"
                                                       ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"/>
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="polygon" Property="Fill" Value="{StaticResource PurpleBrush1}" />
+                                        <Setter TargetName="background" Property="Background" Value="{StaticResource PurpleBrush1}" />
                                         <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="White"></Setter>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
@@ -44,7 +44,7 @@
                             Background="{TemplateBinding Background}">
                         <Border.Resources>
                             <ResourceDictionary>
-                                <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
+                                <GridLength x:Key="ListBoxScrollWidth">10</GridLength>
 
                                 <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
                                     <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -110,17 +110,14 @@
                                             <RowDefinition Height="*" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand"
-                                                          Content="M 0 1 L 1 0 L 2 1"
-                                                          Margin="0,0,0,1" Style="{StaticResource ScrollBarLineButton}"
-                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}"/>
-                                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true">
+
+                                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true" ViewportSize="NaN">
                                             <Track.DecreaseRepeatButton>
                                                 <RepeatButton Style="{StaticResource ScrollBarPageButton}"
                                                                   Command="ScrollBar.PageUpCommand" />
                                             </Track.DecreaseRepeatButton>
                                             <Track.Thumb>
-                                                <Thumb Background="{StaticResource PurpleBrush1}"
+                                                <Thumb MinHeight="50" Background="{StaticResource PurpleBrush1}" 
                                                            Style="{StaticResource ScrollBarThumb}" />
                                             </Track.Thumb>
                                             <Track.IncreaseRepeatButton>
@@ -128,10 +125,7 @@
                                                                   Command="ScrollBar.PageDownCommand" />
                                             </Track.IncreaseRepeatButton>
                                         </Track>
-                                        <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand"
-                                                          Content="M 0 0 L 1 1 L 2 0"
-                                                          Margin="0,1,0,0" Style="{StaticResource ScrollBarLineButton}"
-                                                          Height="{Binding Source={StaticResource ListBoxScrollWidth}, Converter={StaticResource G2L}}" />
+
                                     </Grid>
                                 </ControlTemplate>
 
@@ -145,7 +139,7 @@
                                       Padding="{TemplateBinding Padding}"
                                       Background="{TemplateBinding Background}">
                             <ScrollViewer.Resources>
-                                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">50</sys:Double>
+                                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">10</sys:Double>
                             </ScrollViewer.Resources>
                             <ItemsPresenter />
                         </ScrollViewer>

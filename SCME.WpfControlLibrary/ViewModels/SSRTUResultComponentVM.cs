@@ -17,6 +17,10 @@ namespace SCME.WpfControlLibrary.ViewModels
 
         public bool ShowAuxiliaryCurrentPowerSupply2 => DutPackageType == DutPackageType.V108;
 
+        public bool ShowInputAmperage { get; set; }
+        [DependsOn(nameof(ShowInputAmperage))]
+        public bool ShowInputVoltage => !ShowInputAmperage;
+
 
         public double? LeakageCurrent { get; set; }
         public double? InputAmperage { get; set; }

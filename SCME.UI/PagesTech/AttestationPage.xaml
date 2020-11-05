@@ -8,7 +8,7 @@
       xmlns:customControls="WpfControlLibrary"
       DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
       d:DesignHeight="800" d:DesignWidth="900"
-      Title="Attestation">
+      Title="Атестация">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,6 +25,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition />
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -42,19 +43,22 @@
         
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Тип"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Значение"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Номер позиции" VerticalAlignment="Center"/>
+        
 
-        <TextBlock Grid.Row="5" Grid.Column="1" Text="Сформированное значение"/>
-        <TextBlock Grid.Row="6" Grid.Column="1" Text="Измеренная величина"/>
+        <TextBlock Grid.Row="6" Grid.Column="1" Text="Сформированное значение"/>
+        <TextBlock Grid.Row="7" Grid.Column="1" Text="Измеренная величина"/>
 
 
         <ComboBox ItemsSource="{Binding Source={StaticResource AttestationType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding AttestationType}" Grid.Row="2" Grid.Column="2"/>
         <customControls:NumericUpDown Grid.Row="3" Grid.Column="2" Value="{Binding Value}"/>
+        <ComboBox Grid.Row="4" Grid.Column="2"  ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
-        <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding FormedValue}" HorizontalAlignment="Right"/>
-        <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding MeasuredValue}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding FormedValue}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding MeasuredValue}" HorizontalAlignment="Right"/>
 
-        <Button Grid.Row="8" Style="{StaticResource BackButton}" Content="Назад" Click="Back_Click"/>
+        <Button Grid.Row="9" Style="{StaticResource BackButton}" Content="Назад" Click="Back_Click"/>
 
-        <Button Grid.Row="8" Grid.Column="3" Style="{StaticResource BackButton}" Background="{StaticResource xGreen1}" Content="Старт" Click="Start_Click"/>
+        <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource BackButton}" Background="{StaticResource xGreen1}" Content="Старт" Click="Start_Click"/>
     </Grid>
 </Page>

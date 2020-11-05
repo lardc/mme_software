@@ -193,17 +193,17 @@
                     <Label Grid.Column="0" Grid.Row="2" Margin="40,5,0,5" Content="{x:Static res:Resources.Write}" />
                     <customControls:ValidatingTextBox x:Name="tbWriteAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="2" Maximum="65535" Minimum="0" IsNumeric="True"
-                                            Text="0" FontSize="{StaticResource DefaultFontSize}"
+                                            Text="0" FontSize="{StaticResource DefaultFontSize}" VerticalContentAlignment="Center"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
                     <customControls:ValidatingTextBox x:Name="tbWriteValue" x:FieldModifier="private"
                                             Grid.Column="2" Grid.Row="2" Maximum="65535" Minimum="-32767" IsNumeric="True"
-                                            Text="0" FontSize="{StaticResource DefaultFontSize}"
+                                            Text="0" FontSize="{StaticResource DefaultFontSize}" VerticalContentAlignment="Center"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
                     <Button Grid.Column="3" Grid.Row="2" Margin="20,30" Content="{x:Static res:Resources.Write}"
                             Click="Write_Click" />
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="40,5,0,5" Content="{x:Static res:Resources.Read}" />
-                    <customControls:ValidatingTextBox x:Name="tbReadAddress" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbReadAddress" x:FieldModifier="private" VerticalContentAlignment="Center"
                                             Grid.Column="1" Grid.Row="3" Maximum="99999" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />
@@ -215,7 +215,7 @@
                             Click="Read_Click" />
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="40,5,0,5" Content="{x:Static res:Resources.Call}" />
-                    <customControls:ValidatingTextBox x:Name="tbCallAddress" x:FieldModifier="private"
+                    <customControls:ValidatingTextBox x:Name="tbCallAddress" x:FieldModifier="private" VerticalContentAlignment="Center"
                                             Grid.Column="1" Grid.Row="4" Maximum="65535" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
                                             TextBlock.TextAlignment="Right" Margin="20,30" />

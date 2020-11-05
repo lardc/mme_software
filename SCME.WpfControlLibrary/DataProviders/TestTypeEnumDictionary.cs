@@ -152,7 +152,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 //new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
                 //new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
                 //new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
-                new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток измерения на выходе"),
+                new TestParameter(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток утечки на выходе"),
                 new TestParameter(TestParametersType.OutputResidualVoltage, typeof(Types.OutputResidualVoltage.TestParameters), "Выходное остаточное напряжение"),
                 new TestParameter(TestParametersType.InputOptions, typeof(Types.InputOptions.TestParameters), "Параметры входа"),
                 /*new TestParameter(TestParametersType.ProhibitionVoltage, typeof(Types.ProhibitionVoltage.TestParameters), "Напряжение запрета")*/

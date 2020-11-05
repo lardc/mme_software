@@ -26,7 +26,7 @@ namespace SCME.UI.PagesTech
             InitializeComponent();
         }
 
-        public void SetValues(uint formedValue, uint measuredValue)
+        public void SetValues(double formedValue, double measuredValue)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -37,7 +37,7 @@ namespace SCME.UI.PagesTech
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            Cache.Net.StartAttestation(VM.Parameter, VM.AttestationType, VM.Value);
+            Cache.Net.StartAttestation(VM.NumberPosition, VM.Parameter, VM.AttestationType, VM.Value);
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

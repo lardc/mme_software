@@ -11,6 +11,7 @@ namespace SCME.WpfControlLibrary.CustomControls
     public class ListViewMouseLeftButtonScroll : ListView
     {
         private Point? _lastPoint;
+        private Point _pointMouseDown;
         private object _lastSelectedItem;
 
 
@@ -18,6 +19,8 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             try
             {
+                var point = e.GetPosition(this);
+
                 if (!(e.OriginalSource is Visual visual))
                     return;
 
@@ -29,7 +32,7 @@ namespace SCME.WpfControlLibrary.CustomControls
 
                 var item = element.Content;
 
-                if (item == _lastSelectedItem)
+                if (item == _lastSelectedItem && Math.Pow(_pointMouseDown.X - point.X, 2) + Math.Pow(_pointMouseDown.Y - point.Y, 2) < 400)
                     SelectedItem = item;
             }
             catch
@@ -42,13 +45,13 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             try
             {
-                _lastPoint = e.GetPosition(this);
+                _lastPoint = _pointMouseDown = e.GetPosition(this);
 
                 if (!(e.OriginalSource is Visual visual))
                     return;
 
                 var obj = ContainerFromElement(visual);
-                var element = (ListViewItem) obj;
+                var element = (ListViewItem)obj;
 
                 if (element == null)
                     return;

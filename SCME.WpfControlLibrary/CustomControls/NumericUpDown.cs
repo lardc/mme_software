@@ -143,8 +143,15 @@ namespace SCME.WpfControlLibrary.CustomControls
         public NumericUpDown()
         {
             Loaded +=OnLoaded;
-            
+            LostFocus += NumericUpDown_LostFocus;
              
+        }
+
+        private void NumericUpDown_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+                window.ShowKeyboard(false, this);
+            //throw new System.NotImplementedException();
         }
 
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)

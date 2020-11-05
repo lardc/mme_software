@@ -5,6 +5,7 @@
     
     
     <Converters:TryBooleanToVisibilityHiddenConverter x:Key="B2VC" />
+    <Converters:TryBooleanToVisibilityHiddenConverter x:Key="B2VH" />
     <Converters:TryBooleanToVisibilityConverter x:Key="B2V" />
     <Converters:TryBooleanToVisibilityInverseConverter x:Key="B2VI" />
     <Converters:EnumValueToString x:Key="E2S" />
@@ -20,6 +21,8 @@
     <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
     <Converters:TypeTestParameterToString x:Key="TP2S" />
+    <Converters:DoobleMaxLength x:Key="DML" Round="6"/>
+    
 
     <Converters:GridLengthConverter x:Key="G2L" />
 

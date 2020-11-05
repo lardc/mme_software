@@ -35,7 +35,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             _Converter.ConvertBackCheck(value);
-            Visibility inverseValue = (Visibility)value == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            Visibility inverseValue = (Visibility)value == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             return _Converter.ConvertBackWithoutCheckValue(inverseValue);
         }
     }

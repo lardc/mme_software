@@ -32,22 +32,21 @@ namespace SCME.WpfControlLibrary.Pages
                 case TestParametersType.OutputLeakageCurrent:
                     ItemVM = new SCME.Types.OutputLeakageCurrent.TestParameters();
                     MainTabControl.SelectedIndex = 2;
-                    TextBlockValueName.Text = "Ток утечки";
+                    VM.ShowOutputLeakageCurrent = true;
                     break;
                 case TestParametersType.OutputResidualVoltage:
                     ItemVM = new SCME.Types.OutputResidualVoltage.TestParameters();
                     MainTabControl.SelectedIndex = 1;
-                    TextBlockValueName.Text = "Остаточное напряжение";
+                    VM.ShowOutputResidualVoltage = true;
                     break;
                 case TestParametersType.InputOptions:
                     ItemVM = new SCME.Types.InputOptions.TestParameters();
                     MainTabControl.SelectedIndex = 0;
-                    TextBlockValueName.Text = "Параметры входа";
+                    VM.ShowInputOptions = true;
                     break;
                 case TestParametersType.ProhibitionVoltage:
                     ItemVM = new SCME.Types.ProhibitionVoltage.TestParameters();
                     MainTabControl.SelectedIndex = 3;
-                    TextBlockValueName.Text = "Напряжение запрета";
                     break;
                 default:
                     break;
@@ -78,7 +77,10 @@ namespace SCME.WpfControlLibrary.Pages
         {
             VM.CanStart = true;
             VM.Result = testResults.Value;
-            VM.ShowAuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
+            VM.AuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
+            VM.AuxiliaryCurrentPowerSupply2 = testResults.AuxiliaryCurrentPowerSupply2;
+            VM.OpenResistance = testResults.OpenResistance;
+
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

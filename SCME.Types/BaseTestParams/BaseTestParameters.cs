@@ -93,7 +93,10 @@ namespace SCME.Types.BaseTestParams
         public bool ShowAuxiliaryVoltagePowerSupply2 => DutPackageType == DutPackageType.V108;
 
 
-        [IgnoreDataMember]
+        public virtual bool ShowAuxiliarySupplyCurrent1 => (DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108) && GetType() == typeof(InputOptionsParameters);
+        public virtual bool ShowAuxiliarySupplyCurrent2 =>  DutPackageType == DutPackageType.V108 && GetType() == typeof(InputOptionsParameters);
+
+
         public bool HideMinMax { get; set; }
 
         [DataMember]

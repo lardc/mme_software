@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
@@ -108,6 +109,8 @@ namespace SCME.WpfControlLibrary.Pages
                 return true;
             if (_dbService.ProfileNameExists(ProfileVm.SelectedProfileNameCopy) == false)
                 return true;
+            var profile = _dbService.GetTopProfileByName("IsActive", ProfileVm.SelectedProfile.Name);
+
             new DialogWindow(Properties.Resources.Error, Properties.Resources.PprofileNameAlreadyExists).ShowDialog();
             return false;
         }
@@ -211,6 +214,10 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void TextBoxFind_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if ((sender as ValidatingTextBox).Text != ProfileVm.SearchingName)
+                return;
+            ProfileVm.CountViewProfielsN = 0;
+            ProfileVm.CountViewProfiels = 100;
             ProfileVm.ProfilesSource.View.Refresh();
             //_dispatcherTimerFindProfile.Start();
         }
@@ -253,5 +260,42 @@ namespace SCME.WpfControlLibrary.Pages
             parent.RaiseEvent(eventArg);
         }
 
+        private void DeleteProfile_Click(object sender, RoutedEventArgs e)
+        {
+            if (new DialogWindow("", "Вы действительно хотите удалить профиль", true).ShowDialogWithResult() == true)
+            {
+                _dbService.DeletingByRenaming(ProfileVm.SelectedProfile);
+                ProfileVm.Profiles.Remove(ProfileVm.SelectedProfile);
+
+            }
+        }
+
+        private void ListViewProfiles_MouseMove(object sender, MouseEventArgs e)
+        {
+            var sv = FindVisualChild<ScrollViewer>((sender as ListViewMouseLeftButtonScroll));
+            if ((sv.ExtentHeight - sv.VerticalOffset) / sv.ExtentHeight < 0.15)
+            {
+                if (ProfileVm.Profiles.Count < ProfileVm.CountViewProfiels)
+                    return;
+                ProfileVm.CountViewProfielsN = 0;
+                ProfileVm.CountViewProfiels += 100;
+                ProfileVm.ProfilesSource.View.Refresh();
+            }
+        }
+
+        private static TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject
+        {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (child is TChildItem item)
+                    return item;
+
+                var childOfChild = FindVisualChild<TChildItem>(child);
+                if (childOfChild != null)
+                    return childOfChild;
+            }
+            return null;
+        }
     }
 }

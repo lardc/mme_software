@@ -38,6 +38,11 @@ namespace SCME.Types
             {
                 return Channel.GetProfilesDeepByMmeCode(mmeCode);
             }
+            catch(FaultException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -113,6 +118,11 @@ namespace SCME.Types
         public bool Migrate()
         {
             return Channel.Migrate();
+        }
+
+        public void DeletingByRenaming(MyProfile profile)
+        {
+            Channel.DeletingByRenaming(profile);
         }
     }
 }

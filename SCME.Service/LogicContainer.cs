@@ -429,9 +429,9 @@ namespace SCME.Service
             IsInitialized = false;
         }
 
-        internal void StartAttestation(int parameter, AttestationType attestationType, uint value)
+        internal void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
         {
-           _ioSSRTU.StartAttestation(parameter, attestationType, value);
+           _ioSSRTU.StartAttestation(position, parameter, attestationType, value);
         }
 
         internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)

@@ -34,5 +34,10 @@ namespace SCME.UI.PagesTech
             if (page != null && NavigationService != null)
                 NavigationService.Navigate(page);
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
     }
 }
