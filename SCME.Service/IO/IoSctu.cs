@@ -432,7 +432,7 @@ namespace SCME.Service.IO
                     try
                     {
                         CallAction(ACT_SC_PULSE_CONFIG);
-                        Thread.Sleep(3000);
+                        Thread.Sleep(5000);
 
                         var devState = WaitForPulseConfig();
 
