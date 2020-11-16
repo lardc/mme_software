@@ -70,7 +70,7 @@ namespace SCME.WpfControlLibrary.Pages
                             sSRTUResultComponentVM.InputVoltageMax = j.InputVoltageMaximum;
                             sSRTUResultComponentVM.InputVoltage = 0;
                             foreach (var t in VMByPosition.Values)
-                                t.ShowInputAmperage = true;
+                                t.ShowInputAmperage = false;
                         }
                         else
                         {
@@ -78,7 +78,7 @@ namespace SCME.WpfControlLibrary.Pages
                             sSRTUResultComponentVM.InputAmperageMax = j.InputCurrentMaximum;
                             sSRTUResultComponentVM.InputAmperage = 0;
                             foreach (var t in VMByPosition.Values)
-                                t.ShowInputAmperage = false;
+                                t.ShowInputAmperage = true;
                         }
                         if(j.ShowAuxiliaryVoltagePowerSupply1)
                         {

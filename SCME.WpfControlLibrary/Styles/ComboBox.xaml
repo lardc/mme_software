@@ -8,8 +8,8 @@
     
     <Style TargetType="Border" x:Key="BorderComboBox">
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="True"> 
-                <Setter  Property="Background" Value="{StaticResource xGray4}"/> 
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter  Property="Background" Value="#FFC9C9C9"/> 
             </Trigger> 
             <Trigger Property="IsEnabled" Value="False"> 
                 <Setter  Property="Background" Value="Transparent"/> 
@@ -86,7 +86,7 @@
                                     <ContentPresenter x:Name="contentPresenter"  IsHitTestVisible="False" Margin="5,0,5,0"
                                                       VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 </Border>
-    </ControlTemplate>
+                    </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
@@ -127,17 +127,17 @@
                             <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="MainBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="MainBorder" Property="Visibility" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="contentPresenter" Property="Margin" Value="3,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="0,3,40,3"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsEnabled" Value="False"/>
                                 <Condition Property="Tag" Value="M"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="contentPresenter" Property="Margin" Value="3,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="0,3,40,3"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

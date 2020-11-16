@@ -10,19 +10,18 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="ListViewItem" x:Key="ListViewItemTestParameter">
-        <Setter Property="Background" Value="{StaticResource ListViewItemTestParametersBrush}" />
+        <Setter Property="Background" Value="White" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
-                    <Grid  Margin="10,10,50,10" IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
+                <ControlTemplate TargetType="ListViewItem" >
+                    <Grid SnapsToDevicePixels="True" IsEnabled="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        
-                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1" Background="Transparent" BorderBrush="AliceBlue" />
 
-                        <Grid Grid.Row="0" Margin="10">
+
+                        <Grid Grid.Row="0" Margin="0,0,0,0" SnapsToDevicePixels="True">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -35,26 +34,30 @@
                                 <ColumnDefinition Width="1.1*" />
                             </Grid.ColumnDefinitions>
 
-                            <Label  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Content="{Binding Converter={StaticResource TP2S}}" />
+
+                            <Border Background="#FFC9C9C9" BorderThickness="0" Grid.ColumnSpan="5"/>
+                            <Label Grid.ColumnSpan="2" Content="{Binding Converter={StaticResource TP2S}}"  Margin="40,0,0,0"/>
+            
+                            
                             <CheckBox Grid.Column="3" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" Visibility="Collapsed" HorizontalAlignment="Right" FlowDirection="RightToLeft"
                                       d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
-                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right"  Margin="0,0,10,0">
 
                                 <Button Style="{StaticResource ButtonWithIcon}"
-                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2V}}"
+                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2VH}}" Margin="0,5"
                                         Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=MoveUp}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}">
                                     <Path Data="{StaticResource ArrowUp}" Style="{StaticResource PathIcon}"/>
                                 </Button>
                                 <Button Style="{StaticResource ButtonWithIcon}" Margin="5,0"
-                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2V}}"
+                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2VH}}"
                                         Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=MoveDown}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}">
                                     <Path Data="{StaticResource ArrowDown}" Style="{StaticResource PathIcon}"/>
                                 </Button>
 
                                 <Button Style="{StaticResource ButtonWithIcon}" HorizontalAlignment="Right"
-                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2V}}"
+                                        Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2VH}}"
                                         Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=DeleteRelayCommand}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                                     <Path Data="{StaticResource Delete}" Style="{StaticResource PathIcon}"/>
@@ -63,7 +66,7 @@
 
                         </Grid>
 
-                        <ContentPresenter Grid.Column="0" Grid.Row="1" Margin="10" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}" />
+                        <ContentPresenter Grid.Column="0" Grid.Row="1" Margin="10,38,10,10" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}"  />
 
                         
                         

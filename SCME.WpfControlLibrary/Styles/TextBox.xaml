@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Class="SCME.WpfControlLibrary.CustomControls.TextBoxEvent"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
                     xmlns:profilesPageComponents="clr-namespace:SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents">
@@ -41,6 +41,8 @@
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <EventSetter Event="GotFocus" Handler="NumericUpDown_GotFocus" />
+        <EventSetter Event="LostFocus" Handler="NumericUpDown_LostFocus" />
     </Style>
 
     <Style TargetType="customControls:TextBoxWithTimer" BasedOn="{StaticResource {x:Type TextBox}}"></Style>

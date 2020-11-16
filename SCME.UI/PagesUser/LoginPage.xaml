@@ -27,16 +27,16 @@
             <RowDefinition Height="28*" />
             <RowDefinition Height="7*" />
             <RowDefinition Height="7*" />
-            <RowDefinition Height="55*" />
+            <RowDefinition Height="28*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Column="1" Grid.Row="0"
                  Grid.RowSpan="5"
-                Background="{StaticResource xPurple1}"
+                Background="White"
                 Margin="0,0,0,0" />
 
-        <customControls:ListViewMouseLeftButtonScroll x:Name="accountsListBox" ScrollViewer.CanContentScroll="False"
+        <customControls:ListViewMouseLeftButtonScroll x:Name="accountsListBox" ScrollViewer.CanContentScroll="False" 
                                 Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Style="{StaticResource DefaultListView}"
                                 SelectionChanged="AccountsListBox_OnSelectionChanged">
             <ListView.ItemTemplate>
@@ -46,7 +46,7 @@
             </ListView.ItemTemplate>
         </customControls:ListViewMouseLeftButtonScroll>
 
-        <Label Grid.Column="1" Grid.Row="1" Foreground="White"
+        <Label Grid.Column="1" Grid.Row="1" Foreground="Black" 
                Content="{x:Static res:Resources.EnterPassword}"
                FontSize="36" Margin="120,0,0,0" />
 

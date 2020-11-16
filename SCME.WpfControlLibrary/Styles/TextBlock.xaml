@@ -12,7 +12,9 @@
         <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
         <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="TextWrapping" Value="NoWrap"/>
-        
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        <Setter Property="LineHeight" Value="20"/>
+
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
 </ResourceDictionary>

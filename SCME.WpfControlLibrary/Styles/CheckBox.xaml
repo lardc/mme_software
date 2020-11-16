@@ -18,11 +18,11 @@
     <!--  adapted from http://brianlagunas.com/free-metro-light-and-dark-themes-for-wpf-and-silverlight-microsoft-controls/  -->
     <Style TargetType="CheckBox" >
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
-        <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}" />
+        <Setter Property="Foreground" Value="Black" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         
@@ -37,8 +37,8 @@
                         <Grid x:Name="PART_CHECKBOX" Grid.Column="0">
                             <!--<Rectangle Fill="{DynamicResource TransparentWhiteBrush}" />-->
                             <Border x:Name="normal"  
-                                    Width="36"
-                                    Height="36"
+                                    Width="38"
+                                    Height="38"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
@@ -80,6 +80,49 @@
                         </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="checkBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="normal" Property="Visibility" Value="Visible"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="checkBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="normal" Property="Visibility" Value="Hidden"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsEnabled" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="checkBox" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="normal" Property="Visibility" Value="Visible"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="checkBox" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="normal" Property="Visibility" Value="Visible"/>
+                                
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>-->
+                       
+
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="normal" Property="BorderBrush" Value="{DynamicResource HighlightBrush}" />
                         </Trigger>
@@ -93,6 +136,16 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter TargetName="normal" Property="Visibility" Value="Hidden"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="False"/>
+                                <Condition Property="IsEnabled" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="checkBox" Property="Visibility" Value="Hidden"/>
+                                <Setter TargetName="normal" Property="Visibility" Value="Visible"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
                         <Trigger Property="FlowDirection" Value="RightToLeft">
                             <Setter TargetName="contentPresenter" Property="HorizontalAlignment" Value="Right"></Setter>
                             <Setter TargetName="PART_CHECKBOX" Property="Margin" Value="0,0,5,0"></Setter>

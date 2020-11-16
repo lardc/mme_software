@@ -83,15 +83,15 @@
 
         <Button x:Name="OperatorButton" CommandParameter="{x:Static types:UserWorkMode.Operator}" Grid.Column="2" Grid.Row="1" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
             <Grid Background="{StaticResource xGreen1}">
-                <Path Data="{StaticResource LoginPath}" />
-                <Label Content="{x:Static res:Resources.OperatorMode}" Style="{StaticResource LabelIconButton}" />
+                <Path Data="{StaticResource LoginPath}" VerticalAlignment="Center" />
+                <Label Content="{x:Static res:Resources.OperatorMode}" Style="{StaticResource LabelIconButton}" VerticalAlignment="Center" />
             </Grid>
         </Button>
 
         <Button x:Name="ServiceManButton" CommandParameter="{x:Static types:UserWorkMode.ServiceMan}" Grid.Column="2" Grid.Row="3" Height="160" IsEnabled="{Binding ButtonsModeIsEnabled}" Click="SelectMode_Click">
             <Grid Background="{StaticResource xBlue3}">
-                <Path Data="{StaticResource TechPath}" />
-                <Label Content="{x:Static res:Resources.ServicemanMode}" Style="{StaticResource LabelIconButton}" />
+                <Path Data="{StaticResource TechPath}" VerticalAlignment="Center"/>
+                <Label Content="{x:Static res:Resources.ServicemanMode}" Style="{StaticResource LabelIconButton}" VerticalAlignment="Center" />
             </Grid>
         </Button>
 

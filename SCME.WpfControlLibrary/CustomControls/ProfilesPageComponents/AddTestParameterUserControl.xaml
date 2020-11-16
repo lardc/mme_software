@@ -35,19 +35,19 @@
 
         <Label Grid.Column="0" Grid.Row="0"  Content="Тип корпуса"/>
         <ComboBox Grid.Column="1" Grid.Row="0"  Grid.ColumnSpan="3"  Margin="5,5,5,5"
-                  ItemsSource="{Binding Source={StaticResource DutPackageType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DutPackageType}"
-                                       />
+                  ItemsSource="{Binding Source={StaticResource DutPackageType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DutPackageType}" IsEnabled="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}}" 
+        />
 
 
-        <Label Grid.Column="0" Grid.Row="2" Content="Тип измерения" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2VH}}"  />
+        <Label Grid.Column="0" Grid.Row="2" Content="Тип измерения" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"  />
         <ComboBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3"  Margin="5,5,5,5"
                       ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" 
                       DisplayMemberPath="Name" SelectedValuePath="TestParametersType"  SelectedIndex="0"
                       SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}"
-                  Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2VH}}">
+                  Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}">
             </ComboBox>
-            <Button Grid.Column="4" Grid.Row="1" Grid.RowSpan="1" Height="37.5"  Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Click="AddTestParameters_Click"
-                    Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2VH}}"/>
+            <Button Grid.Column="4" Grid.Row="1" Grid.RowSpan="1" Height="37.5"  Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Width="auto" Click="AddTestParameters_Click"
+                    Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"/>
             
             
             

@@ -207,7 +207,7 @@
 
             <Button CommandParameter="22" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=AttestationIsVisibly, Converter={StaticResource B2V}}">
                 <Grid Background="{StaticResource xPurple2}">
-                    <Label Content="Атестация" />
+                    <Label Content="Аттестация" />
                 </Grid>
             </Button>
 

@@ -14,6 +14,10 @@
     <Prefer32bit>false</Prefer32bit>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\AlarmImage.png" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
@@ -23,6 +27,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SCME.Types\SCME.Types.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Resource Include="Resources\AlarmImage.png" />
   </ItemGroup>
 
  
@@ -79,6 +88,11 @@
     </Compile>
     <Compile Update="Pages\SSRTUPage.xaml.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 

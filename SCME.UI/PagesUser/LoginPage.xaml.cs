@@ -84,7 +84,7 @@ namespace SCME.UI.PagesUser
                     () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1),
                     Cache.Net.StopSSRTU)
                 {
-                    Title = $"Тестирование, профиль: {profilesPage.ProfileVm.SelectedProfile.Name}",
+                    Title = $"Тестирование {profilesPage.ProfileVm.SelectedProfile.Name}",
 
                 };
                 Cache.SSRTUHandler = page.SSRTUHandler;

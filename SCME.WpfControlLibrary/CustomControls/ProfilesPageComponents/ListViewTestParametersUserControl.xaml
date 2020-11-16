@@ -32,13 +32,29 @@
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/DataTemplateForTestParameters.xaml"/>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ProfilePageStyle.xaml"/>
-                
-                
+            
+
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" >
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                <Setter Property="LineHeight" Value="20"/>
+            </Style>
+            <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}" >
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="MinHeight" Value="54"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <ListView BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
-              ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="{StaticResource ListViewTestParametersBrush}" >
+              ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="White" >
       <ListView.ItemsPanel>
           <ItemsPanelTemplate>
                     <StackPanel />

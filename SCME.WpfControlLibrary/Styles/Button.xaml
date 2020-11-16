@@ -89,12 +89,11 @@
 
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">
         <Setter Property="Foreground" Value="White"></Setter>
-        <Setter Property="Background" Value="{StaticResource BlueBrush}" />
+        <Setter Property="Background" Value="#FF0078D7" />
         <Setter Property="Width" Value="290"/>
     </Style>
 
     <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="{StaticResource xBlue1}" />
     </Style>
     
     <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">

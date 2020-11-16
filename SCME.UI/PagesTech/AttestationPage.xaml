@@ -8,7 +8,7 @@
       xmlns:customControls="WpfControlLibrary"
       DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
       d:DesignHeight="800" d:DesignWidth="900"
-      Title="Атестация">
+      Title="Аттестация">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,13 +22,13 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition />
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" x:Name="Row3"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding ElementName=Row3, Path=ActualHeight}"/>
+            <RowDefinition Height="{Binding ElementName=Row3, Path=ActualHeight}"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -57,7 +57,7 @@
         <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding FormedValue}" HorizontalAlignment="Right"/>
         <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding MeasuredValue}" HorizontalAlignment="Right"/>
 
-        <Button Grid.Row="9" Style="{StaticResource BackButton}" Content="Назад" Click="Back_Click"/>
+        <Button Grid.Row="9" Style="{StaticResource BackButton}"  Content="Назад" Click="Back_Click" Background="#FF0078D7"/>
 
         <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource BackButton}" Background="{StaticResource xGreen1}" Content="Старт" Click="Start_Click"/>
     </Grid>

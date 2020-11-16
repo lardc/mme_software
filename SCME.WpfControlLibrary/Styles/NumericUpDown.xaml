@@ -11,13 +11,17 @@
         <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    
+
 
     <Style TargetType="{x:Type myControls:NumericUpDown}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type myControls:NumericUpDown}">
                     <Grid>
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" Visibility="{TemplateBinding IsEnabled, Converter={StaticResource B2VH}}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding BorderThickness}"/>
+                    <Grid Margin="{TemplateBinding Padding}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -71,7 +75,8 @@
                         </RepeatButton>
                         <Label Grid.Column="2" x:Name="LabelValue" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}"  HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                         <TextBox Grid.Column="2" x:Name="TextBoxValue" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}"  TextAlignment="Right" BorderThickness="0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                    </Grid>          
+                    </Grid >
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonUp" Property="Visibility" Value="Collapsed"></Setter>
