@@ -49,7 +49,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         }
 
         [DependsOn(nameof(SelectedProfile))]
-        public bool SelectedProfileNotNull => SelectedProfile != null;
+        public bool SelectedProfileDeepDataNotNull => ProfileDeepDataCopy != null;
+
 
         private MyProfile _selectedProfile;
         public MyProfile SelectedProfile

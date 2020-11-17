@@ -32,7 +32,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}"  Background="#FFC9C9C9">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" SharedSizeGroup="ColumnMmeAndName" />
+                <RowDefinition Height="auto"  />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
@@ -71,7 +71,7 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0" Background="{StaticResource xGray2}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" SharedSizeGroup="ColumnMmeAndName" />
+                <RowDefinition Height="auto"  />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="auto" />
@@ -91,23 +91,23 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0"  Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" Foreground="Black" BorderThickness="0" Margin="40,0,0,0" 
-                         VerticalContentAlignment="Center"  Visibility="{Binding SelectedProfileNotNull, Converter={StaticResource B2V}}"
+                         VerticalContentAlignment="Center"  Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                          IsEnabled="{Binding IsEditModeActive}" />
                 <!--<Border BorderThickness="1" Grid.Column="0" Grid.Row="0" BorderBrush="Gray"   />-->
 
-                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileNotNull, Converter={StaticResource B2V}}"
+                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
                 </Button>
-                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"   Visibility="{Binding SelectedProfileNotNull, Converter={StaticResource B2V}}"
+                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="5,0">
                     <Path Data="{StaticResource Cansel}" Style="{StaticResource PathIcon}"/>
                 </Button>
-                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"  Visibility="{Binding SelectedProfileNotNull, Converter={StaticResource B2V}}"
+                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"  Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Save}" Style="{StaticResource PathIcon}"/>
                 </Button>
-                <Button Grid.Column="4" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileNotNull, Converter={StaticResource B2V}}"
+                <Button Grid.Column="4" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="DeleteProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Delete}" Style="{StaticResource PathIcon}"/>
                 </Button>

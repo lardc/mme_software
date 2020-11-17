@@ -20,19 +20,7 @@
         <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="TextBlock.TextWrapping" Value="NoWrap"/>
         <Setter Property="ContentStringFormat" Value=""/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Label}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" 
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
-                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                          />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+      
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="Black"/>
