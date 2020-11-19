@@ -13,6 +13,10 @@ namespace SCME.WpfControlLibrary.ViewModels
         [DependsOn(nameof(CanStart))]
         public bool CanCanselMeasument => !CanStart;
 
-        
+
+        public string BatchNumber { get; set; }
+        public int SerialNumber { get; set; } = 1;
+        public bool SerialNumberIsEnabled { get; set; }
+
     }
 }

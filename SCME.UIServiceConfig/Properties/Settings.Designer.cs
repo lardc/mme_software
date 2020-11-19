@@ -979,5 +979,14 @@ namespace SCME.UIServiceConfig.Properties {
                 return ((bool)(this["AttestationIsVisibly"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ReportFolder {
+            get {
+                return ((string)(this["ReportFolder"]));
+            }
+        }
     }
 }

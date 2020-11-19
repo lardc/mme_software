@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using SCME.Types;
+using SCME.Types.SSRTU;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,26 @@ namespace SCME.WpfControlLibrary.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class SSRTUResultComponentVM
     {
-        public int Postition { get; set; }
+        public bool IsEmpty => LeakageCurrent == null && InputAmperage == null && InputVoltage == null && ResidualVoltage == null && ProhibitionVoltage == null
+            && AuxiliaryCurrentPowerSupply1 == null && AuxiliaryCurrentPowerSupply2 == null && OpenResistance == null;
+
+        public bool IsGood => (LeakageCurrentIsOk != null && LeakageCurrentIsOk.Value) && 
+            (InputAmperageIsOk != null && InputAmperageIsOk.Value) && 
+            (InputVoltageIsOk != null && InputVoltageIsOk.Value) && 
+            (ResidualVoltageIsOk != null && ResidualVoltageIsOk.Value) && 
+            (ProhibitionVoltageIsOk != null && ProhibitionVoltageIsOk.Value) &&
+            (AuxiliaryCurrentPowerSupply1IsOk != null && AuxiliaryCurrentPowerSupply1IsOk.Value) && 
+            (AuxiliaryCurrentPowerSupply2IsOk != null && AuxiliaryCurrentPowerSupply2IsOk.Value) && 
+            (OpenResistanceIsOk != null && OpenResistanceIsOk.Value);
+
+        //public CommonResult ToCommonResult()
+        //{
+        //    return CommonResult()
+        //}
+
+        public int Positition { get; set; }
         public DutPackageType DutPackageType { get; set; }
+        public int SerialNumber { get; set; } 
 
         public bool ShowAuxiliaryCurrentPowerSupply1 => DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108;
 

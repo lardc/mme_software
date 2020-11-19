@@ -206,6 +206,16 @@ namespace SCME.WpfControlLibrary.DataProviders
             };
         }
 
+        public static Dictionary<TypeManagement, string> GetTypeManagementToString()
+        {
+            return new Dictionary<TypeManagement, string>
+            {
+                {TypeManagement.ACVoltage, "Переменное напряжение" },
+                {TypeManagement.DCVoltage, "Постоянное напряжение" },
+                {TypeManagement.DCAmperage, "Постоянный ток" },
+            };
+        }
+
         public static Dictionary<string, int> GetNumberPosition()
         {
             return new Dictionary<string, int>

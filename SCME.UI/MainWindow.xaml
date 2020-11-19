@@ -166,6 +166,14 @@
                                 <TextBlock Text="ewrfre" HorizontalAlignment="Center" FontSize="10" Visibility="Hidden"/>
                             </StackPanel>
                         </Button>
+                        <Button Click="Minimize_Click"
+                            Visibility="{Binding GoTechButtonVisibility}" Background="Transparent" BorderThickness="0"
+                            Margin="0, 10, 30, 10">
+                            <StackPanel>
+                                <Path  Width="48" Height="48" Stretch="uniform" Data="{StaticResource ArrowDown}" Fill="#ff0078d7" Stroke="Transparent" />
+                                <TextBlock Text="ewrfre" HorizontalAlignment="Center" FontSize="10" Visibility="Hidden"/>
+                            </StackPanel>
+                        </Button>
                         <Button Content="{StaticResource ClosePath}" Click="BtnExit_Click"
                             Style="{StaticResource ButtonPath}" Padding="5" Margin="0, 10, 30, 10"
                             Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ExitButtonIsVisible, Converter={StaticResource B2V}}" />

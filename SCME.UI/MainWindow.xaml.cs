@@ -380,6 +380,11 @@ namespace SCME.UI
             ShowKeyboard(false, null);
         }
 
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
         public void ShowKeyboard(bool Show, Control Control)
         {
             if (!m_IsKeyboardShown && Show)

@@ -58,4 +58,24 @@ namespace SCME.Types.SSRTU
         [DataMember]
         public float OpenResistance { get; set; }
     }
+
+    public class CommonResult
+    {
+        [DataMember]
+        public double? ResidualVoltage { get; set; }
+        [DataMember]
+        public double? LeackageCurrent { get; set; }
+        [DataMember]
+        public double? Voltage { get; set; }
+        [DataMember]
+        public double? Current { get; set; }
+        [DataMember]
+        public double? OpenResistance { get; set; }
+        [DataMember]
+        public double? AuxiliaryCurrentPowerSupply1 { get; set; }
+        [DataMember]
+        public double? AuxiliaryCurrentPowerSupply2 { get; set; }
+
+ 
+    }
 }

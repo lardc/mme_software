@@ -14,11 +14,30 @@
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/SSRTUPageStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"/>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" >
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                <Setter Property="LineHeight" Value="20"/>
+            </Style>
+            <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}" >
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="MinHeight" Value="54"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Style.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid >
+    <Grid>
+        <Button Style="{StaticResource BackButton}" Click="OpenFodlerResult_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  Content="Результаты"/>
+        <Grid >
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
@@ -31,6 +50,23 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Номер партии"/>
+            <CheckBox Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" IsChecked="{Binding SerialNumberIsEnabled}" Margin="10,0,10,0">
+                <Label  Content="Серийный номер"/>
+            </CheckBox>
+            <TextBox Height="54" TextAlignment="Right" Text="{Binding BatchNumber}" Grid.Row="1" Grid.Column="0" Margin="5,0,10,0"/>
+            <TextBox Height="54" TextAlignment="Right" Text="{Binding SerialNumber}" Grid.Row="1" Grid.Column="1" IsEnabled="{Binding SerialNumberIsEnabled}" Margin="15,0,10,0"/>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="3">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -39,7 +75,7 @@
             <controls:SSRTUResultPageControl Grid.Column="1" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SSRTUResultPage}}, Path=VMPosition2}" Margin="10,0,10,0"/>
             <controls:SSRTUResultPageControl Grid.Column="2" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:SSRTUResultPage}}, Path=VMPosition3}" Margin="10,0,0,0"/>
         </Grid>
-        <Grid Grid.Row="3" Grid.ColumnSpan="3">
+        <Grid Grid.Row="5" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -49,5 +85,6 @@
             <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" HorizontalAlignment="Center" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
             <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" HorizontalAlignment="Right" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
         </Grid>
+    </Grid>
     </Grid>
 </Page>
