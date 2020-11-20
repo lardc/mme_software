@@ -536,8 +536,8 @@ namespace SCME.WpfControlLibrary.Pages
                         tbody.AppendChild(AddLineValues("Напряжение управления, В:", rv.Select(m => m.ControlVoltage.ToString())));
                         tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", rv.Select(m =>
                         TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
-                        tbody.AppendChild(AddLineValues("Ком.ток, мА:", rv.Select(m => m.SwitchedAmperage.ToString())));
-                        tbody.AppendChild(AddLineValues("Ком. напр, В:", rv.Select(m => m.SwitchedVoltage.ToString())));
+                        //tbody.AppendChild(AddLineValues("Ком.ток, мА:", rv.Select(m => m.SwitchedAmperage.ToString())));
+                        //tbody.AppendChild(AddLineValues("Ком. напр, В:", rv.Select(m => m.SwitchedVoltage.ToString())));
                         tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
                         tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
                         tbody.AppendChild(AddLineValues("Форма импульса коммутируемого тока:", rv.Select(m =>
@@ -553,8 +553,8 @@ namespace SCME.WpfControlLibrary.Pages
                         TestTypeEnumDictionary.GetApplicationPolarityConstantSwitchingVoltage().ToDictionary(n => n.Value, n => n.Key)[m.ApplicationPolarityConstantSwitchingVoltage])));
                         tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", lc.Select(m =>
                         TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
-                        tbody.AppendChild(AddLineValues("Ком.ток, мА:", lc.Select(m => m.SwitchedAmperage.ToString())));
-                        tbody.AppendChild(AddLineValues("Ком. напр, В:", lc.Select(m => m.SwitchedVoltage.ToString())));
+                        //tbody.AppendChild(AddLineValues("Ком.ток, мА:", lc.Select(m => m.SwitchedAmperage.ToString())));
+                        //tbody.AppendChild(AddLineValues("Ком. напр, В:", lc.Select(m => m.SwitchedVoltage.ToString())));
                         tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
                         tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
 

@@ -35,7 +35,7 @@
     <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
-    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
+    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, мВ" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
 
     <CheckBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" IsChecked="{Binding OpenState}" Foreground="Black" FlowDirection="RightToLeft">
@@ -46,13 +46,13 @@
         </Label>
     </CheckBox>
 
-    <Label Grid.Column="0" Grid.Row="3" Content="Ком. ток, мА" ></Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage, Converter={StaticResource DML}}" />
+    <!--<Label Grid.Column="0" Grid.Row="3" Content="Ком. ток, мА" ></Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage, Converter={StaticResource DML}}" />-->
 
     <Label Grid.Column="0" Grid.Row="4"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
         <Label>
             <TextBlock>
-                Напряжение вспом.<LineBreak/>питания 1, В
+                Напряжение вспом.<LineBreak/>питания 1, мВ
             </TextBlock>
         </Label>
     </Label>
@@ -86,12 +86,12 @@
     </Label>
     <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />
 
-        <Label  Grid.Column="3" Grid.Row="3">Ком. напр., В</Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage, Converter={StaticResource DML}}"   />
+        <!--<Label  Grid.Column="3" Grid.Row="3">Ком. напр., мВ</Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage, Converter={StaticResource DML}}"   />-->
 
     <Label Grid.Column="3" Grid.Row="4"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}">
         <TextBlock>
-                Напряжение вспом.<LineBreak/>питания 2, В
+                Напряжение вспом.<LineBreak/>питания 2, МВ
         </TextBlock>
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply2, Converter={StaticResource DML}}"   />
@@ -122,14 +122,14 @@
 
             <Label Grid.Column="0" Grid.Row="0" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
             <TextBlock>
-            Выходное остаточное<LineBreak/>напряжение мин., В
+            Выходное остаточное<LineBreak/>напряжение мин., мВ
             </TextBlock>
         </Label>
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"   Value="{Binding OutputResidualVoltageMinimum, Converter={StaticResource DML}}"  Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>
 
             <Label  Grid.Column="3" Grid.Row="0" Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}">
             <TextBlock>
-            Выходное остаточное<LineBreak/>напряжение макс., В
+            Выходное остаточное<LineBreak/>напряжение макс., мВ
             </TextBlock>
         </Label>
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"   Value="{Binding OutputResidualVoltageMaximum, Converter={StaticResource DML}}"  Visibility="{Binding HideMinMax, Converter={StaticResource B2VI}}"/>

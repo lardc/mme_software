@@ -534,11 +534,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_SwitchedAmperage":
-                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        //testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
-                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        //testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AppPolSwitchingVoltage":
@@ -597,11 +597,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_SwitchedAmperage":
-                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        //testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
-                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        //testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_PolDCSwVoltageApplication":

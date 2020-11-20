@@ -41,10 +41,10 @@ namespace SCME.Types.OutputLeakageCurrent
         [DataMember]
         public PolarityDCSwitchingVoltageApplication PolarityDCSwitchingVoltageApplication { get; set; }
 
-        [DataMember]
-        public double SwitchedAmperage { get; set; }
-        [DataMember]
-        public double SwitchedVoltage { get; set; }
+        //[DataMember]
+        //public double SwitchedAmperage { get; set; }
+        //[DataMember]
+        //public double SwitchedVoltage { get; set; }
 
         [DataMember]
         public double AuxiliaryVoltagePowerSupply1 { get; set; }

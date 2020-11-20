@@ -32,12 +32,12 @@
     <Label  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер позиции" />
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
-    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
+    <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, мВ" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
 
         <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
         <TextBlock>
-                Напряжение вспом.<LineBreak/>питания 1, В
+                Напряжение вспом.<LineBreak/>питания 1, мВ
         </TextBlock>
     </Label>
     <customControls:NumericUpDown VerticalAlignment="Center" Grid.Column="1" Grid.Row="2"   Value="{Binding AuxiliaryVoltagePowerSupply1}"    Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"/>
@@ -50,7 +50,7 @@
 
     <Label Grid.Column="3" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}">
         <TextBlock>
-                Напряжение вспом.<LineBreak/>питания 2, В
+                Напряжение вспом.<LineBreak/>питания 2, мВ
         </TextBlock>
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding AuxiliaryVoltagePowerSupply2}" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  />

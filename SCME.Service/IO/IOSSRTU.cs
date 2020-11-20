@@ -281,7 +281,7 @@ namespace SCME.Service.IO
             if (!skipJournal)
                 SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU @ReadRegister, addressLow {addressLow}, addressHigh {addressHigh}, value {valueUl} ");
 
-            return Math.Round(valueUl / Math.Pow(10,6), 6);
+            return Math.Round(valueUl / Math.Pow(10,3), 3);
         }
         
         private void WriteRegisterFrom32To1616(ushort addressLow, double value, bool skipJournal = false)
@@ -291,7 +291,7 @@ namespace SCME.Service.IO
         
         private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, double value, bool skipJournal = false)
         {
-            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10,6)), skipJournal);
+            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10,3)), skipJournal);
         }
 
         private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, uint value, bool skipJournal = false)
@@ -381,9 +381,13 @@ namespace SCME.Service.IO
                             WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply2);
                             WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, lc.ControlCurrent);
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage);
-                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, lc.SwitchedAmperage);
-                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
+
+                            //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, lc.SwitchedAmperage);
+                            //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
+
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)lc.PolarityDCSwitchingVoltageApplication);
+                            WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
+
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
@@ -392,8 +396,10 @@ namespace SCME.Service.IO
                             WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, rv.ControlCurrent);
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
-                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
-                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
+
+                            //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
+                            //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
+
                             WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply1);
                             WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply2);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
@@ -404,8 +410,10 @@ namespace SCME.Service.IO
                             WriteRegister(REG_CONTROL_TYPE, (ushort)pv.TypeManagement);
                             WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, pv.ControlCurrent);
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, pv.ControlVoltage);
-                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, pv.SwitchedAmperage);
-                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, pv.SwitchedVoltage);
+
+                            //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, pv.SwitchedAmperage);
+                            //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, pv.SwitchedVoltage);
+
                             WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply1);
                             WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply2);
                             break;
@@ -630,10 +638,10 @@ namespace SCME.Service.IO
             //1 – Трапеция
             //2 - Синус
             REG_COMMUTATION_CURRENT_TIME = 137, // Commutation current time / Длительность импульса коммутируемого тока(in ms /мс)
-            REG_COMM_CURRENT_LOW = 138, // Commutation current / Коммутируемый ток(in mA / мА)
-            REG_COMM_CURRENT_HIGH = 152,
-            REG_COMM_VOLTAGE_LOW = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
-            REG_COMM_VOLTAGE_HIGH = 153,
+            //REG_COMM_CURRENT_LOW = 138, // Commutation current / Коммутируемый ток(in mA / мА)
+            //REG_COMM_CURRENT_HIGH = 152,
+            //REG_COMM_VOLTAGE_LOW = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
+            //REG_COMM_VOLTAGE_HIGH = 153,
             REG_AUX_PS1_VOLTAGE_LOW = 140, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
             REG_AUX_PS1_VOLTAGE_HIGH = 154,
             REG_AUX_1_CURRENT = 141, // Auxiliary power supply 1 current(in mA / мА)
@@ -683,6 +691,9 @@ namespace SCME.Service.IO
             REG_CALIBRATION_GENERATED_VALUE_HIGHT = 231,
             REG_CALIBRATION_MEASURED_VALUE_LOW = 232,
             REG_CALIBRATION_MEASURED_VALUE_HIGHT = 233
+
+
+            //MAX Registers
 
             ;
         #endregion
