@@ -32,9 +32,7 @@
             </Style>
         </ResourceDictionary>
     </Page.Resources>
-    <Grid>
-        <Button Style="{StaticResource BackButton}" Click="OpenFodlerResult_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  Content="Результаты"/>
-        <Grid >
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
@@ -62,8 +60,8 @@
             <CheckBox Grid.Row="0" Grid.Column="1" FlowDirection="RightToLeft" IsChecked="{Binding SerialNumberIsEnabled}" Margin="10,0,10,0">
                 <Label  Content="Серийный номер"/>
             </CheckBox>
-            <TextBox Height="54" TextAlignment="Right" Text="{Binding BatchNumber}" Grid.Row="1" Grid.Column="0" Margin="5,0,10,0"/>
-            <TextBox Height="54" TextAlignment="Right" Text="{Binding SerialNumber}" Grid.Row="1" Grid.Column="1" IsEnabled="{Binding SerialNumberIsEnabled}" Margin="15,0,10,0"/>
+            <TextBox Height="54" TextAlignment="Right" Text="{Binding BatchNumber}" Grid.Row="1" Grid.Column="0" BorderThickness="2" BorderBrush="Black" Margin="5,0,10,0"/>
+            <TextBox Height="54" TextAlignment="Right" Text="{Binding SerialNumber}" Grid.Row="1" Grid.Column="1" BorderThickness="2" BorderBrush="Black" IsEnabled="{Binding SerialNumberIsEnabled}" Margin="15,0,10,0"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -82,9 +80,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Style="{StaticResource BackButton}" IsEnabled="{Binding CanStart}" HorizontalAlignment="Left" Grid.Column="0" Content="Назад" Click="Back_Click"/>
-            <Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" HorizontalAlignment="Center" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>
+            <!--<Button Style="{StaticResource StopButton}" IsEnabled="{Binding CanCanselMeasument}" HorizontalAlignment="Center" Grid.Column="1" Content="Стоп" Click="Stop_Click"/>-->
+            <Button Style="{StaticResource BackButton}" Click="OpenFodlerResult_Click"  HorizontalAlignment="Center" Grid.Column="1" Content="Результаты"/>
             <Button Style="{StaticResource StartButton}" IsEnabled="{Binding CanStart}" HorizontalAlignment="Right" Margin="10,0,0,0" Grid.Column="2" Content="Старт" Click="Start_Click"/>
         </Grid>
-    </Grid>
     </Grid>
 </Page>

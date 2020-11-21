@@ -373,6 +373,12 @@ namespace SCME.Service.IO
                             WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply2);
                             WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, io.ControlCurrent);
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, io.ControlVoltage);
+
+                            WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, io.InputCurrentMaximum);
+                            WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, io.InputVoltageMaximum);
+
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, io.AuxiliaryCurrentPowerSupplyMaximum1);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, io.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             WriteRegister(REG_MEASUREMENT_TYPE, 1);
@@ -383,12 +389,14 @@ namespace SCME.Service.IO
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage);
 
                             //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, lc.SwitchedAmperage);
-                            //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
+                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
 
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)lc.PolarityDCSwitchingVoltageApplication);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
 
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
+
+                            WriteRegisterFrom32To1616(REG_LEAKAGE_CURRENT_MAX_LOW, REG_LEAKAGE_CURRENT_MAX_HIGH, lc.LeakageCurrentMaximum);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 2);
@@ -397,13 +405,15 @@ namespace SCME.Service.IO
                             WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
 
-                            //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
+                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
                             //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
 
                             WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply1);
                             WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply2);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
                             WriteRegisterFrom32To1616(REG_COMMUTATION_CURRENT_TIME, rv.SwitchingCurrentPulseDuration);
+
+                            WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 4);
@@ -638,10 +648,10 @@ namespace SCME.Service.IO
             //1 – Трапеция
             //2 - Синус
             REG_COMMUTATION_CURRENT_TIME = 137, // Commutation current time / Длительность импульса коммутируемого тока(in ms /мс)
-            //REG_COMM_CURRENT_LOW = 138, // Commutation current / Коммутируемый ток(in mA / мА)
-            //REG_COMM_CURRENT_HIGH = 152,
-            //REG_COMM_VOLTAGE_LOW = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
-            //REG_COMM_VOLTAGE_HIGH = 153,
+            REG_COMM_CURRENT_LOW = 138, // Commutation current / Коммутируемый ток(in mA / мА)
+            REG_COMM_CURRENT_HIGH = 152,
+            REG_COMM_VOLTAGE_LOW = 139, // Commutation voltage / Коммутируемого напряжение(in mV / мВ)
+            REG_COMM_VOLTAGE_HIGH = 153,
             REG_AUX_PS1_VOLTAGE_LOW = 140, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
             REG_AUX_PS1_VOLTAGE_HIGH = 154,
             REG_AUX_1_CURRENT = 141, // Auxiliary power supply 1 current(in mA / мА)
@@ -690,11 +700,23 @@ namespace SCME.Service.IO
             REG_CALIBRATION_GENERATED_VALUE_LOW = 230,
             REG_CALIBRATION_GENERATED_VALUE_HIGHT = 231,
             REG_CALIBRATION_MEASURED_VALUE_LOW = 232,
-            REG_CALIBRATION_MEASURED_VALUE_HIGHT = 233
+            REG_CALIBRATION_MEASURED_VALUE_HIGHT = 233,
 
 
             //MAX Registers
-
+            //Ток утечки на выходе, макс. - 138 и 152 регистры
+            REG_LEAKAGE_CURRENT_MAX_LOW = 138,
+            REG_LEAKAGE_CURRENT_MAX_HIGH = 152,
+            REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW = 139,
+            REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH = 153,
+            REG_INPUT_AMPERAGE_MAX_LOW = 133,
+            REG_INPUT_AMPERAGE_MAX_HIGH = 151,
+            REG_INPUT_VOLTAGE_MAX_LOW = 132,
+            REG_INPUT_VOLTAGE_MAX_HIGH = 150,
+            REG_AUX_1_CURRENT_MAX_LOW1 = 141,
+            REG_AUX_1_CURRENT_MAX_HIGH1 = 155,
+            REG_AUX_1_CURRENT_MAX_LOW2 = 143,
+            REG_AUX_1_CURRENT_MAX_HIGH2 = 157
             ;
         #endregion
     }

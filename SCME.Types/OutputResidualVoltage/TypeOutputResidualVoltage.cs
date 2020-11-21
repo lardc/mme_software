@@ -35,8 +35,9 @@ namespace SCME.Types.OutputResidualVoltage
         [DataMember]
         public PolarityDCSwitchingVoltageApplication PolarityDCSwitchingVoltageApplication { get; set; }
 
-        //[DataMember]
-        //public double SwitchedAmperage { get; set; }
+        [DataMember]
+        public double SwitchedAmperage { get; set; }
+
         //[DataMember]
         //public double SwitchedVoltage { get; set; }
 

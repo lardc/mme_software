@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -150,6 +152,12 @@ namespace SCME.UI.PagesTech
                     break;
                 case 22:
                     page = new AttestationSelectPage();
+                    break;
+                case 23:
+                    var reportFolder = SCME.UIServiceConfig.Properties.Settings.Default.ReportFolder;
+                    if (Directory.Exists(reportFolder) == false)
+                        reportFolder = Directory.GetCurrentDirectory();
+                    Process.Start("explorer.exe", reportFolder);
                     break;
             }
 

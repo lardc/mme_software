@@ -39,7 +39,7 @@
         </Grid.ColumnDefinitions>
 
     <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
-        Позиция <Run Text="{Binding Postition}"/>
+        Позиция <Run Text="{Binding Positition}"/>
     </TextBlock>
         <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="1" Text="Ток утечки, мА" />
     <Border Grid.Column="1" Grid.Row="1" Background="{Binding LeakageCurrentIsOk, Converter={StaticResource B2B}}" >

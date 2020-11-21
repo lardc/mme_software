@@ -51,7 +51,8 @@ namespace SCME.WpfControlLibrary.Pages
                 default:
                     break;
             }
-            ItemVM.HideMinMax = true;
+            ItemVM.IsProfileStyle = false;
+            
         }
 
         public void PostSSRTUNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)

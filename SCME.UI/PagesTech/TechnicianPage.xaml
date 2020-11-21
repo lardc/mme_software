@@ -211,6 +211,13 @@
                 </Grid>
             </Button>
 
+            <Button CommandParameter="23">
+                <Grid Background="{StaticResource xBlue2}">
+                    <Label Content="Результаты" />
+                </Grid>
+            </Button>
+
+
         </UniformGrid>
        
         <Button Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"

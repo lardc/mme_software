@@ -97,7 +97,7 @@ namespace SCME.Types.BaseTestParams
         public virtual bool ShowAuxiliarySupplyCurrent2 =>  DutPackageType == DutPackageType.V108 && GetType() == typeof(InputOptionsParameters);
 
 
-        public bool HideMinMax { get; set; }
+        public bool IsProfileStyle { get; set; } = true;
 
         [DataMember]
         public int NumberPosition { get; set; } = 1;
