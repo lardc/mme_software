@@ -53,13 +53,14 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ListView BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
+    <local:ListViewMouseLeftButtonScroll BorderThickness="0"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.CacheLengthUnit="Pixel"
+                                                          VirtualizingStackPanel.CacheLength="1000" ScrollViewer.CanContentScroll="False"
               ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="White" >
-      <ListView.ItemsPanel>
+        <local:ListViewMouseLeftButtonScroll.ItemsPanel>
           <ItemsPanelTemplate>
                     <StackPanel />
             </ItemsPanelTemplate>
-        </ListView.ItemsPanel>
+        </local:ListViewMouseLeftButtonScroll.ItemsPanel>
         <ListView.Resources>
             <DataTemplate DataType="{x:Type gateParameters:TestParameters}" >
                 <testResultDataTemplate:GateDataTemplate />
@@ -99,5 +100,5 @@
                 <testResultDataTemplate:TOUDataTemplate/>
             </DataTemplate>
         </ListView.Resources>
-    </ListView>
+    </local:ListViewMouseLeftButtonScroll>
 </UserControl>

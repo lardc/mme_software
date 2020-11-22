@@ -340,7 +340,7 @@ namespace SCME.Service.IO
 
                 if (_IsSSRTUEmulation)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(1000);
                     Random rand = new Random(DateTime.Now.Millisecond);
 
                     var randValue = rand.Next(0, 2);
@@ -351,10 +351,10 @@ namespace SCME.Service.IO
 
                     //throw new Exception("System.Exception: Operation - @Call, Node - 0, Address - 100, Message - SCCI protocol error: code - UserError, details - 5");
 
-                    _Result.Value = (float)rand.NextDouble() * 1000;
-                    _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.NextDouble() * 1000;
-                    _Result.AuxiliaryCurrentPowerSupply2 = (float)rand.NextDouble() * 1000;
-                    _Result.OpenResistance = (float)rand.NextDouble() * 1000;
+                    _Result.Value = (float)rand.Next(1, 500) / 1000  ;
+                    _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.Next() / 1000;
+                    _Result.AuxiliaryCurrentPowerSupply2 = (float)rand.Next() / 1000;
+                    _Result.OpenResistance = (float)rand.NextDouble() / 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
                     FireSSRTUEvent(DeviceState.Success, _Result);

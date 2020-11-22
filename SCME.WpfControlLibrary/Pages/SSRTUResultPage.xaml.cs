@@ -172,7 +172,8 @@ namespace SCME.WpfControlLibrary.Pages
                     break;
                 case TestParametersType.OutputResidualVoltage:
                     q.ResidualVoltage = testResults.Value;
-                    q.OpenResistance = testResults.OpenResistance;
+                    if(q.OpenResistanceMin != null)
+                        q.OpenResistance = testResults.OpenResistance;
                     break;
                 case TestParametersType.ProhibitionVoltage:
                     q.ProhibitionVoltage = testResults.Value;

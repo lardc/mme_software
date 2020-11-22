@@ -15,7 +15,11 @@ namespace SCME.WpfControlLibrary.IValueConverters
             if (val == null)
                 return "-";
             else
-                return val.Value;
+            {
+                if (val == 0)
+                    return 0.ToString();
+                return val.Value.ToString().TrimEnd('0');
+            }
         }
 
 

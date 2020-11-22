@@ -510,21 +510,21 @@ namespace SCME.UI.IO
                 {
                     var message = Resources.CanNotStartTest + Environment.NewLine;
 
-                    if (isStopButtonPressed)
-                        message += string.Format("{0}\n{1}\n", Resources.StopButtonIsPressed, Resources.PullStopButton);
+                    //if (isStopButtonPressed)
+                    //    message += string.Format("{0}\n{1}\n", Resources.StopButtonIsPressed, Resources.PullStopButton);
 
-                    //если защитная цепь разомкнута и установлена механическая шторка безопасности - выдаём пользователю сообщение об этом
-                    if (!isSafetyCircutClosed)
-                        if (m_ControlClient.GetSafetyType() == ComplexSafety.Mechanical)
-                            message += string.Format("{0}\n{1}\n", Resources.SafetyCircuitIsOpen, Resources.CloseSafetyHood);
+                    ////если защитная цепь разомкнута и установлена механическая шторка безопасности - выдаём пользователю сообщение об этом
+                    //if (!isSafetyCircutClosed)
+                    //    if (m_ControlClient.GetSafetyType() == ComplexSafety.Mechanical)
+                    //        message += string.Format("{0}\n{1}\n", Resources.SafetyCircuitIsOpen, Resources.CloseSafetyHood);
 
-                    if (isClampSlideOut)
-                        message += string.Format("{0}\n{1}\n", Resources.ClampSlidingDeviceIsOut, Resources.MoveClampSlidingDeviceToHome);
+                    //if (isClampSlideOut)
+                    //    message += string.Format("{0}\n{1}\n", Resources.ClampSlidingDeviceIsOut, Resources.MoveClampSlidingDeviceToHome);
 
-                    var dw = new DialogWindow(Resources.Information, message);
+                    //var dw = new DialogWindow(Resources.Information, message);
 
-                    dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                    dw.ShowDialog();
+                    //dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                    //dw.ShowDialog();
 
                     return false;
                 }

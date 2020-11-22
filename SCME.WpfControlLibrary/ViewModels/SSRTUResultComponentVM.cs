@@ -73,35 +73,35 @@ namespace SCME.WpfControlLibrary.ViewModels
 
 
         [DependsOn(nameof(LeakageCurrent), nameof(LeakageCurrentMin), nameof(LeakageCurrentMax))]
-        public bool? LeakageCurrentIsOk => LeakageCurrentMin == null ? (bool?)null : (LeakageCurrentMin < LeakageCurrent && LeakageCurrent < LeakageCurrentMax);
+        public bool? LeakageCurrentIsOk => LeakageCurrentMin == null || LeakageCurrent == 0 ? (bool?)null : (LeakageCurrentMin < LeakageCurrent && LeakageCurrent < LeakageCurrentMax);
 
 
         [DependsOn(nameof(InputAmperage), nameof(InputAmperageMin), nameof(InputAmperageMax))]
-        public bool? InputAmperageIsOk => InputAmperageMin == null ? (bool?)null : InputAmperageMin < InputAmperage && InputAmperage < InputAmperageMax;
+        public bool? InputAmperageIsOk => InputAmperageMin == null || InputAmperage == 0? (bool?)null : InputAmperageMin < InputAmperage && InputAmperage < InputAmperageMax;
 
 
         [DependsOn(nameof(InputVoltage), nameof(InputVoltageMin), nameof(InputVoltageMax))]
-        public bool? InputVoltageIsOk => InputVoltageMin == null ? (bool?)null : InputVoltageMin < InputVoltage && InputVoltage < InputVoltageMax;
+        public bool? InputVoltageIsOk => InputVoltageMin == null || InputVoltage == 0 ? (bool?)null : InputVoltageMin < InputVoltage && InputVoltage < InputVoltageMax;
 
 
         [DependsOn(nameof(ResidualVoltage), nameof(ResidualVoltageMin), nameof(ResidualVoltageMax))]
-        public bool? ResidualVoltageIsOk => ResidualVoltageMin == null ? (bool?)null : ResidualVoltageMin < ResidualVoltage && ResidualVoltage < ResidualVoltageMax;
+        public bool? ResidualVoltageIsOk => ResidualVoltageMin == null || ResidualVoltage == 0 ? (bool?)null : ResidualVoltageMin < ResidualVoltage && ResidualVoltage < ResidualVoltageMax;
 
 
         [DependsOn(nameof(ProhibitionVoltage), nameof(ProhibitionVoltageMin), nameof(ProhibitionVoltageMax))]
-        public bool? ProhibitionVoltageIsOk => ProhibitionVoltageMin == null ? (bool?)null : ProhibitionVoltageMin < ProhibitionVoltage && ProhibitionVoltage < ProhibitionVoltageMax;
+        public bool? ProhibitionVoltageIsOk => ProhibitionVoltageMin == null || ProhibitionVoltage == 0 ? (bool?)null : ProhibitionVoltageMin < ProhibitionVoltage && ProhibitionVoltage < ProhibitionVoltageMax;
 
 
         [DependsOn(nameof(AuxiliaryCurrentPowerSupply1), nameof(AuxiliaryCurrentPowerSupplyMin1), nameof(AuxiliaryCurrentPowerSupplyMax1))]
-        public bool? AuxiliaryCurrentPowerSupply1IsOk => AuxiliaryCurrentPowerSupplyMin1 == null ? (bool?)null : AuxiliaryCurrentPowerSupplyMin1 < AuxiliaryCurrentPowerSupply1 && AuxiliaryCurrentPowerSupply1 < AuxiliaryCurrentPowerSupplyMax1;
+        public bool? AuxiliaryCurrentPowerSupply1IsOk => AuxiliaryCurrentPowerSupplyMin1 == null || AuxiliaryCurrentPowerSupply1 == 0  ? (bool?)null : AuxiliaryCurrentPowerSupplyMin1 < AuxiliaryCurrentPowerSupply1 && AuxiliaryCurrentPowerSupply1 < AuxiliaryCurrentPowerSupplyMax1;
 
 
         [DependsOn(nameof(AuxiliaryCurrentPowerSupply2), nameof(AuxiliaryCurrentPowerSupplyMin2), nameof(AuxiliaryCurrentPowerSupplyMax2))]
-        public bool? AuxiliaryCurrentPowerSupply2IsOk => AuxiliaryCurrentPowerSupplyMin2 == null ? (bool?)null : AuxiliaryCurrentPowerSupplyMin2 < AuxiliaryCurrentPowerSupply2 && AuxiliaryCurrentPowerSupply2 < AuxiliaryCurrentPowerSupplyMax2;
+        public bool? AuxiliaryCurrentPowerSupply2IsOk => AuxiliaryCurrentPowerSupplyMin2 == null || AuxiliaryCurrentPowerSupply2 == 0 ? (bool?)null : AuxiliaryCurrentPowerSupplyMin2 < AuxiliaryCurrentPowerSupply2 && AuxiliaryCurrentPowerSupply2 < AuxiliaryCurrentPowerSupplyMax2;
 
 
         [DependsOn(nameof(OpenResistance), nameof(OpenResistanceMin), nameof(OpenResistanceMax))]
-        public bool? OpenResistanceIsOk => OpenResistanceMin == null ? (bool?)null : OpenResistanceMin < OpenResistance && OpenResistance < OpenResistanceMax;
+        public bool? OpenResistanceIsOk => OpenResistanceMin == null || OpenResistance  == 0? (bool?)null : OpenResistanceMin < OpenResistance && OpenResistance < OpenResistanceMax;
 
     }
 }

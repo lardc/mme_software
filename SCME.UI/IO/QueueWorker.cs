@@ -249,13 +249,13 @@ namespace SCME.UI.IO
                 Cache.Net.Stop();
 
 
-                var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
+                //var dw = new DialogWindow(Resources.Information, Resources.StopButtonIsPressed);
 
-                dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                dw.ShowDialog();
+                //dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                //dw.ShowDialog();
 
-                if (dw.DialogResult ?? false)
-                {
+                //if (dw.DialogResult ?? false)
+                //{
                     //пользователь нажал в появившемся диалоговом окне кнопку OK
                     //сбрасываем состояние SafetyTrig. справедливо и для оптической и механической шторки. только после этого можно разжимать пресс                     
                     Cache.Net.ClearSafetyTrig();
@@ -292,12 +292,12 @@ namespace SCME.UI.IO
                     {
                         //ругаемся, т.к. есть блоки, которые не готовы выполнить очередное измерение
                         //вывешиваем пользователю форму с сообщением о не готовых к очередному измерению блоках
-                        dw = new DialogWindow(Resources.Information, "Блоки: " + NotReadyDevicesToStart + " не готовы для проведения измерений.");
+                        //dw = new DialogWindow(Resources.Information, "Блоки: " + NotReadyDevicesToStart + " не готовы для проведения измерений.");
 
-                        dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                        dw.ShowDialog();
+                        //dw.ButtonConfig(DialogWindow.EbConfig.OK);
+                        //dw.ShowDialog();
                     }
-                }
+                //}
             });
         }
 

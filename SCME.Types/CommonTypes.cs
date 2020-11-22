@@ -19,9 +19,9 @@ namespace SCME.Types
     public enum ApplicationPolarityConstantSwitchingVoltage
     {
         [EnumMember]
-        ACVoltage = 1,
+        DCVoltage = 1,
         [EnumMember]
-        DCVoltage = 2
+        ACVoltage = 2
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
