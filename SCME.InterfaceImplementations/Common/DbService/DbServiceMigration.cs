@@ -107,6 +107,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Im_SwitchingCurrentPulseShape", "Im_SwitchingCurrentPulseShape", true),
             ("Im_SwitchingCurrentPulseDuration", "Im_SwitchingCurrentPulseDuration", true),
             ("Im_OpenState", "Im_OpenState", true),
+            ("Im_ControlVoltageMax", "Im_ControlVoltageMax", true),
+            ("Im_ControlCurrentMax", "Im_ControlCurrentMax", true),
 
             //("Im_ProhibitionVoltageMinimum", "Im_ProhibitionVoltageMinimum", true),
             //("Im_ProhibitionVoltageMaximum", "Im_ProhibitionVoltageMaximum", true),

@@ -379,15 +379,21 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_AppPolSwitchingVoltage", (int)data.ApplicationPolarityConstantSwitchingVoltage},
                 {"Im_PolDCSwVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
                 //{"Im_SwitchedAmperage", data.SwitchedAmperage},
-                //{"Im_SwitchedVoltage", data.SwitchedVoltage},
+                {"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
             };
 
             if (data.ShowVoltage)
+            {
                 condition.Add("Im_ControlVoltage", data.ControlVoltage);
+                condition.Add("Im_ControlCurrentMax", data.ControlCurrentMaximum);
+            }
             else
+            {
                 condition.Add("Im_ControlCurrent", data.ControlCurrent);
+                condition.Add("Im_ControlVoltageMax", data.ControlVoltageMaximum);
+            }
 
             var parameters = new Dictionary<string, (object Min, object Max)>()
             {
@@ -404,7 +410,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_PolDCSwVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
-                //{"Im_SwitchedAmperage", data.SwitchedAmperage},
+                {"Im_SwitchedAmperage", data.SwitchedAmperage},
                 //{"Im_SwitchedVoltage", data.SwitchedVoltage},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
@@ -414,9 +420,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
             };
 
             if (data.ShowVoltage)
+            {
                 condition.Add("Im_ControlVoltage", data.ControlVoltage);
+                condition.Add("Im_ControlCurrentMax", data.ControlCurrentMaximum);
+            }
             else
+            {
                 condition.Add("Im_ControlCurrent", data.ControlCurrent);
+                condition.Add("Im_ControlVoltageMax", data.ControlVoltageMaximum);
+            }
 
             var parameters = new Dictionary<string, (object Min, object Max)>()
             {

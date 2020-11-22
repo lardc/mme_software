@@ -142,12 +142,12 @@
         </Label>
         <customControls:NumericUpDown Grid.Column="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}"  Value="{Binding InputCurrentMaximum, Converter={StaticResource DML}}" />
         
-        <Label Grid.Column="0" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}">
+        <Label Grid.Column="3" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}">
             <TextBlock>
              Ограничение по<LineBreak/>напряжению входа, мВ
             </TextBlock>
         </Label>
-        <customControls:NumericUpDown Grid.Column="14" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding InputVoltageMaximum, Converter={StaticResource DML}}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding InputVoltageMaximum, Converter={StaticResource DML}}" />
 
         <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
             <TextBlock>

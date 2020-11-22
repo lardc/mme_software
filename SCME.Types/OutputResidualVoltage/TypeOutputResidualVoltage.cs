@@ -61,8 +61,14 @@ namespace SCME.Types.OutputResidualVoltage
         [DataMember]
         public double OpenResistanceMaximum { get; set; }
 
+        [DataMember]
+        public double ControlVoltageMaximum { get; set; }
+        [DataMember]
+        public double ControlCurrentMaximum { get; set; }
+
         public TestParameters()
         {
+            IsProfileStyle = true;
             DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.OutputResidualVoltage;
             PolarityDCSwitchingVoltageApplication = PolarityDCSwitchingVoltageApplication.Direct;

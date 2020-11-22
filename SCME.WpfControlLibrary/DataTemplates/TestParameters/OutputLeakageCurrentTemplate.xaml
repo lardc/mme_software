@@ -37,6 +37,14 @@
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, мВ" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
 
+
+    <Label Grid.Column="0" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
+        <TextBlock>
+            Ограничение по<LineBreak/>напр. управления, мВ
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
+    
     <Label Grid.Column="0" Grid.Row="2" >
         <TextBlock>
             Тип ком. напряж. <LineBreak/>при измер. утечки
@@ -59,6 +67,15 @@
 
     <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
+
+    <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}">
+        <TextBlock>
+            Ограничение по току<LineBreak/>Управления, мА
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}"  />
+
+
 
     <Label  Grid.Column="3" Grid.Row="2"  Visibility="{Binding PolarityDCSwitchingVoltageApplicationIsVisible, Converter={StaticResource B2V}}">
         <TextBlock>

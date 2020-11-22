@@ -96,7 +96,7 @@ namespace SCME.Types.BaseTestParams
         public virtual bool ShowAuxiliarySupplyCurrent1 => (DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108) && GetType() == typeof(InputOptionsParameters);
         public virtual bool ShowAuxiliarySupplyCurrent2 =>  DutPackageType == DutPackageType.V108 && GetType() == typeof(InputOptionsParameters);
 
-
+        [DataMember]
         public bool IsProfileStyle { get; set; } = true;
 
         [DataMember]
@@ -118,6 +118,11 @@ namespace SCME.Types.BaseTestParams
         public long TestTypeId { get; set; }
 
         public abstract bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase);
+
+        public BaseTestParametersAndNormatives()
+        {
+            IsProfileStyle = true;
+        }
 
         public static BaseTestParametersAndNormatives CreateParametersByType(TestParametersType type)
         {

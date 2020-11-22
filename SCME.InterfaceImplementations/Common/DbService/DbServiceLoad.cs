@@ -538,7 +538,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_SwitchedVoltage":
-                        //testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
+                        testParams.SwitchedVoltage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_AppPolSwitchingVoltage":
@@ -555,6 +555,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltageMax":
+                        testParams.ControlVoltageMaximum = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrentMax":
+                        testParams.ControlCurrentMaximum = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                 }
@@ -597,7 +605,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
 
                     case "Im_SwitchedAmperage":
-                        //testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
+                        testParams.SwitchedAmperage = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                     case "Im_SwitchedVoltage":
@@ -626,6 +634,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "Im_OpenState":
                         testParams.OpenState = bool.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlVoltageMax":
+                        testParams.ControlVoltageMaximum = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_ControlCurrentMax":
+                        testParams.ControlCurrentMaximum = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }

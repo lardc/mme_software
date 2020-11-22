@@ -120,7 +120,7 @@
                                     AddTestParametersEvent="AddTestParametersEvent_Click" />
             
             
-            <customControls:ScrollViewerLeftMouseButtonScroll Grid.Column="0" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Stretch" Background="White"  Style="{StaticResource DefaultScrollViewer}">
+            <customControls:ScrollViewerLeftMouseButtonScroll Grid.Column="0" Grid.Row="2"  VerticalAlignment="Stretch" Background="White"  Style="{StaticResource DefaultScrollViewer}">
                 <Grid IsSharedSizeScope="True" Background="White">
                    
                     <Grid.RowDefinitions>

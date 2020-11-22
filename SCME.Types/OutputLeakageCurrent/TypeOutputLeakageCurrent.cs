@@ -56,12 +56,18 @@ namespace SCME.Types.OutputLeakageCurrent
         [DataMember]
         public double LeakageCurrentMaximum { get; set; }
 
+
+        [DataMember]
+        public double ControlVoltageMaximum { get; set; }
+        [DataMember]
+        public double ControlCurrentMaximum { get; set; }
+
         [XmlIgnore]
         public bool OpenState { get; set; }
 
-        public TestParameters()
+        public TestParameters() : base()
         {
-            
+            IsProfileStyle = true;
             DutPackageType = DutPackageType.A1;
             TestParametersType = TestParametersType.OutputLeakageCurrent;
             ApplicationPolarityConstantSwitchingVoltage = ApplicationPolarityConstantSwitchingVoltage.ACVoltage;
