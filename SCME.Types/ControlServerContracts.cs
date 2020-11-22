@@ -276,7 +276,7 @@ namespace SCME.Types
         void TOUHandler(DeviceState State, TOU.TestResults Result);
 
         [OperationContract(IsOneWay = true)]
-        void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable);
+        void PostSSRTUNotificationEvent(string message, ushort Problem, ushort Warning, ushort Fault, ushort Disable);
 
         [OperationContract(IsOneWay = true)]
         void TOUNotificationHandler(ushort Problem, ushort Warning, ushort Fault, ushort Disable);

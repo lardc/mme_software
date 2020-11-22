@@ -257,9 +257,9 @@ namespace SCME.Service
         }
 
 
-        public void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        public void PostSSRTUNotificationEvent(string message, ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {
-            EnumerateClients(Client => Client.PostSSRTUNotificationEvent(Problem, Warning, Fault, Disable));
+            EnumerateClients(Client => Client.PostSSRTUNotificationEvent(message, Problem, Warning, Fault, Disable));
         }
 
 

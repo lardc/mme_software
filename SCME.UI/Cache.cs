@@ -39,7 +39,7 @@ namespace SCME.UI
 
         public static Action<DeviceState, Types.SSRTU.TestResults> SSRTUHandler;
 
-        public static Action<ushort, ushort, ushort, ushort> PostSSRTUNotificationEvent;
+        public static Action<string, ushort, ushort, ushort, ushort> PostSSRTUNotificationEvent;
 
         public static Action PostAlarmEvent;
         public static Action<double, double> FireSSRTUAttestation { get; set; }

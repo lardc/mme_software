@@ -1729,9 +1729,9 @@ namespace SCME.UI.IO
             Cache.SSRTUHandler?.Invoke(State, Result);
         }
 
-        public void PostSSRTUNotificationEvent(ushort Problem, ushort Warning, ushort Fault, ushort Disable)
+        public void PostSSRTUNotificationEvent(string message, ushort Problem, ushort Warning, ushort Fault, ushort Disable)
         {
-            Cache.PostSSRTUNotificationEvent?.Invoke(Problem, Warning, Fault, Disable);
+            Cache.PostSSRTUNotificationEvent?.Invoke(message, Problem, Warning, Fault, Disable);
         }
 
         public void PostAlarmEvent()

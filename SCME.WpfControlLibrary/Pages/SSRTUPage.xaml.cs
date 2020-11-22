@@ -55,12 +55,13 @@ namespace SCME.WpfControlLibrary.Pages
             
         }
 
-        public void PostSSRTUNotificationEvent(ushort problem, ushort warning, ushort fault, ushort disable)
+        public void PostSSRTUNotificationEvent(string message, ushort problem, ushort warning, ushort fault, ushort disable)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                var dialogWindow = new DialogWindow("Ошибка оборудования", $"problem {problem} warning {warning}, fault {fault}, disable {disable}"); ;
+                var dialogWindow = new DialogWindow("Ошибка оборудования", $"{message}\r\nproblem {problem}, warning {warning}, fault {fault}, disable {disable}"); ;
                 dialogWindow.ShowDialog();
+                VM.CanStart = true;
             }));
         }
 

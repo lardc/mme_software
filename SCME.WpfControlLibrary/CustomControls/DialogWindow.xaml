@@ -32,7 +32,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Title}" BorderBrush="{StaticResource BlueBrush}" BorderThickness="0,0,0,1" />
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="{Binding Title}" Margin="15" BorderBrush="{StaticResource BlueBrush}" BorderThickness="0,0,0,1" />
 
         <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding Message}" Background="Transparent" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" />
