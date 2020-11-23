@@ -41,7 +41,7 @@
                             
                             <CheckBox Grid.Column="3" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" Visibility="Collapsed" HorizontalAlignment="Right" FlowDirection="RightToLeft"
                                       d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />
-                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right"  Margin="0,0,10,0">
+                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right"  Margin="0,0,50,0">
 
                                 <Button Style="{StaticResource ButtonWithIcon}"
                                         Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2VH}}" Margin="0,5"
@@ -66,7 +66,7 @@
 
                         </Grid>
 
-                        <ContentPresenter Grid.Column="0" Grid.Row="1" Margin="10,38,10,10" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}"  />
+                        <ContentPresenter Grid.Column="0" Grid.Row="1" Margin="10,38,50,10" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}"  />
 
                         
                         

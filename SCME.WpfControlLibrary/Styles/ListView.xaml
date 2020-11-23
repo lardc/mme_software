@@ -44,7 +44,7 @@
                             Background="{TemplateBinding Background}">
                         <Border.Resources>
                             <ResourceDictionary>
-                                <GridLength x:Key="ListBoxScrollWidth">10</GridLength>
+                                <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
 
                                 <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
                                     <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -139,7 +139,7 @@
                                       Padding="{TemplateBinding Padding}"
                                       Background="{TemplateBinding Background}">
                             <ScrollViewer.Resources>
-                                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">10</sys:Double>
+                                <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">50</sys:Double>
                             </ScrollViewer.Resources>
                             <ItemsPresenter />
                         </ScrollViewer>
