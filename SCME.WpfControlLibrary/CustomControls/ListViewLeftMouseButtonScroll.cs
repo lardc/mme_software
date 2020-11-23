@@ -58,7 +58,7 @@ namespace SCME.WpfControlLibrary.CustomControls
 
                 _lastSelectedItem = element.Content;
 
-                e.Handled = true;
+                //e.Handled = true;
             }
             catch
             {

@@ -272,7 +272,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void ListViewProfiles_MouseMove(object sender, MouseEventArgs e)
         {
-            var sv = FindVisualChild<ScrollViewer>((sender as ListViewMouseLeftButtonScroll));
+            var sv = FindVisualChild<ScrollViewer>((sender as ListView));
             if ((sv.ExtentHeight - sv.VerticalOffset) / sv.ExtentHeight < 0.15)
             {
                 if (ProfileVm.Profiles.Count < ProfileVm.CountViewProfiels)

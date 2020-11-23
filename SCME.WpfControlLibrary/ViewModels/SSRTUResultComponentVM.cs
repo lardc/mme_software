@@ -14,14 +14,17 @@ namespace SCME.WpfControlLibrary.ViewModels
         public bool IsEmpty => LeakageCurrent == null && InputAmperage == null && InputVoltage == null && ResidualVoltage == null && ProhibitionVoltage == null
             && AuxiliaryCurrentPowerSupply1 == null && AuxiliaryCurrentPowerSupply2 == null && OpenResistance == null;
 
-        public bool IsGood => (LeakageCurrentIsOk != null && LeakageCurrentIsOk.Value) && 
-            (InputAmperageIsOk != null && InputAmperageIsOk.Value) && 
-            (InputVoltageIsOk != null && InputVoltageIsOk.Value) && 
-            (ResidualVoltageIsOk != null && ResidualVoltageIsOk.Value) && 
-            (ProhibitionVoltageIsOk != null && ProhibitionVoltageIsOk.Value) &&
-            (AuxiliaryCurrentPowerSupply1IsOk != null && AuxiliaryCurrentPowerSupply1IsOk.Value) && 
-            (AuxiliaryCurrentPowerSupply2IsOk != null && AuxiliaryCurrentPowerSupply2IsOk.Value) && 
-            (OpenResistanceIsOk != null && OpenResistanceIsOk.Value);
+        public bool IsGood => (LeakageCurrentIsOk ?? true) && (InputAmperageIsOk ?? true) && (InputVoltageIsOk ?? true) && (ResidualVoltageIsOk ?? true) && (ProhibitionVoltageIsOk ?? true)
+            && (AuxiliaryCurrentPowerSupply1IsOk ?? true) && (AuxiliaryCurrentPowerSupply1IsOk ?? true) && (OpenResistanceIsOk ?? true);
+
+        //public bool IsGood => (LeakageCurrentMin == null || (LeakageCurrentMin != null && LeakageCurrentIsOk.Value)) && 
+        //    (InputAmperageMin != null && InputAmperageIsOk.Value) && 
+        //    (InputVoltageMin != null && InputVoltageIsOk.Value) && 
+        //    (ResidualVoltageMin != null && ResidualVoltageIsOk.Value) && 
+        //    (ProhibitionVoltageMin != null && ProhibitionVoltageIsOk.Value) &&
+        //    (AuxiliaryCurrentPowerSupplyMin1 != null && AuxiliaryCurrentPowerSupply1IsOk.Value) && 
+        //    (AuxiliaryCurrentPowerSupplyMin2 != null && AuxiliaryCurrentPowerSupply2IsOk.Value) && 
+        //    (OpenResistanceMin != null && OpenResistanceIsOk.Value);
 
         //public CommonResult ToCommonResult()
         //{

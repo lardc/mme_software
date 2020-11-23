@@ -214,7 +214,36 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            VM.CanStart = false;
+            foreach (var i in _profile.TestParametersAndNormatives)
+            {
+                var sSRTUResultComponentVM = VMByPosition[i.NumberPosition];
+
+                if (sSRTUResultComponentVM.LeakageCurrentMin != null)
+                    sSRTUResultComponentVM.LeakageCurrent = 0;
+
+                if (sSRTUResultComponentVM.InputAmperageMin != null)
+                    sSRTUResultComponentVM.InputAmperage = 0;
+
+                if (sSRTUResultComponentVM.InputVoltageMin != null)
+                    sSRTUResultComponentVM.InputVoltage = 0;
+
+                if (sSRTUResultComponentVM.ResidualVoltageMin != null)
+                    sSRTUResultComponentVM.ResidualVoltage = 0;
+
+                if (sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 != null)
+                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = 0;
+
+                if (sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 != null)
+                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = 0;
+
+                if (sSRTUResultComponentVM.OpenResistanceMin != null)
+                    sSRTUResultComponentVM.OpenResistance = 0;
+
+                if (sSRTUResultComponentVM.ProhibitionVoltageMin != null)
+                    sSRTUResultComponentVM.ProhibitionVoltage = 0;
+            }
+
+                VM.CanStart = false;
             countEndingTests = 0;
             _start();
             return;
@@ -358,11 +387,11 @@ namespace SCME.WpfControlLibrary.Pages
         {
             var values = valuesI.Where(m=> m != null).ToArray();
             var tr = _doc.CreateElement("tr");
-            tbody.AppendChild(tr);
+            
 
             var td = _doc.CreateElement("td");
             td.InnerHtml = values.First().SerialNumber.ToString();
-            td.SetAttributeValue("rowspan", "3");
+            td.SetAttributeValue("rowspan", valuesI.Count(m=> m!= null).ToString());
             tr.AppendChild(td);
 
             foreach (var i in values)
@@ -404,9 +433,10 @@ namespace SCME.WpfControlLibrary.Pages
                     td.SetAttributeValue("style", "background-color:#eb3434");
                 }
                 tr.AppendChild(td);
+                tbody.AppendChild(tr);
 
                 tr = _doc.CreateElement("tr");
-                tbody.AppendChild(tr);
+                
             }
         }
 

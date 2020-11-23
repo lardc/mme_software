@@ -417,6 +417,7 @@ namespace SCME.Service.IO
                             WriteRegister(REG_MEASUREMENT_TYPE, 2);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)rv.TypeManagement);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
+                            WriteRegister(REG_OPEN_RESISTANCE, Convert.ToUInt16(rv.OpenState));
 
                             WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
                             //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
@@ -508,7 +509,7 @@ namespace SCME.Service.IO
                             _Result.TestParametersType = TestParametersType.OutputResidualVoltage;
                             _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_LOW, REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_HIGH);
                             if (rv.OpenState)
-                                _Result.OpenResistance = ReadRegister(OPEN_RESISTANCE);
+                                _Result.OpenResistance = ReadRegisterFrom1616To32(REG_OPEN_RESISTANCE_LOW, REG_OPEN_RESISTANCE_HIGH);
                             break;
                         case Types.ProhibitionVoltage.TestParameters pv:
                             _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
@@ -688,6 +689,7 @@ namespace SCME.Service.IO
             REG_AUX_PS2_VOLTAGE_LOW = 142, // Auxiliary power supply 1 voltage / Напряжение вспомогательного питания 2 (in mV / мВ)
             REG_AUX_PS2_VOLTAGE_HIGH = 156,
             REG_AUX_2_CURRENT = 143, // Auxiliary power supply 1 current(in mA / мА)
+            REG_OPEN_RESISTANCE = 144,
 
             NODE_CODE = 150,
             CAL_TYPE = 161,
@@ -718,14 +720,15 @@ namespace SCME.Service.IO
             REG_RESULT_CONTROL_CURRENT_LOW = 200, // Control current / Ток управления(mA / мА)
             REG_RESULT_CONTROL_CURRENT_HIGH = 232,
             REG_RESULT_CONTROL_VOLTAGE_LOW = 201, // Control voltage / Напряжение управления(mV / мВ)
-            REG_RESULT_CONTROL_VOLTAGE_HIGH = 201, // Control voltage / Напряжение управления(mV / мВ)
+            REG_RESULT_CONTROL_VOLTAGE_HIGH = 233, // Control voltage / Напряжение управления(mV / мВ)
             REG_RESULT_PROHIBITION_VOLTAGE_LOW = 202, // Prohibition voltage / Напряжение запрета(mV / мВ)
             REG_RESULT_PROHIBITION_VOLTAGE_HIGH = 234, // Prohibition voltage / Напряжение запрета(mV / мВ)
 
 
             AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
             AUXILARY_CURRENT_POWER_SUPPLY2 = 204,
-            OPEN_RESISTANCE = 205,
+            REG_OPEN_RESISTANCE_LOW = 205,
+            REG_OPEN_RESISTANCE_HIGH = 237,
 
             REG_CALIBRATION_GENERATED_VALUE_LOW = 230,
             REG_CALIBRATION_GENERATED_VALUE_HIGHT = 231,

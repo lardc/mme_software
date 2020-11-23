@@ -81,7 +81,7 @@ namespace SCME.UI.PagesUser
             {
                 var navigationService = profilesPage.NavigationService;
                 var page = Cache.SSRTUResultPage = new SSRTUResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
-                    () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), DutPackageType.A1),
+                    () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), profilesPage.ProfileVm.SelectedProfile.DeepData.DutPackageType),
                     Cache.Net.StopSSRTU)
                 {
                     Title = $"Тестирование {profilesPage.ProfileVm.SelectedProfile.Name}",
