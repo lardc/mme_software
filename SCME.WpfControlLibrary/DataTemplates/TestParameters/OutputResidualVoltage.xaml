@@ -37,15 +37,11 @@
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
+    <Label Grid.Column="0" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
 
-    <Label Grid.Column="0" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
-        <TextBlock>
-            Ограничение по<LineBreak/>напр. управления, В
-        </TextBlock>
-    </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
 
-    
+
     <CheckBox Grid.Column="0" x:Name="checkBoxOpenResistance" Grid.ColumnSpan="2" Grid.Row="2" IsChecked="{Binding OpenState}" Foreground="Black" FlowDirection="RightToLeft" >
         <CheckBox.Visibility>
         <MultiBinding Converter="{StaticResource VE2V}">
@@ -93,8 +89,7 @@
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TypeManagement}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TypeManagement}"  />
 
-    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
+   
 
     <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}">
         <TextBlock>
@@ -103,13 +98,19 @@
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}"  />
 
+    <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
+        <TextBlock>
+            Ограничение по<LineBreak/>напр. управления, В
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
 
-    <Label Grid.Column="3" Grid.Row="2"  >
+    <!--<Label Grid.Column="3" Grid.Row="2"  >
         <TextBlock>
             Полярность прил.<LineBreak/> пост. ком. напр.
         </TextBlock>
     </Label>
-    <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />
+    <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}" />-->
 
         <!--<Label  Grid.Column="3" Grid.Row="3">Ком. напр., В</Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3"   Value="{Binding SwitchedVoltage, Converter={StaticResource DML}}"   />-->
@@ -121,12 +122,12 @@
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply2, Converter={StaticResource DML}}"   />
 
-        <Label Grid.Column="3" Grid.Row="5">
+        <!--<Label Grid.Column="3" Grid.Row="5">
         <TextBlock>
             Длительность имп.<LineBreak/>комм. тока, мкс
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding SwitchingCurrentPulseDuration, Converter={StaticResource DML}}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="5"   Value="{Binding SwitchingCurrentPulseDuration, Converter={StaticResource DML}}" />-->
 
   
 

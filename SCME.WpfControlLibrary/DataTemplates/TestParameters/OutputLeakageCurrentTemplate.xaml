@@ -36,14 +36,10 @@
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
+    <Label Grid.Column="0" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
 
-
-    <Label Grid.Column="0" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
-        <TextBlock>
-            Ограничение по<LineBreak/>напр. управления, В
-        </TextBlock>
-    </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
+    
     
     <Label Grid.Column="0" Grid.Row="2" >
         <TextBlock>
@@ -65,8 +61,7 @@
     <Label Grid.Column="3" Grid.Row="0" Content="Тип управления"/>
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TypeManagement}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TypeManagement}"  />
 
-    <Label Grid.Column="3" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
+   
 
     <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}">
         <TextBlock>
@@ -75,15 +70,21 @@
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}"  />
 
+    <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
+        <TextBlock>
+            Ограничение по<LineBreak/>напр. управления, В
+        </TextBlock>
+    </Label>
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
 
 
-    <Label  Grid.Column="3" Grid.Row="2"  Visibility="{Binding PolarityDCSwitchingVoltageApplicationIsVisible, Converter={StaticResource B2V}}">
+    <!--<Label  Grid.Column="3" Grid.Row="2"  Visibility="{Binding PolarityDCSwitchingVoltageApplicationIsVisible, Converter={StaticResource B2V}}">
         <TextBlock>
                 Полярность прил.<LineBreak/>пост. ком. напр.
         </TextBlock>
     </Label>
     <ComboBox Grid.Column="4" Grid.Row="2"  Visibility="{Binding PolarityDCSwitchingVoltageApplicationIsVisible, Converter={StaticResource B2V}}"
-              ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}"/>
+              ItemsSource="{Binding Source={StaticResource PolarityDCSwitchingVoltageApplication}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding PolarityDCSwitchingVoltageApplication}"/>-->
 
 
     <Label Grid.Column="0" Grid.Row="3" >
