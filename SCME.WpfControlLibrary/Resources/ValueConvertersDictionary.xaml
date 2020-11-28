@@ -22,6 +22,7 @@
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
     <Converters:TypeTestParameterToString x:Key="TP2S" />
     <Converters:DoobleMaxLength x:Key="DML" Round="6"/>
+    <Converters:VisiblyEnabledToVisibly x:Key="VE2V"/>
     
 
     <Converters:GridLengthConverter x:Key="G2L" />

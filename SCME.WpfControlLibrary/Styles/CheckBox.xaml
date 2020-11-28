@@ -19,7 +19,7 @@
     <Style TargetType="CheckBox" >
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Black" />
-        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="FontFamily" Value="{DynamicResource ContentFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
         <Setter Property="Foreground" Value="Black" />

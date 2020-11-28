@@ -43,6 +43,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <EventSetter Event="GotFocus" Handler="NumericUpDown_GotFocus" />
         <EventSetter Event="LostFocus" Handler="NumericUpDown_LostFocus" />
+        <EventSetter Event="PreviewMouseDown" Handler="NumericUpDown_PreviewMouseDown"/>
     </Style>
 
     <Style TargetType="customControls:TextBoxWithTimer" BasedOn="{StaticResource {x:Type TextBox}}"></Style>

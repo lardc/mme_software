@@ -44,6 +44,7 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
     
 </ResourceDictionary>

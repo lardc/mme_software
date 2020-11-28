@@ -11,6 +11,7 @@
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="ListViewItem" x:Key="ListViewItemTestParameter">
         <Setter Property="Background" Value="White" />
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem" >

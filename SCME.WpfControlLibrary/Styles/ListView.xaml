@@ -46,7 +46,7 @@
                             <ResourceDictionary>
                                 <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
 
-                                <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+                                <!--<Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
                                     <Setter Property="OverridesDefaultStyle" Value="True" />
                                     <Setter Property="Background" Value="Red" />
                                     <Setter Property="IsTabStop" Value="False" />
@@ -111,13 +111,13 @@
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
-                                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true" ViewportSize="NaN">
+                                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="true" >
                                             <Track.DecreaseRepeatButton>
                                                 <RepeatButton Style="{StaticResource ScrollBarPageButton}"
                                                                   Command="ScrollBar.PageUpCommand" />
                                             </Track.DecreaseRepeatButton>
                                             <Track.Thumb>
-                                                <Thumb MinHeight="50" Background="#FF7A7A7A" 
+                                                <Thumb  Background="#FF7A7A7A" 
                                                            Style="{StaticResource ScrollBarThumb}" />
                                             </Track.Thumb>
                                             <Track.IncreaseRepeatButton>
@@ -131,12 +131,12 @@
 
                                 <Style TargetType="{x:Type ScrollBar}">
                                     <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
-                                </Style>
+                                </Style>-->
 
                             </ResourceDictionary>
                         </Border.Resources>
-                        <ScrollViewer Focusable="False" HorizontalScrollBarVisibility="Hidden"
-                                      Padding="{TemplateBinding Padding}"
+                        <ScrollViewer Focusable="False" HorizontalScrollBarVisibility="Hidden" PanningMode="VerticalOnly"
+                                      Padding="{TemplateBinding Padding}" Style="{StaticResource DefaultScrollViewer}"
                                       Background="{TemplateBinding Background}">
                             <ScrollViewer.Resources>
                                 <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">50</sys:Double>

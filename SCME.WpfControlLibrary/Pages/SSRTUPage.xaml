@@ -43,19 +43,19 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Margin="50,0">
+        <Grid Grid.Row="1" Width="930">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"  />
-                <ColumnDefinition Width="1.1*" />
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="225"  />
+                <ColumnDefinition Width="225" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="1.1*" />
+                <ColumnDefinition Width="225" />
+                <ColumnDefinition Width="225" />
             </Grid.ColumnDefinitions>
             <Label Content="Тип корпуса"/>
             <ComboBox Grid.Column="1" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM}"
                       ItemsSource="{Binding Source={StaticResource DutPackageType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DutPackageType}"/>
         </Grid>
-        <TabControl Grid.Row="2" Background="Transparent" Name="MainTabControl" BorderThickness="0" Margin="50,0" Padding="0">
+        <TabControl Grid.Row="2" Background="Transparent" Name="MainTabControl" BorderThickness="0" Width="930">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Height" Value="0"/>
@@ -75,7 +75,7 @@
                 <testParameters:ProhibitionVoltageTemplate DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM}"/>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="3" Margin="50,38,50,0">
+        <Grid Grid.Row="3" Margin="0,38,0,0" Width="930">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -85,11 +85,11 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"  />
-                <ColumnDefinition Width="1.1*" />
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="225"  />
+                <ColumnDefinition Width="225" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="1.1*" />
+                <ColumnDefinition Width="225" />
+                <ColumnDefinition Width="225" />
             </Grid.ColumnDefinitions>
             
             <!--<TextBlock Grid.Column="0" Grid.Row="1" Text="Ток вспомогательного питания 1" Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"/>
@@ -104,14 +104,14 @@
             <Label Grid.Column="1" Grid.Row="0" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.ShowOutputLeakageCurrent, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.Result, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
 
-            <Label Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Content="Выходное остаточное напряжение, мВ" Margin="0,0,0,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.ShowOutputResidualVoltage, Converter={StaticResource B2V}}"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Content="Выходное остаточное напряжение, В" Margin="0,0,0,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.ShowOutputResidualVoltage, Converter={StaticResource B2V}}"/>
             <Label Grid.Column="1" Grid.Row="1" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.ShowOutputResidualVoltage, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.Result, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
 
             <Grid Grid.Row="2" Grid.ColumnSpan="2" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.ShowInputOptions, Converter={StaticResource B2V}}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"  />
-                    <ColumnDefinition Width="1.1*" />
+                    <ColumnDefinition Width="225"  />
+                    <ColumnDefinition Width="225" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -121,7 +121,7 @@
                 <Label Grid.Column="1" Grid.Row="0" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowVoltage, Converter={StaticResource B2V}}" 
                            Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.Result, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
 
-                <Label Grid.Column="0" Grid.Row="1" Content="Напряжение входа, мВ" Margin="0,0,0,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAmperage, Converter={StaticResource B2V}}"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="Напряжение входа, В" Margin="0,0,0,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAmperage, Converter={StaticResource B2V}}"/>
                 <Label Grid.Column="1" Grid.Row="1" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAmperage, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.Result, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
             </Grid>

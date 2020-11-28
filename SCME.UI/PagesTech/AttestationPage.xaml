@@ -43,7 +43,7 @@
         
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Тип"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Значение"/>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="Номер позиции" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Номер канала" VerticalAlignment="Center"/>
         
 
         <TextBlock Grid.Row="6" Grid.Column="1" Text="Сформированное значение"/>

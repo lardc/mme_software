@@ -128,9 +128,10 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="MainBorder" Property="Visibility" Value="Hidden"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="0,3,5,3"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="contentPresenter" Property="Margin" Value="0,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="Margin" Value="0,3,35,3"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>

@@ -73,7 +73,7 @@
                                 </Style>
                             </RepeatButton.Style>
                         </RepeatButton>
-                            <Grid Grid.Column="2" Margin="0, -8">
+                            <Grid Grid.Column="2" Margin="0, -8,0 -8">
                         <Label   x:Name="LabelValue" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}"  HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                             </Grid>
                             <TextBox Grid.Column="2" x:Name="TextBoxValue" Padding="0,0,10,0" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" FontFamily="{TemplateBinding FontFamily}"  TextAlignment="Right" BorderThickness="0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />

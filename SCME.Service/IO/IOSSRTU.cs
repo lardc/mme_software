@@ -264,12 +264,12 @@ namespace SCME.Service.IO
             _IOAdapter.Write16(_Node, Address, Value);
         }
 
-        private double ReadRegisterFrom1616To32(ushort addressLow, bool skipJournal = false)
+        private double ReadRegisterFrom1616To32(ushort addressLow, int power = 3, bool skipJournal = false)
         {
-            return ReadRegisterFrom1616To32(addressLow, (ushort) (addressLow + 1), skipJournal);
+            return ReadRegisterFrom1616To32(addressLow, (ushort) (addressLow + 1), power, skipJournal);
         }
         
-        private double ReadRegisterFrom1616To32(ushort addressLow, ushort addressHigh,  bool skipJournal = false)
+        private double ReadRegisterFrom1616To32(ushort addressLow, ushort addressHigh, int power = 3,  bool skipJournal = false)
         {
             if (_IsSSRTUEmulation)
                 return 0;
@@ -281,17 +281,17 @@ namespace SCME.Service.IO
             if (!skipJournal)
                 SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU @ReadRegister, addressLow {addressLow}, addressHigh {addressHigh}, value {valueUl} ");
 
-            return Math.Round(valueUl / Math.Pow(10,3), 3);
+            return Math.Round(valueUl / Math.Pow(10, power), power);
         }
         
-        private void WriteRegisterFrom32To1616(ushort addressLow, double value, bool skipJournal = false)
+        private void WriteRegisterFrom32To1616(ushort addressLow, double value, int power = 3, bool skipJournal = false)
         {
-            WriteRegisterFrom32To1616(addressLow, addressLow, value, skipJournal);
+            WriteRegisterFrom32To1616(addressLow, addressLow, value, power, skipJournal);
         }
         
-        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, double value, bool skipJournal = false)
+        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, double value, int power = 3, bool skipJournal = false)
         {
-            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10,3)), skipJournal);
+            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10, power)), skipJournal);
         }
 
         private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, uint value, bool skipJournal = false)
@@ -369,17 +369,17 @@ namespace SCME.Service.IO
                         case Types.InputOptions.TestParameters io:
                             WriteRegister(REG_MEASUREMENT_TYPE, 3);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)io.TypeManagement);
-                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply1);
-                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply1,6);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, io.AuxiliaryVoltagePowerSupply2, 6);
                             
                             if(io.ShowAmperage)
                             {
                                 WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, io.ControlCurrent);
-                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, io.InputVoltageMaximum);
+                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, io.InputVoltageMaximum, 6);
                             }
                             else
                             {
-                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, io.ControlVoltage);
+                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, io.ControlVoltage, 6);
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, io.InputCurrentMaximum);
                             }
 
@@ -390,11 +390,11 @@ namespace SCME.Service.IO
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             WriteRegister(REG_MEASUREMENT_TYPE, 1);
                             WriteRegister(REG_CONTROL_TYPE, (ushort)lc.TypeManagement);
-                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply1);
-                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply1, 6);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, lc.AuxiliaryVoltagePowerSupply2, 6);
 
                             //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, lc.SwitchedAmperage);
-                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage);
+                            WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, lc.SwitchedVoltage, 6);
 
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)lc.PolarityDCSwitchingVoltageApplication);
                             WriteRegister(REG_COMMUTATION_VOLTAGE_TYPE_LEAKAGE, (ushort)lc.ApplicationPolarityConstantSwitchingVoltage);
@@ -404,11 +404,11 @@ namespace SCME.Service.IO
                             if (lc.ShowAmperage)
                             {
                                 WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, lc.ControlCurrent);
-                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, lc.ControlVoltageMaximum);
+                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, lc.ControlVoltageMaximum, 6);
                             }
                             else
                             {
-                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage);
+                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage, 6);
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, lc.ControlCurrentMaximum);
                             }
 
@@ -419,39 +419,39 @@ namespace SCME.Service.IO
                             WriteRegister(REG_COMMUTATION_VOLTAGE_POLARITY, (ushort)rv.PolarityDCSwitchingVoltageApplication);
                             WriteRegister(REG_OPEN_RESISTANCE, Convert.ToUInt16(rv.OpenState));
 
-                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage);
+                            WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, rv.SwitchedAmperage, 6);
                             //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, rv.SwitchedVoltage);
 
-                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply2);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply1,6);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, rv.AuxiliaryVoltagePowerSupply2,6);
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
                             WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
 
-                            WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum);
+                            WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum, 6);
 
                             if (rv.ShowAmperage)
                             {
                                 WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, rv.ControlCurrent);
-                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, rv.ControlVoltageMaximum);
+                                WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, rv.ControlVoltageMaximum, 6);
                             }
                             else
                             {
-                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage);
+                                WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage, 6);
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, rv.ControlCurrentMaximum);
                             }
                             break;
-                        case Types.ProhibitionVoltage.TestParameters pv:
-                            WriteRegister(REG_MEASUREMENT_TYPE, 4);
-                            WriteRegister(REG_CONTROL_TYPE, (ushort)pv.TypeManagement);
-                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, pv.ControlCurrent);
-                            WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, pv.ControlVoltage);
+                        //case Types.ProhibitionVoltage.TestParameters pv:
+                        //    WriteRegister(REG_MEASUREMENT_TYPE, 4);
+                        //    WriteRegister(REG_CONTROL_TYPE, (ushort)pv.TypeManagement);
+                        //    WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, pv.ControlCurrent);
+                        //    WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, pv.ControlVoltage);
 
-                            //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, pv.SwitchedAmperage);
-                            //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, pv.SwitchedVoltage);
+                        //    //WriteRegisterFrom32To1616(REG_COMM_CURRENT_LOW, REG_COMM_CURRENT_HIGH, pv.SwitchedAmperage);
+                        //    //WriteRegisterFrom32To1616(REG_COMM_VOLTAGE_LOW, REG_COMM_VOLTAGE_HIGH, pv.SwitchedVoltage);
 
-                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply1);
-                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply2);
-                            break;
+                        //    WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply1);
+                        //    WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, pv.AuxiliaryVoltagePowerSupply2);
+                        //    break;
                     }
 
                     CallAction(ACT_CLR_FAULT);
@@ -490,7 +490,7 @@ namespace SCME.Service.IO
                         case Types.InputOptions.TestParameters io:
                             _Result.TestParametersType = TestParametersType.InputOptions;
                             if (io.ShowAmperage)
-                                _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_VOLTAGE_LOW, REG_RESULT_CONTROL_VOLTAGE_HIGH);
+                                _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_VOLTAGE_LOW, REG_RESULT_CONTROL_VOLTAGE_HIGH, 6);
                             else
                             {
                                 _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_CURRENT_LOW, REG_RESULT_CONTROL_CURRENT_HIGH);
@@ -507,14 +507,14 @@ namespace SCME.Service.IO
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             _Result.TestParametersType = TestParametersType.OutputResidualVoltage;
-                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_LOW, REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_HIGH);
+                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_LOW, REG_RESULT_RESIDUAL_OUTPUT_VOLTAGE_HIGH, 6);
                             if (rv.OpenState)
                                 _Result.OpenResistance = ReadRegisterFrom1616To32(REG_OPEN_RESISTANCE_LOW, REG_OPEN_RESISTANCE_HIGH);
                             break;
-                        case Types.ProhibitionVoltage.TestParameters pv:
-                            _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
-                            _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_PROHIBITION_VOLTAGE_LOW, REG_RESULT_PROHIBITION_VOLTAGE_HIGH);
-                            break;
+                        //case Types.ProhibitionVoltage.TestParameters pv:
+                        //    _Result.TestParametersType = TestParametersType.ProhibitionVoltage;
+                        //    _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_PROHIBITION_VOLTAGE_LOW, REG_RESULT_PROHIBITION_VOLTAGE_HIGH);
+                        //    break;
                     }
 
                     //_State = DeviceState.Success;

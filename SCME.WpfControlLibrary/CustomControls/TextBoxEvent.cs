@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace SCME.WpfControlLibrary.CustomControls
@@ -38,5 +39,12 @@ namespace SCME.WpfControlLibrary.CustomControls
             else
                 return FindParent<T>(parentObject);
         }
+
+        private void NumericUpDown_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(sender as System.Windows.Controls.Control) is IMainWindow window)
+                window.ShowKeyboard(true, sender as System.Windows.Controls.Control);
+        }
+
     }
 }

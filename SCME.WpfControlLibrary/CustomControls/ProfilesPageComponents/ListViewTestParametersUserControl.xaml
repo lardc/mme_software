@@ -20,7 +20,7 @@
              xmlns:outputResidualVoltage="clr-namespace:SCME.Types.OutputResidualVoltage;assembly=SCME.Types"
              xmlns:inputOptions="clr-namespace:SCME.Types.InputOptions;assembly=SCME.Types"
              xmlns:prohibitionVoltage="clr-namespace:SCME.Types.ProhibitionVoltage;assembly=SCME.Types"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              mc:Ignorable="d" Name="ThisListViewTestParametersUserControl"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -53,7 +53,7 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <local:ListViewMouseLeftButtonScroll  Style="{StaticResource DefaultListView}"  BorderThickness="0" ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="White" >
+    <local:ListViewMouseLeftButtonScroll x:Name="listView" Style="{StaticResource DefaultListView}"  BorderThickness="0" ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" Background="White" >
         <ListView.ItemsPanel>
           <ItemsPanelTemplate>
                     <StackPanel />

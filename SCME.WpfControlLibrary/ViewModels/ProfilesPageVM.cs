@@ -84,8 +84,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         public bool IsEditModeActive { get; set; }
 
         [DependsOn(nameof(IsEditModeActive))] public bool IsEditModeInActive => !IsEditModeActive;
-        
-        public TestParametersType SelectedTestParametersType { get; set; } = TestParametersType.Gate;
+
+        public TestParametersType SelectedTestParametersType { get; set; } = TestParametersType.OutputLeakageCurrent;
         public Dictionary<string, int> MmeCodes { get; set; }
 
         public string SelectedMmeCode { get; set; }

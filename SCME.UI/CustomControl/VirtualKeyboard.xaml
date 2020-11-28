@@ -88,8 +88,8 @@
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <Border Background="Gray" BorderBrush="{StaticResource Color1}"
                                             BorderThickness="2,2,2,0" Margin="0,0,2,0">
-                                        <ScrollViewer>
-                                            <ItemsPresenter Name="ItemsPresenter"
+                                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                                            <ItemsPresenter Name="ItemsPresenter" 
                                                             KeyboardNavigation.DirectionalNavigation="Contained"
                                                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                                         </ScrollViewer>
@@ -140,7 +140,8 @@
                             </Trigger>
                         </ControlTemplate.Triggers>
                         <TextBlock Text="{TemplateBinding Content}" Background="{TemplateBinding Background}"
-                                   Padding="10,0,0,0" />
+                                   Margin="20,15,0,15"
+                                   Padding="0,0,0,0" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -245,7 +246,7 @@
                                     Click="Backspase_Click" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ComboBox Name="languageComboBox" SelectionChanged="Selector_OnSelectionChanged" />
+                            <ComboBox Name="languageComboBox" SelectionChanged="Selector_OnSelectionChanged"  />
                             <Button Content=" " Width="{StaticResource BSizeSpace}" />
                             <Button Content="_" />
                             <Button Content="{StaticResource PgEnter}" Padding="20"

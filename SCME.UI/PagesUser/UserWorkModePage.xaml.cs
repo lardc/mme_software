@@ -112,7 +112,7 @@ namespace SCME.UI.PagesUser
         {
             //запоминаем выбранный пользователем режим работы
             Cache.WorkMode = UserWorkMode.SpecialMeasure;
-            LoginPage.PrepareMoveToSelectProfilePage(Cache.ProfilesPageSpecialMeasure);
+            LoginPage.PrepareMoveToSelectProfilePage(Cache.ProfilesPageSpecialMeasure, "Спец измерения");
             Debug.Assert(ns != null, nameof(ns) + " != null");
             ns.Navigate(Cache.ProfilesPageSpecialMeasure);
             

@@ -139,7 +139,7 @@ namespace SCME.UI.IO
             {
                 Cache.Main.Dispatcher.BeginInvoke(() =>
                 {
-                    var dw = new DialogWindow("Ошибка", "Неверная комбинация параметров (тип корпуса, номер позиции)");
+                    var dw = new DialogWindow("Ошибка", "Неверная комбинация параметров (тип корпуса, номера канала)");
                     dw.ButtonConfig(DialogWindow.EbConfig.OK);
                     dw.ShowDialog();
 

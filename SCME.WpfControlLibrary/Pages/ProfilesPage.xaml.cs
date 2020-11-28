@@ -249,16 +249,6 @@ namespace SCME.WpfControlLibrary.Pages
         
         }
 
-        private void TestParametersListView_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (e.Handled) 
-                return;
-            
-            e.Handled = true;
-            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) {RoutedEvent = MouseWheelEvent, Source = sender};
-            var parent = (UIElement)((Control) sender).Parent;
-            parent.RaiseEvent(eventArg);
-        }
 
         private void DeleteProfile_Click(object sender, RoutedEventArgs e)
         {
@@ -296,6 +286,34 @@ namespace SCME.WpfControlLibrary.Pages
                     return childOfChild;
             }
             return null;
+        }
+
+
+
+        private void BeginCloneProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var newProfile = ProfileVm.SelectedProfile.Copy();
+            var name = newProfile.Name;
+
+                name += " - копия";
+                if(ProfileVm.Profiles.FirstOrDefault(m => m.Name == name) != null || _dbService.ProfileNameExists(name) != false)
+                {
+                    for (var i = 2; ; i++)
+                    {
+                        name += $"({i})";
+                        if (ProfileVm.Profiles.FirstOrDefault(m => m.Name == name) == null && _dbService.ProfileNameExists(name) == false)
+                            break;
+                        name = name.Substring(0, name.Length - $"({i})".Length);
+                    }
+                }
+            
+
+            newProfile.Key = Guid.NewGuid();
+            newProfile.Name = name;
+            newProfile.Timestamp = DateTime.Now;
+            newProfile.Version = 1;
+            newProfile.Id = _dbService.InsertUpdateProfile(null, newProfile, ProfileVm.SelectedMmeCode);
+            ProfileVm.Profiles.Insert(ProfileVm.Profiles.IndexOf(ProfileVm.SelectedProfile), newProfile);
         }
     }
 }

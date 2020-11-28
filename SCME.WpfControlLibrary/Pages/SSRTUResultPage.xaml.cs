@@ -24,6 +24,7 @@ using HtmlAgilityPack;
 using SCME.WpfControlLibrary.DataProviders;
 using System.IO;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace SCME.WpfControlLibrary.Pages
 {
@@ -36,6 +37,9 @@ namespace SCME.WpfControlLibrary.Pages
 
         private Action _start;
         public Action Stop { get; set; }
+
+        private readonly string _userName;
+        private readonly string _mme;
         private Profile _profile;
 
         public SSRTUResultVM VM { get; set; } = new SSRTUResultVM();
@@ -49,7 +53,7 @@ namespace SCME.WpfControlLibrary.Pages
             InitializeComponent();
         }
 
-        public SSRTUResultPage(Profile profile, Action start, Action stop)
+        public SSRTUResultPage(string userName,string mme, Profile profile, Action start, Action stop)
         {
             InitializeComponent();
 
@@ -58,6 +62,8 @@ namespace SCME.WpfControlLibrary.Pages
                 reportFolder = Directory.GetCurrentDirectory();    
             
             _start = start;
+            _userName = userName;
+            _mme = mme;
             _profile = profile;
             Stop = stop;
             VMByPosition = new Dictionary<int, SSRTUResultComponentVM>();
@@ -271,9 +277,11 @@ namespace SCME.WpfControlLibrary.Pages
         private List<Dictionary<int, SSRTUResultComponentVM>> results = new List<Dictionary<int, SSRTUResultComponentVM>>();
         private DateTime _dateTimeBeginMeasurement;
         private string reportFolder;
+        
 
         private void CreateReport()
         {
+            //Верхняя подпись
             _dateTimeBeginMeasurement = DateTime.Now;
             HtmlNode tr;
             var body = _doc.CreateElement("body");
@@ -290,7 +298,21 @@ namespace SCME.WpfControlLibrary.Pages
             tmpHtmlBody.InnerHtml = $"Профиль испытания: Профиль {_profile.Name}";
             body.AppendChild(tmpHtmlBody);
 
+            tmpHtmlBody = _doc.CreateElement("p");
+            tmpHtmlBody.InnerHtml = $"Номер партии: {VM.BatchNumber}";
+            body.AppendChild(tmpHtmlBody);
+
+            tmpHtmlBody = _doc.CreateElement("p");
+            tmpHtmlBody.InnerHtml = $"Оператор: {_userName}";
+            body.AppendChild(tmpHtmlBody);
+
+            tmpHtmlBody = _doc.CreateElement("p");
+            tmpHtmlBody.InnerHtml = $"Оборудование: {_mme}";
+            body.AppendChild(tmpHtmlBody);
+
+            //Параметры
             var table = _doc.CreateElement("table");
+            table.SetAttributeValue("id", "table1");
             table.SetAttributeValue("class", "center");
             table.SetAttributeValue("style", "width:96%;");
 
@@ -301,11 +323,13 @@ namespace SCME.WpfControlLibrary.Pages
 
             body.AppendChild(table);
 
+            //Результаты
             var h2 = _doc.CreateElement("h2");
             h2.InnerHtml = "Результаты";
             body.AppendChild(h2);
 
             table = _doc.CreateElement("table");
+            table.SetAttributeValue("id", "table1");
             table.SetAttributeValue("class", "center");
             table.SetAttributeValue("style", "width:96%;");
 
@@ -318,7 +342,37 @@ namespace SCME.WpfControlLibrary.Pages
             foreach (var i in results)
                 AddLineValues(i.Values, results.IndexOf(i) + 1, tbody);
 
-            
+            //Нижняя подпись
+            table = _doc.CreateElement("table");
+            table.SetAttributeValue("id", "table2");
+            table.SetAttributeValue("class", "center");
+            table.SetAttributeValue("style", "width:96%;border:null");
+            body.AppendChild(table);
+
+            tbody = _doc.CreateElement("tbody");
+            table.AppendChild(tbody);
+
+            tr = _doc.CreateElement("tr");
+            tbody.AppendChild(tr);
+
+            AddCellTdString(Assembly.GetExecutingAssembly().GetName().Version.ToString(), tr, new Dictionary<string, string>()
+            {
+                {"style","width:33%" },
+                {"align","left" }
+            });
+            AddCellTdString("АО \"ПРОТОН - ЭЛЕКТРОТЕКС\"©", tr, new Dictionary<string, string>()
+            {
+                {"style","width:34%" },
+                {"align","center" }
+            });
+            AddCellTdString("HTML Report Generator", tr, new Dictionary<string, string>()
+            {
+                {"style","width:33%" },
+                {"align","right" }
+            });
+
+
+
             string fileName = $@"{_dateTimeBeginMeasurement.ToString("yyyy-MM-dd-hh-mm")}-{(string.IsNullOrEmpty(VM.BatchNumber) ? "NoBatchNumber" : VM.BatchNumber)}.html";
             File.WriteAllText(System.IO.Path.Combine(reportFolder, fileName), File.ReadAllText("ReportTemplate.html").Replace("body", body.OuterHtml));
 
@@ -333,7 +387,7 @@ namespace SCME.WpfControlLibrary.Pages
             for (var i = 0; i < parameters.Length; i++)
             {
                 var td = _doc.CreateElement("td");
-                td.InnerHtml = $"Позиция {parameters[i].NumberPosition}";
+                td.InnerHtml = $"Канал {parameters[i].NumberPosition}";
                 td.SetAttributeValue("align", "center"); 
                 td.SetAttributeValue("colspan", "2");
                 tr.AppendChild(td);
@@ -354,11 +408,14 @@ namespace SCME.WpfControlLibrary.Pages
 
             tr.AppendChild(td);
         }
-        private void AddCellTdString(string value, HtmlNode tr)
+        private void AddCellTdString(string value, HtmlNode tr, Dictionary<string, string> attributes = null)
         {
             var td = _doc.CreateElement("td");
             td.InnerHtml = value;
             tr.AppendChild(td);
+            if (attributes != null)
+                foreach (var i in attributes)
+                    td.SetAttributeValue(i.Key, i.Value);
         }
         private void AddCellThString(string value, HtmlNode tr)
         {
@@ -508,7 +565,7 @@ namespace SCME.WpfControlLibrary.Pages
             }
 
             AddCellThString("Номер", tr);
-            AddCellThString("Позиция", tr);
+            AddCellThString("Канал", tr);
             
             if (values.Count(m => m.LeakageCurrentMin != null) > 0)
                 AddCellThString("Ток утечки", tr);

@@ -54,7 +54,7 @@ namespace SCME.UI.PagesUser
 //                Cache.ProfileSelection.InitFilter();
 //                Cache.ProfileSelection.InitSorting();
                 //NavigationService.Navigate(Cache.ProfileSelection);
-                PrepareMoveToSelectProfilePage(Cache.ProfilesPageSelectForTest);
+                PrepareMoveToSelectProfilePage(Cache.ProfilesPageSelectForTest, CurrentAccount.Name);
                 Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
                 NavigationService.Navigate(Cache.ProfilesPageSelectForTest);
             }
@@ -66,7 +66,7 @@ namespace SCME.UI.PagesUser
 
 
 
-        public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage)
+        public static void PrepareMoveToSelectProfilePage(ProfilesPage profilesPage, string userName)
         {
             Cache.Main.VM.AccountNameIsVisibility = true;
             profilesPage.LoadTopProfiles();
@@ -80,7 +80,8 @@ namespace SCME.UI.PagesUser
             profilesPage.ProfileVm.NextAction = () =>
             {
                 var navigationService = profilesPage.NavigationService;
-                var page = Cache.SSRTUResultPage = new SSRTUResultPage(profilesPage.ProfileVm.SelectedProfile.ToProfile(),
+                
+                var page = Cache.SSRTUResultPage = new SSRTUResultPage(userName, Cache.Main.VM.MmeCode, profilesPage.ProfileVm.SelectedProfile.ToProfile(),
                     () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), profilesPage.ProfileVm.SelectedProfile.DeepData.DutPackageType),
                     Cache.Net.StopSSRTU)
                 {

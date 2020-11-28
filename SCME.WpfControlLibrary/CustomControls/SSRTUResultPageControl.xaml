@@ -39,14 +39,14 @@
         </Grid.ColumnDefinitions>
 
     <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
-        Позиция <Run Text="{Binding Positition}"/>
+        Канал <Run Text="{Binding Positition}"/>
     </TextBlock>
         <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="1" Text="Ток утечки, мА" />
     <Border Grid.Column="1" Grid.Row="1" Background="{Binding LeakageCurrentIsOk, Converter={StaticResource B2B}}" >
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding LeakageCurrent, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
         </Border>
 
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="2" Text="Выходное остаточное напряжение, мВ" />
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="2" Text="Выходное остаточное напряжение, В" />
     <Border Grid.Column="1" Grid.Row="2" Background="{Binding ResidualVoltageIsOk, Converter={StaticResource B2B}}">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
         </Border>
@@ -56,12 +56,12 @@
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding InputAmperage, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
         </Border>
 
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="4" Text="Напряжение входа, мВ" Visibility="{Binding ShowInputVoltage, Converter={StaticResource B2V}}" />
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="4" Text="Напряжение входа, В" Visibility="{Binding ShowInputVoltage, Converter={StaticResource B2V}}" />
     <Border Grid.Column="1" Grid.Row="4" Background="{Binding InputVoltageIsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowInputVoltage, Converter={StaticResource B2V}}">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding InputVoltage, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
         </Border>
 
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Напряжение запрета, мВ"  Visibility="Collapsed"/>
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Напряжение запрета, В"  Visibility="Collapsed"/>
     <Border Grid.Column="1" Grid.Row="5"  Background="{Binding ProhibitionVoltageIsOk, Converter={StaticResource B2B}}" Visibility="Collapsed">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ProhibitionVoltage, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
         </Border>
