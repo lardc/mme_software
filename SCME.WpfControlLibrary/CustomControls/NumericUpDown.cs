@@ -11,6 +11,9 @@ namespace SCME.WpfControlLibrary.CustomControls
 {
     public class NumericUpDown : UserControl
     {
+
+        public bool MirroredNegativeMinMax { get; set; } = false;
+
         public double? Minimum
         {
             get => (double?)GetValue(MinimumProperty);
@@ -45,9 +48,8 @@ namespace SCME.WpfControlLibrary.CustomControls
             {
                 BindsTwoWayByDefault = true,
                 DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                DefaultValue = 1.0
+                DefaultValue = 1.0,
             });
-
 
 
         public string StringFormat { get; set; }
@@ -89,8 +91,8 @@ namespace SCME.WpfControlLibrary.CustomControls
             if (Minimum == null)
                 return true;
             return Value > Minimum;
-        }); 
-        
+        });
+
 
         public ConstantsMinMax.MinMaxInterval MinMaxInterval
         {
@@ -151,7 +153,7 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
                 window.ShowKeyboard(false, this);
-            //throw new System.NotImplementedException();
+
         }
 
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -164,7 +166,10 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             var textBoxValue = FindChild<TextBox>(this,"TextBoxValue");
             if (textBoxValue != null)
-                textBoxValue.PreviewMouseDown+=OnPreviewMouseDown; 
+            {
+                textBoxValue.PreviewMouseDown += OnPreviewMouseDown;
+                textBoxValue.TextChanged += TextBoxValue_TextChanged; ;
+            }
             if (textBoxValue != null && !string.IsNullOrEmpty(StringFormat))
                 {
                     
@@ -177,7 +182,50 @@ namespace SCME.WpfControlLibrary.CustomControls
                     });
                 }
         }
-        
+
+        static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp;
+            temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
+
+
+
+        private void TextBoxValue_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textbox = sender as TextBox;
+
+            double val;
+            if (double.TryParse(textbox.Text, out val) == false)
+            {
+                Value = val;
+                textbox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                return;
+            }
+                
+            double min = Minimum ?? 0;
+            double max = Maximum ?? 0;
+
+            if (MirroredNegativeMinMax && val < 0)
+            {
+                var temp = min * -1;
+                min = max * -1;
+                max = temp;
+            }
+
+            if (val < min)
+                val = min;
+            else if (val > max)
+                val = max;
+            
+            Value = val;
+            textbox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+
+
+
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             //get parent item

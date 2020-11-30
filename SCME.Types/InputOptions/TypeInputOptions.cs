@@ -17,6 +17,36 @@ namespace SCME.Types.InputOptions
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMin => TypeManagement == TypeManagement.ACVoltage ? 5 : 0.05;
+        [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMax => TypeManagement == TypeManagement.ACVoltage ? 300 : 250;
+
+
+        public double ControlCurrentMin => 0.01;
+        public double ControlCurrentMax => 100;
+
+
+        public double InputCurrentMinimumMin => 0;
+        public double InputCurrentMinimumMax => 100;
+        public double InputCurrentMaximumMin => 0.01;
+        public double InputCurrentMaximumMax => 100;
+
+
+        public double AuxiliaryVoltagePowerSupply1Min => 0.05;
+        public double AuxiliaryVoltagePowerSupply1Max => 150;
+        public double AuxiliaryVoltagePowerSupply2Min => 0.05;
+        public double AuxiliaryVoltagePowerSupply2Max => 20;
+
+
+        public double InputVoltageMinimumMin => 0;
+        public double InputVoltageMinimumMax => 250;
+
+        public double InputVoltageMaximumMin => 0.05;
+        public double InputVoltageMaximumMax => 250;
+
+
+
+        [DependsOn(nameof(TypeManagement))]
         public bool ShowVoltage => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.ACVoltage;
         [DependsOn(nameof(TypeManagement))]
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;

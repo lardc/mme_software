@@ -36,9 +36,11 @@
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}"
+                                  Minimum="{Binding ControlVoltageMin}" Maximum="{Binding ControlVoltageMax}"/>
     <Label Grid.Column="0" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}"  />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding ControlCurrentMin}" Maximum="{Binding ControlCurrentMax}"/>
 
 
 
@@ -63,14 +65,16 @@
             Ком. ток ампл. знач., А
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage, Converter={StaticResource DML}}" />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3"   Value="{Binding SwitchedAmperage, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding SwitchedAmperageMin}" Maximum="{Binding SwitchedAmperageMax}"/>
 
     <Label Grid.Column="0" Grid.Row="4"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
             <TextBlock>
                 Напряжение вспом.<LineBreak/>питания 1, В
             </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply1, Converter={StaticResource DML}}"   />
+    <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply1, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding ShowAuxiliaryVoltagePowerSupply1Min}" Maximum="{Binding ShowAuxiliaryVoltagePowerSupply1Max}"/>
 
 
 
@@ -96,14 +100,16 @@
             Ограничение по току<LineBreak/>Управления, мА
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}"  />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding ControlCurrentMin}" Maximum="{Binding ControlCurrentMax}"/>
 
     <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" >
         <TextBlock>
             Ограничение по<LineBreak/>напр. управления, В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1"  Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltageMaximum, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding ControlVoltageMin}" Maximum="{Binding ControlVoltageMax}"/>
 
     <!--<Label Grid.Column="3" Grid.Row="2"  >
         <TextBlock>
@@ -120,7 +126,8 @@
                 Напряжение вспом.<LineBreak/>питания 2, В
         </TextBlock>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply2, Converter={StaticResource DML}}"   />
+    <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply2, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryVoltagePowerSupply2, Converter={StaticResource DML}}" 
+                                  Minimum="{Binding ShowAuxiliaryVoltagePowerSupply2Min}" Maximum="{Binding ShowAuxiliaryVoltagePowerSupply2Max}"/>
 
         <!--<Label Grid.Column="3" Grid.Row="5">
         <TextBlock>
@@ -151,14 +158,16 @@
             Выходное остаточное<LineBreak/>напряжение мин., В
             </TextBlock>
         </Label>
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"   Value="{Binding OutputResidualVoltageMinimum, Converter={StaticResource DML}}"  />
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"   Value="{Binding OutputResidualVoltageMinimum, Converter={StaticResource DML}}" 
+                                      Minimum="{Binding OutputResidualVoltageMinimumMin}" Maximum="{Binding OutputResidualVoltageMinimumMax}"/>
 
             <Label  Grid.Column="3" Grid.Row="0" >
             <TextBlock>
             Выходное остаточное<LineBreak/>напряжение макс., В
             </TextBlock>
         </Label>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"    Value="{Binding OutputResidualVoltageMaximum, Converter={StaticResource DML}}" />
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"    Value="{Binding OutputResidualVoltageMaximum, Converter={StaticResource DML}}" 
+                                      Minimum="{Binding OutputResidualVoltageMaximumMin}" Maximum="{Binding OutputResidualVoltageMaximumMax}"/>
 
         
             <Label Grid.Column="0" Grid.Row="1"  Visibility="{Binding OpenState, Converter={StaticResource B2V}}">

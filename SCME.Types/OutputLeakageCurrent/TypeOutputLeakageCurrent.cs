@@ -17,6 +17,36 @@ namespace SCME.Types.OutputLeakageCurrent
     [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
+        [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMin => TypeManagement == TypeManagement.ACVoltage ? 5 : 0.05;
+        [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMax => TypeManagement == TypeManagement.ACVoltage ? 300 : 250;
+
+        public double ControlCurrentMaximumMin => 0.01;
+        public double ControlCurrentMaximumMax => 100;
+
+
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public double SwitchedVoltageMin => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.ACVoltage ? 5 :  25;
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public double SwitchedVoltageMax => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.ACVoltage ? 300 : 2000;
+
+
+        public double LeakageCurrentMinimumMin => 0;
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public double LeakageCurrentMinimumMax => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.ACVoltage ? 100 : 20;
+
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public double LeakageCurrentMaximumMin => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.ACVoltage ? 0.01 : 0.006;
+        [DependsOn(nameof(ApplicationPolarityConstantSwitchingVoltage))]
+        public double LeakageCurrentMaximumMax => ApplicationPolarityConstantSwitchingVoltage == ApplicationPolarityConstantSwitchingVoltage.ACVoltage ? 100 : 20;
+
+
+        public double AuxiliaryVoltagePowerSupply1Min => 0.05;
+        public double AuxiliaryVoltagePowerSupply1Max => 150;
+        public double AuxiliaryVoltagePowerSupply2Min => 0.05;
+        public double AuxiliaryVoltagePowerSupply2Max => 20;
+
 
         [DependsOn(nameof(TypeManagement))]
         public bool ShowVoltage => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.ACVoltage;

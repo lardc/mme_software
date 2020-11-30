@@ -17,6 +17,33 @@ namespace SCME.Types.OutputResidualVoltage
     {
 
         [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMin => TypeManagement == TypeManagement.ACVoltage ? 5 : 0.05;
+        [DependsOn(nameof(TypeManagement))]
+        public double ControlVoltageMax => TypeManagement == TypeManagement.ACVoltage ? 300 : 250;
+
+        public double ControlCurrentMin => 0.01;
+        public double ControlCurrentMax => 100;
+
+
+        public double SwitchedAmperageMin { get; set; } = 0.01;
+        public double SwitchedAmperageMax { get; set; } = 250;
+
+
+        public double OutputResidualVoltageMinimumMin { get; set; } = 0;
+        public double OutputResidualVoltageMinimumMax { get; set; } = 10;
+        public double OutputResidualVoltageMaximumMin { get; set; } = 0.001;
+        public double OutputResidualVoltageMaximumMax { get; set; } = 10;
+
+
+        public double ShowAuxiliaryVoltagePowerSupply1Min { get; set; } = 0.05;
+        public double ShowAuxiliaryVoltagePowerSupply1Max { get; set; } = 150;
+        public double ShowAuxiliaryVoltagePowerSupply2Min { get; set; } = 0.05;
+        public double ShowAuxiliaryVoltagePowerSupply2Max { get; set; } = 20;
+
+
+
+
+        [DependsOn(nameof(TypeManagement))]
         public bool ShowVoltage => TypeManagement == TypeManagement.DCVoltage || TypeManagement == TypeManagement.ACVoltage;
         [DependsOn(nameof(TypeManagement))]
         public bool ShowAmperage => TypeManagement == TypeManagement.DCAmperage;

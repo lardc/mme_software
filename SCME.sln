@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadLocalToServer", "LoadLo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{08531C19-A93B-44E9-8883-BA2FD29091DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWpf", "TestWpf\TestWpf.csproj", "{7B01A167-66A6-455C-B079-479C5909492B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWpf", "TestWpf\TestWpf.csproj", "{7B01A167-66A6-455C-B079-479C5909492B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
