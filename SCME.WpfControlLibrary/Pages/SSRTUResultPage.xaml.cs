@@ -46,6 +46,7 @@ namespace SCME.WpfControlLibrary.Pages
         public SSRTUResultComponentVM VMPosition1 { get; set; } = new SSRTUResultComponentVM() { Positition = 1};
         public SSRTUResultComponentVM VMPosition2 { get; set; } = new SSRTUResultComponentVM() { Positition = 2 };
         public SSRTUResultComponentVM VMPosition3 { get; set; } = new SSRTUResultComponentVM() { Positition = 3 };
+        public SSRTUResultComponentVM VMPosition4 { get; set; } = new SSRTUResultComponentVM() { Positition = 4 };
 
         public Dictionary<int, SSRTUResultComponentVM> VMByPosition{ get; set; }
         public SSRTUResultPage()
@@ -70,6 +71,7 @@ namespace SCME.WpfControlLibrary.Pages
             VMByPosition[1] = VMPosition1;
             VMByPosition[2] = VMPosition2;
             VMByPosition[3] = VMPosition3;
+            VMByPosition[4] = VMPosition4;
             foreach (var i in VMByPosition)
                 i.Value.DutPackageType = profile.DutPackageType;
 
@@ -95,17 +97,19 @@ namespace SCME.WpfControlLibrary.Pages
                             foreach (var t in VMByPosition.Values)
                                 t.ShowInputAmperage = true;
                         }
-                        if(j.ShowAuxiliaryVoltagePowerSupply1)
+                        break;
+                    case SCME.Types.AuxiliaryPower.TestParameters j:
+                        if (j.ShowAuxiliaryVoltagePowerSupply1)
                         {
-                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
-                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = 0;
+                            VMPosition4.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
+                            VMPosition4.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
+                            VMPosition4.AuxiliaryCurrentPowerSupply1 = 0;
                         }
                         if (j.ShowAuxiliaryVoltagePowerSupply2)
                         {
-                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
-                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = 0;
+                            VMPosition4.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
+                            VMPosition4.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
+                            VMPosition4.AuxiliaryCurrentPowerSupply2 = 0;
                         }
                         break;
                     case SCME.Types.OutputLeakageCurrent.TestParameters j:
@@ -163,15 +167,17 @@ namespace SCME.WpfControlLibrary.Pages
 
             switch (testResults.TestParametersType)
             {
+                case TestParametersType.AuxiliaryPower:
+                    if (VMPosition4.ShowAuxiliaryCurrentPowerSupply1)
+                        VMPosition4.AuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
+                    if (VMPosition4.ShowAuxiliaryCurrentPowerSupply2)
+                        VMPosition4.AuxiliaryCurrentPowerSupply2 = testResults.AuxiliaryCurrentPowerSupply2;
+                    break;
                 case TestParametersType.InputOptions:
                     if (testResults.InputOptionsIsAmperage)
                         q.InputAmperage = testResults.Value;
                     else
                         q.InputVoltage = testResults.Value;
-                    if(q.ShowAuxiliaryCurrentPowerSupply1)
-                        q.AuxiliaryCurrentPowerSupply1 = testResults.AuxiliaryCurrentPowerSupply1;
-                    if(q.ShowAuxiliaryCurrentPowerSupply2)
-                        q.AuxiliaryCurrentPowerSupply2 = testResults.AuxiliaryCurrentPowerSupply2;
                     break;
                 case TestParametersType.OutputLeakageCurrent:
                     q.LeakageCurrent = testResults.Value;
@@ -199,7 +205,7 @@ namespace SCME.WpfControlLibrary.Pages
                 result[1] = VMPosition2.IsEmpty ? null : VMPosition2.Copy();
                 result[2] = VMPosition3.IsEmpty ? null : VMPosition3.Copy();
                 result.First(m => m.Value != null).Value.SerialNumber = VM.SerialNumber;
-                CreateReport();
+                //CreateReport();
                 VM.SerialNumber++;
             }
         }

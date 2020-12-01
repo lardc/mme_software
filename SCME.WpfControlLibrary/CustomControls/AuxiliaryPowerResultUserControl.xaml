@@ -1,0 +1,58 @@
+﻿<Grid x:Class="SCME.WpfControlLibrary.CustomControls.AuxiliaryPowerResultUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SCME.WpfControlLibrary"
+              xmlns:converters="clr-namespace:SCME.WpfControlLibrary.IValueConverters"
+             mc:Ignorable="d" d:DataContext="{d:DesignData vm:SSRTUResultComponentVM}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/SSRTUPageStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:SSRTUResultConverter x:Key="DN2S"/>
+            <converters:BoolToBrush x:Key="B2B" NullBrush="Transparent" TrueBrush="{StaticResource xGreen1}" FalseBrush="{StaticResource xRed1}"/>
+            <Style TargetType="Border">
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <Setter Property="Height" Value="64"/>
+                <Setter Property="Width" Value="114"/>
+            </Style>
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="auto"/>
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
+        Вспомогательное питание
+    </TextBlock>
+    
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="6" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply1, Converter={StaticResource B2V}}" >
+        Ток вспомогательного<LineBreak/>питания1, мА
+    </TextBlock>
+    <Border Grid.Column="1" Grid.Row="6"  Background="{Binding AuxiliaryCurrentPowerSupply1IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply1, Converter={StaticResource B2V}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply1, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
+    </Border>
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}">
+        Ток вспомогательного<LineBreak/>питания2, мА
+    </TextBlock>
+    <Border Grid.Column="1" Grid.Row="7"  Background="{Binding AuxiliaryCurrentPowerSupply2IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply2, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
+    </Border>
+    
+</Grid>
