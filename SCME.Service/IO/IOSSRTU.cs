@@ -332,7 +332,7 @@ namespace SCME.Service.IO
 
             _Result = new TestResults();
             _Result.NumberPosition = parameters.NumberPosition;
-            
+            _Result.Index = parameters.Index;
             try
             {
                 //_State = DeviceState.InProcess;
@@ -412,6 +412,11 @@ namespace SCME.Service.IO
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, lc.ControlCurrentMaximum);
                             }
 
+                            break;
+                        case Types.AuxiliaryPower.TestParameters ap:
+                            WriteRegister(REG_MEASUREMENT_TYPE, 3);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, ap.AuxiliaryCurrentPowerSupplyMaximum1);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, ap.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
                         case Types.OutputResidualVoltage.TestParameters rv:
                             WriteRegister(REG_MEASUREMENT_TYPE, 2);
@@ -496,9 +501,11 @@ namespace SCME.Service.IO
                                 _Result.Value = ReadRegisterFrom1616To32(REG_RESULT_CONTROL_CURRENT_LOW, REG_RESULT_CONTROL_CURRENT_HIGH);
                                 _Result.InputOptionsIsAmperage = true;
                             }
-                            if(io.ShowAuxiliaryVoltagePowerSupply1)
+                            break;
+                        case Types.AuxiliaryPower.TestParameters au:
+                            if(au.ShowAuxiliaryVoltagePowerSupply1)
                                 _Result.AuxiliaryCurrentPowerSupply1 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY1);
-                            if (io.ShowAuxiliaryVoltagePowerSupply2)
+                            if (au.ShowAuxiliaryVoltagePowerSupply2)
                                 _Result.AuxiliaryCurrentPowerSupply2 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY2);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:

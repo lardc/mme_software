@@ -106,6 +106,8 @@ namespace SCME.Types.BaseTestParams
         [DataMember]
         public int NumberPosition { get; set; } = 1;
 
+        [DataMember]
+        public int Index { get; set; } = 1;
         
         [DataMember]
         public DutPackageType DutPackageType { get; set; }  
