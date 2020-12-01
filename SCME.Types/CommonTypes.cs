@@ -1,8 +1,11 @@
-﻿using System;
+﻿using SCME.Types.BaseTestParams;
+using System;
 using System.Runtime.Serialization;
 
 namespace SCME.Types
 {
+
+   
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum TypeManagement

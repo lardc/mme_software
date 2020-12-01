@@ -22,5 +22,12 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
         {
             AddTestParametersEvent?.Invoke();
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = sender as ComboBox;
+            if (cb.SelectedIndex == -1)
+                cb.SelectedIndex = 0;
+        }
     }
 }

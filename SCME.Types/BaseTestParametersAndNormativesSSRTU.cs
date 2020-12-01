@@ -12,6 +12,7 @@ namespace SCME.Types
     [KnownType(typeof(OutputLeakageCurrent.TestParameters))]
     [KnownType(typeof(OutputResidualVoltage.TestParameters))]
     [KnownType(typeof(ProhibitionVoltage.TestParameters))]
+    [KnownType(typeof(AuxiliaryPower.TestParameters))]
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class BaseTestParametersAndNormativesSSRTU : BaseTestParametersAndNormatives
     {

@@ -15,6 +15,7 @@ using SCME.Types.Commutation;
 using SCME.Types.Database;
 using SCME.WpfControlLibrary.Commands;
 using SCME.WpfControlLibrary.CustomControls;
+using SCME.WpfControlLibrary.DataProviders;
 
 namespace SCME.WpfControlLibrary.ViewModels
 {
@@ -86,6 +87,12 @@ namespace SCME.WpfControlLibrary.ViewModels
         [DependsOn(nameof(IsEditModeActive))] public bool IsEditModeInActive => !IsEditModeActive;
 
         public TestParametersType SelectedTestParametersType { get; set; } = TestParametersType.OutputLeakageCurrent;
+
+      
+
+
+
+
         public Dictionary<string, int> MmeCodes { get; set; }
 
         public string SelectedMmeCode { get; set; }

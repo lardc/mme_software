@@ -362,12 +362,30 @@ namespace SCME.InterfaceImplementations.Common.DbService
             else
                 parameters.Add("InputAmperage", (data.InputCurrentMinimum, data.InputCurrentMaximum));
 
-            if(data.ShowAuxiliaryVoltagePowerSupply1)
+            //if(data.ShowAuxiliaryVoltagePowerSupply1)
+            //    parameters.Add("AuxCurrentPower1", (data.AuxiliaryCurrentPowerSupplyMinimum1, data.AuxiliaryCurrentPowerSupplyMaximum1));
+            //if (data.ShowAuxiliaryVoltagePowerSupply1)
+            //    parameters.Add("AuxCurrentPower2", (data.AuxiliaryCurrentPowerSupplyMinimum2, data.AuxiliaryCurrentPowerSupplyMaximum2));
+
+            return ("InputOptions", condition, parameters);
+        }
+
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.AuxiliaryPower.TestParameters data)
+        {
+            var condition = new Dictionary<string, object>()
+            {
+                {"Im_Position", data.NumberPosition},
+                {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
+                {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
+            };
+
+            var parameters = new Dictionary<string, (object Min, object Max)>();
+            if (data.ShowAuxiliaryVoltagePowerSupply1)
                 parameters.Add("AuxCurrentPower1", (data.AuxiliaryCurrentPowerSupplyMinimum1, data.AuxiliaryCurrentPowerSupplyMaximum1));
             if (data.ShowAuxiliaryVoltagePowerSupply1)
                 parameters.Add("AuxCurrentPower2", (data.AuxiliaryCurrentPowerSupplyMinimum2, data.AuxiliaryCurrentPowerSupplyMaximum2));
 
-            return ("InputOptions", condition, parameters);
+            return ("AuxiliaryPower", condition, parameters);
         }
 
         private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.OutputLeakageCurrent.TestParameters data)
@@ -604,6 +622,9 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         break;
                     case Types.InputOptions.TestParameters io:
                         _inserter.Insert(TypeConditionsParameters(io));
+                        break;
+                    case Types.AuxiliaryPower.TestParameters ap:
+                        _inserter.Insert(TypeConditionsParameters(ap));
                         break;
                     case Types.OutputLeakageCurrent.TestParameters lc:
                         _inserter.Insert(TypeConditionsParameters(lc));

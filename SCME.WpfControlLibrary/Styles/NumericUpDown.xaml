@@ -27,7 +27,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <RepeatButton Grid.Column="0" x:Name="ButtonUp" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" Margin="5, 1, 5, 1" >
+                        <RepeatButton Grid.Column="0" x:Name="ButtonUp" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Up}" Width="36" Height="36" Margin="5, 1, 5, 1" >
                             <Path Data="{StaticResource Plus}" Style="{StaticResource PathIcon}"/>
                             <RepeatButton.Style>
                                 <Style TargetType="{x:Type RepeatButton}">
@@ -50,7 +50,7 @@
                                 </Style>
                             </RepeatButton.Style>
                         </RepeatButton>
-                        <RepeatButton Grid.Column="1" x:Name="ButtonDown" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="0, 1, 5, 1">
+                            <RepeatButton Grid.Column="1" x:Name="ButtonDown" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Down}" Width="36" Height="36" Margin="0, 1, 5, 1">
                             <Path Data="{StaticResource Minus}" Style="{StaticResource PathIcon}" Stretch="Fill" Height="3" Width="18"/>
                             <RepeatButton.Style>
                                 <Style TargetType="{x:Type RepeatButton}">
@@ -80,10 +80,10 @@
                     </Grid >
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
+                        <!--<Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ButtonUp" Property="Visibility" Value="Collapsed"></Setter>
                             <Setter TargetName="ButtonDown" Property="Visibility" Value="Collapsed"></Setter>
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

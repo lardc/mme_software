@@ -70,7 +70,11 @@ namespace SCME.Types.BaseTestParams
         OutputResidualVoltage = 103,
 
         [EnumMember]
-        ProhibitionVoltage = 104
+        ProhibitionVoltage = 104,
+
+        [EnumMember]
+        AuxiliaryPower = 105,
+
     }
 
     [KnownType(typeof(ATU.TestParameters))]
@@ -150,6 +154,8 @@ namespace SCME.Types.BaseTestParams
                     return new InputOptionsParameters();
                 case TestParametersType.ProhibitionVoltage:
                     return new ProhibitionVoltageParameters();
+                case TestParametersType.AuxiliaryPower:
+                    return new AuxiliaryPower.TestParameters();
                 default:
                     throw new NotImplementedException("CreateParametersByType");
             }

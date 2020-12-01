@@ -283,8 +283,15 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     FillProhibitionVoltageParameters(prohibitionVoltage, testTypeId);
                     data.TestParametersAndNormatives.Add(prohibitionVoltage);
                     break;
+                case TestParametersType.AuxiliaryPower:
+                    var auxiliaryPower = FillAuxiliaryPowerConditions(testTypeId);
+                    FillAuxiliaryPowerParameters(auxiliaryPower, testTypeId);
+                    data.TestParametersAndNormatives.Add(auxiliaryPower);
+                    break;
             }
         }
+
+
 
         private Types.dVdt.TestParameters FillDvdtConditions(long testTypeId)
         {
@@ -703,7 +710,40 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return testParams;
         }
 
-      
+
+        private Types.AuxiliaryPower.TestParameters FillAuxiliaryPowerConditions (long testTypeId)
+        {
+            var results = new Dictionary<string, object>(2);
+
+            var testParams = new Types.AuxiliaryPower.TestParameters();
+            testParams.IsEnabled = true;
+            testParams.TestTypeId = testTypeId;
+
+            FillOrder(testTypeId, testParams);
+
+            FillConditionsResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Key)
+                {
+                    case "Im_Position":
+                        testParams.NumberPosition = int.Parse(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply1":
+                        testParams.AuxiliaryVoltagePowerSupply1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryVoltagePowerSupply2":
+                        testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+                }
+            }
+
+            return testParams;
+        }
+
 
 
         private void FillComutationConditions(ProfileDeepData data, long testTypeId)
@@ -1122,6 +1162,19 @@ namespace SCME.InterfaceImplementations.Common.DbService
                         parameters.InputVoltageMinimum = result.Item2.Value;
                         parameters.InputVoltageMaximum = result.Item3.Value;
                         break;
+                }
+            }
+        }
+
+        private void FillAuxiliaryPowerParameters(Types.AuxiliaryPower.TestParameters parameters, long testTypeId)
+        {
+            var results = new List<Tuple<string, float?, float?>>();
+            FillParametersResults(testTypeId, results);
+
+            foreach (var result in results)
+            {
+                switch (result.Item1)
+                {
                     case "AuxCurrentPower1":
                         parameters.AuxiliaryCurrentPowerSupplyMinimum1 = result.Item2.Value;
                         parameters.AuxiliaryCurrentPowerSupplyMaximum1 = result.Item3.Value;
@@ -1133,7 +1186,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 }
             }
         }
-        
+
+
         private void FillLeakageCurrentParameters(Types.OutputLeakageCurrent.TestParameters parameters, long testTypeId)
         {
             var results = new List<Tuple<string, float?, float?>>();

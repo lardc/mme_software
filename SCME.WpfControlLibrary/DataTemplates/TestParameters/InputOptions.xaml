@@ -34,11 +34,11 @@
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" 
-                                  Minimum="{Binding ControlVoltageMin}" Maximum="{Binding ControlVoltageMax}"/>
+                                  Minimum="{Binding ControlVoltageMin}" Maximum="{Binding ControlVoltageMax}" MirroredNegativeMinMax="True"/>
 
     <Label Grid.Column="0" Grid.Row="1" Content="Ток управления, мА" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}"/>
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Visibility="{Binding ShowAmperage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrent}" 
-                                  Minimum="{Binding ControlCurrentMin}" Maximum="{Binding ControlCurrentMax}"/>
+                                  Minimum="{Binding ControlCurrentMin}" Maximum="{Binding ControlCurrentMax}" MirroredNegativeMinMax="True"/>
 
     <Label Grid.Column="0" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
         <TextBlock>

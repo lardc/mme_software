@@ -68,6 +68,18 @@ namespace SCME.Types.Profiles
             }
         }
 
+      
+
+        public List<TestParameterTypeMeasurement> GetTestParametersTypes
+        {
+            get
+            {
+                var res = TestParameterTypeMeasurement.GetDefaultList();
+                if (DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108)
+                    res.Add(new TestParameterTypeMeasurement(TestParametersType.AuxiliaryPower, typeof(Types.AuxiliaryPower.TestParameters), "Вспомогательное питание"));
+                return res;
+            }
+        }
         #endregion
         #region Clamping
         [DataMember]

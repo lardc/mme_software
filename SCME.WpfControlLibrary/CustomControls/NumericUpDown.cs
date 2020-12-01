@@ -12,7 +12,19 @@ namespace SCME.WpfControlLibrary.CustomControls
     public class NumericUpDown : UserControl
     {
 
-        public bool MirroredNegativeMinMax { get; set; } = false;
+
+
+        public bool MirroredNegativeMinMax
+        {
+            get { return (bool)GetValue(MirroredNegativeMinMaxProperty); }
+            set { SetValue(MirroredNegativeMinMaxProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MirroredNegativeMinMax.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MirroredNegativeMinMaxProperty =
+            DependencyProperty.Register("MirroredNegativeMinMax", typeof(bool), typeof(NumericUpDown), new PropertyMetadata(false));
+
+
 
         public double? Minimum
         {
@@ -47,7 +59,7 @@ namespace SCME.WpfControlLibrary.CustomControls
             nameof(Value), typeof(double), typeof(NumericUpDown),new FrameworkPropertyMetadata()
             {
                 BindsTwoWayByDefault = true,
-                DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus,
                 DefaultValue = 1.0,
             });
 
@@ -162,49 +174,41 @@ namespace SCME.WpfControlLibrary.CustomControls
                 window.ShowKeyboard(true, this);
         }
 
+        private TextBox _textBox;
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var textBoxValue = FindChild<TextBox>(this,"TextBoxValue");
-            if (textBoxValue != null)
+            _textBox = FindChild<TextBox>(this,"TextBoxValue");
+            if (_textBox != null)
             {
-                textBoxValue.PreviewMouseDown += OnPreviewMouseDown;
-                textBoxValue.TextChanged += TextBoxValue_TextChanged; ;
+                _textBox.PreviewMouseDown += OnPreviewMouseDown;
+                _textBox.LostFocus += TextBoxValue_LostFocus;
             }
-            if (textBoxValue != null && !string.IsNullOrEmpty(StringFormat))
+            if (_textBox != null && !string.IsNullOrEmpty(StringFormat))
                 {
                     
-                    var be = textBoxValue.GetBindingExpression(TextBox.TextProperty);
+                    var be = _textBox.GetBindingExpression(TextBox.TextProperty);
                     var pb = be.ParentBinding;
-                    textBoxValue.SetBinding(TextBox.TextProperty, new Binding("Value")
+                _textBox.SetBinding(TextBox.TextProperty, new Binding("Value")
                     {
                         RelativeSource = pb.RelativeSource,
                         StringFormat = StringFormat
                     });
                 }
+            UpdateTextBox();
         }
 
-        static void Swap<T>(ref T lhs, ref T rhs)
+        private void UpdateTextBox()
         {
-            T temp;
-            temp = lhs;
-            lhs = rhs;
-            rhs = temp;
-        }
-
-
-
-        private void TextBoxValue_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var textbox = sender as TextBox;
-
+            if (_textBox == null)
+                return;
             double val;
-            if (double.TryParse(textbox.Text, out val) == false)
+            if (double.TryParse(_textBox.Text, out val) == false)
             {
                 Value = val;
-                textbox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                _textBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 return;
             }
-                
+
             double min = Minimum ?? 0;
             double max = Maximum ?? 0;
 
@@ -219,11 +223,31 @@ namespace SCME.WpfControlLibrary.CustomControls
                 val = min;
             else if (val > max)
                 val = max;
-            
+
             Value = val;
-            textbox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            _textBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
+        private void TextBoxValue_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateTextBox();
+        }
+ 
+
+        static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T temp;
+            temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
+
+
+
+    private void TextBoxValue_TextChanged(object sender, TextChangedEventArgs e)
+    {
+
+    }
 
 
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject

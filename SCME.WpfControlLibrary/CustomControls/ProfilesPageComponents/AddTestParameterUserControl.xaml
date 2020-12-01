@@ -8,7 +8,7 @@
              xmlns:profile="clr-namespace:SCME.Types.Profiles;assembly=SCME.Types"
              xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
              xmlns:dataProviders="clr-namespace:SCME.WpfControlLibrary.DataProviders"
-             xmlns:pages="clr-namespace:SCME.WpfControlLibrary.Pages"
+             xmlns:pages="clr-namespace:SCME.WpfControlLibrary.Pages" 
              mc:Ignorable="d" d:DesignWidth="800" d:DataContext="{d:DesignInstance profile:ProfileDeepData}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -41,8 +41,8 @@
 
         <Label Grid.Column="0" Grid.Row="2" Content="Тип измерения" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"  />
         <ComboBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3"  Margin="5,5,5,5"
-                      ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" 
-                      DisplayMemberPath="Name" SelectedValuePath="TestParametersType"  SelectedIndex="0"
+                      ItemsSource="{Binding GetTestParametersTypes}"  SelectionChanged="ComboBox_SelectionChanged"
+                      DisplayMemberPath="Name" SelectedValuePath="TestParametersType"  
                       SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}"
                   Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}">
             </ComboBox>

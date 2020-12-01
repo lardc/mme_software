@@ -97,14 +97,14 @@ namespace SCME.WpfControlLibrary.Pages
                         }
                         if(j.ShowAuxiliaryVoltagePowerSupply1)
                         {
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
+                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
+                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
                             sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = 0;
                         }
                         if (j.ShowAuxiliaryVoltagePowerSupply2)
                         {
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
-                            sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
+                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
+                            //sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
                             sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = 0;
                         }
                         break;
@@ -604,7 +604,7 @@ namespace SCME.WpfControlLibrary.Pages
 
                 var th = _doc.CreateElement("th");
                 th.SetAttributeValue("colspan", "6");
-                th.InnerHtml = TestTypeEnumDictionary.GetTestParametersTypes().Single(m => m.Type == t.GetType()).Name;
+                th.InnerHtml = Types.TestParameterTypeMeasurement.GetAllList().Single(m => m.Type == t.GetType()).Name;
                 tr.AppendChild(th);
 
                 tbody.AppendChild(AddNumberPositions(i.ToArray()));

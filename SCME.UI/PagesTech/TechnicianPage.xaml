@@ -198,6 +198,16 @@
                     <Label Content="Параметры входа " />
                 </Grid>
             </Button>
+            <Button CommandParameter="24" >
+                <Grid Background="{StaticResource xBlue1}">
+                    <Label >
+                        <TextBlock>
+                            Вспомогательное<LineBreak/>питание
+                        </TextBlock>
+                    </Label>
+                </Grid>
+            </Button>
+
 
             <!--<Button CommandParameter="21" >
                 <Grid Background="{StaticResource xGray1}">

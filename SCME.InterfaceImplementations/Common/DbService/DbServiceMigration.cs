@@ -228,7 +228,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ((int)TestParametersType.InputOptions, "InputOptions"),
             ((int)TestParametersType.OutputLeakageCurrent, "LeakageCurrent"),
             ((int)TestParametersType.OutputResidualVoltage, "ResidualVoltage"),
-            ((int)TestParametersType.ProhibitionVoltage, "ProhibitionVoltage")
+            ((int)TestParametersType.ProhibitionVoltage, "ProhibitionVoltage"),
+                ((int)TestParametersType.AuxiliaryPower, "AuxiliaryPower")
         };
 
         private DbCommand CreateCountCmdCount(string tableName, string columnName)

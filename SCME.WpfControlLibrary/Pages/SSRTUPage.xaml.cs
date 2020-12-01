@@ -48,6 +48,10 @@ namespace SCME.WpfControlLibrary.Pages
                     ItemVM = new SCME.Types.ProhibitionVoltage.TestParameters();
                     MainTabControl.SelectedIndex = 3;
                     break;
+                case TestParametersType.AuxiliaryPower:
+                    ItemVM = new SCME.Types.AuxiliaryPower.TestParameters();
+                    MainTabControl.SelectedIndex = 4;
+                    break;
                 default:
                     break;
             }

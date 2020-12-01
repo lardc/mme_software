@@ -74,6 +74,9 @@
             <TabItem>
                 <testParameters:ProhibitionVoltageTemplate DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM}"/>
             </TabItem>
+            <TabItem>
+                <testParameters:AuxiliaryPowerTemplate DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM}"/>
+            </TabItem>
         </TabControl>
         <Grid Grid.Row="3" Margin="0,38,0,0" Width="930">
             <Grid.RowDefinitions>
@@ -138,6 +141,8 @@
             <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Content="Ток вспомогательного питания 2, мА" Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent2, Converter={StaticResource B2V}}"/>
             <Label Grid.Column="1" Grid.Row="5" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent2, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.AuxiliaryCurrentPowerSupply2, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
+            
+
             
             <!--<TextBlock Grid.Column="0" Grid.Row="4" TextWrapping="Wrap">
                 Ток вспом. питания 1, мА

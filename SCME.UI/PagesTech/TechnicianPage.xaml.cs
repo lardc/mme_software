@@ -150,6 +150,16 @@ namespace SCME.UI.PagesTech
                     Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
                     page = Cache.SSRTU;
                     break;
+                case 24:
+                    Cache.SSRTU = new SSRTUPage(Types.BaseTestParams.TestParametersType.AuxiliaryPower,
+                        () => Cache.Net.StartSSRTU(new List<Types.BaseTestParams.BaseTestParametersAndNormatives> { Cache.SSRTU.ItemVM }, Cache.SSRTU.ItemVM.DutPackageType),
+                        Cache.Net.StopSSRTU);
+                    Cache.Main.VM.TopTitle = "Напряжение запрета";
+                    Cache.SSRTUHandler = Cache.SSRTU.SSRTUHandler;
+                    Cache.PostAlarmEvent = Cache.SSRTU.PostAlarmEvent;
+                    Cache.PostSSRTUNotificationEvent = Cache.SSRTU.PostSSRTUNotificationEvent;
+                    page = Cache.SSRTU;
+                    break;
                 case 22:
                     page = new AttestationSelectPage();
                     break;

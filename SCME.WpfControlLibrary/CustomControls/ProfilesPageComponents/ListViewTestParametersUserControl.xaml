@@ -19,6 +19,7 @@
              xmlns:outputLeakageCurrent="clr-namespace:SCME.Types.OutputLeakageCurrent;assembly=SCME.Types"
              xmlns:outputResidualVoltage="clr-namespace:SCME.Types.OutputResidualVoltage;assembly=SCME.Types"
              xmlns:inputOptions="clr-namespace:SCME.Types.InputOptions;assembly=SCME.Types"
+             xmlns:auxiliaryPower="clr-namespace:SCME.Types.AuxiliaryPower;assembly=SCME.Types"
              xmlns:prohibitionVoltage="clr-namespace:SCME.Types.ProhibitionVoltage;assembly=SCME.Types"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
@@ -69,7 +70,11 @@
             <DataTemplate DataType="{x:Type outputResidualVoltage:TestParameters}" >
                 <testResultDataTemplate:OutputResidualVoltage />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type auxiliaryPower:TestParameters}" >
+                <testResultDataTemplate:AuxiliaryPowerTemplate />
+            </DataTemplate>
             
+
             <DataTemplate DataType="{x:Type vtmParameters:TestParameters}" >
                 <testResultDataTemplate:VTMDataTemplate/>
             </DataTemplate>
