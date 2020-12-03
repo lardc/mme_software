@@ -38,7 +38,11 @@ namespace SCME.WpfControlLibrary.DataTemplates.TestParameters
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var q = FindParent<ListViewMouseLeftButtonScroll>(this);
+            if (q == null)
+                return;
             var w = q.ItemsSource as ObservableCollection<BaseTestParametersAndNormatives>;
+            if (w == null)
+                return;
             ProfilesPage.CheckIndexes(w);
         }
 
