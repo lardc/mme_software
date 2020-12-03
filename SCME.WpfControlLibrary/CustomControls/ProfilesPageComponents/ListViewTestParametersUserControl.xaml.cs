@@ -79,7 +79,17 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
             }
         }
 
-        public ICommand DeleteRelayCommand => new RelayCommand<BaseTestParametersAndNormatives>(q => ItemSource.Remove(q));
+        public ICommand DeleteRelayCommand => new RelayCommand<BaseTestParametersAndNormatives>(q =>
+        {
+            ItemSource.Remove(q);
+            var n = 1;
+            foreach (var i in ItemSource.Where(m => m.TestParametersType == q.TestParametersType && m.NumberPosition == q.NumberPosition))
+            {
+                if (i.Index != n)
+                    i.Index = n;
+                n++;
+            }
+        });
         
         public ICommand MoveUp => new RelayCommand<BaseTestParametersAndNormatives>((o) =>
         {

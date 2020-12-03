@@ -201,6 +201,8 @@ namespace SCME.WpfControlLibrary.CustomControls
         {
             if (_textBox == null)
                 return;
+            if (Minimum == null && Maximum == null)
+                return;
             double val;
             if (double.TryParse(_textBox.Text, out val) == false)
             {

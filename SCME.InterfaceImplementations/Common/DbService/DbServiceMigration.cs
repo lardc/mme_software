@@ -94,6 +94,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
 
 
+            ("Im_Index", "Im_Index", true),
             ("Im_Position", "Im_Position", true),
             ("Im_TypeManagement", "Im_TypeManagement", true),
             ("Im_ControlVoltage", "Im_ControlVoltage", true),

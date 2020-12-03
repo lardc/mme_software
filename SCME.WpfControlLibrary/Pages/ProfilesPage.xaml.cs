@@ -166,8 +166,36 @@ namespace SCME.WpfControlLibrary.Pages
             ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
         }
 
+        public static void CheckIndexes(ObservableCollection<BaseTestParametersAndNormatives> parameters)
+        {
+
+            var q = parameters.GroupBy(m => m.TestParametersType).ToList();
+            foreach (var i in parameters.GroupBy(m => m.TestParametersType))
+            {
+                var w = i.GroupBy(m => m.NumberPosition).ToList();
+                foreach (var j in i.GroupBy(m => m.NumberPosition))
+                {
+                    var n = 1;
+                    foreach (var t in j)
+                    {
+                        if (t.Index != n)
+                            t.Index = n;
+                        n++;
+                    }
+                }
+            }
+        }
+
         private void AddTestParametersEvent_Click()
         {
+            /*switch (ProfileVm.SelectedTestParametersType)
+            {
+                case TestParametersType.AuxiliaryPower:
+                    if(ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives.Cast<Types.AuxiliaryPower.TestParameters>().Count(m=> m != null) > 0)
+                        DialogWindow db = new DialogWindow("Ошибка", "");
+                    break ;
+            }*/
+            
             var testParametersAndNormatives = ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives;
             var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
@@ -175,7 +203,12 @@ namespace SCME.WpfControlLibrary.Pages
             newTestParameter.DutPackageType = ProfileVm.ProfileDeepDataCopy.DutPackageType;
             newTestParameter.IsEnabled = true;
             newTestParameter.Order = maxOrder + 1;
+
+            
             testParametersAndNormatives.Add(newTestParameter);
+            CheckIndexes(ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives);
+
+
         }
 
 

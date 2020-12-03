@@ -340,7 +340,7 @@ namespace SCME.Service.IO
 
                 if (_IsSSRTUEmulation)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(50);
                     Random rand = new Random(DateTime.Now.Millisecond);
 
                     var randValue = rand.Next(0, 2);

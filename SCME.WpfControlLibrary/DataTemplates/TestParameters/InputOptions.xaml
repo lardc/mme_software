@@ -30,7 +30,7 @@
         <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <Label  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="Номер канала" />
-    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
+    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}" SelectionChanged="ComboBox_SelectionChanged" />
 
     <Label Grid.Column="0" Grid.Row="1" Content="Напр. управления, В" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlVoltage, Converter={StaticResource DML}}" 

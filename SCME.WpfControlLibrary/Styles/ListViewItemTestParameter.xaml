@@ -37,8 +37,13 @@
 
 
                             <Border Background="#FFC9C9C9" BorderThickness="0" Grid.ColumnSpan="5"/>
-                            <Label Grid.ColumnSpan="2" Content="{Binding Converter={StaticResource TP2S}}"  Margin="40,0,0,0"/>
-            
+                            <Label Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="40,0,0,0" >
+                                <TextBlock>
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TP2S}}"/>
+                                     <Run Text="{Binding Mode=OneWay, Path=Index}"/>
+                                </TextBlock>
+                            </Label>
+                            
                             
                             <CheckBox Grid.Column="3" Grid.Row="0" IsChecked="{Binding IsEnabled}" Content="{x:Static res:Resources.IsActive}" Visibility="Collapsed" HorizontalAlignment="Right" FlowDirection="RightToLeft"
                                       d:DataContext="{d:DesignInstance baseTestParametersAndNormatives:BaseTestParametersAndNormatives }" />

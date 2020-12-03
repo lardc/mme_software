@@ -44,6 +44,8 @@ namespace SCME.Types.SSRTU
         [DataMember]
         public int NumberPosition { get; set; }
         [DataMember]
+        public int Index { get; set; }
+        [DataMember]
         public bool InputOptionsIsAmperage { get; set; }
         [DataMember]
         public double Value { get; set; }

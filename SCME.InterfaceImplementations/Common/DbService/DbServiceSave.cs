@@ -345,6 +345,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var condition = new Dictionary<string, object>()
             {
+                {"Im_Index", data.Index},
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
@@ -374,6 +375,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var condition = new Dictionary<string, object>()
             {
+                {"Im_Index", data.Index},
                 {"Im_Position", data.NumberPosition},
                 {"Im_AuxiliaryVoltagePowerSupply1", data.AuxiliaryVoltagePowerSupply1},
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
@@ -392,6 +394,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var condition = new Dictionary<string, object>()
             {
+                {"Im_Index", data.Index},
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_AppPolSwitchingVoltage", (int)data.ApplicationPolarityConstantSwitchingVoltage},
@@ -425,6 +428,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var condition = new Dictionary<string, object>()
             {
+                {"Im_Index", data.Index},
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_PolDCSwVoltageApplication", (int)data.PolarityDCSwitchingVoltageApplication},
@@ -463,6 +467,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             var condition = new Dictionary<string, object>()
             {
+                {"Im_Index", data.Index},
                 {"Im_Position", data.NumberPosition},
                 {"Im_TypeManagement", (int)data.TypeManagement},
                 {"Im_SwitchedAmperage", data.SwitchedAmperage},

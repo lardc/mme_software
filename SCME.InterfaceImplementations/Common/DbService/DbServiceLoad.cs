@@ -479,6 +479,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Im_Index":
+                        testParams.Index = int.Parse(result.Value.ToString());
+                        break;
+                        
                     case "Im_Position":
                         testParams.NumberPosition = int.Parse(result.Value.ToString());
                         break;
@@ -524,6 +528,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Im_Index":
+                        testParams.Index = int.Parse(result.Value.ToString());
+                        break;
+                    
                     case "Im_Position":
                         testParams.NumberPosition = int.Parse(result.Value.ToString());
                         break;
@@ -595,6 +603,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Im_Index":
+                        testParams.Index = int.Parse(result.Value.ToString());
+                        break;
+                    
                     case "Im_Position":
                         testParams.NumberPosition = int.Parse(result.Value.ToString());
                         break;
@@ -673,6 +685,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Im_Index":
+                        testParams.Index = int.Parse(result.Value.ToString());
+                        break;
+                    
                     case "Im_Position":
                         testParams.NumberPosition = int.Parse(result.Value.ToString());
                         break;
@@ -727,6 +743,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (result.Key)
                 {
+                    case "Im_Index":
+                        testParams.Index = int.Parse(result.Value.ToString());
+                        break;
+                    
                     case "Im_Position":
                         testParams.NumberPosition = int.Parse(result.Value.ToString());
                         break;
