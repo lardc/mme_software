@@ -8,7 +8,7 @@
 
 
 
-    <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
+    <GridLength x:Key="ListBoxScrollWidth">10</GridLength>
 
 
 

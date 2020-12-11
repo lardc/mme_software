@@ -609,9 +609,14 @@ namespace SCME.UI.IO
             return false;
         }
 
-        public void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
+        public void StartAttestation(AttestationParameterRequest attestationParameterRequest)
         {
-            m_ControlClient.StartAttestation(position, parameter, attestationType, value);
+            m_ControlClient.StartAttestation(attestationParameterRequest);
+        }
+
+        public bool NeedStart()
+        {
+            return m_ControlClient.NeedStart();
         }
 
         public bool StartSSRTU(List<BaseTestParametersAndNormatives> parameters, DutPackageType dutPackageType)
@@ -1739,9 +1744,9 @@ namespace SCME.UI.IO
             Cache.PostAlarmEvent?.Invoke();
         }
 
-        public void FireSSRTUAttestation(double formedValue, double measuredValue)
+        public void FireSSRTUAttestation(AttestationParameterResponse attestationParameterResponse)
         {
-            Cache.FireSSRTUAttestation?.Invoke(formedValue, measuredValue);
+            Cache.FireSSRTUAttestation?.Invoke(attestationParameterResponse);
         }
 
 

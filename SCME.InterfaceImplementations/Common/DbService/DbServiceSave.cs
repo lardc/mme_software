@@ -352,6 +352,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
             };
 
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax1)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax1", data.AuxiliaryCurrentPowerSupplyMaximum1);
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax2)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax2", data.AuxiliaryCurrentPowerSupplyMaximum2);
+
             if (data.ShowVoltage)
                 condition.Add("Im_ControlVoltage", data.ControlVoltage);
             else
@@ -405,6 +410,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_AuxiliaryVoltagePowerSupply2", data.AuxiliaryVoltagePowerSupply2},
             };
 
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax1)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax1", data.AuxiliaryCurrentPowerSupplyMaximum1);
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax2)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax2", data.AuxiliaryCurrentPowerSupplyMaximum2);
+
             if (data.ShowVoltage)
             {
                 condition.Add("Im_ControlVoltage", data.ControlVoltage);
@@ -440,6 +450,11 @@ namespace SCME.InterfaceImplementations.Common.DbService
                 {"Im_SwitchingCurrentPulseDuration", data.SwitchingCurrentPulseDuration},
                 {"Im_OpenState", data.OpenState }
             };
+
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax1)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax1", data.AuxiliaryCurrentPowerSupplyMaximum1);
+            if (data.ShowAuxiliaryCurrentPowerSupplyMax2)
+                condition.Add("Im_AuxiliaryCurrentPowerSupplyMax2", data.AuxiliaryCurrentPowerSupplyMaximum2);
 
             if (data.ShowVoltage)
             {

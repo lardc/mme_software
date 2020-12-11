@@ -156,6 +156,7 @@ namespace SCME.WpfControlLibrary.CustomControls
         
         public NumericUpDown()
         {
+            
             Loaded +=OnLoaded;
             LostFocus += NumericUpDown_LostFocus;
              
@@ -171,7 +172,9 @@ namespace SCME.WpfControlLibrary.CustomControls
         private void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Properties.Settings.Default.IsTouchUI && FindParent<Window>(this) is IMainWindow window)
+            {
                 window.ShowKeyboard(true, this);
+            }
         }
 
         private TextBox _textBox;
@@ -196,6 +199,7 @@ namespace SCME.WpfControlLibrary.CustomControls
                 }
             UpdateTextBox();
         }
+
 
         private void UpdateTextBox()
         {
@@ -226,8 +230,18 @@ namespace SCME.WpfControlLibrary.CustomControls
             else if (val > max)
                 val = max;
 
+            int x = 3;
+            x++;
+
+            //Value = 0;
             Value = val;
-            _textBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            //_textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateTarget();
+            //_textBox.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            
+            //GetBindingExpression(ValueProperty)?.UpdateTarget();
+            GetBindingExpression(ValueProperty)?.UpdateSource();
+
+            //.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
         private void TextBoxValue_LostFocus(object sender, RoutedEventArgs e)

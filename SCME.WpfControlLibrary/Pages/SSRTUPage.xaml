@@ -134,11 +134,19 @@
             <Label Grid.Column="1" Grid.Row="3" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.OpenState, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.OpenResistance, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
 
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Content="Ток вспомогательного питания 1, мА" Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent1, Converter={StaticResource B2V}}"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"  Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent1, Converter={StaticResource B2V}}">
+                <TextBlock>
+                    Ток вспомогательного<LineBreak/>питания 1, мА
+                </TextBlock>
+            </Label>
             <Label Grid.Column="1" Grid.Row="4" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent1, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.AuxiliaryCurrentPowerSupply1, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
 
-            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Content="Ток вспомогательного питания 2, мА" Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent2, Converter={StaticResource B2V}}"/>
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Margin="0,0,30,0"  Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent2, Converter={StaticResource B2V}}">
+                <TextBlock>
+                    Ток вспомогательного<LineBreak/>питания 2, мА
+                </TextBlock>
+            </Label>
             <Label Grid.Column="1" Grid.Row="5" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=ItemVM.ShowAuxiliarySupplyCurrent2, Converter={StaticResource B2V}}" 
                        Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}, Path=VM.AuxiliaryCurrentPowerSupply2, Converter={StaticResource DML}}" HorizontalAlignment="Right"/>
             

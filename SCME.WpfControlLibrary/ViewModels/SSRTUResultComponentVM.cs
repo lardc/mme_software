@@ -18,8 +18,8 @@ namespace SCME.WpfControlLibrary.ViewModels
         public bool IsGood => (LeakageCurrentIsOk ?? true) && (InputAmperageIsOk ?? true) && (InputVoltageIsOk ?? true) && (ResidualVoltageIsOk ?? true) && (ProhibitionVoltageIsOk ?? true)
             && (AuxiliaryCurrentPowerSupply1IsOk ?? true) && (AuxiliaryCurrentPowerSupply1IsOk ?? true) && (OpenResistanceIsOk ?? true);*/
 
-
-        public bool IsEmpty => LeakageCurrentsIsEmpty && InputAmperagesIsEmpty && InputVoltagesIsEmpty && ResidualVoltagesIsEmpty  && AuxiliaryCurrentPowerSupply1 == null && AuxiliaryCurrentPowerSupply2 == null ;
+        public string ErrorCode { get; set; }
+        public bool IsEmpty => LeakageCurrentsIsEmpty && InputAmperagesIsEmpty && InputVoltagesIsEmpty && ResidualVoltagesIsEmpty && AuxiliaryCurrentPowerSupply1 == null && AuxiliaryCurrentPowerSupply2 == null;
         public bool IsGood => LeakageCurrentsIsGood && InputAmperagesIsGood && InputVoltagesIsGood && ResidualVoltagesIsGood && (AuxiliaryCurrentPowerSupply1IsOk ?? true) && (AuxiliaryCurrentPowerSupply1IsOk ?? true);
 
 
@@ -69,7 +69,7 @@ namespace SCME.WpfControlLibrary.ViewModels
 
         public int Positition { get; set; }
         public DutPackageType DutPackageType { get; set; }
-        public int SerialNumber { get; set; } 
+        public int SerialNumber { get; set; }
 
         public bool ShowAuxiliaryCurrentPowerSupply1 => DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108;
 
@@ -79,7 +79,7 @@ namespace SCME.WpfControlLibrary.ViewModels
         [DependsOn(nameof(ShowInputAmperage))]
         public bool ShowInputVoltage => !ShowInputAmperage;
 
-        
+
         [AddINotifyPropertyChangedInterface]
         public class Result
         {
@@ -100,11 +100,11 @@ namespace SCME.WpfControlLibrary.ViewModels
 
 
             [DependsOn(nameof(Value), nameof(Min), nameof(Max))]
-            public bool? IsOk => Min == null || Value?.CompareTo(0) == 0 ? (bool?)null : (Min < Value && Value < Max);
+            public bool? IsOk => Min == null || Value?.CompareTo(double.Epsilon) == 0 ? (bool?)null : (Min <= Value && Value < Max);
         }
-        
+
         [AddINotifyPropertyChangedInterface]
-        public class ResultResidualVoltage :Result
+        public class ResultResidualVoltage : Result
         {
             public ResultResidualVoltage(int index) : base(index)
             {
@@ -120,36 +120,36 @@ namespace SCME.WpfControlLibrary.ViewModels
             public bool IsEmptyEx => ValueEx == null;
 
             [DependsOn(nameof(ValueEx), nameof(MinEx), nameof(MaxEx))]
-            public bool? IsOkEx => MinEx == null || ValueEx?.CompareTo(0) == 0 ? (bool?)null : (MinEx < ValueEx && ValueEx < MaxEx);
+            public bool? IsOkEx => MinEx == null || ValueEx?.CompareTo(double.Epsilon) == 0 ? (bool?)null : (MinEx < ValueEx && ValueEx < MaxEx);
         }
-        
-        
+
+
 
         public Result LeakageCurrent1 { get; set; } = new Result(1);
-        public Result LeakageCurrent2 { get; set; }= new Result(2);
-        public Result LeakageCurrent3 { get; set; }= new Result(3);
+        public Result LeakageCurrent2 { get; set; } = new Result(2);
+        public Result LeakageCurrent3 { get; set; } = new Result(3);
         public List<Result> LeakageCurrents { get; set; }
-        
-        
-        public ResultResidualVoltage ResidualVoltage1 { get; set; }= new ResultResidualVoltage(1);
-        public ResultResidualVoltage ResidualVoltage2 { get; set; }= new ResultResidualVoltage(2);
+
+
+        public ResultResidualVoltage ResidualVoltage1 { get; set; } = new ResultResidualVoltage(1);
+        public ResultResidualVoltage ResidualVoltage2 { get; set; } = new ResultResidualVoltage(2);
         public List<ResultResidualVoltage> ResidualVoltages { get; set; }
 
 
-        
-        public Result InputAmperage1 { get; set; }= new Result(1);
-        public Result InputAmperage2 { get; set; }= new Result(2);
-        public Result InputAmperage3 { get; set; }= new Result(3);
-        public Result InputAmperage4 { get; set; }= new Result(4);
-        public List <Result> InputAmperages{ get; set; }
-        
-        
-        
-        public Result InputVoltage1 { get; set; }= new Result(1);
-        public Result InputVoltage2 { get; set; }= new Result(2);
-        public Result InputVoltage3 { get; set; }= new Result(3);
-        public Result InputVoltage4 { get; set; }= new Result(4);
-        public List <Result> InputVoltages{ get; set; }
+
+        public Result InputAmperage1 { get; set; } = new Result(1);
+        public Result InputAmperage2 { get; set; } = new Result(2);
+        public Result InputAmperage3 { get; set; } = new Result(3);
+        public Result InputAmperage4 { get; set; } = new Result(4);
+        public List<Result> InputAmperages { get; set; }
+
+
+
+        public Result InputVoltage1 { get; set; } = new Result(1);
+        public Result InputVoltage2 { get; set; } = new Result(2);
+        public Result InputVoltage3 { get; set; } = new Result(3);
+        public Result InputVoltage4 { get; set; } = new Result(4);
+        public List<Result> InputVoltages { get; set; }
 
 
 
@@ -182,12 +182,21 @@ namespace SCME.WpfControlLibrary.ViewModels
 
 
         [DependsOn(nameof(AuxiliaryCurrentPowerSupply1), nameof(AuxiliaryCurrentPowerSupplyMin1), nameof(AuxiliaryCurrentPowerSupplyMax1))]
-        public bool? AuxiliaryCurrentPowerSupply1IsOk => AuxiliaryCurrentPowerSupplyMin1 == null || AuxiliaryCurrentPowerSupply1 == 0  ? (bool?)null : AuxiliaryCurrentPowerSupplyMin1 < AuxiliaryCurrentPowerSupply1 && AuxiliaryCurrentPowerSupply1 < AuxiliaryCurrentPowerSupplyMax1;
+        public bool? AuxiliaryCurrentPowerSupply1IsOk => AuxiliaryCurrentPowerSupplyMin1 == null || AuxiliaryCurrentPowerSupply1?.CompareTo(double.Epsilon) == 0 ? (bool?)null : AuxiliaryCurrentPowerSupplyMin1 < AuxiliaryCurrentPowerSupply1 && AuxiliaryCurrentPowerSupply1 < AuxiliaryCurrentPowerSupplyMax1;
 
 
         [DependsOn(nameof(AuxiliaryCurrentPowerSupply2), nameof(AuxiliaryCurrentPowerSupplyMin2), nameof(AuxiliaryCurrentPowerSupplyMax2))]
-        public bool? AuxiliaryCurrentPowerSupply2IsOk => AuxiliaryCurrentPowerSupplyMin2 == null || AuxiliaryCurrentPowerSupply2 == 0 ? (bool?)null : AuxiliaryCurrentPowerSupplyMin2 < AuxiliaryCurrentPowerSupply2 && AuxiliaryCurrentPowerSupply2 < AuxiliaryCurrentPowerSupplyMax2;
+        public bool? AuxiliaryCurrentPowerSupply2IsOk => AuxiliaryCurrentPowerSupplyMin2 == null || AuxiliaryCurrentPowerSupply2?.CompareTo(double.Epsilon) == 0 ? (bool?)null : AuxiliaryCurrentPowerSupplyMin2 < AuxiliaryCurrentPowerSupply2 && AuxiliaryCurrentPowerSupply2 < AuxiliaryCurrentPowerSupplyMax2;
 
-
+        public bool? HaveError
+        {
+            get
+            {
+                if (ErrorCode == null)
+                    return null;
+                else
+                    return string.IsNullOrEmpty(ErrorCode);
+            }
+        }
     }
 }

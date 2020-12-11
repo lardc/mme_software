@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace SCME.WpfControlLibrary.Pages
     /// </summary>
     public partial class ProfilesPage
     {
+        public bool Render { get; set; }
         public ProfilesPageProfileVm ProfileVm { get; set; }
         private readonly IDbService _dbService;
         private readonly bool _isWithoutChild;
@@ -118,6 +120,29 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void EndEditProfile_Click(object sender, RoutedEventArgs e)
         {
+            var testParametersAndNormatives = ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives;
+
+            for(int i = 1; i <= 3; i++)
+            {
+                string error = null;
+                if (ProfileVm.SelectedTestParametersType == TestParametersType.AuxiliaryPower && testParametersAndNormatives.Count(m => m.TestParametersType == TestParametersType.AuxiliaryPower && m.NumberPosition == i) > 1)
+                    error = "Превышен лимит измерений для типа вспомогательное напряжение";
+                if (ProfileVm.SelectedTestParametersType == TestParametersType.InputOptions && testParametersAndNormatives.Count(m => m.TestParametersType == TestParametersType.InputOptions && m.NumberPosition == i) > 4 )
+                    error = "Превышен лимит измерений для типа параметры входа";
+                if (ProfileVm.SelectedTestParametersType == TestParametersType.OutputLeakageCurrent && testParametersAndNormatives.Count(m => m.TestParametersType == TestParametersType.OutputLeakageCurrent && m.NumberPosition == i) > 3)
+                    error = "Превышен лимит измерений для типа ток утечки на выходе";
+                if (ProfileVm.SelectedTestParametersType == TestParametersType.OutputResidualVoltage && testParametersAndNormatives.Count(m => m.TestParametersType == TestParametersType.OutputResidualVoltage && m.NumberPosition == i) > 2)
+                    error = "Превышен лимит измерений для типа выходное остаточное напряжение";
+
+                if(error != null)
+                {
+                    DialogWindow dw = new DialogWindow("Ошибка", $"{error}. Номер канала: {i}");
+                    dw.ShowDialog();
+                    return;
+                }
+            }
+
+            StartAnimationWait();
             if (ProfileVm.SpecialMeasure)
             {
                 ProfileVm.SelectedProfile.DeepData = ProfileVm.ProfileDeepDataCopy.Copy();
@@ -186,6 +211,20 @@ namespace SCME.WpfControlLibrary.Pages
             }
         }
 
+        private void _testParametersAndNormatives_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var parameters = sender as ObservableCollection<BaseTestParametersAndNormatives>;
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                if (e.NewItems[0] is Types.AuxiliaryPower.TestParameters)
+                    foreach (var i in parameters)
+                        i.HaveAuxiliaryPower = true;
+
+                else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                    if (e.OldItems[0] is Types.AuxiliaryPower.TestParameters)
+                        foreach (var i in parameters)
+                            i.HaveAuxiliaryPower = false;
+        }
+
         private void AddTestParametersEvent_Click()
         {
             /*switch (ProfileVm.SelectedTestParametersType)
@@ -195,9 +234,14 @@ namespace SCME.WpfControlLibrary.Pages
                         DialogWindow db = new DialogWindow("Ошибка", "");
                     break ;
             }*/
+
+            
             
             var testParametersAndNormatives = ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives;
-            var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
+
+
+
+                var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
             var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(ProfileVm.SelectedTestParametersType);
             newTestParameter.DutPackageType = ProfileVm.ProfileDeepDataCopy.DutPackageType;
@@ -208,7 +252,11 @@ namespace SCME.WpfControlLibrary.Pages
             testParametersAndNormatives.Add(newTestParameter);
             CheckIndexes(ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives);
 
+            if (newTestParameter.TestParametersType == TestParametersType.AuxiliaryPower)
+                    foreach (var i in testParametersAndNormatives)
+                        i.HaveAuxiliaryPower = true;
 
+            listViewTestParameters.ScrollBottom();
         }
 
 
@@ -225,6 +273,8 @@ namespace SCME.WpfControlLibrary.Pages
             if (ProfileVm.MmeCodes.Count == 0)
                 MessageBox.Show(Properties.Resources.Error, Properties.Resources.MissingMMECodes);
             AfterLoadAction?.Invoke();
+            if(loadingAnimationWindow == null)
+                CreateAnimationWait();
         }
 
         public void RefreshProfile(MyProfile newProfile)
@@ -263,10 +313,12 @@ namespace SCME.WpfControlLibrary.Pages
             NavigationService?.GoBack();
         }
 
+
         private void ListViewProfiles_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
+                StartAnimationWait();
                 if (ProfileVm.SelectedProfile == null)
                     return;
 //            if (_disabledProfileSelectionChanged)
@@ -279,9 +331,61 @@ namespace SCME.WpfControlLibrary.Pages
                 new DialogWindow("Error OnSelectionChanged", exception.ToString()).ShowDialog();
                 throw;
             }
-        
         }
 
+        private LoadingAnimationWindow loadingAnimationWindow;
+        private void StartAnimationWait()
+        {
+            
+            loadingAnimationWindow.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                loadingAnimationWindow.Show();
+            }));
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+               loadingAnimationWindow.Dispatcher.BeginInvoke(new Action(() =>
+               {
+                   loadingAnimationWindow.Hide();
+                   //loadingAnimationWindow.Visibility = Visibility.Collapsed;
+               }));
+                Render = true;
+            }), DispatcherPriority.ContextIdle, null);
+        }
+        private void CreateAnimationWait()
+        {
+            Render = false;
+            var window = Application.Current.MainWindow;
+            double left = window.Left + window.ActualWidth / 2 - 100;
+            double top = window.Top + 20;
+            double width = 200;
+            double height = 200;
+
+            Thread newWindowThread = new Thread(new ThreadStart(() =>
+            {
+                try
+                {
+                    loadingAnimationWindow = new WpfControlLibrary.CustomControls.LoadingAnimationWindow();
+                    loadingAnimationWindow.ProfilesPage = this;
+                    loadingAnimationWindow.Left = left;
+                    loadingAnimationWindow.Top = top;
+                    loadingAnimationWindow.Width = width;
+                    loadingAnimationWindow.Height = height;
+
+                    Dispatcher.Run();
+                }
+                catch(Exception ex1)
+                {
+
+                }
+
+            }));
+            newWindowThread.SetApartmentState(ApartmentState.STA);
+            newWindowThread.IsBackground = true;
+            newWindowThread.Start();
+
+
+        }
 
         private void DeleteProfile_Click(object sender, RoutedEventArgs e)
         {

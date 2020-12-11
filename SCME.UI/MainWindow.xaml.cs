@@ -385,36 +385,43 @@ namespace SCME.UI
             WindowState = WindowState.Minimized;
         }
 
+        bool defaultKeyboardOpen;
+
         public void ShowKeyboard(bool Show, Control Control)
         {
             if (!m_IsKeyboardShown && Show)
             {
                 m_IsKeyboardShown = true;
 
-                var asPopup =
-                    !(Control.TransformToAncestor(this).Transform(new Point(0, Control.ActualHeight)).Y >
-                      Height - defaultKeyboard.Height);
+                var keyboardHeight = 0.0;
+                if (defaultKeyboardOpen)
+                    keyboardHeight += defaultKeyboard.Height;
+
+                var controlBottomY = Control.TransformToAncestor(this).Transform(new Point(0, Control.ActualHeight)).Y;
+                var asPopup = controlBottomY + keyboardHeight < ActualHeight - defaultKeyboard.Height;
 
                 if (asPopup)
                 {
+                    defaultKeyboardOpen = false;
                     defaultKeyboard.Show(Settings.Default.IsAnimationEnabled);
                     keyboardPopup.IsOpen = true;
                 }
                 else
                 {
+                    defaultKeyboardOpen = true;
                     keyboardBorder.Height = defaultKeyboard.Height;
                     defaultKeyboard.Show(Settings.Default.IsAnimationEnabled);
                     keyboardPopup.IsOpen = true;
                     AnimateScrollViewer(defaultKeyboard.Height);
                 }
             }
-
             if (m_IsKeyboardShown && !Show)
             {
                 m_IsKeyboardShown = false;
                 AnimateScrollViewer(0);
                 defaultKeyboard.Hide(Settings.Default.IsAnimationEnabled);
             }
+
         }
 
         private void AnimateScrollViewer(double To)

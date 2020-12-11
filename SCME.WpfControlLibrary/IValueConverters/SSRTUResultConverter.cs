@@ -13,9 +13,11 @@ namespace SCME.WpfControlLibrary.IValueConverters
         {
             var val = (double?)value;
             if (val == null)
-                return "-";
+                return "n/a";
             else
             {
+                if(val == double.Epsilon)
+                    return "-"; 
                 if (val == 0)
                     return 0.ToString();
                 return val.Value.ToString().TrimEnd('0');

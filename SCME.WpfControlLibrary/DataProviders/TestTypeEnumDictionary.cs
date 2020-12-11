@@ -272,6 +272,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 {"В1", DutPackageType.V1 },
                 {"В108", DutPackageType.V108 },
                 {"В2", DutPackageType.V2 },
+                {"В104", DutPackageType.V104 }
             };
         }
 

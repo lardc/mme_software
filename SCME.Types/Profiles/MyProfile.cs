@@ -19,8 +19,13 @@ namespace SCME.Types.Profiles
     [AddINotifyPropertyChangedInterface]
     public class ProfileDeepData
     {
+        public ProfileDeepData()
+        {
+            TestParametersAndNormatives = new ObservableCollection<BaseTestParametersAndNormatives>();
+        }
+
         [XmlIgnore]
-        public ObservableCollection<BaseTestParametersAndNormatives> _testParametersAndNormatives { get; set; } = new ObservableCollection<BaseTestParametersAndNormatives>();
+        private ObservableCollection<BaseTestParametersAndNormatives> _testParametersAndNormatives;
 
         [DataMember]
         public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives
@@ -34,10 +39,18 @@ namespace SCME.Types.Profiles
                 _testParametersAndNormatives = value;
                 if(_testParametersAndNormatives == null)
                     return;
+                var haveAuxiliaryPower = _testParametersAndNormatives.FirstOrDefault(m => m.GetType() == typeof(AuxiliaryPower.TestParameters)) != null;
                 foreach (var i in _testParametersAndNormatives)
+                {
                     i.DutPackageType = _dutPackageType;
+                    if (haveAuxiliaryPower)
+                        i.HaveAuxiliaryPower = true;
+                }
             }
         }
+
+
+
 
         #region Comutation
         [DataMember]

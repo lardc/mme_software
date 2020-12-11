@@ -322,9 +322,13 @@ namespace SCME.Service
             _IoMain.StopSSRTU();
         }
 
-        public void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
+        public bool NeedStart() => _IoMain.NeedStart();
+
+
+
+        public void StartAttestation(AttestationParameterRequest attestationParameterRequest)
         {
-            _IoMain.StartAttestation(position, parameter, attestationType, value);
+            _IoMain.StartAttestation(attestationParameterRequest);
         }
 
 

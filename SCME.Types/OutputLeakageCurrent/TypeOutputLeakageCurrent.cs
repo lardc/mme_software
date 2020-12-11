@@ -18,11 +18,11 @@ namespace SCME.Types.OutputLeakageCurrent
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         [DependsOn(nameof(TypeManagement))]
-        public double ControlVoltageMin => TypeManagement == TypeManagement.ACVoltage ? 5 : 0.05;
+        public double ControlVoltageMin => 0;
         [DependsOn(nameof(TypeManagement))]
         public double ControlVoltageMax => TypeManagement == TypeManagement.ACVoltage ? 300 : 250;
 
-        public double ControlCurrentMaximumMin => 0.01;
+        public double ControlCurrentMaximumMin => 0;
         public double ControlCurrentMaximumMax => 100;
 
 

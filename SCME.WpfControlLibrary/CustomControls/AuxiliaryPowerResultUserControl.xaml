@@ -41,18 +41,25 @@
         Вспомогательное питание
     </TextBlock>
     
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="6" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply1, Converter={StaticResource B2V}}" >
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="6"  >
         Ток вспом. пит. 1
     </TextBlock>
-    <Border Grid.Column="1" Grid.Row="6"  Background="{Binding AuxiliaryCurrentPowerSupply1IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply1, Converter={StaticResource B2V}}">
+    <Border Grid.Column="1" Grid.Row="6"  Background="{Binding AuxiliaryCurrentPowerSupply1IsOk, Converter={StaticResource B2B}}" >
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply1, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
     </Border>
 
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}">
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" >
         Ток вспом. пит. 2
     </TextBlock>
-    <Border Grid.Column="1" Grid.Row="7"  Background="{Binding AuxiliaryCurrentPowerSupply2IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ShowAuxiliaryCurrentPowerSupply2, Converter={StaticResource B2V}}">
+    <Border Grid.Column="1" Grid.Row="7"  Background="{Binding AuxiliaryCurrentPowerSupply2IsOk, Converter={StaticResource B2B}}" >
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply2, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
     </Border>
-    
+
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="8" >
+        Код ошибки
+    </TextBlock>
+    <Border Grid.Column="1" Grid.Row="8" Background="{Binding HaveError, Converter={StaticResource B2B}}"  >
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ErrorCode}" HorizontalAlignment="Center"/>
+    </Border>
+
 </Grid>

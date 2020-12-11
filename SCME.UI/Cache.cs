@@ -42,7 +42,7 @@ namespace SCME.UI
         public static Action<string, ushort, ushort, ushort, ushort> PostSSRTUNotificationEvent;
 
         public static Action PostAlarmEvent;
-        public static Action<double, double> FireSSRTUAttestation { get; set; }
+        public static Action<AttestationParameterResponse> FireSSRTUAttestation { get; set; }
 
         
 

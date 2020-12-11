@@ -66,7 +66,7 @@
     <Border Grid.Column="1" Grid.Row="4" Background="{Binding ResidualVoltage1.IsOk, Converter={StaticResource B2B}}">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage1.Value, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
     </Border>
-    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Вых. ост. напр. 1, В" />
+    <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="5" Text="Вых. ост. напр. 2, В" />
     <Border Grid.Column="1" Grid.Row="5" Background="{Binding ResidualVoltage2.IsOk, Converter={StaticResource B2B}}">
         <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage2.Value, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
     </Border>
@@ -108,14 +108,14 @@
     <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="14" Visibility="{Binding ResidualVoltage1.UseEx, Converter={StaticResource B2V}}">
         Сопр. в откр. сост.1, Ом
     </TextBlock>
-    <Border Grid.Column="1" Grid.Row="14" Background="{Binding ResidualVoltage1.IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ResidualVoltage1.UseEx, Converter={StaticResource B2V}}">
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage1.Value, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
+    <Border Grid.Column="1" Grid.Row="14" Background="{Binding ResidualVoltage1.IsOkEx, Converter={StaticResource B2B}}" Visibility="{Binding ResidualVoltage1.UseEx, Converter={StaticResource B2V}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage1.ValueEx, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
     </Border>
     <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="15" Visibility="{Binding ResidualVoltage2.UseEx, Converter={StaticResource B2V}}">
         Сопр. в откр. сост.2, Ом
     </TextBlock>
-    <Border Grid.Column="1" Grid.Row="15" Background="{Binding ResidualVoltage2.IsOk, Converter={StaticResource B2B}}" Visibility="{Binding ResidualVoltage2.UseEx, Converter={StaticResource B2V}}">
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage2.Value, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
+    <Border Grid.Column="1" Grid.Row="15" Background="{Binding ResidualVoltage2.IsOkEx, Converter={StaticResource B2B}}" Visibility="{Binding ResidualVoltage2.UseEx, Converter={StaticResource B2V}}">
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding ResidualVoltage2.ValueEx, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center" />
     </Border>
 
 </Grid>

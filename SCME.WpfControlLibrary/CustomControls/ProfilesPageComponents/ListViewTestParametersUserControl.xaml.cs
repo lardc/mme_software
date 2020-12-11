@@ -54,6 +54,11 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
             
         }
 
+        public void ScrollBottom()
+        {
+            listView.ScrollIntoView(ItemSource.Last());
+        }
+
         public static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             //get parent item
@@ -82,6 +87,9 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
         public ICommand DeleteRelayCommand => new RelayCommand<BaseTestParametersAndNormatives>(q =>
         {
             ItemSource.Remove(q);
+            if (q.TestParametersType == TestParametersType.AuxiliaryPower)
+                foreach (var i in ItemSource)
+                    i.HaveAuxiliaryPower = false;
             var n = 1;
             foreach (var i in ItemSource.Where(m => m.TestParametersType == q.TestParametersType && m.NumberPosition == q.NumberPosition))
             {

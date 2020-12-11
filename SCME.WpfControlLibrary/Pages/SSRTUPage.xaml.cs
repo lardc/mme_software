@@ -76,6 +76,7 @@ namespace SCME.WpfControlLibrary.Pages
             {
                 var dialogWindow = new DialogWindow("Внимание", "Нарушен периметр безопасности");
                 dialogWindow.ShowDialog();
+                VM.CanStart = true;
             }));
         }
 

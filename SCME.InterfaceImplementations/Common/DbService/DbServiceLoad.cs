@@ -506,6 +506,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
                     case "Im_AuxiliaryVoltagePowerSupply2":
                         testParams.AuxiliaryVoltagePowerSupply2 = Double.ParseInternationally(result.Value.ToString());
                         break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax1":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax2":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum2 = Double.ParseInternationally(result.Value.ToString());
+                        break;
                 }
             }
 
@@ -578,6 +586,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "Im_ControlCurrentMax":
                         testParams.ControlCurrentMaximum = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax1":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax2":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum2 = Double.ParseInternationally(result.Value.ToString());
                         break;
 
                 }
@@ -661,6 +677,14 @@ namespace SCME.InterfaceImplementations.Common.DbService
 
                     case "Im_ControlCurrentMax":
                         testParams.ControlCurrentMaximum = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax1":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum1 = Double.ParseInternationally(result.Value.ToString());
+                        break;
+
+                    case "Im_AuxiliaryCurrentPowerSupplyMax2":
+                        testParams.AuxiliaryCurrentPowerSupplyMaximum2 = Double.ParseInternationally(result.Value.ToString());
                         break;
                 }
             }

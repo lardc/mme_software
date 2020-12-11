@@ -23,12 +23,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto" x:Name="Row3"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="{Binding ElementName=Row3, Path=ActualHeight}"/>
-            <RowDefinition Height="{Binding ElementName=Row3, Path=ActualHeight}"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -40,25 +41,29 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="{Binding NameParameter}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Тип" Visibility="{Binding ShowAttestationType, Converter={StaticResource B2V}}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Напряжение, мВ"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Ток, мА"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="Номер канала" VerticalAlignment="Center"/>
+
+
+        <TextBlock Grid.Row="7" Grid.Column="1" Text="Напряжение, В:"/>
+        <TextBlock Grid.Row="8" Grid.Column="1" Text="Ток, мА"/>
+
+
+        <ComboBox ItemsSource="{Binding Source={StaticResource AttestationType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding AttestationType}" Visibility="{Binding ShowAttestationType, Converter={StaticResource B2V}}" Grid.Row="2" Grid.Column="2"/>
+        <customControls:NumericUpDown Grid.Row="3" Grid.Column="2" Value="{Binding Voltage}" Margin="5,5,0,5"/>
+        <customControls:NumericUpDown Grid.Row="4" Grid.Column="2" Value="{Binding Current}" Margin="5,5,0,5"/>
+        <ComboBox Grid.Row="5" Grid.Column="2"  ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
+
+
+        <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding VoltageResult}" HorizontalAlignment="Right" Margin="0,5"/>
+        <TextBlock Grid.Row="8" Grid.Column="2" Text="{Binding CurrentResult}" HorizontalAlignment="Right" Margin="0,5"/>
         
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Тип"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="Значение"/>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="Номер канала" VerticalAlignment="Center"/>
-        
 
-        <TextBlock Grid.Row="6" Grid.Column="1" Text="Сформированное значение"/>
-        <TextBlock Grid.Row="7" Grid.Column="1" Text="Измеренная величина"/>
+        <Button Grid.Row="10" Style="{StaticResource BackButton}"  Content="Назад" Click="Back_Click" Background="#FF0078D7"/>
 
-
-        <ComboBox ItemsSource="{Binding Source={StaticResource AttestationType}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding AttestationType}" Grid.Row="2" Grid.Column="2"/>
-        <customControls:NumericUpDown Grid.Row="3" Grid.Column="2" Value="{Binding Value}"/>
-        <ComboBox Grid.Row="4" Grid.Column="2"  ItemsSource="{Binding Source={StaticResource NumberPosition}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding NumberPosition}"  />
-
-        <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding FormedValue}" HorizontalAlignment="Right"/>
-        <TextBlock Grid.Row="7" Grid.Column="2" Text="{Binding MeasuredValue}" HorizontalAlignment="Right"/>
-
-        <Button Grid.Row="9" Style="{StaticResource BackButton}"  Content="Назад" Click="Back_Click" Background="#FF0078D7"/>
-
-        <Button Grid.Row="9" Grid.Column="3" Style="{StaticResource BackButton}" Background="{StaticResource xGreen1}" Content="Старт" Click="Start_Click"/>
+        <Button Grid.Row="10" Grid.Column="3" Style="{StaticResource BackButton}" Background="{StaticResource xGreen1}" Content="Старт" Click="Start_Click"/>
     </Grid>
 </Page>

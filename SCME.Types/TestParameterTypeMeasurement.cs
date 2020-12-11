@@ -34,7 +34,7 @@ namespace SCME.Types
                     new TestParameterTypeMeasurement(TestParametersType.OutputLeakageCurrent, typeof(Types.OutputLeakageCurrent.TestParameters), "Ток утечки на выходе"),
                     new TestParameterTypeMeasurement(TestParametersType.OutputResidualVoltage, typeof(Types.OutputResidualVoltage.TestParameters), "Выходное остаточное напряжение"),
                     new TestParameterTypeMeasurement(TestParametersType.InputOptions, typeof(Types.InputOptions.TestParameters), "Параметры входа"),
-                    new TestParameterTypeMeasurement(TestParametersType.AuxiliaryPower, typeof(Types.AuxiliaryPower.TestParameters), "Вспомогательное пиотание")
+                    new TestParameterTypeMeasurement(TestParametersType.AuxiliaryPower, typeof(Types.AuxiliaryPower.TestParameters), "Вспомогательное питание")
               };
 
     }

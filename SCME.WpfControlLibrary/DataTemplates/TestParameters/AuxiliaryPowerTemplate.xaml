@@ -68,12 +68,12 @@
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}"  Value="{Binding AuxiliaryCurrentPowerSupplyMinimum1, Converter={StaticResource DML}}" 
                                       Minimum="{Binding AuxiliaryCurrentPowerSupplyMinimumMin}" Maximum="{Binding AuxiliaryCurrentPowerSupplyMinimumMax}"/>
 
-        <Label Grid.Column="3" Grid.Row="2" Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}">
+        <Label Grid.Column="3" Grid.Row="2" Visibility="{Binding ShowAuxiliaryCurrentPowerSupplyMax1, Converter={StaticResource B2V}}">
             <TextBlock>
             Ток вспомогательного<LineBreak/>питания 1 макс., мА
             </TextBlock>
         </Label>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryVoltagePowerSupply1, Converter={StaticResource B2V}}" Value="{Binding AuxiliaryCurrentPowerSupplyMaximum1, Converter={StaticResource DML}}" 
+        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"  Visibility="{Binding ShowAuxiliaryCurrentPowerSupplyMax1, Converter={StaticResource B2V}}" Value="{Binding AuxiliaryCurrentPowerSupplyMaximum1, Converter={StaticResource DML}}" 
                                       Minimum="{Binding AuxiliaryCurrentPowerSupplyMaximumMin}" Maximum="{Binding AuxiliaryCurrentPowerSupplyMaximumMax}"/>
 
         

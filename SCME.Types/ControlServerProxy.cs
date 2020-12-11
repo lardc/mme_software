@@ -229,9 +229,14 @@ namespace SCME.Types
             Channel.StopSSRTU();
         }
 
-        public void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
+        public void StartAttestation(AttestationParameterRequest attestationParameterRequest)
         {
-            Channel.StartAttestation(position, parameter, attestationType, value);
+            Channel.StartAttestation(attestationParameterRequest);
+        }
+
+        public bool NeedStart()
+        {
+            return Channel.NeedStart();
         }
     }
 }

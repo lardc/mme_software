@@ -99,6 +99,8 @@ namespace SCME.InterfaceImplementations.Common.DbService
             ("Im_TypeManagement", "Im_TypeManagement", true),
             ("Im_ControlVoltage", "Im_ControlVoltage", true),
             ("Im_ControlCurrent", "Im_ControlCurrent", true),
+            ("Im_AuxiliaryCurrentPowerSupplyMax1", "Im_AuxiliaryCurrentPowerSupplyMax1", true),
+            ("Im_AuxiliaryCurrentPowerSupplyMax2", "Im_AuxiliaryCurrentPowerSupplyMax2", true),
             ("Im_AuxiliaryVoltagePowerSupply1", "Im_AuxiliaryVoltagePowerSupply1", true),
             ("Im_AuxiliaryVoltagePowerSupply2", "Im_AuxiliaryVoltagePowerSupply2", true),
             ("Im_AppPolSwitchingVoltage", "Im_ApplicationPolarityConstantSwitchingVoltage", true),

@@ -37,13 +37,9 @@ namespace SCME.Types.AuxiliaryPower
 
         [DataMember]
         public double AuxiliaryCurrentPowerSupplyMinimum1 { get; set; }
-        [DataMember]
-        public double AuxiliaryCurrentPowerSupplyMaximum1 { get; set; }
 
         [DataMember]
         public double AuxiliaryCurrentPowerSupplyMinimum2 { get; set; }
-        [DataMember]
-        public double AuxiliaryCurrentPowerSupplyMaximum2 { get; set; }
 
         [XmlIgnore]
         public bool OpenState { get; set; }

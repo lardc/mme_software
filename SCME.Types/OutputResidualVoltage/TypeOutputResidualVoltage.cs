@@ -25,20 +25,20 @@ namespace SCME.Types.OutputResidualVoltage
         public double ControlCurrentMax => 100;
 
 
-        public double SwitchedAmperageMin { get; set; } = 0.01;
-        public double SwitchedAmperageMax { get; set; } = 250;
+        public double SwitchedAmperageMin => 0.01;
+        public double SwitchedAmperageMax => 250;
 
 
-        public double OutputResidualVoltageMinimumMin { get; set; } = 0;
-        public double OutputResidualVoltageMinimumMax { get; set; } = 10;
-        public double OutputResidualVoltageMaximumMin { get; set; } = 0.001;
-        public double OutputResidualVoltageMaximumMax { get; set; } = 10;
+        public double OutputResidualVoltageMinimumMin => 0;
+        public double OutputResidualVoltageMinimumMax => 10;
+        public double OutputResidualVoltageMaximumMin => 0.001;
+        public double OutputResidualVoltageMaximumMax => 10;
 
 
-        public double ShowAuxiliaryVoltagePowerSupply1Min { get; set; } = 0.05;
-        public double ShowAuxiliaryVoltagePowerSupply1Max { get; set; } = 150;
-        public double ShowAuxiliaryVoltagePowerSupply2Min { get; set; } = 0.05;
-        public double ShowAuxiliaryVoltagePowerSupply2Max { get; set; } = 20;
+        public double ShowAuxiliaryVoltagePowerSupply1Min => 0.05;
+        public double ShowAuxiliaryVoltagePowerSupply1Max => 150;
+        public double ShowAuxiliaryVoltagePowerSupply2Min => 0.05;
+        public double ShowAuxiliaryVoltagePowerSupply2Max => 20;
 
 
 
@@ -82,6 +82,8 @@ namespace SCME.Types.OutputResidualVoltage
         public double OutputResidualVoltageMinimum {get;set;}
         [DataMember]
         public double OutputResidualVoltageMaximum { get; set; }
+
+        public double OutputResidualVoltageMaximumOpenState => SwitchedAmperage * OpenResistanceMaximum;
 
         [DataMember]
         public double OpenResistanceMinimum { get; set; }

@@ -79,6 +79,7 @@ namespace SCME.WpfControlLibrary.ViewModels
             }
         }
 
+
         [DependsOn(nameof(SelectedProfile), nameof(IsEditModeActive))]
         public bool IsEditModeEnabled => IsEditModeActive == false && SelectedProfile != null;
 

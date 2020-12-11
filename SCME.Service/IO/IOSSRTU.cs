@@ -291,10 +291,10 @@ namespace SCME.Service.IO
         
         private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, double value, int power = 3, bool skipJournal = false)
         {
-            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToUInt32(value * Math.Pow(10, power)), skipJournal);
+            WriteRegisterFrom32To1616(addressLow, addressHigh, Convert.ToInt32(value * Math.Pow(10, power)), skipJournal);
         }
 
-        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, uint value, bool skipJournal = false)
+        private void WriteRegisterFrom32To1616(ushort addressLow, ushort addressHigh, int value, bool skipJournal = false)
         {
             if (!skipJournal)
                 SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU @WriteRegister32, addressLow {addressLow}, addressHigh {addressHigh}, value: {value}");
@@ -331,7 +331,11 @@ namespace SCME.Service.IO
             //return false;
 
             _Result = new TestResults();
-            _Result.NumberPosition = parameters.NumberPosition;
+            if (parameters is Types.AuxiliaryPower.TestParameters)
+                _Result.NumberPosition = 4;
+            else
+                _Result.NumberPosition = parameters.NumberPosition;
+
             _Result.Index = parameters.Index;
             try
             {
@@ -340,7 +344,7 @@ namespace SCME.Service.IO
 
                 if (_IsSSRTUEmulation)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(100);
                     Random rand = new Random(DateTime.Now.Millisecond);
 
                     var randValue = rand.Next(0, 2);
@@ -353,7 +357,7 @@ namespace SCME.Service.IO
 
                     _Result.Value = (float)rand.Next(1, 500) / 1000  ;
                     _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.Next() / 1000;
-                    _Result.AuxiliaryCurrentPowerSupply2 = (float)rand.Next() / 1000;
+                    _Result.AuxiliaryCurrentPowerSupply2 = 13;
                     _Result.OpenResistance = (float)rand.NextDouble() / 1000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
@@ -383,7 +387,8 @@ namespace SCME.Service.IO
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, io.InputCurrentMaximum);
                             }
 
-                            
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, io.AuxiliaryCurrentPowerSupplyMaximum1);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, io.AuxiliaryCurrentPowerSupplyMaximum2);
                             //WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, io.AuxiliaryCurrentPowerSupplyMaximum1);
                             //WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, io.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
@@ -411,10 +416,15 @@ namespace SCME.Service.IO
                                 WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, lc.ControlVoltage, 6);
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, lc.ControlCurrentMaximum);
                             }
-
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, lc.AuxiliaryCurrentPowerSupplyMaximum1);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, lc.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
                         case Types.AuxiliaryPower.TestParameters ap:
                             WriteRegister(REG_MEASUREMENT_TYPE, 3);
+                            WriteRegisterFrom32To1616(REG_CONTROL_CURRENT_LOW, REG_CONTROL_CURRENT_HIGH, 0);
+                            WriteRegisterFrom32To1616(REG_INPUT_VOLTAGE_MAX_LOW, REG_INPUT_VOLTAGE_MAX_HIGH, 0);
+                            WriteRegisterFrom32To1616(REG_AUX_PS1_VOLTAGE_LOW, REG_AUX_PS1_VOLTAGE_HIGH, ap.AuxiliaryVoltagePowerSupply1, 6);
+                            WriteRegisterFrom32To1616(REG_AUX_PS2_VOLTAGE_LOW, REG_AUX_PS2_VOLTAGE_HIGH, ap.AuxiliaryVoltagePowerSupply2, 6);
                             WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, ap.AuxiliaryCurrentPowerSupplyMaximum1);
                             WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, ap.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
@@ -432,7 +442,10 @@ namespace SCME.Service.IO
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
                             //WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
 
-                            WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum, 6);
+                            if(rv.OpenState)
+                                WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximumOpenState, 6);
+                            else
+                                WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum, 6);
 
                             if (rv.ShowAmperage)
                             {
@@ -444,6 +457,8 @@ namespace SCME.Service.IO
                                 WriteRegisterFrom32To1616(REG_CONTROL_VOLTAGE_LOW, REG_CONTROL_VOLTAGE_HIGH, rv.ControlVoltage, 6);
                                 WriteRegisterFrom32To1616(REG_INPUT_AMPERAGE_MAX_LOW, REG_INPUT_AMPERAGE_MAX_HIGH, rv.ControlCurrentMaximum);
                             }
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW1, REG_AUX_1_CURRENT_MAX_HIGH1, rv.AuxiliaryCurrentPowerSupplyMaximum1);
+                            WriteRegisterFrom32To1616(REG_AUX_1_CURRENT_MAX_LOW2, REG_AUX_1_CURRENT_MAX_HIGH2, rv.AuxiliaryCurrentPowerSupplyMaximum2);
                             break;
                         //case Types.ProhibitionVoltage.TestParameters pv:
                         //    WriteRegister(REG_MEASUREMENT_TYPE, 4);
@@ -487,7 +502,9 @@ namespace SCME.Service.IO
                     }
 
                     if (res != -1)
-                        throw new Exception($"Ошибка измерения, код{res}");
+                    {
+                        FireNotificationEvent($"Ошибка измерения, код {res}");
+                    }
 
 
                     switch (parameters)
@@ -503,10 +520,11 @@ namespace SCME.Service.IO
                             }
                             break;
                         case Types.AuxiliaryPower.TestParameters au:
-                            if(au.ShowAuxiliaryVoltagePowerSupply1)
-                                _Result.AuxiliaryCurrentPowerSupply1 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY1);
+                            _Result.TestParametersType = TestParametersType.AuxiliaryPower;
+                            if (au.ShowAuxiliaryVoltagePowerSupply1)
+                                _Result.AuxiliaryCurrentPowerSupply1 = ReadRegisterFrom1616To32(AUXILARY_CURRENT_POWER_SUPPLY1_LOW, AUXILARY_CURRENT_POWER_SUPPLY1_HIGH);
                             if (au.ShowAuxiliaryVoltagePowerSupply2)
-                                _Result.AuxiliaryCurrentPowerSupply2 = ReadRegister(AUXILARY_CURRENT_POWER_SUPPLY2);
+                                _Result.AuxiliaryCurrentPowerSupply2 = ReadRegisterFrom1616To32(AUXILARY_CURRENT_POWER_SUPPLY2_LOW, AUXILARY_CURRENT_POWER_SUPPLY2_HIGH);
                             break;
                         case Types.OutputLeakageCurrent.TestParameters lc:
                             _Result.TestParametersType = TestParametersType.OutputLeakageCurrent;
@@ -539,34 +557,39 @@ namespace SCME.Service.IO
 
             return true;
         }
-
-        internal void StartAttestation(int position, int parameter, AttestationType attestationType, uint value)
+        public bool NeedStart()
         {
-            double formedValue;
-            double measuredValue;
+            return ReadRegister(REG_START_BUTTON) == 1;
+        }
+
+        internal void StartAttestation(AttestationParameterRequest attestationParameterRequest)
+        {
+            double voltage;
+            double current;
 
             if (_IsSSRTUEmulation)
             {
                 Random rnd = new Random(DateTime.Now.Millisecond);
-                formedValue = (uint)(Math.Abs(rnd.Next()) * 2);
-                measuredValue = (uint)(Math.Abs(rnd.Next()) * 2);
-                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation emulation formedValue: {formedValue}, measuredValue: {measuredValue}");
-                _Communication.FireSSRTUAttestation(formedValue, measuredValue);
+                voltage = (uint)(Math.Abs(rnd.Next()) * 2);
+                current = (uint)(Math.Abs(rnd.Next()) * 2);
+                SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation emulation voltage: {voltage} V, current: {current} mA"); 
+                _Communication.FireSSRTUAttestation(new AttestationParameterResponse(voltage, current));
                 return;
             }
 
-            WriteRegister(REG_DUT_POSITION, (ushort)parameter);
-            WriteRegister(NODE_CODE, (ushort)parameter);
-            WriteRegister(CAL_TYPE, (ushort)attestationType);
-            WriteRegisterFrom32To1616(CAL_VALUE_LOW, CAL_VALUE_HIGHT, value);
+            WriteRegister(REG_DUT_POSITION, (ushort)attestationParameterRequest.NumberPosition);
+            WriteRegister(NODE_CODE, (ushort)attestationParameterRequest.Parameter);
+            WriteRegister(CAL_TYPE, (ushort)attestationParameterRequest.AttestationType);
+            WriteRegisterFrom32To1616(REG_CALIBRATION_VSET_LOW, REG_CALIBRATION_VSET_HIGH, attestationParameterRequest.Voltage);
+            WriteRegisterFrom32To1616(REG_CALIBRATION_ISET_LOW, REG_CALIBRATION_ISET_HIGH, attestationParameterRequest.Current);
 
             CallAction(ACT_CALIBRATE);
 
-            formedValue = ReadRegisterFrom1616To32(REG_CALIBRATION_MEASURED_VALUE_LOW);
-            measuredValue = ReadRegisterFrom1616To32(REG_CALIBRATION_MEASURED_VALUE_HIGHT);
+            voltage = ReadRegisterFrom1616To32(REG_CALIBRATION_VOLTAGE_LOW, REG_CALIBRATION_VOLTAGE_HIGH);
+            current = ReadRegisterFrom1616To32(REG_CALIBRATION_CURRENT_LOW, REG_CALIBRATION_CURRENT_HIGH);
 
-            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation formedValue: {formedValue}, measuredValue: {measuredValue}");
-            _Communication.FireSSRTUAttestation(formedValue, measuredValue);
+            SystemHost.Journal.AppendLog(ComplexParts.SSRTU, LogMessageType.Info, $"SSRTU attestation voltage: {voltage} V, current: {current} mA");
+            _Communication.FireSSRTUAttestation(new AttestationParameterResponse(voltage, current));
         }
 
 
@@ -632,11 +655,12 @@ namespace SCME.Service.IO
             ACT_CALIBRATE = 104,
 
             REG_MEASUREMENT_TYPE = 128, // Measurement type / Тип измерения
-            //1 – Ток утечки на выходе
-            //2 – Выходное остаточное напряжение
-            //3 – Параметры входа
-            //4 – Напряжение запрета
+                                        //1 – Ток утечки на выходе
+                                        //2 – Выходное остаточное напряжение
+                                        //3 – Параметры входа
+                                        //4 – Напряжение запрета
 
+            REG_START_BUTTON = 250,
             REG_DUT_PACKAGE_TYPE = 129, // DUT housing type / Тип корпуса
             //1 – А1
             //2 – И1
@@ -698,7 +722,7 @@ namespace SCME.Service.IO
             REG_AUX_2_CURRENT = 143, // Auxiliary power supply 1 current(in mA / мА)
             REG_OPEN_RESISTANCE = 144,
 
-            NODE_CODE = 150,
+            NODE_CODE = 160,
             CAL_TYPE = 161,
             CAL_VALUE_LOW = 162,
             CAL_VALUE_HIGHT = 163,
@@ -732,16 +756,26 @@ namespace SCME.Service.IO
             REG_RESULT_PROHIBITION_VOLTAGE_HIGH = 234, // Prohibition voltage / Напряжение запрета(mV / мВ)
 
 
-            AUXILARY_CURRENT_POWER_SUPPLY1 = 203,
-            AUXILARY_CURRENT_POWER_SUPPLY2 = 204,
+            AUXILARY_CURRENT_POWER_SUPPLY1_LOW = 203,
+            AUXILARY_CURRENT_POWER_SUPPLY1_HIGH = 235,
+            AUXILARY_CURRENT_POWER_SUPPLY2_LOW = 204,
+            AUXILARY_CURRENT_POWER_SUPPLY2_HIGH = 236,
+
             REG_OPEN_RESISTANCE_LOW = 205,
             REG_OPEN_RESISTANCE_HIGH = 237,
 
-            REG_CALIBRATION_GENERATED_VALUE_LOW = 230,
-            REG_CALIBRATION_GENERATED_VALUE_HIGHT = 231,
-            REG_CALIBRATION_MEASURED_VALUE_LOW = 232,
-            REG_CALIBRATION_MEASURED_VALUE_HIGHT = 233,
 
+
+
+REG_CALIBRATION_VSET_LOW =			162,	// Уставка напряжения калибровки
+REG_CALIBRATION_VSET_HIGH =			163,
+REG_CALIBRATION_ISET_LOW =			164,	// Уставка тока калибровки
+REG_CALIBRATION_ISET_HIGH =			165,
+
+            REG_CALIBRATION_VOLTAGE_LOW = 240,    // Результат калибровки: напряжение (в мкВ)
+            REG_CALIBRATION_VOLTAGE_HIGH  =241,
+             REG_CALIBRATION_CURRENT_LOW  =242,    // Результат калибровки: ток (в мкА)
+             REG_CALIBRATION_CURRENT_HIGH  =243,
 
             //MAX Registers
             //Ток утечки на выходе, макс. - 138 и 152 регистры

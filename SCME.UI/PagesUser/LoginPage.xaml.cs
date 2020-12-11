@@ -83,10 +83,9 @@ namespace SCME.UI.PagesUser
                 
                 var page = Cache.SSRTUResultPage = new SSRTUResultPage(userName, Cache.Main.VM.MmeCode, profilesPage.ProfileVm.SelectedProfile.ToProfile(),
                     () => Cache.Net.StartSSRTU(profilesPage.ProfileVm.SelectedProfile.DeepData.TestParametersAndNormatives.ToList(), profilesPage.ProfileVm.SelectedProfile.DeepData.DutPackageType),
-                    Cache.Net.StopSSRTU)
+                    Cache.Net.StopSSRTU, Cache.Net.NeedStart)
                 {
                     Title = $"Тестирование {profilesPage.ProfileVm.SelectedProfile.Name}",
-
                 };
                 Cache.SSRTUHandler = page.SSRTUHandler;
                 Cache.PostAlarmEvent = page.PostAlarmEvent;

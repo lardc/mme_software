@@ -17,6 +17,7 @@ using OutputLeakageCurrentParameters = SCME.Types.OutputLeakageCurrent.TestParam
 using OutputResidualVoltageParameters = SCME.Types.OutputResidualVoltage.TestParameters;
 using InputOptionsParameters = SCME.Types.InputOptions.TestParameters;
 using ProhibitionVoltageParameters = SCME.Types.ProhibitionVoltage.TestParameters;
+using AuxiliaryPowerParaneters = SCME.Types.AuxiliaryPower.TestParameters;
 using System.Xml.Serialization;
 
 namespace SCME.Types.BaseTestParams
@@ -88,6 +89,7 @@ namespace SCME.Types.BaseTestParams
     [KnownType(typeof(OutputLeakageCurrent.TestParameters))]
     [KnownType(typeof(OutputResidualVoltage.TestParameters))]
     [KnownType(typeof(ProhibitionVoltage.TestParameters))]
+    [KnownType(typeof(AuxiliaryPower.TestParameters))]
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public abstract class BaseTestParametersAndNormatives: INotifyPropertyChanged
@@ -97,8 +99,26 @@ namespace SCME.Types.BaseTestParams
         public bool ShowAuxiliaryVoltagePowerSupply2 => DutPackageType == DutPackageType.V108;
 
 
-        public virtual bool ShowAuxiliarySupplyCurrent1 => (DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108) && GetType() == typeof(InputOptionsParameters);
-        public virtual bool ShowAuxiliarySupplyCurrent2 =>  DutPackageType == DutPackageType.V108 && GetType() == typeof(InputOptionsParameters);
+        public virtual bool ShowAuxiliarySupplyCurrent1 => (DutPackageType == DutPackageType.B5 || DutPackageType == DutPackageType.V108) && GetType() == typeof(AuxiliaryPowerParaneters);
+        public virtual bool ShowAuxiliarySupplyCurrent2 =>  DutPackageType == DutPackageType.V108 && GetType() == typeof(AuxiliaryPowerParaneters);
+
+
+        public double AuxiliaryCurrentPowerSupplyMaximumMin => 0.01;
+        public double AuxiliaryCurrentPowerSupplyMaximumMax => 100;
+
+
+
+        [DataMember]
+        public bool HaveAuxiliaryPower { get; set; }
+        public bool ShowAuxiliaryCurrentPowerSupplyMax1 => ShowAuxiliaryVoltagePowerSupply1; /*&& HaveAuxiliaryPower;*/
+        public bool ShowAuxiliaryCurrentPowerSupplyMax2 => ShowAuxiliaryVoltagePowerSupply2; /*&& HaveAuxiliaryPower;*/
+
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMaximum1 { get; set; }
+        [DataMember]
+        public double AuxiliaryCurrentPowerSupplyMaximum2 { get; set; }
+
+
 
         [DataMember]
         public bool IsProfileStyle { get; set; } = true;

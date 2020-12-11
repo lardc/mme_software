@@ -11,18 +11,22 @@ namespace SCME.WpfControlLibrary.IValueConverters
         public int Round { get; set; }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var val = Math.Round((double)value, Round).ToString(CultureInfo.InvariantCulture);
-            val.TrimEnd('0');
-            val.TrimEnd(',');
-            return val;
+            //var val = Math.Round((double)value, Round).ToString(CultureInfo.InvariantCulture);
+            //val = val.TrimEnd('0');
+            //val = val.TrimEnd(',');
+            //return val;
+            return Math.Round((double)value, Round);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var val = Math.Round((double)value, Round).ToString(CultureInfo.InvariantCulture);
-            val.TrimEnd('0');
-            val.TrimEnd(',');
-            return double.Parse(val.Replace('.',','));
+            //var val = Math.Round((double)value, Round).ToString(CultureInfo.InvariantCulture);
+            //if (val == "0")
+            //    return 0;
+            //val = val.TrimEnd('0');
+            //val = val.TrimEnd(',');
+            //return double.Parse(val.Replace('.',','));
+            return Math.Round((double)value, Round);
         }
     }
 }

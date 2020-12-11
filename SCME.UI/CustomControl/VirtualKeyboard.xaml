@@ -278,7 +278,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Content="0" Width="{StaticResource BSizeErase}" />
                             <Button Content="." />
-                            <Button Content="Tm" />
+                            <Button Content="," />
                         </StackPanel>
                     </StackPanel>
                 </Grid>

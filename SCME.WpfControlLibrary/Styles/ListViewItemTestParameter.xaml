@@ -55,7 +55,7 @@
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}">
                                     <Path Data="{StaticResource ArrowUp}" Style="{StaticResource PathIcon}"/>
                                 </Button>
-                                <Button Style="{StaticResource ButtonWithIcon}" Margin="5,0"
+                                <Button Style="{StaticResource ButtonWithIcon}" Margin="25,0"
                                         Visibility="{Binding Path=ContentIsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Converter={StaticResource B2VH}}"
                                         Command="{Binding  RelativeSource ={RelativeSource Mode=FindAncestor, AncestorType=profilesPageComponents:ListViewTestParametersUserControl}, Path=MoveDown}"
                                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListViewItem}, Path=DataContext}">

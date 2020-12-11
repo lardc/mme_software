@@ -76,6 +76,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Background" Value="White"/>
         <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="MaxDropDownHeight" Value="800"/>
         <Setter Property="ItemContainerStyle" >
             <Setter.Value>
                 <Style TargetType="{x:Type ComboBoxItem}">

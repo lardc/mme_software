@@ -57,7 +57,7 @@
 
             <customControls:ListViewMouseLeftButtonScroll Grid.Row="3" ItemsSource="{Binding ProfilesSource.View}" Style="{StaticResource DefaultListView}" x:Name="ListViewProfiles" MouseMove="ListViewProfiles_MouseMove"
                                                           VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" VirtualizingStackPanel.CacheLengthUnit="Pixel"
-                                                          VirtualizingStackPanel.CacheLength="1000" ScrollViewer.CanContentScroll="False"
+                                                          VirtualizingStackPanel.CacheLength="1000" ScrollViewer.CanContentScroll="False" 
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                <ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">
@@ -96,18 +96,19 @@
                          IsEnabled="{Binding IsEditModeActive}" />
                 <!--<Border BorderThickness="1" Grid.Column="0" Grid.Row="0" BorderBrush="Gray"   />-->
 
-                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
-                        Click="BeginCloneProfile_Click" Style="{StaticResource ButtonWithIcon}">
-                    <Path Data="{StaticResource Clone}" Style="{StaticResource PathIcon}"/>
-                </Button>
-                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
-                        Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
-                    <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
-                </Button>
-                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
+                <Button Grid.Column="1" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="CancelEditProfile_Click" Style="{StaticResource ButtonWithIcon}" Margin="5,0">
                     <Path Data="{StaticResource Cansel}" Style="{StaticResource PathIcon}"/>
                 </Button>
+                <Button Grid.Column="2" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
+                        Click="BeginCloneProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                    <Path Data="{StaticResource Clone}" Style="{StaticResource PathIcon}"/>
+                </Button>
+                <Button Grid.Column="3" Grid.Row="0" IsEnabled="{Binding IsEditModeEnabled}"   Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
+                        Click="BeginEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
+                    <Path Data="{StaticResource Edit}" Style="{StaticResource PathIcon}"/>
+                </Button>
+
                 <Button Grid.Column="4" Grid.Row="0" IsEnabled="{Binding IsEditModeActive}"  Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                         Click="EndEditProfile_Click" Style="{StaticResource ButtonWithIcon}">
                     <Path Data="{StaticResource Save}" Style="{StaticResource PathIcon}"/>
@@ -138,7 +139,7 @@
                 </Grid>
             </customControls:ScrollViewerLeftMouseButtonScroll>-->
 
-            <profilesPageComponents:ListViewTestParametersUserControl Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" 
+            <profilesPageComponents:ListViewTestParametersUserControl x:Name="listViewTestParameters" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" 
                             ContentIsEnabled="{Binding IsEditModeActive}"  
                             ItemSource="{Binding ProfileDeepDataCopy.TestParametersAndNormatives}"
                          

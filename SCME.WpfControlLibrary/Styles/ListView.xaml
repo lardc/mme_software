@@ -10,6 +10,7 @@
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="False"/>
                     <Setter Property="Background" 
                             Value="{Binding RelativeSource={RelativeSource Self},
                      Path=(ItemsControl.AlternationIndex),

@@ -1,4 +1,5 @@
-﻿using SCME.UI.ViewModels;
+﻿using SCME.Types;
+using SCME.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,18 +27,18 @@ namespace SCME.UI.PagesTech
             InitializeComponent();
         }
 
-        public void SetValues(double formedValue, double measuredValue)
+        public void SetValues(AttestationParameterResponse attestationParameterResponse)
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                VM.FormedValue = formedValue;
-                VM.MeasuredValue = measuredValue;
+                VM.CurrentResult = attestationParameterResponse.Current;
+                VM.VoltageResult = attestationParameterResponse.Voltage;
             }));
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            Cache.Net.StartAttestation(VM.NumberPosition, VM.Parameter, VM.AttestationType, VM.Value);
+            Cache.Net.StartAttestation(new AttestationParameterRequest( VM.Parameter, VM.Current, VM.Voltage, VM.NumberPosition, VM.AttestationType));
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

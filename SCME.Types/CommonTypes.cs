@@ -107,7 +107,9 @@ namespace SCME.Types
         [EnumMember]
         D2 = 14,
         [EnumMember]
-        D192 = 15
+        D192 = 15,
+        [EnumMember]
+        V104 = 16
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

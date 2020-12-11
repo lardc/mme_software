@@ -25,6 +25,7 @@ using SCME.WpfControlLibrary.DataProviders;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Threading;
 
 namespace SCME.WpfControlLibrary.Pages
 {
@@ -34,13 +35,14 @@ namespace SCME.WpfControlLibrary.Pages
     public partial class SSRTUResultPage : Page
     {
 
-
+        Func<bool> NeedStartFunc;
         private Action _start;
         public Action Stop { get; set; }
 
         private readonly string _userName;
         private readonly string _mme;
         private Profile _profile;
+        private DispatcherTimer _dispatcherTimerNeedStart = new DispatcherTimer();
 
         public SSRTUResultVM VM { get; set; } = new SSRTUResultVM();
         public SSRTUResultComponentVM VMPosition1 { get; set; } = new SSRTUResultComponentVM() { Positition = 1};
@@ -54,8 +56,12 @@ namespace SCME.WpfControlLibrary.Pages
             InitializeComponent();
         }
 
-        public SSRTUResultPage(string userName,string mme, Profile profile, Action start, Action stop)
+        public SSRTUResultPage(string userName,string mme, Profile profile, Action start, Action stop, Func<bool> needStartFunc)
         {
+            NeedStartFunc = needStartFunc;
+            _dispatcherTimerNeedStart.Interval = new TimeSpan(0, 0, 1);
+            _dispatcherTimerNeedStart.Tick += Dt_Tick;
+            _dispatcherTimerNeedStart.Start();
             InitializeComponent();
 
             reportFolder = SCME.UIServiceConfig.Properties.Settings.Default.ReportFolder;
@@ -86,7 +92,7 @@ namespace SCME.WpfControlLibrary.Pages
                             var inputOptions = sSRTUResultComponentVM.InputVoltages[i.Index-1];
                             inputOptions.Min = j.InputVoltageMinimum;
                             inputOptions.Max = j.InputVoltageMaximum;
-                            inputOptions.Value = 0;
+                            inputOptions.Value = double.Epsilon;
                             foreach (var t in VMByPosition.Values)
                                 t.ShowInputAmperage = false;
                         }
@@ -95,7 +101,7 @@ namespace SCME.WpfControlLibrary.Pages
                             var inputOptions = sSRTUResultComponentVM.InputAmperages[i.Index-1];
                             inputOptions.Min = j.InputCurrentMinimum;
                             inputOptions.Max = j.InputCurrentMaximum;
-                            inputOptions.Value = 0;
+                            inputOptions.Value = double.Epsilon;
                             foreach (var t in VMByPosition.Values)
                                 t.ShowInputAmperage = true;
                         }
@@ -105,31 +111,34 @@ namespace SCME.WpfControlLibrary.Pages
                         {
                             VMPosition4.AuxiliaryCurrentPowerSupplyMin1 = j.AuxiliaryCurrentPowerSupplyMinimum1;
                             VMPosition4.AuxiliaryCurrentPowerSupplyMax1 = j.AuxiliaryCurrentPowerSupplyMaximum1;
-                            VMPosition4.AuxiliaryCurrentPowerSupply1 = 0;
+                            VMPosition4.AuxiliaryCurrentPowerSupply1 = double.Epsilon;
                         }
                         if (j.ShowAuxiliaryVoltagePowerSupply2)
                         {
                             VMPosition4.AuxiliaryCurrentPowerSupplyMin2 = j.AuxiliaryCurrentPowerSupplyMinimum2;
                             VMPosition4.AuxiliaryCurrentPowerSupplyMax2 = j.AuxiliaryCurrentPowerSupplyMaximum2;
-                            VMPosition4.AuxiliaryCurrentPowerSupply2 = 0;
+                            VMPosition4.AuxiliaryCurrentPowerSupply2 = double.Epsilon;
                         }
                         break;
                     case SCME.Types.OutputLeakageCurrent.TestParameters j:
                         var leakageCurrent = sSRTUResultComponentVM.LeakageCurrents[i.Index-1];
                         leakageCurrent.Min = j.LeakageCurrentMinimum;
                         leakageCurrent.Max = j.LeakageCurrentMaximum;
-                        leakageCurrent.Value = 0;
+                        leakageCurrent.Value = double.Epsilon;
                         break;
                     case SCME.Types.OutputResidualVoltage.TestParameters j:
                         var residualVoltage = sSRTUResultComponentVM.ResidualVoltages[i.Index-1];
-                        residualVoltage.Min = j.OutputResidualVoltageMinimum;
-                        residualVoltage.Max = j.OutputResidualVoltageMaximum;
-                        residualVoltage.Value = 0;
-                        if(j.OpenState)
+                        if (j.OpenState)
                         {
                             residualVoltage.MinEx = j.OpenResistanceMinimum;
                             residualVoltage.MaxEx = j.OpenResistanceMaximum;
-                            residualVoltage.ValueEx = 0;
+                            residualVoltage.ValueEx = double.Epsilon;
+                        }
+                        else
+                        {
+                            residualVoltage.Min = j.OutputResidualVoltageMinimum;
+                            residualVoltage.Max = j.OutputResidualVoltageMaximum;
+                            residualVoltage.Value = double.Epsilon;
                         }
                         break;
                     default:
@@ -139,6 +148,15 @@ namespace SCME.WpfControlLibrary.Pages
             
         }
 
+        private void Dt_Tick(object sender, EventArgs e)
+        {
+            if (VM.CanStart && NeedStartFunc())
+            {
+                _dispatcherTimerNeedStart.Stop();
+                Start_Click(null, null);
+            }
+        }
+
         public void PostSSRTUNotificationEvent(string message, ushort problem, ushort warning, ushort fault, ushort disable)
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -146,6 +164,15 @@ namespace SCME.WpfControlLibrary.Pages
                 var dialogWindow = new DialogWindow("Ошибка оборудования", $"{message}\r\n problem {problem}, warning {warning}, fault {fault}, disable {disable}"); ;
                 dialogWindow.ShowDialog();
                 VM.CanStart = true;
+                try
+                {
+                    VMPosition4.ErrorCode = problem.ToString();  
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
             }));
         }
     
@@ -156,6 +183,7 @@ namespace SCME.WpfControlLibrary.Pages
             {
                 var dialogWindow = new DialogWindow("Внимание", "Нарушен периметр безопасности");
                 dialogWindow.ShowDialog();
+                VM.CanStart = true;
             }));
         }
 
@@ -183,9 +211,10 @@ namespace SCME.WpfControlLibrary.Pages
                     break;
                 case TestParametersType.OutputResidualVoltage:
                     var residualVoltage = q.ResidualVoltages[testResults.Index - 1];
-                    residualVoltage.Value = testResults.Value;
                     if(residualVoltage.MinEx != null)
                         residualVoltage.ValueEx = testResults.OpenResistance;
+                    else
+                        residualVoltage.Value = testResults.Value;
                     break;
                 default:
                     break;
@@ -203,7 +232,10 @@ namespace SCME.WpfControlLibrary.Pages
                 result[2] = VMPosition3.IsEmpty ? null : VMPosition3.Copy();
                 result[3] = VMPosition4.IsEmpty ? null : VMPosition4.Copy();
                 result.First(m => m.Value != null).Value.SerialNumber = VM.SerialNumber;
+                if (string.IsNullOrEmpty(VMPosition4.ErrorCode) == false)
+                    result.Values.First(m => m != null).ErrorCode = VMPosition4.ErrorCode;
                 CreateReport();
+                _dispatcherTimerNeedStart.Start();
                 VM.SerialNumber++;
             }
         }
@@ -229,26 +261,25 @@ namespace SCME.WpfControlLibrary.Pages
                 var sSRTUResultComponentVM = VMByPosition[i.NumberPosition];
 
                 foreach (var j in sSRTUResultComponentVM.LeakageCurrents.Where(j => j.Min != null))
-                    j.Value = 0;
+                    j.Value = double.Epsilon;
                 
                 foreach (var j in sSRTUResultComponentVM.InputAmperages.Where(j => j.Min != null))
-                    j.Value = 0;
+                    j.Value = double.Epsilon;
                 
                 foreach (var j in sSRTUResultComponentVM.InputVoltages.Where(j => j.Min != null))
-                    j.Value = 0;
+                    j.Value = double.Epsilon;
 
                 foreach (var j in sSRTUResultComponentVM.ResidualVoltages.Where(j => j.Min != null))
-                {
-                    j.Value = 0;
-                    if (j.UseEx)
-                        j.ValueEx = 0;
-                }
+                    j.Value = double.Epsilon;
+                
+                foreach (var j in sSRTUResultComponentVM.ResidualVoltages.Where(j => j.MinEx != null))
+                    j.ValueEx = double.Epsilon;
 
                 if (sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin1 != null)
-                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = 0;
+                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply1 = double.Epsilon;
 
                 if (sSRTUResultComponentVM.AuxiliaryCurrentPowerSupplyMin2 != null)
-                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = 0;
+                    sSRTUResultComponentVM.AuxiliaryCurrentPowerSupply2 = double.Epsilon;
 
             }
 
@@ -376,7 +407,8 @@ namespace SCME.WpfControlLibrary.Pages
 
 
 
-            string fileName = $@"{_dateTimeBeginMeasurement.ToString("yyyy-MM-dd-hh-mm")}-{(string.IsNullOrEmpty(VM.BatchNumber) ? "NoBatchNumber" : VM.BatchNumber)}.html";
+            //string fileName = $@"{_dateTimeBeginMeasurement.ToString("yyyy-MM-dd-HH-mm")}-{(string.IsNullOrEmpty(VM.BatchNumber) ? "NoBatchNumber" : VM.BatchNumber)}.html";
+            string fileName = $@"{_profile.Name}-{_dateTimeBeginMeasurement:yyyy-MM-dd-HH-mm}.html";
             File.WriteAllText(System.IO.Path.Combine(reportFolder, fileName), File.ReadAllText("ReportTemplate.html").Replace("body", body.OuterHtml));
 
 
@@ -407,7 +439,7 @@ namespace SCME.WpfControlLibrary.Pages
             if (value == null)
                 td.InnerHtml = "-";
             else
-                td.InnerHtml = value.ToString();
+                td.InnerHtml = Math.Round(value.Value,6).ToString();
 
             tr.AppendChild(td);
         }
@@ -445,32 +477,28 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void AddLineValues(IEnumerable<SSRTUResultComponentVM> valuesI, int number, HtmlNode tbody)
         {
-            var values = valuesI.Where(m=> m != null && m.Positition != 4).ToList();
+            var values = valuesI.Where(m => m != null && m.Positition != 4).OrderBy(m=> m.Positition).ToList();
             var tr = _doc.CreateElement("tr");
-            
+
 
             var td = _doc.CreateElement("td");
-            td.InnerHtml = values.First().SerialNumber.ToString();
-            td.SetAttributeValue("rowspan", values.Count(m=> m!= null).ToString());
+            td.InnerHtml = valuesI.Where(m => m != null).First().SerialNumber.ToString();
+            if (values.Count(m => m != null) == 0)
+                td.SetAttributeValue("rowspan", "1");
+            else
+                td.SetAttributeValue("rowspan", values.Count(m => m != null).ToString());
             tr.AppendChild(td);
 
             var auxiliarPower = valuesI.SingleOrDefault(m => m?.Positition == 4);
-
-            foreach (var i in values)
+            if (values.Count == 0)
             {
                 td = _doc.CreateElement("td");
-                td.InnerHtml = i.Positition.ToString();
+                td.InnerHtml = auxiliarPower.Positition.ToString();
                 tr.AppendChild(td);
-
-                AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Value);
-                AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Value);
-                AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Value);
-                AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Value);
-                AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Value);
 
                 if (auxiliarPower != null)
                 {
-                    if (values.IndexOf(i) == 0)
+                    if (values.IndexOf(auxiliarPower) == 0)
                     {
                         if (auxiliarPower.AuxiliaryCurrentPowerSupplyMin1 != null)
                             AddCellTdString(auxiliarPower.AuxiliaryCurrentPowerSupply1, tr);
@@ -487,7 +515,12 @@ namespace SCME.WpfControlLibrary.Pages
                 }
 
                 td = _doc.CreateElement("td");
-                if (i.IsGood)
+                if (string.IsNullOrEmpty(valuesI.First(m => m != null).ErrorCode) == false)
+                {
+                    td.InnerHtml = valuesI.First(m => m != null).ErrorCode;
+                    td.SetAttributeValue("style", "background-color:#eb3434");
+                }
+                if (auxiliarPower.IsGood)
                 {
                     td.InnerHtml = "годен";
                     td.SetAttributeValue("style", "background-color:#71fa2d");
@@ -501,8 +534,61 @@ namespace SCME.WpfControlLibrary.Pages
                 tbody.AppendChild(tr);
 
                 tr = _doc.CreateElement("tr");
-                
             }
+            else
+                foreach (var i in values)
+                {
+                    td = _doc.CreateElement("td");
+                    td.InnerHtml = i.Positition.ToString();
+                    tr.AppendChild(td);
+
+                    AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Value);
+                    AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Value);
+                    AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Value);
+                    AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages.Where(m => m.Min != null), tr, SelectorMinMaxValue.Value);
+                    AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages.Where(m => m.MinEx != null), tr, SelectorMinMaxValue.Value);
+
+                    if (auxiliarPower != null)
+                    {
+                        if (values.IndexOf(i) == 0)
+                        {
+                            if (auxiliarPower.AuxiliaryCurrentPowerSupplyMin1 != null)
+                                AddCellTdString(auxiliarPower.AuxiliaryCurrentPowerSupply1, tr);
+                            if (auxiliarPower.AuxiliaryCurrentPowerSupplyMin2 != null)
+                                AddCellTdString(auxiliarPower.AuxiliaryCurrentPowerSupply2, tr);
+                        }
+                        else
+                        {
+                            if (auxiliarPower.AuxiliaryCurrentPowerSupplyMin1 != null)
+                                AddCellTdString("-", tr);
+                            if (auxiliarPower.AuxiliaryCurrentPowerSupplyMin2 != null)
+                                AddCellTdString("-", tr);
+                        }
+                    }
+
+                    td = _doc.CreateElement("td");
+
+                    if (string.IsNullOrEmpty(valuesI.First(m => m != null).ErrorCode) == false)
+                    {
+                        td.InnerHtml = valuesI.First(m => m != null).ErrorCode;
+                        td.SetAttributeValue("style", "background-color:#eb3434");
+                    }
+                    else if (i.IsGood)
+                    {
+                        td.InnerHtml = "годен";
+                        td.SetAttributeValue("style", "background-color:#71fa2d");
+                    }
+                    else
+                    {
+                        td.InnerHtml = "не годен";
+                        td.SetAttributeValue("style", "background-color:#eb3434");
+                    }
+                    tr.AppendChild(td);
+                    tbody.AppendChild(tr);
+
+                    tr = _doc.CreateElement("tr");
+
+                }
         }
 
 
@@ -513,50 +599,91 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void AddMinMaxHeader(int count, IEnumerable<SSRTUResultComponentVM.Result> result, HtmlNode tr, SelectorMinMaxValue selectorMinMaxValue = SelectorMinMaxValue.Min)
         {
+            if (count == 0)
+                return;
             int n = 0;
-            foreach (var j in result.Where(m => m.Min != null))
+            var resultArray = result.ToArray();
+            for (int i = 1; i <= count; i++ )
             {
-                switch (selectorMinMaxValue)
+                if (n < result.Count())
                 {
-                    case SelectorMinMaxValue.Min:
-                        AddCellTdString(j.Min, tr);
-                        break;
-                    case SelectorMinMaxValue.Max:
-                        AddCellTdString(j.Max, tr);
-                        break;
-                    case SelectorMinMaxValue.Value:
-                        AddCellTdString(j.Value, tr);
-                        break;
+                    var res = resultArray[n];
+                    if (res.Index == i)
+                    {
+                        switch (selectorMinMaxValue)
+                        {
+                            case SelectorMinMaxValue.Min:
+                                AddCellTdString(res.Min, tr);
+                                break;
+                            case SelectorMinMaxValue.Max:
+                                AddCellTdString(res.Max, tr);
+                                break;
+                            case SelectorMinMaxValue.Value:
+                                AddCellTdString(res.Value, tr);
+                                break;
+                        }
+                        n++;
+                    }
+                    else
+                        AddCellTdString("-", tr);
                 }
-                n++;
+                else
+                    AddCellTdString("-", tr);
             }
+            //foreach (var j in result.Where(m => m.Min != null))
+            //{
+            //    switch (selectorMinMaxValue)
+            //    {
+            //        case SelectorMinMaxValue.Min:
+            //            AddCellTdString(j.Min, tr);
+            //            break;
+            //        case SelectorMinMaxValue.Max:
+            //            AddCellTdString(j.Max, tr);
+            //            break;
+            //        case SelectorMinMaxValue.Value:
+            //            AddCellTdString(j.Value, tr);
+            //            break;
+            //    }
+            //    n++;
+            //}
 
-            while (n++ < count)
-                AddCellTdString("-", tr);
+            //while (n++ < count)
+            //    AddCellTdString("-", tr);
         }
 
         private void AddMinMaxExHeader(int count, IEnumerable<SSRTUResultComponentVM.ResultResidualVoltage> result, HtmlNode tr, SelectorMinMaxValue selectorMinMaxValue = SelectorMinMaxValue.Min)
         {
+            if (count == 0)
+                return;
             int n = 0;
-            foreach (var j in result.Where(m => m.Min != null))
+            var resultArray = result.ToArray();
+            for (int i = 1; i <= count; i++)
             {
-                switch (selectorMinMaxValue)
+                if (n < result.Count())
                 {
-                    case SelectorMinMaxValue.Min:
-                        AddCellTdString(j.Min, tr);
-                        break;
-                    case SelectorMinMaxValue.Max:
-                        AddCellTdString(j.Max, tr);
-                        break;
-                    case SelectorMinMaxValue.Value:
-                        AddCellTdString(j.Value, tr);
-                        break;
+                    var res = resultArray[n];
+                    if (res.Index == i)
+                    {
+                        switch (selectorMinMaxValue)
+                        {
+                            case SelectorMinMaxValue.Min:
+                                AddCellTdString(res.MinEx, tr);
+                                break;
+                            case SelectorMinMaxValue.Max:
+                                AddCellTdString(res.MaxEx, tr);
+                                break;
+                            case SelectorMinMaxValue.Value:
+                                AddCellTdString(res.ValueEx, tr);
+                                break;
+                        }
+                        n++;
+                    }
+                    else
+                        AddCellTdString("-", tr);
                 }
-                n++;
+                else
+                    AddCellTdString("-", tr);
             }
-
-            while (n++ < count)
-                AddCellTdString("-", tr);
         }
 
 
@@ -567,7 +694,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void AddHeadersResult(IEnumerable<SSRTUResultComponentVM> valuesI, HtmlNode tbody)
         {
-            var values = valuesI.Where(m=> m!= null && m.Positition != 4).ToList();
+            var values = valuesI.Where(m=> m!= null && m.Positition != 4).OrderBy(m => m.Positition).ToList();
             var tr = _doc.CreateElement("tr");
 
             var td = _doc.CreateElement("td");
@@ -580,11 +707,11 @@ namespace SCME.WpfControlLibrary.Pages
             {
                 AddCellTdString($"Мин{i.Positition}", tr);
 
-                AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Min);
-                AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Min);
-                AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Min);
-                AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Min);
-                AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Min);
+                AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Min);
+                AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Min);
+                AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Min);
+                AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Min);
+                AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Min);
 
                 if (auxiliarPower != null)
                 {
@@ -610,11 +737,11 @@ namespace SCME.WpfControlLibrary.Pages
                 tr = _doc.CreateElement("tr");
                 AddCellTdString($"Макс{i.Positition}", tr);
 
-                AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Max);
-                AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Max);
-                AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Max);
-                AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Max);
-                AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Max);
+                AddMinMaxHeader(values.SelectMany(m => m.LeakageCurrents).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.LeakageCurrents, tr, SelectorMinMaxValue.Max);
+                AddMinMaxHeader(values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputAmperages, tr, SelectorMinMaxValue.Max);
+                AddMinMaxHeader(values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.InputVoltages, tr, SelectorMinMaxValue.Max);
+                AddMinMaxHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Max);
+                AddMinMaxExHeader(values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).OrderBy(m => m.Index).GroupBy(m => m.Index).Count(), i.ResidualVoltages, tr, SelectorMinMaxValue.Max);
 
                 if (auxiliarPower != null)
                 {
@@ -643,19 +770,19 @@ namespace SCME.WpfControlLibrary.Pages
             AddCellThString("Канал", tr);
 
 
-            foreach(var i in values.SelectMany(m => m.LeakageCurrents).Where(m=> m.Min != null).GroupBy(m => m.Index))
+            foreach(var i in values.SelectMany(m => m.LeakageCurrents).Where(m=> m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index))
                 AddCellThString($"Ток утечки {i.Key}", tr);
 
-            foreach (var i in values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).GroupBy(m => m.Index))
+            foreach (var i in values.SelectMany(m => m.InputAmperages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index))
                 AddCellThString($"Ток входа {i.Key}", tr);
 
-            foreach (var i in values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).GroupBy(m => m.Index))
+            foreach (var i in values.SelectMany(m => m.InputVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index))
                 AddCellThString($"Напряжение входа {i.Key}", tr);
 
-            foreach (var i in values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).GroupBy(m => m.Index))
+            foreach (var i in values.SelectMany(m => m.ResidualVoltages).Where(m => m.Min != null).OrderBy(m => m.Index).GroupBy(m => m.Index))
                 AddCellThString($"Выходное ост. напр. {i.Key}", tr);
 
-            foreach (var i in values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).GroupBy(m => m.Index))
+            foreach (var i in values.SelectMany(m => m.ResidualVoltages).Where(m => m.MinEx != null).OrderBy(m => m.Index).GroupBy(m => m.Index))
                 AddCellThString($"Сопр. в откр. сост. {i.Key}", tr);
 
             if (auxiliarPower?.AuxiliaryCurrentPowerSupplyMin1 != null)
@@ -673,7 +800,7 @@ namespace SCME.WpfControlLibrary.Pages
         {
             foreach (var i in _profile.TestParametersAndNormatives.GroupBy(m => m.GetType()))
             {
-                foreach (var j in i.GroupBy(m => m.Index))
+                foreach (var j in i.OrderBy(m => m.NumberPosition).GroupBy(m => m.Index))
                 {
                     var t = j.First();
 
@@ -697,23 +824,27 @@ namespace SCME.WpfControlLibrary.Pages
                             var io = j.Cast<SCME.Types.InputOptions.TestParameters>();
                             tbody.AppendChild(AddLineValues("Тип управления:", io.Select(m => TestTypeEnumDictionary.GetTypeManagementToString()[m.TypeManagement])));
                             tbody.AppendChild(AddLineValues("Напряжение управления, В:", io.Select(m => m.ControlVoltage.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", io.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", io.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
+                            if (io.First().ShowAuxiliaryVoltagePowerSupply1)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", io.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
+                            if (io.First().ShowAuxiliaryVoltagePowerSupply2)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", io.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
                             break;
 
                         case SCME.Types.OutputResidualVoltage.TestParameters rvType:
                             var rv = j.Cast<SCME.Types.OutputResidualVoltage.TestParameters>();
                             tbody.AppendChild(AddLineValues("Тип управления:", rv.Select(m => TestTypeEnumDictionary.GetTypeManagementToString()[m.TypeManagement].ToString())));
                             tbody.AppendChild(AddLineValues("Напряжение управления, В:", rv.Select(m => m.ControlVoltage.ToString())));
-                            tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", rv.Select(m =>
-                            TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
-                            //tbody.AppendChild(AddLineValues("Ком.ток, мА:", rv.Select(m => m.SwitchedAmperage.ToString())));
+                            //tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", rv.Select(m =>
+                            //TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
+                            tbody.AppendChild(AddLineValues("Ком. ток. ампл. знач., мА:", rv.Select(m => m.SwitchedAmperage.ToString())));
                             //tbody.AppendChild(AddLineValues("Ком. напр, В:", rv.Select(m => m.SwitchedVoltage.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
-                            tbody.AppendChild(AddLineValues("Форма импульса коммутируемого тока:", rv.Select(m =>
-                            TestTypeEnumDictionary.GetSwitchingCurrentPulseShape().ToDictionary(n => n.Value, n => n.Key)[m.SwitchingCurrentPulseShape])));
-                            tbody.AppendChild(AddLineValues("Длительность имп. ком.тока., мкс:", rv.Select(m => m.SwitchingCurrentPulseDuration.ToString())));
+                            if (rv.First().ShowAuxiliaryVoltagePowerSupply1)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
+                            if (rv.First().ShowAuxiliaryVoltagePowerSupply2)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", rv.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
+                            //tbody.AppendChild(AddLineValues("Форма импульса коммутируемого тока:", rv.Select(m =>
+                            //TestTypeEnumDictionary.GetSwitchingCurrentPulseShape().ToDictionary(n => n.Value, n => n.Key)[m.SwitchingCurrentPulseShape])));
+                            //tbody.AppendChild(AddLineValues("Длительность имп. ком.тока., мкс:", rv.Select(m => m.SwitchingCurrentPulseDuration.ToString())));
                             break;
 
                         case SCME.Types.OutputLeakageCurrent.TestParameters lcType:
@@ -722,18 +853,22 @@ namespace SCME.WpfControlLibrary.Pages
                             tbody.AppendChild(AddLineValues("Напряжение управления, В:", lc.Select(m => m.ControlVoltage.ToString())));
                             tbody.AppendChild(AddLineValues("Тип ком. напр. при измер. утечки:.:", lc.Select(m =>
                             TestTypeEnumDictionary.GetApplicationPolarityConstantSwitchingVoltage().ToDictionary(n => n.Value, n => n.Key)[m.ApplicationPolarityConstantSwitchingVoltage])));
-                            tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", lc.Select(m =>
-                            TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
+                            //tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", lc.Select(m =>
+                            //TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
                             //tbody.AppendChild(AddLineValues("Ком.ток, мА:", lc.Select(m => m.SwitchedAmperage.ToString())));
                             //tbody.AppendChild(AddLineValues("Ком. напр, В:", lc.Select(m => m.SwitchedVoltage.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
+                            if(lc.First().ShowAuxiliaryVoltagePowerSupply1)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
+                            if (lc.First().ShowAuxiliaryVoltagePowerSupply2)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
                             break;
 
                         case SCME.Types.AuxiliaryPower.TestParameters apType:
                             var ap = j.Cast<SCME.Types.AuxiliaryPower.TestParameters>();
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", ap.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", ap.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
+                            if (ap.First().ShowAuxiliaryVoltagePowerSupply1)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", ap.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
+                            if (ap.First().ShowAuxiliaryVoltagePowerSupply2)
+                                tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", ap.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
                             break;
 
                         default:
