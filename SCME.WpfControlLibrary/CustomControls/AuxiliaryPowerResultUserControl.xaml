@@ -45,14 +45,14 @@
         Ток вспом. пит. 1
     </TextBlock>
     <Border Grid.Column="1" Grid.Row="6"  Background="{Binding AuxiliaryCurrentPowerSupply1IsOk, Converter={StaticResource B2B}}" >
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply1, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply1, Converter={StaticResource DN2S}, StringFormat=N3}" HorizontalAlignment="Center"/>
     </Border>
 
     <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="7" >
         Ток вспом. пит. 2
     </TextBlock>
     <Border Grid.Column="1" Grid.Row="7"  Background="{Binding AuxiliaryCurrentPowerSupply2IsOk, Converter={StaticResource B2B}}" >
-        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply2, Converter={StaticResource DN2S}, StringFormat=N6}" HorizontalAlignment="Center"/>
+        <TextBlock Style="{StaticResource DefaultTextBlock}" Text="{Binding AuxiliaryCurrentPowerSupply2, Converter={StaticResource DN2S}, StringFormat=N3}" HorizontalAlignment="Center"/>
     </Border>
 
     <TextBlock Style="{StaticResource DefaultTextBlock}" Grid.Column="0" Grid.Row="8" >

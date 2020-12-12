@@ -95,6 +95,7 @@ namespace SCME.WpfControlLibrary.Pages
         private void BeginEditProfile_Click(object sender, RoutedEventArgs e)
         {
             BeginEditProfile();
+            StartAnimationWait();
         }
 
         private void CreateNewProfile_Click(object sender, RoutedEventArgs e)
@@ -111,7 +112,12 @@ namespace SCME.WpfControlLibrary.Pages
                 return true;
             if (_dbService.ProfileNameExists(ProfileVm.SelectedProfileNameCopy) == false)
                 return true;
-            var profile = _dbService.GetTopProfileByName("IsActive", ProfileVm.SelectedProfile.Name);
+            try
+            {
+                var profile = _dbService.GetTopProfileByName("IsActive", ProfileVm.SelectedProfile.Name);
+            }
+            catch
+            { }
 
             new DialogWindow(Properties.Resources.Error, Properties.Resources.PprofileNameAlreadyExists).ShowDialog();
             return false;

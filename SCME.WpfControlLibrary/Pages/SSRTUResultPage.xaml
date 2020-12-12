@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SCME.WpfControlLibrary.Pages"
+      xmlns:local="clr-namespace:SCME.WpfControlLibrary.Pages" Unloaded="Page_Unloaded"
       xmlns:controls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
       mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=VM}"
       

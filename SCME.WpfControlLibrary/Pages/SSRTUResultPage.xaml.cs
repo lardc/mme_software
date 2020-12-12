@@ -475,6 +475,23 @@ namespace SCME.WpfControlLibrary.Pages
             return tr;
         }
 
+        private HtmlNode AddLineValues2(IEnumerable<string> namesI , IEnumerable<string> valuesI)
+        {
+            var names = namesI.ToArray();
+            var values = valuesI.ToArray();
+            var tr = _doc.CreateElement("tr");
+            for (var i = 0; i < values.Length; i++)
+            {
+                var td = _doc.CreateElement("td");
+                td.InnerHtml = names[i];
+                tr.AppendChild(td);
+                td = _doc.CreateElement("td");
+                td.InnerHtml = values[i];
+                tr.AppendChild(td);
+            }
+            return tr;
+        }
+
         private void AddLineValues(IEnumerable<SSRTUResultComponentVM> valuesI, int number, HtmlNode tbody)
         {
             var values = valuesI.Where(m => m != null && m.Positition != 4).OrderBy(m=> m.Positition).ToList();
@@ -823,7 +840,8 @@ namespace SCME.WpfControlLibrary.Pages
                         case SCME.Types.InputOptions.TestParameters ioType:
                             var io = j.Cast<SCME.Types.InputOptions.TestParameters>();
                             tbody.AppendChild(AddLineValues("Тип управления:", io.Select(m => TestTypeEnumDictionary.GetTypeManagementToString()[m.TypeManagement])));
-                            tbody.AppendChild(AddLineValues("Напряжение управления, В:", io.Select(m => m.ControlVoltage.ToString())));
+                            tbody.AppendChild(AddLineValues2(io.Select(m => m.ShowVoltage ? "Напряжение управления, В:" : "Ток управления, мА:"),
+                                io.Select(m => m.ShowVoltage ? m.ControlVoltage.ToString() : m.ControlCurrent.ToString())));
                             if (io.First().ShowAuxiliaryVoltagePowerSupply1)
                                 tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", io.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
                             if (io.First().ShowAuxiliaryVoltagePowerSupply2)
@@ -833,7 +851,11 @@ namespace SCME.WpfControlLibrary.Pages
                         case SCME.Types.OutputResidualVoltage.TestParameters rvType:
                             var rv = j.Cast<SCME.Types.OutputResidualVoltage.TestParameters>();
                             tbody.AppendChild(AddLineValues("Тип управления:", rv.Select(m => TestTypeEnumDictionary.GetTypeManagementToString()[m.TypeManagement].ToString())));
-                            tbody.AppendChild(AddLineValues("Напряжение управления, В:", rv.Select(m => m.ControlVoltage.ToString())));
+                            tbody.AppendChild(AddLineValues2(rv.Select(m => m.ShowVoltage ? "Напряжение управления, В:" : "Ток управления, мА:"), 
+                                rv.Select(m => m.ShowVoltage ? m.ControlVoltage.ToString() : m.ControlCurrent.ToString())));
+                            tbody.AppendChild(AddLineValues2(rv.Select(m => m.ShowVoltage ? "Ограничение по току управления, мА:" : "Ограничение по напр. управления, В"), 
+                                rv.Select(m => m.ShowVoltage ? m.ControlCurrentMaximum.ToString() : m.ControlVoltageMaximum.ToString())));
+
                             //tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", rv.Select(m =>
                             //TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
                             tbody.AppendChild(AddLineValues("Ком. ток. ампл. знач., мА:", rv.Select(m => m.SwitchedAmperage.ToString())));
@@ -850,14 +872,18 @@ namespace SCME.WpfControlLibrary.Pages
                         case SCME.Types.OutputLeakageCurrent.TestParameters lcType:
                             var lc = j.Cast<SCME.Types.OutputLeakageCurrent.TestParameters>();
                             tbody.AppendChild(AddLineValues("Тип управления:", lc.Select(m => TestTypeEnumDictionary.GetTypeManagementToString()[m.TypeManagement])));
-                            tbody.AppendChild(AddLineValues("Напряжение управления, В:", lc.Select(m => m.ControlVoltage.ToString())));
+                            tbody.AppendChild(AddLineValues2(lc.Select(m => m.ShowVoltage ? "Напряжение управления, В:" : "Ток управления, мА:"),
+                                lc.Select(m => m.ShowVoltage ? m.ControlVoltage.ToString() : m.ControlCurrent.ToString())));
+                            tbody.AppendChild(AddLineValues2(lc.Select(m => m.ShowVoltage ? "Ограничение по току управления, мА:" : "Ограничение по напр. управления, В"),
+                                lc.Select(m => m.ShowVoltage ? m.ControlCurrentMaximum.ToString() : m.ControlVoltageMaximum.ToString())));
                             tbody.AppendChild(AddLineValues("Тип ком. напр. при измер. утечки:.:", lc.Select(m =>
                             TestTypeEnumDictionary.GetApplicationPolarityConstantSwitchingVoltage().ToDictionary(n => n.Value, n => n.Key)[m.ApplicationPolarityConstantSwitchingVoltage])));
+                            tbody.AppendChild(AddLineValues("Комм. напряжение, В", lc.Select(m => m.SwitchedVoltage.ToString())));
                             //tbody.AppendChild(AddLineValues("Полярность прил. пост. ком. напр.:", lc.Select(m =>
                             //TestTypeEnumDictionary.GetPolarityDCSwitchingVoltageApplication().ToDictionary(n => n.Value, n => n.Key)[m.PolarityDCSwitchingVoltageApplication])));
                             //tbody.AppendChild(AddLineValues("Ком.ток, мА:", lc.Select(m => m.SwitchedAmperage.ToString())));
                             //tbody.AppendChild(AddLineValues("Ком. напр, В:", lc.Select(m => m.SwitchedVoltage.ToString())));
-                            if(lc.First().ShowAuxiliaryVoltagePowerSupply1)
+                            if (lc.First().ShowAuxiliaryVoltagePowerSupply1)
                                 tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 1, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply1.ToString())));
                             if (lc.First().ShowAuxiliaryVoltagePowerSupply2)
                                 tbody.AppendChild(AddLineValues("Напряжение вспом. пит. 2, В:", lc.Select(m => m.AuxiliaryVoltagePowerSupply2.ToString())));
@@ -881,6 +907,13 @@ namespace SCME.WpfControlLibrary.Pages
         private void OpenFodlerResult_Click(object sender, RoutedEventArgs e)
         {
                 Process.Start("explorer.exe", reportFolder);
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _dispatcherTimerNeedStart.Stop();
+            _dispatcherTimerNeedStart.Tick -= Dt_Tick;
+            _dispatcherTimerNeedStart = null;
         }
     }
 }

@@ -21,7 +21,7 @@
     <Converters:TDcFallRateValueFromEnum x:Key="TDcFallRateVFE" />
     <Converters:TOsvRateValueFromEnum x:Key="TOsvRateVFE" />
     <Converters:TypeTestParameterToString x:Key="TP2S" />
-    <Converters:DoobleMaxLength x:Key="DML" Round="6"/>
+    <Converters:DoobleMaxLength x:Key="DML" Round="3"/>
     <Converters:VisiblyEnabledToVisibly x:Key="VE2V"/>
     
 

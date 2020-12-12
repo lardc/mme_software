@@ -113,7 +113,7 @@
 
     <Label Grid.Column="3" Grid.Row="1"  Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}">
         <TextBlock>
-            Ограничение по току<LineBreak/>Управления, мА
+            Ограничение по току<LineBreak/>управления, мА
         </TextBlock>
     </Label>
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Visibility="{Binding ShowVoltage, Converter={StaticResource B2V}}" Value="{Binding ControlCurrentMaximum, Converter={StaticResource DML}}" 
