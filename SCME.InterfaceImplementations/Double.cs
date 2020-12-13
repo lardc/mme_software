@@ -37,7 +37,14 @@ namespace SCME.InterfaceImplementations
 
         public static double ParseInternationally(string str)
         {
-            return double.Parse(str.Replace(',', '.'), CultureInfo.InvariantCulture);
+            try
+            {
+                return double.Parse(str.Replace(',', '.'), CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return 0;
+            }
             foreach (var i in cultures.Select(m => m.Value).Where(i => i != null))
                 if (double.TryParse(str, NumberStyles.Any, i, out var result))
                     return result;
