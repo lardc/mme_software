@@ -185,6 +185,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
         {
+            StartAnimationWait();
             ProfileVm.IsEditModeActive = false;
             if (ProfileVm.SelectedProfile == null)
             {

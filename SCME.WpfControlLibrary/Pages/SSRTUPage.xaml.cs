@@ -35,7 +35,10 @@ namespace SCME.WpfControlLibrary.Pages
                     VM.ShowOutputLeakageCurrent = true;
                     break;
                 case TestParametersType.OutputResidualVoltage:
-                    ItemVM = new SCME.Types.OutputResidualVoltage.TestParameters();
+                    ItemVM = new SCME.Types.OutputResidualVoltage.TestParameters()
+                    {
+                        OutputResidualVoltageMaximumOperator = true
+                    };
                     MainTabControl.SelectedIndex = 1;
                     VM.ShowOutputResidualVoltage = true;
                     break;

@@ -9,6 +9,8 @@ namespace SCME.WpfControlLibrary.IValueConverters
 {
     public class SSRTUResultConverter : IValueConverter
     {
+        public int Round { get; set; } = 3;
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var val = (double?)value;
@@ -20,7 +22,7 @@ namespace SCME.WpfControlLibrary.IValueConverters
                     return "-"; 
                 if (val == 0)
                     return 0.ToString();
-                return val.Value.ToString().TrimEnd('0');
+                return Math.Round(val.Value, Round).ToString().TrimEnd('0');
             }
         }
 

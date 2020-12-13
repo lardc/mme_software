@@ -223,6 +223,13 @@
             </TextBlock>
         </Label>
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"    Value="{Binding OutputResidualVoltageMaximum, Converter={StaticResource DML}}" />
+
+        <!--<Label  Grid.Column="0" Grid.Row="0">
+            <TextBlock>
+            Ограничение по<LineBreak/>Сопр. в открытом<LineBreak/>состоянии, Ом
+            </TextBlock>
+        </Label>
+        <customControls:NumericUpDown Grid.Column="1" Grid.Row="0"    Value="{Binding OutputResidualVoltageMaximum, Converter={StaticResource DML}}" />-->
     </Grid>
 
 

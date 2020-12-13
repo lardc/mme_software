@@ -355,10 +355,10 @@ namespace SCME.Service.IO
 
                     //throw new Exception("System.Exception: Operation - @Call, Node - 0, Address - 100, Message - SCCI protocol error: code - UserError, details - 5");
 
-                    _Result.Value = (float)rand.Next(1, 500) / 1000  ;
-                    _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.Next() / 1000;
+                    _Result.Value = (float)rand.Next(1, 500000) / 1000000  ;
+                    _Result.AuxiliaryCurrentPowerSupply1 = (float)rand.Next() / 1000000;
                     _Result.AuxiliaryCurrentPowerSupply2 = 13;
-                    _Result.OpenResistance = (float)rand.NextDouble() / 1000;
+                    _Result.OpenResistance = (float)rand.NextDouble() / 1000000;
                     _Result.TestParametersType = parameters.TestParametersType;
                     //_State = DeviceState.Success;
                     FireSSRTUEvent(DeviceState.Success, _Result);
@@ -442,7 +442,7 @@ namespace SCME.Service.IO
                             WriteRegister(REG_COMMUTATION_CURRENT_SHAPE, (ushort)rv.SwitchingCurrentPulseShape);
                             //WriteRegister(REG_COMMUTATION_CURRENT_TIME, (ushort)rv.SwitchingCurrentPulseDuration);
 
-                            if(rv.OpenState)
+                            if(rv.OpenState && rv.OutputResidualVoltageMaximumOperator == false)
                                 WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximumOpenState, 6);
                             else
                                 WriteRegisterFrom32To1616(REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_LOW, REG_OUTPUT_RESIDUAL_VOLTAGE_MAX_HIGH, rv.OutputResidualVoltageMaximum, 6);

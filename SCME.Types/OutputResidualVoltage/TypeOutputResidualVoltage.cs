@@ -79,6 +79,9 @@ namespace SCME.Types.OutputResidualVoltage
         public double SwitchingCurrentPulseDuration { get; set; }
 
         [DataMember]
+        public bool OutputResidualVoltageMaximumOperator { get; set; }
+
+        [DataMember]
         public double OutputResidualVoltageMinimum {get;set;}
         [DataMember]
         public double OutputResidualVoltageMaximum { get; set; }
