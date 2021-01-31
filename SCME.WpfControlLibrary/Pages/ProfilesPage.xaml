@@ -27,7 +27,7 @@
     
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="22*" />
+            <ColumnDefinition Width="25*" />
             <ColumnDefinition Width="75*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}"  Background="#FFC9C9C9">
@@ -61,8 +61,10 @@
                       SelectedValue="{Binding SelectedProfile}" SelectionChanged="ListViewProfiles_OnSelectionChanged">
                <ListView.ItemTemplate>
                    <DataTemplate DataType="profiles:Profile">
-                        <Label Name="label" Content="{Binding Path=Name}"  Foreground="{TemplateBinding TextBlock.Foreground}" Margin="10,0,0,0" />
-                   </DataTemplate>
+                        <Label Name="label" Foreground="{TemplateBinding TextBlock.Foreground}" Margin="3,0,0,0" >
+                            <TextBlock Style="{StaticResource tblk}" Text="{Binding Path=Name}" />
+                        </Label>
+                    </DataTemplate>
                </ListView.ItemTemplate>
             </customControls:ListViewMouseLeftButtonScroll>
 

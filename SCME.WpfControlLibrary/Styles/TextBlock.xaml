@@ -17,4 +17,12 @@
 
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="tblk" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontStretch" Value="ExtraCondensed"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FontWeight" Value="ExtraLight"/>
+    </Style>
+
+
 </ResourceDictionary>

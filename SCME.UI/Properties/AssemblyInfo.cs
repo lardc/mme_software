@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Proton-Electrotex JSC")]
 [assembly: AssemblyProduct("SCME.UI")]
-[assembly: AssemblyCopyright("Copyright © Proton-Electrotex JSC 2014")]
+[assembly: AssemblyCopyright("Copyright © Proton-Electrotex JSC 2014-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

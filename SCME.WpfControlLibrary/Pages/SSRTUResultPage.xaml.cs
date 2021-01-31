@@ -394,7 +394,7 @@ namespace SCME.WpfControlLibrary.Pages
                 {"style","width:33%" },
                 {"align","left" }
             });
-            AddCellTdString("АО \"ПРОТОН - ЭЛЕКТРОТЕКС\"©", tr, new Dictionary<string, string>()
+            AddCellTdString("ЗАО \"ПРОТОН - ИМПУЛЬС\"©", tr, new Dictionary<string, string>()
             {
                 {"style","width:34%" },
                 {"align","center" }

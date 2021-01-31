@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Proton-Electrotex JSC")]
 [assembly: AssemblyProduct("SCME.Service")]
-[assembly: AssemblyCopyright("Copyright © Proton-Electrotex JSC 2014")]
+[assembly: AssemblyCopyright("Copyright © Proton-Electrotex JSC 2014-2021")]
 [assembly: AssemblyTrademark("Proton-Electrotex")]
 [assembly: AssemblyCulture("")]
 
@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("3.2.*")]
+[assembly: AssemblyVersion("3.3.*")]

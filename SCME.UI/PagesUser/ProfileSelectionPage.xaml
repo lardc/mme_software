@@ -181,8 +181,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="34*" />
-            <ColumnDefinition Width="66*" />
+            <ColumnDefinition Width="40*" />
+            <ColumnDefinition Width="60*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*" />

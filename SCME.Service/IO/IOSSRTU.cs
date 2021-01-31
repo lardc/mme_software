@@ -84,10 +84,11 @@ namespace SCME.Service.IO
                 }
 
                 var res = (HWFinishedState)ReadRegister(REG_FINISHED);
+                
                 if (res == HWFinishedState.Success)
                     return (false, -1);
 
-                else if(res == HWFinishedState.Failed)
+                if(res == HWFinishedState.Failed)
                     return (false, ReadRegister(REG_FAULT_REASON));
 
                 CheckDevStateThrow(devState);
@@ -107,6 +108,7 @@ namespace SCME.Service.IO
             {
                 _connectionState = DeviceConnectionState.ConnectionSuccess;
                 FireConnectionEvent(_connectionState, "SSRTU initialized");
+
                 return _connectionState;
             }
 
@@ -134,7 +136,7 @@ namespace SCME.Service.IO
                         WaitState(HWDeviceState.Ready);
                         break;
                     case HWDeviceState.Fault:
-                        break;
+                        throw new Exception("SSRTU требуется перезагрузка питания");
                     case HWDeviceState.Disabled:
                         throw new Exception("SSRTU требуется перезагрузка питания");
                     case HWDeviceState.Ready:
@@ -144,6 +146,12 @@ namespace SCME.Service.IO
                         break;
                     case HWDeviceState.Alarm:
                         CallAction(ACT_CLR_SAFETY);
+                        try
+                        {
+                            CallAction(ACT_ENABLE_POWER);
+                        }
+                        catch { }
+                        WaitState(HWDeviceState.Ready);
                         break;
                     default:
                         break;
@@ -559,7 +567,7 @@ namespace SCME.Service.IO
         }
         public bool NeedStart()
         {
-            return ReadRegister(REG_START_BUTTON) == 1;
+            return ReadRegister(REG_START_BUTTON, true) == 1;
         }
 
         internal void StartAttestation(AttestationParameterRequest attestationParameterRequest)

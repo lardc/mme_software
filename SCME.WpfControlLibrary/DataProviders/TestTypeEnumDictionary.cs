@@ -200,8 +200,8 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return new Dictionary<string, TypeManagement>
             {
-                {"Переменное напр.", TypeManagement.ACVoltage },
-                {"Постоянное напр.", TypeManagement.DCVoltage },
+                {"Перем. напр.", TypeManagement.ACVoltage },
+                {"Пост. напр.", TypeManagement.DCVoltage },
                 {"Постоянный ток", TypeManagement.DCAmperage },
             };
         }
@@ -210,9 +210,9 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return new Dictionary<TypeManagement, string>
             {
-                {TypeManagement.ACVoltage, "Переменное напряжение" },
-                {TypeManagement.DCVoltage, "Постоянное напряжение" },
-                {TypeManagement.DCAmperage, "Постоянный ток" },
+                {TypeManagement.ACVoltage, "Перем. напр." },
+                {TypeManagement.DCVoltage, "Пост. напр." },
+                {TypeManagement.DCAmperage, "Пост. ток" },
             };
         }
 
