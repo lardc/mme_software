@@ -2,24 +2,13 @@
 using SCME.Types.BaseTestParams;
 using SCME.Types.Profiles;
 using SCME.WpfControlLibrary.CustomControls;
-using SCME.WpfControlLibrary.DataTemplates.TestParameters;
 using SCME.WpfControlLibrary.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using HtmlAgilityPack;
 using SCME.WpfControlLibrary.DataProviders;
 using System.IO;
@@ -34,7 +23,6 @@ namespace SCME.WpfControlLibrary.Pages
     /// </summary>
     public partial class SSRTUResultPage : Page
     {
-
         Func<bool> NeedStartFunc;
         private Action _start;
         public Action Stop { get; set; }
@@ -234,7 +222,26 @@ namespace SCME.WpfControlLibrary.Pages
                 result.First(m => m.Value != null).Value.SerialNumber = VM.SerialNumber;
                 if (string.IsNullOrEmpty(VMPosition4.ErrorCode) == false)
                     result.Values.First(m => m != null).ErrorCode = VMPosition4.ErrorCode;
-                CreateReport();
+
+                try
+                {
+                    CreateReport();
+                }
+                catch
+                {
+                    _dateTimeBeginMeasurement = DateTime.Now;
+
+                    try
+                    {
+                        CreateReport();
+                    }
+                    catch
+                    {
+                        var dialogWindow = new DialogWindow("Внимание", "Невозможно сохранить результаты в файл отчета");
+                        dialogWindow.ShowDialog();
+                    }
+                }
+
                 _dispatcherTimerNeedStart.Start();
                 VM.SerialNumber++;
             }
@@ -250,8 +257,6 @@ namespace SCME.WpfControlLibrary.Pages
         {
             Stop();
             VM.CanStart = true;
-
-
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -287,36 +292,19 @@ namespace SCME.WpfControlLibrary.Pages
             countEndingTests = 0;
             _start();
             return;
-            /*VM.CanStart = false;
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-
-                VM.CanStart = true;
-            });
-            return;
-            Random random = new Random(DateTime.Now.Millisecond);
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-                VMPosition1.InputAmperage = random.Next(0, 6);
-                VMPosition2.InputVoltage = random.Next(0, 6);
-                VMPosition3.LeakageCurrent = random.Next(0, 6);
-                VM.CanStart = true;
-            });*/
         }
 
 
         private HtmlDocument _doc = new HtmlDocument();
         private List<Dictionary<int, SSRTUResultComponentVM>> results = new List<Dictionary<int, SSRTUResultComponentVM>>();
-        private DateTime _dateTimeBeginMeasurement;
+        private DateTime _dateTimeBeginMeasurement = DateTime.Now;
         private string reportFolder;
         
 
         private void CreateReport()
         {
             //Верхняя подпись
-            _dateTimeBeginMeasurement = DateTime.Now;
+            // _dateTimeBeginMeasurement = DateTime.Now;
             HtmlNode tr;
             var body = _doc.CreateElement("body");
 
@@ -405,15 +393,9 @@ namespace SCME.WpfControlLibrary.Pages
                 {"align","right" }
             });
 
-
-
-            //string fileName = $@"{_dateTimeBeginMeasurement.ToString("yyyy-MM-dd-HH-mm")}-{(string.IsNullOrEmpty(VM.BatchNumber) ? "NoBatchNumber" : VM.BatchNumber)}.html";
-            string fileName = $@"{_profile.Name}-{_dateTimeBeginMeasurement:yyyy-MM-dd-HH-mm}.html";
+            //string fileName = $@"{_profile.Name}-{_dateTimeBeginMeasurement:yyyy-MM-dd-HH-mm}.html";
+            string fileName = $@"{_profile.Name}_[{(string.IsNullOrEmpty(VM.BatchNumber) ? "NoBatchNumber" : VM.BatchNumber)}]_{_dateTimeBeginMeasurement.ToString("yyyy-MM-dd-HH-mm-ss")}.html";
             File.WriteAllText(System.IO.Path.Combine(reportFolder, fileName), File.ReadAllText("ReportTemplate.html").Replace("body", body.OuterHtml));
-
-
-
-
         }
 
         private HtmlNode AddNumberPositions(BaseTestParametersAndNormatives[] parameters)
@@ -430,8 +412,6 @@ namespace SCME.WpfControlLibrary.Pages
             return tr;
         }
 
-       
-
         private void AddCellTdString(double? value, HtmlNode tr)
         {
             var td = _doc.CreateElement("td");
@@ -439,10 +419,11 @@ namespace SCME.WpfControlLibrary.Pages
             if (value == null)
                 td.InnerHtml = "-";
             else
-                td.InnerHtml = Math.Round(value.Value,6).ToString();
+                td.InnerHtml = Math.Round(value.Value, 3).ToString();
 
             tr.AppendChild(td);
         }
+
         private void AddCellTdString(string value, HtmlNode tr, Dictionary<string, string> attributes = null)
         {
             var td = _doc.CreateElement("td");
@@ -452,6 +433,7 @@ namespace SCME.WpfControlLibrary.Pages
                 foreach (var i in attributes)
                     td.SetAttributeValue(i.Key, i.Value);
         }
+
         private void AddCellThString(string value, HtmlNode tr)
         {
             var th = _doc.CreateElement("th");
@@ -604,14 +586,14 @@ namespace SCME.WpfControlLibrary.Pages
                     tbody.AppendChild(tr);
 
                     tr = _doc.CreateElement("tr");
-
                 }
         }
 
-
         enum SelectorMinMaxValue
         {
-            Min,Max,Value
+            Min,
+            Max,
+            Value
         }
 
         private void AddMinMaxHeader(int count, IEnumerable<SSRTUResultComponentVM.Result> result, HtmlNode tr, SelectorMinMaxValue selectorMinMaxValue = SelectorMinMaxValue.Min)
@@ -647,31 +629,13 @@ namespace SCME.WpfControlLibrary.Pages
                 else
                     AddCellTdString("-", tr);
             }
-            //foreach (var j in result.Where(m => m.Min != null))
-            //{
-            //    switch (selectorMinMaxValue)
-            //    {
-            //        case SelectorMinMaxValue.Min:
-            //            AddCellTdString(j.Min, tr);
-            //            break;
-            //        case SelectorMinMaxValue.Max:
-            //            AddCellTdString(j.Max, tr);
-            //            break;
-            //        case SelectorMinMaxValue.Value:
-            //            AddCellTdString(j.Value, tr);
-            //            break;
-            //    }
-            //    n++;
-            //}
-
-            //while (n++ < count)
-            //    AddCellTdString("-", tr);
         }
 
         private void AddMinMaxExHeader(int count, IEnumerable<SSRTUResultComponentVM.ResultResidualVoltage> result, HtmlNode tr, SelectorMinMaxValue selectorMinMaxValue = SelectorMinMaxValue.Min)
         {
             if (count == 0)
                 return;
+
             int n = 0;
             var resultArray = result.ToArray();
             for (int i = 1; i <= count; i++)
@@ -702,7 +666,6 @@ namespace SCME.WpfControlLibrary.Pages
                     AddCellTdString("-", tr);
             }
         }
-
 
         private void AddAuxiliarPower(SSRTUResultComponentVM result, HtmlNode tr, bool useMax)
         {
@@ -906,7 +869,7 @@ namespace SCME.WpfControlLibrary.Pages
 
         private void OpenFodlerResult_Click(object sender, RoutedEventArgs e)
         {
-                Process.Start("explorer.exe", reportFolder);
+            Process.Start("explorer.exe", reportFolder);
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
@@ -914,6 +877,11 @@ namespace SCME.WpfControlLibrary.Pages
             _dispatcherTimerNeedStart.Stop();
             _dispatcherTimerNeedStart.Tick -= Dt_Tick;
             _dispatcherTimerNeedStart = null;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            _dateTimeBeginMeasurement = DateTime.Now;
         }
     }
 }

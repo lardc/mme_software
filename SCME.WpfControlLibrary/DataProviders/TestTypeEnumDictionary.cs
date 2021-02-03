@@ -202,7 +202,7 @@ namespace SCME.WpfControlLibrary.DataProviders
             {
                 {"Перем. напр.", TypeManagement.ACVoltage },
                 {"Пост. напр.", TypeManagement.DCVoltage },
-                {"Постоянный ток", TypeManagement.DCAmperage },
+                {"Пост. ток", TypeManagement.DCAmperage },
             };
         }
 
@@ -230,8 +230,8 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return new Dictionary<string, ApplicationPolarityConstantSwitchingVoltage>
             {
-                {"Переменное", ApplicationPolarityConstantSwitchingVoltage.ACVoltage },
-                {"Постоянное", ApplicationPolarityConstantSwitchingVoltage.DCVoltage },
+                {"Перем.", ApplicationPolarityConstantSwitchingVoltage.ACVoltage },
+                {"Пост.", ApplicationPolarityConstantSwitchingVoltage.DCVoltage },
             };
         }
 
@@ -240,7 +240,7 @@ namespace SCME.WpfControlLibrary.DataProviders
             return new Dictionary<string, PolarityDCSwitchingVoltageApplication>
             {
                 {"Прямая", PolarityDCSwitchingVoltageApplication.Direct },
-                {"Обратная", PolarityDCSwitchingVoltageApplication.Reverse },
+                {"Обрат.", PolarityDCSwitchingVoltageApplication.Reverse },
             };
         }
 
@@ -249,7 +249,7 @@ namespace SCME.WpfControlLibrary.DataProviders
             return new Dictionary<string, SwitchingCurrentPulseShape>
             {
                 {"Синус", SwitchingCurrentPulseShape.Sinus },
-                {"Трапеция", SwitchingCurrentPulseShape.Trapezoid },
+                {"Трап.", SwitchingCurrentPulseShape.Trapezoid },
             };
         }
 

@@ -28,7 +28,7 @@
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*" />
-            <ColumnDefinition Width="75*" />
+            <ColumnDefinition Width="70*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}"  Background="#FFC9C9C9">
             <Grid.RowDefinitions>
@@ -46,7 +46,7 @@
                     IsEnabled="{Binding IsEditModeInActive}"
                     Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}"
                     Content="{x:Static res:Resources.Add}" Click="CreateNewProfile_Click"
-                    Background="#FF0078D7" />
+                    Background="#FF0078D7" Width="auto" />
 
             
             <customControls:ValidatingTextBox Grid.Column="0" Grid.Row="2" Tag="{x:Static res:Resources.Search}" Padding="10,0,0,0"
@@ -69,7 +69,7 @@
             </customControls:ListViewMouseLeftButtonScroll>
 
             <Button Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Back}" Name="BackButton"
-                    Style="{StaticResource PrimaryButton}" Click="GoBack_Click" />
+                    Style="{StaticResource PrimaryButton}" Click="GoBack_Click" Width="auto" />
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0" Background="{StaticResource xGray2}">
             <Grid.RowDefinitions>

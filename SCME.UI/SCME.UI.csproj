@@ -174,9 +174,6 @@
     <Compile Update="PagesUser\MeasureDialog.xaml.cs">
       <DependentUpon>MeasureDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Update="PagesUser\ProfileSelectionPage.xaml.cs">
-      <DependentUpon>ProfileSelectionPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="PagesUser\UserTestPage.xaml.cs">
       <DependentUpon>UserTestPage.xaml</DependentUpon>
     </Compile>
@@ -306,9 +303,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PagesUser\MeasureDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="PagesUser\ProfileSelectionPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="PagesUser\UserTestPage.xaml">
