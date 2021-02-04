@@ -28,7 +28,7 @@
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25*" />
-            <ColumnDefinition Width="70*" />
+            <ColumnDefinition Width="65*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding IsEditModeInActive}"  Background="#FFC9C9C9">
             <Grid.RowDefinitions>
@@ -93,7 +93,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0"  Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" Foreground="Black" BorderThickness="0" Margin="40,0,0,0" 
+                <TextBox Grid.Column="0"  Grid.Row="0" Text="{Binding SelectedProfileNameCopy}" Foreground="Black" BorderThickness="0" Margin="40,0,0,0" FontWeight="Regular"
                          VerticalContentAlignment="Center"  Visibility="{Binding SelectedProfileDeepDataNotNull, Converter={StaticResource B2V}}"
                          IsEnabled="{Binding IsEditModeActive}" />
                 <!--<Border BorderThickness="1" Grid.Column="0" Grid.Row="0" BorderBrush="Gray"   />-->

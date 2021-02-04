@@ -17,7 +17,7 @@
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource xBlack1}"/>
-        <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="{StaticResource FontSize22}"/>
         <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="TextBlock.TextWrapping" Value="NoWrap"/>
@@ -53,7 +53,7 @@
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource xBlack1}"/>
-        <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="{StaticResource FontSize22}"/>
         <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="TextBlock.TextWrapping" Value="NoWrap"/>

@@ -31,9 +31,9 @@
             <Setter Property="Width" Value="{StaticResource BSize}" />
             <Setter Property="Height" Value="{StaticResource BSize}" />
             <Setter Property="Foreground" Value="{StaticResource xWhite1}" />
-            <Setter Property="FontFamily" Value="Helvetica Neue LT Std" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-            <Setter Property="FontWeight" Value="ExtraLight" />
+            <Setter Property="FontWeight" Value="Semibold" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">

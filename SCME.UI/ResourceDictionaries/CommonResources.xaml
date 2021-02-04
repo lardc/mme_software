@@ -55,7 +55,7 @@
     
     <sys:Double   x:Key="PathThickness">6</sys:Double>
 
-    <FontFamily         x:Key="DefaultFontFamily"       >Helvetica Neue LT Std</FontFamily>
+    <FontFamily         x:Key="DefaultFontFamily"       >Segoe UI</FontFamily>
     
     <sys:Double         x:Key="DefaultFontSize"         >36</sys:Double>
     <sys:Double         x:Key="FontSize32"              >32</sys:Double>

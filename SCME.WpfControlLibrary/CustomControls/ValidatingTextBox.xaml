@@ -6,7 +6,7 @@
          mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="50"
          GotFocus="TextBox_GotFocus" PreviewMouseDown="ValidatingTextBox_OnPreviewMouseDown"
          LostKeyboardFocus="TextBox_LostFocus"
-         FontFamily="Helvetica Neue LT Std"
+         FontFamily="Segoe UI"
          
          FontWeight="ExtraLight" >
 
@@ -43,7 +43,7 @@
                         <TextBlock Focusable="False"
                                    Foreground="Red"
                                    Padding="5, 15, 5, 5"
-                                   FontFamily="Helvetica Neue LT Std"
+                                   FontFamily="Segoe UI"
                                    FontWeight="ExtraLight"
                                    Text="{TemplateBinding Content}" />
                     </Grid>

@@ -69,7 +69,7 @@
             <Setter Property="Width" Value="Auto" />
             <Setter Property="Height" Value="Auto" />
             <Setter Property="IsEnabled" Value="True" />
-            <Setter Property="FontFamily" Value="Helvetica Neue LT Std" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
             <Setter Property="FontWeight" Value="ExtraLight" />
             <Setter Property="VerticalContentAlignment" Value="Bottom" />
@@ -226,6 +226,7 @@
                                Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4"
                                VerticalAlignment="Stretch" Margin="10"
                                FontFamily="{StaticResource DefaultFontFamily}"
+                               FontWeight="ExtraLight"
                                FontSize="{StaticResource FontSize22}"
                                Text="Error" TextWrapping="Wrap"
                                Foreground="{StaticResource xRed1}" />

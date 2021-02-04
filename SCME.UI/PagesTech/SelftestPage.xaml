@@ -72,7 +72,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Width" Value="Auto" />
             <Setter Property="Height" Value="Auto" />
-            <Setter Property="FontFamily" Value="Helvetica Neue LT Std" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
             <Setter Property="FontWeight" Value="ExtraLight" />
             <Setter Property="VerticalContentAlignment" Value="Bottom" />

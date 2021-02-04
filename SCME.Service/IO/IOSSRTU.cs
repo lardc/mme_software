@@ -60,6 +60,9 @@ namespace SCME.Service.IO
                 if (devState == needState)
                     break;
 
+                if(devState == HWDeviceState.Fault)
+                    throw new Exception($"Fault state occured in block while waiting for {needState} state");
+
                 CheckDevStateThrow(devState);
             }
 

@@ -17,11 +17,11 @@
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"  />
-        <ColumnDefinition Width="1.1*" />
-            <ColumnDefinition Width="30" />
+        <ColumnDefinition Width="225"  />
+        <ColumnDefinition Width="200" />
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="1.1*" />
+        <ColumnDefinition Width="225" />
+        <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

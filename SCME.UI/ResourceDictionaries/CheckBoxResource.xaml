@@ -41,7 +41,7 @@
                                           Data="M 0 1.5 L 1.5 3 L 3 0" />
                             </Border>
                             <ContentPresenter Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"
-                                                  TextBlock.Foreground="{TemplateBinding Foreground}" TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
+                                                  TextBlock.Foreground="{TemplateBinding Foreground}" TextBlock.FontFamily="{StaticResource DefaultFontFamily}" TextBlock.FontWeight="ExtraLight"
                                                   TextBlock.FontSize="{TemplateBinding FontSize}" Margin="{TemplateBinding Padding}"/>
                         </Grid>
                     </Border>

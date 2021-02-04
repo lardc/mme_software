@@ -35,7 +35,7 @@
     <Style TargetType="TextBox" >
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="0"/>
-        <Setter Property="FontFamily" Value="Helvetica Neue LT Std"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="FontSize" Value="{DynamicResource SCME.BaseFontSize}" />

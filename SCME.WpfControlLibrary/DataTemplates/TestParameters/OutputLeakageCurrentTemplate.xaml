@@ -18,10 +18,10 @@
     </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="225"  />
-        <ColumnDefinition Width="225" />
+        <ColumnDefinition Width="200" />
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="225" />
-        <ColumnDefinition Width="225" />
+        <ColumnDefinition Width="200" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
@@ -130,10 +130,10 @@
     <Grid Grid.Row="6" Grid.ColumnSpan="5" Margin="0,24,0,0" Visibility="{Binding IsProfileStyle, Converter={StaticResource B2V}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225"  />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -152,10 +152,10 @@
     <Grid Grid.Row="6" Grid.ColumnSpan="5" Margin="0,24,0,0" Visibility="{Binding IsProfileStyle, Converter={StaticResource B2VI}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225"  />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

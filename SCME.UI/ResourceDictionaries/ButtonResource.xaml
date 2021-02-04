@@ -21,6 +21,7 @@
         <Setter Property="Padding"  Value="0"/>
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -65,6 +66,7 @@
         <Setter Property="Padding"  Value="0"/>
         <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
+        <Setter Property="FontWeight" Value="ExtraLight"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>

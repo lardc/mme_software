@@ -37,10 +37,10 @@
 
 
                             <Border Background="#FFC9C9C9" BorderThickness="0" Grid.ColumnSpan="5"/>
-                            <Label Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="40,0,0,0" >
-                                <TextBlock>
-                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TP2S}}"/>
-                                     <Run Text="{Binding Mode=OneWay, Path=Index}"/>
+                            <Label Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="40,0,0,0" FontWeight="SemiBold" >
+                                <TextBlock  FontWeight="SemiBold">
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource TP2S}}" FontWeight="SemiBold"/>
+                                     <Run Text="{Binding Mode=OneWay, Path=Index}" FontWeight="SemiBold"/>
                                 </TextBlock>
                             </Label>
                             

@@ -7,7 +7,7 @@
              xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls" 
              xmlns:outputResidualVoltage="clr-namespace:SCME.Types.OutputResidualVoltage;assembly=SCME.Types"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=outputResidualVoltage:TestParameters}"
-             d:DesignWidth="800">
+             d:DesignWidth="1000">
     <Grid.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,11 +18,11 @@
     </Grid.Resources>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="225"  />
+        <ColumnDefinition Width="200" />
+        <ColumnDefinition Width="*" />
         <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="225" />
-        </Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200" />
+    </Grid.ColumnDefinitions>
     <Grid.RowDefinitions >
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
@@ -159,10 +159,10 @@
     <Grid Grid.ColumnSpan="5" Grid.Row="6" Margin="0,38,0,0" Visibility="{Binding IsProfileStyle, Converter={StaticResource B2V}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225"  />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -207,10 +207,10 @@
     <Grid Grid.ColumnSpan="5" Grid.Row="6" Margin="0,38,0,0" Visibility="{Binding IsProfileStyle, Converter={StaticResource B2VI}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="225"  />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="225" />
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

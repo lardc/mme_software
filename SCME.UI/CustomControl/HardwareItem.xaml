@@ -56,8 +56,9 @@
                          Grid.Row="1" Minimum="0" Value="0" Maximum="100" Height="10" />
 
             <TextBlock Grid.Row="2" TextWrapping="Wrap"
-                       FontFamily="Helvetica Neue LT Std" Margin="10,0"
+                       FontFamily="Segoe UI" Margin="10,0"
                        FontSize="14"
+		       FontWeight="ExtraLight"
                        Foreground="{StaticResource xRed1}"
                        Text="{Binding ElementName=userControlItem, Path=Error}" />
         </Grid>
