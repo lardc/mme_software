@@ -1,53 +1,66 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace SCME.UpdateServer.Controllers
 {
+    //Стандартный маршрут
     [Route("{controller}/{action}")]
+
     public class UpdateController : ControllerBase
     {
         private const int SIZE_PACKET = 1024 * 1024;
-        private readonly UpdateDataConfig _config;
+        private readonly UpdateDataConfig Config;
 
+        /// <summary>Инициализирует новый экземпляр класса UpdateController</summary>
+        /// <param name="config">Конфигурация сервиса</param>
         public UpdateController(IOptionsSnapshot<UpdateDataConfig> config)
         {
-            _config = config.Value;
+            Config = config.Value;
         }
 
+        /// <summary>Возникла ошибка при выполнении</summary>
         public void Error()
         {
-            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            System.IO.File.AppendAllText(Path.GetFullPath(Path.Combine(Startup.LOGS_DIRECTORY, $"{DateTime.Now:s}.txt".Replace(':', '-'))), $"{exceptionHandlerPathFeature.Path} {exceptionHandlerPathFeature.Error}");
+            IExceptionHandlerPathFeature ExceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            System.IO.File.AppendAllText(Path.GetFullPath(Path.Combine(Startup.LOGS_DIRECTORY, $"{DateTime.Now:s}.txt".Replace(':', '-'))), $"{ExceptionHandlerPathFeature.Path} {ExceptionHandlerPathFeature.Error}");
         }
 
+        /// <summary>Получить параметр Debug</summary>
+        /// <returns>Debug-параметр</returns>
         [HttpGet]
-        public string DebugParameter() => _config.DebugParameter;
+        public string DebugParameter()
+        {
+            return Config.DebugParameter;
+        }
 
+        /// <summary>Получить версию агента</summary>
+        /// <returns>Версия агента</returns>
         [HttpGet]
-        public string GetAgentVersion() => FileVersionInfo.GetVersionInfo(Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName, _config.ScmeAgentExeName)).ProductVersion;
+        public string GetAgentVersion()
+        {
+            return FileVersionInfo.GetVersionInfo(Path.Combine(Config.DataPathRoot, Config.ScmeAgentFolderName, Config.ScmeAgentExeName)).ProductVersion;
+        }
 
+        /// <summary>Получить расположение папки агента</summary>
+        /// <returns>Расположение папки агента</returns>
         [HttpGet]
         public void GetAgentFolder()
         {
-            var zipFileName = Guid.NewGuid().ToString();
-
+            string ZipFileName = Guid.NewGuid().ToString();
             try
             {
-                var folderName = Path.Combine(_config.DataPathRoot, _config.ScmeAgentFolderName);
-                FileStream fileStream;
-
-                using (fileStream = System.IO.File.Open(zipFileName, FileMode.Create, FileAccess.ReadWrite))
-                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true))
-                    foreach (var i in ZipAndXmlHelper.DirectorySearch(folderName))
-                        archive.CreateEntryFromFile(i, i.Substring(folderName.Length + 1));
-
-                ReturnFileInPars(zipFileName);
+                string FolderName = Path.Combine(Config.DataPathRoot, Config.ScmeAgentFolderName);
+                using (FileStream Stream = System.IO.File.Open(ZipFileName, FileMode.Create, FileAccess.ReadWrite))
+                using (ZipArchive Archive = new ZipArchive(Stream, ZipArchiveMode.Create, true))
+                    foreach (string obj in ZipAndXmlHelper.DirectorySearch(FolderName))
+                        Archive.CreateEntryFromFile(obj, obj.Substring(FolderName.Length + 1));
+                ReturnFileInPars(ZipFileName);
             }
             catch (Exception e)
             {
@@ -58,28 +71,28 @@ namespace SCME.UpdateServer.Controllers
 			{
 				try
 				{
-	                if (System.IO.File.Exists(zipFileName))
-	                    System.IO.File.Delete(zipFileName);
-				}
+                    System.IO.File.Delete(ZipFileName);
+                }
 		        catch (Exception e)
 		        {
 		            Console.WriteLine(e);
 		        }
 			}
-            
             GC.Collect(2, GCCollectionMode.Forced, true);
             GC.WaitForPendingFinalizers();
         }
 
+        /// <summary>Получить расположение папки агента</summary>
+        /// <returns>Расположение папки агента</returns>
         [HttpGet]
         public string EqualSoftwareVersion(string mme, string currentVersion)
         {
-            var mmeParameter = _config.MmeParameters.SingleOrDefault(m => m.Name == mme);
+            var mmeParameter = Config.MmeParameters.SingleOrDefault(m => m.Name == mme);
 
             if (mmeParameter == null)
                 return "null";
 
-            var uiExeFileName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder, _config.ScmeUIExeName);
+            var uiExeFileName = Path.Combine(Config.DataPathRoot, mmeParameter.Folder, Config.ScmeUIExeName);
             // ReSharper disable once AssignNullToNotNullAttribute
             var versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
 
@@ -112,8 +125,8 @@ namespace SCME.UpdateServer.Controllers
             var zipFileName = Guid.NewGuid().ToString();
             try
             {
-                var mmeParameter = _config.MmeParameters.Single(m => m.Name == mme);
-                var folderName = Path.Combine(_config.DataPathRoot, mmeParameter.Folder);
+                var mmeParameter = Config.MmeParameters.Single(m => m.Name == mme);
+                var folderName = Path.Combine(Config.DataPathRoot, mmeParameter.Folder);
 
                 FileStream fileStream;
 
@@ -122,7 +135,7 @@ namespace SCME.UpdateServer.Controllers
                     foreach (var i in ZipAndXmlHelper.DirectorySearch(folderName))
                     {
                         var entryName = i.Substring(folderName.Length + 1);
-                        if (_config.ScmeCommonConfigName == entryName || $@"UI\{_config.ScmeCommonConfigName}" == entryName)
+                        if (Config.ScmeCommonConfigName == entryName || $@"UI\{Config.ScmeCommonConfigName}" == entryName)
                         {
                             var entry = archive.CreateEntry(entryName);
                             using var stream = entry.Open();

@@ -1,5 +1,4 @@
 ﻿using System.Data.SqlClient;
-using System.ServiceModel;
 
 namespace SCME.InterfaceImplementations.NewImplement.MSSQL
 {

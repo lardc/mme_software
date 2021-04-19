@@ -1,95 +1,99 @@
-﻿using System;
+﻿using SCME.DatabaseServer.Properties;
+using System;
 using System.Configuration.Install;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Windows.Forms;
-using SCME.DatabaseServer.Properties;
 
 namespace SCME.DatabaseServer
 {
     static class Program
     {
-        private static NotifyIcon ms_TrayIcon;
+        private static NotifyIcon NotifyIcon;
 
-        private static void Main(string[] Args)
+        private static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
-
-            if (Environment.UserInteractive)
-            {
-                var parameter = string.Concat(Args);
-
-                switch (parameter)
-                {
-                    case "--install":
-                        StartElevated("--installElevated");
-                        break;
-                    case "--uninstall":
-                        StartElevated("--uninstallElevated");
-                        break;
-                    case "--installElevated":
-                        ManagedInstallerClass.InstallHelper(new[] { Assembly.GetExecutingAssembly().Location });
-                        break;
-                    case "--uninstallElevated":
-                        ManagedInstallerClass.InstallHelper(new[] { "/u", Assembly.GetExecutingAssembly().Location });
-                        break;
-                    default:
-                        StartAsApplication();
-                        break;
-                }
-            }
-            else
+            //Добавление обработчика исключений
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if (!Environment.UserInteractive)
             {
                 ServiceBase.Run(new DatabaseService());
+                return;
+            }
+            //Конкатинация параметров
+            string Parameter = string.Concat(args);
+            switch (Parameter)
+            {
+                case "--install":
+                    Process_StartElevated("--installElevated");
+                    break;
+                case "--uninstall":
+                    Process_StartElevated("--uninstallElevated");
+                    break;
+                case "--installElevated":
+                    ManagedInstallerClass.InstallHelper(new[] { Assembly.GetExecutingAssembly().Location });
+                    break;
+                case "--uninstallElevated":
+                    ManagedInstallerClass.InstallHelper(new[] { "/u", Assembly.GetExecutingAssembly().Location });
+                    break;
+                default:
+                    Process_StartAsApplication();
+                    break;
             }
         }
 
-        private static void StartElevated(string Args)
+        private static void Process_StartElevated(string args) //Запуск процесса
         {
-            var info = new ProcessStartInfo(Assembly.GetEntryAssembly().Location, Args)
+            ProcessStartInfo Info = new ProcessStartInfo(Assembly.GetEntryAssembly().Location, args)
             {
-                Verb = @"runas",
+                Verb = @"runas"
             };
-
-            using (var process = new Process { StartInfo = info })
+            using (Process Process = new Process())
             {
-                process.Start();
+                Process.StartInfo = Info;
+                Process.Start();
             }
-        }      
+        } 
 
-        private static void StartAsApplication()
+        private static void Process_StartAsApplication() //Запуск как приложение
         {
             SystemHost.StartService();
-
-            var ico = Resources.ServiceIcon;
-            ms_TrayIcon = new NotifyIcon
-            {
-                Text = @"SCME.DatabaseServer: " + SystemHost.GetHost() + ":" + SystemHost.GetPort().ToString(),
-                Icon = new Icon(ico, ico.Width, ico.Height),
-                ContextMenu = new ContextMenu(new[] { new MenuItem(@"Exit", OnExit) }),
-                Visible = true
-            };
-
-            Application.ApplicationExit += Application_ApplicationExit;
+            TrayObject_Create();
+            Application.ApplicationExit += Application_Exit;
             Application.Run();
         }
 
-        static void Application_ApplicationExit(object Sender, EventArgs E)
+        private static void TrayObject_Create() //Создание объекта в трэе
+        {
+            Icon Icon = Resources.ServiceIcon;
+            NotifyIcon = new NotifyIcon
+            {
+                Text = string.Format(@"SCME.DatabaseServer: {0}:{1}", SystemHost.GetHost(), SystemHost.GetPort()),
+                Icon = new Icon(Icon, Icon.Width, Icon.Height),
+                ContextMenu = new ContextMenu(new[]
+                {
+                    new MenuItem("Выход", NotifyIconButtonExit_Click)
+                }),
+                Visible = true
+            };
+        }
+
+        static void Application_Exit(object sender, EventArgs e) //Остановка службы
         {
             SystemHost.StopService();
         }
 
-        private static void OnExit(object Sender, EventArgs E)
+        private static void NotifyIconButtonExit_Click(object sender, EventArgs e) //Закрытие приложения
         {
-            ms_TrayIcon.Visible = false;
+            NotifyIcon.Visible = false;
             Application.Exit();
         }
 
-        private static void CurrentDomainUnhandledException(object Sender, UnhandledExceptionEventArgs E)
+        private static void CurrentDomain_UnhandledException(object Sender, UnhandledExceptionEventArgs e) //Обработчик исключений
         {
-            SystemHost.LogCriticalErrorMessage((Exception)E.ExceptionObject);
+            SystemHost.LogCriticalErrorMessage((Exception)e.ExceptionObject);
         }
     }
 }

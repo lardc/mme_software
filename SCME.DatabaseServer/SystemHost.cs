@@ -1,214 +1,163 @@
-﻿using System;
+﻿using SCME.DatabaseServer.Properties;
+using SCME.InterfaceImplementations;
+using SCME.InterfaceImplementations.NewImplement.MSSQL;
+using SCME.Types.Utils;
+using System;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
-using SCME.DatabaseServer.Properties;
-using SCME.InterfaceImplementations;
-using SCME.InterfaceImplementations.NewImplement.MSSQL;
-using SCME.Types.Utils;
 
 namespace SCME.DatabaseServer
 {
     internal static class SystemHost
     {
-        private static ServiceHost ms_ServiceHost;
-        
-        private static ServiceHost _databaseServiceHost;
+        private static ServiceHost MsServiceHost;
+        private static ServiceHost DatabaseServiceHost;
 
-        internal static LogJournal Journal { get; private set; }
+        /// <summary>Журнал логов</summary>
+        internal static LogJournal Journal
+        {
+            get; private set;
+        }
 
+        /// <summary>Запуск службы</summary>
         internal static void StartService()
         {
+            //Создание журнала логов
             Journal = new LogJournal();
-
             try
             {
-                var path = String.Format(Settings.Default.LogPathTemplate,
-                    DateTime.Now.ToString(CultureInfo.CurrentCulture).Replace('/', '_').Replace(':', '_'));
-
-                if (!Path.IsPathRooted(path))
-                    path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-
-                Journal.Open(path, true, true);
+                string LogPath = string.Format(Settings.Default.LogPathTemplate, DateTime.Now.ToString(CultureInfo.CurrentCulture).Replace('/', '_').Replace(':', '_'));
+                if (!Path.IsPathRooted(LogPath))
+                    LogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogPath);
+                Journal.Open(LogPath, true, true);
             }
             catch (Exception ex)
             {
                 LogCriticalErrorMessage(ex);
                 return;
             }
-
-//            try
-//            {
-//                SQLDatabaseService dbForMigration = new SQLDatabaseService(SQLCentralDatabaseService.GetConnectionStringFromSettings(Settings.Default));
-//                dbForMigration.Open();
-//                dbForMigration.Migrate();
-//                dbForMigration.Close();
-//            }
-//            catch (Exception ex)
-//            {
-//                Journal.AppendLog("Central DB SQL SERVER migration", LogJournalMessageType.Error, String.Format("Migrate database error: {0}", ex.Message));
-//                return;
-//            }
-
             try
             {
-                var service = new SQLCentralDatabaseService(Settings.Default);
-                ms_ServiceHost = new ServiceHost(service);
-                var behaviour = ms_ServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
-                behaviour.InstanceContextMode = InstanceContextMode.Single;
-                ms_ServiceHost.Open();
+                SQLCentralDatabaseService Service = new SQLCentralDatabaseService(Settings.Default);
+                MsServiceHost = new ServiceHost(Service);
+                ServiceBehaviorAttribute Behaviour = MsServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                Behaviour.InstanceContextMode = InstanceContextMode.Single;
+                MsServiceHost.Open();
             }
             catch (Exception ex)
             {
-                Journal.AppendLog("SystemHost", LogJournalMessageType.Error,
-                    $"Error starting database service: {ex.Message}");
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Error, string.Format("Error on starting database service: {0}", ex.Message));
                 return;
             }
-            
             try
             {
-                MSSQLDbService mssqlDbService;
-                _databaseServiceHost = new ServiceHost( mssqlDbService = new MSSQLDbService(new  SqlConnection(new SqlConnectionStringBuilder()
-                {
-                    DataSource = Settings.Default.DbPath,
-                    InitialCatalog = Settings.Default.DBName,
-                    IntegratedSecurity = Settings.Default.DBIntegratedSecurity,
-                    UserID = Settings.Default.DBUser,
-                    Password = Settings.Default.DBPassword,
-                    ConnectTimeout = 5
-                }.ToString()), false));
-                var behaviour = _databaseServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
-                behaviour.InstanceContextMode = InstanceContextMode.Single;
-                mssqlDbService.Migrate();
-                _databaseServiceHost.Open();
+                //Строка подключения к БД
+                string ConnectionString = string.Format(@"Data Source={0}; Initial Catalog={1}; IntegratedSecurity={2}; User ID={3}; Password={4}; Connection Timeout=5", Settings.Default.DbPath, Settings.Default.DBName, Settings.Default.DBIntegratedSecurity, Settings.Default.DBUser, Settings.Default.DBPassword);
+                MSSQLDbService MssqlDbService;
+                DatabaseServiceHost = new ServiceHost(MssqlDbService = new MSSQLDbService(new SqlConnection(ConnectionString), false));
+                ServiceBehaviorAttribute Behaviour = DatabaseServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                Behaviour.InstanceContextMode = InstanceContextMode.Single;
+                MssqlDbService.Migrate();
+                DatabaseServiceHost.Open();
             }
             catch (Exception ex)
             {
-                Journal.AppendLog("SystemHost", LogJournalMessageType.Error,
-                    $"Error starting database service: {ex?.InnerException?.ToString() ?? ex.ToString()}");
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Error, string.Format("Error on starting database service: {0}", ex?.InnerException?.ToString() ?? ex.ToString()));
                 return;
             }
-
-            Journal.AppendLog("SystemHost", LogJournalMessageType.Info,
-                $"SCME database service started on {_databaseServiceHost.BaseAddresses.FirstOrDefault()}");
+            Journal.AppendLog("SystemHost", LogJournalMessageType.Info, string.Format("Database service loaded on {0}", DatabaseServiceHost.BaseAddresses.FirstOrDefault()));
         }
 
+        /// <summary>Остановка службы</summary>
         internal static void StopService()
         {
             try
             {
-                if (ms_ServiceHost != null)
+                //Остановка службы
+                if (MsServiceHost != null)
                 {
-                    if (ms_ServiceHost.State != CommunicationState.Opened)
-                        ms_ServiceHost.Abort();
+                    if (MsServiceHost.State != CommunicationState.Opened)
+                        MsServiceHost.Abort();
                     else
-                        ms_ServiceHost.Close();
-
-                    ms_ServiceHost = null;
+                        MsServiceHost.Close();
+                    MsServiceHost = null;
                 }
-                
-                if (_databaseServiceHost != null)
+                //Остановка службы базы данных
+                if (DatabaseServiceHost != null)
                 {
-                    if (_databaseServiceHost.State != CommunicationState.Opened)
-                        _databaseServiceHost.Abort();
+                    if (DatabaseServiceHost.State != CommunicationState.Opened)
+                        DatabaseServiceHost.Abort();
                     else
-                        _databaseServiceHost.Close();
-
-                    _databaseServiceHost = null;
+                        DatabaseServiceHost.Close();
+                    DatabaseServiceHost = null;
                 }
             }
             catch (Exception ex)
             {
-                Journal.AppendLog("SystemHost", LogJournalMessageType.Warning,
-                    $"SCME database service can not be stopped properly: {ex.Message}");
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Warning, string.Format("Couldn't exit the database service properly: {0}", ex.Message));
             }
-
+            //Закрытие журнала логов
             if (Journal != null)
             {
-                Journal.AppendLog("SystemHost", LogJournalMessageType.Info, "SCME database service stopped");
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Info, "Database service stopped");
                 Journal.Close();
                 Journal = null;
             }
         }
 
-        internal static void LogCriticalErrorMessage(Exception Ex)
+        /// <summary>Критическая ошибка службы</summary>
+        internal static void LogCriticalErrorMessage(Exception ex)
         {
             try
             {
-                File.AppendAllText(@"SCME.DatabseServer error.txt",
-                    $"\n\n{DateTime.Now}\nEXCEPTION: {Ex}\nINNER EXCEPTION: {Ex.InnerException ?? new Exception("No additional information - InnerException is null")}\n");
+                File.AppendAllText(@"SCME.DatabseServer error.txt", string.Format("\n\n{0}\nEXCEPTION: {1}\nINNER EXCEPTION: {2}\n", DateTime.Now, ex, ex.InnerException ?? new Exception("No additional information - InnerException is null")));
             }
-            catch
-            {
-            }
+            catch { }
         }
 
+        /// <summary>Возвращает слушающий порт</summary>
+        /// <returns>При неудачном чтении значение равно -1</returns>
         public static int GetPort()
         {
-            //возвращает номер слушающего порта сервера:
-            //  успешный результат возврата всегда больше нуля;
-            //  возвращает -1 при не успешном чтении номера слушающего порта сервера
-            int result = -1;
-
-            if (ms_ServiceHost != null)
+            int Result = -1;
+            //Служба не запущена
+            if (MsServiceHost == null)
+                return Result;
+            try
             {
-                try
-                {
-                    switch (ms_ServiceHost.ChannelDispatchers.Count)
-                    {
-                        case 1:
-                            result = ms_ServiceHost.ChannelDispatchers.FirstOrDefault().Listener.Uri.Port;
-                            break;
-
-                        default:
-                            result = -1;
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Journal.AppendLog("SystemHost", LogJournalMessageType.Error, $"Error getting listener port from database service: {ex.Message}");
-                    result = -1;
-                }
+                if (MsServiceHost.ChannelDispatchers.Count == 1)
+                    Result = MsServiceHost.ChannelDispatchers.FirstOrDefault().Listener.Uri.Port;
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Error, string.Format("Error getting listening port from database service: {0}", ex.Message));
+                Result = -1;
+            }
+            return Result;
         }
 
+        /// <summary>Возвращает имя хоста слушающего порта</summary>
+        /// <returns>При неудачном чтении значение равно пустой строке</returns>
         public static string GetHost()
         {
-            //возвращает хост слушающего порта сервера:
-            //  успешный результат возврата всегда больше нуля;
-            //  возвращает -1 при не успешном чтении номера слушающего порта сервера
-            string result = string.Empty;
-
-            if (ms_ServiceHost != null)
+            string Result = string.Empty;
+            //Служба не запущена
+            if (MsServiceHost == null)
+                return Result;
+            try
             {
-                try
-                {
-                    switch (ms_ServiceHost.ChannelDispatchers.Count)
-                    {
-                        case 1:
-                            result = ms_ServiceHost.ChannelDispatchers.FirstOrDefault().Listener.Uri.Host;
-                            break;
-
-                        default:
-                            result = string.Empty;
-                            break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Journal.AppendLog("SystemHost", LogJournalMessageType.Error, $"Error getting listener port from database service: {ex.Message}");
-                    result = string.Empty;
-                }
+                if (MsServiceHost.ChannelDispatchers.Count == 1)
+                    Result = MsServiceHost.ChannelDispatchers.FirstOrDefault().Listener.Uri.Host;
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                Journal.AppendLog("SystemHost", LogJournalMessageType.Error, string.Format("Error getting listening port from database service: {0}", ex.Message));
+                Result = string.Empty;
+            }
+            return Result;
         }
-
-
     }
 }

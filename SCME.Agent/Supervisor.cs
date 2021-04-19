@@ -1,124 +1,119 @@
-﻿using System;
+﻿using SCME.Agent.Properties;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
-using SCME.Agent.Properties;
-// ReSharper disable InvertIf
 
 namespace SCME.Agent
 {
     internal class Supervisor
     {
-        private readonly Process _pService, _pUserInterface;
-        private bool _restartService = true;
-        public bool NeedRestart = false;
+        //Процессы службы и UI на рабочей станции
+        private readonly Process PService, PUserInterface;
+        private bool RestartService = true;
+        public bool NeedsRestart = false;
+        
+        /// <summary>Инициализирует новый экземпляр класса Supervisor</summary>
         internal Supervisor()
         {
-            var ico = Resources.TrayIconPE;
-            var toolStripButton = new ToolStripButton()
-            {
-                Text = @"Exit"
-            };
-            toolStripButton.Click += ToolStripButtonExit_Click;
-
-            var contextMenuStrip = new ContextMenuStrip();
-            contextMenuStrip.Items.Add(toolStripButton);
-            var notifyIcon = new NotifyIcon
-            {
-                Text = @"SCME.Agent",
-                Icon = new Icon(ico, ico.Width, ico.Height),
-                ContextMenuStrip = contextMenuStrip,
-                Visible = true
-            };
-
-
-            _pService = new Process
+            TrayObject_Create();
+            //Сервис на рабочей станции
+            PService = new Process
             {
                 StartInfo =
                 {
                     FileName = Program.ConfigData.ServiceAppPath,
-                    WorkingDirectory =
-                        Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ??
-                        Environment.CurrentDirectory,
+                    WorkingDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath) ?? Environment.CurrentDirectory,
                     ErrorDialog = false
                 },
                 EnableRaisingEvents = true
             };
-            _pService.Exited += PServiceOnExited;
-
+            PService.Exited += PService_Exited;
+            //UI на рабочей станции
             if (Program.ConfigData.IsUserInterfaceEnabled)
             {
-                _pUserInterface = new Process
+                PUserInterface = new Process
                 {
                     StartInfo =
                     {
                         FileName = Program.ConfigData.UIAppPath,
-                        WorkingDirectory =
-                            (Path.GetDirectoryName(Program.ConfigData.UIAppPath)) ??
-                            Environment.CurrentDirectory,
+                        WorkingDirectory = Path.GetDirectoryName(Program.ConfigData.UIAppPath) ??Environment.CurrentDirectory,
                         ErrorDialog = false
                     },
                     EnableRaisingEvents = true
                 };
-
-                _pUserInterface.Exited += PUserInterfaceOnExited;
+                PUserInterface.Exited += PUserInterface_Exited;
             }
-
         }
 
-        private void ToolStripButtonExit_Click(object sender, EventArgs e)
+        internal void Start() //Запуск супервайзера
         {
-            _pService.Exited -= PServiceOnExited;
-            _pUserInterface.Exited -= PUserInterfaceOnExited;
-            _pService.Kill();
-            _pService.WaitForExit();
-            _pUserInterface.Kill();
-            _pUserInterface.WaitForExit();
-            Application.Exit();
-        }
-
-        private void PUserInterfaceOnExited(object sender, EventArgs e)
-        {
-            _restartService = false;
-            _pService.Kill();
-            _pService.WaitForExit();
-            NeedRestart = true;
-            Application.Exit();
-        }
-
-        private void PServiceOnExited(object sender, EventArgs e)
-        {
-            if(_restartService)
-                StartProcess(_pService);
-        }
-
-        internal void Start()
-        {
-            StartProcess(_pService);
-
+            StartProcess(PService);
+            //Запуск UI при необходимости
             if (Program.ConfigData.IsUserInterfaceEnabled)
-                StartProcess(_pUserInterface);
+                StartProcess(PUserInterface);
         }
-        
 
-        private static void StartProcess(Process p)
+        private void TrayObject_Create() //Создание объекта в трэе
+        {
+            Icon Icon = Resources.TrayIconPE;
+            ToolStripButton ToolStripButton = new ToolStripButton()
+            {
+                Text = @"Exit"
+            };
+            ToolStripButton.Click += ToolStripButtonExit_Click;
+            ContextMenuStrip ContextMenuStrip = new ContextMenuStrip();
+            ContextMenuStrip.Items.Add(ToolStripButton);
+            NotifyIcon NotifyIcon = new NotifyIcon
+            {
+                Text = "SCME.Agent",
+                Icon = new Icon(Icon, Icon.Width, Icon.Height),
+                ContextMenuStrip = ContextMenuStrip,
+                Visible = true
+            };
+        }
+
+        private void ToolStripButtonExit_Click(object sender, EventArgs e) //Закрытие супервайзера
+        {
+            PService.Exited -= PService_Exited;
+            PUserInterface.Exited -= PUserInterface_Exited;
+            PService.Kill();
+            PService.WaitForExit();
+            PUserInterface.Kill();
+            PUserInterface.WaitForExit();
+            Application.Exit();
+        }
+
+        private void PUserInterface_Exited(object sender, EventArgs e) //Выключение UI
+        {
+            RestartService = false;
+            PService.Kill();
+            PService.WaitForExit();
+            NeedsRestart = true;
+            Application.Exit();
+        }
+
+        private void PService_Exited(object sender, EventArgs e) //Выключение сервиса
+        {
+            if (RestartService)
+                StartProcess(PService);
+        }        
+
+        private static void StartProcess(Process process) //Запуск процесса
         {
             try
             {
-                var processesByName = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(p.StartInfo.FileName));
-
-                if (processesByName.Length == 0)
-                    p.Start();
+                //Проверка существования процесса
+                Process[] ProcessesByName = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(process.StartInfo.FileName));
+                //Процесс не запущен
+                if (ProcessesByName.Length == 0)
+                    process.Start();
             }
             catch (Exception ex)
             {
-                var str = string.Format(Resources.Log_Message_Process_error, p.StartInfo.FileName, ex.Message);
-
-                MessageBox.Show(str, Resources.Error_Caption_Supervisor_error, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
+                string report = string.Format(Resources.Log_Message_Process_error, process.StartInfo.FileName, ex.Message);
+                MessageBox.Show(report, Resources.Error_Caption_Supervisor_error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }

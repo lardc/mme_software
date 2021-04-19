@@ -1,53 +1,52 @@
 ﻿using SCME.InterfaceImplementations.NewImplement.MSSQL;
 using SCME.Types;
+using SCME.Types.Gate;
+using SCME.Types.Profiles;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using SCME.Types.Gate;
 
 namespace BaseRepair
 {
-    class Program
+    static class Program
     {
-        public static void ReSaveProfiles()
+        static void Main(string[] args)
         {
             try
             {
-                var q = new SqlConnectionStringBuilder()
+                //ReSaveForGateItm();
+                Profiles_Resave();
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("error.txt", ex.ToString());
+            }
+
+        }
+
+        private static void Profiles_Resave() //Пересоздание профилей
+        {
+            try
+            {
+                //Строка подключения к БД
+                string ConnectionString = string.Format(@"Data Source=tcp:192.168.0.134, 1444; Initial Catalog=SCME_ResultsDB; User ID=sa; Password={0}", File.ReadAllText("password.txt"));
+                //Инициализация подключения
+                MSSQLDbService MsSqlDbService = new MSSQLDbService(new SqlConnection(ConnectionString));
+                List<MyProfile> CentralProfiles = MsSqlDbService.GetProfilesDeepByMmeCode("MME007");
+                List<MyProfile> NewCentralProfiles = new List<MyProfile>(CentralProfiles);
+                //Обновление версий профилей
+                foreach (MyProfile Profile in NewCentralProfiles)
                 {
-                    DataSource = @"tcp:192.168.0.134, 1444",
-                    InitialCatalog = @"SCME_ResultsDB",
-                    IntegratedSecurity = false,
-                    UserID = "sa",
-                    Password = File.ReadAllText("password.txt"),
-                    ConnectTimeout = 15
-                };
-                var mssqlDbService = new MSSQLDbService(new SqlConnection(q.ToString()));
-
-                var msSqlDbServiceProxy = new MSSQLDbService(new SqlConnection(q.ToString()));
-
-                var centralProfiles = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
-                var centralProfiles1 = msSqlDbServiceProxy.GetProfilesDeepByMmeCode("MME007");
-
-
-                foreach (var i in centralProfiles1)
-                {
-                    i.Version++;
-                    i.Timestamp = DateTime.Now;
-                    i.Key = Guid.NewGuid();
-                    i.Id = 0;
+                    Profile.Version++;
+                    Profile.Timestamp = DateTime.Now;
+                    Profile.Key = Guid.NewGuid();
+                    Profile.Id = 0;
                 }
-
-                var w = centralProfiles.Zip(centralProfiles1, (m, n) => new {oldP = m, newP = n}).ToList();
-
-                int qwe = 0;
-
-                foreach (var i in w)
-                {
-                    mssqlDbService.InsertUpdateProfile(i.oldP, i.newP, "MME007");
-                    qwe++;
-                }
+                List<(MyProfile oldP, MyProfile newP) > CortegeList = CentralProfiles.Zip(NewCentralProfiles, (oldProfile, newProfile) => (oldP: oldProfile, newP: newProfile)).ToList();
+                foreach ((MyProfile oldP, MyProfile newP) in CortegeList)
+                    MsSqlDbService.InsertUpdateProfile(oldP, newP, "MME007");
             }
             catch (Exception ex)
             {
@@ -85,22 +84,8 @@ namespace BaseRepair
                     mssqlDbService.InsertUpdateProfile(j, copy, i.Key);
                     countUpdates++;
                 }
-
                 Console.WriteLine($"Количество обновлённых профилей {countUpdates}");
                 Console.WriteLine($"Закончена обработка mme: {i.Key}");
-            }
-        }
-
-        private static void Main(string[] args)
-        {
-            try
-            {
-                //ReSaveForGateItm();
-                ReSaveProfiles();
-            }
-            catch (Exception ex)
-            {
-                File.WriteAllText("error.txt", ex.ToString());
             }
         }
     }

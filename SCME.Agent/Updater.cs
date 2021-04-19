@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -10,14 +11,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml;
-using SCME.Agent.Properties;
-
-// ReSharper disable InvertIf
 
 namespace SCME.Agent
 {
     internal class Updater
     {
+        //Расположения файлов для обновления
         private const string ERROR_FILE = "UpdateError.txt";
         private const string GET_SCME_AGENT_VERSION_PATH = "Update/GetAgentVersion";
         private const string DOWNLOAD_SCME_AGENT_FILE_PATH = "Update/GetAgentFolder";
@@ -25,15 +24,13 @@ namespace SCME.Agent
         private const string DOWNLOAD_SCME_UI_SERVICE_FILE_PATH = "Update/GetSoftwareFolder";
         private const string BACK_AGENT_DIRECTORY = "../BackAGENT";
         private const string BACK_UI_SERVICE_DIRECTORY = "../BackUiService";
-
-        private readonly HttpClient _client = new HttpClient();
-
+        private readonly HttpClient Client = new HttpClient();
         private const int DELAY_MS = 1000;
         private const int COUNT_REPEAT = 3;
 
-        private static async Task<T> RepeatActionAsync<T>(Func<Task<T>> action, string exceptionMessage = null)
+        private static async Task<T> RepeatActionAsync<T>(Func<Task<T>> action, string exceptionMessage = null) //Попытка выполнения действия асинхронно
         {
-            for (var i = 0; i < COUNT_REPEAT; i++)
+            for (int i = 0; i < COUNT_REPEAT; i++)
             {
                 try
                 {
@@ -46,59 +43,60 @@ namespace SCME.Agent
                     Thread.Sleep(DELAY_MS);
                 }
             }
-
             throw new NotImplementedException();
         }
 
-        private static void DirectoryMove(string sourceDirName, string destDirName, bool copySubDirs)
+        private static void Directory_Move(string sourceDirName, string destDirName, bool copySubDirs) //Перемещение папок
         {
-            var dir = new DirectoryInfo(sourceDirName);
-
-            if (!dir.Exists)
-                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
-
-            var subDirectories = dir.GetDirectories();
-
+            //Корневая папка
+            DirectoryInfo RootDirectory = new DirectoryInfo(sourceDirName);
+            //Корневая папка не существует
+            if (!RootDirectory.Exists)
+                throw new DirectoryNotFoundException(string.Format("Каталог не существует или не найден: {0}", sourceDirName));
+            //Подразделы корневой папки
+            DirectoryInfo[] SubDirectories = RootDirectory.GetDirectories();
             if (!Directory.Exists(destDirName))
                 Directory.CreateDirectory(destDirName);
-
-            var files = dir.GetFiles();
-            foreach (var file in files)
-                file.MoveTo(Path.Combine(destDirName, file.Name));
-
+            //Файлы корневой директории
+            FileInfo[] Files = RootDirectory.GetFiles();
+            //Перемещение всех файлов в папку назначения
+            foreach (FileInfo File in Files)
+                File.MoveTo(Path.Combine(destDirName, File.Name));
+            //Рекурсивное копирование подразделов
             if (copySubDirs)
-                foreach (var directoryInfo in subDirectories)
-                    DirectoryMove(directoryInfo.FullName, Path.Combine(destDirName, directoryInfo.Name), true);
+                foreach (DirectoryInfo directoryInfo in SubDirectories)
+                    Directory_Move(directoryInfo.FullName, Path.Combine(destDirName, directoryInfo.Name), true);
         }
 
+        /// <summary>Обновление агента</summary>
+        /// <returns>Результат выполнения обновления</returns>
         public async Task<bool> UpdateAgent()
         {
             try
             {
-                var serverAgentVersionString = await RepeatActionAsync(() => _client.GetStringAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), GET_SCME_AGENT_VERSION_PATH)));
-                if (FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion == serverAgentVersionString)
+                //Получение версии агента с сервера
+                string ServerAgentVersionString = await RepeatActionAsync(() => Client.GetStringAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), GET_SCME_AGENT_VERSION_PATH)));
+                if (FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion == ServerAgentVersionString)
                     return false;
-
-                var newVersionBytes = await RepeatActionAsync(() => _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), DOWNLOAD_SCME_AGENT_FILE_PATH)));
-
+                //Получение новой версии агента
+                byte[] NewVersionBytes = await RepeatActionAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), DOWNLOAD_SCME_AGENT_FILE_PATH)));
+                //Бэкап предыдущей версии
                 if (Directory.Exists(BACK_AGENT_DIRECTORY))
                     Directory.Delete(BACK_AGENT_DIRECTORY, true);
-
-                DirectoryMove(Directory.GetCurrentDirectory(), BACK_AGENT_DIRECTORY, true);
-
+                Directory_Move(Directory.GetCurrentDirectory(), BACK_AGENT_DIRECTORY, true);
                 try
                 {
-                    await using var memoryStream = new MemoryStream(newVersionBytes);
-                    using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
-                    zipArchive.ExtractToDirectory(Directory.GetCurrentDirectory(), true);
-                    File.Copy(Path.Combine(BACK_AGENT_DIRECTORY,"appsettings.json"), "appsettings.json", true);
+                    //Архивация новой версии и перезапись конфигурационного json-файла
+                    await using MemoryStream Stream = new MemoryStream(NewVersionBytes);
+                    using ZipArchive Archive = new ZipArchive(Stream, ZipArchiveMode.Read, false);
+                    Archive.ExtractToDirectory(Directory.GetCurrentDirectory(), true);
+                    File.Copy(Path.Combine(BACK_AGENT_DIRECTORY, "appsettings.json"), "appsettings.json", true);
                 }
                 catch
                 {
-                    DirectoryMove(BACK_AGENT_DIRECTORY, Directory.GetCurrentDirectory(), true);
+                    Directory_Move(BACK_AGENT_DIRECTORY, Directory.GetCurrentDirectory(), true);
                     throw;
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -108,87 +106,82 @@ namespace SCME.Agent
             }
         }
 
+        /// <summary>Обновление UI</summary>
+        /// <returns>Результат выполнения обновления</returns>
         public async Task<bool> UpdateUiService()
         {
             try
             {
-                bool currentVersionNotFound = false;
-                string mmeCode;
-                var serviceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
-                var versionFileName = Path.Combine(Path.GetDirectoryName(Program.ConfigData.UIAppPath), "Version.txt");
-                var uriBuilder = new UriBuilder(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), EQUAL_SOFTWARE_VERSION));
-                var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-
-                bool variantOne = File.Exists(Program.ConfigData.ServiceAppPath);
-                bool variantTwo = File.Exists(versionFileName);
-                
-                if (variantOne == false && variantTwo == false  )
+                bool CurrentVersionNotFound = false;
+                string MmeCode;
+                string ServiceDirectory = Path.GetDirectoryName(Program.ConfigData.ServiceAppPath);
+                string VersionFileName = Path.Combine(Path.GetDirectoryName(Program.ConfigData.UIAppPath), "Version.txt");
+                UriBuilder UriBuilder = new UriBuilder(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), EQUAL_SOFTWARE_VERSION));
+                NameValueCollection Query = HttpUtility.ParseQueryString(UriBuilder.Query);
+                //Проверка существования файлов службы и версии
+                bool VariantOne = File.Exists(Program.ConfigData.ServiceAppPath);
+                bool VariantTwo = File.Exists(VersionFileName);
+                //Оба файла отсутствуют
+                if (!VariantOne && !VariantTwo)
                 {
-                    mmeCode = Program.ConfigData.MMECode;
-                    if (MessageBox.Show(@$"Current version not found, install latest version {mmeCode} ? {Environment.NewLine} No - Close program", @"Confirm", MessageBoxButtons.YesNo) ==
-                        DialogResult.No)
+                    MmeCode = Program.ConfigData.MMECode;
+                    if (MessageBox.Show(string.Format(@"Текущая версия не найдена. Установить последнюю версию {0} ? {1}", MmeCode, Environment.NewLine), "Подтверждение", MessageBoxButtons.YesNo) == DialogResult.No)
                         return false;
-                    currentVersionNotFound = true;
-                    query["currentVersion"] = "0.0.0.0";
+                    CurrentVersionNotFound = true;
+                    Query["currentVersion"] = "0.0.0.0";
                 }
                 else
                 {
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "SCME.UIServiceConfig.dll.config"));
-                    mmeCode = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>()
-                        .Single(m => m.Attributes["name"].Value == "MMECode").InnerText;
-                    if (variantTwo)
-                        query["currentVersion"] = File.ReadAllText(Path.Combine(versionFileName));
+                    XmlDocument XmlDocument = new XmlDocument();
+                    XmlDocument.Load(Path.Combine(Path.GetDirectoryName(Program.ConfigData.ServiceAppPath), "SCME.UIServiceConfig.dll.config"));
+                    MmeCode = XmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().Single(node => node.Attributes["name"].Value == "MMECode").InnerText;
+                    //Отсутствует файл текущей версии
+                    if (VariantTwo)
+                        Query["currentVersion"] = File.ReadAllText(Path.Combine(VersionFileName));
                     else 
-                        query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion;
+                        Query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion;
                         
                 }
-
-                query["mme"] = mmeCode;
-                uriBuilder.Query = query.ToString();
-
-                var versionEqual = await RepeatActionAsync(() => _client.GetStringAsync(uriBuilder.Uri));
-
-                if (versionEqual == "null")
+                Query["mme"] = MmeCode;
+                UriBuilder.Query = Query.ToString();
+                //Получение версии с сервера
+                string VersionsEqual = await RepeatActionAsync(() => Client.GetStringAsync(UriBuilder.Uri));
+                if (VersionsEqual == "null")
                 {
-                    MessageBox.Show($@"{mmeCode} не найден на сервере");
+                    MessageBox.Show(string.Format("{0} не найден на сервере", MmeCode));
                     return true;
                 }
-
-                if (Convert.ToBoolean(versionEqual))
+                //Версии совпадают
+                if (Convert.ToBoolean(VersionsEqual))
                     return true;
-
-                var newVersionBytes = await RepeatActionAsync(() =>
-                    _client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={mmeCode}")));
-
-                if (!currentVersionNotFound)
+                //Получение новой версии UI
+                byte[] NewVersionBytes = await RepeatActionAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={MmeCode}")));
+                if (!CurrentVersionNotFound)
                 {
                     if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
                         Directory.Delete(BACK_UI_SERVICE_DIRECTORY, true);
-
-                    DirectoryMove(serviceDirectory, BACK_UI_SERVICE_DIRECTORY, true);
+                    Directory_Move(ServiceDirectory, BACK_UI_SERVICE_DIRECTORY, true);
                 }
-
                 try
                 {
-                    await using var memoryStream = new MemoryStream(newVersionBytes);
-                    using var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Read, false);
-                    zipArchive.ExtractToDirectory(serviceDirectory, true);
+                    //Архивация новой версии
+                    await using MemoryStream Stream = new MemoryStream(NewVersionBytes);
+                    using ZipArchive Archive = new ZipArchive(Stream, ZipArchiveMode.Read, false);
+                    Archive.ExtractToDirectory(ServiceDirectory, true);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    if (!currentVersionNotFound)
-                        DirectoryMove(BACK_UI_SERVICE_DIRECTORY, serviceDirectory, true);
+                    if (!CurrentVersionNotFound)
+                        Directory_Move(BACK_UI_SERVICE_DIRECTORY, ServiceDirectory, true);
                     throw;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), @"Error");
+                MessageBox.Show(ex.ToString(), "Ошибка");
                 File.WriteAllText(ERROR_FILE, ex.ToString());
                 throw;
             }
-
             return true;
         }
     }
