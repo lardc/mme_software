@@ -14,6 +14,7 @@ using System.Xml;
 
 namespace SCME.Agent
 {
+    /// <summary>Апдейтер</summary>
     internal class Updater
     {
         //Расположения файлов для обновления
@@ -27,24 +28,6 @@ namespace SCME.Agent
         private readonly HttpClient Client = new HttpClient();
         private const int DELAY_MS = 1000;
         private const int COUNT_REPEAT = 3;
-
-        private static async Task<T> RepeatActionAsync<T>(Func<Task<T>> action, string exceptionMessage = null) //Попытка выполнения действия асинхронно
-        {
-            for (int i = 0; i < COUNT_REPEAT; i++)
-            {
-                try
-                {
-                    return await action();
-                }
-                catch (Exception ex)
-                {
-                    if (i == COUNT_REPEAT - 1)
-                        throw string.IsNullOrEmpty(exceptionMessage) ? ex : new Exception(exceptionMessage, ex);
-                    Thread.Sleep(DELAY_MS);
-                }
-            }
-            throw new NotImplementedException();
-        }
 
         private static void Directory_Move(string sourceDirName, string destDirName, bool copySubDirs) //Перемещение папок
         {
@@ -75,11 +58,11 @@ namespace SCME.Agent
             try
             {
                 //Получение версии агента с сервера
-                string ServerAgentVersionString = await RepeatActionAsync(() => Client.GetStringAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), GET_SCME_AGENT_VERSION_PATH)));
+                string ServerAgentVersionString = await Action_RepeatAsync(() => Client.GetStringAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), GET_SCME_AGENT_VERSION_PATH)));
                 if (FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion == ServerAgentVersionString)
                     return false;
                 //Получение новой версии агента
-                byte[] NewVersionBytes = await RepeatActionAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), DOWNLOAD_SCME_AGENT_FILE_PATH)));
+                byte[] NewVersionBytes = await Action_RepeatAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), DOWNLOAD_SCME_AGENT_FILE_PATH)));
                 //Бэкап предыдущей версии
                 if (Directory.Exists(BACK_AGENT_DIRECTORY))
                     Directory.Delete(BACK_AGENT_DIRECTORY, true);
@@ -138,14 +121,14 @@ namespace SCME.Agent
                     //Отсутствует файл текущей версии
                     if (VariantTwo)
                         Query["currentVersion"] = File.ReadAllText(Path.Combine(VersionFileName));
-                    else 
+                    else
                         Query["currentVersion"] = FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion;
-                        
+
                 }
                 Query["mme"] = MmeCode;
                 UriBuilder.Query = Query.ToString();
                 //Получение версии с сервера
-                string VersionsEqual = await RepeatActionAsync(() => Client.GetStringAsync(UriBuilder.Uri));
+                string VersionsEqual = await Action_RepeatAsync(() => Client.GetStringAsync(UriBuilder.Uri));
                 if (VersionsEqual == "null")
                 {
                     MessageBox.Show(string.Format("{0} не найден на сервере", MmeCode));
@@ -155,7 +138,7 @@ namespace SCME.Agent
                 if (Convert.ToBoolean(VersionsEqual))
                     return true;
                 //Получение новой версии UI
-                byte[] NewVersionBytes = await RepeatActionAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={MmeCode}")));
+                byte[] NewVersionBytes = await Action_RepeatAsync(() => Client.GetByteArrayAsync(new Uri(new Uri(Program.ConfigData.UpdateServerUrl), $"{DOWNLOAD_SCME_UI_SERVICE_FILE_PATH}?mme={MmeCode}")));
                 if (!CurrentVersionNotFound)
                 {
                     if (Directory.Exists(BACK_UI_SERVICE_DIRECTORY))
@@ -183,6 +166,24 @@ namespace SCME.Agent
                 throw;
             }
             return true;
+        }
+
+        private static async Task<T> Action_RepeatAsync<T>(Func<Task<T>> action, string exceptionMessage = null) //Попытка выполнения действия асинхронно
+        {
+            for (int i = 0; i < COUNT_REPEAT; i++)
+            {
+                try
+                {
+                    return await action();
+                }
+                catch (Exception ex)
+                {
+                    if (i == COUNT_REPEAT - 1)
+                        throw string.IsNullOrEmpty(exceptionMessage) ? ex : new Exception(exceptionMessage, ex);
+                    Thread.Sleep(DELAY_MS);
+                }
+            }
+            throw new NotImplementedException();
         }
     }
 }

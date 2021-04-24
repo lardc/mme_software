@@ -1,28 +1,72 @@
-﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace SCME.UpdateServer
 {
-
+    /// <summary>Параметры Mme</summary>
     public class MmeParameter
     {
-        public string Name { get; set; }
-        public string Folder { get; set; }
-        public IConfigurationSection Configs { get; set; }
+        /// <summary>Наименование</summary>
+        public string Name
+        {
+            get; set;
+        }
+
+        /// <summary>Расположение</summary>
+        public string Folder
+        {
+            get; set;
+        }
+
+        /// <summary>Конфигурация</summary>
+        public IConfigurationSection Configs
+        {
+            get; set;
+        }
     }
-    
+
+    /// <summary>Параметры Mme</summary>
     public class UpdateDataConfig
     {
-        public string DebugParameter { get; set; }
-        public string DataPathRoot { get; set; }
-        public string ScmeAgentFolderName { get; set; }
-        public string ScmeAgentExeName { get; set; }
+        /// <summary>Debug-параметр</summary>
+        public string DebugParameter
+        {
+            get; set;
+        }
 
-        public string ScmeUIExeName { get; set; }
-        public string ScmeCommonConfigName { get; set; }
+        /// <summary>Корневой каталог</summary>
+        public string DataPathRoot
+        {
+            get; set;
+        }
 
-        public MmeParameter[] MmeParameters { get; set; }
-        
+        /// <summary>Расположение папки агента</summary>
+        public string ScmeAgentFolderName
+        {
+            get; set;
+        }
+
+        /// <summary>Имя файла агента</summary>
+        public string ScmeAgentExeName
+        {
+            get; set;
+        }
+
+        /// <summary>Имя файла UI</summary>
+        public string ScmeUIExeName
+        {
+            get; set;
+        }
+
+        /// <summary>Имя файла общих настроек</summary>
+        public string ScmeCommonConfigName
+        {
+            get; set;
+        }
+
+        /// <summary>Параметры Mme</summary>
+        public MmeParameter[] MmeParameters
+        {
+            get; set;
+        }
     }
 }

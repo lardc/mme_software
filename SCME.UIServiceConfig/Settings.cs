@@ -1,38 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace SCME.UIServiceConfig
 {
+    /// <summary>Конфигурационные настройки</summary>
     public static class Settings
     {
+        /// <summary>Загрузка конфигурационных параметров</summary>
+        /// <param name="loadParentConfig">Необходимость использовать родительские конфигурационные параметры</param>
         public static void LoadSettings(bool loadParentConfig = false)
         {
-            var settings = Properties.Settings.Default;
-            
-            var exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine((loadParentConfig ? Directory.GetParent(Path.GetDirectoryName(exePath)).FullName : Path.GetDirectoryName(exePath)) ?? throw new DirectoryNotFoundException(), "SCME.UIServiceConfig.dll.config");
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(path);
-            foreach(XmlElement i in  xmlDocument.SelectNodes(@"//applicationSettings/SCME.UIServiceConfig.Properties.Settings")[0])
+            Properties.Settings Settings = Properties.Settings.Default;
+            //Расположение сборки
+            string ExePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //Расположение конфигурационных параметров
+            string ConfigPath = Path.Combine((loadParentConfig ? Directory.GetParent(Path.GetDirectoryName(ExePath)).FullName : Path.GetDirectoryName(ExePath)) ?? throw new DirectoryNotFoundException(), "SCME.UIServiceConfig.dll.config");
+            XmlDocument Document = new XmlDocument();
+            Document.Load(ConfigPath);
+            //Получение списка параметров
+            foreach (XmlElement Element in Document.SelectNodes(@"//applicationSettings/SCME.UIServiceConfig.Properties.Settings")[0])
             {
-                var nameSetting = i.GetAttribute("name");
-                var value = i.InnerText;
-                
-                var typeValue = settings[nameSetting].GetType();
-                
-                var converter = TypeDescriptor.GetConverter(typeValue);
-                var canConvert = converter.CanConvertFrom(typeof(string));
-                
-                if(!canConvert)
+                string NameSetting = Element.GetAttribute("name");
+                string Value = Element.InnerText;
+                Type TypeValue = Settings[NameSetting].GetType();
+                TypeConverter Converter = TypeDescriptor.GetConverter(TypeValue);
+                bool CanConvert = Converter.CanConvertFrom(typeof(string));
+                //Конвертация не удалась
+                if (!CanConvert)
                     throw new NotImplementedException();
-                
-                settings[nameSetting] = converter.ConvertFrom(value);
+                Settings[NameSetting] = Converter.ConvertFrom(Value);
             }
         }
     }

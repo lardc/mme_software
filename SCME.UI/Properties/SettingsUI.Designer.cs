@@ -12,7 +12,7 @@ namespace SCME.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class SettingsUI : global::System.Configuration.ApplicationSettingsBase {
         
         private static SettingsUI defaultInstance = ((SettingsUI)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new SettingsUI())));
@@ -25,7 +25,7 @@ namespace SCME.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public string ComplexPartsIsDisabled {
             get {
                 return ((string)(this["ComplexPartsIsDisabled"]));

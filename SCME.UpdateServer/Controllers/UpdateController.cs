@@ -14,6 +14,7 @@ namespace SCME.UpdateServer.Controllers
 
     public class UpdateController : ControllerBase
     {
+        //Размер пакета передачи и конфигурационный файл
         private const int SIZE_PACKET = 1024 * 1024;
         private readonly UpdateDataConfig Config;
 
@@ -60,113 +61,114 @@ namespace SCME.UpdateServer.Controllers
                 using (ZipArchive Archive = new ZipArchive(Stream, ZipArchiveMode.Create, true))
                     foreach (string obj in ZipAndXmlHelper.DirectorySearch(FolderName))
                         Archive.CreateEntryFromFile(obj, obj.Substring(FolderName.Length + 1));
-                ReturnFileInPars(ZipFileName);
+                ReturnFileInParts(ZipFileName);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-			finally
-			{
-				try
-				{
+            finally
+            {
+                try
+                {
                     System.IO.File.Delete(ZipFileName);
                 }
-		        catch (Exception e)
-		        {
-		            Console.WriteLine(e);
-		        }
-			}
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
             GC.Collect(2, GCCollectionMode.Forced, true);
             GC.WaitForPendingFinalizers();
         }
 
-        /// <summary>Получить расположение папки агента</summary>
-        /// <returns>Расположение папки агента</returns>
+        /// <summary>Получить текущую версию на сервере</summary>
+        /// <param name="mme">Mme-код</param>
+        /// <param name="currentVersion">Текущая версия на станции</param>
+        /// <returns>Текущая версию на сервере</returns>
         [HttpGet]
         public string EqualSoftwareVersion(string mme, string currentVersion)
         {
-            var mmeParameter = Config.MmeParameters.SingleOrDefault(m => m.Name == mme);
-
-            if (mmeParameter == null)
+            MmeParameter MmeParameter = Config.MmeParameters.SingleOrDefault(m => m.Name == mme);
+            if (MmeParameter == null)
                 return "null";
-
-            var uiExeFileName = Path.Combine(Config.DataPathRoot, mmeParameter.Folder, Config.ScmeUIExeName);
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var versionFileName = Path.Combine(uiExeFileName, Path.GetDirectoryName(uiExeFileName), "Version.txt");
-
-            var variantTwo = System.IO.File.Exists(versionFileName);
-            
-            return variantTwo ? (currentVersion == System.IO.File.ReadAllText(versionFileName)).ToString().Trim() : (currentVersion == FileVersionInfo.GetVersionInfo(uiExeFileName).ProductVersion).ToString();
+            string UiExeFileName = Path.Combine(Config.DataPathRoot, MmeParameter.Folder, Config.ScmeUIExeName);
+            string VersionFileName = Path.Combine(UiExeFileName, Path.GetDirectoryName(UiExeFileName), "Version.txt");
+            //Файл с версией существует
+            bool VariantTwo = System.IO.File.Exists(VersionFileName);
+            //Возвращение версии либо из файла, либо из версии сборки
+            return VariantTwo ? (currentVersion == System.IO.File.ReadAllText(VersionFileName)).ToString().Trim() : (currentVersion == FileVersionInfo.GetVersionInfo(UiExeFileName).ProductVersion).ToString();
         }
 
-        private void ReturnFileInPars(string fileName)
-        {
-            using var fileStream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
-            using var br = new BinaryReader(fileStream);
-            var length =  fileStream.Length;
-            var bytes = new byte[SIZE_PACKET];
-            
-            Response.ContentType = "application/octet-stream";
-
-            Response.ContentLength = length;
-            for (var i = 0; i < fileStream.Length; i += SIZE_PACKET)
-            {
-                var countReadBytes = Convert.ToInt32(i + SIZE_PACKET < length ? SIZE_PACKET : length - i);
-                br.Read(bytes, 0, countReadBytes);
-                Response.Body.WriteAsync(bytes, 0, countReadBytes).Wait();
-            }
-        }
-
+        /// <summary>Получить архив папки с проектом</summary>
+        /// <param name="mme">Mme-код</param>
         [HttpGet]
         public void GetSoftwareFolder(string mme)
         {
-            var zipFileName = Guid.NewGuid().ToString();
+            string ZipFileName = Guid.NewGuid().ToString();
             try
             {
-                var mmeParameter = Config.MmeParameters.Single(m => m.Name == mme);
-                var folderName = Path.Combine(Config.DataPathRoot, mmeParameter.Folder);
-
-                FileStream fileStream;
-
-                using (fileStream = System.IO.File.Open(zipFileName, FileMode.Create, FileAccess.ReadWrite))
-                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create, true))
-                    foreach (var i in ZipAndXmlHelper.DirectorySearch(folderName))
+                MmeParameter MmeParameter = Config.MmeParameters.Single(m => m.Name == mme);
+                //Получение соответствуещего расположения папки
+                string FolderName = Path.Combine(Config.DataPathRoot, MmeParameter.Folder);
+                FileStream Stream;
+                //Архивация папки
+                using (Stream = System.IO.File.Open(ZipFileName, FileMode.Create, FileAccess.ReadWrite))
+                using (ZipArchive Archive = new ZipArchive(Stream, ZipArchiveMode.Create, true))
+                    foreach (string Element in ZipAndXmlHelper.DirectorySearch(FolderName))
                     {
-                        var entryName = i.Substring(folderName.Length + 1);
-                        if (Config.ScmeCommonConfigName == entryName || $@"UI\{Config.ScmeCommonConfigName}" == entryName)
+                        string EntryName = Element.Substring(FolderName.Length + 1);
+                        if (Config.ScmeCommonConfigName == EntryName || $@"UI\{Config.ScmeCommonConfigName}" == EntryName)
                         {
-                            var entry = archive.CreateEntry(entryName);
-                            using var stream = entry.Open();
-                            stream.Write(new ReadOnlySpan<byte>(ZipAndXmlHelper.GetChangedConfig(i, mmeParameter)));
+                            ZipArchiveEntry Entry = Archive.CreateEntry(EntryName);
+                            using Stream NewStream = Entry.Open();
+                            NewStream.Write(new ReadOnlySpan<byte>(ZipAndXmlHelper.GetChangedConfig(Element, MmeParameter)));
                         }
                         else
-                            archive.CreateEntryFromFile(i, entryName);
+                            Archive.CreateEntryFromFile(Element, EntryName);
                     }
-
-                ReturnFileInPars(zipFileName);
+                //Передача архива по частям
+                ReturnFileInParts(ZipFileName);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-			finally
-			{
-				try
-				{
-	                if (System.IO.File.Exists(zipFileName))
-	                    System.IO.File.Delete(zipFileName);
-				}
-	            catch (Exception e)
-	            {
-	                Console.WriteLine(e);
-	            }
-			}
-
+            finally
+            {
+                try
+                {
+                    //Удаление архива
+                    System.IO.File.Delete(ZipFileName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+            //Вызов GC
             GC.Collect(2, GCCollectionMode.Forced, true);
             GC.WaitForPendingFinalizers();
+        }
+
+        /// <summary>Получить файл частями</summary>
+        /// <param name="fileName">Имя файла</param>
+        private void ReturnFileInParts(string fileName)
+        {
+            using FileStream Stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read);
+            using BinaryReader Reader = new BinaryReader(Stream);
+            long Length = Stream.Length;
+            byte[] Bytes = new byte[SIZE_PACKET];
+            Response.ContentType = "application/octet-stream";
+            Response.ContentLength = Length;
+            for (int i = 0; i < Stream.Length; i += SIZE_PACKET)
+            {
+                int CountReadBytes = Convert.ToInt32(i + SIZE_PACKET < Length ? SIZE_PACKET : Length - i);
+                Reader.Read(Bytes, 0, CountReadBytes);
+                Response.Body.WriteAsync(Bytes, 0, CountReadBytes).Wait();
+            }
         }
     }
 }

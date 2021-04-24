@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,80 +9,69 @@ namespace SCME.UpdateServer
 {
     public static class ZipAndXmlHelper
     {
+        /// <summary>Рекурсивное составление дерева директории</summary>
+        /// <param name="directory">Директория для поиска</param>
+        /// <returns>Все файлы и папки директории</returns>
         public static IEnumerable<string> DirectorySearch(string directory)
         {
-            foreach (var f in Directory.GetFiles(directory))
-                yield return f;
-            
-            foreach (var innerDirectory in Directory.GetDirectories(directory))
-            foreach (var f in DirectorySearch(innerDirectory))
-                yield return f;    
-            
-        }
-        
-
-
-        private static string PrintXml(string xml)
-        {
-            var result = "";
-
-            var mStream = new MemoryStream();
-            var writer = new XmlTextWriter(mStream, Encoding.Unicode);
-            var document = new XmlDocument();
-
-            try
-            {
-                document.LoadXml(xml);
-                writer.Formatting = Formatting.Indented;
-
-                document.WriteContentTo(writer);
-                writer.Flush();
-                mStream.Flush();
-
-                mStream.Position = 0;
-
-                var sReader = new StreamReader(mStream);
-
-                var formattedXml = sReader.ReadToEnd();
-
-                result = formattedXml;
-            }
-            catch (XmlException)
-            {
-                // Handle the exception
-            }
-
-            mStream.Close();
-            writer.Close();
-
-            return result;
+            //Поиск всех файлов
+            foreach (string File in Directory.GetFiles(directory))
+                yield return File;
+            //Получение всех директорий и поиск вложенных файлов
+            foreach (string InnerDirectory in Directory.GetDirectories(directory))
+                foreach (string File in DirectorySearch(InnerDirectory))
+                    yield return File;
         }
 
+        /// <summary>Получение изменений в конфигурации</summary>
+        /// <param name="sourceFileName">Файл конфигурации</param>
+        /// <param name="mmeParameter">Mme-код</param>
+        /// <returns></returns>
         public static byte[] GetChangedConfig(string sourceFileName, MmeParameter mmeParameter)
         {
-            using var sr = new StreamReader(sourceFileName);
-            var xmlDocument = new XmlDocument();
-            xmlDocument.Load(sr);
-            
-            var appSettings = xmlDocument.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().ToList();
-
-            var n = 0;
-            foreach (var configurationSection in mmeParameter.Configs.GetChildren())
+            using StreamReader Reader = new StreamReader(sourceFileName);
+            XmlDocument Document = new XmlDocument();
+            Document.Load(Reader);
+            List<XmlNode> AppSettings = Document.SelectNodes("configuration/applicationSettings/SCME.UIServiceConfig.Properties.Settings/setting").Cast<XmlNode>().ToList();
+            int i = 0;
+            foreach (IConfigurationSection ConfigurationSection in mmeParameter.Configs.GetChildren())
             {
-                n++;
-                var xmlNode = appSettings.SingleOrDefault(m => m.Attributes["name"].InnerText == configurationSection.Key);
-                // ReSharper disable once InvertIf
-                if (xmlNode != null)
+                i++;
+                XmlNode XmlNode = AppSettings.SingleOrDefault(m => m.Attributes["name"].InnerText == ConfigurationSection.Key);
+                if (XmlNode != null)
                 {
-                    var newNode = xmlDocument.CreateElement("value");
-                    newNode.InnerText = configurationSection.Value;
-                    xmlNode.RemoveChild(xmlNode.ChildNodes[0]);
-                    xmlNode.AppendChild(newNode);
+                    XmlElement NewNode = Document.CreateElement("value");
+                    NewNode.InnerText = ConfigurationSection.Value;
+                    XmlNode.RemoveChild(XmlNode.ChildNodes[0]);
+                    XmlNode.AppendChild(NewNode);
                 }
             }
-            sr.Close();
+            Reader.Close();
+            return Encoding.UTF8.GetBytes(Xml_Print(Document.OuterXml));
+        }
 
-            return Encoding.UTF8.GetBytes(PrintXml(xmlDocument.OuterXml));
+        private static string Xml_Print(string xml) //Получение данных из xml
+        {
+            string Result = "";
+            MemoryStream Stream = new MemoryStream();
+            XmlTextWriter Writer = new XmlTextWriter(Stream, Encoding.Unicode);
+            XmlDocument Document = new XmlDocument();
+            try
+            {
+                Document.LoadXml(xml);
+                Writer.Formatting = Formatting.Indented;
+                Document.WriteContentTo(Writer);
+                Writer.Flush();
+                Stream.Flush();
+                Stream.Position = 0;
+                StreamReader Reader = new StreamReader(Stream);
+                string FormattedXml = Reader.ReadToEnd();
+                Result = FormattedXml;
+            }
+            catch { }
+            Stream.Close();
+            Writer.Close();
+            return Result;
         }
     }
 }

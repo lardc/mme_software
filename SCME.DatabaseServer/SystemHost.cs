@@ -11,8 +11,10 @@ using System.ServiceModel;
 
 namespace SCME.DatabaseServer
 {
+    /// <summary>Хост служб</summary>
     internal static class SystemHost
     {
+        //Хосты служб
         private static ServiceHost MsServiceHost;
         private static ServiceHost DatabaseServiceHost;
 

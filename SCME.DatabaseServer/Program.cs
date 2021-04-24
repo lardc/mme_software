@@ -11,6 +11,7 @@ namespace SCME.DatabaseServer
 {
     static class Program
     {
+        //Иконка в трэе
         private static NotifyIcon NotifyIcon;
 
         private static void Main(string[] args)
@@ -55,7 +56,7 @@ namespace SCME.DatabaseServer
                 Process.StartInfo = Info;
                 Process.Start();
             }
-        } 
+        }
 
         private static void Process_StartAsApplication() //Запуск как приложение
         {

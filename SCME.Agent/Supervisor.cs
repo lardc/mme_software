@@ -7,13 +7,14 @@ using System.Windows.Forms;
 
 namespace SCME.Agent
 {
+    /// <summary>Супервайзер</summary>
     internal class Supervisor
     {
         //Процессы службы и UI на рабочей станции
         private readonly Process PService, PUserInterface;
         private bool RestartService = true;
         public bool NeedsRestart = false;
-        
+
         /// <summary>Инициализирует новый экземпляр класса Supervisor</summary>
         internal Supervisor()
         {
@@ -49,10 +50,10 @@ namespace SCME.Agent
 
         internal void Start() //Запуск супервайзера
         {
-            StartProcess(PService);
+            Process_Start(PService);
             //Запуск UI при необходимости
             if (Program.ConfigData.IsUserInterfaceEnabled)
-                StartProcess(PUserInterface);
+                Process_Start(PUserInterface);
         }
 
         private void TrayObject_Create() //Создание объекта в трэе
@@ -97,10 +98,10 @@ namespace SCME.Agent
         private void PService_Exited(object sender, EventArgs e) //Выключение сервиса
         {
             if (RestartService)
-                StartProcess(PService);
-        }        
+                Process_Start(PService);
+        }
 
-        private static void StartProcess(Process process) //Запуск процесса
+        private static void Process_Start(Process process) //Запуск процесса
         {
             try
             {
