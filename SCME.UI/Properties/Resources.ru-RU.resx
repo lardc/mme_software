@@ -775,10 +775,10 @@
     <value>Вкл. внут. сис. безопасности</value>
   </data>
   <data name="MessageErrorSaveTestFault" xml:space="preserve">
-    <value>Произошла ошибка изменения не будут сохранены</value>
+    <value>Произошла ошибка, изменения не будут сохранены</value>
   </data>
   <data name="ProfilePageToolTip" xml:space="preserve">
-    <value>Профили не доступны для редактирования в режиме синхронизации с центральным сервером</value>
+    <value>Профили недоступны для редактирования в режиме синхронизации с центральным сервером</value>
   </data>
   <data name="IDSM_mA" xml:space="preserve">
     <value>IDSM, мА</value>
@@ -814,7 +814,7 @@
     <value>Профиль не изменен</value>
   </data>
   <data name="ProfileWasUntied" xml:space="preserve">
-    <value>Профиль был отвязан от mme кода</value>
+    <value>Профиль был отвязан от mme-кода</value>
   </data>
   <data name="ErrorWriteResult" xml:space="preserve">
     <value>Ошибка отправки результатов на сервер</value>
@@ -829,7 +829,7 @@
     <value>VRRM, В</value>
   </data>
   <data name="WarningEmulation" xml:space="preserve">
-    <value>Блоки находящиеся в режиме умуляции</value>
+    <value>Блоки, находящиеся в режиме эмуляции</value>
   </data>
   <data name="Local" xml:space="preserve">
     <value>Автономно</value>

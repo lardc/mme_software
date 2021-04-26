@@ -19,15 +19,15 @@
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column0f" />
+            <ColumnDefinition Width="220" SharedSizeGroup="Column1f"/>
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3f" />
+            <ColumnDefinition Width="220" SharedSizeGroup="Column4f"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}" />
+        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}" Foreground="Black"/>
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentAmplitude}" MinMaxInterval="{x:Static types:ConstantsMinMax+Tou.CurrentAmplitude}" />
 </Grid>

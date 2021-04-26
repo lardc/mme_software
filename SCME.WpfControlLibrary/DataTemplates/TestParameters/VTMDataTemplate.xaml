@@ -19,11 +19,11 @@
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-        <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column0h" />
+        <ColumnDefinition Width="*" SharedSizeGroup="Column1h"/>
         <ColumnDefinition Width="30" />
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
-        <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+        <ColumnDefinition Width="auto" SharedSizeGroup="Column3h" />
+        <ColumnDefinition Width="*" SharedSizeGroup="Column4h"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -37,44 +37,44 @@
         <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Type}" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.Type}" />
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource VtmTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
 
 
-    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Current_A}" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.Current_A}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding RampCurrent}" />
-    <Label Grid.Column="3" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="1" Content="{x:Static res:Resources.Time_us}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Value="{Binding RampTime}" />
 
-    <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding IsRampOpeningEnabled}" Content="{x:Static res:Resources.IsHeatEnabled}" />
+    <CheckBox Foreground="Black" BorderBrush="#FFC9C9C9" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding IsRampOpeningEnabled}" Content="{x:Static res:Resources.IsHeatEnabled}" />
 
-    <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.HeatCurrent_A}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.HeatCurrent_A}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding RampOpeningCurrent }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
-    <Label Grid.Column="4" Grid.Row="3" Content="{x:Static res:Resources.HeatTime_us}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
+    <Label Foreground="Black" Grid.Column="4" Grid.Row="3" Content="{x:Static res:Resources.HeatTime_us}" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding RampOpeningTime }" Visibility="{Binding IsRampOpeningEnabled, Converter={StaticResource B2V} }" />
 
     
-    <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Current_A}" /> 
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.Current_A}" /> 
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="4" Value="{Binding SinusCurrent}" />
-    <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.Time_us}" />
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.Time_us}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding SinusTime }" />
     
     
-    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.Current_A}" /> 
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.Current_A}" /> 
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="5" Value="{Binding CurveCurrent }" />
-    <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.Time_us}" />
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.Time_us}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="5" Value="{Binding CurveTime }" />
     
-    <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.CurveFactor}" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.CurveFactor}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="6" Value="{Binding CurveFactor }" />
-    <Label Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.AdditionalTime_us}" />
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.AdditionalTime_us}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding CurveAddTime }" />
 
-    <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding UseFullScale}" Content="{x:Static res:Resources.UseFullScale}" /> 
+    <CheckBox Foreground="Black" BorderBrush="#FFC9C9C9" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding UseFullScale}" Content="{x:Static res:Resources.UseFullScale}" /> 
     
-    <Label Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.Count}" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.Count}" />
     <customControls:NumericUpDown Grid.Column="1" Grid.Row="8" Value="{Binding Count }" />
-    <Label Grid.Column="3" Grid.Row="8" Content="{x:Static res:Resources.MaxVtm_V}" />
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="8" Content="{x:Static res:Resources.MaxVtm_V}" />
     <customControls:NumericUpDown Grid.Column="4" Grid.Row="8" Value="{Binding VTM }" StringFormat="{}{0:N2}" />
     
 </Grid>

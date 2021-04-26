@@ -18,11 +18,11 @@
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column0" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column1"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column0g" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column1g"/>
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column3" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Column4"/>
+            <ColumnDefinition Width="auto" SharedSizeGroup="Column3g" />
+            <ColumnDefinition Width="*" SharedSizeGroup="Column4g"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -33,33 +33,33 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
-        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource BvtTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding UdsmUrsmTestType}" />
-        <Label Grid.Column="3" Grid.Row="0" Content="{x:Static res:Resources.CurrentLimit_mA}" />
+        <Label Foreground="Black" Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TestType}" />
+        <ComboBox Margin="10,0,0,0" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource BvtTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding UdsmUrsmTestType}" />
+        <Label Foreground="Black" Grid.Column="3" Grid.Row="0" Content="{x:Static res:Resources.CurrentLimit_mA}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding UdsmUrsmCurrentLimit }" StringFormat="{}{0:N0}"/>
 
-        <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitD_V}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
+        <Label Foreground="Black" Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitD_V}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding UdsmUrsmVoltageLimitD }" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
-        <Label Grid.Column="3" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitR_V}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=2}" />
+        <Label Foreground="Black" Grid.Column="3" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitR_V}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=2}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Value="{Binding UdsmUrsmVoltageLimitR}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource TT2V}, ConverterParameter=2}" />
 
-        <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.PlateTime_ms}" />
+        <Label Foreground="Black" Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.PlateTime_ms}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding UdsmUrsmPlateTime}" />
-        <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.Rampup_Vms}" />
+        <Label Foreground="Black" Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.Rampup_Vms}" />
         <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding UdsmUrsmRampUpVoltage}" />
 
-        <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.StartVoltage_V}" />
+        <Label Foreground="Black" Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.StartVoltage_V}" />
         <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding UdsmUrsmStartVoltage}" />
-        <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.Frequency_Hz}" />
-        <ComboBox Grid.Column="4" Grid.Row="3" ItemsSource="{Binding Source={StaticResource VoltageFrequency}}" SelectedValue="{Binding UdsmUrsmVoltageFrequency}" />
+        <Label Foreground="Black" Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.Frequency_Hz}" />
+        <ComboBox Margin="10,0,0,0" Grid.Column="4" Grid.Row="3" ItemsSource="{Binding Source={StaticResource VoltageFrequency}}" SelectedValue="{Binding UdsmUrsmVoltageFrequency}" />
 
-        <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}" />
-        <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource FrequencyDivisors}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding UdsmUrsmFrequencyDivisor}" />
+        <Label Foreground="Black" Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}" />
+        <ComboBox Margin="10,0,0,0" Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource FrequencyDivisors}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding UdsmUrsmFrequencyDivisor}" />
 
-    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MaxIdsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIdsmToVisibilityConverter}}" />
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MaxIdsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIdsmToVisibilityConverter}}" />
     <customControls:NumericUpDown Grid.Column="1" Interval="0.5" Grid.Row="5" Value="{Binding IDSM}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIdsmToVisibilityConverter}}" StringFormat="{}{0:N1}"/>
 
 
-    <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MaxIrsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIrsmToVisibilityConverter}}"/>
+    <Label Foreground="Black" Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MaxIrsm_mA}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIrsmToVisibilityConverter}}"/>
     <customControls:NumericUpDown Grid.Column="4" Interval="0.5" Grid.Row="5" Value="{Binding IRSM}" Visibility="{Binding UdsmUrsmTestType, Converter={StaticResource bvtUdsmUrsmIrsmToVisibilityConverter}}" StringFormat="{}{0:N1}"/>
 </Grid>

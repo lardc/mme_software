@@ -70,7 +70,7 @@
                             </RepeatButton.Style>
                         </RepeatButton>
                         <Label Grid.Column="2" x:Name="LabelValue" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2VI}}"  ContentStringFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=StringFormat}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
-                        <TextBox Grid.Column="2" x:Name="TextBoxValue" TextAlignment="Right" BorderThickness="0" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
+                        <TextBox Grid.Column="2" x:Name="TextBoxValue" TextAlignment="Right" BorderThickness="0" Foreground="Black" Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsEnabled, Converter={StaticResource B2V}}"  Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">
