@@ -21,7 +21,7 @@
         <GridLength x:Key="ListBoxItemHeight">60</GridLength>
         <GridLength x:Key="ListBoxScrollWidth">50</GridLength>
 
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}" />
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}"/>
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="LightGreen" />

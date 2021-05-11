@@ -14,20 +14,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column0f" />
+            <ColumnDefinition Width="0" SharedSizeGroup="Column0f" />
             <ColumnDefinition Width="220" SharedSizeGroup="Column1f"/>
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="auto" SharedSizeGroup="Column3f" />
+            <ColumnDefinition Width="0" SharedSizeGroup="Column3f" />
             <ColumnDefinition Width="220" SharedSizeGroup="Column4f"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}" Foreground="Black"/>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentAmplitude}" MinMaxInterval="{x:Static types:ConstantsMinMax+Tou.CurrentAmplitude}" />
+    <customControls:ValidatingTextBox Text="{Binding CurrentAmplitude}" IsFloat="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
 </Grid>

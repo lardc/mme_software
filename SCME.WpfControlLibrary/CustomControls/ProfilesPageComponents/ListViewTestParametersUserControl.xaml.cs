@@ -29,7 +29,10 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
         public ObservableCollection<BaseTestParametersAndNormatives> ItemSource
         {
             get => (ObservableCollection<BaseTestParametersAndNormatives>)GetValue(ItemSourceProperty);
-            set => SetValue(ItemSourceProperty, value);
+            set
+            {
+                SetValue(ItemSourceProperty, value);
+            }
         }
 
         // Using a DependencyProperty as the backing store for ItemSource.  This enables animation, styling, binding, etc...
@@ -76,6 +79,11 @@ namespace SCME.WpfControlLibrary.CustomControls.ProfilesPageComponents
         {
             ItemSource.Remove(((Button) sender).DataContext as BaseTestParametersAndNormatives);
         }
-        
+
+        private void ParametersList_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (ParametersList.Items.Count > 0)
+            ParametersList.ScrollIntoView(ParametersList.Items[ParametersList.Items.Count - 1]);
+        }
     }
 }

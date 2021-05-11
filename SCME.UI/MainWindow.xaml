@@ -14,7 +14,7 @@
         WindowStyle="None"
         Focusable="False"
         ResizeMode="NoResize"
-        WindowStartupLocation="Manual"
+        WindowStartupLocation="CenterScreen"
         Background="{StaticResource xGray2}"
         Closing="MainWindow_Closing"
         Closed="MainWindow_OnClosed"
@@ -117,29 +117,34 @@
                        HorizontalAlignment="Right" />
 
                     <StackPanel Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Border Margin="0,5,-20,5" Padding="10, 0, 10, 0"
-                            Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
-                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="DarkSeaGreen"
-                                  StrokeThickness="5" VerticalAlignment="Center"
-                                  Stretch="UniformToFill" Margin="0, 5, 20, 10"/>
-
-                            </StackPanel>
-                        </Border>
-
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="15,0">
-                            <Path  Width="39" Height="48" Stretch="uniform"  Fill="{Binding ConnectStateBrush}" Data="{Binding ConnectStateGeometry}" />
-                            <TextBlock Text="{Binding ConnectStateText}" TextAlignment="center" FontFamily="Segoe UI"  FontSize="10"/>
-                        </StackPanel>
+                        <Label Margin="0,8,16,0" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=ClampIsVisible, Converter={StaticResource B2V}}">
+                            <Label.ToolTip>
+                                <TextBlock>
+                                        Цветовые обозначения:
+                                        <LineBreak/>
+                                        <Run FontSize="16">Зеленый - пресс расжат</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">Желтый - пресс в движении</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">Оранжевый - пресс зажат</Run>
+                                </TextBlock>
+                            </Label.ToolTip>
+                            <Path x:Name="clampPath" Data="{StaticResource ClampPath}" Stroke="Green" VerticalAlignment="Center" Width="60" Height="60" Stretch="Uniform"
+                                  StrokeThickness="5"/>
+                        </Label>
+                        <Label Background="Transparent" Margin="0,4,10,0" ToolTip="{Binding ConnectStateText}">
+                            <Path Fill="{Binding ConnectStateBrush}" Data="{Binding ConnectStateGeometry}" VerticalAlignment="Center" Width="48" Height="48" Stretch="Uniform"/>
+                        </Label>
 
                         <Label x:Name="connectionLabel" Content=" Restoring connection... " FontSize="28" HorizontalAlignment="Left"
                            VerticalContentAlignment="Center" Margin="30,00,60,0" Background="Yellow" Visibility="Collapsed"/>
                         <Path Data="{StaticResource CircutBrakePath}"
                           Stroke="{StaticResource xRed1}"
                           StrokeThickness="4" VerticalAlignment="Center"
-                          Stretch="UniformToFill" Margin="0, 10, 30, 10" 
+                          Stretch="UniformToFill" Margin="0, 20, 10, 15" 
                           Visibility="{Binding IsSafetyBreakIconVisible, Converter={StaticResource B2V}}" />
-                        <Label Background="Transparent" Margin="0,8,20,0">
+                        
+                        <Label Background="Transparent" Margin="0,12,10,0">
                             <Label.Style>
                                 <Style TargetType="Label">
                                     <Setter Property="ToolTip" Value="Система безопасности выключена"/>
@@ -160,21 +165,22 @@
                                         <Setter Property="Fill" Value="Red"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding SafetyMode}" Value="0">
-                                                <Setter Property="Data" Value="M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18V21Z"/>
+                                                <Setter Property="Data" Value="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"/>
                                                 <Setter Property="Fill" Value="Green"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding SafetyMode}" Value="1">
-                                                <Setter Property="Data" Value="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"/>
-                                                <Setter Property="Fill" Value="Green"/>
+                                                <Setter Property="Data" Value="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M14.28,14.08L12.26,16.1C11.66,16.7 10.87,17 10.08,17C9.29,17 8.5,16.7 7.9,16.1C6.7,14.9 6.7,12.95 7.9,11.74L9.15,10.5L9.14,11.06C9.14,11.5 9.21,11.95 9.36,12.37L9.41,12.5L9.04,12.87C8.76,13.15 8.6,13.53 8.6,13.92C8.6,14.32 8.76,14.69 9.04,14.97C9.6,15.53 10.57,15.53 11.13,14.97L13.14,12.96C13.43,12.67 13.58,12.3 13.58,11.91C13.58,11.5 13.43,11.14 13.15,10.86C13,10.71 12.9,10.5 12.9,10.29C12.9,10.08 13,9.88 13.15,9.73C13.45,9.42 14,9.43 14.28,9.73C14.86,10.31 15.18,11.08 15.18,11.9C15.18,12.73 14.86,13.5 14.28,14.08M17.1,11.26L15.85,12.5L15.86,11.94C15.86,11.5 15.79,11.06 15.64,10.64L15.6,10.5L15.96,10.13C16.25,9.85 16.4,9.5 16.4,9.08C16.4,8.69 16.25,8.32 15.97,8.04C15.4,7.47 14.43,7.47 13.87,8.04L11.86,10.05C11.58,10.33 11.42,10.7 11.42,11.1C11.42,11.5 11.57,11.86 11.86,12.14C12,12.29 12.1,12.5 12.1,12.71C12.1,12.93 12,13.13 11.85,13.28C11.7,13.44 11.5,13.5 11.29,13.5C11.09,13.5 10.88,13.43 10.72,13.28C9.5,12.08 9.5,10.12 10.72,8.92L12.74,6.9C13.95,5.7 15.9,5.7 17.1,6.9C17.68,7.5 18,8.26 18,9.08C18,9.9 17.68,10.68 17.1,11.26Z"/>
+                                                <Setter Property="Fill" Value="DarkOliveGreen"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Path.Style>
                             </Path>
                         </Label>
-                        <StackPanel Margin="0,12,20,0">
-                            <Label Background="Transparent" HorizontalAlignment="Center">
-                                <Label.ToolTip>
+                        <Label Margin="0,2,20,0" Background="Transparent" HorizontalAlignment="Center">
+                            <Label.ToolTip>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Version, StringFormat={}Текущая версия ПО: {0}}"/>
                                     <TextBlock>
                                         Основные нововведения патча:
                                         <LineBreak/>
@@ -192,27 +198,10 @@
                                         <LineBreak/>
                                         <Run FontSize="16">7. Очистка репозитория от неподдерживаемого кода</Run>
                                     </TextBlock>
-                                </Label.ToolTip>
-                                <Path VerticalAlignment="Center" Width="48" Height="48" Stretch="Uniform" Fill="Black" Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-                            </Label>
-                            <TextBlock Text="{Binding Version}" HorizontalAlignment="Center" FontSize="10" />
-                        </StackPanel>
-
-                        <!--<Grid VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label Content="{Binding SafetyMode}" Visibility="{Binding SafetyVisibility}" FontSize="24" Margin="0,0,30,0"/>
-                            <Label Grid.Column="1"  Content="{Binding AccountName}"   FontSize="24" HorizontalAlignment="Left"
-                           Visibility="{Binding AccountNameIsVisibility, Converter={StaticResource B2V}}"
-                           VerticalContentAlignment="Center" Margin="0,0,30,0" />
-                        </Grid>-->
-
+                                </StackPanel>
+                            </Label.ToolTip>
+                            <Path VerticalAlignment="Center" Width="48" Height="48" Stretch="Uniform" Fill="Black" Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                        </Label>
                         <Button Click="Logout_Click"
                             Visibility="{Binding AccountButtonVisibility}"  Background="Transparent" BorderThickness="0"
                              Margin="0, 10, 30, 10" >

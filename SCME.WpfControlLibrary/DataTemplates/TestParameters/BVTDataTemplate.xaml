@@ -13,60 +13,47 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column0c" />
+        <ColumnDefinition Width="180" SharedSizeGroup="Column0c" />
         <ColumnDefinition Width="220" SharedSizeGroup="Column1c"/>
         <ColumnDefinition Width="30" />
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column3c" />
+        <ColumnDefinition Width="170" SharedSizeGroup="Column3c" />
         <ColumnDefinition Width="220" SharedSizeGroup="Column4c"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="45" />
     </Grid.RowDefinitions>
-
     <Label Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.TestType}" Foreground="Black"/>
     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource BvtTestTypes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding TestType}" />
     <Label Grid.Column="3" Grid.Row="0" Content="{x:Static res:Resources.CurrentLimit_mA}"  Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="0" Value="{Binding CurrentLimit }" StringFormat="{}{0:N0}"/>
-
+    <customControls:ValidatingTextBox Text="{Binding CurrentLimit, StringFormat={}{0:N0}}" IsNumeric="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitD_V}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}"  Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="1" Value="{Binding VoltageLimitD }" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}" />
+    <customControls:ValidatingTextBox Text="{Binding VoltageLimitD}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=1}" IsNumeric="True" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="3" Grid.Row="1" Content="{x:Static res:Resources.VoltageLimitR_V}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=2}" Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="1" Value="{Binding VoltageLimitR}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=2}" />
-
+    <customControls:ValidatingTextBox Text="{Binding VoltageLimitR}" Visibility="{Binding TestType, Converter={StaticResource TT2V}, ConverterParameter=2}" IsNumeric="True" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.PlateTime_ms}"  Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="2" Value="{Binding PlateTime}" />
+    <customControls:ValidatingTextBox Text="{Binding PlateTime}" IsNumeric="True" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.Rampup_Vms}"  Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding RampUpVoltage}" />
-
+    <customControls:ValidatingTextBox Text="{Binding RampUpVoltage}" IsNumeric="True" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="0" Grid.Row="3" Content="{x:Static res:Resources.StartVoltage_V}"  Foreground="Black"/>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="3" Value="{Binding StartVoltage}" />
+    <customControls:ValidatingTextBox Text="{Binding StartVoltage}" IsNumeric="True" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="3" Grid.Row="3" Content="{x:Static res:Resources.Frequency_Hz}"  Foreground="Black"/>
     <ComboBox Grid.Column="4" Grid.Row="3" ItemsSource="{Binding Source={StaticResource VoltageFrequency}}" SelectedValue="{Binding VoltageFrequency}" />
-
     <Label Grid.Column="0" Grid.Row="4" Content="{x:Static res:Resources.FreqRate_Hz}"  Foreground="Black"/>
     <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Source={StaticResource FrequencyDivisors}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding FrequencyDivisor}" />
-
     <Label Grid.Column="3" Grid.Row="4" Content="{x:Static res:Resources.Mode}"  Foreground="Black"/>
-    <ComboBox Grid.Column="4" Grid.Row="4" ItemsSource="{Binding Source={StaticResource BvtMeasurementModes}}"
-              DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding MeasurementMode}" />
-
-
-    <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.MinVdrm_V}"  Foreground="Black">
+    <ComboBox Grid.Column="4" Grid.Row="4" ItemsSource="{Binding Source={StaticResource BvtMeasurementModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding MeasurementMode}" />
+    <Label Grid.Column="0" Grid.Row="5" Content="{x:Static res:Resources.MinVdrm_V}"  Foreground="Black">
         <Label.Visibility>
             <MultiBinding Converter="{StaticResource Vdrm2V}">
                 <Binding Path="MeasurementMode" />
@@ -74,16 +61,15 @@
             </MultiBinding>
         </Label.Visibility>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="6" Value="{Binding VDRM}">
-        <customControls:NumericUpDown.Visibility>
+    <customControls:ValidatingTextBox Text="{Binding VDRM}" IsNumeric="True" Grid.Row="5" Grid.Column="1" Margin="0,5" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0">
+        <customControls:ValidatingTextBox.Visibility>
             <MultiBinding Converter="{StaticResource Vdrm2V}">
                 <Binding Path="MeasurementMode" />
                 <Binding Path="TestType" />
             </MultiBinding>
-        </customControls:NumericUpDown.Visibility>
-    </customControls:NumericUpDown>
-
-    <Label Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.MinVrrm_V}"  Foreground="Black">
+        </customControls:ValidatingTextBox.Visibility>
+    </customControls:ValidatingTextBox>
+    <Label Grid.Column="3" Grid.Row="5" Content="{x:Static res:Resources.MinVrrm_V}"  Foreground="Black">
         <Label.Visibility>
             <MultiBinding Converter="{StaticResource Vrrm2V}">
                 <Binding Path="MeasurementMode" />
@@ -91,17 +77,15 @@
             </MultiBinding>
         </Label.Visibility>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding VRRM}" >
-        <customControls:NumericUpDown.Visibility>
+    <customControls:ValidatingTextBox Text="{Binding VRRM}" IsNumeric="True" Grid.Row="5" Grid.Column="4" Margin="0,5" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0">
+        <customControls:ValidatingTextBox.Visibility>
             <MultiBinding Converter="{StaticResource Vrrm2V}">
                 <Binding Path="MeasurementMode" />
                 <Binding Path="TestType" />
             </MultiBinding>
-        </customControls:NumericUpDown.Visibility>
-    </customControls:NumericUpDown>
-
-
-    <Label Grid.Column="0" Grid.Row="7" Content="{x:Static res:Resources.MaxIdrm_mA}"  Foreground="Black">
+        </customControls:ValidatingTextBox.Visibility>
+    </customControls:ValidatingTextBox>
+    <Label Grid.Column="0" Grid.Row="6" Content="{x:Static res:Resources.MaxIdrm_mA}"  Foreground="Black">
         <Label.Visibility>
             <MultiBinding Converter="{StaticResource Idrm2V}">
                 <Binding Path="MeasurementMode" />
@@ -109,16 +93,15 @@
             </MultiBinding>
         </Label.Visibility>
     </Label>
-    <customControls:NumericUpDown Grid.Column="1" Grid.Row="7" Value="{Binding IDRM}" StringFormat="{}{0:N0}">
-        <customControls:NumericUpDown.Visibility>
+    <customControls:ValidatingTextBox Text="{Binding IDRM, StringFormat={}{0:N0}}" IsNumeric="True" Grid.Row="6" Grid.Column="1" Margin="0,5" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0">
+        <customControls:ValidatingTextBox.Visibility>
             <MultiBinding Converter="{StaticResource Idrm2V}">
                 <Binding Path="MeasurementMode" />
                 <Binding Path="TestType" />
             </MultiBinding>
-        </customControls:NumericUpDown.Visibility>
-    </customControls:NumericUpDown>
-
-    <Label Grid.Column="3" Grid.Row="7" Content="{x:Static res:Resources.MaxIrrm_mA}"  Foreground="Black">
+        </customControls:ValidatingTextBox.Visibility>
+    </customControls:ValidatingTextBox>
+    <Label Grid.Column="3" Grid.Row="6" Content="{x:Static res:Resources.MaxIrrm_mA}"  Foreground="Black">
         <Label.Visibility>
             <MultiBinding Converter="{StaticResource Irrm2V}">
                 <Binding Path="MeasurementMode" />
@@ -126,21 +109,13 @@
             </MultiBinding>
         </Label.Visibility>
     </Label>
-    <customControls:NumericUpDown Grid.Column="4" Grid.Row="7" Value="{Binding IRRM}" StringFormat="{}{0:N0}" >
-        <customControls:NumericUpDown.Visibility>
+    <customControls:ValidatingTextBox Text="{Binding IRRM, StringFormat={}{0:N0}}" IsNumeric="True" Grid.Row="6" Grid.Column="4" Margin="0,5" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0">
+        <customControls:ValidatingTextBox.Visibility>
             <MultiBinding Converter="{StaticResource Irrm2V}">
                 <Binding Path="MeasurementMode" />
                 <Binding Path="TestType" />
             </MultiBinding>
-        </customControls:NumericUpDown.Visibility>
-    </customControls:NumericUpDown>
-
-
-    <CheckBox Grid.Column="0" Margin="5,5,5,0" Grid.Row="8" Grid.ColumnSpan="2"  Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}"  Foreground="Black" BorderBrush="#FFC9C9C9"/>
-
-
-   
-  
-
-
+        </customControls:ValidatingTextBox.Visibility>
+    </customControls:ValidatingTextBox>
+    <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Content="{x:Static res:Resources.UseUdsmUrsm}" IsChecked="{Binding UseUdsmUrsm}"  Foreground="Black" BorderBrush="#FFC9C9C9"/>
 </Grid>

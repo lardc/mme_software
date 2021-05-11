@@ -23,8 +23,8 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ListView BorderThickness="0" Background="#FFEDEDED" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
-              ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}">
+    <ListView x:Name="ParametersList" BorderThickness="0" Background="#FFEDEDED" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"
+              ItemContainerStyle="{StaticResource ListViewItemTestParameter}" ItemsSource="{Binding Path=ItemSource, ElementName=ThisListViewTestParametersUserControl}" SizeChanged="ParametersList_SizeChanged">
       <ListView.ItemsPanel>
           <ItemsPanelTemplate>
                     <StackPanel />

@@ -64,7 +64,7 @@
                      TargetType="{x:Type TextBox}">
         <Border x:Name="PART_ContentHost"
                 Focusable="False"
-                Background="{TemplateBinding Background}" />
+                Background="{TemplateBinding Background}"/>
     </ControlTemplate>
 
     <Style  TargetType="ComboBox">
@@ -100,7 +100,7 @@
                                       IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
                                       ClickMode="Press"/>
 
-                        <ContentPresenter Name="contentPresenter" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                        <ContentPresenter TextElement.Foreground="Black" Name="contentPresenter" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                         ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"  VerticalAlignment="Center" HorizontalAlignment="Right" />
 
                         <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
@@ -111,11 +111,6 @@
                                     </ScrollViewer>
                                 </Border>
                             </Grid>
-                            <!--<Popup.Triggers>
-                                <Trigger Property="IsDropDownOpen" Value="True">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Trigger>
-                            </Popup.Triggers>-->
                         </Popup>
                         <Border BorderThickness="0" Name="MainBorder"  BorderBrush="Gray"></Border>
                     </Grid>
@@ -140,6 +135,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter TargetName="contentPresenter" Property="Margin" Value="3,3,40,3"/>
+                            <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="White"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>

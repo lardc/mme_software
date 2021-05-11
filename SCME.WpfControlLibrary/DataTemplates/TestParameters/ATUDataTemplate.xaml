@@ -13,31 +13,27 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="Column0a" />
+            <ColumnDefinition Width="160" SharedSizeGroup="Column0a" />
             <ColumnDefinition Width="220" SharedSizeGroup="Column1a"/>
             <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="Auto" SharedSizeGroup="Column3a" />
+            <ColumnDefinition Width="160" SharedSizeGroup="Column3a" />
             <ColumnDefinition Width="220" SharedSizeGroup="Column4a"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.AtuPrePulseValue}" Foreground="Black"/>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="0"  Value="{Binding PrePulseValue}" />
-
+    <customControls:ValidatingTextBox Text="{Binding PrePulseValue}" IsNumeric="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}"  Foreground="Black"/>
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="1"   Value="{Binding PowerValue}" StringFormat="{}{0:N1}"/>
-
-    <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}" Foreground="Black"></Label>
-        <customControls:NumericUpDown Grid.Column="1" Grid.Row="2"   Value="{Binding PRSM_Min}" x:Name="PrsmMin" Maximum="{Binding ElementName=PrsmMax, Path=Value}" StringFormat="N2"/>
-    <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"  Foreground="Black"></Label>
-        <customControls:NumericUpDown Grid.Column="4" Grid.Row="2"   Value="{Binding PRSM_Max}" x:Name="PrsmMax" Minimum="{Binding ElementName=PrsmMin, Path=Value}" StringFormat="N2"/>
-        
+    <customControls:ValidatingTextBox Text="{Binding PowerValue, StringFormat={}{0:N1}}" IsFloat="True" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}" Foreground="Black"/>
+    <customControls:ValidatingTextBox x:Name="PrsmMin" Text="{Binding PRSM_Min, StringFormat={}{0:N2}}" IsFloat="True" Maximum="{Binding ElementName=PrsmMax, Path=Text}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"  Foreground="Black"/>
+    <customControls:ValidatingTextBox x:Name="PrsmMax" Text="{Binding PRSM_Max, StringFormat={}{0:N2}}" IsFloat="True" Minimum="{Binding ElementName=PrsmMin, Path=Text}" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
 </Grid>

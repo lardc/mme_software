@@ -13,49 +13,39 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column0e" />
+        <ColumnDefinition Width="220" SharedSizeGroup="Column0e" />
         <ColumnDefinition Width="220" SharedSizeGroup="Column1e"/>
         <ColumnDefinition Width="30" />
-        <ColumnDefinition Width="auto" SharedSizeGroup="Column3e" />
+        <ColumnDefinition Width="0" SharedSizeGroup="Column3e" />
         <ColumnDefinition Width="220" SharedSizeGroup="Column4e"/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="50" />
     </Grid.RowDefinitions>
-
     <Label Foreground="Black" Grid.Column="0" Grid.Row="0" Content="{x:Static res:Resources.QrrTqMode}" />
     <ComboBox Grid.Column="4" Grid.Row="0" ItemsSource="{Binding Source={StaticResource TModes}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
-
     <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5"  Content="{x:Static res:Resources.QrrTqTrrMeasureBy9050Method}" IsChecked="{Binding TrrMeasureBy9050Method}" Foreground="Black" BorderBrush="#FFC9C9C9"/>
-
-    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Name="WidthTemplate" Text="{x:Static res:Resources.QrrTqDirectCurrent}" Foreground="Black"/> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="2" Value="{Binding DirectCurrent}" /> 
-    
-    <Label Foreground="Black" Grid.Column="0" Grid.Row="3"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" /> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="3" Value="{Binding DCPulseWidth}" /> 
-    
-    <Label Foreground="Black" Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" /> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="4" Value="{Binding DCRiseRate}" StringFormat="N3" /> 
-    
+    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Name="WidthTemplate" Text="{x:Static res:Resources.QrrTqDirectCurrent}" Foreground="Black" VerticalAlignment="Center"/>
+    <customControls:ValidatingTextBox Text="{Binding DirectCurrent}" IsFloat="True" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="3"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCPulseWidth}" />
+    <customControls:ValidatingTextBox Text="{Binding DCPulseWidth}" IsFloat="True" Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Foreground="Black" Grid.Column="0" Grid.Row="4"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCRiseRate}" />
+    <customControls:ValidatingTextBox Text="{Binding DCRiseRate, StringFormat={}{0:N3}}" IsFloat="True" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Foreground="Black" Grid.Column="0" Grid.Row="5"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqDCFallRate}" /> 
      <ComboBox Grid.Column="4" Grid.Row="5"  ItemsSource="{Binding Source={StaticResource TDcFallRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding DCFallRate}" /> 
-    
-     <Label Foreground="Black" Grid.Column="0" Grid.Row="6"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" /> 
-     <customControls:NumericUpDown Grid.Column="4" Grid.Row="6" Value="{Binding OffStateVoltage}" />
-
-
-    <TextBlock Grid.Column="0" Grid.Row="7" Foreground="Black" Grid.ColumnSpan="4" TextWrapping="Wrap" HorizontalAlignment="Left" Width="{Binding ElementName=WidthTemplate, Path=ActualWidth}" Text="{x:Static res:Resources.QrrTqOsvRate}"  />
-    <ComboBox Grid.Column="4" Grid.Row="7"  ItemsSource="{Binding Source={StaticResource TOsvRates}}" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
+     <Label Foreground="Black" Grid.Column="0" Grid.Row="6"  Grid.ColumnSpan="4" Content="{x:Static res:Resources.QrrTqOffStateVoltage}" />
+    <customControls:ValidatingTextBox Text="{Binding OffStateVoltage}" IsFloat="True" Grid.Row="6" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <TextBlock Grid.Column="0" Grid.Row="7" Foreground="Black" Grid.ColumnSpan="4" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="{Binding ElementName=WidthTemplate, Path=ActualWidth}" Text="{x:Static res:Resources.QrrTqOsvRate}"  />
+    <ComboBox Grid.Column="4" Grid.Row="7"  ItemsSource="{Binding Source={StaticResource TOsvRates}}" Height="45" DisplayMemberPath="Key" SelectedValuePath="Value" SelectedValue="{Binding OsvRate}" />
 </Grid>
