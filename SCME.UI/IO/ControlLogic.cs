@@ -1489,6 +1489,11 @@ namespace SCME.UI.IO
             m_QueueWorker.AddGateIlEvent(state, il, testTypeId);
         }
 
+        public void GateVgntHandler(DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        {
+            m_QueueWorker.AddGateVgntEvent(state, vgnt, ignt, testTypeId);
+        }
+
         public void GateNotificationHandler(Types.Gate.HWProblemReason Problem, Types.Gate.HWWarningReason Warning,
                                             Types.Gate.HWFaultReason Fault,
                                             Types.Gate.HWDisableReason Disable)

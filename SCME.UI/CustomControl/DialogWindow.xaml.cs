@@ -2,29 +2,23 @@
 
 namespace SCME.UI.CustomControl
 {
-    /// <summary>
-    ///     Interaction logic for DialogWindow.xaml
-    /// </summary>
     public partial class DialogWindow
     {
-        public enum EbConfig
-        {
-            OK,
-            Cancel,
-            OKCancel
-        }
-
-        public DialogWindow(string Title, string Message)
+        /// <summary>Инициализирует новый экземпляр класса DialogWindow</summary>
+        /// <param name="title">Заголовок диалогового окна</param>
+        /// <param name="message">Текст сообщения</param>
+        public DialogWindow(string title, string message)
         {
             InitializeComponent();
-
-            lblTitle.Content = Title;
-            tbMessage.Text = Message;
+            lblTitle.Content = title;
+            tbMessage.Text = message;
         }
 
-        public void ButtonConfig(EbConfig Conf)
+        /// <summary>Конфигурирование диалогового окна</summary>
+        /// <param name="conf">Параметр конфигурации</param>
+        public void ButtonConfig(EbConfig conf)
         {
-            switch (Conf)
+            switch (conf)
             {
                 case EbConfig.OKCancel:
                     mainGrid.ColumnDefinitions[0].Width = new GridLength(60, GridUnitType.Star);
@@ -41,9 +35,17 @@ namespace SCME.UI.CustomControl
             }
         }
 
-        private void BtnOk_Click(object Sender, RoutedEventArgs E)
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+        }
+
+        /// <summary>Конфигурация диалогового окна</summary>
+        public enum EbConfig
+        {
+            OK,
+            Cancel,
+            OKCancel
         }
     }
 }

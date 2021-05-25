@@ -1,37 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using SCME.Types;
+using SCME.UIServiceConfig.Properties;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Research.DynamicDataDisplay;
-using Microsoft.Research.DynamicDataDisplay.DataSources;
-using SCME.Types;
-using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 
 namespace SCME.UI.PagesTech
 {
-    /// <summary>
-    ///     Interaction logic for GraphicPage.xaml
-    /// </summary>
     public partial class GatePage
     {
+        //Цветовая индикация
         private readonly SolidColorBrush m_XRed, m_XGreen, m_XOrange;
+        //Состояние тестирования
         private bool m_IsRunning;
-        private const int RoomTemp = 25;
-        public int Temperature { get; set; }
 
-        public Types.Gate.TestParameters Parameters { get; set; }
-        public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.Commutation.ModuleCommutationType CommType { get; set; }
-        public Types.Commutation.ModulePosition ModPosition { get; set; }
-
+        /// <summary>Инициализирует новый экземпляр класса GatePage</summary>
         internal GatePage()
         {
-            Parameters = new Types.Gate.TestParameters { IsEnabled = true };
+            Parameters = new Types.Gate.TestParameters
+            {
+                IsEnabled = true
+            };
             ClampParameters = new Types.Clamping.TestParameters
             {
                 StandardForce = Types.Clamping.ClampingForceInternal.Custom,
@@ -39,22 +35,42 @@ namespace SCME.UI.PagesTech
                 IsHeightMeasureEnabled = false
             };
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
-            Temperature = RoomTemp;
+            Temperature = 25;
             InitializeComponent();
-
             m_XRed = (SolidColorBrush)FindResource("xRed1");
             m_XGreen = (SolidColorBrush)FindResource("xGreen1");
             m_XOrange = (SolidColorBrush)FindResource("xOrange1");
-
             ClearStatus();
+        }
+
+        public int Temperature
+        {
+            get; set;
+        }
+
+        public Types.Gate.TestParameters Parameters
+        {
+            get; set;
+        }
+        
+        public Types.Clamping.TestParameters ClampParameters
+        {
+            get; set;
+        }
+        
+        public Types.Commutation.ModuleCommutationType CommType
+        {
+            get; set;
+        }
+        
+        public Types.Commutation.ModulePosition ModPosition
+        {
+            get; set;
         }
 
         internal bool IsRunning
         {
-            get
-            {
-                return m_IsRunning;
-            }
+            get => m_IsRunning;
             set
             {
                 m_IsRunning = value;
@@ -63,97 +79,94 @@ namespace SCME.UI.PagesTech
             }
         }
 
-        internal void SetResultAll(DeviceState State)
+        internal void SetResultAll(DeviceState state)
         {
-            if (State == DeviceState.InProcess)
+            if (state == DeviceState.InProcess)
                 ClearStatus();
             else
                 IsRunning = false;
         }
 
-        internal void SetResultKelvin(DeviceState State, bool IsKelvinOk)
+        internal void SetResultKelvin(DeviceState state, bool isKelvinOk)
         {
-            SetLabel(lblKelvin, State, IsKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
+            SetLabel(lblKelvin, state, isKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
         }
 
-        internal void SetResultResistance(DeviceState State, float Resistance)
+        internal void SetResultResistance(DeviceState state, float resistance)
         {
-            SetLabel(lblResistance, State, string.Format("{0}", Resistance));
+            SetLabel(lblResistance, state, resistance.ToString());
         }
 
-        internal void SetResultGT(DeviceState State, float IGT, float VGT, IList<short> ArrayI,
-                                        IList<short> ArrayV)
+        internal void SetResultGT(DeviceState state, float igt, float vgt, IList<short> arrayI, IList<short> arrayV)
         {
-            SetLabel(lblIGT, State, string.Format("{0}", IGT));
-            SetLabel(lblVGT, State, string.Format("{0}", VGT));
-
-            if (State == DeviceState.Success)
+            SetLabel(lblIGT, state, igt.ToString());
+            SetLabel(lblVGT, state, vgt.ToString());
+            if (state == DeviceState.Success)
             {
-                Plot(@"Igt", m_XRed.Color, ArrayI);
-                Plot(@"Vgt", m_XOrange.Color, ArrayV);
+                Plot(@"Igt", m_XRed.Color, arrayI);
+                Plot(@"Vgt", m_XOrange.Color, arrayV);
             }
         }
 
-        private void Pulse_Gate_Click(object Sender, RoutedEventArgs E)
+        private void Pulse_Gate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var result = Cache.Net.GatePulseCalibrationGate(ushort.Parse(calibrationCurrent.Text));
-
-                actualCurrent.Content = result.Current.ToString(CultureInfo.InvariantCulture);
-                actualVoltage.Content = result.Voltage.ToString(CultureInfo.InvariantCulture);
+                Types.Gate.CalibrationResultGate Result = Cache.Net.GatePulseCalibrationGate(ushort.Parse(calibrationCurrent.Text));
+                actualCurrent.Content = Result.Current.ToString(CultureInfo.InvariantCulture);
+                actualVoltage.Content = Result.Voltage.ToString(CultureInfo.InvariantCulture);
             }
-            catch
-            {
-            }
+            catch { }
         }
 
-        private void Pulse_Main_Click(object Sender, RoutedEventArgs E)
+        private void Pulse_Main_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var result = Cache.Net.GatePulseCalibrationMain(ushort.Parse(calibrationCurrent.Text));
-
-                actualCurrent.Content = result.ToString(CultureInfo.InvariantCulture);
+                ushort Result = Cache.Net.GatePulseCalibrationMain(ushort.Parse(calibrationCurrent.Text));
+                actualCurrent.Content = Result.ToString(CultureInfo.InvariantCulture);
                 actualVoltage.Content = "0";
             }
-            catch
-            {
-            }
+            catch { }
         }
         
-        internal void SetResultIh(DeviceState State, float IH, IList<short> Array)
+        internal void SetResultIh(DeviceState state, float ih, IList<short> array)
         {
-            SetLabel(lblIH, State, string.Format("{0}", IH));
-
-            if (State == DeviceState.Success)
-                Plot(@"Ih", m_XGreen.Color, Array);
+            SetLabel(lblIH, state, ih.ToString());
+            if (state == DeviceState.Success)
+                Plot(@"Ih", m_XGreen.Color, array);
         }
 
-        internal void SetResultIl(DeviceState State, float IL)
+        internal void SetResultIl(DeviceState state, float il)
         {
-            SetLabel(lblIL, State, string.Format("{0}", IL));
+            SetLabel(lblIL, state, il.ToString());
         }
 
-        internal void SetWarning(Types.Gate.HWWarningReason Warning)
+        internal void SetResultVgnt(DeviceState state, float vgnt, ushort ignt)
+        {
+            SetLabel(lblVgnt, state, vgnt.ToString());
+            SetLabel(lblIgnt, state, ignt.ToString());
+        }
+
+        internal void SetWarning(Types.Gate.HWWarningReason warning)
         {
             if (lblWarning.Visibility != Visibility.Visible)
             {
 
-                lblWarning.Content = Warning.ToString();
+                lblWarning.Content = warning.ToString();
                 lblWarning.Visibility = Visibility.Visible;
             }
         }
 
-        internal void SetProblem(Types.Gate.HWProblemReason Problem)
+        internal void SetProblem(Types.Gate.HWProblemReason problem)
         {
-            lblWarning.Content = Problem.ToString();
+            lblWarning.Content = problem.ToString();
             lblWarning.Visibility = Visibility.Visible;
         }
 
-        internal void SetFault(Types.Gate.HWFaultReason Fault)
+        internal void SetFault(Types.Gate.HWFaultReason fault)
         {
-            lblFault.Content = Fault.ToString();
+            lblFault.Content = fault.ToString();
             lblFault.Visibility = Visibility.Visible;
             IsRunning = false;
         }
@@ -172,48 +185,45 @@ namespace SCME.UI.PagesTech
             chartPlotter.Children.RemoveAll(typeof(LineGraph));
         }
 
-        private static void SetLabel(ContentControl Target, DeviceState State, string Message)
+        private static void SetLabel(ContentControl target, DeviceState state, string message)
         {
-            Target.Content = string.Empty;
-
-            switch (State)
+            target.Content = string.Empty;
+            switch (state)
             {
                 case DeviceState.Success:
-                    Target.Background = Brushes.LightGreen;
-                    Target.Content = Message;
+                    target.Background = Brushes.LightGreen;
+                    target.Content = message;
                     break;
                 case DeviceState.Problem:
-                    Target.Background = Brushes.Gold;
-                    Target.Content = Message;
+                    target.Background = Brushes.Gold;
+                    target.Content = message;
                     break;
                 case DeviceState.InProcess:
-                    Target.Background = Brushes.Gold;
+                    target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Stopped:
                 case DeviceState.Fault:
-                    Target.Background = Brushes.Tomato;
+                    target.Background = Brushes.Tomato;
                     break;
                 default:
-                    Target.Background = Brushes.Transparent;
+                    target.Background = Brushes.Transparent;
                     break;
             }
         }
 
-        private void ResetLabel(ContentControl Target)
+        private void ResetLabel(ContentControl target)
         {
-            Target.Content = "";
-            Target.Background = Brushes.Transparent;
+            target.Content = string.Empty;
+            target.Background = Brushes.Transparent;
         }
 
-        private void Plot(string LineName, Color LineColor, IEnumerable<short> UPoints)
+        private void Plot(string lineName, Color lineColor, IEnumerable<short> uPoints)
         {
-            var points = UPoints.Select((T, I) => new PointF(I, T)).ToList();
-            var dataSource = new EnumerableDataSource<PointF>(points);
-
-            dataSource.SetXMapping(P => P.X);
-            dataSource.SetYMapping(P => P.Y);
-
-            chartPlotter.AddLineGraph(dataSource, LineColor, 3, LineName);
+            List<PointF> Points = uPoints.Select((T, I) => new PointF(I, T)).ToList();
+            EnumerableDataSource<PointF> DataSource = new EnumerableDataSource<PointF>(Points);
+            DataSource.SetXMapping(P => P.X);
+            DataSource.SetYMapping(P => P.Y);
+            chartPlotter.AddLineGraph(DataSource, lineColor, 3, lineName);
             chartPlotter.FitToView();
         }
 
@@ -221,42 +231,58 @@ namespace SCME.UI.PagesTech
         {
             if (IsRunning)
                 return;
-
-            var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
-            var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
-            var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
-            var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramIH = new Types.IH.TestParameters { IsEnabled = false };
-            var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
-
+            Types.VTM.TestParameters paramVtm = new Types.VTM.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.BVT.TestParameters paramBvt = new Types.BVT.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.ATU.TestParameters paramATU = new Types.ATU.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.QrrTq.TestParameters paramQrrTq = new Types.QrrTq.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.IH.TestParameters paramIH = new Types.IH.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.RCC.TestParameters paramRCC = new Types.RCC.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.TOU.TestParameters paramTOU = new Types.TOU.TestParameters
+            {
+                IsEnabled = false
+            };
             ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
-
-            if (!Cache.Net.Start(Parameters, paramVtm, paramBvt, paramATU, paramQrrTq, paramIH, paramRCC,
-                                 new Types.Commutation.TestParameters
+            if (!Cache.Net.Start(Parameters, paramVtm, paramBvt, paramATU, paramQrrTq, paramIH, paramRCC, new Types.Commutation.TestParameters
                                  {
                                      BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
                                      CommutationType = ConverterUtil.MapCommutationType(CommType),
                                      Position = ConverterUtil.MapModulePosition(ModPosition)
                                  }, ClampParameters, paramTOU))
                 return;
-
             ClearStatus();
             IsRunning = true;
         }
 
-        private void btnStart_OnClick(object Sender, RoutedEventArgs E)
+        private void btnStart_OnClick(object sender, RoutedEventArgs e)
         {
             ScrollViewer.ScrollToBottom();
             Start();
         }
 
-        private void btnStop_OnClick(object Sender, RoutedEventArgs E)
+        private void btnStop_OnClick(object sender, RoutedEventArgs e)
         {
             Cache.Net.StopByButtonStop();
         }
 
-        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
+        private void btnBack_OnClick(object sender, RoutedEventArgs e)
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
@@ -270,16 +296,9 @@ namespace SCME.UI.PagesTech
         public void SetTopTemp(int temeprature)
         {
             TopTempLabel.Content = temeprature;
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
-                TopTempLabel.Background = Brushes.Tomato;
-            }
-            else
-            {
-                TopTempLabel.Background = Brushes.LightGreen;
-            }
+            int bottomTemp = Temperature - 2;
+            int topTemp = Temperature + 2;
+            TopTempLabel.Background = temeprature < bottomTemp || temeprature > topTemp ? Brushes.Tomato : Brushes.LightGreen;
         }
 
         public void SetBottomTemp(int temeprature)

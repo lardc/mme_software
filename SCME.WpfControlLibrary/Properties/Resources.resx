@@ -828,4 +828,16 @@
   <data name="TopTempName" xml:space="preserve">
     <value>Chanel 1 temp, C</value>
   </data>
+  <data name="Vgnt" xml:space="preserve">
+    <value>VGNT</value>
+  </data>
+  <data name="TestVoltage" xml:space="preserve">
+    <value>Test Voltage</value>
+  </data>
+  <data name="GateLimitI" xml:space="preserve">
+    <value>Gate limit, Ig</value>
+  </data>
+  <data name="GateLimitV" xml:space="preserve">
+    <value>Gate limit, Vg</value>
+  </data>
 </root>

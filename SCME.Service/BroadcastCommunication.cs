@@ -116,6 +116,11 @@ namespace SCME.Service
             EnumerateClients(client => client.GateIlHandler(state, result.IL, result.TestTypeId));
         }
 
+        public void PostGateVgntEvent(DeviceState state, Types.Gate.TestResults result)
+        {
+            EnumerateClients(client => client.GateVgntHandler(state, result.VGNT, result.IGNT, result.TestTypeId));
+        }
+
         public void PostGateNotificationEvent(Types.Gate.HWProblemReason Problem, Types.Gate.HWWarningReason Warning,
                                               Types.Gate.HWFaultReason Fault, Types.Gate.HWDisableReason Disable)
         {

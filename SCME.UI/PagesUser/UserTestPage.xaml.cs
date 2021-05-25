@@ -930,6 +930,32 @@ namespace SCME.UI.PagesUser
             }
         }
 
+        internal void SetResultGateVgnt(DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        {
+            m_StateGate = state;
+
+            List<DependencyObject> gateResults = GetGateItemContainer();
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
+            Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult1");
+            Label labelIgntResult = FindChild<Label>(presenter, "labelIgntResult1");
+            if (labelVgntResult != null)
+                SetLabel(labelVgntResult, state, vgnt <= Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].VGNT,
+                     string.Format("{0}", vgnt));
+            if (labelIgntResult != null)
+                SetLabel(labelIgntResult, state, ignt <= Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].IGNT,
+                     string.Format("{0}", ignt));
+            if (state != DeviceState.InProcess)
+            {
+                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = vgnt;
+                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IGNT = ignt;
+
+                if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].VGNT)
+                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGNT");
+                if (ignt > Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].IGNT)
+                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGNT");
+            }
+        }
+
         internal void SetGateWarning(HWWarningReason Warning)
         {
             var gateResults = GetGateItemContainer();

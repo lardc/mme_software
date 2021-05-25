@@ -826,6 +826,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IGNT, mA.
+        /// </summary>
+        public static string Ignt_mA {
+            get {
+                return ResourceManager.GetString("Ignt_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на IGT, mA.
         /// </summary>
         public static string Igt_mA {
@@ -2173,6 +2182,24 @@ namespace SCME.UI.Properties {
         public static string VDSM_V {
             get {
                 return ResourceManager.GetString("VDSM_V", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на VGNT.
+        /// </summary>
+        public static string Vgnt {
+            get {
+                return ResourceManager.GetString("Vgnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на VGNT, V.
+        /// </summary>
+        public static string Vgnt_V {
+            get {
+                return ResourceManager.GetString("Vgnt_V", resourceCulture);
             }
         }
         

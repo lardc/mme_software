@@ -533,6 +533,10 @@ namespace SCME.Service.IO
                         break;
                     case Types.Commutation.CommutationMode.Gate:
                         CallAction(m_Type6 ? ACT_COMM6_GATE : ACT_COMM2_GATE);
+                        
+                        if (!m_Type6)
+                            CallAction(ACT_COMM2_GATE_BVT);
+
                         break;
                     case Types.Commutation.CommutationMode.VTM:
                         CallAction(m_Type6 ? ACT_COMM6_SL : ACT_COMM2_SL);
@@ -666,7 +670,9 @@ namespace SCME.Service.IO
             REG_MODULE_TYPE = 70,
             REG_MODULE_POSITION = 71,
             SAFETY_REASON_SC1 = 301,
-            SAFETY_REASON_SC2 = 302;
+            SAFETY_REASON_SC2 = 302,
+
+            ACT_COMM2_GATE_BVT = 117;
 
         #endregion
     }

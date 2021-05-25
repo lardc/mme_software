@@ -771,7 +771,7 @@ namespace SCME.Service.IO
 
         #region Registers
 
-        private const ushort
+        internal const ushort
             ACT_ENABLE_POWER = 1,
             ACT_DISABLE_POWER = 2,
             ACT_CLEAR_FAULT = 3,

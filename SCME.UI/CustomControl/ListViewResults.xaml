@@ -90,11 +90,19 @@
                     <Label Name="labelIlResult1"  Grid.Column="1" Grid.Row="5" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
+                    <customControls:LabelWithIndex Content="VGNT" Grid.Column="0" Grid.Row="6" Height="Auto" />
+                    <Label Name="labelVgntResult1"  Grid.Column="1" Grid.Row="6" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
+                    <customControls:LabelWithIndex Content="IGNT" Grid.Column="0" Grid.Row="7" Height="Auto" />
+                    <Label Name="labelIgntResult1"  Grid.Column="1" Grid.Row="7" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
+
+
                     <Label Name="labelGateWarning1"  Background="Gold" Grid.Column="0"
-                       Grid.Row="6" Content="Warning"
+                       Grid.Row="8" Content="Warning"
                        Style="{StaticResource WarningFaultLabelStyle}" />
                     <Label Name="labelGateFault1"  Background="Tomato" Grid.Column="1"
-                       Grid.Row="6" Content="Fault"
+                       Grid.Row="8" Content="Fault"
                        Style="{StaticResource WarningFaultLabelStyle}" />
 
 

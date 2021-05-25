@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using SCME.Service.Properties;
-using SCME.Types;
+﻿using SCME.Types;
 using SCME.Types.Commutation;
 using SCME.UIServiceConfig.Properties;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace SCME.Service.IO
 {
@@ -20,6 +19,8 @@ namespace SCME.Service.IO
         private const float EMU_DEFAULT_VGT = 990;
         private const short EMU_DEFAULT_IH = 32;
         private const short EMU_DEFAULT_IL = 270;
+        private const float EMU_DEFAULT_VGNT = 100;
+        private const ushort EMU_DEFAULT_IGNT = 25;
 
         private readonly IOAdapter m_IOAdapter;
         private readonly BroadcastCommunication m_Communication;
@@ -36,6 +37,7 @@ namespace SCME.Service.IO
 
         private int m_Timeout = DEFAULT_TIMEOUT;
         public IOIH IH;
+        public IOBvt VGNT;
 
         internal IOGate(IOAdapter Adapter, BroadcastCommunication Communication)
         {
@@ -44,18 +46,18 @@ namespace SCME.Service.IO
             m_IsGateEmulationHard = Settings.Default.GateEmulation;
             m_IsGateEmulation = m_IsGateEmulationHard;
             m_ReadGraph = Settings.Default.GateReadGraph;
-
             m_Node = (ushort)Settings.Default.GateNode;
             m_Result = new Types.Gate.TestResults();
-
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info,
-                                         String.Format("Gate created. Emulation mode: {0}", m_IsGateEmulation));
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info, string.Format("Gate created. Emulation mode: {0}", m_IsGateEmulation));
         }
 
         internal IOCommutation ActiveCommutation
         {
-            get { return m_IOCommutation; }
-            set { m_IOCommutation = value; }
+            get => m_IOCommutation;
+            set
+            {
+                m_IOCommutation = value;
+            }
         }
 
         internal DeviceConnectionState Initialize(bool Enable, int Timeout)
@@ -150,6 +152,7 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP);
+            VGNT.CallAction(ACT_STOP_VGNT);
             m_Stop = true;
             m_State = DeviceState.Stopped;
         }
@@ -284,8 +287,6 @@ namespace SCME.Service.IO
 
         #endregion
 
-
-
         private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
         {
             try
@@ -310,8 +311,8 @@ namespace SCME.Service.IO
                     else
                         Ih();
                     Il();
+                    Vgnt();
                 }
-
                 if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
                 {
                     m_State = DeviceState.Fault;
@@ -388,7 +389,8 @@ namespace SCME.Service.IO
 
         private void IgtVgt()
         {
-            if (m_Stop) return;
+            if (m_Stop)
+                return;
 
             FireGateEvent(DeviceState.InProcess, m_Result);
 
@@ -604,6 +606,36 @@ namespace SCME.Service.IO
             FireILEvent(DeviceState.Success, m_Result);
         }
 
+        private void Vgnt()
+        {
+            if (m_Stop)
+                return;
+            if (!m_Parameter.UseVgnt)
+                return;
+            FireVgntEvent(DeviceState.InProcess, m_Result);
+            VGNT.WriteRegister(REG_LIMIT_CURRENT, (ushort)(m_Parameter.CurrentLimit * 10));
+            VGNT.WriteRegister(REG_TEST_VOLTAGE, m_Parameter.VoltageLimitD);
+            VGNT.WriteRegister(REG_VOLTAGE_PLATE_TIME, m_Parameter.PlateTime);
+            VGNT.WriteRegister(REG_VOLTAGE_AC_RATE, (ushort)(m_Parameter.RampUpVoltage * 10));
+            VGNT.WriteRegister(REG_START_VOLTAGE_AC, m_Parameter.StartVoltage);
+            WriteRegister(REG_V_GATE_LIMIT, m_Parameter.GateLimitV);
+            WriteRegister(REG_I_GATE_LIMIT, m_Parameter.GateLimitI);
+            VGNT.CallAction(ACT_START_TEST);
+            CallAction(ACT_START_VGNT);
+            if (!m_IsGateEmulation)
+            {
+                WaitForEndOfTest();
+                m_Result.VGNT = ReadRegister(REG_RESULT_VGNT);
+                m_Result.IGNT = ReadRegister(REG_RESULT_IGNT);
+            }
+            else
+            {
+                m_Result.VGNT = EMU_DEFAULT_VGNT;
+                m_Result.IGNT = EMU_DEFAULT_IGNT;
+            }
+            FireVgntEvent(DeviceState.Success, m_Result);
+        }
+
         private void WaitForEndOfTest()
         {
             var timeStamp = Environment.TickCount + m_Timeout;
@@ -663,6 +695,17 @@ namespace SCME.Service.IO
         }
 
         #region Events
+
+        private void FireVgntEvent(DeviceState State, Types.Gate.TestResults Result)
+        {
+            var message = string.Format("Gate VGNT state {0}", State);
+
+            if (State == DeviceState.Success)
+                message = string.Format("Gate VGNT {0}", Result.VGNT);
+
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info, message);
+            m_Communication.PostGateVgntEvent(State, Result);
+        }
 
         private void FireConnectionEvent(DeviceConnectionState State, string Message)
         {
@@ -810,8 +853,21 @@ namespace SCME.Service.IO
             SCOPE_I = 1,
             SCOPE_V = 2,
             ARR_SCOPE1_DATA = 1,
-            ARR_SCOPE2_DATA = 2;
+            ARR_SCOPE2_DATA = 2,
 
+            REG_LIMIT_CURRENT = 130,
+            REG_TEST_VOLTAGE = 131,
+            REG_VOLTAGE_PLATE_TIME = 132,
+            REG_VOLTAGE_AC_RATE = 133,
+            REG_START_VOLTAGE_AC = 134,
+            REG_V_GATE_LIMIT = 130,
+            REG_I_GATE_LIMIT = 131,
+            ACT_START_TEST = 100,
+            ACT_START_VGNT = 106,
+            REG_RESULT_VGNT = 205,
+            REG_RESULT_IGNT = 206,
+            ACT_STOP_VGNT = 101;
+            
         #endregion
     }
 }

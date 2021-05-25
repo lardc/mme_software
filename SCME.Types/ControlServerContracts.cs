@@ -228,6 +228,9 @@ namespace SCME.Types
         void GateIlHandler(DeviceState state, float il, long testTypeId);
 
         [OperationContract(IsOneWay = true)]
+        void GateVgntHandler(DeviceState state, float vgnt, ushort ignt, long testTypeId);
+
+        [OperationContract(IsOneWay = true)]
         void GateNotificationHandler(Gate.HWProblemReason Problem, Gate.HWWarningReason Warning,
                                      Gate.HWFaultReason Fault, Gate.HWDisableReason Disable);
 

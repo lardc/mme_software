@@ -736,6 +736,24 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Gate limit, Ig.
+        /// </summary>
+        public static string GateLimitI {
+            get {
+                return ResourceManager.GetString("GateLimitI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Gate limit, Vg.
+        /// </summary>
+        public static string GateLimitV {
+            get {
+                return ResourceManager.GetString("GateLimitV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Gateway.
         /// </summary>
         public static string Gateway {
@@ -1906,6 +1924,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Test Voltage.
+        /// </summary>
+        public static string TestVoltage {
+            get {
+                return ResourceManager.GetString("TestVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Time, us.
         /// </summary>
         public static string Time_us {
@@ -2064,6 +2091,15 @@ namespace SCME.WpfControlLibrary.Properties {
         public static string VdrmV {
             get {
                 return ResourceManager.GetString("VdrmV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на VGNT.
+        /// </summary>
+        public static string Vgnt {
+            get {
+                return ResourceManager.GetString("Vgnt", resourceCulture);
             }
         }
         
