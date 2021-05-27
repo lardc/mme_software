@@ -28,7 +28,7 @@
         }
 
         /// <summary>Задержка инициализации Proxy</summary>
-        public int  ProxyInitDelayMs
+        public int ProxyInitDelayMs
         {
             get; set;
         }

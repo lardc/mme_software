@@ -649,7 +649,7 @@
     <value>Напряжение, В</value>
   </data>
   <data name="Temp" xml:space="preserve">
-    <value>Temp, C</value>
+    <value>Температура, C</value>
   </data>
   <data name="DvdtVoltageRate" xml:space="preserve">
     <value>Скор. роста, В/мкс</value>
@@ -826,7 +826,7 @@
     <value>Верхняя пластина, C</value>
   </data>
   <data name="Vgnt" xml:space="preserve">
-    <value>VGNT</value>
+    <value>UGNT</value>
   </data>
   <data name="TestVoltage" xml:space="preserve">
     <value>Test Voltage</value>

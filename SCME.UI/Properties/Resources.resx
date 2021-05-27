@@ -880,4 +880,19 @@
   <data name="Vgnt_V" xml:space="preserve">
     <value>VGNT, V</value>
   </data>
+  <data name="ActualCurrent_mA" xml:space="preserve">
+    <value>Actual current, mA</value>
+  </data>
+  <data name="ActualVoltage" xml:space="preserve">
+    <value>Actual voltage, V</value>
+  </data>
+  <data name="NominalCurrent_mA" xml:space="preserve">
+    <value>Nominal current, mA</value>
+  </data>
+  <data name="PulseGate" xml:space="preserve">
+    <value>Pulse Gate</value>
+  </data>
+  <data name="PulseMain" xml:space="preserve">
+    <value>Pulse Main</value>
+  </data>
 </root>

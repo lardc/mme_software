@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyDescription("Supervisor application for SCME projects")]
+[assembly: AssemblyDescription("Supervisor and updater application for SCME projects")]
 [assembly: AssemblyCopyright("Copyright © Proton-Electrotex JSC 2014")]
 [assembly: AssemblyTrademark("Proton-Electrotex")]
 [assembly: AssemblyCulture("")]
@@ -32,4 +31,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("3.9.0.0")]
+[assembly: AssemblyVersion("3.12.0.0")]

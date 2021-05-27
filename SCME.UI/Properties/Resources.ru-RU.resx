@@ -844,12 +844,30 @@
     <value>Всего профилей</value>
   </data>
   <data name="Vgnt" xml:space="preserve">
-    <value>VGNT</value>
+    <value>UGNT</value>
   </data>
   <data name="Ignt_mA" xml:space="preserve">
     <value>IGNT, мА</value>
   </data>
   <data name="Vgnt_V" xml:space="preserve">
-    <value>VGNT, В</value>
+    <value>UGNT, В</value>
+  </data>
+  <data name="Temp" xml:space="preserve">
+    <value>Температура, С</value>
+  </data>
+  <data name="ActualCurrent_mA" xml:space="preserve">
+    <value>Измеренный ток, mA</value>
+  </data>
+  <data name="ActualVoltage" xml:space="preserve">
+    <value>Измеренное напряжение, V</value>
+  </data>
+  <data name="NominalCurrent_mA" xml:space="preserve">
+    <value>Номинальный ток, mA</value>
+  </data>
+  <data name="PulseGate" xml:space="preserve">
+    <value>Импульс управления</value>
+  </data>
+  <data name="PulseMain" xml:space="preserve">
+    <value>Силовой импульс</value>
   </data>
 </root>

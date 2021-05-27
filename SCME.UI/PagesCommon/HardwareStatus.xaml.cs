@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SCME.Types;
 using System.Windows;
-using SCME.Types;
-using SCME.UI.CustomControl;
-using SCME.UI.IO;
 
 namespace SCME.UI.PagesCommon
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
     public partial class HardwareStatusPage
     {
         private bool m_IsBackEnable;
         private bool m_IsRestartEnable;
 
+        /// <summary>Инициализирует новый экземпляр класса HardwareStatusPage</summary>
         public HardwareStatusPage()
         {
             InitializeComponent();
-
             IsBackEnable = false;
             IsRestartEnable = false;
-
-            btnRestart.Click += (object sender, RoutedEventArgs e) => System.Windows.Application.Current.Shutdown();
-            
-            
-            
         }
 
+        /// <summary>Активация перехода назад</summary>
         internal bool IsBackEnable
         {
-            get { return m_IsBackEnable; }
+            get => m_IsBackEnable;
             set
             {
                 m_IsBackEnable = value;
@@ -38,13 +27,14 @@ namespace SCME.UI.PagesCommon
             }
         }
 
+        /// <summary>Активация перезапуска приложения</summary>
         internal bool IsRestartEnable
         {
-            get { return m_IsRestartEnable; }
+            get => m_IsRestartEnable;
             set
             {
                 m_IsRestartEnable = value;
-                    //btnRestart.Visibility = m_IsRestartEnable ? Visibility.Visible : Visibility.Collapsed;
+                //btnRestart.Visibility = m_IsRestartEnable ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -240,10 +230,15 @@ namespace SCME.UI.PagesCommon
             }
         }
 
-        private void Back_Click(object Sender, RoutedEventArgs E)
+        private void Back_Click(object sender, RoutedEventArgs e) //Переход назад
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
+        }
+
+        private void btnRestart_Click(object sender, RoutedEventArgs e) //Перезапуск приложения
+        {
+            Application.Current.Shutdown();
         }
     }
 }

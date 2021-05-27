@@ -320,5 +320,8 @@
     <Setting Name="MEFAUri" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://127.0.0.1:740</Value>
     </Setting>
+    <Setting Name="TempIsVisible" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

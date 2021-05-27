@@ -61,6 +61,24 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Actual current, mA.
+        /// </summary>
+        public static string ActualCurrent_mA {
+            get {
+                return ResourceManager.GetString("ActualCurrent_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Actual voltage, V.
+        /// </summary>
+        public static string ActualVoltage {
+            get {
+                return ResourceManager.GetString("ActualVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Adapter.
         /// </summary>
         public static string Adapter {
@@ -1159,6 +1177,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Nominal current, mA.
+        /// </summary>
+        public static string NominalCurrent_mA {
+            get {
+                return ResourceManager.GetString("NominalCurrent_mA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Not correct.
         /// </summary>
         public static string NonCorrect {
@@ -1444,6 +1471,24 @@ namespace SCME.UI.Properties {
         public static string PullStopButton {
             get {
                 return ResourceManager.GetString("PullStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pulse Gate.
+        /// </summary>
+        public static string PulseGate {
+            get {
+                return ResourceManager.GetString("PulseGate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pulse Main.
+        /// </summary>
+        public static string PulseMain {
+            get {
+                return ResourceManager.GetString("PulseMain", resourceCulture);
             }
         }
         
