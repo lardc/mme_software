@@ -109,6 +109,14 @@ namespace SCME.Service.IO
             FireConnectionEvent(DeviceConnectionState.DisconnectionSuccess, "Gate disconnected");
         }
 
+        internal bool IsReadyToStart()
+        {
+            //блок готов если он в состоянии отличном от Fault, Disabled или InProcess
+            var devState = (Types.Gate.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+
+            return !((devState == Types.Gate.HWDeviceState.Fault) || (devState == Types.Gate.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
+        }
+
         internal DeviceState Start(Types.Gate.TestParameters parameters, Types.Commutation.TestParameters commParameters)
         {
             m_Parameter = parameters;
@@ -156,136 +164,6 @@ namespace SCME.Service.IO
             m_Stop = true;
             m_State = DeviceState.Stopped;
         }
-
-        internal bool IsReadyToStart()
-        {
-            //блок готов если он в состоянии отличном от Fault, Disabled или InProcess
-            var devState = (Types.Gate.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-
-            return !((devState == Types.Gate.HWDeviceState.Fault) || (devState == Types.Gate.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
-        }
-
-        #region Standart API
-
-        internal void ClearFault()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "Gate fault cleared");
-
-            CallAction(ACT_CLEAR_FAULT);
-        }
-
-        internal void ClearWarning()
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "Gate warning cleared");
-
-            CallAction(ACT_CLEAR_WARNING);
-        }
-
-        internal ushort ReadRegister(ushort Address, bool SkipJournal = false)
-        {
-            ushort value = 0;
-
-            if (!m_IsGateEmulation)
-                value = m_IOAdapter.Read16(m_Node, Address);
-
-            if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @ReadRegister, address {0}, value {1}", Address, value));
-
-            return value;
-        }
-
-        internal short ReadRegisterS(ushort Address, bool SkipJournal = false)
-        {
-            short value = 0;
-
-            if (!m_IsGateEmulation)
-                value = m_IOAdapter.Read16S(m_Node, Address);
-
-            if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @ReadRegisterS, address {0}, value {1}", Address, value));
-
-            return value;
-        }
-
-        internal ushort ReadDeviceState(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_DEVICE_STATE, SkipJournal);
-        }
-
-        internal ushort ReadFaultReason(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_FAULT_REASON, SkipJournal);
-        }
-
-        internal ushort ReadDisableReason(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_DISABLE_REASON, SkipJournal);
-        }
-
-        internal ushort ReadFinished(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_TEST_FINISHED, SkipJournal);
-        }
-
-        internal ushort ReadWarning(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_WARNING, SkipJournal);
-        }
-
-        internal ushort ReadProblem(bool SkipJournal = false)
-        {
-            return ReadRegister(REG_PROBLEM, SkipJournal);
-        }
-
-        internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
-        {
-            if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @WriteRegister, address {0}, value {1}", Address, Value));
-
-            if (m_IsGateEmulation)
-                return;
-
-            m_IOAdapter.Write16(m_Node, Address, Value);
-        }
-
-        internal void WriteRegisterS(ushort Address, short Value, bool SkipJournal = false)
-        {
-            if (!SkipJournal)
-                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @WriteRegisterS, address {0}, value {1}", Address, Value));
-
-            if (m_IsGateEmulation)
-                return;
-
-            m_IOAdapter.Write16S(m_Node, Address, Value);
-        }
-
-        private IList<short> ReadArrayFastS(ushort Address)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @ReadArrayFastS, endpoint {0}", Address));
-
-            if (m_IsGateEmulation)
-                return new List<short>();
-
-            return m_IOAdapter.ReadArrayFast16S(m_Node, Address);
-        }
-
-        internal void CallAction(ushort Action)
-        {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         string.Format("Gate @Call, action {0}", Action));
-
-            if (m_IsGateEmulation)
-                return;
-
-            m_IOAdapter.Call(m_Node, Action);
-        }
-
-        #endregion
 
         private void MeasurementLogicRoutine(Types.Commutation.TestParameters Commutation)
         {
@@ -693,6 +571,128 @@ namespace SCME.Service.IO
                 throw new Exception("Timeout while waiting for Gate test to end");
             }
         }
+
+        #region Standart API
+
+        internal void ClearFault()
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "Gate fault cleared");
+
+            CallAction(ACT_CLEAR_FAULT);
+        }
+
+        internal void ClearWarning()
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "Gate warning cleared");
+
+            CallAction(ACT_CLEAR_WARNING);
+        }
+
+        internal ushort ReadRegister(ushort Address, bool SkipJournal = false)
+        {
+            ushort value = 0;
+
+            if (!m_IsGateEmulation)
+                value = m_IOAdapter.Read16(m_Node, Address);
+
+            if (!SkipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @ReadRegister, address {0}, value {1}", Address, value));
+
+            return value;
+        }
+
+        internal short ReadRegisterS(ushort Address, bool SkipJournal = false)
+        {
+            short value = 0;
+
+            if (!m_IsGateEmulation)
+                value = m_IOAdapter.Read16S(m_Node, Address);
+
+            if (!SkipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @ReadRegisterS, address {0}, value {1}", Address, value));
+
+            return value;
+        }
+
+        internal ushort ReadDeviceState(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_DEVICE_STATE, SkipJournal);
+        }
+
+        internal ushort ReadFaultReason(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_FAULT_REASON, SkipJournal);
+        }
+
+        internal ushort ReadDisableReason(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_DISABLE_REASON, SkipJournal);
+        }
+
+        internal ushort ReadFinished(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_TEST_FINISHED, SkipJournal);
+        }
+
+        internal ushort ReadWarning(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_WARNING, SkipJournal);
+        }
+
+        internal ushort ReadProblem(bool SkipJournal = false)
+        {
+            return ReadRegister(REG_PROBLEM, SkipJournal);
+        }
+
+        internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
+        {
+            if (!SkipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @WriteRegister, address {0}, value {1}", Address, Value));
+
+            if (m_IsGateEmulation)
+                return;
+
+            m_IOAdapter.Write16(m_Node, Address, Value);
+        }
+
+        internal void WriteRegisterS(ushort Address, short Value, bool SkipJournal = false)
+        {
+            if (!SkipJournal)
+                SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @WriteRegisterS, address {0}, value {1}", Address, Value));
+
+            if (m_IsGateEmulation)
+                return;
+
+            m_IOAdapter.Write16S(m_Node, Address, Value);
+        }
+
+        private IList<short> ReadArrayFastS(ushort Address)
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @ReadArrayFastS, endpoint {0}", Address));
+
+            if (m_IsGateEmulation)
+                return new List<short>();
+
+            return m_IOAdapter.ReadArrayFast16S(m_Node, Address);
+        }
+
+        internal void CallAction(ushort Action)
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("Gate @Call, action {0}", Action));
+
+            if (m_IsGateEmulation)
+                return;
+
+            m_IOAdapter.Call(m_Node, Action);
+        }
+
+        #endregion
 
         #region Events
 

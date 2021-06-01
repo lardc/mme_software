@@ -1,77 +1,76 @@
-﻿using System;
+﻿using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using SCME.Types;
+using SCME.Types.ATU;
+using SCME.UIServiceConfig.Properties;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using SCME.Types;
-using SCME.Types.BaseTestParams;
-using SCME.Types.ATU;
-using SCME.UIServiceConfig.Properties;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+
 
 namespace SCME.UI.PagesTech
 {
-    /// <summary>
-    /// Interaction logic for ATUPage.xaml
-    /// </summary>
     public partial class ATUPage : Page
     {
+        //Цветовая индикация
+        private readonly SolidColorBrush m_XGreen, m_XBlue;
+        //Состояние тестирования
         private bool m_IsRunning;
 
-        public TestParameters Parameters { get; set; }
-        public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.Commutation.ModuleCommutationType CommType { get; set; }
-        public Types.Commutation.ModulePosition ModPosition { get; set; }
-
-        private const int RoomTemp = 25;
-        public int Temperature { get; set; }
-
-
-        internal void SetResultAll(DeviceState State)
+        public int Temperature
         {
-            if (State == DeviceState.InProcess)
-                ClearStatus();
-            else IsRunning = false;
+            get; set;
         }
 
+        public TestParameters Parameters
+        {
+            get; set;
+        }
+
+        public Types.Clamping.TestParameters ClampParameters
+        {
+            get; set;
+        }
+
+        public Types.Commutation.ModuleCommutationType CommType
+        {
+            get; set;
+        }
+
+        public Types.Commutation.ModulePosition ModPosition
+        {
+            get; set;
+        }
+
+        /// <summary>Инициализирует новый экземпляр класса ATUPage</summary>
         internal ATUPage()
         {
-            Parameters = new Types.ATU.TestParameters { IsEnabled = true };
-            ClampParameters = new Types.Clamping.TestParameters { StandardForce = Types.Clamping.ClampingForceInternal.Custom, CustomForce = 5 };
+            Parameters = new TestParameters
+            {
+                IsEnabled = true
+            };
+            ClampParameters = new Types.Clamping.TestParameters
+            {
+                StandardForce = Types.Clamping.ClampingForceInternal.Custom,
+                CustomForce = 5
+            };
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
-            Temperature = RoomTemp;
-
+            Temperature = 25;
             InitializeComponent();
-
+            m_XGreen = (SolidColorBrush)FindResource("xGreen1");
+            m_XBlue = (SolidColorBrush)FindResource("xBlue1");
             ClearStatus();
-        }
-
-        private void ResetLabel(ContentControl Target)
-        {
-            Target.Content = "";
-            Target.Background = Brushes.Transparent;
-        }
-
-        internal void ClearMeasureResult()
-        //очистка label для вывода измеренных результатов
-        {
-            ResetLabel(lbAtuUBR);
-            ResetLabel(lbAtuUPRSM);
-            ResetLabel(lbAtuIPRSM);
-            ResetLabel(lbAtuPRSM);
-        }
-
-        private void ClearStatus()
-        {
-            lbAtuWarning.Visibility = Visibility.Collapsed;
-            lbAtuFaultReason.Visibility = Visibility.Collapsed;
-
-            ClearMeasureResult();
         }
 
         internal bool IsRunning
         {
-            get { return m_IsRunning; }
-
+            get => m_IsRunning;
             set
             {
                 m_IsRunning = value;
@@ -80,112 +79,39 @@ namespace SCME.UI.PagesTech
             }
         }
 
-        internal void SetResult(DeviceState State, Types.ATU.TestResults Result)
-        {
-            if (State == DeviceState.InProcess)
-            {
-                ClearStatus();
-            }
-            else
-            {
-                IsRunning = false;
-                SetLabel(lbAtuUBR, State, true, Result.UBR.ToString());
-                SetLabel(lbAtuUPRSM, State, true, Result.UPRSM.ToString());
-                SetLabel(lbAtuIPRSM, State, true, String.Format("{0:0.00}", Result.IPRSM)); //формат вывода - 2 знака после запятой
-                SetLabel(lbAtuPRSM, State, true, String.Format("{0:0.00}", Result.PRSM));   //формат вывода - 2 знака после запятой
-            }
-        }
-
-        internal void SetColorByWarning(ushort Warning)
-        {
-            //установка цвета lbAtuWarning в зависимости от принятого кода Warning
-            switch (Warning)
-            {
-                //будем привлекать внимание оператора с помощью выделения сообщения цветом
-                case (ushort)Types.ATU.HWWarningReason.Idle:
-                case (ushort)Types.ATU.HWWarningReason.FacetBreak:
-                    lbAtuWarning.Background = Brushes.Orange;
-                    break;
-
-                case (ushort)Types.ATU.HWWarningReason.BreakDUT:
-                case (ushort)Types.ATU.HWWarningReason.Short:               
-                    lbAtuWarning.Background = (SolidColorBrush)FindResource("xRed1");
-                    break;
-
-                default:
-                    lbAtuWarning.Background = Brushes.Gold;
-                    break;
-            }
-        }
-
-        internal void SetWarning(ushort Warning)
-        {
-            //закрашиваем цветом поле вывода Warning, чтобы обратить на него внимание оператора
-            SetColorByWarning(Warning);
-
-            Types.ATU.HWWarningReason WarningReason = (Types.ATU.HWWarningReason)Warning;
-            lbAtuWarning.Content = WarningReason.ToString();
-            lbAtuWarning.Visibility = Visibility.Visible;
-        }
-
-        internal void SetFault(ushort Fault)
-        {
-            Types.ATU.HWFaultReason FaultReason = (Types.ATU.HWFaultReason)Fault;
-            lbAtuFaultReason.Content = FaultReason.ToString();
-            lbAtuFaultReason.Visibility = Visibility.Visible;
-            IsRunning = false;
-        }
-
-        private static void SetLabel(ContentControl Target, DeviceState State, bool IsFitWithNormatives, string Value)
-        {
-            switch (State)
-            {
-                case DeviceState.None:
-                    Target.Content = "";
-                    Target.Background = Brushes.Transparent;
-                    break;
-
-                case DeviceState.InProcess:
-                    Target.Background = Brushes.Gold;
-                    break;
-
-                case DeviceState.Success:
-                    Target.Content = Value;
-                    Target.Background = IsFitWithNormatives ? Brushes.LightGreen : Brushes.LightPink;
-                    break;
-
-                case DeviceState.Stopped:
-                    Target.Content = Properties.Resources.Stopped;
-                    Target.Background = Brushes.LightGreen;
-                    break;
-
-                case DeviceState.Problem:
-                    Target.Content = Value;
-                    Target.Background = Brushes.Gold;
-                    break;
-
-                case DeviceState.Fault:
-                    Target.Content = Properties.Resources.Fault;
-                    Target.Background = Brushes.Tomato;
-                    break;
-            }
-        }
-
         internal void Start()
         {
-            if (IsRunning) return;
-
-            var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
-            var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
-            var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
-            var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramIH = new Types.IH.TestParameters { IsEnabled = false };
-            var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
-
-            //если пресс был зажат вручную - не стоит пробовать зажимать его ещё раз
+            if (IsRunning)
+                return;
+            Types.Gate.TestParameters paramGate = new Types.Gate.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.VTM.TestParameters paramVtm = new Types.VTM.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.BVT.TestParameters paramBvt = new Types.BVT.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.QrrTq.TestParameters paramQrrTq = new Types.QrrTq.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.IH.TestParameters paramIH = new Types.IH.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.RCC.TestParameters paramRCC = new Types.RCC.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.TOU.TestParameters paramTOU = new Types.TOU.TestParameters
+            {
+                IsEnabled = false
+            };
             ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
-
             if (!Cache.Net.Start(paramGate, paramVtm, paramBvt, Parameters, paramQrrTq, paramIH, paramRCC,
                                  new Types.Commutation.TestParameters
                                  {
@@ -199,14 +125,147 @@ namespace SCME.UI.PagesTech
             IsRunning = true;
         }
 
-        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
+        internal void SetResultAll(DeviceState state)
         {
-            if (NavigationService != null) NavigationService.GoBack();
+            if (state == DeviceState.InProcess)
+                ClearStatus();
+            else
+                IsRunning = false;
         }
 
-        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
+        internal void SetResult(DeviceState state, TestResults result)
         {
-            Cache.Net.StartHeating(Temperature);
+            if (state == DeviceState.InProcess)
+                ClearStatus();
+            else
+            {
+                IsRunning = false;
+                SetLabel(lbAtuUBR, state, true, result.UBR.ToString());
+                SetLabel(lbAtuUPRSM, state, true, result.UPRSM.ToString());
+                SetLabel(lbAtuIPRSM, state, true, string.Format("{0:0.00}", result.IPRSM));
+                SetLabel(lbAtuPRSM, state, true, string.Format("{0:0.00}", result.PRSM));
+
+                Plot(@"U", m_XGreen.Color, result.ArrayVDUT);
+                Plot(@"I", m_XBlue.Color, result.ArrayIDUT);
+            }
+        }
+
+        private void Plot(string lineName, Color lineColor, IEnumerable<short> uPoints)
+        {
+            List<PointF> Points = uPoints.Select((T, I) => new PointF(I, T)).ToList();
+            EnumerableDataSource<PointF> DataSource = new EnumerableDataSource<PointF>(Points);
+            DataSource.SetXMapping(P => P.X);
+            DataSource.SetYMapping(P => P.Y);
+            chartPlotter.AddLineGraph(DataSource, lineColor, 3, lineName);
+            chartPlotter.FitToView();
+        }
+
+        public void SetTopTemp(int temperature)
+        {
+            TopTempLabel.Content = temperature;
+            int bottomTemp = Temperature - 2;
+            int topTemp = Temperature + 2;
+            if (temperature < bottomTemp || temperature > topTemp)
+                TopTempLabel.Background = Brushes.Tomato;
+            else
+                TopTempLabel.Background = Brushes.LightGreen;
+        }
+
+        public void SetBottomTemp(int temperature)
+        {
+            BotTempLabel.Content = temperature;
+            int bottomTemp = Temperature - 2;
+            int topTemp = Temperature + 2;
+            if (temperature < bottomTemp || temperature > topTemp)
+                BotTempLabel.Background = Brushes.Tomato;
+            else
+                BotTempLabel.Background = Brushes.LightGreen;
+        }
+
+        private void ResetLabel(ContentControl target)
+        {
+            target.Content = string.Empty;
+            target.Background = Brushes.Transparent;
+        }
+
+        internal void ClearMeasureResult()
+        {
+            ResetLabel(lbAtuUBR);
+            ResetLabel(lbAtuUPRSM);
+            ResetLabel(lbAtuIPRSM);
+            ResetLabel(lbAtuPRSM);
+        }
+
+        internal void SetColorByWarning(ushort warning)
+        {
+            switch (warning)
+            {
+                case (ushort)HWWarningReason.Idle:
+                case (ushort)HWWarningReason.FacetBreak:
+                    lbAtuWarning.Background = Brushes.Orange;
+                    break;
+                case (ushort)HWWarningReason.BreakDUT:
+                case (ushort)HWWarningReason.Short:               
+                    lbAtuWarning.Background = (SolidColorBrush)FindResource("xRed1");
+                    break;
+                default:
+                    lbAtuWarning.Background = Brushes.Gold;
+                    break;
+            }
+        }
+
+        internal void SetWarning(ushort warning)
+        {
+            SetColorByWarning(warning);
+            HWWarningReason WarningReason = (HWWarningReason)warning;
+            lbAtuWarning.Content = WarningReason.ToString();
+            lbAtuWarning.Visibility = Visibility.Visible;
+        }
+
+        internal void SetFault(ushort fault)
+        {
+            HWFaultReason FaultReason = (Types.ATU.HWFaultReason)fault;
+            lbAtuFaultReason.Content = FaultReason.ToString();
+            lbAtuFaultReason.Visibility = Visibility.Visible;
+            IsRunning = false;
+        }
+
+        private void ClearStatus()
+        {
+            lbAtuWarning.Visibility = Visibility.Collapsed;
+            lbAtuFaultReason.Visibility = Visibility.Collapsed;
+            ClearMeasureResult();
+            chartPlotter.Children.RemoveAll(typeof(LineGraph));
+        }
+
+        private static void SetLabel(ContentControl target, DeviceState state, bool isFitWithNormatives, string value)
+        {
+            switch (state)
+            {
+                case DeviceState.None:
+                    target.Content = "";
+                    target.Background = Brushes.Transparent;
+                    break;
+                case DeviceState.InProcess:
+                    target.Background = Brushes.Gold;
+                    break;
+                case DeviceState.Success:
+                    target.Content = value;
+                    target.Background = isFitWithNormatives ? Brushes.LightGreen : Brushes.LightPink;
+                    break;
+                case DeviceState.Stopped:
+                    target.Content = Properties.Resources.Stopped;
+                    target.Background = Brushes.LightGreen;
+                    break;
+                case DeviceState.Problem:
+                    target.Content = value;
+                    target.Background = Brushes.Gold;
+                    break;
+                case DeviceState.Fault:
+                    target.Content = Properties.Resources.Fault;
+                    target.Background = Brushes.Tomato;
+                    break;
+            }
         }
 
         private void btnStart_OnClick(object sender, RoutedEventArgs e)
@@ -219,38 +278,15 @@ namespace SCME.UI.PagesTech
             Cache.Net.StopByButtonStop();
         }
 
-        public void SetTopTemp(int temperature)
+        private void btnBack_OnClick(object sender, RoutedEventArgs e)
         {
-            TopTempLabel.Content = temperature;
-
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-
-            if (temperature < bottomTemp || temperature > topTemp)
-            {
-                TopTempLabel.Background = Brushes.Tomato;
-            }
-            else
-            {
-                TopTempLabel.Background = Brushes.LightGreen;
-            }
+            if (NavigationService != null)
+                NavigationService.GoBack();
         }
 
-        public void SetBottomTemp(int temperature)
+        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
         {
-            BotTempLabel.Content = temperature;
-
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-
-            if (temperature < bottomTemp || temperature > topTemp)
-            {
-                BotTempLabel.Background = Brushes.Tomato;
-            }
-            else
-            {
-                BotTempLabel.Background = Brushes.LightGreen;
-            }
+            Cache.Net.StartHeating(Temperature);
         }
     }
 }

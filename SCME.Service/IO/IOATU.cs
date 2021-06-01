@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Threading;
-using SCME.Service.Properties;
-using SCME.Types;
+﻿using SCME.Types;
 using SCME.Types.ATU;
 using SCME.UIServiceConfig.Properties;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace SCME.Service.IO
 {
@@ -19,10 +17,10 @@ namespace SCME.Service.IO
         private readonly bool m_IsATUEmulationHard;
         private bool m_IsATUEmulation;
         private IOCommutation m_IOCommutation;
-        private Types.ATU.TestParameters m_Parameters;
+        private TestParameters m_Parameters;
         private DeviceConnectionState m_ConnectionState;
         private volatile DeviceState m_State;
-        private volatile Types.ATU.TestResults m_Result;
+        private volatile TestResults m_Result;
         private volatile bool m_Stop;
 
         private int m_Timeout = 30000;
@@ -33,85 +31,44 @@ namespace SCME.Service.IO
             m_Communication = Communication;
             m_IsATUEmulationHard = Settings.Default.ATUEmulation;
             m_IsATUEmulation = m_IsATUEmulationHard;
-
             m_Node = (ushort)Settings.Default.ATUNode;
-            m_Result = new Types.ATU.TestResults();
-
-            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Info, String.Format("ATU created. Emulation mode: {0}", Settings.Default.ATUEmulation));
+            m_Result = new TestResults();
+            SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Info, string.Format("ATU created. Emulation mode: {0}", Settings.Default.ATUEmulation));
         }
 
         internal IOCommutation ActiveCommutation
         {
-            get { return m_IOCommutation; }
-            set { m_IOCommutation = value; }
-        }
-
-        internal ushort ReadDeviceState(HWDeviceState WaitedState, int Timeout)
-        //реализация чтения состояния конечного автомата.
-        //в WaitedState принимается состояние, в которое должен перейти конечный автомат ATU
-        //реализация ожидает перехода конечного автомата в состояние WaitedState в течении времени Timeout
-        //реализация возвращает считанный номер состояния конечного автомата
-        {
-            ushort State = ReadRegister(REG_DEV_STATE);
-
-            if (State == (ushort)WaitedState) return State;
-            else
+            get => m_IOCommutation;
+            set
             {
-                //пока не истёк таймаут - будем перечитывать состояние блока ATU через каждые 100 мс до тех пор, пока не окажемся в ожидаемом состоянии WaitedState
-                var timeStamp = Environment.TickCount + Timeout;
-
-                while (Environment.TickCount < timeStamp)
-                {
-                    if (m_Stop)
-                    {
-                        //ATU умеет команду Stop. при этом ATU перейдёт в состояние DS_Ready
-                        CallAction(ACT_STOP_TEST);
-                    }
-
-                    Thread.Sleep(100);
-
-                    State = ReadRegister(REG_DEV_STATE);
-
-                    //считано состояние State, равное ожидаемому состоянию WaitedState - прерываем цикл ожидания
-                    if (State == (ushort)WaitedState) return State;
-                }
-
-                //раз мы здесь - значит наступил таймаут, а состояния WaitedState мы так и не дождались
-                return State;
+                m_IOCommutation = value;
             }
         }
 
         internal DeviceConnectionState Initialize(bool Enable, int Timeout)
         {
             m_IsATUEmulation = m_IsATUEmulationHard || !Enable;
-
             m_ConnectionState = DeviceConnectionState.ConnectionInProcess;
             FireConnectionEvent(m_ConnectionState, "ATU initializing");
-
             if (m_IsATUEmulation)
             {
                 m_ConnectionState = DeviceConnectionState.ConnectionSuccess;
                 FireConnectionEvent(m_ConnectionState, "ATU initialized");
-
                 return m_ConnectionState;
             }
-
             try
             {
                 //для исполнения процедуры инициализации необходимо, чтобы блок ATU находился в состоянии DS_NONE, поэтому прежде чем мы начнём исполнять цикл конечного автомата, реализующий инициализацию ATU переведём ATU в состояние DS_None
                 if (ReadRegister(REG_DEV_STATE) != (ushort)HWDeviceState.DS_None)
                     CallAction(ACT_DISABLE_POWER);
-
                 //ATU должен быть в состоянии DS_NONE. в принципе можно было бы сразу проверить состояние блока ATU, но мы будем выдерживать таймаут m_Timeout, за время истечения которого блок ATU должен выйти в состояние DS_None. если такового не случится - будем возбуждать исключительную ситуацию
                 HWDeviceState WaitedState = HWDeviceState.DS_None;
                 ushort State;
                 bool End = false;
-
                 while (!End)
                 {
                     //чтение переменных конечного автомата
                     State = ReadDeviceState(WaitedState, Timeout);
-
                     if (State == (ushort)WaitedState)
                     {
                         switch (State)
@@ -196,18 +153,6 @@ namespace SCME.Service.IO
             }
         }
 
-        internal void Stop()
-        {
-            m_Stop = true;
-        }
-
-        internal bool IsReadyToStart()
-        {
-            var devState = (Types.ATU.HWDeviceState)ReadRegister(REG_DEV_STATE);
-
-            return !((devState == Types.ATU.HWDeviceState.DS_Fault) || (devState == Types.ATU.HWDeviceState.DS_Disabled) || (m_State == DeviceState.InProcess));
-        }
-
         internal DeviceState Start(TestParameters Parameters, Types.Commutation.TestParameters commParameters)
         {
             m_Parameters = Parameters;
@@ -244,6 +189,53 @@ namespace SCME.Service.IO
             MeasurementLogicRoutine(commParameters);
 
             return m_State;
+        }
+
+        internal void Stop()
+        {
+            m_Stop = true;
+        }
+
+        internal ushort ReadDeviceState(HWDeviceState WaitedState, int Timeout)
+        //реализация чтения состояния конечного автомата.
+        //в WaitedState принимается состояние, в которое должен перейти конечный автомат ATU
+        //реализация ожидает перехода конечного автомата в состояние WaitedState в течении времени Timeout
+        //реализация возвращает считанный номер состояния конечного автомата
+        {
+            ushort State = ReadRegister(REG_DEV_STATE);
+
+            if (State == (ushort)WaitedState) return State;
+            else
+            {
+                //пока не истёк таймаут - будем перечитывать состояние блока ATU через каждые 100 мс до тех пор, пока не окажемся в ожидаемом состоянии WaitedState
+                var timeStamp = Environment.TickCount + Timeout;
+
+                while (Environment.TickCount < timeStamp)
+                {
+                    if (m_Stop)
+                    {
+                        //ATU умеет команду Stop. при этом ATU перейдёт в состояние DS_Ready
+                        CallAction(ACT_STOP_TEST);
+                    }
+
+                    Thread.Sleep(100);
+
+                    State = ReadRegister(REG_DEV_STATE);
+
+                    //считано состояние State, равное ожидаемому состоянию WaitedState - прерываем цикл ожидания
+                    if (State == (ushort)WaitedState) return State;
+                }
+
+                //раз мы здесь - значит наступил таймаут, а состояния WaitedState мы так и не дождались
+                return State;
+            }
+        }
+
+        internal bool IsReadyToStart()
+        {
+            var devState = (Types.ATU.HWDeviceState)ReadRegister(REG_DEV_STATE);
+
+            return !((devState == Types.ATU.HWDeviceState.DS_Fault) || (devState == Types.ATU.HWDeviceState.DS_Disabled) || (m_State == DeviceState.InProcess));
         }
 
         private float RoundTwoDigits(double value)
@@ -311,6 +303,9 @@ namespace SCME.Service.IO
                     m_Result.UPRSM = ReadRegisterS(REG_VOLTAGE_VALUE_MEASURE);
                     m_Result.IPRSM = RoundTwoDigits(ReadRegisterS(REG_CURRENT_VALUE_MEASURE) / 1000d); //А уровень отображения реализует вывод до 2 десятых
                     m_Result.PRSM = RoundTwoDigits(ReadRegisterS(REG_POWER_VALUE_MEASURE) / 100d);     //в регистре сидит значение Bт/10. переводим его в кВт уровень отображения реализует вывод до 2 десятых
+
+                    m_Result.ArrayVDUT = ReadArrayFastS(ARR_SCOPE1_DATA);
+                    m_Result.ArrayIDUT = ReadArrayFastS(ARR_SCOPE2_DATA);
 
                     //по окончании процесса измерения - отключаем коммутацию
                     if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
@@ -397,8 +392,6 @@ namespace SCME.Service.IO
             return DeviceState.Success;
         }
 
-      
-
         #region Standart API
         private void EnablePower()
         //включение зарядки конденсаторов блока ATU
@@ -476,6 +469,17 @@ namespace SCME.Service.IO
             m_IOAdapter.Write16(m_Node, Address, value);
         }
 
+        private IList<short> ReadArrayFastS(ushort Address)
+        {
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
+                                         string.Format("ATU @ReadArrayFastS, endpoint {0}", Address));
+
+            if (m_IsATUEmulation)
+                return new List<short>();
+
+            return m_IOAdapter.ReadArrayFast16S(m_Node, Address);
+        }
+
         internal void CallAction(ushort Action)
         {
             SystemHost.Journal.AppendLog(ComplexParts.ATU, LogMessageType.Note, string.Format("ATU @Call, action {0}", Action));
@@ -547,7 +551,10 @@ namespace SCME.Service.IO
         REG_DISABLE_REASON = 98,
 
         //предупреждение
-        REG_WARNING = 99;
+        REG_WARNING = 99,
+
+        ARR_SCOPE1_DATA = 1,
+        ARR_SCOPE2_DATA = 2;
         #endregion
 
         #region Actions

@@ -870,4 +870,22 @@
   <data name="PulseMain" xml:space="preserve">
     <value>Силовой импульс</value>
   </data>
+  <data name="AtuIPRSM" xml:space="preserve">
+    <value>I(PRSM), А</value>
+  </data>
+  <data name="AtuPowerValueSet" xml:space="preserve">
+    <value>Мощность, кВт</value>
+  </data>
+  <data name="AtuPrePulseValue" xml:space="preserve">
+    <value>Амплитуда предъимпульса</value>
+  </data>
+  <data name="AtuPRSM" xml:space="preserve">
+    <value>PRSM, кВт</value>
+  </data>
+  <data name="AtuUBR" xml:space="preserve">
+    <value>UBR, В</value>
+  </data>
+  <data name="AtuUPRSM" xml:space="preserve">
+    <value>U(PRSM), В</value>
+  </data>
 </root>

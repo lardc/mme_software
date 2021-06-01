@@ -56,7 +56,7 @@
             <dynamicDataDisplay:VerticalAxisTitle Content="{x:Static res:Resources.Graph_V}"/>
             <dynamicDataDisplay:AxisGrid Visibility="Hidden"/>
         </dynamicDataDisplay:ChartPlotter>
-        <Border x:Name="borderParameters" Grid.Row="0" Grid.Column="3" Margin="0,0,5,0" Width="460">
+        <Border x:Name="borderParameters" Grid.Row="0" Grid.Column="3" Margin="0,0,5,0" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -78,8 +78,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition Width="*" MinWidth="195"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="{x:Static res:Resources.Mode}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" />
                 <ComboBox ItemsSource="{Binding Source={StaticResource DataFromTestdVdtTypeEnum}}" SelectedItem="{Binding Parameters.Mode, ElementName=dVdtPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource E2S}}" Grid.Row="0" Grid.Column="1"/>

@@ -1,185 +1,222 @@
-﻿using System;
+﻿using SCME.Types.BaseTestParams;
+using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
-using SCME.Types.BaseTestParams;
-
 
 namespace SCME.Types.ATU
 {
+    /// <summary>Состояние оборудования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
-    //список состояний блока ATU
     {
-        //блок в неопределенном состоянии (после включения питания)
+        /// <summary>Неопределенное состояние (после включения питания)</summary>
         [EnumMember]
         DS_None = 0,
-
-        //блок в состоянии Fault
+        /// <summary>Состояние ошибки</summary>
         [EnumMember]
         DS_Fault = 1,
-
-        //блок в состоянии Disabled
+        /// <summary>Выключен</summary>
         [EnumMember]
         DS_Disabled = 2,
-
-        //блок в состоянии ожидания заряда конденсаторной батареи
+        /// <summary>Ожидание заряда батареи</summary>
         [EnumMember]
         DS_BatteryCharge = 3,
-
-        //блок в состоянии готовности
+        /// <summary>Состояние готовности</summary>
         [EnumMember]
         DS_Ready = 4,
-
-        //блок в процессе работы
+        /// <summary>В процессе работы</summary>
         [EnumMember]
         DS_InProcess = 5,
     };
 
+    /// <summary>Причина ошибки</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWFaultReason
+    {
+        [EnumMember]
+        None = 0,
+        /// <summary>Ошибка заряда батареи</summary>
+        [EnumMember]
+        ChargeError = 1,
+        /// <summary>Ошибка оцифровки значений напряжения/тока</summary>
+        [EnumMember]
+        ADCError = 2
+    };
 
+    /// <summary>Причина предупреждения</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWWarningReason
+    {
+        [EnumMember]
+        None = 0,
+        /// <summary>ХХ на выходе</summary>
+        [EnumMember]
+        Idle = 1,
+        /// <summary>КP на выходе</summary>
+        [EnumMember]
+        Short = 2,
+        /// <summary>Погрешность полученной мощности велика</summary>
+        [EnumMember]
+        PowerAccuracy = 3,
+        /// <summary>Пробой прибора</summary>
+        [EnumMember]
+        BreakDUT = 4,
+        /// <summary>Краевой пробой прибора</summary>
+        [EnumMember]
+        FacetBreak = 5
+    };
+
+    /// <summary>Причина выключения</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWDisableReason
+    {
+        [EnumMember]
+        None = 0
+    }
+
+    /// <summary>Результат выполнения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWOperationResult
     {
+        /// <summary>В процессе</summary>
         [EnumMember]
         InProcess = 0,
-
+        /// <summary>Успешно</summary>
         [EnumMember]
         Success = 1,
-
+        /// <summary>Неудачно</summary>
         [EnumMember]
         Fail = 2
     };
 
-
-    [DataContract(Name = "Atu.TestParameters",Namespace = "http://proton-electrotex.com/SCME")]
-//    [KnownType(typeof(BaseTestParametersAndNormatives))]
+    [DataContract(Name = "Atu.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public ushort PrePulseValue { get; set; }
-
-        [DataMember]
-        public float PowerValue { get; set; }
-
-        [DataMember]
-        public short UBR { get; set; }
-
-        [DataMember]
-        public short UPRSM { get; set; }
-
-        [DataMember]
-        public float IPRSM { get; set; }
-
-        [DataMember] 
-        public float PRSM_Min { get; set; } = 0;
-        
-        [DataMember]
-        public float PRSM_Max { get; set; } = 70;
-
+        /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
             TestParametersType = TestParametersType.ATU;
+            PrePulseValue = 100;
+            PowerValue = 16;
             IsEnabled = true;
-            PrePulseValue = 100; //мА
-            PowerValue = 16;     //кВт
         }
 
+        [DataMember]
+        public ushort PrePulseValue
+        {
+            get; set;
+        }
 
+        [DataMember]
+        public float PowerValue
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public short UBR
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public short UPRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IPRSM
+        {
+            get; set;
+        }
+
+        [DataMember] 
+        public float PRSM_Min
+        {
+            get; set;
+        } = 0;
+
+        [DataMember]
+        public float PRSM_Max
+        {
+            get; set;
+        } = 70;
+
+        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParameters)
+        {
+            if (oldParameters == null)
+                throw new ArgumentNullException("Метод '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' равный Null.");
+            if (GetHashCode() == oldParameters.GetHashCode())
+                return false;
+            string typeName = oldParameters.GetType().Name;
+            if (typeName != "TestParameters")
+                throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
+            TestParameters aTUOldParameters = (TestParameters)oldParameters;
+            if (PrePulseValue != aTUOldParameters.PrePulseValue)
+                return true;
+            if (PowerValue != aTUOldParameters.PowerValue)
+                return true;
+            return false;
+        }
+        
         public object Clone()
         {
             return MemberwiseClone();
         }
-
-
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParameters)
-        {
-            if (oldParameters == null) throw new ArgumentNullException("Метод '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' равный Null.");
-
-            //сравниваем свой хеш с хешем принятого oldParameters и если они одинаковы - значит мы имеем дело с одним и тем же экземпляром
-            if (this.GetHashCode() == oldParameters.GetHashCode()) return false;
-
-            //раз мы сюда добрались - имеем дело с разными экземплярами, необходимо сравнение их содержимого
-            var typeName = oldParameters.GetType().Name;
-
-            if (typeName != "TestParameters") throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
-
-            var aTUOldParameters = (TestParameters)oldParameters;
-
-            if (PrePulseValue != aTUOldParameters.PrePulseValue)
-                return true;
-
-            if (PowerValue != aTUOldParameters.PowerValue)
-                return true;
-
-            return false;
-        }
     }
 
-
+    /// <summary>Результаты тестирования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
-        [DataMember]
-        public short UBR { get; set; }
+        /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
+        public TestResults()
+        {
+            ArrayVDUT = new List<short>();
+            ArrayIDUT = new List<short>();
+        }
 
         [DataMember]
-        public short UPRSM { get; set; }
+        public short UBR
+        {
+            get; set;
+        }
 
         [DataMember]
-        public float IPRSM { get; set; }
+        public short UPRSM
+        {
+            get; set;
+        }
 
         [DataMember]
-        public float PRSM { get; set; }
+        public float IPRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float PRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public IList<short> ArrayVDUT
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public IList<short> ArrayIDUT
+        {
+            get; set;
+        }
     }
-
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class CalibrationParams
     {
 
     }
-
-
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWWarningReason
-    {
-        [EnumMember]
-        None = 0,
-
-        [EnumMember]
-        Idle = 1,          //ХХ на выходе
-
-        [EnumMember]
-        Short = 2,         //КЗ на выходе
-
-        [EnumMember]
-        PowerAccuracy = 3, //Погрешность полученной мощности велика
-
-        [EnumMember]
-        BreakDUT = 4,      //Пробой прибора
-
-        [EnumMember]
-        FacetBreak = 5,    //Краевой пробой прибора
-    };
-
-
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWFaultReason
-    {
-        [EnumMember]
-        None = 0,
-
-        [EnumMember]
-        ChargeError = 1, //Ошибка заряда батареи
-
-        [EnumMember]
-        ADCError = 2,    //Ошибка оцифровки значений напряжения/тока
-    };
-
-
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWDisableReason
-    {
-        [EnumMember]
-        None = 0,
-    }
-
 }

@@ -9,12 +9,16 @@ namespace SCME.Types.Gate
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {
+        /// <summary>Неопределенное состояние (после включения питания)</summary>
         [EnumMember]
         None = 0,
+        /// <summary>Состояние ошибки</summary>
         [EnumMember]
         Fault = 1,
+        /// <summary>Выключен</summary>
         [EnumMember]
         Disabled = 2,
+        /// <summary>Прозвонка</summary>
         [EnumMember]
         Kelvin = 3,
         [EnumMember]
@@ -45,16 +49,6 @@ namespace SCME.Types.Gate
         LatchProcessError = 121,
     };
 
-    /// <summary>Причина выключения</summary>
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWDisableReason
-    {
-        [EnumMember]
-        None = 0,
-        [EnumMember]
-        BadClock = 1001
-    };
-
     /// <summary>Причина предупреждения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWWarningReason
@@ -65,6 +59,16 @@ namespace SCME.Types.Gate
         HoldingCurrentSmall = 101,
         [EnumMember]
         WatchdogReset = 1001
+    };
+
+    /// <summary>Причина выключения</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWDisableReason
+    {
+        [EnumMember]
+        None = 0,
+        [EnumMember]
+        BadClock = 1001
     };
 
     /// <summary>Причина проблемы</summary>
@@ -95,10 +99,13 @@ namespace SCME.Types.Gate
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWOperationResult
     {
+        /// <summary>В процессе</summary>
         [EnumMember]
         InProcess = 0,
+        /// <summary>Успешно</summary>
         [EnumMember]
         Success = 1,
+        /// <summary>Неудачно</summary>
         [EnumMember]
         Fail = 2
     };
@@ -107,6 +114,28 @@ namespace SCME.Types.Gate
     [DataContract(Name = "Gate.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
+        /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
+        public TestParameters()
+        {
+            TestParametersType = TestParametersType.Gate;
+            Resistance = 100;
+            IGT = 500;
+            VGT = 2.5f;
+            IH = 150;
+            IL = 1000;
+            VGNT = 100;
+            IGNT = 25;
+            Itm = 0;
+            CurrentLimit = 5;
+            VoltageLimitD = 1000;
+            PlateTime = 1000;
+            RampUpVoltage = 2;
+            StartVoltage = 500;
+            GateLimitV = 100;
+            GateLimitI = 25;
+            IsEnabled = true;
+        }
+
         [DataMember]
         public bool IsCurrentEnabled
         {
@@ -233,28 +262,6 @@ namespace SCME.Types.Gate
             get; set;
         }
 
-        /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
-        public TestParameters()
-        {
-            IsEnabled = true;
-            Resistance = 100;
-            IGT = 500;
-            VGT = 2.5f;
-            IH = 150;
-            IL = 1000;
-            VGNT = 100;
-            IGNT = 25;
-            Itm = 0;
-            CurrentLimit = 5;
-            VoltageLimitD = 1000;
-            PlateTime = 1000;
-            RampUpVoltage = 2;
-            StartVoltage = 500;
-            GateLimitV = 100;
-            GateLimitI = 25;
-            TestParametersType = TestParametersType.Gate;
-        }
-
         public override bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase)
         {
             TestParameters oldParameters = (TestParameters)oldParametersBase;
@@ -309,6 +316,18 @@ namespace SCME.Types.Gate
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class ResultNormatives
     {
+        /// <summary>Инициализирует новый экземпляр класса ResultNormatives</summary>
+        public ResultNormatives()
+        {
+            Resistance = 100;
+            IGT = 500;
+            VGT = 2.5f;
+            IH = 150;
+            IL = 1000;
+            VGNT = 100;
+            IGNT = 100;
+        }
+
         [DataMember]
         public float Resistance
         {
@@ -350,24 +369,21 @@ namespace SCME.Types.Gate
         {
             get; set;
         }
-
-        /// <summary>Инициализирует новый экземпляр класса ResultNormatives</summary>
-        public ResultNormatives()
-        {
-            Resistance = 100;
-            IGT = 500;
-            VGT = 2.5f;
-            IH = 150;
-            IL = 1000;
-            VGNT = 100;
-            IGNT = 100;
-        }
     }
 
     /// <summary>Результаты тестирования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
+        /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
+        public TestResults()
+        {
+            ArrayVGT = new List<short>();
+            ArrayIGT = new List<short>();
+            ArrayIH = new List<short>();
+            ArrayKelvin = new List<short>();
+        }
+
         [DataMember]
         public float Resistance
         {
@@ -438,15 +454,6 @@ namespace SCME.Types.Gate
         public IList<short> ArrayKelvin
         {
             get; set;
-        }
-
-        /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
-        public TestResults()
-        {
-            ArrayVGT = new List<short>();
-            ArrayIGT = new List<short>();
-            ArrayIH = new List<short>();
-            ArrayKelvin = new List<short>();
         }
     }
 
