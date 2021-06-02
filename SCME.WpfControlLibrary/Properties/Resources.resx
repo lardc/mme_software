@@ -628,7 +628,7 @@
     <value>Height, mm</value>
   </data>
   <data name="Temp" xml:space="preserve">
-    <value>Temp, C</value>
+    <value>Temp, °C</value>
   </data>
   <data name="TryConnect" xml:space="preserve">
     <value>Try to connect</value>

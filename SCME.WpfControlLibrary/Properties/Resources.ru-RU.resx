@@ -649,7 +649,7 @@
     <value>Напряжение, В</value>
   </data>
   <data name="Temp" xml:space="preserve">
-    <value>Температура, C</value>
+    <value>Температура, °C</value>
   </data>
   <data name="DvdtVoltageRate" xml:space="preserve">
     <value>Скор. роста, В/мкс</value>

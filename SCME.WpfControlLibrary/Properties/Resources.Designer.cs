@@ -1897,7 +1897,7 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Temp, C.
+        ///   Ищет локализованную строку, похожую на Temp, °C.
         /// </summary>
         public static string Temp {
             get {

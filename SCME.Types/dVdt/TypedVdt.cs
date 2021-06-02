@@ -106,7 +106,6 @@ namespace SCME.Types.dVdt
             Voltage = 1000;
             VoltageRate = VoltageRate.V500;
             Mode = DvdtMode.Confirmation;
-
             ConfirmationCount = 1;
             VoltageRateLimit = 1000;
             VoltageRateOffSet = 100;

@@ -17,12 +17,12 @@
         BorderBrush="{StaticResource xBlue1}">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Name="lblTitle" Style="{StaticResource CLabelBlackStyle}" Content="#Title" Grid.Row="0" Grid.ColumnSpan="2" Margin="3" BorderThickness="0,0,0,1" BorderBrush="{StaticResource xBlue1}"/>
-        <TextBox Name="tbMessage" Text="#Message" TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Margin="3" VerticalContentAlignment="Top" Background="Transparent" BorderBrush="Transparent" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource FontSize28}"/>
+        <TextBox Name="tbMessage" Text="#Message" TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Margin="3" VerticalContentAlignment="Top" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource FontSize28}"/>
         <Grid Name="mainGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

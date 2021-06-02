@@ -17,7 +17,7 @@ namespace SCME.UI.IO
         public static void LoadProfile(List<MyProfile> profiles)
         {
             var dictionary = new ProfileDictionary(profiles.Select(m => m.ToProfile()));
-            Cache.Main.IsProfilesParsed = true;
+            Cache.Main.AreProfilesParsed = true;
 
 //            Cache.ProfileEdit = new ProfilePage(dictionary);
 //            Cache.ProfileSelection = new ProfileSelectionPage(dictionary);

@@ -121,6 +121,7 @@ namespace SCME.Types.Gate
             Resistance = 100;
             IGT = 500;
             VGT = 2.5f;
+            UseIhGost = 0;
             IH = 150;
             IL = 1000;
             VGNT = 100;
@@ -186,6 +187,11 @@ namespace SCME.Types.Gate
 
         [DataMember]
         public float VGT
+        {
+            get; set;
+        }
+
+        public int UseIhGost
         {
             get; set;
         }
@@ -461,43 +467,79 @@ namespace SCME.Types.Gate
     public class CalibrationResultGate
     {
         [DataMember]
-        public ushort Current { get; set; }
+        public ushort Current
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort Voltage { get; set; }
+        public ushort Voltage
+        {
+            get; set;
+        }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class CalibrationParameters
     {
         [DataMember]
-        public short GateIGTOffset { get; set; }
+        public short GateIGTOffset
+        {
+            get; set;
+        }
 
         [DataMember]
-        public short GateVGTOffset { get; set; }
+        public short GateVGTOffset
+        {
+            get; set;
+        }
 
         [DataMember]
-        public short GateIHLOffset { get; set; }
+        public short GateIHLOffset
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort RgCurrent { get; set; }
+        public ushort RgCurrent
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineIGT_N { get; set; }
+        public ushort GateFineIGT_N
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineIGT_D { get; set; }
+        public ushort GateFineIGT_D
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineVGT_N { get; set; }
+        public ushort GateFineVGT_N
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineVGT_D { get; set; }
+        public ushort GateFineVGT_D
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineIHL_N { get; set; }
+        public ushort GateFineIHL_N
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort GateFineIHL_D { get; set; }
+        public ushort GateFineIHL_D
+        {
+            get; set;
+        }
     }
 }

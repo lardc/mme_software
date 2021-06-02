@@ -35,7 +35,7 @@ namespace SCME.UI.CustomControl
             }
         }
 
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
+        private void BtnOk_Click(object sender, RoutedEventArgs e) //Подтверждение диалогового окна
         {
             DialogResult = true;
         }

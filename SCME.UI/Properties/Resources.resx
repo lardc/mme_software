@@ -181,7 +181,7 @@
     <value>Fault</value>
   </data>
   <data name="Gate" xml:space="preserve">
-    <value>Gate</value>
+    <value>GTU</value>
   </data>
   <data name="Gateway" xml:space="preserve">
     <value>Gateway</value>
@@ -298,8 +298,8 @@
   <data name="Stopped" xml:space="preserve">
     <value>Stopped</value>
   </data>
-  <data name="Technitian" xml:space="preserve">
-    <value>Technitian</value>
+  <data name="Technician" xml:space="preserve">
+    <value>Technician</value>
   </data>
   <data name="Test" xml:space="preserve">
     <value>Test</value>
@@ -350,7 +350,7 @@
     <value>V / ms</value>
   </data>
   <data name="Vtm" xml:space="preserve">
-    <value>Static losses</value>
+    <value>SL</value>
   </data>
   <data name="VtmV" xml:space="preserve">
     <value>VTM, V</value>
@@ -617,13 +617,13 @@
     <value>Height, mm</value>
   </data>
   <data name="Temp" xml:space="preserve">
-    <value>Temp, C</value>
+    <value>Temperature, °C</value>
   </data>
   <data name="BotTempName" xml:space="preserve">
-    <value>Chanel 2 temp, C</value>
+    <value>Chanel 2 temp, °C</value>
   </data>
   <data name="TopTempName" xml:space="preserve">
-    <value>Chanel 1 temp, C</value>
+    <value>Chanel 1 temp, °C</value>
   </data>
   <data name="SetTemp" xml:space="preserve">
     <value>Heat</value>
@@ -695,7 +695,7 @@
     <value>Results will not be saved</value>
   </data>
   <data name="SettingTemperatureName" xml:space="preserve">
-    <value>Setting temperature, C</value>
+    <value>Setting temperature, °C</value>
   </data>
   <data name="ProfileNotSynced" xml:space="preserve">
     <value>Profile not synced</value>
@@ -894,5 +894,11 @@
   </data>
   <data name="PulseMain" xml:space="preserve">
     <value>Pulse Main</value>
+  </data>
+  <data name="Gost" xml:space="preserve">
+    <value>GOST</value>
+  </data>
+  <data name="Lardc" xml:space="preserve">
+    <value>LARDC</value>
   </data>
 </root>

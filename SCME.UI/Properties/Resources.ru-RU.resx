@@ -133,7 +133,7 @@
     <value>Назад</value>
   </data>
   <data name="Bvt" xml:space="preserve">
-    <value>Классификатор</value>
+    <value>BVT</value>
   </data>
   <data name="Call" xml:space="preserve">
     <value>Вызвать</value>
@@ -184,7 +184,7 @@
     <value>Ошибка</value>
   </data>
   <data name="Gate" xml:space="preserve">
-    <value>Управление</value>
+    <value>GTU</value>
   </data>
   <data name="Gateway" xml:space="preserve">
     <value>Шлюз</value>
@@ -297,7 +297,7 @@
   <data name="Stopped" xml:space="preserve">
     <value>Останов</value>
   </data>
-  <data name="Technitian" xml:space="preserve">
+  <data name="Technician" xml:space="preserve">
     <value>Наладчик</value>
   </data>
   <data name="Test" xml:space="preserve">
@@ -337,7 +337,7 @@
     <value>В / мс</value>
   </data>
   <data name="Vtm" xml:space="preserve">
-    <value>Стат. потери</value>
+    <value>SL</value>
   </data>
   <data name="VtmV" xml:space="preserve">
     <value>UTM, В</value>
@@ -568,7 +568,7 @@
     <value>Пароль неверен</value>
   </data>
   <data name="dVdt" xml:space="preserve">
-    <value>dVdt</value>
+    <value>dUdt</value>
   </data>
   <data name="PseJob" xml:space="preserve">
     <value>ПЗ ППЭ</value>
@@ -601,10 +601,10 @@
     <value>Высота, мм</value>
   </data>
   <data name="BotTempName" xml:space="preserve">
-    <value>Нижняя пластина, C</value>
+    <value>Нижняя пластина, °C</value>
   </data>
   <data name="TopTempName" xml:space="preserve">
-    <value>Верхняя пластина, C</value>
+    <value>Верхняя пластина, °C</value>
   </data>
   <data name="SetTemp" xml:space="preserve">
     <value>Нагрев</value>
@@ -655,13 +655,13 @@
     <value>Результаты измерений не будут сохранены</value>
   </data>
   <data name="SettingTemperatureName" xml:space="preserve">
-    <value>Уставка по температуре, C</value>
+    <value>Уставка по температуре, °C</value>
   </data>
   <data name="ProfileNotSynced" xml:space="preserve">
     <value>Профиль не синхронизирован</value>
   </data>
   <data name="ATU" xml:space="preserve">
-    <value>Atu</value>
+    <value>ATU</value>
   </data>
   <data name="QrrTq" xml:space="preserve">
     <value>QrrTq</value>
@@ -853,16 +853,16 @@
     <value>UGNT, В</value>
   </data>
   <data name="Temp" xml:space="preserve">
-    <value>Температура, С</value>
+    <value>Температура, °С</value>
   </data>
   <data name="ActualCurrent_mA" xml:space="preserve">
-    <value>Измеренный ток, mA</value>
+    <value>Измеренный ток, мА</value>
   </data>
   <data name="ActualVoltage" xml:space="preserve">
-    <value>Измеренное напряжение, V</value>
+    <value>Измеренное напряжение, В</value>
   </data>
   <data name="NominalCurrent_mA" xml:space="preserve">
-    <value>Номинальный ток, mA</value>
+    <value>Номинальный ток, мА</value>
   </data>
   <data name="PulseGate" xml:space="preserve">
     <value>Импульс управления</value>
@@ -887,5 +887,11 @@
   </data>
   <data name="AtuUPRSM" xml:space="preserve">
     <value>U(PRSM), В</value>
+  </data>
+  <data name="Gost" xml:space="preserve">
+    <value>ГОСТ</value>
+  </data>
+  <data name="Lardc" xml:space="preserve">
+    <value>ЛАНТЦ</value>
   </data>
 </root>

@@ -34,7 +34,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="App.config" />
     <Content Include="App.config" />
   </ItemGroup>
 </Project>

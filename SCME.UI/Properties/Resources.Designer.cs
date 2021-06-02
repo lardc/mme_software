@@ -241,7 +241,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Chanel 2 temp, C.
+        ///   Ищет локализованную строку, похожую на Chanel 2 temp, °C.
         /// </summary>
         public static string BotTempName {
             get {
@@ -673,7 +673,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Gate.
+        ///   Ищет локализованную строку, похожую на GTU.
         /// </summary>
         public static string Gate {
             get {
@@ -687,6 +687,15 @@ namespace SCME.UI.Properties {
         public static string Gateway {
             get {
                 return ResourceManager.GetString("Gateway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на GOST.
+        /// </summary>
+        public static string Gost {
+            get {
+                return ResourceManager.GetString("Gost", resourceCulture);
             }
         }
         
@@ -957,6 +966,15 @@ namespace SCME.UI.Properties {
         public static string Kelvin {
             get {
                 return ResourceManager.GetString("Kelvin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на LARDC.
+        /// </summary>
+        public static string Lardc {
+            get {
+                return ResourceManager.GetString("Lardc", resourceCulture);
             }
         }
         
@@ -1880,7 +1898,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Setting temperature, C.
+        ///   Ищет локализованную строку, похожую на Setting temperature, °C.
         /// </summary>
         public static string SettingTemperatureName {
             get {
@@ -1988,16 +2006,16 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Technitian.
+        ///   Ищет локализованную строку, похожую на Technician.
         /// </summary>
-        public static string Technitian {
+        public static string Technician {
             get {
-                return ResourceManager.GetString("Technitian", resourceCulture);
+                return ResourceManager.GetString("Technician", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Temp, C.
+        ///   Ищет локализованную строку, похожую на Temperature, °C.
         /// </summary>
         public static string Temp {
             get {
@@ -2078,7 +2096,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Chanel 1 temp, C.
+        ///   Ищет локализованную строку, похожую на Chanel 1 temp, °C.
         /// </summary>
         public static string TopTempName {
             get {
@@ -2321,7 +2339,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Static losses.
+        ///   Ищет локализованную строку, похожую на SL.
         /// </summary>
         public static string Vtm {
             get {

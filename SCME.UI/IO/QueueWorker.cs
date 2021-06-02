@@ -120,7 +120,7 @@ namespace SCME.UI.IO
                         break;
                     case DeviceConnectionState.DisconnectionError:
                     case DeviceConnectionState.DisconnectionSuccess:
-                        if (Cache.Main.IsNeedToRestart)
+                        if (Cache.Main.NeedsToRestart)
                             m_Net.Initialize(Cache.Main.Param);
                         break;
                 }

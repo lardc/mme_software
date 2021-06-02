@@ -8,6 +8,7 @@
       xmlns:ui="clr-namespace:SCME.UI"
       xmlns:res="clr-namespace:SCME.UI.Properties"
       xmlns:customControls="WpfControlLibrary"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d"
       d:DesignWidth="1280" d:DesignHeight="924"
       Title="{x:Static res:Resources.Gate}">
@@ -88,10 +89,14 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="320"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" MinWidth="145"/>
                     </Grid.ColumnDefinitions>
                     <CheckBox Content="{x:Static res:Resources.PureVgt}" IsChecked="{Binding Parameters.IsCurrentEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <CheckBox Content="{x:Static res:Resources.HoldingCurrent}" IsChecked="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <ComboBox Style="{StaticResource CComboboxStyle}" SelectedIndex="{Binding Parameters.UseIhGost, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="2" Margin="10" VerticalAlignment="Center" IsEnabled="{Binding IHGOST, Source={x:Static uiServiceConfig:Settings.Default}}" Padding="5">
+                        <ComboBoxItem Content="{x:Static res:Resources.Lardc}"/>
+                        <ComboBoxItem Content="{x:Static res:Resources.Gost}"/>
+                    </ComboBox>
                     <Label Content="{x:Static res:Resources.IHItm}" Grid.Row="2" Grid.Column="0" Visibility="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Converter={StaticResource B2V}}"/>
                     <customControls:ValidatingTextBox Text="{Binding Parameters.Itm, ElementName=gatePage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinItm_IH_GATE}" Maximum="{StaticResource MaxItm_IH_GATE}" TextAlignment="Right" Grid.Row="2" Grid.Column="2" Margin="10" Visibility="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
                     <CheckBox Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding Parameters.IsIhStrikeCurrentEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>

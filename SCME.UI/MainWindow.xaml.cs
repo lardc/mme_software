@@ -1,13 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SCME.Types;
+using SCME.UI.IO;
+using SCME.UI.ViewModels;
+using SCME.UIServiceConfig.Properties;
+using SCME.WpfControlLibrary;
+using SCME.WpfControlLibrary.CustomControls;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.ServiceModel;
-using System.Threading;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,114 +21,44 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
-using SCME.Types;
-using SCME.Types.Profiles;
-using SCME.UI.IO;
-using SCME.UI.PagesTech;
-using SCME.UI.PagesUser;
-using SCME.UIServiceConfig.Properties;
-using SCME.UI.ViewModels;
-using SCME.WpfControlLibrary;
-using SCME.WpfControlLibrary.CustomControls;
 using DialogWindow = SCME.UI.CustomControl.DialogWindow;
-using System.Reflection;
-using System.Xml.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
-using System.Collections;
 
 namespace SCME.UI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : IMainWindow
     {
-        private const string PROFILE_ENDPOINT_NAME = "SCME.ProfileService";
+        //Состояние виртуальной клавиатуры
+        private bool IsKeyboardShown;
+        //Предыдущая страница
+        private Page PrevPage;
+        //Базовый цвет иконки пресса
+        private Brush NominalClampPathStroke;
 
-        private string _state = "LOCAL";
-        private string _TopTitle = "Title";
-        private readonly SolidColorBrush m_XRed, m_XOrange;
-        private bool m_IsSafetyBreakIconVisible;
-        private bool m_IsKeyboardShown;
-        private Visibility m_GoTechButtonVisibility, m_AccountButtonVisibility, m_TechPasswordVisibility;
-        private Page m_PrevPage;
-        private Brush m_NominalClampPathStroke;
-
-        public MainWindowVM VM { get; set; } = new MainWindowVM();
-
-        private void LoadConstraints()
-        {
-            string constraintsPath = Path.Combine(Path.GetDirectoryName(Settings.Default.AccountsPath), "Constraints.xaml");
-
-            if (File.Exists(constraintsPath) == false)
-                return;
-
-            ResourceDictionary resourceDictionaryUser;
-            using (FileStream fs = new FileStream(constraintsPath, FileMode.Open))
-                resourceDictionaryUser = XamlReader.Load(fs) as ResourceDictionary;
-
-            var resourceDictionaryApplication = Application.Current.Resources.MergedDictionaries.First(m=> m.Source.AbsolutePath.Contains("Constraints.xaml"));
-
-            foreach (var i in resourceDictionaryUser)
-            {
-                var dictionaryEntry = (DictionaryEntry)i;
-                resourceDictionaryApplication.Remove(dictionaryEntry.Key);
-                resourceDictionaryApplication.Add(dictionaryEntry.Key, dictionaryEntry.Value);
-            }
-
-        }
-
+        /// <summary>Инициализирует новый экземпляр класса MainWindow</summary>
         public MainWindow()
         {
             try
             {
-                foreach (var (key, value) in JsonConvert.DeserializeObject<Dictionary<ComplexParts, bool>>(Properties.SettingsUI.Default.ComplexPartsIsDisabled))
+                foreach ((ComplexParts key, bool value) in JsonConvert.DeserializeObject<Dictionary<ComplexParts, bool>>(Properties.SettingsUI.Default.ComplexPartsIsDisabled))
                     Cache.Welcome.DeviceSetEnabled(key, !value);
             }
-            catch
-            {
-                // ignored
-            }
-
-
-            string s = Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
+            catch { }
+            //Версия сборки
+            string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            //Добавление обработчиков исключений
             Application.Current.DispatcherUnhandledException += DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-
-            LoadConstraints();
-
-            try
-            {
-                //Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Localization);
-//                CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(Settings.Default.Localization);
-//                Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.Localization);
-//                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Localization);
-//                LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
-//                    XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-            }
-            catch (Exception ex)
-            {
-                var dw = new DialogWindow("Localization error", ex.Message);
-                dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                dw.ShowDialog();
-            }
-
-            Cache.Keyboards = new KeyboardLayouts(Path.IsPathRooted(Settings.Default.KeyboardsPath) ? Settings.Default.KeyboardsPath : Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase),Settings.Default.KeyboardsPath));
-            
+            //Подгрузка ограничений
+            Constraints_Load();
+            //Установка локализованной клавиатуры
+            Cache.Keyboards = new KeyboardLayouts(Path.IsPathRooted(Settings.Default.KeyboardsPath) ? Settings.Default.KeyboardsPath : Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), Settings.Default.KeyboardsPath));
             ResourceBinding.Scaling(0.60);
-
             InitializeComponent();
-
-
-            m_XRed = (SolidColorBrush)FindResource("xRed1");
-            m_XOrange = (SolidColorBrush)FindResource("xOrange1");
-
             VM.TechPasswordVisibility = Visibility.Collapsed;
-
             try
             {
                 Cache.Main = this;
+                //Проверка разрешения экрана
                 if (Settings.Default.WindowIs1280x1024)
                 {
                     Top = SystemParameters.WorkArea.Top;
@@ -136,7 +71,7 @@ namespace SCME.UI
                 {
                     if (Settings.Default.NormalWindow)
                     {
-                        
+
                         WindowStyle = WindowStyle.SingleBorderWindow;
                         WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         ResizeMode = ResizeMode.CanResize;
@@ -151,342 +86,186 @@ namespace SCME.UI
                         Height = SystemParameters.WorkArea.Height;
                     }
                 }
-
                 Cache.Storage = new LocalStorage(Settings.Default.StoragePath);
                 Cache.Net = new ControlLogic();
-
                 VM.IsSafetyBreakIconVisible = false;
-
                 RestartRoutine(null, null);
             }
             catch (Exception ex)
             {
-                var dw = new DialogWindow(Properties.Resources.ApplicationStartError, ex.Message);
-                dw.ButtonConfig(DialogWindow.EbConfig.OK);
-                dw.ShowDialog();
-
+                DialogWindow DialogWindow = new DialogWindow(Properties.Resources.ApplicationStartError, ex.Message);
+                DialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
+                DialogWindow.ShowDialog();
                 Application.Current.Shutdown(1);
             }
-            
-            mainFrame.Navigated += MainFrameOnNavigated;
-            mainFrame.Navigating += MainFrameOnNavigating;
-            
         }
 
-        public Point GetWaitProgressBarPoint => WaitProgressBar.TransformToAncestor(this).Transform(new Point(0,0));
-        public Point GetWaitProgressBarSize => new Point(WaitProgressBar.Width, WaitProgressBar.Height);
-
-        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        /// <summary>Модель представления главного окна</summary>
+        public MainWindowVM VM
         {
-            VM.WaitProgressBarIsShow = true;
+            get; set;
+        } = new MainWindowVM();
 
-            var emulationMessages = new List<string>();
-            
-            if(Settings.Default.CommutationEmulation && Settings.Default.CommIsVisible)
-                emulationMessages.Add(Properties.Resources.Commutation);
-            
-            if(Settings.Default.dVdtEmulation && Settings.Default.dVdtIsVisible)
-                emulationMessages.Add(Properties.Resources.dVdt);
-            
-            /*if(Settings.Default.SctuEmulation && Settings.Default.sctu)
-                emulationMessages.Add("SCTU");*/
-            
-            if(Settings.Default.CommutationExEmulation && Settings.Default.CommExIsVisible)
-                emulationMessages.Add(Properties.Resources.Commutation + "2");
-            
-            if(Settings.Default.IHEmulation && Settings.Default.IHIsVisible)
-                emulationMessages.Add(Properties.Resources.IH);
-            
-            if(Settings.Default.QrrTqEmulation && Settings.Default.QrrTqIsVisible)
-                emulationMessages.Add(Properties.Resources.QrrTq);
-            
-            if(Settings.Default.SLEmulation && Settings.Default.SLIsVisible)
-                emulationMessages.Add(Properties.Resources.Vtm);
-            
-            if(Settings.Default.ATUEmulation && Settings.Default.ATUIsVisible)
-                emulationMessages.Add(Properties.Resources.ATU);
-            
-            if(Settings.Default.BVTEmulation && Settings.Default.BvtIsVisible)
-                emulationMessages.Add(Properties.Resources.Bvt);
-            
-            if(Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
-                emulationMessages.Add(Properties.Resources.RAC);
-            
-            /*if(Settings.Default.RCCEmulation)
-                emulationMessages.Add("RCC");*/
-            
-            if(Settings.Default.TOUEmulation && Settings.Default.TOUIsVisible)
-                emulationMessages.Add(Properties.Resources.TOU);
-            
-            if(Settings.Default.AdapterEmulation )
-                emulationMessages.Add(Properties.Resources.Adapter);
-            
-            if(Settings.Default.GateEmulation && Settings.Default.GateIsVisible)
-                emulationMessages.Add(Properties.Resources.Gate);
-            
-            if(Settings.Default.GatewayEmulation )
-                emulationMessages.Add(Properties.Resources.Gateway);
-            
-            if(Settings.Default.ClampingSystemEmulation && Settings.Default.ClampIsVisible)
-                emulationMessages.Add(Properties.Resources.Clamp);
-
-            var emulationMessage = string.Join(", ", emulationMessages);
-            if (!string.IsNullOrEmpty(emulationMessage))
-            {
-                var dialogWindow = new DialogWindow(Properties.Resources.Warning, $"{Properties.Resources.WarningEmulation}:{Environment.NewLine}{emulationMessage}");
-                dialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
-                dialogWindow.ShowDialog();
-            }
-        }
-
-        private void MainFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
+        /// <summary>Необходимость в перезапуске приложения</summary>
+        internal bool NeedsToRestart
         {
-            
+            get; private set;
         }
 
-        private void MainFrameOnNavigated(object sender, NavigationEventArgs e)
+        /// <summary>Чтение профилей</summary>
+        internal bool AreProfilesParsed
         {
-            VM.TopTitle = (e.Content as Page)?.Title;
-            
+            get; set;
         }
 
-
-        private static void CurrentDomainOnUnhandledException(object Sender, UnhandledExceptionEventArgs Args)
+        /// <summary>Параметры запуска приложения</summary>
+        internal TypeCommon.InitParams Param
         {
-            MessageBox.Show(Args.ExceptionObject.ToString(), "Unhandled exception");
+            get; private set;
         }
 
-        static void DispatcherUnhandledException(object Sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs E)
-        {
-            MessageBox.Show(E.Exception.ToString(), "Unhandled exception");
-        }
-
+        /// <summary>Видимость строки состояния подключения</summary>
         public bool ConnectionLabelVisible
         {
-            set { connectionLabel.Visibility = value ? Visibility.Visible : Visibility.Collapsed; }
+            set => connectionLabel.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
 
-    
-   
-
-        internal bool IsNeedToRestart { get; private set; }
-
-        internal bool IsProfilesParsed { get; set; }
-
-        internal TypeCommon.InitParams Param { get; private set; }
-
-        internal void RestartRoutine(object Sender, RoutedEventArgs E)
+        private void Constraints_Load() //Подгрузка ограничений
         {
-            
-            Param = new TypeCommon.InitParams
+            string ConstraintsPath = Path.Combine(Path.GetDirectoryName(Settings.Default.AccountsPath), "Constraints.xaml");
+            //Проверка существования файла
+            if (!File.Exists(ConstraintsPath))
+                return;
+            ResourceDictionary ResourceDictionaryUser;
+            using (FileStream Stream = new FileStream(ConstraintsPath, FileMode.Open))
+                ResourceDictionaryUser = (ResourceDictionary)XamlReader.Load(Stream);
+            ResourceDictionary ResourceDictionaryApplication = Application.Current.Resources.MergedDictionaries.First(m => m.Source.AbsolutePath.Contains("Constraints.xaml"));
+            //Перебор всех ограничений
+            foreach (object Entry in ResourceDictionaryUser)
             {
-                TimeoutService = Cache.Welcome.GetTimeout(ComplexParts.Service),
-                IsInternalEnabled = false,
-                TimeoutAdapter = Cache.Welcome.GetTimeout(ComplexParts.Adapter),
-                IsGateEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.Gate) && Settings.Default.GateIsVisible,
-                TimeoutGate = Cache.Welcome.GetTimeout(ComplexParts.Gate),
-                IsSLEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.SL) && Settings.Default.SLIsVisible,
-                TimeoutSL = Cache.Welcome.GetTimeout(ComplexParts.SL),
-                IsBVTEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.BVT) && Settings.Default.BvtIsVisible,
-                TimeoutBVT = Cache.Welcome.GetTimeout(ComplexParts.BVT),
-                IsClampEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.Clamping) && Settings.Default.ClampIsVisible,
-                TimeoutClamp = Cache.Welcome.GetTimeout(ComplexParts.Clamping),
-                TimeoutdVdt = Cache.Welcome.GetTimeout(ComplexParts.DvDt),
-                IsdVdtEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.DvDt) && Settings.Default.dVdtIsVisible,
-                TimeoutATU = Cache.Welcome.GetTimeout(ComplexParts.ATU),
-                IsATUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.ATU) && Settings.Default.ATUIsVisible,
-                TimeoutQrrTq = Cache.Welcome.GetTimeout(ComplexParts.QrrTq),
-                IsQrrTqEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.QrrTq) && Settings.Default.QrrTqIsVisible,
-                TimeoutRAC = Cache.Welcome.GetTimeout(ComplexParts.RAC),
-                IsRACEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.RAC) && Settings.Default.RACIsVisible,
-                TimeoutIH = Cache.Welcome.GetTimeout(ComplexParts.IH),
-                IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
-                IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
-                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
-                SafetyMode = VM.SafetyMode,
-                SoftVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()
-            };
-
-            if (!Equals(mainFrame.Content, Cache.Welcome))
-                mainFrame.Navigate(Cache.Welcome);
-
-            Cache.Welcome.IsRestartEnable = false;
-            Cache.Welcome.IsBackEnable = false;
-            Cache.Technician.AreButtonsEnabled(Param);
-            Cache.Console.AreButtonEnabled(Param);
-            Cache.Selftest.AreButtonEnabled(Param);
-
-            IsNeedToRestart = true;
-            IsProfilesParsed = false;
-            Cache.Net.Deinitialize();
+                DictionaryEntry DictionaryEntry = (DictionaryEntry)Entry;
+                ResourceDictionaryApplication.Remove(DictionaryEntry.Key);
+                ResourceDictionaryApplication.Add(DictionaryEntry.Key, DictionaryEntry.Value);
+            }
         }
 
-        internal void SetClampState(Types.Clamping.SqueezingState State)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e) //Загрузка окна
         {
-            switch (State)
-            {
-                case Types.Clamping.SqueezingState.Down:
-                    clampPath.Stroke = Brushes.DarkSeaGreen;
-                    break;
-                case Types.Clamping.SqueezingState.Squeezing:
-                    clampPath.Stroke = Brushes.Gold;
-                    break;
-                case Types.Clamping.SqueezingState.Up:
-                    clampPath.Stroke = m_XOrange;
-                    break;
-                case Types.Clamping.SqueezingState.Unsqueezing:
-                    clampPath.Stroke = Brushes.Gold;
-                    break;
-                case Types.Clamping.SqueezingState.Undeterminated:
-                    clampPath.Stroke = m_XRed;
-                    break;
-            }
-
-            m_NominalClampPathStroke = clampPath.Stroke;
+            VM.WaitProgressBarIsShow = true;
+            //Сообщения об эмулируемых блоках
+            List<string> EmulationMessages = new List<string>();
+            //Эмуляция адаптера
+            if (Settings.Default.AdapterEmulation)
+                EmulationMessages.Add(Properties.Resources.Adapter);
+            //Эмуляция шлюза
+            if (Settings.Default.GatewayEmulation)
+                EmulationMessages.Add(Properties.Resources.Gateway);
+            //Эмуляция блока коммутации
+            if (Settings.Default.CommutationEmulation && Settings.Default.CommIsVisible)
+                EmulationMessages.Add(Properties.Resources.Commutation);
+            //Эмуляция блока коммутации 2
+            if (Settings.Default.CommutationExEmulation && Settings.Default.CommExIsVisible)
+                EmulationMessages.Add(Properties.Resources.Commutation + "2");
+            //Эмуляция блока GTU
+            if (Settings.Default.GateEmulation && Settings.Default.GateIsVisible)
+                EmulationMessages.Add(Properties.Resources.Gate);
+            //Эмуляция блока SL
+            if (Settings.Default.SLEmulation && Settings.Default.SLIsVisible)
+                EmulationMessages.Add(Properties.Resources.Vtm);
+            //Эмуляция блока BVT
+            if (Settings.Default.BVTEmulation && Settings.Default.BvtIsVisible)
+                EmulationMessages.Add(Properties.Resources.Bvt);
+            //Эмуляция пресса
+            if (Settings.Default.ClampingSystemEmulation && Settings.Default.ClampIsVisible)
+                EmulationMessages.Add(Properties.Resources.Clamp);
+            //Эмуляция блока dUdt
+            if (Settings.Default.dVdtEmulation && Settings.Default.dVdtIsVisible)
+                EmulationMessages.Add(Properties.Resources.dVdt);
+            //Эмуляция блока ATU
+            if (Settings.Default.ATUEmulation && Settings.Default.ATUIsVisible)
+                EmulationMessages.Add(Properties.Resources.ATU);
+            //Эмуляция блока QrrTq
+            if (Settings.Default.QrrTqEmulation && Settings.Default.QrrTqIsVisible)
+                EmulationMessages.Add(Properties.Resources.QrrTq);
+            //Эмуляция блока R A-C
+            if (Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
+                EmulationMessages.Add(Properties.Resources.RAC);
+            //Эмуляция блока IH
+            if (Settings.Default.IHEmulation && Settings.Default.IHIsVisible)
+                EmulationMessages.Add(Properties.Resources.IH);
+            //Эмуляция блока TOU
+            if (Settings.Default.TOUEmulation && Settings.Default.TOUIsVisible)
+                EmulationMessages.Add(Properties.Resources.TOU);
+            //Получение строки из сообщений
+            string EmulationMessage = string.Join(", ", EmulationMessages);
+            //Строка пуста
+            if (string.IsNullOrEmpty(EmulationMessage))
+                return;
+            DialogWindow DialogWindow = new DialogWindow(Properties.Resources.Warning, string.Format("{0}:\n{1}", Properties.Resources.WarningEmulation, EmulationMessage));
+            DialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
+            DialogWindow.ShowDialog();
         }
 
-        internal void SetClampWarning(Types.Clamping.HWWarningReason Warning)
-        {
-            if (Warning == Types.Clamping.HWWarningReason.None)
-            {
-                clampPath.Stroke = m_NominalClampPathStroke;
-            }
-            else
-            {
-                clampPath.Stroke = Brushes.Tomato;
-            }
-        }
-
-        internal void SetClampFault(Types.Clamping.HWFaultReason Fault)
-        {
-            if (Fault == Types.Clamping.HWFaultReason.None)
-            {
-                clampPath.Stroke = m_NominalClampPathStroke;
-            }
-            else
-            {
-                clampPath.Stroke = Brushes.Tomato;
-            }
-        }
-
-        private void BtnExit_Click(object Sender, RoutedEventArgs E)
+        private void btnExit_Click(object sender, RoutedEventArgs e) //Закрытие приложения
         {
             Application.Current.Shutdown();
         }
 
-        private void MainWindow_Closing(object Sender, CancelEventArgs E)
+        private void MainWindow_Closing(object sender, CancelEventArgs e) //Деинициализация приложения
         {
-            IsNeedToRestart = false;
-
+            NeedsToRestart = false;
             if (Cache.Net != null)
                 Cache.Net.Deinitialize();
         }
 
-        private void MainWindow_OnClosed(object Sender, EventArgs E)
+        private void MainWindow_Closed(object sender, EventArgs e) //Запуск explorer.exe
         {
             if (Settings.Default.RunExplorer)
                 Process.Start("explorer.exe");
         }
 
-        private void Frame_Navigating(object Sender, NavigatingCancelEventArgs E)
+        private void Tech_Click(object sender, RoutedEventArgs e) //Переход в режим наладчика
         {
-            if (Settings.Default.IsAnimationEnabled)
-            {
-                var animation = new DoubleAnimation
-                {
-                    From = 1,
-                    To = 0,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(200))
-                };
-                mainFrame.BeginAnimation(OpacityProperty, animation);
-            }
+            ServiceManLogin();
         }
 
-        private void Frame_Navigated(object Sender, NavigationEventArgs E)
-        {
-//            VM.TopTitle = ((Page)mainFrame.Content).Title;
-//            VM.GoTechButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
-//                                     Equals(mainFrame.Content, Cache.UserTest) ||
-//                                     Equals(mainFrame.Content, Cache.Login)
-//                                         ? Visibility.Visible
-//                                         : Visibility.Collapsed;
-//            VM.AccountButtonVisibility = Equals(mainFrame.Content, Cache.ProfileSelection) ||
-//                                      Equals(mainFrame.Content, Cache.UserTest)
-//                                          ? Visibility.Visible
-//                                          : Visibility.Collapsed;
-
-            if (Equals(mainFrame.Content, Cache.Password) && Settings.Default.IsTechPasswordEnabled)
-                Cache.Technician.PreviousPage = m_PrevPage;
-            m_PrevPage = E.Content as Page;
-
-            if (Settings.Default.IsAnimationEnabled)
-            {
-                var animation = new DoubleAnimation
-                {
-                    From = 0,
-                    To = 1,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(200))
-                };
-                mainFrame.BeginAnimation(OpacityProperty, animation);
-            }
-        }
-
+        /// <summary>Переход в режим наладчика</summary>
         public void ServiceManLogin()
         {
             if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
                 Cache.UserTest.OnLeaveNotify();
-
-//            if (!Cache.Main.IsProfilesParsed)
-//                ProfilesDbLogic.ImportProfilesFromDb();
-
             if (Settings.Default.IsTechPasswordEnabled)
             {
-                Cache.Password.AfterOkRoutine = delegate { mainFrame.Navigate(Cache.Technician); };
-                mainFrame.Navigate(Cache.Password);                    
+                Cache.Password.AfterOkRoutine = delegate
+                {
+                    mainFrame.Navigate(Cache.Technician);
+                };
+                mainFrame.Navigate(Cache.Password);
             }
             else
                 mainFrame.Navigate(Cache.Technician);
         }
 
-        private void Tech_Click(object Sender, RoutedEventArgs E)
+        private void MainWindow_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) //Открытие виртуальной клавиатуры
         {
-            ServiceManLogin();
+            if (e.NewFocus is ValidatingTextBox TextBox)
+                ShowKeyboard(!Settings.Default.NormalWindow, TextBox);
         }
 
-        private void Logout_Click(object Sender, RoutedEventArgs E)
-        {
-            Cache.Net.SetSafetyMode(SafetyMode.Internal);
-
-            if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
-                Cache.UserTest.OnLeaveNotify();
-
-            mainFrame.Navigate(Cache.Login);
-        }
-
-        #region Keyboard
-
-        private void MyWindow_PreviewGotKeyboardFocus(object Sender, KeyboardFocusChangedEventArgs E)
-        {
-            if (E.NewFocus is ValidatingTextBox validatingTextBox)
-                ShowKeyboard(!Settings.Default.NormalWindow, validatingTextBox);
-        }
-
-        private void MyWindow_MouseDown(object Sender, MouseButtonEventArgs E)
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e) //Закрытие виртуальной клавиатуры
         {
             ShowKeyboard(false, null);
         }
 
-        public void ShowKeyboard(bool Show, Control Control)
+        public void ShowKeyboard(bool show, Control control) //Отрисовка виртуальной клавиатуры
         {
-            if (!m_IsKeyboardShown && Show)
+            //Необходимо открытие
+            if (!IsKeyboardShown && show)
             {
-                m_IsKeyboardShown = true;
-
-                var asPopup =
-                    !(Control.TransformToAncestor(this).Transform(new Point(0, Control.ActualHeight)).Y >
-                      Height - defaultKeyboard.Height);
-
-                if (asPopup)
+                IsKeyboardShown = true;
+                //Наслоение на объекты страницы
+                bool AsPopup = !(control.TransformToAncestor(this).Transform(new Point(0, control.ActualHeight)).Y > Height - defaultKeyboard.Height);
+                if (AsPopup)
                 {
                     defaultKeyboard.Show(Settings.Default.IsAnimationEnabled);
                     keyboardPopup.IsOpen = true;
@@ -499,72 +278,215 @@ namespace SCME.UI
                     AnimateScrollViewer(defaultKeyboard.Height);
                 }
             }
-
-            if (m_IsKeyboardShown && !Show)
+            //Необходимо сокрытие
+            if (IsKeyboardShown && !show)
             {
-                m_IsKeyboardShown = false;
+                IsKeyboardShown = false;
                 AnimateScrollViewer(0);
                 defaultKeyboard.Hide(Settings.Default.IsAnimationEnabled);
             }
         }
 
-        private void AnimateScrollViewer(double To)
+        private void AnimateScrollViewer(double to) //Анимация скроллвьюера для отрисовки виртуальной клавиатуры
         {
-            keyboardBorder.Height = To;
-
+            keyboardBorder.Height = to;
             if (Settings.Default.IsAnimationEnabled)
             {
-                var verticalAnimation = new DoubleAnimation
+                DoubleAnimation VerticalAnimation = new DoubleAnimation
                 {
-                    To = To,
-                    DecelerationRatio = .2,
+                    To = to,
+                    DecelerationRatio = 0.2,
                     Duration = new Duration(TimeSpan.FromMilliseconds(300))
                 };
-
-                var storyboard = new Storyboard();
-                storyboard.Children.Add(verticalAnimation);
-                Storyboard.SetTarget(verticalAnimation, scrollViewer);
-                Storyboard.SetTargetProperty(verticalAnimation,
-                                             new PropertyPath(ScrollViewerBehavior.VerticalOffsetProperty));
-                storyboard.Begin();
+                Storyboard Storyboard = new Storyboard();
+                Storyboard.Children.Add(VerticalAnimation);
+                Storyboard.SetTarget(VerticalAnimation, scrollViewer);
+                Storyboard.SetTargetProperty(VerticalAnimation, new PropertyPath(ScrollViewerBehavior.VerticalOffsetProperty));
+                Storyboard.Begin();
             }
             else
-                scrollViewer.ScrollToVerticalOffset(To);
+                scrollViewer.ScrollToVerticalOffset(to);
         }
 
-        private void Keyboard_EnterPressed(object Sender, RoutedEventArgs E)
+        private void Keyboard_EnterPressed(object sender, RoutedEventArgs e) //Подтверждение ввода на виртуальной клавиатуре
         {
             ShowKeyboard(false, null);
         }
 
-        #endregion
+        private void Logout_Click(object sender, RoutedEventArgs e) //Выход из профиля
+        {
+            Cache.Net.SetSafetyMode(SafetyMode.Internal);
+            if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
+                Cache.UserTest.OnLeaveNotify();
+            mainFrame.Navigate(Cache.Login);
+        }
 
+        private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) //Анимация при навигации
+        {
+            if (!Settings.Default.IsAnimationEnabled)
+                return;
+            DoubleAnimation Animation = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(200))
+            };
+            mainFrame.BeginAnimation(OpacityProperty, Animation);
+        }
 
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e) //Навигация между страницами
+        {
+            VM.TopTitle = ((Page)e.Content)?.Title;
+            if (Equals(mainFrame.Content, Cache.Password) && Settings.Default.IsTechPasswordEnabled)
+                Cache.Technician.PreviousPage = PrevPage;
+            PrevPage = (Page)e.Content;
+            
+            if (!Settings.Default.IsAnimationEnabled)
+                return;
+            //Анимация перехода
+            DoubleAnimation Animation = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = new Duration(TimeSpan.FromMilliseconds(200))
+            };
+            mainFrame.BeginAnimation(OpacityProperty, Animation);
+        }
+
+        internal void RestartRoutine(object sender, RoutedEventArgs e) //Процесс перезапуска
+        {
+            Param = new TypeCommon.InitParams
+            {
+                TimeoutService = Cache.Welcome.GetTimeout(ComplexParts.Service),
+                IsInternalEnabled = false,
+                //Адаптер
+                TimeoutAdapter = Cache.Welcome.GetTimeout(ComplexParts.Adapter),
+                //GTU
+                IsGateEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.Gate) && Settings.Default.GateIsVisible,
+                TimeoutGate = Cache.Welcome.GetTimeout(ComplexParts.Gate),
+                //SL
+                IsSLEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.SL) && Settings.Default.SLIsVisible,
+                TimeoutSL = Cache.Welcome.GetTimeout(ComplexParts.SL),
+                //BVT
+                IsBVTEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.BVT) && Settings.Default.BvtIsVisible,
+                TimeoutBVT = Cache.Welcome.GetTimeout(ComplexParts.BVT),
+                //Пресс
+                IsClampEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.Clamping) && Settings.Default.ClampIsVisible,
+                TimeoutClamp = Cache.Welcome.GetTimeout(ComplexParts.Clamping),
+                //dUdt
+                IsdVdtEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.DvDt) && Settings.Default.dVdtIsVisible,
+                TimeoutdVdt = Cache.Welcome.GetTimeout(ComplexParts.DvDt),
+                //ATU
+                TimeoutATU = Cache.Welcome.GetTimeout(ComplexParts.ATU),
+                IsATUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.ATU) && Settings.Default.ATUIsVisible,
+                //QrrTq
+                TimeoutQrrTq = Cache.Welcome.GetTimeout(ComplexParts.QrrTq),
+                IsQrrTqEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.QrrTq) && Settings.Default.QrrTqIsVisible,
+                //R A-C
+                TimeoutRAC = Cache.Welcome.GetTimeout(ComplexParts.RAC),
+                IsRACEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.RAC) && Settings.Default.RACIsVisible,
+                //IH
+                TimeoutIH = Cache.Welcome.GetTimeout(ComplexParts.IH),
+                IsIHEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.IH) && Settings.Default.IHIsVisible,
+                //TOU
+                IsTOUEnabled = Cache.Welcome.IsDeviceEnabled(ComplexParts.TOU) && Settings.Default.TOUIsVisible,
+                TimeoutTOU = Cache.Welcome.GetTimeout(ComplexParts.TOU),
+                SafetyMode = VM.SafetyMode,
+                SoftVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()
+            };
+            //Открытие главной страницы
+            if (!Equals(mainFrame.Content, Cache.Welcome))
+                mainFrame.Navigate(Cache.Welcome);
+            Cache.Welcome.IsRestartEnable = false;
+            Cache.Welcome.IsBackEnable = false;
+            Cache.Technician.AreButtonsEnabled(Param);
+            Cache.Console.AreButtonEnabled(Param);
+            Cache.Selftest.AreButtonEnabled(Param);
+            NeedsToRestart = true;
+            AreProfilesParsed = false;
+            Cache.Net.Deinitialize();
+        }
+
+        internal void SetClampState(Types.Clamping.SqueezingState state) //Установка состояния пресса
+        {
+            SolidColorBrush m_XOrange = (SolidColorBrush)FindResource("xOrange1");
+            switch (state)
+            {
+                case Types.Clamping.SqueezingState.Down:
+                    clampPath.Stroke = Brushes.Green;
+                    break;
+                case Types.Clamping.SqueezingState.Squeezing:
+                    clampPath.Stroke = Brushes.Gold;
+                    break;
+                case Types.Clamping.SqueezingState.Up:
+                    clampPath.Stroke = m_XOrange;
+                    break;
+                case Types.Clamping.SqueezingState.Unsqueezing:
+                    clampPath.Stroke = Brushes.Gold;
+                    break;
+                case Types.Clamping.SqueezingState.Undeterminated:
+                    clampPath.Stroke = m_XOrange;
+                    break;
+            }
+            NominalClampPathStroke = clampPath.Stroke;
+        }
+
+        internal void SetClampWarning(Types.Clamping.HWWarningReason warning) //Установка предупреждений пресса
+        {
+            if (warning == Types.Clamping.HWWarningReason.None)
+                clampPath.Stroke = NominalClampPathStroke;
+            else
+                clampPath.Stroke = Brushes.Tomato;
+        }
+
+        internal void SetClampFault(Types.Clamping.HWFaultReason fault) //Установка ошибок пресса
+        {
+            if (fault == Types.Clamping.HWFaultReason.None)
+                clampPath.Stroke = NominalClampPathStroke;
+            else
+                clampPath.Stroke = Brushes.Tomato;
+        }
+
+        public Point GetWaitProgressBarPoint() //Получение положения колеса загрузки
+        {
+            return WaitProgressBar.TransformToAncestor(this).Transform(new Point(0, 0));
+        }
+
+        public Point GetWaitProgressBarSize() //Получение размера колеса загрузки
+        {
+            return new Point(WaitProgressBar.Width, WaitProgressBar.Height);
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args) //Обработчик исключений
+        {
+            MessageBox.Show(args.ExceptionObject.ToString(), "Unhandled exception");
+        }
+
+        static void DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) //Обработчик исключений текущего диспетчера
+        {
+            MessageBox.Show(e.Exception.ToString(), "Unhandled exception");
+        }
     }
 
     public class ScrollViewerBehavior
     {
-        public static readonly DependencyProperty VerticalOffsetProperty =
-            DependencyProperty.RegisterAttached("VerticalOffset", typeof(double), typeof(ScrollViewerBehavior),
-                                                new UIPropertyMetadata(0.0, OnVerticalOffsetChanged));
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.RegisterAttached("VerticalOffset", typeof(double), typeof(ScrollViewerBehavior), new UIPropertyMetadata(0.0, OnVerticalOffsetChanged));
 
-        public static void SetVerticalOffset(FrameworkElement Target, double Value)
+        public static double GetVerticalOffset(FrameworkElement target)
         {
-            Target.SetValue(VerticalOffsetProperty, Value);
+            return (double)target.GetValue(VerticalOffsetProperty);
         }
 
-        public static double GetVerticalOffset(FrameworkElement Target)
+        public static void SetVerticalOffset(FrameworkElement target, double value)
         {
-            return (double)Target.GetValue(VerticalOffsetProperty);
+            target.SetValue(VerticalOffsetProperty, value);
         }
 
-        private static void OnVerticalOffsetChanged(DependencyObject Target, DependencyPropertyChangedEventArgs E)
+        private static void OnVerticalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
-            var scrollViewer = Target as ScrollViewer;
-            if (scrollViewer != null)
-            {
-                scrollViewer.ScrollToVerticalOffset((double)E.NewValue);
-            }
+            ScrollViewer ScrollViewer = (ScrollViewer)target;
+            if (ScrollViewer != null)
+                ScrollViewer.ScrollToVerticalOffset((double)e.NewValue);
         }
     }
 }

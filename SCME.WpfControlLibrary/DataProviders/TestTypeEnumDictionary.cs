@@ -190,6 +190,7 @@ namespace SCME.WpfControlLibrary.DataProviders
                 new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
                 new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
                 new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),
+                new TestParameter(TestParametersType.Clamping, typeof(Types.Clamping.TestParameters), "Height"),
             };
         }
 

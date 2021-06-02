@@ -51,10 +51,10 @@ namespace SCME.UI.PagesUser
         private void ButtonNext_OnClick(object sender, RoutedEventArgs e) //Переход на следующую страницу
         {
             //Отображение анимации загрузки окна
-            double Left = Cache.Main.GetWaitProgressBarPoint.X + Cache.Main.Left;
-            double Top = Cache.Main.GetWaitProgressBarPoint.Y + Cache.Main.Top;
-            double Width = Cache.Main.GetWaitProgressBarSize.X;
-            double  Height = Cache.Main.GetWaitProgressBarSize.Y;
+            double Left = Cache.Main.GetWaitProgressBarPoint().X + Cache.Main.Left;
+            double Top = Cache.Main.GetWaitProgressBarPoint().Y + Cache.Main.Top;
+            double Width = Cache.Main.GetWaitProgressBarSize().X;
+            double  Height = Cache.Main.GetWaitProgressBarSize().Y;
             Thread NewWindowThread = new Thread(new ThreadStart(() =>
             {
                 LoadingAnimationWindow = new LoadingAnimationWindow

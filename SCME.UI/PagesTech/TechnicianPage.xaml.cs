@@ -1,144 +1,122 @@
-﻿using System;
+﻿using SCME.Types;
+using SCME.UI.IO;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using SCME.Types;
-using SCME.UI.IO;
-using SCME.WpfControlLibrary.Pages;
 
 namespace SCME.UI.PagesTech
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
     public partial class TechnicianPage
     {
+        //Предыдущая страница
         internal object PreviousPage;
+        //Отступ на страницах
+        private Thickness PageMargin = new Thickness(0, 0, 10, 0);
 
+        /// <summary>Инициализирует новый экземпляр класса TechnicianPage</summary>
         public TechnicianPage()
         {
             InitializeComponent();
-            
         }
 
-        internal void AreButtonsEnabled(TypeCommon.InitParams Param)
+        private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e) //Загрузка страницы
         {
-            btnGate.IsEnabled = Param.IsGateEnabled;
-            btnVtm.IsEnabled = Param.IsSLEnabled;
-            btnBvt.IsEnabled = Param.IsBVTEnabled;
-            btndVdt.IsEnabled = Param.IsdVdtEnabled;
-            btnATU.IsEnabled = Param.IsATUEnabled;
-            btnQrrTq.IsEnabled = Param.IsQrrTqEnabled;
-            btnIH.IsEnabled = Param.IsIHEnabled;
-            btnTOU.IsEnabled = Param.IsTOUEnabled;
-
+            Cache.ProfilesPage.GoBackAction += () =>
+            {
+                ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.Profiles.ToList());
+            };
+            Cache.Main.VM.AccountNameIsVisibility = false;
         }
 
-        private void Button_Click(object Sender, RoutedEventArgs E)
+        /// <summary>Проверка доступности кнопок</summary>
+        /// <param name="param">Параметры конфигурации</param>
+        internal void AreButtonsEnabled(TypeCommon.InitParams param)
         {
-            var btn = (Button)Sender;
+            btnGTU.IsEnabled = param.IsGateEnabled;
+            btnSL.IsEnabled = param.IsSLEnabled;
+            btnBVT.IsEnabled = param.IsBVTEnabled;
+            btndUdt.IsEnabled = param.IsdVdtEnabled;
+            btnATU.IsEnabled = param.IsATUEnabled;
+            btnQrrTq.IsEnabled = param.IsQrrTqEnabled;
+            btnTOU.IsEnabled = param.IsTOUEnabled;
+        }
 
-            Page page = null;
-
-            switch (Convert.ToUInt16(btn.CommandParameter))
+        private void Button_Click(object sender, RoutedEventArgs e) //Выбор теста в режиме наладчика
+        {
+            Button ClickedButton = (Button)sender;
+            Page Page = null;
+            switch (Convert.ToUInt16(ClickedButton.CommandParameter))
             {
                 case 1:
                     Cache.Gate = new GatePage();
-                    page = Cache.Gate;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.Gate;
+                    Page.Margin = PageMargin;
                     break;
                 case 2:
                     Cache.Sl = new SLPage();
-                    page = Cache.Sl;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.Sl;
+                    Page.Margin = PageMargin;
                     break;
                 case 3:
                     Cache.Bvt = new BvtPage();
-                    page = Cache.Bvt;
-                    page.Margin = new Thickness(0,0,10,0);
-                    break;
-                case 4:
-                    page = Cache.Selftest;
+                    Page = Cache.Bvt;
+                    Page.Margin = PageMargin;
                     break;
                 case 6:
-                    page = Cache.Console;
+                    Page = Cache.Console;
                     break;
                 case 7:
-                    page = Cache.ProfilesPage;
+                    Page = Cache.ProfilesPage;
                     break;
                 case 9:
-                    page = Cache.Results;
+                    Page = Cache.Results;
                     break;
                 case 10:
                     Cache.Welcome.IsBackEnable = true;
                     Cache.Welcome.IsRestartEnable = true;
-                    page = Cache.Welcome;
+                    Page = Cache.Welcome;
                     break;
                 case 11:
-                    page = Cache.Clamp;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.Clamp;
+                    Page.Margin = PageMargin;
                     break;
                 case 12:
                     Cache.DVdt = new DVdtPage();
-                    page = Cache.DVdt;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.DVdt;
+                    Page.Margin = PageMargin;
                     break;
                 case 13:
                     Cache.ATU = new ATUPage();
-                    page = Cache.ATU;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.ATU;
+                    Page.Margin = PageMargin;
                     break;
                 case 14:
                     Cache.QrrTq = new QrrTqPage();
-                    page = Cache.QrrTq;
-                    page.Margin = new Thickness(0,0,10,0);
-                    break;
-                case 15:
-                    //Cache.RAC = new RACPage();
-                    //page = Cache.RAC;
-                    break;
-                case 16:
-                    Cache.IH = new IHPage();
-                    page = Cache.IH;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.QrrTq;
+                    Page.Margin = PageMargin;
                     break;
                 case 17:
                     Cache.TOU = new TOUPage();
-                    page = Cache.TOU;
-                    page.Margin = new Thickness(0,0,10,0);
+                    Page = Cache.TOU;
+                    Page.Margin = PageMargin;
                     break;
             }
-
-            
-            if (page != null && NavigationService != null)
-                NavigationService.Navigate(page);
+            if (Page != null && NavigationService != null)
+                NavigationService.Navigate(Page);
         }
 
-        private void BtnBack_Click(object Sender, RoutedEventArgs E)
+        private void BtnBack_Click(object sender, RoutedEventArgs e) //Переход на предыдущую страницу
         {
-            if (NavigationService != null)
+            if (NavigationService == null)
+                return;
+            if (PreviousPage == null)
+                NavigationService.Navigate(Cache.Login);
+            Cache.Password.AfterOkRoutine = delegate
             {
-                if (PreviousPage == null)
-                    NavigationService.Navigate(Cache.Login);
-                    //PreviousPage = Cache.Login;
-
-//                Cache.ProfileEdit.ClearFilter();
-//                Cache.ProfileSelection.InitFilter();
-//                Cache.ProfileSelection.InitSorting();
-//                if (PreviousPage is ProfilesPage)
-//                {
-////                    NavigationService.Navigate(Cache.ProfileSelection);
-//                    return;
-//                }
-                Cache.Password.AfterOkRoutine = delegate { Cache.Main.mainFrame.Navigate(Cache.Technician); };
-                NavigationService.GoBack();
-            }
-        }
-
-        private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            Cache.ProfilesPage.GoBackAction += () => { ProfilesDbLogic.LoadProfile(Cache.ProfilesPage.ProfileVm.Profiles.ToList());};
-            Cache.Main.VM.AccountNameIsVisibility = false;
+                Cache.Main.mainFrame.Navigate(Cache.Technician);
+            };
+            NavigationService.GoBack();
         }
     }
 }
