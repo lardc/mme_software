@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using SCME.Types;
+﻿using SCME.Types;
 using SCME.Types.Gate;
 using SCME.Types.Profiles;
+using SCME.Types.SQL;
 using SCME.UI.CustomControl;
-using SCME.UI.PagesTech;
-using SCME.UI.PagesUser;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using SCME.Types.SQL;
 
 namespace SCME.UI.IO
 {

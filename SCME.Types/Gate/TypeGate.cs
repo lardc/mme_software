@@ -114,6 +114,8 @@ namespace SCME.Types.Gate
     [DataContract(Name = "Gate.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
+        int useIhGost;
+
         /// <summary>»нициализирует новый экземпл€р класса TestParameters</summary>
         public TestParameters()
         {
@@ -121,7 +123,6 @@ namespace SCME.Types.Gate
             Resistance = 100;
             IGT = 500;
             VGT = 2.5f;
-            UseIhGost = 0;
             IH = 150;
             IL = 1000;
             VGNT = 100;
@@ -191,9 +192,11 @@ namespace SCME.Types.Gate
             get; set;
         }
 
-        public int UseIhGost
+        [DataMember]
+        public bool UseIhGost
         {
-            get; set;
+            get => Convert.ToBoolean(useIhGost);
+            set => useIhGost = value ? 1 : 0;
         }
 
         [DataMember]

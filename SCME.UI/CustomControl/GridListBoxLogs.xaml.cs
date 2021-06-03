@@ -1,15 +1,8 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using SCME.Types;
 
 namespace SCME.UI.CustomControl
 {
-    /// <summary>
-    /// Interaction logic for GridListBox.xaml
-    /// </summary>
     public partial class GridListBoxLogs
     {
         public GridListBoxLogs()

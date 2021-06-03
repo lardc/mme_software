@@ -185,7 +185,7 @@ namespace SCME.Service.IO
                 {
                     Resistance();
                     IgtVgt();
-                    if (m_Parameter.UseIhGost == 1)
+                    if (m_Parameter.UseIhGost)
                         IhGOST(Commutation);
                     else
                         Ih();
@@ -429,42 +429,42 @@ namespace SCME.Service.IO
             if (!m_Parameter.IsIhEnabled)
                 return;
 
-            FireIHEvent(DeviceState.InProcess, m_Result);
-            WriteRegister(130, 1);
-            WriteRegister(151, 4);
-            CallAction(102);
-            SLIH.WriteRegister(162, 1);
-            SLIH.WriteRegister(163, 1);
-            
-            Thread.Sleep(20);
-            
-            SLIH.WriteRegister(128, 1);
-            SLIH.WriteRegister(140, m_Parameter.Itm);
-            SLIH.WriteRegister(141, 10000);
-            SLIH.WriteRegister(160, 1);
-            SLIH.CallAction(100);
-            ushort Result;
-            do
-            {
-                Result = SLIH.ReadRegister(192);
-                
-                Thread.Sleep(50);
-            }
-            while (Result != 3 && Result != 5);
-            do
-            {
-                Result = ReadRegister(192);
-
-                Thread.Sleep(50);
-            }
-            while (Result != 5);
-            WriteRegister(130, 0);
-
-            //var ihParameters = new Types.IH.TestParameters {Itm = m_Parameter.Itm};
             //FireIHEvent(DeviceState.InProcess, m_Result);
-            //var result = IH.MeasurementLogicRoutineGOST(commutation, ihParameters);
-            //m_Result.IH = result.Ih;
-            //FireIHEvent(DeviceState.Success, m_Result);
+            //WriteRegister(130, 1);
+            //WriteRegister(151, 4);
+            //CallAction(102);
+            //SLIH.WriteRegister(162, 1);
+            //SLIH.WriteRegister(163, 1);
+
+            //Thread.Sleep(20);
+
+            //SLIH.WriteRegister(128, 1);
+            //SLIH.WriteRegister(140, m_Parameter.Itm);
+            //SLIH.WriteRegister(141, 10000);
+            //SLIH.WriteRegister(160, 1);
+            //SLIH.CallAction(100);
+            //ushort Result;
+            //do
+            //{
+            //    Result = SLIH.ReadRegister(192);
+
+            //    Thread.Sleep(50);
+            //}
+            //while (Result != 3 && Result != 5);
+            //do
+            //{
+            //    Result = ReadRegister(192);
+
+            //    Thread.Sleep(50);
+            //}
+            //while (Result != 5);
+            //WriteRegister(130, 0);
+
+            var ihParameters = new Types.IH.TestParameters { Itm = m_Parameter.Itm };
+            FireIHEvent(DeviceState.InProcess, m_Result);
+            var result = IH.MeasurementLogicRoutineGOST(commutation, ihParameters);
+            m_Result.IH = result.Ih;
+            FireIHEvent(DeviceState.Success, m_Result);
         }
         
         private void Ih()

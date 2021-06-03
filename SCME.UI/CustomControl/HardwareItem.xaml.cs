@@ -1,16 +1,13 @@
-﻿using System;
+﻿using SCME.Types;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using SCME.Types;
 
 namespace SCME.UI.CustomControl
 {
-    /// <summary>
-    /// Interaction logic for UserControlItem.xaml
-    /// </summary>
     public partial class HardwareItem : INotifyPropertyChanged
     {
         private Storyboard m_Storyboard;

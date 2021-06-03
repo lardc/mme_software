@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
-using SCME.Types;
+﻿using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Clamping;
 using SCME.Types.DatabaseServer;
@@ -14,9 +7,15 @@ using SCME.Types.SCTU;
 using SCME.Types.SQL;
 using SCME.Types.TOU;
 using SCME.UI.CustomControl;
-using SCME.UI.PagesUser;
 using SCME.UI.Properties;
 using SCME.UIServiceConfig.Properties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 using TestParameters = SCME.Types.Commutation.TestParameters;
 
 namespace SCME.UI.IO
