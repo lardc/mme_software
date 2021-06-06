@@ -898,7 +898,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ih, mA.
+        ///   Ищет локализованную строку, похожую на IH, mA.
         /// </summary>
         public static string Iholding_mA {
             get {
@@ -907,7 +907,7 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Il, mA.
+        ///   Ищет локализованную строку, похожую на IL, mA.
         /// </summary>
         public static string Ilatching_mA {
             get {
@@ -2344,6 +2344,15 @@ namespace SCME.UI.Properties {
         public static string Vtm {
             get {
                 return ResourceManager.GetString("Vtm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на VTM, mV.
+        /// </summary>
+        public static string Vtm_mv {
+            get {
+                return ResourceManager.GetString("Vtm_mv", resourceCulture);
             }
         }
         

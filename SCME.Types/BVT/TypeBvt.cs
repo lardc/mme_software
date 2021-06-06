@@ -180,7 +180,7 @@ namespace SCME.Types.BVT
         [DataMember]
         public float IRRM { get; set; }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
         {
             var oldParameters = oldParametersBase as TestParameters;
             if (oldParameters == null)

@@ -30,7 +30,7 @@ namespace SCME.Types.IH
             return MemberwiseClone();
         }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParameters)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
         {
             if (oldParameters == null) throw new ArgumentNullException("Метод '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' равный Null.");
 

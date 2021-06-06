@@ -4,6 +4,7 @@ using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.dVdt
 {
+    /// <summary>Состояние оборудования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {
@@ -19,6 +20,7 @@ namespace SCME.Types.dVdt
         InProcess = 4
     };
 
+    /// <summary>Причина ошибки</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWFaultReason
     {
@@ -50,13 +52,7 @@ namespace SCME.Types.dVdt
         NotReadyCell6 = 616
     };
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWDisableReason
-    {
-        [EnumMember]
-        None = 0,
-    }
-
+    /// <summary>Причина предупреждения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWWarningReason
     {
@@ -66,6 +62,15 @@ namespace SCME.Types.dVdt
         WatchdogReset = 1001
     };
 
+    /// <summary>Причина выключения</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWDisableReason
+    {
+        [EnumMember]
+        None = 0,
+    }
+
+    /// <summary>Результат выполнения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWOperationResult
     {
@@ -81,24 +86,7 @@ namespace SCME.Types.dVdt
     [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        [DataMember]
-        public ushort Voltage { get; set; }
-
-        [DataMember]
-        public DvdtMode Mode { get; set; }
-
-        [DataMember]
-        public VoltageRate VoltageRate { get; set; }
-
-        [DataMember]
-        public ushort ConfirmationCount { get; set; }
-
-        [DataMember]
-        public ushort VoltageRateLimit { get; set; }
-
-        [DataMember]
-        public ushort VoltageRateOffSet { get; set; }
-
+        /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
             TestParametersType = TestParametersType.Dvdt;
@@ -111,18 +99,53 @@ namespace SCME.Types.dVdt
             VoltageRateOffSet = 100;
         }
 
+        [DataMember]
+        public ushort Voltage
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public DvdtMode Mode
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public VoltageRate VoltageRate
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort ConfirmationCount
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageRateLimit
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageRateOffSet
+        {
+            get; set;
+        }
+
+
         public object Clone()
         {
             return MemberwiseClone();
         }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParameters)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
         {
-            var dvdDtOldParameters = oldParameters as TestParameters;
-
+            TestParameters dvdDtOldParameters = (TestParameters)oldParameters;
             if (dvdDtOldParameters == null)
                 throw new InvalidCastException("oldParameters must be dvdDtOldParameters");
-
             if (Mode != dvdDtOldParameters.Mode)
                 return true;
             if (VoltageRate != dvdDtOldParameters.VoltageRate)
@@ -135,7 +158,6 @@ namespace SCME.Types.dVdt
                 return true;
             if (VoltageRateOffSet != dvdDtOldParameters.VoltageRateOffSet)
                 return true;
-
             return false;
         }
     }
@@ -143,44 +165,76 @@ namespace SCME.Types.dVdt
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
-        [DataMember]
-        public bool Passed { get; set; }
-
-        [DataMember]
-        public ushort VoltageRate { get; set; }
-
-        [DataMember]
-        public DvdtMode Mode { get; set; }
-
+        /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
         public TestResults()
         {
             Passed = false;
             VoltageRate = 0;
         }
+
+        [DataMember]
+        public bool Passed
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageRate
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public DvdtMode Mode
+        {
+            get; set;
+        }
+
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class CalibrationParams
     {
         [DataMember]
-        public ushort VFineN { get; set; }
+        public ushort VFineN
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort VFineD { get; set; }
+        public ushort VFineD
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort V500 { get; set; }
+        public ushort V500
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort V1000 { get; set; }
+        public ushort V1000
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort V1500 { get; set; }
+        public ushort V1500
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort V2000 { get; set; }
+        public ushort V2000
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort V2500 { get; set; }
+        public ushort V2500
+        {
+            get; set;
+        }
     }
 }

@@ -208,10 +208,10 @@
     <value>IGT, мА</value>
   </data>
   <data name="Iholding_mA" xml:space="preserve">
-    <value>Ih, мА</value>
+    <value>IH, мА</value>
   </data>
   <data name="Ilatching_mA" xml:space="preserve">
-    <value>Il, мА</value>
+    <value>IL, мА</value>
   </data>
   <data name="IsHeatEnabled" xml:space="preserve">
     <value>Открытие</value>
@@ -893,5 +893,8 @@
   </data>
   <data name="Lardc" xml:space="preserve">
     <value>ЛАНТЦ</value>
+  </data>
+  <data name="Vtm_mv" xml:space="preserve">
+    <value>UTM, мВ</value>
   </data>
 </root>

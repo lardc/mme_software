@@ -408,7 +408,7 @@ namespace SCME.UI.PagesUser
                         if (g == null)
                             return true;
 
-                        if (g.IsHasChanges(gate))
+                        if (g.HasChanges(gate))
                             return true;
 
                         GateCount++;
@@ -422,7 +422,7 @@ namespace SCME.UI.PagesUser
                         if (b == null)
                             return true;
 
-                        if (b.IsHasChanges(bvt))
+                        if (b.HasChanges(bvt))
                             return true;
 
                         BVTCount++;
@@ -436,7 +436,7 @@ namespace SCME.UI.PagesUser
                         if (s == null)
                             return true;
 
-                        if (s.IsHasChanges(sl))
+                        if (s.HasChanges(sl))
                             return true;
 
                         SlCount++;
@@ -450,7 +450,7 @@ namespace SCME.UI.PagesUser
                         if (d == null)
                             return true;
 
-                        if (d.IsHasChanges(dvdt))
+                        if (d.HasChanges(dvdt))
                             return true;
 
                         DvDTCount++;
@@ -464,7 +464,7 @@ namespace SCME.UI.PagesUser
                         if (a == null)
                             return true;
 
-                        if (a.IsHasChanges(atu))
+                        if (a.HasChanges(atu))
                             return true;
 
                         ATUCount++;
@@ -478,7 +478,7 @@ namespace SCME.UI.PagesUser
                         if (q == null)
                             return true;
 
-                        if (q.IsHasChanges(qrrTq))
+                        if (q.HasChanges(qrrTq))
                             return true;
 
                         QrrTqCount++;
@@ -492,7 +492,7 @@ namespace SCME.UI.PagesUser
                         if (r == null)
                             return true;
 
-                        if (r.IsHasChanges(tou))
+                        if (r.HasChanges(tou))
                             return true;
 
                         TOUCount++;

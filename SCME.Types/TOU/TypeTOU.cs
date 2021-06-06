@@ -85,7 +85,7 @@ namespace SCME.Types.TOU
             return MemberwiseClone();
         }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParameters)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
         {
             var tOUOldParameters = oldParameters as TestParameters;
 

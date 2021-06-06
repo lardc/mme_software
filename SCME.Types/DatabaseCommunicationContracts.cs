@@ -257,43 +257,43 @@ namespace SCME.Types
 
             for (var i = 0; i < GateTestParameters.Count; i++)
             {
-                if (GateTestParameters[i].IsHasChanges(oldItem.GateTestParameters[i]))
+                if (GateTestParameters[i].HasChanges(oldItem.GateTestParameters[i]))
                     return true;
             }
 
             for (var i = 0; i < VTMTestParameters.Count; i++)
             {
-                if (VTMTestParameters[i].IsHasChanges(oldItem.VTMTestParameters[i]))
+                if (VTMTestParameters[i].HasChanges(oldItem.VTMTestParameters[i]))
                     return true;
             }
 
             for (var i = 0; i < BVTTestParameters.Count; i++)
             {
-                if (BVTTestParameters[i].IsHasChanges(oldItem.BVTTestParameters[i]))
+                if (BVTTestParameters[i].HasChanges(oldItem.BVTTestParameters[i]))
                     return true;
             }
 
             for (var i = 0; i < DvDTestParameterses.Count; i++)
             {
-                if (DvDTestParameterses[i].IsHasChanges(oldItem.DvDTestParameterses[i]))
+                if (DvDTestParameterses[i].HasChanges(oldItem.DvDTestParameterses[i]))
                     return true;
             }
 
             for (var i = 0; i < ATUTestParameters.Count; i++)
             {
-                if (ATUTestParameters[i].IsHasChanges(oldItem.ATUTestParameters[i]))
+                if (ATUTestParameters[i].HasChanges(oldItem.ATUTestParameters[i]))
                     return true;
             }
 
             for (var i = 0; i < QrrTqTestParameters.Count; i++)
             {
-                if (QrrTqTestParameters[i].IsHasChanges(oldItem.QrrTqTestParameters[i]))
+                if (QrrTqTestParameters[i].HasChanges(oldItem.QrrTqTestParameters[i]))
                     return true;
             }
 
             for (var i = 0; i < TOUTestParameters.Count; i++)
             {
-                if (TOUTestParameters[i].IsHasChanges(oldItem.TOUTestParameters[i]))
+                if (TOUTestParameters[i].HasChanges(oldItem.TOUTestParameters[i]))
                     return true;
             }
 

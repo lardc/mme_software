@@ -1,39 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using SCME.Types;
+using SCME.UIServiceConfig.Properties;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Research.DynamicDataDisplay;
-using Microsoft.Research.DynamicDataDisplay.DataSources;
-using SCME.Types;
-using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 
 namespace SCME.UI.PagesTech
 {
-    /// <summary>
-    /// Interaction logic for GraphicPage.xaml
-    /// </summary>
     public partial class SLPage
     {
-        private const int TIME_STEP = 50;
+        //Цветовая индикация
+        private readonly SolidColorBrush ColorGreen, ColorOrange;
+        //Состояние тестирования
+        private bool isRunning;
 
-        private readonly SolidColorBrush m_XGreen, m_XOrange;
-        private bool m_IsRunning;
-
-        public Types.VTM.TestParameters Parameters { get; set; }
-        public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.Commutation.ModuleCommutationType CommType { get; set; }
-        public Types.Commutation.ModulePosition ModPosition { get; set; }
-
-        private const int RoomTemp = 25;
-        public int Temperature { get; set; }
-
+        /// <summary>Инициализирует новый экземпляр класса SLPage</summary>
         internal SLPage()
         {
-            Parameters = new Types.VTM.TestParameters { IsEnabled = true, UseLsqMethod = Settings.Default.UseVTMPostProcessing };
+            //Установка базовых параметров SL и пресса
+            Parameters = new Types.VTM.TestParameters
+            {
+                UseLsqMethod = Settings.Default.UseVTMPostProcessing,
+                IsEnabled = true
+            };
             ClampParameters = new Types.Clamping.TestParameters
             {
                 StandardForce = Types.Clamping.ClampingForceInternal.Custom,
@@ -41,214 +36,254 @@ namespace SCME.UI.PagesTech
                 IsHeightMeasureEnabled = false
             };
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
-            Temperature = RoomTemp;
+            Temperature = 25;
             InitializeComponent();
-
-            m_XGreen = (SolidColorBrush)FindResource("xGreen1");
-            m_XOrange = (SolidColorBrush)FindResource("xOrange1");
-
-            ClearStatus();
+            ColorGreen = (SolidColorBrush)FindResource("xGreen1");
+            ColorOrange = (SolidColorBrush)FindResource("xOrange1");
+            //Предварительная очистка всех статусов
+            Status_Clear();
         }
 
+        /// <summary>Параметры SL</summary>
+        public Types.VTM.TestParameters Parameters
+        {
+            get; set;
+        }
+
+        /// <summary>Параметры пресса</summary>
+        public Types.Clamping.TestParameters ClampParameters
+        {
+            get; set;
+        }
+
+        /// <summary>Тип коммутации</summary>
+        public Types.Commutation.ModuleCommutationType CommType
+        {
+            get; set;
+        }
+
+        /// <summary>Позиция</summary>
+        public Types.Commutation.ModulePosition ModPosition
+        {
+            get; set;
+        }
+
+        /// <summary>Температура</summary>
+        public int Temperature
+        {
+            get; set;
+        }
+
+        /// <summary>Состояние тестирования</summary>
         internal bool IsRunning
         {
-            get
-            {
-                return m_IsRunning;
-            }
+            get => isRunning;
             set
             {
-                m_IsRunning = value;
-                btnStart.IsEnabled = !m_IsRunning;
-                btnBack.IsEnabled = !m_IsRunning;
+                isRunning = value;
+                btnStart.IsEnabled = !isRunning;
+                btnBack.IsEnabled = !isRunning;
             }
         }
 
-        internal void SetResultAll(DeviceState State)
+        /// <summary>Установка всех результатов</summary>
+        /// <param name="state">Состояние</param>
+        internal void SetResultAll(DeviceState state)
         {
-            if (State == DeviceState.InProcess)
-                ClearStatus();
+            if (state == DeviceState.InProcess)
+                Status_Clear();
             else
                 IsRunning = false;
         }
 
-        internal void SetResultVtm(DeviceState State, Types.VTM.TestResults Result)
+        /// <summary>Установка результата теста SL</summary>
+        /// <param name="state">Состояние</param>
+        /// <param name="result">Результат теста</param>
+        internal void SetResultVtm(DeviceState state, Types.VTM.TestResults result)
         {
-            if (State != DeviceState.InProcess)
+            Label_Set(lblVtm, state, string.Format("{0}", result.Voltage));
+            lblItm.Content = string.Format("{0}", result.Current);
+            if (state != DeviceState.InProcess)
             {
                 IsRunning = false;
-
-                if (State == DeviceState.Success)
+                if (state == DeviceState.Success)
                 {
-                    Plot(@"Itm", m_XGreen.Color, Result.ITMArray);
-                    Plot(@"Vtm", m_XOrange.Color, Result.VTMArray);
+                    Chart_Plot(@"Itm", ColorGreen.Color, result.ITMArray);
+                    Chart_Plot(@"Utm", ColorOrange.Color, result.VTMArray);
                 }
             }
             else
-                ClearStatus();
-
-            SetLabel(lblVtm, State, string.Format("{0}", Result.Voltage));
-
-            //сознательно не используем SetLabel т.к. нам не нужна установка Background
-            lblItm.Content = string.Format("{0}", Result.Current);
+                Status_Clear();
         }
 
-        internal void SetWarning(Types.VTM.HWWarningReason Warning)
+        /// <summary>Установка ошибок</summary>
+        /// <param name="fault">Ошибка</param>
+        internal void SetFault(Types.VTM.HWFaultReason fault)
         {
-            if (labelWarning.Visibility != Visibility.Visible)
-            {
-
-                labelWarning.Content = Warning.ToString();
-                labelWarning.Visibility = Visibility.Visible;
-            }
-        }
-
-        internal void SetProblem(Types.VTM.HWProblemReason Problem)
-        {
-            labelWarning.Content = Problem.ToString();
-            labelWarning.Visibility = Visibility.Visible;
-        }
-
-        internal void SetFault(Types.VTM.HWFaultReason Fault)
-        {
-            labelFault.Content = Fault.ToString();
+            labelFault.Content = fault.ToString();
             labelFault.Visibility = Visibility.Visible;
             IsRunning = false;
         }
 
-        private void ClearStatus()
+        /// <summary>Установка предупреждений</summary>
+        /// <param name="warning">Предупреждение</param>
+        internal void SetWarning(Types.VTM.HWWarningReason warning)
+        {
+            labelWarning.Content = warning.ToString();
+            labelWarning.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>Установка проблем</summary>
+        /// <param name="problem">Проблема</param>
+        internal void SetProblem(Types.VTM.HWProblemReason problem)
+        {
+            labelWarning.Content = problem.ToString();
+            labelWarning.Visibility = Visibility.Visible;
+        }
+
+        private void Status_Clear() //Очистка всех статусов
         {
             labelWarning.Visibility = Visibility.Collapsed;
             labelFault.Visibility = Visibility.Collapsed;
-
-            ResetLabel(lblVtm);
-            ResetLabel(lblItm);
-
+            Label_Reset(lblVtm);
+            Label_Reset(lblItm);
             chartPlotter.Children.RemoveAll(typeof(LineGraph));
         }
 
-        private static void SetLabel(ContentControl Target, DeviceState State, string Message)
+        private static void Label_Set(ContentControl target, DeviceState state, string message) //Установка значения
         {
-            Target.Content = string.Empty;
-
-            switch (State)
+            target.Content = string.Empty;
+            switch (state)
             {
                 case DeviceState.Success:
-                    Target.Background = Brushes.LightGreen;
-                    Target.Content = Message;
+                    target.Background = Brushes.LightGreen;
+                    target.Content = message;
                     break;
                 case DeviceState.Problem:
-                    Target.Background = Brushes.Gold;
-                    Target.Content = Message;
+                    target.Background = Brushes.Gold;
+                    target.Content = message;
                     break;
                 case DeviceState.InProcess:
-                    Target.Background = Brushes.Gold;
+                    target.Background = Brushes.Gold;
                     break;
                 case DeviceState.Stopped:
                 case DeviceState.Fault:
-                    Target.Background = Brushes.Tomato;
+                    target.Background = Brushes.Tomato;
                     break;
                 default:
-                    Target.Background = Brushes.Transparent;
+                    target.Background = Brushes.Transparent;
                     break;
             }
         }
 
-        private static void ResetLabel(ContentControl Target)
+        private static void Label_Reset(ContentControl target) //Сброс значения
         {
-            Target.Content = "";
-            Target.Background = Brushes.Transparent;
+            target.Content = string.Empty;
+            target.Background = Brushes.Transparent;
         }
 
-        private void Plot(string LineName, Color LineColor, IEnumerable<short> UPoints)
+        private void Chart_Plot(string lineName, Color lineColor, IEnumerable<short> uPoints) //Отрисовка графика
         {
-            var points = UPoints.Select((T, I) => new PointF(I, T)).ToList();
-            var dataSource = new EnumerableDataSource<PointF>(points);
-            dataSource.SetXMapping(P => P.X * TIME_STEP);
-            dataSource.SetYMapping(P => P.Y);
-
-            chartPlotter.AddLineGraph(dataSource, LineColor, 3, LineName);
+            List<PointF> Points = uPoints.Select((T, I) => new PointF(I, T)).ToList();
+            EnumerableDataSource<PointF> DataSource = new EnumerableDataSource<PointF>(Points);
+            DataSource.SetXMapping(P => P.X * 50);
+            DataSource.SetYMapping(P => P.Y);
+            chartPlotter.AddLineGraph(DataSource, lineColor, 3, lineName);
             chartPlotter.FitToView();
         }
 
-        internal void Start()
-        {
-            if (IsRunning)
-                return;
-
-            var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
-            var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
-            var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
-            var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramIH = new Types.IH.TestParameters { IsEnabled = false };
-            var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
-
-            ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
-            ClearStatus();
-
-            if (!Cache.Net.Start(paramGate, Parameters, paramBvt, paramATU, paramQrrTq, paramIH, paramRCC,
-                                 new Types.Commutation.TestParameters
-                                 {
-                                     BlockIndex = (!Cache.Clamp.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
-                                     CommutationType = ConverterUtil.MapCommutationType(CommType),
-                                     Position = ConverterUtil.MapModulePosition(ModPosition)
-                                 }, ClampParameters, paramTOU))
-                return;
-
-            IsRunning = true;
-        }
-
-        private void btnStart_OnClick(object Sender, RoutedEventArgs E)
+        private void btnStart_OnClick(object sender, RoutedEventArgs e) //Запуск тестирования
         {
             ScrollViewer.ScrollToBottom();
             Start();
         }
 
-        private void btnStop_OnClick(object Sender, RoutedEventArgs E)
+        /// <summary>Запуск тестирования</summary>
+        internal void Start()
+        {
+            if (IsRunning)
+                return;
+            Types.Commutation.TestParameters ParamCommutation = new Types.Commutation.TestParameters
+            {
+                BlockIndex = !Cache.Clamp.clampPage.UseTmax ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
+                CommutationType = ConverterUtil.MapCommutationType(CommType),
+                Position = ConverterUtil.MapModulePosition(ModPosition)
+            };
+            Types.Gate.TestParameters ParamGTU = new Types.Gate.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.BVT.TestParameters ParamBVT = new Types.BVT.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.ATU.TestParameters ParamATU = new Types.ATU.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.QrrTq.TestParameters ParamQrrTq = new Types.QrrTq.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.IH.TestParameters ParamIH = new Types.IH.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.RCC.TestParameters ParamRCC = new Types.RCC.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.TOU.TestParameters ParamTOU = new Types.TOU.TestParameters
+            {
+                IsEnabled = false
+            };
+            ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
+            Status_Clear();
+            if (!Cache.Net.Start(ParamGTU, Parameters, ParamBVT, ParamATU, ParamQrrTq, ParamIH, ParamRCC, ParamCommutation, ClampParameters, ParamTOU))
+                return;
+            IsRunning = true;
+        }
+
+        private void btnStop_OnClick(object sender, RoutedEventArgs e) //Остановка тестирования
         {
             Cache.Net.StopByButtonStop();
         }
 
-        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
+        private void btnBack_OnClick(object sender, RoutedEventArgs e) //Переход на предыдущую страницу
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
         }
 
-        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
+        private void btnTemperature_OnClick(object sender, RoutedEventArgs e) //Нагрев
         {
             Cache.Net.StartHeating(Temperature);
         }
 
+        /// <summary>Установка температуры верхней пластины</summary>
+        /// <param name="temeprature">Температура</param>
         public void SetTopTemp(int temeprature)
         {
             TopTempLabel.Content = temeprature;
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
+            int BottomTemp = Temperature - 2;
+            int TopTemp = Temperature + 2;
+            if (temeprature < BottomTemp || temeprature > TopTemp)
                 TopTempLabel.Background = Brushes.Tomato;
-            }
             else
-            {
                 TopTempLabel.Background = Brushes.LightGreen;
-            }
         }
 
+        /// <summary>Установка температуры нижней пластины</summary>
+        /// <param name="temeprature">Температура</param>
         public void SetBottomTemp(int temeprature)
         {
             BotTempLabel.Content = temeprature;
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
+            int BottomTemp = Temperature - 2;
+            int TopTemp = Temperature + 2;
+            if (temeprature < BottomTemp || temeprature > TopTemp)
                 BotTempLabel.Background = Brushes.Tomato;
-            }
             else
-            {
                 BotTempLabel.Background = Brushes.LightGreen;
-            }
         }
     }
 }

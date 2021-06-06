@@ -75,7 +75,7 @@ namespace SCME.Types.BaseTestParams
         [DataMember]
         public long TestTypeId { get; set; }
 
-        public abstract bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase);
+        public abstract bool HasChanges(BaseTestParametersAndNormatives oldParametersBase);
 
         public static BaseTestParametersAndNormatives CreateParametersByType(TestParametersType type)
         {

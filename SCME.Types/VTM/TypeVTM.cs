@@ -198,7 +198,7 @@ namespace SCME.Types.VTM
         [DataMember]
         public float VTM { get; set; }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
         {
             var oldParameters = oldParametersBase as TestParameters;
 

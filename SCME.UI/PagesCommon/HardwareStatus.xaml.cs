@@ -38,6 +38,10 @@ namespace SCME.UI.PagesCommon
             }
         }
 
+        /// <summary>Установка состояния связи с блоком</summary>
+        /// <param name="device">Блок</param>
+        /// <param name="connectionState">Состояние связи</param>
+        /// <param name="message">Сообщение</param>
         internal void State(ComplexParts device, DeviceConnectionState connectionState, string message)
         {
             switch (device)
@@ -81,18 +85,20 @@ namespace SCME.UI.PagesCommon
                 case ComplexParts.QrrTq:
                     qrrTqControl.SetConnectionStatus(connectionState, message);
                     break;
-                case ComplexParts.RAC:
-                    rACControl.SetConnectionStatus(connectionState, message);
-                    break;
-                case ComplexParts.IH:
-                    ihControl.SetConnectionStatus(connectionState, message);
-                    break;
+                
+                //case ComplexParts.RAC:
+                //    rACControl.SetConnectionStatus(connectionState, message);
+                //    break;
+                
                 case ComplexParts.TOU:
                     touControl.SetConnectionStatus(connectionState, message);
                     break;
             }
         }
 
+        /// <summary>Установка доступности блоков</summary>
+        /// <param name="Device">Блок</param>
+        /// <returns>Статус доступности</returns>
         internal bool IsDeviceEnabled(ComplexParts Device)
         {
             switch (Device)
@@ -123,10 +129,10 @@ namespace SCME.UI.PagesCommon
                     return !aTUControl.IsDisabled;
                 case ComplexParts.QrrTq:
                     return !qrrTqControl.IsDisabled;
-                case ComplexParts.RAC:
-                    return !rACControl.IsDisabled;
-                case ComplexParts.IH:
-                    return !ihControl.IsDisabled;
+                
+                //case ComplexParts.RAC:
+                //    return !rACControl.IsDisabled;
+                
                 case ComplexParts.TOU:
                     return !touControl.IsDisabled;
                 default:
@@ -134,6 +140,9 @@ namespace SCME.UI.PagesCommon
             }
         }
         
+        /// <summary>Установка доступности блока</summary>
+        /// <param name="device">Блок</param>
+        /// <param name="value">Значение доступности</param>
         internal void DeviceSetEnabled(ComplexParts device, bool value)
         {
             switch (device)
@@ -177,18 +186,20 @@ namespace SCME.UI.PagesCommon
                 case ComplexParts.QrrTq:
                      qrrTqControl.IsDisabled= value;
                      break;
-                case ComplexParts.RAC:
-                     rACControl.IsDisabled= value;
-                     break;
-                case ComplexParts.IH:
-                     ihControl.IsDisabled= value;
-                     break;
+                
+                //case ComplexParts.RAC:
+                //     rACControl.IsDisabled= value;
+                //     break;
+                
                 case ComplexParts.TOU:
                      touControl.IsDisabled= value;
                      break;
             }
         }
 
+        /// <summary>Получение таймаута связи с блоком</summary>
+        /// <param name="Device">Блок</param>
+        /// <returns>Время таймаута</returns>
         internal int GetTimeout(ComplexParts Device)
         {
             switch (Device)
@@ -219,10 +230,10 @@ namespace SCME.UI.PagesCommon
                     return aTUControl.OperationTimeout;
                 case ComplexParts.QrrTq:
                     return qrrTqControl.OperationTimeout;
-                case ComplexParts.RAC:
-                    return rACControl.OperationTimeout;
-                case ComplexParts.IH:
-                    return ihControl.OperationTimeout;
+                
+                //case ComplexParts.RAC:
+                //    return rACControl.OperationTimeout;
+                
                 case ComplexParts.TOU:
                     return touControl.OperationTimeout;
                 default:

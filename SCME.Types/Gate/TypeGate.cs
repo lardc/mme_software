@@ -114,7 +114,7 @@ namespace SCME.Types.Gate
     [DataContract(Name = "Gate.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-        int useIhGost;
+        private int useIhGost;
 
         /// <summary>»нициализирует новый экземпл€р класса TestParameters</summary>
         public TestParameters()
@@ -271,7 +271,7 @@ namespace SCME.Types.Gate
             get; set;
         }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
         {
             TestParameters oldParameters = (TestParameters)oldParametersBase;
             if (oldParameters == null)

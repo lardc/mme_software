@@ -1,44 +1,78 @@
-﻿using System;
+﻿using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using Microsoft.Research.DynamicDataDisplay.ViewportRestrictions;
+using SCME.Types;
+using SCME.UIServiceConfig.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Research.DynamicDataDisplay;
-using Microsoft.Research.DynamicDataDisplay.DataSources;
-using SCME.Types;
-using SCME.UIServiceConfig.Properties;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
-//
-using Microsoft.Research.DynamicDataDisplay.ViewportRestrictions;
-//
 
 namespace SCME.UI.PagesTech
 {
-    /// <summary>
-    ///     Interaction logic for BvtPage.xaml
-    /// </summary>
     public partial class BvtPage
     {
-        private const int DATA_LENGTH = 600;
+        //Цветовая индикация
+        private readonly SolidColorBrush ColorRed, ColorGreen;
+        //Состояние тестирования
+        private bool isRunning;
+        private bool WasCurrentMore;
 
-        private readonly SolidColorBrush m_XRed, m_XGreen;
-        private bool m_IsRunning;
+        /// <summary>Параметры BVT</summary>
+        public Types.BVT.TestParameters Parameters
+        {
+            get; set;
+        }
 
-        public Types.BVT.TestParameters Parameters { get; set; }
-        public Types.Clamping.TestParameters ClampParameters { get; set; }
-        public Types.Commutation.ModuleCommutationType CommType { get; set; }
-        public Types.Commutation.ModulePosition ModPosition { get; set; }
+        /// <summary>Параметры пресса</summary>
+        public Types.Clamping.TestParameters ClampParameters
+        {
+            get; set;
+        }
 
-        private const int RoomTemp = 25;
-        public int Temperature { get; set; }
-        private bool wasCurrentMore;
+        /// <summary>Тип коммутации</summary>
+        public Types.Commutation.ModuleCommutationType CommType
+        {
+            get; set;
+        }
 
+        /// <summary>Позиция</summary>
+        public Types.Commutation.ModulePosition ModPosition
+        {
+            get; set;
+        }
+
+        /// <summary>Температура</summary>
+        public int Temperature
+        {
+            get; set;
+        }
+
+        /// <summary>Состояние тестирования</summary>
+        private bool IsRunning
+        {
+            get => isRunning;
+            set
+            {
+                isRunning = value;
+                btnStart.IsEnabled = !isRunning;
+                btnBack.IsEnabled = !isRunning;
+            }
+        }
+
+        /// <summary>Инициализирует новый экземпляр класса BvtPage</summary>
         internal BvtPage()
         {
-            Parameters = new Types.BVT.TestParameters {IsEnabled = true};
+            //Установка базовых параметров BVT и пресса
+            Parameters = new Types.BVT.TestParameters
+            {
+                IsEnabled = true
+            };
             ClampParameters = new Types.Clamping.TestParameters
             {
                 StandardForce = Types.Clamping.ClampingForceInternal.Custom,
@@ -46,14 +80,12 @@ namespace SCME.UI.PagesTech
                 IsHeightMeasureEnabled = false
             };
             CommType = Settings.Default.SinglePositionModuleMode ? Types.Commutation.ModuleCommutationType.Direct : Types.Commutation.ModuleCommutationType.MT3;
-            Temperature = RoomTemp;
+            Temperature = 25;
             InitializeComponent();
-
-            m_XRed = (SolidColorBrush) FindResource("xRed1");
-            m_XGreen = (SolidColorBrush) FindResource("xGreen3");
-
-            ClearStatus();
-
+            ColorRed = (SolidColorBrush)FindResource("xRed1");
+            ColorGreen = (SolidColorBrush)FindResource("xGreen3");
+            //Предварительная очистка всех статусов
+            Status_Clear();
             ViewportAxesRangeRestriction restr = new ViewportAxesRangeRestriction { YRange = new DisplayRange(-7, 7) };
             chartPlotter.Viewport.Restrictions.Add(restr);
         }
@@ -97,248 +129,239 @@ namespace SCME.UI.PagesTech
         }
         //окончание добавления
 
-
-
-        private bool IsRunning
+        /// <summary>Установка всех результатов</summary>
+        /// <param name="state">Состояние</param>
+        internal void SetResultAll(DeviceState state)
         {
-            get
-            {
-                return m_IsRunning;
-            }
-            set
-            {
-                m_IsRunning = value;
-                btnStart.IsEnabled = !m_IsRunning;
-                btnBack.IsEnabled = !m_IsRunning;
-            }
+            if (state == DeviceState.InProcess)
+                Status_Clear();
+            else
+                IsRunning = false;
         }
 
-        internal void SetResultAll(DeviceState State)
-        {
-            if (State == DeviceState.InProcess) ClearStatus();
-            else IsRunning = false;
-        }
-
-        internal void SetResultBvtDirect(DeviceState State, Types.BVT.TestResults Result)
+        /// <summary>Установка результата прямого</summary>
+        /// <param name="state">Состояние</param>
+        /// <param name="result">Результат теста</param>
+        internal void SetResultBvtDirect(DeviceState state, Types.BVT.TestResults result)
         {
             labelWarning.Visibility = Visibility.Collapsed;
             labelFault.Visibility = Visibility.Collapsed;
-
-            SetLabel(labelDirect, State,
-                $"{Result.VDRM}{Properties.Resources.V} : {Result.IDRM}{Properties.Resources.mA}");
-
-            if (State == DeviceState.Success)
-                PlotYX("Direct", m_XRed.Color, Result.VoltageData, Result.CurrentData);
+            Label_Set(labelDirect, state, string.Format("{0}{1} : {2}{3}", result.VDRM, Properties.Resources.V, result.IDRM, Properties.Resources.mA));
+            if (state == DeviceState.Success)
+                Chart_PlotYX("Direct", ColorRed.Color, result.VoltageData, result.CurrentData);
         }
 
-        internal void SetResultReverseBvt(DeviceState State, Types.BVT.TestResults Result)
+        /// <summary>Установка результата обратного</summary>
+        /// <param name="state">Состояние</param>
+        /// <param name="result">Результат теста</param>
+        internal void SetResultReverseBvt(DeviceState state, Types.BVT.TestResults result)
         {
             labelWarning.Visibility = Visibility.Collapsed;
             labelFault.Visibility = Visibility.Collapsed;
-
-            SetLabel(labelReverse, State,
-                $"{Result.VRRM}{Properties.Resources.V} : {Result.IRRM}{Properties.Resources.mA}");
-            if (State == DeviceState.Success)
-                PlotYX("Reverse", m_XGreen.Color, Result.VoltageData, Result.CurrentData);
+            Label_Set(labelReverse, state, string.Format("{0}{1} : {2}{3}", result.VRRM, Properties.Resources.V, result.IRRM, Properties.Resources.mA));
+            if (state == DeviceState.Success)
+                Chart_PlotYX("Reverse", ColorGreen.Color, result.VoltageData, result.CurrentData);
         }
 
-        internal void SetWarning(Types.BVT.HWWarningReason Warning)
+        /// <summary>Установка ошибок</summary>
+        /// <param name="fault">Ошибка</param>
+        internal void SetFault(Types.BVT.HWFaultReason fault)
         {
-            if (labelWarning.Visibility != Visibility.Visible)
-            {
-
-            labelWarning.Content = Warning.ToString();
-            labelWarning.Visibility = Visibility.Visible;
-        }
-}
-
-        internal void SetProblem(Types.BVT.HWProblemReason Problem)
-        {
-            labelWarning.Content = Problem.ToString();
-            labelWarning.Visibility = Visibility.Visible;
-        }
-
-        internal void SetFault(Types.BVT.HWFaultReason Fault)
-        {
-            labelFault.Content = Fault.ToString();
+            labelFault.Content = fault.ToString();
             labelFault.Visibility = Visibility.Visible;
             IsRunning = false;
 
         }
 
-        private void ClearStatus()
+        /// <summary>Установка предупреждений</summary>
+        /// <param name="warning">Предупреждение</param>
+        internal void SetWarning(Types.BVT.HWWarningReason warning)
+        {
+            labelWarning.Content = warning.ToString();
+            labelWarning.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>Установка проблем</summary>
+        /// <param name="problem">Проблема</param>
+        internal void SetProblem(Types.BVT.HWProblemReason problem)
+        {
+            labelWarning.Content = problem.ToString();
+            labelWarning.Visibility = Visibility.Visible;
+        }
+
+        private void Status_Clear() //Очистка всех статусов
         {
             labelWarning.Visibility = Visibility.Collapsed;
             labelFault.Visibility = Visibility.Collapsed;
-
-            ResetLabel(labelDirect);
-            ResetLabel(labelReverse);
-
-            chartPlotter.Children.RemoveAll(typeof (LineGraph));
-            chartPlotter.Children.RemoveAll(typeof (MarkerPointsGraph));
+            Label_Reset(labelDirect);
+            Label_Reset(labelReverse);
+            chartPlotter.Children.RemoveAll(typeof(LineGraph));
+            chartPlotter.Children.RemoveAll(typeof(MarkerPointsGraph));
         }
 
-        private void PlotYX(string LineName, Color LineColor, ICollection<short> UxPoints, IEnumerable<short> UyPoints)
+        internal void SetResultBvtUdsmUrsmDirect(DeviceState state, Types.BVT.TestResults result)
         {
-            var crop = UxPoints.Count - DATA_LENGTH;
+            //            SetLabel(labelDirectSM, State,
+            //                $"{Result.VDSM}{Properties.Resources.V} : {Result.IDSM}{Properties.Resources.mA}");
+        }
 
-            var dataI = UxPoints.Skip(crop).Select(I => (Math.Abs(I) <= 2 ? (short) 0 : I));
-            var dataV = UyPoints.Skip(crop);
+        internal void SetResultBvtUdsmUrsmReverse(DeviceState state, Types.BVT.TestResults result)
+        {
+            //            SetLabel(labelReverseSM, State,
+            //                $"{Result.VRSM}{Properties.Resources.V} : {Result.IRSM}{Properties.Resources.mA}");
+        }
 
-            if (dataI.Any() && (dataI.Min() < -7 * 10 || Math.Abs(dataI.Max()) > 7 * 10) || wasCurrentMore)
+        private static void Label_Set(ContentControl target, DeviceState state, string message) //Установка значения
+        {
+            target.Content = string.Empty;
+            switch (state)
             {
-                wasCurrentMore = true;
+                case DeviceState.Success:
+                    target.Background = Brushes.LightGreen;
+                    target.Content = message;
+                    break;
+                case DeviceState.Problem:
+                    target.Background = Brushes.Gold;
+                    target.Content = message;
+                    break;
+                case DeviceState.InProcess:
+                    target.Background = Brushes.Gold;
+                    break;
+                case DeviceState.Stopped:
+                case DeviceState.Fault:
+                    target.Background = Brushes.Tomato;
+                    break;
+                default:
+                    target.Background = Brushes.Transparent;
+                    break;
+            }
+        }
+
+        private void Label_Reset(ContentControl target) //Сброс значения
+        {
+            target.Content = string.Empty;
+            target.Background = Brushes.Transparent;
+        }
+
+        private void Chart_PlotYX(string lineName, Color lineColor, ICollection<short> uxPoints, IEnumerable<short> uyPoints) //Отрисовка графика
+        {
+            int Crop = uxPoints.Count - 600;
+            IEnumerable<short> DataI = uxPoints.Skip(Crop).Select(I => Math.Abs(I) <= 2 ? (short)0 : I);
+            IEnumerable<short> DataV = uyPoints.Skip(Crop);
+            if (DataI.Any() && (DataI.Min() < -7 * 10 || Math.Abs(DataI.Max()) > 7 * 10) || WasCurrentMore)
+            {
+                WasCurrentMore = true;
                 chartPlotter.Viewport.Restrictions.Clear();
             }
             else
             {
                 chartPlotter.Viewport.Restrictions.Clear();
-                var restr = new ViewportAxesRangeRestriction { YRange = new DisplayRange(-7, 7) };
-                chartPlotter.Viewport.Restrictions.Add(restr);
+                ViewportAxesRangeRestriction Restriction = new ViewportAxesRangeRestriction
+                {
+                    YRange = new DisplayRange(-7, 7)
+                };
+                chartPlotter.Viewport.Restrictions.Add(Restriction);
             }
-
-            var points =
-                dataI.Zip(dataV, (I, V) => new PointF(V, I/10.0f))
-                     .Select((P => (Math.Abs(P.X) < 200 ? new PointF(P.X, 0) : P)));
-
-            var dataSource = new EnumerableDataSource<PointF>(points);
-            dataSource.SetXMapping(P => P.X);
-            dataSource.SetYMapping(P => P.Y);
-
-            chartPlotter.AddLineGraph(dataSource, LineColor, 3, LineName);
-
+            IEnumerable<PointF> Points = DataI.Zip(DataV, (I, V) => new PointF(V, I / 10.0f)).Select(P => Math.Abs(P.X) < 200 ? new PointF(P.X, 0) : P);
+            EnumerableDataSource<PointF> DataSource = new EnumerableDataSource<PointF>(Points);
+            DataSource.SetXMapping(P => P.X);
+            DataSource.SetYMapping(P => P.Y);
+            chartPlotter.AddLineGraph(DataSource, lineColor, 3, lineName);
             chartPlotter.FitToView();
         }
-        
-        internal void SetResultBvtUdsmUrsmDirect(DeviceState State, Types.BVT.TestResults Result)
+
+        private void btnStart_OnClick(object sender, RoutedEventArgs e)  //Запуск тестирования
         {
-//            SetLabel(labelDirectSM, State,
-//                $"{Result.VDSM}{Properties.Resources.V} : {Result.IDSM}{Properties.Resources.mA}");
-        }
-
-        internal void SetResultBvtUdsmUrsmReverse(DeviceState State, Types.BVT.TestResults Result)
-        {
-//            SetLabel(labelReverseSM, State,
-//                $"{Result.VRSM}{Properties.Resources.V} : {Result.IRSM}{Properties.Resources.mA}");
-        }
-
-        private static void SetLabel(ContentControl Target, DeviceState State, string Message)
-        {
-            Target.Content = string.Empty;
-
-            switch (State)
-            {
-                case DeviceState.Success:
-                    Target.Background = Brushes.LightGreen;
-                    Target.Content = Message;
-                    break;
-                case DeviceState.Problem:
-                    Target.Background = Brushes.Gold;
-                    Target.Content = Message;
-                    break;
-                case DeviceState.InProcess:
-                    Target.Background = Brushes.Gold;
-                    break;
-                case DeviceState.Stopped:
-                case DeviceState.Fault:
-                    Target.Background = Brushes.Tomato;
-                    break;
-                default:
-                    Target.Background = Brushes.Transparent;
-                    break;
-            }
-        }
-
-        private void ResetLabel(ContentControl Target)
-        {
-            Target.Content = "";
-            Target.Background = Brushes.Transparent;
-        }
-
-        internal void Start()
-        {
-            if (IsRunning)
-                return;
-            
-            var paramGate = new Types.Gate.TestParameters {IsEnabled = false};
-            var paramVtm = new Types.VTM.TestParameters {IsEnabled = false};
-            var paramATU = new Types.ATU.TestParameters { IsEnabled = false };
-            var paramQrrTq = new Types.QrrTq.TestParameters { IsEnabled = false };
-            var paramIH = new Types.IH.TestParameters { IsEnabled = false };
-            var paramRCC = new Types.RCC.TestParameters { IsEnabled = false };
-            var paramTOU = new Types.TOU.TestParameters { IsEnabled = false };
-
-            ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
-
-            Parameters.VoltageFrequency = (ushort)Settings.Default.BVTVoltageFrequency;
-            Parameters.MeasurementMode = Types.BVT.BVTMeasurementMode.ModeV;
-
-            if (!Cache.Net.Start(paramGate, paramVtm, Parameters, paramATU, paramQrrTq, paramIH, paramRCC,
-                                 new Types.Commutation.TestParameters
-                                     {
-                                         BlockIndex = (!Cache.Clamp.clampPage.UseTmax) ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
-                                         CommutationType = ConverterUtil.MapCommutationType(CommType),
-                                         Position = ConverterUtil.MapModulePosition(ModPosition)
-                                     }, ClampParameters, paramTOU))
-                return;
-
-            ClearStatus();
-            IsRunning = true;
-        }
-
-        private void btnStart_OnClick(object Sender, RoutedEventArgs E)
-        {
-            wasCurrentMore = false;
-
+            WasCurrentMore = false;
             ScrollViewer.ScrollToBottom();
             Start();
         }
 
-        private void btnStop_OnClick(object Sender, RoutedEventArgs E)
+        /// <summary>Запуск тестирования</summary>
+        internal void Start()
+        {
+            if (IsRunning)
+                return;
+            Types.Commutation.TestParameters ParamCommutation = new Types.Commutation.TestParameters
+            {
+                BlockIndex = !Cache.Clamp.clampPage.UseTmax ? Types.Commutation.HWBlockIndex.Block1 : Types.Commutation.HWBlockIndex.Block2,
+                CommutationType = ConverterUtil.MapCommutationType(CommType),
+                Position = ConverterUtil.MapModulePosition(ModPosition)
+            };
+            Types.Gate.TestParameters ParamGTU = new Types.Gate.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.VTM.TestParameters ParamSL = new Types.VTM.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.ATU.TestParameters ParamATU = new Types.ATU.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.QrrTq.TestParameters ParamQrrTq = new Types.QrrTq.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.IH.TestParameters ParamIH = new Types.IH.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.RCC.TestParameters ParamRCC = new Types.RCC.TestParameters
+            {
+                IsEnabled = false
+            };
+            Types.TOU.TestParameters ParamTOU = new Types.TOU.TestParameters
+            {
+                IsEnabled = false
+            };
+            ClampParameters.SkipClamping = Cache.Clamp.ManualClamping;
+            Parameters.VoltageFrequency = (ushort)Settings.Default.BVTVoltageFrequency;
+            Parameters.MeasurementMode = Types.BVT.BVTMeasurementMode.ModeV;
+            if (!Cache.Net.Start(ParamGTU, ParamSL, Parameters, ParamATU, ParamQrrTq, ParamIH, ParamRCC, ParamCommutation, ClampParameters, ParamTOU))
+                return;
+            Status_Clear();
+            IsRunning = true;
+        }
+
+        private void btnStop_OnClick(object sender, RoutedEventArgs e) //Остановка тестирования
         {
             Cache.Net.StopByButtonStop();
         }
 
-        private void btnBack_OnClick(object Sender, RoutedEventArgs E)
+        private void btnBack_OnClick(object sender, RoutedEventArgs e) //Переход на предыдущую страницу
         {
             if (NavigationService != null)
                 NavigationService.GoBack();
         }
 
-        private void btnTemperature_OnClick(object sender, RoutedEventArgs e)
+        private void btnTemperature_OnClick(object sender, RoutedEventArgs e) //Нагрев
         {
             Cache.Net.StartHeating(Temperature);
         }
 
+        /// <summary>Установка температуры верхней пластины</summary>
+        /// <param name="temeprature">Температура</param>
         public void SetTopTemp(int temeprature)
         {
             TopTempLabel.Content = temeprature;
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
-                TopTempLabel.Background = Brushes.Tomato;
-            }
-            else
-            {
-                TopTempLabel.Background = Brushes.LightGreen;
-            }
+            int BottomTemp = Temperature - 2;
+            int TopTemp = Temperature + 2;
+            TopTempLabel.Background = temeprature < BottomTemp || temeprature > TopTemp ? Brushes.Tomato : Brushes.LightGreen;
         }
 
-
+        /// <summary>Установка температуры нижней пластины</summary>
+        /// <param name="temeprature">Температура</param>
         public void SetBottomTemp(int temeprature)
         {
             BotTempLabel.Content = temeprature;
-            var bottomTemp = Temperature - 2;
-            var topTemp = Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
+            int BottomTemp = Temperature - 2;
+            int TopTemp = Temperature + 2;
+            if (temeprature < BottomTemp || temeprature > TopTemp)
                 BotTempLabel.Background = Brushes.Tomato;
-            }
             else
-            {
                 BotTempLabel.Background = Brushes.LightGreen;
-            }
         }
     }
 }

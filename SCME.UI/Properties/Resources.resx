@@ -205,10 +205,10 @@
     <value>IGT, mA</value>
   </data>
   <data name="Iholding_mA" xml:space="preserve">
-    <value>Ih, mA</value>
+    <value>IH, mA</value>
   </data>
   <data name="Ilatching_mA" xml:space="preserve">
-    <value>Il, mA</value>
+    <value>IL, mA</value>
   </data>
   <data name="IsHeatEnabled" xml:space="preserve">
     <value>Opening</value>
@@ -900,5 +900,8 @@
   </data>
   <data name="Lardc" xml:space="preserve">
     <value>LARDC</value>
+  </data>
+  <data name="Vtm_mv" xml:space="preserve">
+    <value>VTM, mV</value>
   </data>
 </root>

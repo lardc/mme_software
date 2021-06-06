@@ -32,7 +32,7 @@ namespace SCME.Types.SCTU
         [DataMember]
         public ushort ShuntResistance { get; set; }
 
-        public override bool IsHasChanges(BaseTestParametersAndNormatives oldParametersBase)
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
         {
             return false;
         }

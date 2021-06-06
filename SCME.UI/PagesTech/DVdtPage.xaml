@@ -104,9 +104,9 @@
                 <Label x:Name="lblTitleBot" Content="{x:Static res:Resources.BotTempName}" Grid.Row="10" Grid.Column="0" HorizontalAlignment="Left"/>
                 <Label x:Name="BotTempLabel" Content="0" Grid.Row="10" Grid.Column="1" Background="LightGreen" Padding="0,0,10,0"/>
                 <Label Content="{x:Static res:Resources.Results}" Grid.Column="0" Grid.Row="11" HorizontalAlignment="Left"  />
-                <Label x:Name="labelResult" Grid.Row="11" Grid.Column="1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                <Label x:Name="labelResult" Grid.Row="11" Grid.Column="1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Padding="0,0,10,0"/>
                 <Label Content="{x:Static res:Resources.DvdtVoltageRate}" Grid.Row="12" Grid.Column="0" HorizontalAlignment="Left" Visibility="{Binding Parameters.Mode, ElementName=dVdtPage, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Name="labelVoltageRate" Grid.Row="12" Grid.Column="1" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.Mode, ElementName=dVdtPage, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource FontSize26}"/>
+                <Label Name="labelVoltageRate" Grid.Row="12" Grid.Column="1" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.Mode, ElementName=dVdtPage, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="{StaticResource FontSize26}" Padding="0,0,10,0"/>
                 <Label x:Name="lblFault" Content="Fault" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Background="Tomato" Padding="10"/>
                 <Label x:Name="lblWarning" Content="Warning" Grid.Row="14" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Background="Gold"/>
             </Grid>

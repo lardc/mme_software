@@ -188,11 +188,10 @@ namespace SCME.UI
             if (Settings.Default.QrrTqEmulation && Settings.Default.QrrTqIsVisible)
                 EmulationMessages.Add(Properties.Resources.QrrTq);
             //Эмуляция блока R A-C
-            if (Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
-                EmulationMessages.Add(Properties.Resources.RAC);
-            //Эмуляция блока IH
-            if (Settings.Default.IHEmulation && Settings.Default.IHIsVisible)
-                EmulationMessages.Add(Properties.Resources.IH);
+            
+            //if (Settings.Default.RACEmulation && Settings.Default.RACIsVisible)
+            //    EmulationMessages.Add(Properties.Resources.RAC);
+            
             //Эмуляция блока TOU
             if (Settings.Default.TOUEmulation && Settings.Default.TOUIsVisible)
                 EmulationMessages.Add(Properties.Resources.TOU);
