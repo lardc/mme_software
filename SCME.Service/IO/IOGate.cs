@@ -4,6 +4,7 @@ using SCME.UIServiceConfig.Properties;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SCME.Service.IO
 {
@@ -250,11 +251,8 @@ namespace SCME.Service.IO
         {
             if (m_Stop)
                 return;
-
             FireResistanceEvent(DeviceState.InProcess, m_Result);
-
-            m_IOAdapter.Call(m_Node, ACT_START_RG);
-
+            CallAction(ACT_START_RG);
             if (!m_IsGateEmulation)
             {
                 WaitForEndOfTest();
@@ -422,7 +420,7 @@ namespace SCME.Service.IO
             return parameters;
         }
 
-        private async void IhGOST(TestParameters commutation)
+        private void IhGOST(TestParameters commutation)
         {
             if (m_Stop)
                 return;
@@ -430,12 +428,15 @@ namespace SCME.Service.IO
                 return;
 
             FireIHEvent(DeviceState.InProcess, m_Result);
+            m_IOCommutation.CallAction(116);
             WriteRegister(130, 1);
             WriteRegister(151, 4);
             CallAction(102);
             SLIH.WriteRegister(162, 1);
             SLIH.WriteRegister(163, 1);
-            await System.Threading.Tasks.Task.Run(() => Thread.Sleep(20));
+
+            Task.Run(async () => await Task.Run(() => Thread.Sleep(20)));
+            
             SLIH.WriteRegister(128, 1);
             SLIH.WriteRegister(140, m_Parameter.Itm);
             SLIH.WriteRegister(141, 10000);
@@ -445,14 +446,13 @@ namespace SCME.Service.IO
             do
             {
                 Result = SLIH.ReadRegister(192);
-                await System.Threading.Tasks.Task.Run(() => Thread.Sleep(50));
+                Task.Run(async () => await Task.Run(() => Thread.Sleep(50)));
             }
             while (Result != 3 && Result != 5);
-            
             do
             {
                 Result = ReadRegister(192);
-                await System.Threading.Tasks.Task.Run(() => Thread.Sleep(50));
+                Task.Run(async () => await Task.Run(() => Thread.Sleep(50)));
             }
             while (Result != 5);
 
@@ -532,6 +532,9 @@ namespace SCME.Service.IO
             if (!m_Parameter.UseVgnt)
                 return;
             FireVgntEvent(DeviceState.InProcess, m_Result);
+
+            m_IOCommutation.CallAction(117);
+
             VGNT.WriteRegister(REG_LIMIT_CURRENT, (ushort)(m_Parameter.CurrentLimit * 10));
             VGNT.WriteRegister(REG_TEST_VOLTAGE, m_Parameter.VoltageLimitD);
             VGNT.WriteRegister(REG_VOLTAGE_PLATE_TIME, m_Parameter.PlateTime);
