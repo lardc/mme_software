@@ -149,6 +149,7 @@ namespace SCME.WpfControlLibrary.Pages
             }
 
             ProfileVm.SelectedProfile = newProfile;
+            HeightExpander.IsExpanded = false;
         }
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
@@ -163,6 +164,7 @@ namespace SCME.WpfControlLibrary.Pages
 
             ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData;
             ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
+            HeightExpander.IsExpanded = false;
         }
 
         private void AddTestParametersEvent_Click()
@@ -170,12 +172,24 @@ namespace SCME.WpfControlLibrary.Pages
             var testParametersAndNormatives = ProfileVm.ProfileDeepDataCopy.TestParametersAndNormatives;
             var maxOrder = testParametersAndNormatives.Count > 0 ? testParametersAndNormatives.Max(m => m.Order) : 0;
 
+            if (ProfileVm.SelectedTestParametersType == TestParametersType.Clamping)
+            {
+                HeightMeasure.Visibility = Visibility.Visible;
+                ProfileVm.ProfileDeepDataCopy.IsHeightMeasureEnabled = true;
+                return;
+            }
+
             var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(ProfileVm.SelectedTestParametersType);
             newTestParameter.IsEnabled = true;
             newTestParameter.Order = maxOrder + 1;
             testParametersAndNormatives.Add(newTestParameter);
         }
 
+        private void DisableHeightMeasure_Click(object sender, RoutedEventArgs e)
+        {
+            HeightMeasure.Visibility = Visibility.Collapsed;
+            ProfileVm.ProfileDeepDataCopy.IsHeightMeasureEnabled = false;
+        }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

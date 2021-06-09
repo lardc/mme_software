@@ -435,8 +435,8 @@ namespace SCME.Service.IO
             SLIH.WriteRegister(162, 1);
             SLIH.WriteRegister(163, 1);
 
-            Task.Run(async () => await Task.Run(() => Thread.Sleep(20)));
-            
+            Task.Run(async () => await Task.Delay(20));
+
             SLIH.WriteRegister(128, 1);
             SLIH.WriteRegister(140, m_Parameter.Itm);
             SLIH.WriteRegister(141, 10000);
@@ -446,13 +446,13 @@ namespace SCME.Service.IO
             do
             {
                 Result = SLIH.ReadRegister(192);
-                Task.Run(async () => await Task.Run(() => Thread.Sleep(50)));
+                Task.Run(async () => await Task.Delay(50));
             }
             while (Result != 3 && Result != 5);
             do
             {
                 Result = ReadRegister(192);
-                Task.Run(async () => await Task.Run(() => Thread.Sleep(50)));
+                Task.Run(async () => await Task.Delay(50));
             }
             while (Result != 5);
 
@@ -535,18 +535,29 @@ namespace SCME.Service.IO
 
             m_IOCommutation.CallAction(117);
 
+            VGNT.WriteRegister(128, 3);
+           
             VGNT.WriteRegister(REG_LIMIT_CURRENT, (ushort)(m_Parameter.CurrentLimit * 10));
             VGNT.WriteRegister(REG_TEST_VOLTAGE, m_Parameter.VoltageLimitD);
             VGNT.WriteRegister(REG_VOLTAGE_PLATE_TIME, m_Parameter.PlateTime);
             VGNT.WriteRegister(REG_VOLTAGE_AC_RATE, (ushort)(m_Parameter.RampUpVoltage * 10));
             VGNT.WriteRegister(REG_START_VOLTAGE_AC, m_Parameter.StartVoltage);
-            WriteRegister(REG_V_GATE_LIMIT, m_Parameter.GateLimitV);
-            WriteRegister(REG_I_GATE_LIMIT, m_Parameter.GateLimitI);
+
+            WriteRegister(REG_V_GATE_LIMIT, 12000);
+            WriteRegister(REG_I_GATE_LIMIT, 1000);
+
+
+            //WriteRegister(REG_V_GATE_LIMIT, m_Parameter.GateLimitV);
+            //WriteRegister(REG_I_GATE_LIMIT, m_Parameter.GateLimitI);
+            
             VGNT.CallAction(ACT_START_TEST);
             CallAction(ACT_START_VGNT);
             if (!m_IsGateEmulation)
             {
-                WaitForEndOfTest();
+                //WaitForEndOfTest();
+
+                WaitVGNT();
+
                 m_Result.VGNT = ReadRegister(REG_RESULT_VGNT);
                 m_Result.IGNT = ReadRegister(REG_RESULT_IGNT);
             }
@@ -556,6 +567,30 @@ namespace SCME.Service.IO
                 m_Result.IGNT = EMU_DEFAULT_IGNT;
             }
             FireVgntEvent(DeviceState.Success, m_Result);
+        }
+
+        private void WaitVGNT()
+        {
+            var timeStamp = Environment.TickCount + m_Timeout;
+            while (Environment.TickCount < timeStamp)
+            {
+                var devState = (Types.Gate.HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                var devStateBVT = (Types.BVT.HWDeviceState)VGNT.ReadRegister(REG_DEVICE_STATE, true);
+                if (devState != Types.Gate.HWDeviceState.CalHolding || devStateBVT != Types.BVT.HWDeviceState.InProcess)
+                {
+                    Thread.Sleep(100);
+                    if (VGNT.ReadRegister(192, true) == 5)
+                        VGNT.CallAction(101);
+                    return;
+                }
+                Thread.Sleep(REQUEST_DELAY_MS);
+            }
+
+            if (Environment.TickCount > timeStamp)
+            {
+                FireExceptionEvent("Timeout while waiting for Gate test to end");
+                throw new Exception("Timeout while waiting for Gate test to end");
+            }
         }
 
         private void WaitForEndOfTest()
@@ -745,7 +780,7 @@ namespace SCME.Service.IO
             var message = string.Format("Gate VGNT state {0}", State);
 
             if (State == DeviceState.Success)
-                message = string.Format("Gate VGNT {0}", Result.VGNT);
+                message = string.Format("Gate VGNT {0}, Gate IGNT {1}", Result.VGNT, Result.IGNT);
 
             SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info, message);
             m_Communication.PostGateVgntEvent(State, Result);
@@ -904,8 +939,8 @@ namespace SCME.Service.IO
             REG_VOLTAGE_PLATE_TIME = 132,
             REG_VOLTAGE_AC_RATE = 133,
             REG_START_VOLTAGE_AC = 134,
-            REG_V_GATE_LIMIT = 130,
-            REG_I_GATE_LIMIT = 131,
+            REG_V_GATE_LIMIT = 133,
+            REG_I_GATE_LIMIT = 134,
             ACT_START_TEST = 100,
             ACT_START_VGNT = 106,
             REG_RESULT_VGNT = 205,

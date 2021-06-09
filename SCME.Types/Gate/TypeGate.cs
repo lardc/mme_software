@@ -125,8 +125,8 @@ namespace SCME.Types.Gate
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
-            VGNT = 100;
-            IGNT = 25;
+            VGNT = 12000;
+            IGNT = 1000;
             Itm = 0;
             CurrentLimit = 5;
             VoltageLimitD = 1000;

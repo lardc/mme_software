@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ListViewItemTestParameter.xaml" />
                 <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Styles/ProfilePageStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -87,13 +88,22 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="1" Visibility="{Binding IsClampingCommutationActive, Converter={StaticResource B2V}}" Grid.ColumnSpan="2">
-
                         <Border BorderThickness="1" BorderBrush="#FFC9C9C9" Margin="10,10,10,0" IsEnabled="{Binding IsEditModeActive}">
                             <profilesPageComponents:AddTestParameterUserControl x:Name="AddTestParameterUserControl" DataContext="{Binding ProfileDeepDataCopy}" HorizontalAlignment="Stretch" AddTestParametersEvent="AddTestParametersEvent_Click"/>
                         </Border>
-
-                        <Border BorderThickness="1" BorderBrush="#FFC9C9C9" Margin="10,10,10,0" IsEnabled="{Binding IsEditModeActive}">
-                            <CheckBox DataContext="{Binding ProfileDeepDataCopy}" Content="{x:Static res:Resources.MeasureDialog_Title}" BorderBrush="#FFC9C9C9" IsChecked="{Binding IsHeightMeasureEnabled}" Margin="10" FlowDirection="RightToLeft"/>
+                        <Border x:Name="HeightMeasure" BorderThickness="1" BorderBrush="#FFC9C9C9" Margin="10,10,10,0" IsEnabled="{Binding IsEditModeActive}" Visibility="{Binding ProfileVm.ProfileDeepDataCopy.IsHeightMeasureEnabled, ElementName=MainPage, Converter={StaticResource B2V}}">
+                            <Expander x:Name="HeightExpander" Style="{StaticResource CustomExpander}" Margin="10">
+                                <Expander.Header>
+                                    <DockPanel>
+                                        <Label Content="{x:Static res:Resources.Height}" Foreground="Black" Width="810"/>
+                                        <Button x:Name="DisableHeightMeasure" Style="{StaticResource ButtonWithIcon}" HorizontalAlignment="Right"
+                                        Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Border}, Converter={StaticResource B2V}}" Click="DisableHeightMeasure_Click">
+                                            <Path Data="{StaticResource Delete}" Style="{StaticResource PathIcon}"/>
+                                        </Button>
+                                    </DockPanel>
+                                </Expander.Header>
+                                <CheckBox HorizontalAlignment="Left" Width="390" DataContext="{Binding ProfileDeepDataCopy}" Content="{x:Static res:Resources.MeasureDialog_Title}" BorderBrush="#FFC9C9C9" IsChecked="{Binding IsHeightMeasureEnabled}" IsHitTestVisible="False" Margin="0,10,0,0" FlowDirection="RightToLeft"/>
+                            </Expander>
                         </Border>
                     </StackPanel>
 

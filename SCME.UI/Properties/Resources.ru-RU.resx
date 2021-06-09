@@ -877,7 +877,7 @@
     <value>Мощность, кВт</value>
   </data>
   <data name="AtuPrePulseValue" xml:space="preserve">
-    <value>Амплитуда предъимпульса</value>
+    <value>Амплитуда предимпульса</value>
   </data>
   <data name="AtuPRSM" xml:space="preserve">
     <value>PRSM, кВт</value>

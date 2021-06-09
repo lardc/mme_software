@@ -479,7 +479,8 @@ namespace SCME.Service.IO
 
                     if (m_ReadGraph)
                     {
-                        m_Result.DesiredArray = ReadArrayFastS(ARR_SCOPE_DESIRED);
+                        //m_Result.DesiredArray = ReadArrayFastS(ARR_SCOPE_DESIRED);
+                        
                         m_Result.ITMArray = ReadArrayFastS(ARR_SCOPE_ITM);
                         m_Result.VTMArray = ReadArrayFastS(ARR_SCOPE_VTM);
                     }
