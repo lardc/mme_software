@@ -17,7 +17,7 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using Microsoft.Research.DynamicDataDisplay.ViewportRestrictions;
 using SCME.Types;
 using SCME.Types.BaseTestParams;
-using SCME.Types.Gate;
+using SCME.Types.GTU;
 using SCME.Types.Profiles;
 using SCME.UI.Annotations;
 using SCME.UIServiceConfig.Properties;
@@ -28,10 +28,10 @@ using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 using DialogWindow = SCME.UI.CustomControl.DialogWindow;
-using HWFaultReason = SCME.Types.Gate.HWFaultReason;
-using HWWarningReason = SCME.Types.Gate.HWWarningReason;
+using HWFaultReason = SCME.Types.GTU.HWFaultReason;
+using HWWarningReason = SCME.Types.GTU.HWWarningReason;
 using TestParameters = SCME.Types.Commutation.TestParameters;
-using TestResults = SCME.Types.Gate.TestResults;
+using TestResults = SCME.Types.GTU.TestResults;
 
 namespace SCME.UI.PagesUser
 {
@@ -48,14 +48,14 @@ namespace SCME.UI.PagesUser
 
         private readonly Brush m_TbBrush;
         private readonly List<string> m_Errors1, m_Errors2;
-        private List<Types.Gate.TestResults> m_ResultsGate1, m_ResultsGate2;
+        private List<Types.GTU.TestResults> m_ResultsGate1, m_ResultsGate2;
         private List<Types.VTM.TestResults> m_ResultsVTM1, m_ResultsVTM2; //m_ResultsITM1, m_ResultsITM2
         private List<Types.BVT.TestResults> m_ResultsBVT1, m_ResultsBVT2;
         private List<Types.dVdt.TestResults> _dvdTestResults1, _dvdTestResults2;
         private List<Types.ATU.TestResults> m_ResultsATU1, m_ResultsATU2;
         private List<Types.QrrTq.TestResults> m_ResultsQrrTq1, m_ResultsQrrTq2;
         private List<Types.TOU.TestResults> _ResultsTOU1, _ResultsTOU2;
-        private DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC, _StateTOU;
+        private Types.DeviceState m_StateGate, m_StateVtm, m_StateBvt, m_StatedVdt, m_StateATU, m_StateQrrTq, m_StateRAC, _StateTOU;
         private Profile m_Profile;
         private bool m_SpecialMeasureMode;
         private bool m_TwoPosRequested, m_IsRunning;
@@ -68,7 +68,7 @@ namespace SCME.UI.PagesUser
         {
             this.DataContext = new UserTestPageViewModel();
 
-            m_ResultsGate1 = new List<Types.Gate.TestResults>();
+            m_ResultsGate1 = new List<Types.GTU.TestResults>();
             m_ResultsVTM1 = new List<Types.VTM.TestResults>();
             m_ResultsBVT1 = new List<Types.BVT.TestResults>();
             _dvdTestResults1 = new List<Types.dVdt.TestResults>();
@@ -76,7 +76,7 @@ namespace SCME.UI.PagesUser
             m_ResultsQrrTq1 = new List<Types.QrrTq.TestResults>();
             _ResultsTOU1 = new List<Types.TOU.TestResults>();
 
-            m_ResultsGate2 = new List<Types.Gate.TestResults>();
+            m_ResultsGate2 = new List<Types.GTU.TestResults>();
             m_ResultsVTM2 = new List<Types.VTM.TestResults>();
             m_ResultsBVT2 = new List<Types.BVT.TestResults>();
             _dvdTestResults2 = new List<Types.dVdt.TestResults>();
@@ -84,13 +84,13 @@ namespace SCME.UI.PagesUser
             m_ResultsQrrTq2 = new List<Types.QrrTq.TestResults>();
             _ResultsTOU2 = new List<Types.TOU.TestResults>();
 
-            m_StateGate = DeviceState.None;
-            m_StateVtm = DeviceState.None;
-            m_StateBvt = DeviceState.None;
-            m_StateATU = DeviceState.None;
-            m_StateQrrTq = DeviceState.None;
-            m_StateRAC = DeviceState.None;
-            _StateTOU = DeviceState.None;
+            m_StateGate = Types.DeviceState.None;
+            m_StateVtm = Types.DeviceState.None;
+            m_StateBvt = Types.DeviceState.None;
+            m_StateATU = Types.DeviceState.None;
+            m_StateQrrTq = Types.DeviceState.None;
+            m_StateRAC = Types.DeviceState.None;
+            _StateTOU = Types.DeviceState.None;
 
             m_Errors1 = new List<string>();
             m_Errors2 = new List<string>();
@@ -238,7 +238,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        public List<Types.Gate.TestResults> ResultsGate1
+        public List<Types.GTU.TestResults> ResultsGate1
         {
             get { return m_ResultsGate1; }
             set
@@ -248,7 +248,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        public List<Types.Gate.TestResults> ResultsGate2
+        public List<Types.GTU.TestResults> ResultsGate2
         {
             get { return m_ResultsGate2; }
             set
@@ -372,7 +372,7 @@ namespace SCME.UI.PagesUser
             {
                 for (int i = 0; i < ListViewResults1.Items.Count; i++)
                 {
-                    if (ListViewResults1.Items[i] is Types.Gate.TestParameters)
+                    if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
                     {
                         IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
@@ -390,7 +390,7 @@ namespace SCME.UI.PagesUser
             {
                 for (int i = 0; i < ListViewResults2.Items.Count; i++)
                 {
-                    if (ListViewResults2.Items[i] is Types.Gate.TestParameters)
+                    if (ListViewResults2.Items[i] is Types.GTU.TestParameters)
                     {
                         IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
 
@@ -597,14 +597,14 @@ namespace SCME.UI.PagesUser
 
 
         private bool _firstSend = true;
-        internal void SetResultAll(DeviceState State)
+        internal void SetResultAll(Types.DeviceState State)
         {
-            if (State == DeviceState.None || State == DeviceState.Heating)
+            if (State == Types.DeviceState.None || State == Types.DeviceState.Heating)
                 return;
 
-            Cache.Main.VM.GoTechButtonVisibility = (State == DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
+            Cache.Main.VM.GoTechButtonVisibility = (State == Types.DeviceState.InProcess ? Visibility.Hidden : Visibility.Visible);
 
-            if (State == DeviceState.InProcess)
+            if (State == Types.DeviceState.InProcess)
                 ClearStatus(m_CurrentPos == 1, true);
             else
             {
@@ -628,7 +628,7 @@ namespace SCME.UI.PagesUser
 
                 bool HeightMeasureResult = false;
 
-                if (paramsClamp.IsHeightMeasureEnabled && State == DeviceState.Success)
+                if (paramsClamp.IsHeightMeasureEnabled && State == Types.DeviceState.Success)
                 {
                     //спрашиваем у пользователя результаты измерения высоты (он выполняет это измерение вручную с помощью калибра)
                     measureDialog = new MeasureDialog(paramsClamp)
@@ -648,11 +648,11 @@ namespace SCME.UI.PagesUser
                     switch (Settings.Default.DUTType)
                     {
                         case DUTType.Element:
-                            needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
+                            needSave = (!string.IsNullOrWhiteSpace(tbPseJob.Text) && !string.IsNullOrWhiteSpace(tbPseNumber.Text));
                             tbNumber = tbPseNumber;
                             break;
                         case DUTType.Device:
-                            needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
+                            needSave = (!string.IsNullOrWhiteSpace(tbPsdJob.Text) && !string.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
                             tbNumber = tbPsdSerialNumber;
                             break;
                         case DUTType.Profile:
@@ -661,12 +661,12 @@ namespace SCME.UI.PagesUser
                             {
                                 case SubjectForMeasure.FPE:
                                 case SubjectForMeasure.PSE:
-                                    needSave = (!String.IsNullOrWhiteSpace(tbPseJob.Text) && !String.IsNullOrWhiteSpace(tbPseNumber.Text));
+                                    needSave = (!string.IsNullOrWhiteSpace(tbPseJob.Text) && !string.IsNullOrWhiteSpace(tbPseNumber.Text));
                                     tbNumber = tbPseNumber;
                                     break;
                                 case SubjectForMeasure.FPD:
                                 case SubjectForMeasure.PSD:
-                                    needSave = (!String.IsNullOrWhiteSpace(tbPsdJob.Text) && !String.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
+                                    needSave = (!string.IsNullOrWhiteSpace(tbPsdJob.Text) && !string.IsNullOrWhiteSpace(tbPsdSerialNumber.Text));
                                     tbNumber = tbPsdSerialNumber;
                                     break;
                                 default:
@@ -707,7 +707,7 @@ namespace SCME.UI.PagesUser
                         QrrTq = (m_CurrentPos == 1) ? ResultsQrrTq1.ToArray() : ResultsQrrTq2.ToArray(),
                         TOU = (m_CurrentPos == 1) ? ResultsTOU1.ToArray() : ResultsTOU2.ToArray(),
                         DVDT = (m_CurrentPos == 1) ? _dvdTestResults1.ToArray() : _dvdTestResults2.ToArray(),
-                        GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray(),
+                        GateTestParameters = Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray(),
                         VTMTestParameters = Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray(),
                         BVTTestParameters = Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray(),
                         ATUTestParameters = Profile.TestParametersAndNormatives.OfType<Types.ATU.TestParameters>().ToArray(),
@@ -794,9 +794,9 @@ namespace SCME.UI.PagesUser
 
         private int _gateCounter;
 
-        internal void SetResultGateKelvin(DeviceState state, bool isKelvinOk, long testTypeId)
+        internal void SetResultGateKelvin(Types.DeviceState state, bool isKelvinOk, long testTypeId)
         {
-            if (state == DeviceState.InProcess)
+            if (state == Types.DeviceState.InProcess)
             {
                 _gateCounter++;
             }
@@ -810,7 +810,7 @@ namespace SCME.UI.PagesUser
             if (labelKelvinResult != null)
                 SetLabel(labelKelvinResult, state, isKelvinOk, isKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1)
                     ? ResultsGate1.Find(g => g.TestTypeId.Equals(testTypeId))
@@ -821,7 +821,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        internal void SetResultGateResistance(DeviceState state, float resistance, long testTypeId)
+        internal void SetResultGateResistance(Types.DeviceState state, float resistance, long testTypeId)
         {
             m_StateGate = state;
 
@@ -832,19 +832,19 @@ namespace SCME.UI.PagesUser
             var labelRgResult = FindChild<Label>(presenter, "labelRgResult1");
             if (labelRgResult != null)
                 SetLabel(labelRgResult, state,
-                     resistance <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].Resistance,
+                     resistance <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].Resistance,
                      string.Format("{0}", resistance));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).Resistance = resistance;
 
-                if (resistance > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].Resistance)
+                if (resistance > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].Resistance)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_RG");
             }
         }
 
-        internal void SetResultGateGate(DeviceState state, float igt, float vgt, IList<short> arrayI,
+        internal void SetResultGateGate(Types.DeviceState state, float igt, float vgt, IList<short> arrayI,
                                         IList<short> arrayV, long testTypeId)
         {
             m_StateGate = state;
@@ -859,32 +859,32 @@ namespace SCME.UI.PagesUser
 
             var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult1");
             if (labelIgtResult != null)
-                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT &&
-                                                igt >= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].MinIGT,
+                SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IGT &&
+                                                igt >= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].MinIGT,
                      string.Format("{0}", igt));
 
             var labelVgtResult = FindChild<Label>(presenter, "labelVgtResult1");
             if (labelVgtResult != null)
                 SetLabel(labelVgtResult, state,
-                        ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].VGT,
+                        ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].VGT,
                         string.Format("{0}", ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
-                if (igt > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IGT || igt < (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].MinIGT)
+                if (igt > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IGT || igt < (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].MinIGT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGT");
-                if (((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].VGT)
+                if (((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].VGT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGT");
             }
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserGate)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserGate)
             {
                 PlotX(m_CurrentPos, "Igt", m_XRed.Color, arrayI);
                 PlotX(m_CurrentPos, Properties.Resources.Vgt, m_XOrange.Color, arrayV);
             }
         }
 
-        internal void SetResultGateIh(DeviceState state, float ih, IList<short> array, long testTypeId)
+        internal void SetResultGateIh(Types.DeviceState state, float ih, IList<short> array, long testTypeId)
         {
             m_StateGate = state;
 
@@ -894,22 +894,22 @@ namespace SCME.UI.PagesUser
 
             var labelIhResult = FindChild<Label>(presenter, "labelIhResult1");
             if (labelIhResult != null)
-                SetLabel(labelIhResult, state, ih <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IH,
+                SetLabel(labelIhResult, state, ih <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IH,
                      string.Format("{0}", ih));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IH = ih;
 
-                if (ih > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IH)
+                if (ih > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IH)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IH");
             }
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserGate)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserGate)
                 PlotX(m_CurrentPos, "Ih", m_XGreen.Color, array);
         }
 
-        internal void SetResultGateIl(DeviceState state, float il, long testTypeId)
+        internal void SetResultGateIl(Types.DeviceState state, float il, long testTypeId)
         {
             m_StateGate = state;
 
@@ -919,18 +919,18 @@ namespace SCME.UI.PagesUser
 
             var labelIlResult = FindChild<Label>(presenter, "labelIlResult1");
             if (labelIlResult != null)
-                SetLabel(labelIlResult, state, il <= (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IL, string.Format("{0}", il));
+                SetLabel(labelIlResult, state, il <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IL, string.Format("{0}", il));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IL = il;
 
-                if (il > (Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray())[_gateCounter].IL)
+                if (il > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IL)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IL");
             }
         }
 
-        internal void SetResultGateVgnt(DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        internal void SetResultGateVgnt(Types.DeviceState state, float vgnt, ushort ignt, long testTypeId)
         {
             m_StateGate = state;
 
@@ -939,19 +939,19 @@ namespace SCME.UI.PagesUser
             Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult1");
             Label labelIgntResult = FindChild<Label>(presenter, "labelIgntResult1");
             if (labelVgntResult != null)
-                SetLabel(labelVgntResult, state, vgnt <= Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].VGNT,
+                SetLabel(labelVgntResult, state, vgnt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT,
                      string.Format("{0}", vgnt));
             if (labelIgntResult != null)
-                SetLabel(labelIgntResult, state, ignt <= Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].IGNT,
+                SetLabel(labelIgntResult, state, ignt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT,
                      string.Format("{0}", ignt));
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = vgnt;
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IGNT = ignt;
 
-                if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].VGNT)
+                if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGNT");
-                if (ignt > Profile.TestParametersAndNormatives.OfType<Types.Gate.TestParameters>().ToArray()[_gateCounter].IGNT)
+                if (ignt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGNT");
             }
         }
@@ -983,14 +983,14 @@ namespace SCME.UI.PagesUser
 
             switch (Problem)
             {
-                case Types.Gate.HWProblemReason.HoldReachTimeout:
-                case Types.Gate.HWProblemReason.LatchCurrentHigh:
-                case Types.Gate.HWProblemReason.LatchFollowingError:
+                case Types.GTU.HWProblemReason.HoldReachTimeout:
+                case Types.GTU.HWProblemReason.LatchCurrentHigh:
+                case Types.GTU.HWProblemReason.LatchFollowingError:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IHL_PROBLEM");
                     break;
-                case Types.Gate.HWProblemReason.GateCurrentHigh:
-                case Types.Gate.HWProblemReason.GateFollowingError:
-                case Types.Gate.HWProblemReason.GateIgtOverload:
+                case Types.GTU.HWProblemReason.GateCurrentHigh:
+                case Types.GTU.HWProblemReason.GateFollowingError:
+                case Types.GTU.HWProblemReason.GateIgtOverload:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_GT_PROBLEM");
                     break;
             }
@@ -1011,11 +1011,11 @@ namespace SCME.UI.PagesUser
 
             switch (Fault)
             {
-                case Types.Gate.HWFaultReason.HoldProcessError:
-                case Types.Gate.HWFaultReason.LatchProcessError:
+                case Types.GTU.HWFaultReason.HoldProcessError:
+                case Types.GTU.HWFaultReason.LatchProcessError:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IHL_PROBLEM");
                     break;
-                case Types.Gate.HWFaultReason.GateProcessError:
+                case Types.GTU.HWFaultReason.GateProcessError:
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_GT_PROBLEM");
                     break;
             }
@@ -1071,10 +1071,10 @@ namespace SCME.UI.PagesUser
             return gateResults;
         }
 
-        internal void SetResultSl(DeviceState state, Types.VTM.TestResults result)
+        internal void SetResultSl(Types.DeviceState state, Types.VTM.TestResults result)
         {
             m_StateVtm = state;
-            if (state == DeviceState.InProcess)
+            if (state == Types.DeviceState.InProcess)
                 slCounter++;
 
             if (m_CurrentPos == 1)
@@ -1094,7 +1094,7 @@ namespace SCME.UI.PagesUser
                      ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM,
                      string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
                 if (((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage > (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VTM");
 
@@ -1103,7 +1103,7 @@ namespace SCME.UI.PagesUser
             if (labelItmResult != null)
                 labelItmResult.Content = string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Current);
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserSL)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserSL)
             {
                 PlotX(m_CurrentPos, @"Itm", m_XRed.Color, result.ITMArray);
                 PlotX(m_CurrentPos, @"Vtm", m_XOrange.Color, result.VTMArray);
@@ -1224,13 +1224,13 @@ namespace SCME.UI.PagesUser
             return gateResults;
         }
 
-        internal void SetResultBvtAll(DeviceState state)
+        internal void SetResultBvtAll(Types.DeviceState state)
         {
-            if (state == DeviceState.InProcess)
+            if (state == Types.DeviceState.InProcess)
                 bvtCounter++;
         }
 
-        internal void SetResultBvtDirect(DeviceState state, Types.BVT.TestResults result)
+        internal void SetResultBvtDirect(Types.DeviceState state, Types.BVT.TestResults result)
         {
             m_StateBvt = state;
 
@@ -1259,7 +1259,7 @@ namespace SCME.UI.PagesUser
                 if (labelBvtVdrmResult != null)
                     SetLabel(labelBvtVdrmResult, state, result.VDRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VDRM, result.VDRM.ToString(CultureInfo.InvariantCulture));
 
-                if (state != DeviceState.InProcess)
+                if (state != Types.DeviceState.InProcess)
                     if (result.VDRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VDRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VDRM");
             }
@@ -1275,16 +1275,16 @@ namespace SCME.UI.PagesUser
                                                         result.IDRM > 0,
                          result.IDRM.ToString(CultureInfo.InvariantCulture));
 
-                if (state != DeviceState.InProcess)
+                if (state != Types.DeviceState.InProcess)
                     if (result.IDRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IDRM");
             }
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserBVT)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserBVT)
                 PlotYX(m_CurrentPos, "Direct", _bvtDirectSolidColorBrush.Color, result.VoltageData, result.CurrentData);
         }
 
-        internal void SetResultReverseBvt(DeviceState state, Types.BVT.TestResults result)
+        internal void SetResultReverseBvt(Types.DeviceState state, Types.BVT.TestResults result)
         {
             m_StateBvt = state;
 
@@ -1314,7 +1314,7 @@ namespace SCME.UI.PagesUser
                     SetLabel(labelBvtVrrmResult, state, result.VRRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VRRM,
                          result.VRRM.ToString(CultureInfo.InvariantCulture));
 
-                if (state != DeviceState.InProcess)
+                if (state != Types.DeviceState.InProcess)
                     if (result.VRRM <= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].VRRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VRRM");
             }
@@ -1330,12 +1330,12 @@ namespace SCME.UI.PagesUser
                                                         result.IRRM > 0,
                          result.IRRM.ToString(CultureInfo.InvariantCulture));
 
-                if (state != DeviceState.InProcess)
+                if (state != Types.DeviceState.InProcess)
                     if (result.IRRM > (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRRM)
                         ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IRRM");
             }
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserBVT)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserBVT)
                 PlotYX(m_CurrentPos, "Reverse", _bvtReverseColorBrush.Color, result.VoltageData, result.CurrentData);
         }
 
@@ -1392,7 +1392,7 @@ namespace SCME.UI.PagesUser
             IsRunning = false;
         }
 
-        internal void SetResultBvtUdsmUrsmDirect(DeviceState state, Types.BVT.TestResults result)
+        internal void SetResultBvtUdsmUrsmDirect(Types.DeviceState state, Types.BVT.TestResults result)
         {
             m_StateBvt = state;
 
@@ -1418,12 +1418,12 @@ namespace SCME.UI.PagesUser
             if (labelBvtIdsmResult != null)
                 SetLabel(labelBvtIdsmResult, state, result.IDSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDSM, result.IDSM.ToString(CultureInfo.InvariantCulture));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
                 if (result.IDSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IDSM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IDSM");
         }
 
-        internal void SetResultBvtUdsmUrsmReverse(DeviceState state, Types.BVT.TestResults result)
+        internal void SetResultBvtUdsmUrsmReverse(Types.DeviceState state, Types.BVT.TestResults result)
         {
             m_StateBvt = state;
 
@@ -1449,7 +1449,7 @@ namespace SCME.UI.PagesUser
             if (labelBvtIrsmResult != null)
                 SetLabel(labelBvtIrsmResult, state, result.IRSM < (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRSM, result.IRSM.ToString(CultureInfo.InvariantCulture));
 
-            if (state != DeviceState.InProcess)
+            if (state != Types.DeviceState.InProcess)
                 if (result.IRSM >= (Profile.TestParametersAndNormatives.OfType<Types.BVT.TestParameters>().ToArray())[bvtCounter].IRSM)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IRSM");
         }
@@ -1502,11 +1502,11 @@ namespace SCME.UI.PagesUser
             return results;
         }
 
-        internal void SetResultdVdt(DeviceState state, Types.dVdt.TestResults Result)
+        internal void SetResultdVdt(Types.DeviceState state, Types.dVdt.TestResults Result)
         {
             m_StatedVdt = state;
 
-            if (m_StatedVdt == DeviceState.InProcess)
+            if (m_StatedVdt == Types.DeviceState.InProcess)
                 dvdtCounter++;
 
             if (m_CurrentPos == 1)
@@ -1527,7 +1527,7 @@ namespace SCME.UI.PagesUser
                 SetLabel(labelResult, state, Result.Passed, Result.Passed ? "OK" : "Not OK");
             }
 
-            if (state == DeviceState.Success)
+            if (state == Types.DeviceState.Success)
             {
                 var labelDvdTVoltageRate = FindChild<Label>(presenter, "labelVoltageRate");
                 if (labelDvdTVoltageRate != null)
@@ -1623,11 +1623,11 @@ namespace SCME.UI.PagesUser
             return results;
         }
 
-        internal void SetResultATU(DeviceState state, Types.ATU.TestResults result)
+        internal void SetResultATU(Types.DeviceState state, Types.ATU.TestResults result)
         {
             m_StateATU = state;
 
-            if (m_StateATU == DeviceState.InProcess)
+            if (m_StateATU == Types.DeviceState.InProcess)
                 ATUCounter++;
 
             if (m_CurrentPos == 1)
@@ -1645,7 +1645,7 @@ namespace SCME.UI.PagesUser
                 ResultsATU2[ATUCounter].PRSM = result.PRSM;
             }
 
-            if (state == DeviceState.Success)
+            if (state == Types.DeviceState.Success)
             {
                 List<DependencyObject> ATUItemContainer = GetATUItemContainer();
                 ContentPresenter presenter = FindVisualChild<ContentPresenter>(ATUItemContainer[ATUCounter]);
@@ -1754,11 +1754,11 @@ namespace SCME.UI.PagesUser
             return results;
         }
 
-        internal void SetResultQrrTq(DeviceState state, Types.QrrTq.TestResults result)
+        internal void SetResultQrrTq(Types.DeviceState state, Types.QrrTq.TestResults result)
         {
             m_StateQrrTq = state;
 
-            if (m_StateQrrTq == DeviceState.InProcess)
+            if (m_StateQrrTq == Types.DeviceState.InProcess)
                 QrrTqCounter++;
 
             if (m_CurrentPos == 1)
@@ -1786,7 +1786,7 @@ namespace SCME.UI.PagesUser
                 ResultsQrrTq2[QrrTqCounter].Tq = result.Tq;
             }
 
-            if (state == DeviceState.Success)
+            if (state == Types.DeviceState.Success)
             {
                 List<DependencyObject> QrrTqItemContainer = GetQrrTqItemContainer();
                 ContentPresenter presenter = FindVisualChild<ContentPresenter>(QrrTqItemContainer[QrrTqCounter]);
@@ -1851,7 +1851,7 @@ namespace SCME.UI.PagesUser
                 }
             }
 
-            if (state == DeviceState.Success && Settings.Default.PlotUserQrrTq)
+            if (state == Types.DeviceState.Success && Settings.Default.PlotUserQrrTq)
             {
                 PlotX(m_CurrentPos, @"I", m_XRed.Color, result.CurrentData);
                 PlotX(m_CurrentPos, @"V", m_XOrange.Color, result.VoltageData);
@@ -1964,11 +1964,11 @@ namespace SCME.UI.PagesUser
             return results;
         }
 
-        internal void SetResultTOU(DeviceState state, Types.TOU.TestResults result)
+        internal void SetResultTOU(Types.DeviceState state, Types.TOU.TestResults result)
         {
             _StateTOU = state;
 
-            if (_StateTOU == DeviceState.InProcess)
+            if (_StateTOU == Types.DeviceState.InProcess)
                 TOUCounter++;
 
             List<Types.TOU.TestResults> results = m_CurrentPos == 1 ? ResultsTOU1 : ResultsTOU2;
@@ -1977,7 +1977,7 @@ namespace SCME.UI.PagesUser
             results[TOUCounter].TGD = result.TGD;
             results[TOUCounter].TGT = result.TGT;
 
-            if (state == DeviceState.Success)
+            if (state == Types.DeviceState.Success)
             {
                 List<DependencyObject> TOUItemContainer = GetTOUItemContainer();
                 ContentPresenter presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
@@ -2118,7 +2118,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        private static void SetLabel(ContentControl Target, DeviceState State, bool IsFitWithNormatives, string Value, bool UseIsFitWithNormatives = true)
+        private static void SetLabel(ContentControl Target, Types.DeviceState State, bool IsFitWithNormatives, string Value, bool UseIsFitWithNormatives = true)
         {
             switch (State)
             {
@@ -2257,7 +2257,7 @@ namespace SCME.UI.PagesUser
                         foreach (var j in FindVisualChildren<LabelWithIndex>(element))
                             j.Number = ListViewResults1.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
 
-                        if (ListViewResults1.Items[i] is Types.Gate.TestParameters)
+                        if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
                         {
                             ClearResultsGate(element);
                             continue;
@@ -2313,7 +2313,7 @@ namespace SCME.UI.PagesUser
                         foreach (var j in FindVisualChildren<LabelWithIndex>(element))
                             j.Number = ListViewResults2.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
 
-                        if (ListViewResults2.Items[i] is Types.Gate.TestParameters)
+                        if (ListViewResults2.Items[i] is Types.GTU.TestParameters)
                         {
                             ClearResultsGate(element);
                             continue;
@@ -2771,7 +2771,7 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        private void StartInternal(int Position, Types.Gate.TestParameters ParamsGate,
+        private void StartInternal(int Position, Types.GTU.TestParameters ParamsGate,
                                    Types.VTM.TestParameters ParamsVTM,
                                    Types.BVT.TestParameters ParamsBVT, Types.QrrTq.TestParameters ParamsQrrTq, Types.IH.TestParameters ParamsIH, Types.RCC.TestParameters ParamsRCC, Types.Commutation.TestParameters ParamsComm, Types.Clamping.TestParameters ParamsClamp, Types.ATU.TestParameters ParamsATU, Types.TOU.TestParameters ParamsTOU)
         {
@@ -2874,7 +2874,7 @@ namespace SCME.UI.PagesUser
 
             foreach (var baseTestParametersAndNormativese in parameters)
             {
-                var parGate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                var parGate = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                 if (parGate != null)
                 {
                     m_ResultsGate1.Add(new TestResults { TestTypeId = baseTestParametersAndNormativese.TestTypeId });

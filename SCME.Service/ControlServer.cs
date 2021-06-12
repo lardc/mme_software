@@ -105,7 +105,7 @@ namespace SCME.Service
 //            return initializationResponse;
         }
 
-        Types.Gate.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
+        Types.GTU.CalibrationResultGate IExternalControl.GatePulseCalibrationGate(ushort Current)
         {
             return _IoMain.GatePulseCalibrationGate(Current);
         }
@@ -115,12 +115,12 @@ namespace SCME.Service
             return _IoMain.GatePulseCalibrationMain(Current);
         }
 
-        void IExternalControl.GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        void IExternalControl.GateWriteCalibrationParameters(Types.GTU.CalibrationParameters Parameters)
         {
             _IoMain.GateWriteCalibrationParams(Parameters);
         }
 
-        Types.Gate.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
+        Types.GTU.CalibrationParameters IExternalControl.GateReadCalibrationParameters()
         {
             return _IoMain.GateReadCalibrationParams();
         }
@@ -140,14 +140,14 @@ namespace SCME.Service
             return _IoMain.GetSafetyType();
         }
 
-        bool IExternalControl.Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL,
+        bool IExternalControl.Start(Types.GTU.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL,
                                     Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC,
                                     Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             return _IoMain.Start(ParametersGate, ParametersSL, ParametersBvt, ParametersAtu, ParametersQrrTq, ParametersIH, ParametersRCC, ParametersComm, ParametersClamp, ParametersTOU);
         }
 
-        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        bool IExternalControl.StartDynamic(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.GTU.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
             return _IoMain.Start(parametersCommutation, parametersClamp, parametersGate, parametersSl, parametersBvt, parametersDvDt, parametersAtu, parametersQrrTq, parametersSctu, parametersTOU);
         }

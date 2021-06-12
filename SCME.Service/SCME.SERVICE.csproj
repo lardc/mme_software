@@ -132,7 +132,7 @@
     <Compile Include="IO\IOCommutation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IO\IOGate.cs">
+    <Compile Include="IO\IOGTU.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IO\IOGateway.cs" />

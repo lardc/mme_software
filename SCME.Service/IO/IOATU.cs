@@ -19,7 +19,7 @@ namespace SCME.Service.IO
         private IOCommutation m_IOCommutation;
         private TestParameters m_Parameters;
         private DeviceConnectionState m_ConnectionState;
-        private volatile DeviceState m_State;
+        private volatile Types.DeviceState m_State;
         private volatile TestResults m_Result;
         private volatile bool m_Stop;
 
@@ -59,10 +59,10 @@ namespace SCME.Service.IO
             try
             {
                 //для исполнения процедуры инициализации необходимо, чтобы блок ATU находился в состоянии DS_NONE, поэтому прежде чем мы начнём исполнять цикл конечного автомата, реализующий инициализацию ATU переведём ATU в состояние DS_None
-                if (ReadRegister(REG_DEV_STATE) != (ushort)HWDeviceState.DS_None)
+                if (ReadRegister(REG_DEV_STATE) != (ushort)Types.ATU.HWDeviceState.DS_None)
                     CallAction(ACT_DISABLE_POWER);
                 //ATU должен быть в состоянии DS_NONE. в принципе можно было бы сразу проверить состояние блока ATU, но мы будем выдерживать таймаут m_Timeout, за время истечения которого блок ATU должен выйти в состояние DS_None. если такового не случится - будем возбуждать исключительную ситуацию
-                HWDeviceState WaitedState = HWDeviceState.DS_None;
+                Types.ATU.HWDeviceState WaitedState = Types.ATU.HWDeviceState.DS_None;
                 ushort State;
                 bool End = false;
                 while (!End)
@@ -82,12 +82,12 @@ namespace SCME.Service.IO
                                 EnablePower();
 
                                 //из данного состояния ATU должен перейти в состояние DS_BatteryCharge но см. http://elma.pe.local/Projects/ProjectTask/Execute/82923 комментарий (Мороз Е. В. 13.04.2017 13:00:51)
-                                WaitedState = HWDeviceState.DS_Ready;
+                                WaitedState = Types.ATU.HWDeviceState.DS_Ready;
                                 break;
 
                             case (ushort)HWDeviceState.DS_BatteryCharge:
                                 //из данного состояния ATU должен перейти в состояние DS_Ready
-                                WaitedState = HWDeviceState.DS_Ready;
+                                WaitedState = Types.ATU.HWDeviceState.DS_Ready;
                                 break;
 
                             case (ushort)HWDeviceState.DS_Ready:
@@ -108,14 +108,14 @@ namespace SCME.Service.IO
                                 ClearFault();
 
                                 //после сброса состояния DS_Fault оно всегда будет DS_None
-                                WaitedState = HWDeviceState.DS_None;
+                                WaitedState = Types.ATU.HWDeviceState.DS_None;
                                 break;
 
                             case (ushort)HWDeviceState.DS_Disabled:
                                 throw new Exception(string.Format("state is 'DS_Disabled', reason: {0}", ReadRegister(REG_DISABLE_REASON)));
 
                             default:
-                                throw new Exception(string.Format("state is '{0}', waited state is '{1}'", ((HWDeviceState)State).ToString(), ((HWDeviceState)WaitedState).ToString()));
+                                throw new Exception(string.Format("state is '{0}', waited state is '{1}'", ((Types.ATU.HWDeviceState)State).ToString(), ((Types.ATU.HWDeviceState)WaitedState).ToString()));
                         }
                     }
                 }
@@ -153,11 +153,11 @@ namespace SCME.Service.IO
             }
         }
 
-        internal DeviceState Start(TestParameters Parameters, Types.Commutation.TestParameters commParameters)
+        internal Types.DeviceState Start(TestParameters Parameters, Types.Commutation.TestParameters commParameters)
         {
             m_Parameters = Parameters;
 
-            if (m_State == DeviceState.InProcess) throw new Exception("ATU test is already started.");
+            if (m_State == Types.DeviceState.InProcess) throw new Exception("ATU test is already started.");
 
             m_Result = new TestResults();
             m_Result.TestTypeId = m_Parameters.TestTypeId;
@@ -196,7 +196,7 @@ namespace SCME.Service.IO
             m_Stop = true;
         }
 
-        internal ushort ReadDeviceState(HWDeviceState WaitedState, int Timeout)
+        internal ushort ReadDeviceState(Types.ATU.HWDeviceState WaitedState, int Timeout)
         //реализация чтения состояния конечного автомата.
         //в WaitedState принимается состояние, в которое должен перейти конечный автомат ATU
         //реализация ожидает перехода конечного автомата в состояние WaitedState в течении времени Timeout
@@ -235,7 +235,7 @@ namespace SCME.Service.IO
         {
             var devState = (Types.ATU.HWDeviceState)ReadRegister(REG_DEV_STATE);
 
-            return !((devState == Types.ATU.HWDeviceState.DS_Fault) || (devState == Types.ATU.HWDeviceState.DS_Disabled) || (m_State == DeviceState.InProcess));
+            return !((devState == Types.ATU.HWDeviceState.DS_Fault) || (devState == Types.ATU.HWDeviceState.DS_Disabled) || (m_State == Types.DeviceState.InProcess));
         }
 
         private float RoundTwoDigits(double value)
@@ -248,7 +248,7 @@ namespace SCME.Service.IO
         {
             try
             {
-                m_State = DeviceState.InProcess;
+                m_State = Types.DeviceState.InProcess;
 
                 //перед измерением очищаем только Warning. сброс состояния Fault не делаем, т.к. он переводит ATU в состояние None
                 ClearWarning();
@@ -265,7 +265,7 @@ namespace SCME.Service.IO
                 if (m_IsATUEmulation)
                 {
                     //эмулируем успешный результат измерений
-                    m_State = DeviceState.Success;
+                    m_State = Types.DeviceState.Success;
                     m_Result.UBR = 3000;   //В
                     m_Result.UPRSM = 1800; //В
                     m_Result.IPRSM = RoundTwoDigits(10257 / 1000d); //А   уровень отображения реализует вывод до 2 десятых
@@ -278,9 +278,9 @@ namespace SCME.Service.IO
                 else
                 {
                     //перед каждым измерением выполняем включение специальной коммутации для блока ATU для подключения требуемого измерительного блока к испытуемому прибору
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.ATU, Commutation.CommutationType, Commutation.Position) == DeviceState.Fault)
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.ATU, Commutation.CommutationType, Commutation.Position) == Types.DeviceState.Fault)
                     {
-                        m_State = DeviceState.Fault;
+                        m_State = Types.DeviceState.Fault;
                         //раз коммутация не удалась - выставляем значения всех измеряемых параметров в ноль
                         m_Result.UBR = 0;
                         m_Result.UPRSM = 0;
@@ -308,10 +308,10 @@ namespace SCME.Service.IO
                     m_Result.ArrayIDUT = ReadArrayFastS(ARR_SCOPE2_DATA);
 
                     //по окончании процесса измерения - отключаем коммутацию
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == Types.DeviceState.Fault)
                     {
-                        m_State = DeviceState.Fault;
-                       
+                        m_State = Types.DeviceState.Fault;
+
                         //коммутация не удалась, оставляем содержимое m_Result без изменения
                         FireATUEvent(m_State, m_Result);
 
@@ -324,7 +324,7 @@ namespace SCME.Service.IO
             catch (Exception e)
             {
                 m_IOCommutation.Switch(Types.Commutation.CommutationMode.None);
-                m_State = DeviceState.Fault;
+                m_State = Types.DeviceState.Fault;
                 FireATUEvent(m_State, m_Result);
                 FireExceptionEvent(e.Message);
 
@@ -332,7 +332,7 @@ namespace SCME.Service.IO
             }
         }
 
-        private DeviceState WaitForEndOfTest()
+        private Types.DeviceState WaitForEndOfTest()
         {
             var timeStamp = Environment.TickCount + m_Timeout;
 
@@ -341,13 +341,13 @@ namespace SCME.Service.IO
                 if (m_Stop)
                 {
                     CallAction(ACT_STOP_TEST);
-                    return DeviceState.Stopped;
+                    return Types.DeviceState.Stopped;
                 }
 
                 ushort devState = ReadRegister(REG_DEV_STATE, true);
 
                 //блок ATU перешёл в состояние DS_Fault
-                if (devState == (ushort)HWDeviceState.DS_Fault)
+                if (devState == (ushort)Types.ATU.HWDeviceState.DS_Fault)
                 {
                     ushort faultReason = ReadRegister(REG_FAULT_REASON);
 
@@ -355,7 +355,7 @@ namespace SCME.Service.IO
                 }
 
                 //блок ATU перешёл в состояние DS_Disabled
-                if (devState == (ushort)HWDeviceState.DS_Disabled)
+                if (devState == (ushort)Types.ATU.HWDeviceState.DS_Disabled)
                 {
                     ushort disableReason = ReadRegister(REG_DISABLE_REASON);
 
@@ -363,7 +363,7 @@ namespace SCME.Service.IO
                 }
 
                 //блок ATU завершил процесс измерения
-                if (devState == (ushort)HWDeviceState.DS_Ready)
+                if (devState == (ushort)Types.ATU.HWDeviceState.DS_Ready)
                 {
                     //проверим наличие warnig от блока ATU
                     ushort warning = ReadRegister(REG_WARNING);
@@ -389,7 +389,7 @@ namespace SCME.Service.IO
             }
 
             //раз мы сюда добрались - значит ATU находится в адекватном состоянии и таймаут не наступил
-            return DeviceState.Success;
+            return Types.DeviceState.Success;
         }
 
         #region Standart API
@@ -503,7 +503,7 @@ namespace SCME.Service.IO
             m_Communication.PostATUNotificationEvent(Warning, Fault, Disable);
         }
 
-        private void FireATUEvent(DeviceState State, TestResults Result)
+        private void FireATUEvent(Types.DeviceState State, TestResults Result)
         {
             string message = string.Format("ATU test state {0}", State);
 

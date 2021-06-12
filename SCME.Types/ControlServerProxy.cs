@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Commutation;
-using SCME.Types.Gate;
+using SCME.Types.GTU;
 using SCME.Types.Profiles;
 using SCME.Types.SCTU;
 using SCME.Types.SQL;
@@ -61,7 +61,7 @@ namespace SCME.Types
             return Channel.GetSafetyType();
         }
 
-        public bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersVTM,
+        public bool Start(GTU.TestParameters ParametersGate, VTM.TestParameters ParametersVTM,
                           BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC,
                           Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamping, TOU.TestParameters ParametersTOU)
         {
@@ -156,7 +156,7 @@ namespace SCME.Types
             return Channel.RequestRemotePrinting(GroupName, CustomerName, DeviceType, Predicate);
         }
 
-        public bool StartDynamic(Commutation.TestParameters paramsComm, Clamping.TestParameters paramsClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
+        public bool StartDynamic(Commutation.TestParameters paramsComm, Clamping.TestParameters paramsClamp, GTU.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm,
                           BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu,
                           QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, TOU.TestParameters[] parametersTOU)
         {

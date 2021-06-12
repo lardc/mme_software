@@ -9,10 +9,10 @@ namespace SCME.Types.ATU
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {
-        /// <summary>Неопределенное состояние (после включения питания)</summary>
+        /// <summary>Неопределенное состояние</summary>
         [EnumMember]
         DS_None = 0,
-        /// <summary>Состояние ошибки</summary>
+        /// <summary>Ошибка</summary>
         [EnumMember]
         DS_Fault = 1,
         /// <summary>Выключен</summary>
@@ -26,7 +26,7 @@ namespace SCME.Types.ATU
         DS_Ready = 4,
         /// <summary>В процессе работы</summary>
         [EnumMember]
-        DS_InProcess = 5,
+        DS_InProcess = 5
     };
 
     /// <summary>Причина ошибки</summary>
@@ -57,10 +57,10 @@ namespace SCME.Types.ATU
         Short = 2,
         /// <summary>Погрешность полученной мощности велика</summary>
         [EnumMember]
-        PowerAccuracy = 3,
+        Accuracy = 3,
         /// <summary>Пробой прибора</summary>
         [EnumMember]
-        BreakDUT = 4,
+        Break = 4,
         /// <summary>Краевой пробой прибора</summary>
         [EnumMember]
         FacetBreak = 5
@@ -89,16 +89,17 @@ namespace SCME.Types.ATU
         Fail = 2
     };
 
-    [DataContract(Name = "Atu.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    /// <summary>Параметры произведения тестов</summary>
+    [DataContract(Name = "ATU.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
             TestParametersType = TestParametersType.ATU;
+            IsEnabled = true;
             PrePulseValue = 100;
             PowerValue = 16;
-            IsEnabled = true;
         }
 
         [DataMember]
@@ -143,19 +144,18 @@ namespace SCME.Types.ATU
             get; set;
         } = 70;
 
+        /// <summary>Проверка изменений в параметрах</summary>
+        /// <param name="oldParameters">Старые параметры</param>
+        /// <returns>Возвращает True, если параметры были изменены</returns>
         public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
         {
+            //Старые параметры
+            TestParameters OldTestParameters = (TestParameters)oldParameters;
             if (oldParameters == null)
-                throw new ArgumentNullException("Метод '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' равный Null.");
-            if (GetHashCode() == oldParameters.GetHashCode())
-                return false;
-            string typeName = oldParameters.GetType().Name;
-            if (typeName != "TestParameters")
-                throw new InvalidCastException("Method '" + System.Reflection.MethodBase.GetCurrentMethod().Name + "' получил на вход параметр 'oldParameters' тип которого '" + typeName + "'. Ожидался тип параметра 'TestParameters'.");
-            TestParameters aTUOldParameters = (TestParameters)oldParameters;
-            if (PrePulseValue != aTUOldParameters.PrePulseValue)
+                throw new InvalidCastException("OldParameters must be ATUOldParameters");
+            if (PrePulseValue != OldTestParameters.PrePulseValue)
                 return true;
-            if (PowerValue != aTUOldParameters.PowerValue)
+            if (PowerValue != OldTestParameters.PowerValue)
                 return true;
             return false;
         }
@@ -173,8 +173,8 @@ namespace SCME.Types.ATU
         /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
         public TestResults()
         {
-            ArrayVDUT = new List<short>();
             ArrayIDUT = new List<short>();
+            ArrayVDUT = new List<short>();
         }
 
         [DataMember]
@@ -202,20 +202,20 @@ namespace SCME.Types.ATU
         }
 
         [DataMember]
-        public IList<short> ArrayVDUT
+        public IList<short> ArrayIDUT
         {
             get; set;
         }
 
         [DataMember]
-        public IList<short> ArrayIDUT
+        public IList<short> ArrayVDUT
         {
             get; set;
         }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class CalibrationParams
+    public class CalibrationParameters
     {
 
     }

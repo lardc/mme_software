@@ -61,7 +61,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return ("Commutation", clampingCondtions, clampingParameters);
         }
 
-        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.Gate.TestParameters gate)
+        private (string typeName, Dictionary<string, object> conditions, Dictionary<string, (object Min, object Max)> parameters) TypeConditionsParameters(Types.GTU.TestParameters gate)
         {
             var gateCondtions = new Dictionary<string, object>()
             {
@@ -455,7 +455,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             {
                 switch (i)
                 {
-                    case Types.Gate.TestParameters gate:
+                    case Types.GTU.TestParameters gate:
                         _inserter.Insert(TypeConditionsParameters(gate));
                         break;
                     case Types.VTM.TestParameters sl:

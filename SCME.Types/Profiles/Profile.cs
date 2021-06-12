@@ -128,9 +128,9 @@ namespace SCME.Types.Profiles
         public ObservableCollection<BaseTestParametersAndNormatives> TestParametersAndNormatives { get; set; }
 
         [DataMember]
-        public Gate.TestParameters ParametersGate { get; set; }
+        public GTU.TestParameters ParametersGate { get; set; }
         [DataMember]
-        public Gate.ResultNormatives NormativesGate { get; set; }
+        public GTU.ResultNormatives NormativesGate { get; set; }
         [DataMember]
         public VTM.TestParameters ParametersVTM { get; set; }
         [DataMember]
@@ -158,7 +158,7 @@ namespace SCME.Types.Profiles
 
         private void ConstructorInit()
         {
-            ParametersGate = new Gate.TestParameters();
+            ParametersGate = new GTU.TestParameters();
             ParametersVTM = new VTM.TestParameters();
             ParametersBVT = new BVT.TestParameters();
             ParametersComm = new Commutation.ModuleCommutationType();
@@ -166,7 +166,7 @@ namespace SCME.Types.Profiles
             TestParametersAndNormatives = new ObservableCollection<BaseTestParametersAndNormatives>(new List<BaseTestParametersAndNormatives>());
 
 
-            NormativesGate = new Gate.ResultNormatives();
+            NormativesGate = new GTU.ResultNormatives();
             NormativesVTM = new VTM.ResultNormatives();
             NormativesBVT = new BVT.ResultNormatives();
         }
@@ -180,7 +180,7 @@ namespace SCME.Types.Profiles
                 ProfileKey = Key,
                 ProfileName = Name,
                 Version = Version,
-                GateTestParameters = new List<Gate.TestParameters>(),
+                GateTestParameters = new List<GTU.TestParameters>(),
                 VTMTestParameters = new List<VTM.TestParameters>(),
                 BVTTestParameters = new List<BVT.TestParameters>(),
                 DvDTestParameterses = new List<dVdt.TestParameters>(),
@@ -198,7 +198,7 @@ namespace SCME.Types.Profiles
             {
                 switch (baseTestParametersAndNormativese)
                 {
-                    case Gate.TestParameters gate:
+                    case GTU.TestParameters gate:
                         profileItem.GateTestParameters.Add(gate);
                         break;
                     case VTM.TestParameters sl:

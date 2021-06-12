@@ -163,7 +163,7 @@ namespace SCME.UI.IO
             }
         }
 
-        public void GateWriteCalibrationParameters(Types.Gate.CalibrationParameters Parameters)
+        public void GateWriteCalibrationParameters(Types.GTU.CalibrationParameters Parameters)
         {
             try
             {
@@ -183,9 +183,9 @@ namespace SCME.UI.IO
             }
         }
 
-        public Types.Gate.CalibrationParameters GateReadCalibrationParameters()
+        public Types.GTU.CalibrationParameters GateReadCalibrationParameters()
         {
-            var parameters = new Types.Gate.CalibrationParameters();
+            var parameters = new Types.GTU.CalibrationParameters();
             try
             {
                 parameters = m_ControlClient.GateReadCalibrationParameters();
@@ -206,7 +206,7 @@ namespace SCME.UI.IO
             return parameters;
         }
 
-        public Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        public Types.GTU.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
         {
             try
             {
@@ -215,17 +215,17 @@ namespace SCME.UI.IO
             catch (FaultException<FaultData> ex)
             {
                 ShowFaultError("Calibration error", ex);
-                return new Types.Gate.CalibrationResultGate();
+                return new Types.GTU.CalibrationResultGate();
             }
             catch (CommunicationException ex)
             {
                 ProcessCommunicationException(ex);
-                return new Types.Gate.CalibrationResultGate();
+                return new Types.GTU.CalibrationResultGate();
             }
             catch (Exception ex)
             {
                 ProcessGeneralException(ex);
-                return new Types.Gate.CalibrationResultGate();
+                return new Types.GTU.CalibrationResultGate();
             }
         }
 
@@ -480,7 +480,7 @@ namespace SCME.UI.IO
 
         #region ExternalControl members
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
+        public bool Start(Types.GTU.TestParameters ParametersGate, Types.VTM.TestParameters ParametersVtm,
                           Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersCommutation, Types.Clamping.TestParameters ParametersClamping, Types.TOU.TestParameters ParametersTOU, bool SkipSC = false)
         {
             if (!IsServerConnected)
@@ -592,7 +592,7 @@ namespace SCME.UI.IO
                     return false;
                 }
 
-                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.Gate.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
+                result = m_ControlClient.StartDynamic(paramsComm, paramsClamp, parameters.OfType<Types.GTU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.VTM.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.BVT.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.dVdt.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.ATU.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<Types.QrrTq.TestParameters>().Where(t => t.IsEnabled).ToArray(), parameters.OfType<SctuTestParameters>().ToArray(), parameters.OfType<Types.TOU.TestParameters>().Where(t => t.IsEnabled).ToArray());
 
                 return result;
             }
@@ -1338,12 +1338,12 @@ namespace SCME.UI.IO
             m_QueueWorker.Start();
         }
 
-        public void BVTUdsmUrsmDirectHandler(DeviceState State, Types.BVT.TestResults Result)
+        public void BVTUdsmUrsmDirectHandler(Types.DeviceState State, Types.BVT.TestResults Result)
         {
             m_QueueWorker.AddBvtUdsmUrsmDirectEvent(State, Result);
         }
 
-        public void BVTUdsmUrsmReverseHandler(DeviceState State, Types.BVT.TestResults Result)
+        public void BVTUdsmUrsmReverseHandler(Types.DeviceState State, Types.BVT.TestResults Result)
         {
             m_QueueWorker.AddBvtUdsmUrsmReverseEvent(State, Result);
         }
@@ -1375,7 +1375,7 @@ namespace SCME.UI.IO
             m_QueueWorker.AddDeviceConnectionEvent(Device, State, Message);
         }
 
-        public void TestAllHandler(DeviceState State, string Message)
+        public void TestAllHandler(Types.DeviceState State, string Message)
         {
             m_QueueWorker.AddTestAllEvent(State, Message);
         }
@@ -1458,59 +1458,59 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddCommutationFaultEvent(Fault);
         }
 
-        public void GateAllHandler(DeviceState State)
+        public void GateAllHandler(Types.DeviceState State)
         {
             m_QueueWorker.AddGateAllEvent(State);
         }
 
-        public void GateKelvinHandler(DeviceState state, bool isKelvinOk, IList<short> array, long testTypeId)
+        public void GateKelvinHandler(Types.DeviceState state, bool isKelvinOk, IList<short> array, long testTypeId)
         {
             m_QueueWorker.AddGateKelvinEvent(state, isKelvinOk, array, testTypeId);
         }
 
-        public void GateResistanceHandler(DeviceState state, float resistance, long testTypeId)
+        public void GateResistanceHandler(Types.DeviceState state, float resistance, long testTypeId)
         {
             m_QueueWorker.AddGateResistanceEvent(state, resistance, testTypeId);
         }
 
-        public void GateIgtVgtHandler(DeviceState state, float igt, float vgt, IList<short> arrayI, IList<short> arrayV, long testTypeId)
+        public void GateIgtVgtHandler(Types.DeviceState state, float igt, float vgt, IList<short> arrayI, IList<short> arrayV, long testTypeId)
         {
             m_QueueWorker.AddGateGateEvent(state, igt, vgt, arrayI, arrayV, testTypeId);
         }
 
-        public void GateIhHandler(DeviceState state, float ih, IList<short> array, long testTypeId)
+        public void GateIhHandler(Types.DeviceState state, float ih, IList<short> array, long testTypeId)
         {
             m_QueueWorker.AddGateIhEvent(state, ih, array, testTypeId);
         }
 
-        public void GateIlHandler(DeviceState state, float il, long testTypeId)
+        public void GateIlHandler(Types.DeviceState state, float il, long testTypeId)
         {
             m_QueueWorker.AddGateIlEvent(state, il, testTypeId);
         }
 
-        public void GateVgntHandler(DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        public void GateVgntHandler(Types.DeviceState state, float vgnt, ushort ignt, long testTypeId)
         {
             m_QueueWorker.AddGateVgntEvent(state, vgnt, ignt, testTypeId);
         }
 
-        public void GateNotificationHandler(Types.Gate.HWProblemReason Problem, Types.Gate.HWWarningReason Warning,
-                                            Types.Gate.HWFaultReason Fault,
-                                            Types.Gate.HWDisableReason Disable)
+        public void GateNotificationHandler(Types.GTU.HWProblemReason Problem, Types.GTU.HWWarningReason Warning,
+                                            Types.GTU.HWFaultReason Fault,
+                                            Types.GTU.HWDisableReason Disable)
         {
-            if (Warning != Types.Gate.HWWarningReason.None)
+            if (Warning != Types.GTU.HWWarningReason.None)
                 m_QueueWorker.AddGateWarningEvent(Warning);
 
-            if (Problem != Types.Gate.HWProblemReason.None)
+            if (Problem != Types.GTU.HWProblemReason.None)
                 m_QueueWorker.AddGateProblemEvent(Problem);
 
-            if (Fault != Types.Gate.HWFaultReason.None)
+            if (Fault != Types.GTU.HWFaultReason.None)
                 m_QueueWorker.AddGateFaultEvent(Fault);
 
             // if (Disable != Types.Gate.HWDisableReason.None)
             //      m_QueueWorker.AddVtmFaultEvent(Disable);
         }
 
-        public void SLHandler(DeviceState state, Types.VTM.TestResults result)
+        public void SLHandler(Types.DeviceState state, Types.VTM.TestResults result)
         {
             m_QueueWorker.AddSLEvent(state, result);
         }
@@ -1532,17 +1532,17 @@ namespace SCME.UI.IO
             //      m_QueueWorker.AddVtmFaultEvent(Disable);
         }
 
-        public void BVTAllHandler(DeviceState State)
+        public void BVTAllHandler(Types.DeviceState State)
         {
             m_QueueWorker.AddBvtAllEvent(State);
         }
 
-        public void BVTDirectHandler(DeviceState State, Types.BVT.TestResults Result)
+        public void BVTDirectHandler(Types.DeviceState State, Types.BVT.TestResults Result)
         {
             m_QueueWorker.AddBvtDirectEvent(State, Result);
         }
 
-        public void BVTReverseHandler(DeviceState State, Types.BVT.TestResults Result)
+        public void BVTReverseHandler(Types.DeviceState State, Types.BVT.TestResults Result)
         {
             m_QueueWorker.AddBvtReverseEvent(State, Result);
         }
@@ -1564,7 +1564,7 @@ namespace SCME.UI.IO
             //      m_QueueWorker.AddBvtFaultEvent(Disable);
         }
 
-        public void DvDtHandler(DeviceState State, Types.dVdt.TestResults Result)
+        public void DvDtHandler(Types.DeviceState State, Types.dVdt.TestResults Result)
         {
             m_QueueWorker.AddDVdtEvent(State, Result);
         }
@@ -1578,7 +1578,7 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddDVdtFaultEvent(Fault);
         }
 
-        public void ATUHandler(DeviceState State, Types.ATU.TestResults Result)
+        public void ATUHandler(Types.DeviceState State, Types.ATU.TestResults Result)
         {
             m_QueueWorker.AddATUEvent(State, Result);
         }
@@ -1590,7 +1590,7 @@ namespace SCME.UI.IO
             if (Fault != (ushort)Types.ATU.HWFaultReason.None) m_QueueWorker.AddATUFaultEvent(Fault);
         }
 
-        public void QrrTqHandler(DeviceState State, Types.QrrTq.TestResults Result)
+        public void QrrTqHandler(Types.DeviceState State, Types.QrrTq.TestResults Result)
         {
             m_QueueWorker.AddQrrTqEvent(State, Result);
         }
@@ -1613,7 +1613,7 @@ namespace SCME.UI.IO
         }
 
 
-        public void TOUHandler(DeviceState State, TestResults Result)
+        public void TOUHandler(Types.DeviceState State, TestResults Result)
         {
             m_QueueWorker.AddTOUEvent(State, Result);
         }
@@ -1631,7 +1631,7 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddTOUFaultEvent(Fault);
         }
 
-        public void IHHandler(DeviceState State, Types.IH.TestResults Result)
+        public void IHHandler(Types.DeviceState State, Types.IH.TestResults Result)
         {
             m_QueueWorker.AddIHEvent(State, Result);
         }
@@ -1648,7 +1648,7 @@ namespace SCME.UI.IO
                 m_QueueWorker.AddIHFaultEvent(Fault);
         }
 
-        public void RCCHandler(DeviceState State, Types.RCC.TestResults Result)
+        public void RCCHandler(Types.DeviceState State, Types.RCC.TestResults Result)
         {
             //UI не использует виртуальный блок RCC, его использует только комплекс АКИМ
         }

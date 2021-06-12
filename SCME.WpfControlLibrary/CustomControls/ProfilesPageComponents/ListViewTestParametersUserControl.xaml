@@ -6,7 +6,7 @@
              xmlns:atuParameters="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
              xmlns:bvtParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types"
              xmlns:dVdtParameters="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"
-             xmlns:gateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types"
+             xmlns:gateParameters="clr-namespace:SCME.Types.GTU;assembly=SCME.Types"
              xmlns:qrrTqParameters="clr-namespace:SCME.Types.QrrTq;assembly=SCME.Types"
              xmlns:touParameters="clr-namespace:SCME.Types.TOU;assembly=SCME.Types"
              xmlns:vtmParameters="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"

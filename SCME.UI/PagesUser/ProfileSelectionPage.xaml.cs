@@ -285,7 +285,7 @@ namespace SCME.UI.PagesUser
             {
                 switch (type)
                 {
-                    case TestParametersType.Gate:
+                    case TestParametersType.GTU:
                         for (int i = 0; i < profileItem.GateTestParameters.Count; i++)
                         {
                             Test = profileItem.GateTestParameters[i];
@@ -296,7 +296,7 @@ namespace SCME.UI.PagesUser
 
                         break;
 
-                    case TestParametersType.StaticLoses:
+                    case TestParametersType.SL:
                         for (int i = 0; i < profileItem.VTMTestParameters.Count; i++)
                         {
                             Test = profileItem.VTMTestParameters[i];
@@ -307,7 +307,7 @@ namespace SCME.UI.PagesUser
 
                         break;
 
-                    case TestParametersType.Bvt:
+                    case TestParametersType.BVT:
                         for (int i = 0; i < profileItem.BVTTestParameters.Count; i++)
                         {
                             Test = profileItem.BVTTestParameters[i];
@@ -318,7 +318,7 @@ namespace SCME.UI.PagesUser
 
                         break;
 
-                    case TestParametersType.Dvdt:
+                    case TestParametersType.dVdt:
                         for (int i = 0; i < profileItem.DvDTestParameterses.Count; i++)
                         {
                             Test = profileItem.DvDTestParameterses[i];
@@ -400,10 +400,10 @@ namespace SCME.UI.PagesUser
 
                 foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
                 {
-                    var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                    var gate = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                     if (gate != null)
                     {
-                        var g = TestByTypeAndOrder(actualProfileItem, TestParametersType.Gate, gate.Order);
+                        var g = TestByTypeAndOrder(actualProfileItem, TestParametersType.GTU, gate.Order);
 
                         if (g == null)
                             return true;
@@ -417,7 +417,7 @@ namespace SCME.UI.PagesUser
                     var bvt = baseTestParametersAndNormativese as Types.BVT.TestParameters;
                     if (bvt != null)
                     {
-                        var b = TestByTypeAndOrder(actualProfileItem, TestParametersType.Bvt, bvt.Order);
+                        var b = TestByTypeAndOrder(actualProfileItem, TestParametersType.BVT, bvt.Order);
 
                         if (b == null)
                             return true;
@@ -431,7 +431,7 @@ namespace SCME.UI.PagesUser
                     var sl = baseTestParametersAndNormativese as Types.VTM.TestParameters;
                     if (sl != null)
                     {
-                        var s = TestByTypeAndOrder(actualProfileItem, TestParametersType.StaticLoses, sl.Order);
+                        var s = TestByTypeAndOrder(actualProfileItem, TestParametersType.SL, sl.Order);
 
                         if (s == null)
                             return true;
@@ -445,7 +445,7 @@ namespace SCME.UI.PagesUser
                     var dvdt = baseTestParametersAndNormativese as Types.dVdt.TestParameters;
                     if (dvdt != null)
                     {
-                        var d = TestByTypeAndOrder(actualProfileItem, TestParametersType.Dvdt, dvdt.Order);
+                        var d = TestByTypeAndOrder(actualProfileItem, TestParametersType.dVdt, dvdt.Order);
 
                         if (d == null)
                             return true;

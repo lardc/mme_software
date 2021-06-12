@@ -1,29 +1,35 @@
+using PropertyChanged;
+using SCME.Types.BaseTestParams;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Windows;
-using PropertyChanged;
-using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.BVT
 {
+    /// <summary>Состояние оборудования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {
+        /// <summary>Неопределенное состояние</summary>
         [EnumMember]
-        None = 0,
+        DS_None = 0,
+        /// <summary>Ошибка</summary>
         [EnumMember]
-        Fault = 1,
+        DS_Fault = 1,
+        /// <summary>Выключен</summary>
         [EnumMember]
-        Disabled = 2,
+        DS_Disabled = 2,
         [EnumMember]
-        Charging = 3,
+        DS_dummy = 3,
+        /// <summary>Заряжен</summary>
         [EnumMember]
-        PowerReady = 4,
+        DS_Powered = 4,
+        /// <summary>В процессе работы</summary>
         [EnumMember]
-        InProcess = 5
+        DS_InProcess = 5
     };
 
+    /// <summary>Причина ошибки</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWFaultReason
     {
@@ -37,6 +43,20 @@ namespace SCME.Types.BVT
         TemperatureOverload = 401
     };
 
+    /// <summary>Причина предупреждения</summary>
+    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
+    public enum HWWarningReason
+    {
+        [EnumMember]
+        None = 0,
+        [EnumMember]
+        CurrentNotReached = 401,
+        /// <summary>Система перезагружена watchdog'ом</summary>
+        [EnumMember]
+        WatchdogReset = 1001
+    };
+
+    /// <summary>Причина выключения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDisableReason
     {
@@ -50,17 +70,7 @@ namespace SCME.Types.BVT
         NoTempSignal = 402
     };
 
-    [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWWarningReason
-    {
-        [EnumMember]
-        None = 0,
-        [EnumMember]
-        CurrentNotReached = 401,
-        [EnumMember]
-        WatchdogReset = 1001
-    };
-
+    /// <summary>Причина проблемы</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWProblemReason
     {
@@ -70,210 +80,303 @@ namespace SCME.Types.BVT
         Stopped = 401
     };
 
+    /// <summary>Результат выполнения</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWOperationResult
     {
+        /// <summary>В процессе</summary>
         [EnumMember]
         InProcess = 0,
+        /// <summary>Успешно</summary>
         [EnumMember]
         Success = 1,
+        /// <summary>Неудачно</summary>
         [EnumMember]
         Fail = 2
     };
-    
-    [DataContract(Name = "Bvt.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+
+    /// <summary>Параметры произведения тестов</summary>
+    [DataContract(Name = "BVT.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     [AddINotifyPropertyChangedInterface]
-//    [KnownType(typeof(BaseTestParametersAndNormatives))]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
-     
-        [DataMember]
-        public BVTTestType UdsmUrsmTestType { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmPulseFrequency{ get; set; }
-        
-        [DataMember]
-        public float UdsmUrsmCurrentLimit{ get; set; }
-        
-        [DataMember]
-        public float UdsmUrsmRampUpVoltage{ get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmStartVoltage { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmVoltageFrequency { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmFrequencyDivisor { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmVoltageLimitR { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmVoltageLimitD { get; set; }
-        
-        [DataMember]
-        public ushort UdsmUrsmPlateTime { get; set; }
-
-
-        [DataMember]
-        public ushort VDSM { get; set; }
-
-        [DataMember]
-        public ushort VRSM { get; set; }
-        [DataMember]
-        public float IDSM { get; set; }
-
-        [DataMember]
-        public float IRSM { get; set; }
-
-        [DataMember]
-        public bool UseUdsmUrsm { get; set; }
-        
-        [DataMember]
-        public int? ClassByProfileName { get; set; }
-        
-        [DataMember]
-        public ushort PulseFrequency { get; set; }
-        
-        [DataMember]
-        public BVTMeasurementMode MeasurementMode { get; set; }
-
-        [DataMember]
-        public ushort VoltageLimitD { get; set; }
-
-        [DataMember]
-        public ushort VoltageLimitR { get; set; }
-
-        [DataMember]
-        public float CurrentLimit { get; set; }
-
-        [DataMember]
-        public ushort PlateTime { get; set; }
-
-        [DataMember]
-        public float RampUpVoltage { get; set; }
-
-        [DataMember]
-        public ushort StartVoltage { get; set; }
-
-        [DataMember]
-        public ushort VoltageFrequency { get; set; }
-
-        [DataMember]
-        public ushort FrequencyDivisor { get; set; }
-
-        [DataMember]
-        public BVTTestType TestType { get; set; }
-
-        [DataMember]
-        public ushort VDRM { get; set; }
-
-        [DataMember]
-        public ushort VRRM { get; set; }
-
-        [DataMember]
-        public float IDRM { get; set; }
-
-        [DataMember]
-        public float IRRM { get; set; }
-
-        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
-        {
-            var oldParameters = oldParametersBase as TestParameters;
-            if (oldParameters == null)
-                throw new InvalidCastException("oldParametersBase must be bvtOldParameters");
-
-            if (UseUdsmUrsm != oldParameters.UseUdsmUrsm)
-                return true;
-            if (PulseFrequency != oldParameters.PulseFrequency)
-                return true;
-            if (MeasurementMode != oldParameters.MeasurementMode)
-                return true;
-            if (VoltageLimitD != oldParameters.VoltageLimitD)
-                return true;
-            if (VoltageLimitR != oldParameters.VoltageLimitR)
-                return true;
-            if (CurrentLimit.CompareTo(oldParameters.CurrentLimit) != 0)
-                return true;
-            if (PlateTime != oldParameters.PlateTime)
-                return true;
-            if (RampUpVoltage.CompareTo(oldParameters.RampUpVoltage) != 0)
-                return true;
-            if (StartVoltage != oldParameters.StartVoltage)
-                return true;
-            if (VoltageFrequency != oldParameters.VoltageFrequency)
-                return true;
-            if (FrequencyDivisor != oldParameters.FrequencyDivisor)
-                return true;
-            if (TestType != oldParameters.TestType)
-                return true;
-            if (VDRM != oldParameters.VDRM)
-                return true;
-            if (VRRM != oldParameters.VRRM)
-                return true;
-            if (IDRM.CompareTo(oldParameters.IDRM) != 0)
-                return true;
-            if (IRRM.CompareTo(oldParameters.IRRM) != 0)
-                return true;
-            
-            if (UdsmUrsmPulseFrequency != oldParameters.UdsmUrsmPulseFrequency)
-                return true;    
-            if (UdsmUrsmVoltageLimitD != oldParameters.VoltageLimitD)
-                return true;
-            if (UdsmUrsmVoltageLimitR != oldParameters.VoltageLimitR)
-                return true;
-            if (UdsmUrsmCurrentLimit.CompareTo(oldParameters.CurrentLimit) != 0)
-                return true;
-            if (UdsmUrsmPlateTime != oldParameters.PlateTime)
-                return true;
-            if (UdsmUrsmRampUpVoltage.CompareTo(oldParameters.RampUpVoltage) != 0)
-                return true;
-            if (UdsmUrsmStartVoltage != oldParameters.StartVoltage)
-                return true;
-            if (UdsmUrsmVoltageFrequency != oldParameters.VoltageFrequency)
-                return true;
-            if (UdsmUrsmFrequencyDivisor != oldParameters.FrequencyDivisor)
-                return true;
-            if (UdsmUrsmTestType != oldParameters.TestType)
-                return true;
-            if (VDSM != oldParameters.VDSM)
-                return true;
-            if (VRSM != oldParameters.VRSM)
-                return true;
-            if (IDSM.CompareTo(oldParameters.IDSM) != 0)
-                return true;
-            if (IRSM.CompareTo(oldParameters.IRSM) != 0)
-                return true;
-
-            return false;
-        }
-
+        /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
+            TestParametersType = TestParametersType.BVT;
             IsEnabled = false;
             UdsmUrsmTestType = TestType = BVTTestType.Reverse;
             MeasurementMode = BVTMeasurementMode.ModeV;
-            UdsmUrsmVoltageLimitD =VoltageLimitD = 1000;
-            UdsmUrsmVoltageLimitR =VoltageLimitR = 1000;
-            UdsmUrsmCurrentLimit =CurrentLimit = 5;
-            UdsmUrsmPlateTime =PlateTime = 1000;
-            UdsmUrsmRampUpVoltage =RampUpVoltage = 2;
-            UdsmUrsmStartVoltage =StartVoltage = 500;
-            UdsmUrsmVoltageFrequency =VoltageFrequency = 50;
+            UdsmUrsmVoltageLimitD = VoltageLimitD = 1000;
+            UdsmUrsmVoltageLimitR = VoltageLimitR = 1000;
+            UdsmUrsmCurrentLimit = CurrentLimit = 5;
+            UdsmUrsmPlateTime = PlateTime = 1000;
+            UdsmUrsmRampUpVoltage = RampUpVoltage = 2;
+            UdsmUrsmStartVoltage = StartVoltage = 500;
+            UdsmUrsmVoltageFrequency = VoltageFrequency = 50;
             UdsmUrsmFrequencyDivisor = FrequencyDivisor = 1;
             VDRM = 1400;
             VRRM = 1400;
-            IDSM =IDRM = 5;
+            IDSM = IDRM = 5;
             IRSM = IRRM = 5;
-            
+        }
 
-            TestParametersType = TestParametersType.Bvt;
+        [DataMember]
+        public BVTTestType UdsmUrsmTestType
+        {
+            get; set;
+        }
+        
+        [DataMember]
+        public ushort UdsmUrsmPulseFrequency
+        {
+            get; set;
+        }
 
+        [DataMember]
+        public float UdsmUrsmCurrentLimit
+        {
+            get; set;
+        }
 
+        [DataMember]
+        public float UdsmUrsmRampUpVoltage
+        {
+            get; set;
+        }
 
+        [DataMember]
+        public ushort UdsmUrsmStartVoltage
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort UdsmUrsmVoltageFrequency
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort UdsmUrsmFrequencyDivisor
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort UdsmUrsmVoltageLimitR
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort UdsmUrsmVoltageLimitD
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort UdsmUrsmPlateTime
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VDSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VRSM
+        {
+            get; set;
+        }
+        
+        [DataMember]
+        public float IDSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public bool UseUdsmUrsm
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public int? ClassByProfileName
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort PulseFrequency
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public BVTMeasurementMode MeasurementMode
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageLimitD
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageLimitR
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float CurrentLimit
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort PlateTime
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float RampUpVoltage
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort StartVoltage
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VoltageFrequency
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort FrequencyDivisor
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public BVTTestType TestType
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VRRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IRRM
+        {
+            get; set;
+        }
+
+        /// <summary>Проверка изменений в параметрах</summary>
+        /// <param name="oldParameters">Старые параметры</param>
+        /// <returns>Возвращает True, если параметры были изменены</returns>
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
+        {
+            //Старые параметры
+            TestParameters OldTestParameters = (TestParameters)oldParameters;
+            if (oldParameters == null)
+                throw new InvalidCastException("OldParameters must be BVTOldParameters");
+            if (UseUdsmUrsm != OldTestParameters.UseUdsmUrsm)
+                return true;
+            if (PulseFrequency != OldTestParameters.PulseFrequency)
+                return true;
+            if (MeasurementMode != OldTestParameters.MeasurementMode)
+                return true;
+            if (VoltageLimitD != OldTestParameters.VoltageLimitD)
+                return true;
+            if (VoltageLimitR != OldTestParameters.VoltageLimitR)
+                return true;
+            if (CurrentLimit != OldTestParameters.CurrentLimit)
+                return true;
+            if (PlateTime != OldTestParameters.PlateTime)
+                return true;
+            if (RampUpVoltage != OldTestParameters.RampUpVoltage)
+                return true;
+            if (StartVoltage != OldTestParameters.StartVoltage)
+                return true;
+            if (VoltageFrequency != OldTestParameters.VoltageFrequency)
+                return true;
+            if (FrequencyDivisor != OldTestParameters.FrequencyDivisor)
+                return true;
+            if (TestType != OldTestParameters.TestType)
+                return true;
+            if (VDRM != OldTestParameters.VDRM)
+                return true;
+            if (VRRM != OldTestParameters.VRRM)
+                return true;
+            if (IDRM != OldTestParameters.IDRM)
+                return true;
+            if (IRRM != OldTestParameters.IRRM)
+                return true;
+            if (UdsmUrsmPulseFrequency != OldTestParameters.UdsmUrsmPulseFrequency)
+                return true;    
+            if (UdsmUrsmVoltageLimitD != OldTestParameters.VoltageLimitD)
+                return true;
+            if (UdsmUrsmVoltageLimitR != OldTestParameters.VoltageLimitR)
+                return true;
+            if (UdsmUrsmCurrentLimit != OldTestParameters.CurrentLimit)
+                return true;
+            if (UdsmUrsmPlateTime != OldTestParameters.PlateTime)
+                return true;
+            if (UdsmUrsmRampUpVoltage != OldTestParameters.RampUpVoltage)
+                return true;
+            if (UdsmUrsmStartVoltage != OldTestParameters.StartVoltage)
+                return true;
+            if (UdsmUrsmVoltageFrequency != OldTestParameters.VoltageFrequency)
+                return true;
+            if (UdsmUrsmFrequencyDivisor != OldTestParameters.FrequencyDivisor)
+                return true;
+            if (UdsmUrsmTestType != OldTestParameters.TestType)
+                return true;
+            if (VDSM != OldTestParameters.VDSM)
+                return true;
+            if (VRSM != OldTestParameters.VRSM)
+                return true;
+            if (IDSM != OldTestParameters.IDSM)
+                return true;
+            if (IRSM != OldTestParameters.IRSM)
+                return true;
+            return false;
         }
 
         public object Clone()
@@ -282,29 +385,11 @@ namespace SCME.Types.BVT
         }
     }
 
+    /// <summary>Нормативы тестирования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class ResultNormatives
     {
-        [DataMember]
-        public ushort VDRM { get; set; }
-
-        [DataMember]
-        public ushort VRRM { get; set; }
-
-        [DataMember]
-        public float IDRM { get; set; }
-
-        [DataMember]
-        public float IRRM { get; set; }
-
-        
-        [DataMember]
-        public float UdsmUrsmIDRM { get; set; }
-
-        [DataMember]
-        public float UdsmUrsmIRRM { get; set; }
-        
-        
+        /// <summary>Инициализирует новый экземпляр класса ResultNormatives</summary>
         public ResultNormatives()
         {
             VDRM = 1400;
@@ -312,73 +397,166 @@ namespace SCME.Types.BVT
             UdsmUrsmIDRM = IDRM = 5;
             UdsmUrsmIRRM = IRRM = 5;
         }
+
+        [DataMember]
+        public ushort VDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VRRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IRRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float UdsmUrsmIDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float UdsmUrsmIRRM
+        {
+            get; set;
+        }
     }
 
+    /// <summary>Результаты тестирования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public class TestResults : BaseTestResults
     {
-        [DataMember]
-        public ushort VDSM { get; set; }
-
-        [DataMember]
-        public ushort VRSM { get; set; }
-
-        [DataMember]
-        public float IDSM { get; set; }
-
-        [DataMember]
-        public float IRSM { get; set; }
-
-        [DataMember]
-        public ushort VDRM { get; set; }
-
-        [DataMember]
-        public ushort VRRM { get; set; }
-
-        [DataMember]
-        public float IDRM { get; set; }
-
-        [DataMember]
-        public float IRRM { get; set; }
-
-        [DataMember]
-        public List<short> VoltageData { get; set; }
-
-        [DataMember]
-        public List<short> CurrentData { get; set; }
-
+        /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
         public TestResults()
         {
             VoltageData = new List<short>();
             CurrentData = new List<short>();
         }
+
+        [DataMember]
+        public ushort VDSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IDSM
+        {
+            get; set;
+        }
+
+
+        [DataMember]
+        public float IRSM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public ushort VRRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IDRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public float IRRM
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public List<short> VoltageData
+        {
+            get; set;
+        }
+
+        [DataMember]
+        public List<short> CurrentData
+        {
+            get; set;
+        }
     }
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public class CalibrationParams
+    public class CalibrationParameters
     {
         [DataMember]
-        public ushort S1Current1FineN { get; set; }
+        public ushort S1Current1FineN
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Current1FineD { get; set; }
+        public ushort S1Current1FineD
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Current2FineN { get; set; }
+        public ushort S1Current2FineN
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Current2FineD { get; set; }
+        public ushort S1Current2FineD
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Voltage1FineN { get; set; }
+        public ushort S1Voltage1FineN
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Voltage1FineD { get; set; }
+        public ushort S1Voltage1FineD
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Voltage2FineN { get; set; }
+        public ushort S1Voltage2FineN
+        {
+            get; set;
+        }
 
         [DataMember]
-        public ushort S1Voltage2FineD { get; set; }
+        public ushort S1Voltage2FineD
+        {
+            get; set;
+        }
     }
 }

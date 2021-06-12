@@ -9,7 +9,7 @@ using SCME.Types.dVdt;
 using SCME.Types.Interfaces;
 using SCME.Types.VTM;
 using SCME.Types.SQL;
-using TestParameters = SCME.Types.Gate.TestParameters;
+using TestParameters = SCME.Types.GTU.TestParameters;
 
 namespace SCME.InterfaceImplementations
 {
@@ -493,16 +493,16 @@ namespace SCME.InterfaceImplementations
         {
             switch (baseTestParametersAndNormatives.TestParametersType)
             {
-                case TestParametersType.Gate:
+                case TestParametersType.GTU:
                     InsertGateConditions(baseTestParametersAndNormatives as TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.StaticLoses:
+                case TestParametersType.SL:
                     InsertSlConditions(baseTestParametersAndNormatives as Types.VTM.TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.Bvt:
+                case TestParametersType.BVT:
                     InsertBvtConditions(baseTestParametersAndNormatives as Types.BVT.TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.Dvdt:
+                case TestParametersType.dVdt:
                     InsertDvdtConditions(baseTestParametersAndNormatives as Types.dVdt.TestParameters, testTypeId, profileId, trans);
                     break;
                 case TestParametersType.ATU:
@@ -647,13 +647,13 @@ namespace SCME.InterfaceImplementations
         {
             switch (baseTestParametersAndNormatives.TestParametersType)
             {
-                case TestParametersType.Gate:
+                case TestParametersType.GTU:
                     InsertGateParameters(baseTestParametersAndNormatives as TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.StaticLoses:
+                case TestParametersType.SL:
                     InsertVtmParameters(baseTestParametersAndNormatives as Types.VTM.TestParameters, testTypeId, profileId, trans);
                     break;
-                case TestParametersType.Bvt:
+                case TestParametersType.BVT:
                     InsertBvtParameters(baseTestParametersAndNormatives as Types.BVT.TestParameters, testTypeId, profileId, trans);
                     break;
                 case TestParametersType.ATU:

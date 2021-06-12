@@ -12,7 +12,7 @@ namespace SCME.Service.IO
 {
     internal class IOIH
     {
-        private readonly IOGate m_IOGate;
+        private readonly IOGTU m_IOGate;
         private readonly IOStLs m_IOStLs;
         private readonly BroadcastCommunication m_Communication;
         private readonly bool m_IsEmulationHard;
@@ -24,7 +24,7 @@ namespace SCME.Service.IO
         private volatile DeviceState m_State;
         private volatile Types.IH.TestResults m_Result;
 
-        internal IOIH(IOGate Gate, IOStLs StLs, BroadcastCommunication Communication)
+        internal IOIH(IOGTU Gate, IOStLs StLs, BroadcastCommunication Communication)
         {
             m_IOGate = Gate;
             m_IOStLs = StLs;
@@ -104,18 +104,18 @@ namespace SCME.Service.IO
             if (!m_IsEmulation)
             {
                 //смотрим состояние Gate
-                m_IOGate.ClearWarning();
+                m_IOGate.Warnings_Clear();
                 ushort State = m_IOGate.ReadDeviceState();
 
                 switch (State)
                 {
-                    case (ushort)Types.Gate.HWDeviceState.Fault:
+                    case (ushort)Types.GTU.HWDeviceState.Fault:
                         ushort faultReason = m_IOGate.ReadFaultReason();
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
                         break;
 
-                    case (ushort)Types.Gate.HWDeviceState.Disabled:
+                    case (ushort)Types.GTU.HWDeviceState.Disabled:
                         ushort disableReason = m_IOGate.ReadDisableReason();
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
@@ -224,10 +224,10 @@ namespace SCME.Service.IO
 
             while (Environment.TickCount < timeStamp)
             {
-                var devState = (Types.Gate.HWDeviceState)m_IOGate.ReadDeviceState(true);
-                var opResult = (Types.Gate.HWOperationResult)m_IOGate.ReadFinished(true);
+                var devState = (Types.GTU.HWDeviceState)m_IOGate.ReadDeviceState(true);
+                var opResult = (Types.GTU.HWOperationResult)m_IOGate.ReadFinished(true);
 
-                if (devState == Types.Gate.HWDeviceState.Fault)
+                if (devState == Types.GTU.HWDeviceState.Fault)
                 {
                     ushort faultReason = m_IOGate.ReadFaultReason();
 
@@ -236,7 +236,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("IH virtual device. Gate device is in fault state, reason - {0}", faultReason));
                 }
 
-                if (devState == Types.Gate.HWDeviceState.Disabled)
+                if (devState == Types.GTU.HWDeviceState.Disabled)
                 {
                     ushort disableReason = m_IOGate.ReadDisableReason();
 
@@ -245,18 +245,18 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("IH virtual device. Gate device is in disabled state, reason - {0}", disableReason));
                 }
 
-                if (opResult != Types.Gate.HWOperationResult.InProcess)
+                if (opResult != Types.GTU.HWOperationResult.InProcess)
                 {                    
                     ushort problem = m_IOGate.ReadProblem();
                     ushort warning = m_IOGate.ReadWarning();
 
-                    if (problem != (ushort)Types.Gate.HWProblemReason.None)
+                    if (problem != (ushort)Types.GTU.HWProblemReason.None)
                         FireNotificationEvent(ComplexParts.Gate, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
 
-                    if (warning != (ushort)Types.Gate.HWWarningReason.None)
+                    if (warning != (ushort)Types.GTU.HWWarningReason.None)
                     {
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
-                        m_IOGate.ClearWarning();
+                        m_IOGate.Warnings_Clear();
                     }
 
                     break;
@@ -289,7 +289,7 @@ namespace SCME.Service.IO
 
                     try
                     {
-                        m_IOGate.CallAction(IOGate.ACT_START_IH);//102
+                        m_IOGate.CallAction(IOGTU.ACT_START_IH);//102
 
                         m_IOStLs.WriteRegister(128, 1);
                         m_IOStLs.WriteRegister(140, m_Parameters.Itm);
@@ -364,7 +364,7 @@ namespace SCME.Service.IO
 
                     try
                     {
-                        m_IOGate.CallAction(IOGate.ACT_START_IH);//102
+                        m_IOGate.CallAction(IOGTU.ACT_START_IH);//102
 
                         m_IOStLs.WriteRegister(128, 1);
                         m_IOStLs.WriteRegister(140, m_Parameters.Itm);
@@ -422,7 +422,7 @@ namespace SCME.Service.IO
         {
             //очистка ошибки виртуального блока IH
             SystemHost.Journal.AppendLog(ComplexParts.IH, LogMessageType.Note, "IH try to clear fault");
-            m_IOGate.ClearFault();
+            m_IOGate.ClearFaults();
             m_IOStLs.ClearFault();
             SystemHost.Journal.AppendLog(ComplexParts.IH, LogMessageType.Note, "IH fault cleared");
         }
@@ -431,7 +431,7 @@ namespace SCME.Service.IO
         {
             //очистка предупреждения виртуального блока IH
             SystemHost.Journal.AppendLog(ComplexParts.IH, LogMessageType.Note, "IH try to clear warning");
-            m_IOGate.ClearWarning();
+            m_IOGate.Warnings_Clear();
             m_IOStLs.ClearWarning();
             SystemHost.Journal.AppendLog(ComplexParts.IH, LogMessageType.Note, "IH warning cleared");
         }

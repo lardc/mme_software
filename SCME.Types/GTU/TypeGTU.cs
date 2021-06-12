@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace SCME.Types.Gate
+namespace SCME.Types.GTU
 {
     /// <summary>Состояние оборудования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum HWDeviceState
     {
-        /// <summary>Неопределенное состояние (после включения питания)</summary>
+        /// <summary>Неопределенное состояние</summary>
         [EnumMember]
         None = 0,
-        /// <summary>Состояние ошибки</summary>
+        /// <summary>Ошибка</summary>
         [EnumMember]
         Fault = 1,
         /// <summary>Выключен</summary>
@@ -21,18 +21,24 @@ namespace SCME.Types.Gate
         /// <summary>Прозвонка</summary>
         [EnumMember]
         Kelvin = 3,
+        /// <summary>Gate</summary>
         [EnumMember]
         Gate = 4,
+        /// <summary>IH</summary>
         [EnumMember]
         IH = 5,
+        /// <summary>IL</summary>
         [EnumMember]
         IL = 6,
+        /// <summary>Сопротивление</summary>
         [EnumMember]
-        Resistance = 7,
+        RG = 7,
+        /// <summary>Калибровка</summary>
         [EnumMember]
-        CalGate = 8,
+        Calibrate = 8,
+        /// <summary>VGNT</summary>
         [EnumMember]
-        CalHolding = 9
+        VGNT = 9
     };
 
     /// <summary>Причина ошибки</summary>
@@ -46,7 +52,7 @@ namespace SCME.Types.Gate
         [EnumMember]
         GateProcessError = 112,
         [EnumMember]
-        LatchProcessError = 121,
+        LatchProcessError = 121
     };
 
     /// <summary>Причина предупреждения</summary>
@@ -57,6 +63,7 @@ namespace SCME.Types.Gate
         None = 0,
         [EnumMember]
         HoldingCurrentSmall = 101,
+        /// <summary>Система перезагружена watchdog'ом</summary>
         [EnumMember]
         WatchdogReset = 1001
     };
@@ -67,6 +74,7 @@ namespace SCME.Types.Gate
     {
         [EnumMember]
         None = 0,
+        /// <summary>Проблема с главным осциллятором</summary>
         [EnumMember]
         BadClock = 1001
     };
@@ -77,6 +85,39 @@ namespace SCME.Types.Gate
     {
         [EnumMember]
         None = 0,
+        /// <summary>Процесс завершен пользователем</summary>
+        [EnumMember]
+        OperationStopped = 1,
+        /// <summary>Ошибка стабилизации VD</summary>
+        [EnumMember]
+        VDSetErr = 2,
+        /// <summary>Ошибка стабилизации ID</summary>
+        [EnumMember]
+        IDSetErr = 3,
+        /// <summary>Ошибка стабилизации VG</summary>
+        [EnumMember]
+        VGSetErr = 4,
+        /// <summary>Ошибка стабилизации IG</summary>
+        [EnumMember]
+        IGSetErr = 5,
+        /// <summary>Неожиданный прямой ток</summary>
+        [EnumMember]
+        IDLeak = 6,
+        /// <summary>Не включен DUT</summary>
+        [EnumMember]
+        DUTNoTrig = 7,
+        /// <summary>Не выключен DUT</summary>
+        [EnumMember]
+        DUTNoClose = 8,
+        /// <summary>Не заперт DUT</summary>
+        [EnumMember]
+        DUTNoLatching = 9,
+        /// <summary>Нет потенциального сигнала DUT VG</summary>
+        [EnumMember]
+        DUTNoVGSensing = 10,
+        /// <summary>DUT запущен во время подтверждения VGNT</summary>
+        [EnumMember]
+        VGNTConfTrig = 11,
         [EnumMember]
         HoldReachTimeout = 101,
         [EnumMember]
@@ -111,15 +152,17 @@ namespace SCME.Types.Gate
     };
 
     /// <summary>Параметры произведения тестов</summary>
-    [DataContract(Name = "Gate.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
+    [DataContract(Name = "GTU.TestParameters", Namespace = "http://proton-electrotex.com/SCME")]
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
+        //Использование IH ГОСТ
         private int useIhGost;
 
         /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
-            TestParametersType = TestParametersType.Gate;
+            TestParametersType = TestParametersType.GTU;
+            IsEnabled = true;
             Resistance = 100;
             IGT = 500;
             VGT = 2.5f;
@@ -135,7 +178,6 @@ namespace SCME.Types.Gate
             StartVoltage = 500;
             GateLimitV = 100;
             GateLimitI = 25;
-            IsEnabled = true;
         }
 
         [DataMember]
@@ -212,7 +254,7 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public float VGNT
+        public bool UseVgnt
         {
             get; set;
         }
@@ -224,7 +266,7 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public bool UseVgnt
+        public float VGNT
         {
             get; set;
         }
@@ -271,46 +313,50 @@ namespace SCME.Types.Gate
             get; set;
         }
 
-        public override bool HasChanges(BaseTestParametersAndNormatives oldParametersBase)
+        /// <summary>Проверка изменений в параметрах</summary>
+        /// <param name="oldParameters">Старые параметры</param>
+        /// <returns>Возвращает True, если параметры были изменены</returns>
+        public override bool HasChanges(BaseTestParametersAndNormatives oldParameters)
         {
-            TestParameters oldParameters = (TestParameters)oldParametersBase;
+            //Старые параметры
+            TestParameters OldTestParameters = (TestParameters)oldParameters;
             if (oldParameters == null)
-                throw new InvalidCastException("oldParameters must be gateOldParameters");
-            if (IsCurrentEnabled != oldParameters.IsCurrentEnabled)
+                throw new InvalidCastException("OldParameters must be GTUOldParameters");
+            if (IsCurrentEnabled != OldTestParameters.IsCurrentEnabled)
                 return true;
-            if (IsIhEnabled != oldParameters.IsIhEnabled)
+            if (IsIhEnabled != OldTestParameters.IsIhEnabled)
                 return true;
-            if (IsIhStrikeCurrentEnabled != oldParameters.IsIhStrikeCurrentEnabled)
+            if (IsIhStrikeCurrentEnabled != OldTestParameters.IsIhStrikeCurrentEnabled)
                 return true;
-            if (IsIlEnabled != oldParameters.IsIlEnabled)
+            if (IsIlEnabled != OldTestParameters.IsIlEnabled)
                 return true;
-            if (Resistance.CompareTo(oldParameters.Resistance) != 0)
+            if (Resistance != OldTestParameters.Resistance)
                 return true;
-            if (IGT.CompareTo(oldParameters.IGT) != 0)
+            if (IGT != OldTestParameters.IGT)
                 return true;
-            if (VGT.CompareTo(oldParameters.VGT) != 0)
+            if (VGT != OldTestParameters.VGT)
                 return true;
-            if (IH.CompareTo(oldParameters.IH) != 0)
+            if (IH != OldTestParameters.IH)
                 return true;
-            if (IL.CompareTo(oldParameters.IL) != 0)
+            if (IL != OldTestParameters.IL)
                 return true;
-            if (Itm.CompareTo(oldParameters.Itm) != 0)
+            if (Itm != OldTestParameters.Itm)
                 return true;
-            if (UseVgnt != oldParameters.UseVgnt)
+            if (UseVgnt != OldTestParameters.UseVgnt)
                 return true;
-            if (CurrentLimit.CompareTo(oldParameters.CurrentLimit) != 0)
+            if (CurrentLimit != OldTestParameters.CurrentLimit)
                 return true;
-            if (VoltageLimitD.CompareTo(oldParameters.VoltageLimitD) != 0)
+            if (VoltageLimitD != OldTestParameters.VoltageLimitD)
                 return true;
-            if (PlateTime.CompareTo(oldParameters.PlateTime) != 0)
+            if (PlateTime != OldTestParameters.PlateTime)
                 return true;
-            if (RampUpVoltage.CompareTo(oldParameters.RampUpVoltage) != 0)
+            if (RampUpVoltage != OldTestParameters.RampUpVoltage)
                 return true;
-            if (StartVoltage.CompareTo(oldParameters.StartVoltage) != 0)
+            if (StartVoltage != OldTestParameters.StartVoltage)
                 return true;
-            if (GateLimitV.CompareTo(oldParameters.GateLimitV) != 0)
+            if (GateLimitV != OldTestParameters.GateLimitV)
                 return true;
-            if (GateLimitI.CompareTo(oldParameters.GateLimitI) != 0)
+            if (GateLimitI != OldTestParameters.GateLimitI)
                 return true;
             return false;
         }
@@ -333,8 +379,8 @@ namespace SCME.Types.Gate
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
-            VGNT = 100;
             IGNT = 100;
+            VGNT = 100;
         }
 
         [DataMember]
@@ -368,13 +414,13 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public float VGNT
+        public ushort IGNT
         {
             get; set;
         }
 
         [DataMember]
-        public ushort IGNT
+        public float VGNT
         {
             get; set;
         }
@@ -387,10 +433,16 @@ namespace SCME.Types.Gate
         /// <summary>Инициализирует новый экземпляр класса TestResults</summary>
         public TestResults()
         {
-            ArrayVGT = new List<short>();
-            ArrayIGT = new List<short>();
-            ArrayIH = new List<short>();
             ArrayKelvin = new List<short>();
+            ArrayIGT = new List<short>();
+            ArrayVGT = new List<short>();
+            ArrayIH = new List<short>();
+        }
+
+        [DataMember]
+        public bool IsKelvinOk
+        {
+            get; set;
         }
 
         [DataMember]
@@ -424,7 +476,7 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public bool IsKelvinOk
+        public ushort IGNT
         {
             get; set;
         }
@@ -436,13 +488,7 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public ushort IGNT
-        {
-            get; set;
-        }
-
-        [DataMember]
-        public IList<short> ArrayVGT
+        public IList<short> ArrayKelvin
         {
             get; set;
         }
@@ -454,13 +500,13 @@ namespace SCME.Types.Gate
         }
 
         [DataMember]
-        public IList<short> ArrayIH
+        public IList<short> ArrayVGT
         {
             get; set;
         }
 
         [DataMember]
-        public IList<short> ArrayKelvin
+        public IList<short> ArrayIH
         {
             get; set;
         }

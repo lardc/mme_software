@@ -1,6 +1,6 @@
+using SCME.Types.BaseTestParams;
 using System;
 using System.Runtime.Serialization;
-using SCME.Types.BaseTestParams;
 
 namespace SCME.Types.dVdt
 {
@@ -9,15 +9,18 @@ namespace SCME.Types.dVdt
     public enum HWDeviceState
     {
         [EnumMember]
-        None = 0,
+        DS_None = 0,
+        /// <summary>Ошибка</summary>
         [EnumMember]
-        Fault = 1,
+        DS_Fault = 1,
+        /// <summary>Выключен</summary>
         [EnumMember]
-        Disabled = 2,
+        DS_Disabled = 2,
+        /// <summary>Заряжен</summary>
         [EnumMember]
-        PowerReady = 3,
+        DS_Powered = 3,
         [EnumMember]
-        InProcess = 4
+        DS_InProcess = 4
     };
 
     /// <summary>Причина ошибки</summary>
@@ -58,6 +61,7 @@ namespace SCME.Types.dVdt
     {
         [EnumMember]
         None = 0,
+        /// <summary>Система перезагружена watchdog'ом</summary>
         [EnumMember]
         WatchdogReset = 1001
     };
@@ -89,7 +93,7 @@ namespace SCME.Types.dVdt
         /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
         {
-            TestParametersType = TestParametersType.Dvdt;
+            TestParametersType = TestParametersType.dVdt;
             IsEnabled = true;
             Voltage = 1000;
             VoltageRate = VoltageRate.V500;

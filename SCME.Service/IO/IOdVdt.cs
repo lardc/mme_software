@@ -70,21 +70,21 @@ namespace SCME.Service.IO
                 ClearWarning();
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-                if (devState != HWDeviceState.PowerReady)
+                if (devState != HWDeviceState.DS_Powered)
                 {
-                    if (devState == HWDeviceState.Fault)
+                    if (devState == HWDeviceState.DS_Fault)
                     {
                         ClearFault();
                         Thread.Sleep(100);
 
                         devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                        if (devState == HWDeviceState.Fault)
+                        if (devState == HWDeviceState.DS_Fault)
                             throw new Exception(string.Format("dVdt is in fault state, reason: {0}",
                                 (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
                     }
 
-                    if (devState == HWDeviceState.Disabled)
+                    if (devState == HWDeviceState.DS_Disabled)
                         throw new Exception(string.Format("dVdt is in disabled state, reason: {0}",
                                 (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
 
@@ -98,13 +98,13 @@ namespace SCME.Service.IO
                     devState = (HWDeviceState)
                                ReadRegister(REG_DEVICE_STATE);
 
-                    if (devState == HWDeviceState.PowerReady)
+                    if (devState == HWDeviceState.DS_Powered)
                         break;
 
-                    if (devState == HWDeviceState.Fault)
+                    if (devState == HWDeviceState.DS_Fault)
                         throw new Exception(string.Format("dVdt is in fault state, reason: {0}",
                                                           (HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    if (devState == HWDeviceState.Disabled)
+                    if (devState == HWDeviceState.DS_Disabled)
                         throw new Exception(string.Format("dVdt is in disabled state, reason: {0}",
                                                           (HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
@@ -170,7 +170,7 @@ namespace SCME.Service.IO
             if (!m_IsdVdtEmulation)
             {
                 var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-                if (devState == HWDeviceState.Fault)
+                if (devState == HWDeviceState.DS_Fault)
                 {
                     var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
                     FireNotificationEvent(HWWarningReason.None, faultReason,
@@ -179,7 +179,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("dVdt is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == HWDeviceState.Disabled)
+                if (devState == HWDeviceState.DS_Disabled)
                 {
                     var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
                     FireNotificationEvent(HWWarningReason.None,
@@ -205,7 +205,7 @@ namespace SCME.Service.IO
         {
             var devState = (Types.dVdt.HWDeviceState)ReadRegister(REG_DEVICE_STATE);
 
-            return !((devState == Types.dVdt.HWDeviceState.Fault) || (devState == Types.dVdt.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
+            return !((devState == Types.dVdt.HWDeviceState.DS_Fault) || (devState == Types.dVdt.HWDeviceState.DS_Disabled) || (m_State == DeviceState.InProcess));
         }
 
         #region Standart API
@@ -492,7 +492,7 @@ namespace SCME.Service.IO
 
                 var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == HWDeviceState.DS_Fault)
                 {
                     var faultReason = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
 
@@ -501,7 +501,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("dVdt device is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == HWDeviceState.Disabled)
+                if (devState == HWDeviceState.DS_Disabled)
                 {
                     var disableReason = (HWDisableReason)ReadRegister(REG_DISABLE_REASON);
 
@@ -510,7 +510,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("dVdt device is in disabled state, reason: {0}", disableReason));
                 }
 
-                if (devState != HWDeviceState.InProcess)
+                if (devState != HWDeviceState.DS_InProcess)
                 {
                     var warning = (HWWarningReason)ReadRegister(REG_WARNING);
 

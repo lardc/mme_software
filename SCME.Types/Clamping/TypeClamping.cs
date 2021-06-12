@@ -12,11 +12,14 @@ namespace SCME.Types.Clamping
     }
     
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
-    public enum HWDeviceState
+    public enum DeviceState
     {
-        [EnumMember] None = 0,
-        [EnumMember] Fault = 1,
-        [EnumMember] Disabled = 2,
+        [EnumMember]
+        None = 0,
+        [EnumMember]
+        Fault = 1,
+        [EnumMember]
+        Disabled = 2,
         [EnumMember] Ready = 3,
         [EnumMember] Halt = 4,
         [EnumMember] ClampingDone = 8,

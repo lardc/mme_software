@@ -245,7 +245,7 @@ namespace SCME.UI.PagesTech
         {
             if (IsRunning) return;
 
-            var paramGate = new Types.Gate.TestParameters { IsEnabled = false };
+            var paramGate = new Types.GTU.TestParameters { IsEnabled = false };
             var paramVtm = new Types.VTM.TestParameters { IsEnabled = false };
             var paramBvt = new Types.BVT.TestParameters { IsEnabled = false };
             var paramATU = new Types.ATU.TestParameters { IsEnabled = false };

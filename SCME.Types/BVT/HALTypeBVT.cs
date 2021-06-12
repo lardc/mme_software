@@ -2,26 +2,36 @@
 
 namespace SCME.Types.BVT
 {
+    /// <summary>Тип направления</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum BVTTestType
     {
-        [EnumMember] Both,
-        [EnumMember] Direct,
-        [EnumMember] Reverse
+        /// <summary>Оба направления</summary>
+        [EnumMember]
+        Both,
+        /// <summary>Прямое</summary>
+        [EnumMember]
+        Direct,
+        /// <summary>Обратное</summary>
+        [EnumMember]
+        Reverse
     };
 
+    /// <summary>Режим тестирования</summary>
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum BVTMeasurementMode
     {
-        [EnumMember] ModeI,
-        [EnumMember] ModeV
+        [EnumMember]
+        ModeI,
+        [EnumMember]
+        ModeV
     };
 
     public static class BVTRates
     {
         public static string[] GetRates()
         {
-            return new [] {"5", "50"};
+            return new string[] { "5", "50" };
         }
     }
 }

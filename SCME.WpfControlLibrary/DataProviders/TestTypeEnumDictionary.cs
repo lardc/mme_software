@@ -183,10 +183,10 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return new List<TestParameter>()
             {
-                new TestParameter(TestParametersType.Gate, typeof(Types.Gate.TestParameters), "GTU"),
-                new TestParameter(TestParametersType.StaticLoses, typeof(Types.VTM.TestParameters), "SL"),
-                new TestParameter(TestParametersType.Bvt, typeof(Types.BVT.TestParameters), "BVT"),
-                new TestParameter(TestParametersType.Dvdt, typeof(Types.dVdt.TestParameters), "dUdt"),
+                new TestParameter(TestParametersType.GTU, typeof(Types.GTU.TestParameters), "GTU"),
+                new TestParameter(TestParametersType.SL, typeof(Types.VTM.TestParameters), "SL"),
+                new TestParameter(TestParametersType.BVT, typeof(Types.BVT.TestParameters), "BVT"),
+                new TestParameter(TestParametersType.dVdt, typeof(Types.dVdt.TestParameters), "dUdt"),
                 new TestParameter(TestParametersType.ATU, typeof(Types.ATU.TestParameters), "ATU"),
                 new TestParameter(TestParametersType.QrrTq, typeof(Types.QrrTq.TestParameters), "QrrTq"),
                 new TestParameter(TestParametersType.TOU, typeof(Types.TOU.TestParameters), "TOU"),

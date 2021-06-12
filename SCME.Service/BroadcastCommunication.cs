@@ -91,38 +91,38 @@ namespace SCME.Service
             EnumerateClients(client => client.GateAllHandler(state));
         }
 
-        public void PostGateKelvinEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateKelvinEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateKelvinHandler(state, result.IsKelvinOk, result.ArrayKelvin, result.TestTypeId));
         }
 
-        public void PostGateResistanceEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateResistanceEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateResistanceHandler(state, result.Resistance, result.TestTypeId));
         }
 
-        public void PostGateGateEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateGateEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateIgtVgtHandler(state, result.IGT, result.VGT, result.ArrayIGT, result.ArrayVGT, result.TestTypeId));
         }
 
-        public void PostGateIhEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateIhEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateIhHandler(state, result.IH, result.ArrayIH, result.TestTypeId));
         }
 
-        public void PostGateIlEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateIlEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateIlHandler(state, result.IL, result.TestTypeId));
         }
 
-        public void PostGateVgntEvent(DeviceState state, Types.Gate.TestResults result)
+        public void PostGateVgntEvent(DeviceState state, Types.GTU.TestResults result)
         {
             EnumerateClients(client => client.GateVgntHandler(state, result.VGNT, result.IGNT, result.TestTypeId));
         }
 
-        public void PostGateNotificationEvent(Types.Gate.HWProblemReason Problem, Types.Gate.HWWarningReason Warning,
-                                              Types.Gate.HWFaultReason Fault, Types.Gate.HWDisableReason Disable)
+        public void PostGateNotificationEvent(Types.GTU.HWProblemReason Problem, Types.GTU.HWWarningReason Warning,
+                                              Types.GTU.HWFaultReason Fault, Types.GTU.HWDisableReason Disable)
         {
             EnumerateClients(Client => Client.GateNotificationHandler(Problem, Warning, Fault, Disable));
         }

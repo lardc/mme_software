@@ -139,22 +139,22 @@ namespace SCME.Service.IO
 
                 ClearWarning();
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
-                if (devState != HWDeviceState.Ready)
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
+                if (devState != Types.Clamping.DeviceState.Ready)
                 {
-                    if (devState == HWDeviceState.Fault)
+                    if (devState == Types.Clamping.DeviceState.Fault)
                     {
                         ClearFault();
                         Thread.Sleep(100);
 
-                        devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                        devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                        if (devState == HWDeviceState.Fault)
+                        if (devState == Types.Clamping.DeviceState.Fault)
                             throw new Exception(string.Format("Clamping is in fault state, reason: {0}",
                                 ReadRegister(REG_FAULT_REASON)));
                     }
 
-                    if (devState == HWDeviceState.ClampingDone)
+                    if (devState == Types.Clamping.DeviceState.ClampingDone)
                         CallAction(ACT_RELEASE_CLAMPING);
                     else
                         CallAction(ACT_HOMING);
@@ -164,15 +164,15 @@ namespace SCME.Service.IO
                 {
                     Thread.Sleep(100);
 
-                    devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                    devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE, true);
 
-                    if (devState == HWDeviceState.Ready)
+                    if (devState == Types.Clamping.DeviceState.Ready)
                         break;
 
-                    if (devState == HWDeviceState.Fault)
+                    if (devState == Types.Clamping.DeviceState.Fault)
                         throw new Exception(string.Format("Clamping is in fault state, reason: {0}",
                             (Types.VTM.HWFaultReason)ReadRegister(REG_FAULT_REASON)));
-                    if (devState == HWDeviceState.Disabled)
+                    if (devState == Types.Clamping.DeviceState.Disabled)
                         throw new Exception(string.Format("Clamping is in disabled state, reason: {0}",
                             (Types.VTM.HWDisableReason)ReadRegister(REG_DISABLE_REASON)));
                 }
@@ -210,7 +210,7 @@ namespace SCME.Service.IO
             {
                 if (!m_IsClampingEmulation && oldState == DeviceConnectionState.ConnectionSuccess)
                 {
-                    var devState = (HWDeviceState)
+                    var devState = (Types.Clamping.DeviceState)
                         ReadRegister(REG_DEVICE_STATE);
 
                     try
@@ -225,7 +225,7 @@ namespace SCME.Service.IO
                         SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Error, $"Error during Clamp deinitialization, temperature stage: {ex.Message}");
                     }
 
-                    if (devState == HWDeviceState.ClampingDone)
+                    if (devState == Types.Clamping.DeviceState.ClampingDone)
                         Unsqueeze(new TestParameters());
                 }
 
@@ -288,9 +288,9 @@ namespace SCME.Service.IO
         internal void CheckAndClearHalt()
         {
             //читает состояние пресса и если оно есть Halt - сбрасывает его
-            HWDeviceState devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+            Types.Clamping.DeviceState devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-            if (devState == HWDeviceState.Halt)
+            if (devState == Types.Clamping.DeviceState.Halt)
                 Clear_Halt();
         }
 
@@ -441,7 +441,7 @@ namespace SCME.Service.IO
                 FireExceptionEvent(E.Error.Message);
         }
 
-        public DeviceState StartHeating(int temperature)
+        public Types.DeviceState StartHeating(int temperature)
         {
             SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info, $"Heating to temperature: {temperature}");
             aimTemperature = (ushort)temperature;
@@ -451,7 +451,7 @@ namespace SCME.Service.IO
                 FireSwitchEvent(SqueezingState.Heating, null, null);
 
                 m_SendTemperature = true;
-                return DeviceState.Heating;
+                return Types.DeviceState.Heating;
             }
 
             try
@@ -464,14 +464,14 @@ namespace SCME.Service.IO
                     ClearWarning();
                 }
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None,
                                           (HWFaultReason)ReadRegister(REG_FAULT_REASON));
 
-                    return DeviceState.Fault;
+                    return Types.DeviceState.Fault;
                 }
 
                 FireSwitchEvent(SqueezingState.Heating, null, null);
@@ -482,12 +482,12 @@ namespace SCME.Service.IO
 #endif
                 m_SendTemperature = true;
 
-                return DeviceState.Heating;
+                return Types.DeviceState.Heating;
             }
             catch (Exception ex)
             {
                 FireExceptionEvent(ex.Message);
-                return DeviceState.Fault;
+                return Types.DeviceState.Fault;
             }
         }
 
@@ -512,9 +512,9 @@ namespace SCME.Service.IO
                     ClearWarning();
                 }
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None, (HWFaultReason)ReadRegister(REG_FAULT_REASON));
 
@@ -543,13 +543,13 @@ namespace SCME.Service.IO
             _UserWorkMode = userWorkMode;
         }
 
-        internal DeviceState Squeeze(TestParameters ClampingParameters, bool SkipReadingArrays = true)
+        internal Types.DeviceState Squeeze(TestParameters ClampingParameters, bool SkipReadingArrays = true)
         {
             if(_UserWorkMode == UserWorkMode.OperatorBuildMode)
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
 
             if (ClampingParameters.SkipClamping)
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
 
             _clampingParameters = ClampingParameters;
             if (_clampingParameters.Height == 0)
@@ -563,7 +563,7 @@ namespace SCME.Service.IO
                 Thread.Sleep(500);
                 FireSwitchEvent(SqueezingState.Up, null, null);
 
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
             }
 
             m_Stop = false;
@@ -578,18 +578,18 @@ namespace SCME.Service.IO
                     ClearWarning();
                 }
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None, (HWFaultReason)ReadRegister(REG_FAULT_REASON));
 
-                    return DeviceState.Fault;
+                    return Types.DeviceState.Fault;
                 }
 
                 //если сработала система безопасности - прижим остановится и перейдёт в состояние Halt
-                if (devState == HWDeviceState.Halt)
-                    return DeviceState.Stopped;
+                if (devState == Types.Clamping.DeviceState.Halt)
+                    return Types.DeviceState.Stopped;
 
                 FireSwitchEvent(SqueezingState.Squeezing, null, null);
 
@@ -612,13 +612,13 @@ namespace SCME.Service.IO
                 List<float> arrayF = null;
                 List<float> arrayFd = null;
 
-                if ((result == DeviceState.Success) && !SkipReadingArrays)
+                if ((result == Types.DeviceState.Success) && !SkipReadingArrays)
                 {
                     arrayF = ReadArrayFast(ARR_FORCE_ACT).Select(Arg => Arg / 1000.0f).ToList();
                     arrayFd = ReadArrayFast(ARR_FORCE_DESIRED).Select(Arg => Arg / 1000.0f).ToList();
                 }
 
-                FireSwitchEvent(result == DeviceState.Success
+                FireSwitchEvent(result == Types.DeviceState.Success
                     ? SqueezingState.Up
                     : SqueezingState.Undeterminated, arrayF, arrayFd);
 
@@ -627,17 +627,17 @@ namespace SCME.Service.IO
             catch (Exception ex)
             {
                 FireExceptionEvent(ex.Message);
-                return DeviceState.Fault;
+                return Types.DeviceState.Fault;
             }
         }
 
-        internal DeviceState SetCustomForce()
+        internal Types.DeviceState SetCustomForce()
         {
             const bool isDefault = false;
             return UpdateClamp(isDefault);
         }
 
-        internal DeviceState ReturnForceToDefault()
+        internal Types.DeviceState ReturnForceToDefault()
         {
             const bool isDefault = true;
             return UpdateClamp(isDefault);
@@ -660,28 +660,28 @@ namespace SCME.Service.IO
             }
         }
 
-        private DeviceState UpdateClamp(bool isDefault)
+        private Types.DeviceState UpdateClamp(bool isDefault)
         {
             if (m_IsClampingEmulation)
             {
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
             }
             else
             {
-                var devState = (HWDeviceState)
+                var devState = (Types.Clamping.DeviceState)
                     ReadRegister(REG_DEVICE_STATE);
 
-                if (devState != HWDeviceState.ClampingDone)
+                if (devState != Types.Clamping.DeviceState.ClampingDone)
                 {
                     SystemHost.Journal.AppendLog(ComplexParts.Clamping, LogMessageType.Info, string.Format("Can't update clamping - device state is {0}", devState));
-                    return DeviceState.Success;
+                    return Types.DeviceState.Success;
                     //throw new Exception(string.Format("Can't update clamping - device state is {0}", devState));
                 }
 
                 //если заданное в профиле значение усилия зажатия пресса меньше или равно значению параметра LongTimeForce - не надо менять усилие зажатия пресса
                 //смысл LongTimeForce - пресс способен продолжительное время удерживать усилие зажатия LongTimeForce без перегрева своего двигателя
                 if (_clampingParameters.CustomForce <= _longTimeForce)
-                    return DeviceState.Success;
+                    return Types.DeviceState.Success;
 
                 if (isDefault)
                     WriteRegister(REG_FORCE_VAL, (ushort)(_defaultForce * 10));
@@ -709,16 +709,16 @@ namespace SCME.Service.IO
             }
         }
 
-        private DeviceState WaitForUpdate()
+        private Types.DeviceState WaitForUpdate()
         {
             var timeStamp = Environment.TickCount + m_Timeout;
 
             while (Environment.TickCount < timeStamp)
             {
                 if (m_Stop)
-                    return DeviceState.Stopped;
+                    return Types.DeviceState.Stopped;
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE, true);
                 var warning = (HWWarningReason)ReadRegister(REG_WARNING, true);
                 var problem = (HWProblemReason)ReadRegister(REG_PROBLEM, true);
 
@@ -732,18 +732,18 @@ namespace SCME.Service.IO
                 {
                     FireNotificationEvent(HWWarningReason.None, problem, HWFaultReason.None);
 
-                    return DeviceState.Problem;
+                    return Types.DeviceState.Problem;
                 }
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     var fault = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
 
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None, fault);
-                    return DeviceState.Fault;
+                    return Types.DeviceState.Fault;
                 }
 
-                if (devState == HWDeviceState.ClampingDone)
+                if (devState == Types.Clamping.DeviceState.ClampingDone)
                     break;
 
             }
@@ -753,16 +753,16 @@ namespace SCME.Service.IO
                 FireExceptionEvent("Timeout while waiting for Clamping to end operation");
                 throw new Exception("Timeout while waiting for Clamping to end operation");
             }
-            return DeviceState.Success;
+            return Types.DeviceState.Success;
         }
 
-        internal DeviceState Unsqueeze(TestParameters ClampingParameters)
+        internal Types.DeviceState Unsqueeze(TestParameters ClampingParameters)
         {
             if (_UserWorkMode == UserWorkMode.OperatorBuildMode)
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
 
             if (ClampingParameters.SkipClamping)
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
 
             if (m_IsClampingEmulation)
             {
@@ -770,7 +770,7 @@ namespace SCME.Service.IO
                 Thread.Sleep(500);
                 FireSwitchEvent(SqueezingState.Down, null, null);
 
-                return DeviceState.Success;
+                return Types.DeviceState.Success;
             }
 
             m_Stop = false;
@@ -786,21 +786,21 @@ namespace SCME.Service.IO
                     ClearWarning();
                 }
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE);
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None,
                                           (HWFaultReason)ReadRegister(REG_FAULT_REASON));
-                    return DeviceState.Fault;
+                    return Types.DeviceState.Fault;
                 }
 
                 //если сработала система безопасности - прижим остановится и перейдёт в состояние Halt
-                if (devState == HWDeviceState.Halt)
-                    return DeviceState.Stopped;
+                if (devState == Types.Clamping.DeviceState.Halt)
+                    return Types.DeviceState.Stopped;
 
                 //перед выдачей команды на разжатие убедимся, что пресс готов обработать эту команду, а если не готов - подождём пока пресс станет готов
-                if ((devState == HWDeviceState.Ready) || (ReadDeviceState(Types.Clamping.HWDeviceState.ClampingDone, 30000) == (ushort)Types.Clamping.HWDeviceState.ClampingDone))
+                if ((devState == Types.Clamping.DeviceState.Ready) || (ReadDeviceState(Types.Clamping.DeviceState.ClampingDone, 30000) == (ushort)Types.Clamping.DeviceState.ClampingDone))
                 {
                     FireSwitchEvent(SqueezingState.Unsqueezing, null, null);
                     CallAction(ACT_RELEASE_CLAMPING);
@@ -815,7 +815,7 @@ namespace SCME.Service.IO
             catch (Exception ex)
             {
                 FireExceptionEvent(ex.ToString());
-                return DeviceState.Fault;
+                return Types.DeviceState.Fault;
             }
         }
 
@@ -826,7 +826,7 @@ namespace SCME.Service.IO
             return ReadRegister(REG_DEVICE_STATE);
         }
 
-        private ushort ReadDeviceState(Types.Clamping.HWDeviceState WaitedState, int Timeout)
+        private ushort ReadDeviceState(Types.Clamping.DeviceState WaitedState, int Timeout)
         //реализация чтения состояния конечного автомата
         //в WaitedState принимается состояние, в которое должен перейти конечный автомат
         //реализация ожидает перехода конечного автомата в состояние WaitedState в течении времени Timeout
@@ -855,20 +855,20 @@ namespace SCME.Service.IO
             }
         }
 
-        private DeviceState WaitForEndOfTest(bool Up)
+        private Types.DeviceState WaitForEndOfTest(bool Up)
         {
             var timeStamp = Environment.TickCount + m_Timeout;
 
             while (Environment.TickCount < timeStamp)
             {
                 if (m_Stop)
-                    return DeviceState.Stopped;
+                    return Types.DeviceState.Stopped;
 
-                var devState = (HWDeviceState)ReadRegister(REG_DEVICE_STATE, true);
+                var devState = (Types.Clamping.DeviceState)ReadRegister(REG_DEVICE_STATE, true);
 
                 //если сработала система безопасности - прижим остановится и перейдёт в состояние Halt
-                if (devState == HWDeviceState.Halt)
-                    return DeviceState.Stopped;
+                if (devState == Types.Clamping.DeviceState.Halt)
+                    return Types.DeviceState.Stopped;
 
                 var warning = (HWWarningReason)ReadRegister(REG_WARNING, true);
                 var problem = (HWProblemReason)ReadRegister(REG_PROBLEM, true);
@@ -883,25 +883,25 @@ namespace SCME.Service.IO
                 {
                     FireNotificationEvent(HWWarningReason.None, problem, HWFaultReason.None);
 
-                    return DeviceState.Problem;
+                    return Types.DeviceState.Problem;
                 }
 
-                if (devState == HWDeviceState.Fault)
+                if (devState == Types.Clamping.DeviceState.Fault)
                 {
                     var fault = (HWFaultReason)ReadRegister(REG_FAULT_REASON);
 
                     FireNotificationEvent(HWWarningReason.None, HWProblemReason.None, fault);
-                    return DeviceState.Fault;
+                    return Types.DeviceState.Fault;
                 }
 
                 if (Up)
                 {
-                    if (devState == HWDeviceState.ClampingDone)
+                    if (devState == Types.Clamping.DeviceState.ClampingDone)
                         break;
                 }
                 else
                 {
-                    if (devState == HWDeviceState.Ready)
+                    if (devState == Types.Clamping.DeviceState.Ready)
                         break;
                 }
 
@@ -914,7 +914,7 @@ namespace SCME.Service.IO
                 throw new Exception("Timeout while waiting for Clamping to end test");
             }
 
-            return DeviceState.Success;
+            return Types.DeviceState.Success;
         }
 
         #region Events

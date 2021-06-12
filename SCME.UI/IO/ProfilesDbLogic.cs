@@ -1,5 +1,5 @@
 ﻿using SCME.Types;
-using SCME.Types.Gate;
+using SCME.Types.GTU;
 using SCME.Types.Profiles;
 using SCME.Types.SQL;
 using SCME.UI.CustomControl;

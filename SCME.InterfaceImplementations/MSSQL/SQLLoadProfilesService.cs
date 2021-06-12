@@ -11,7 +11,7 @@ using SCME.Types.Interfaces;
 using SCME.Types.Profiles;
 using SCME.Types.VTM;
 using SCME.Types.SQL;
-using TestParameters = SCME.Types.Gate.TestParameters;
+using TestParameters = SCME.Types.GTU.TestParameters;
 
 namespace SCME.InterfaceImplementations
 {
@@ -401,25 +401,25 @@ namespace SCME.InterfaceImplementations
         {
             switch (testParametersType)
             {
-                case (int)TestParametersType.Gate:
+                case (int)TestParametersType.GTU:
                     var gatePars = FillGateConditions(testTypeId);
                     FillGateParameters(gatePars, testTypeId);
                     profile.TestParametersAndNormatives.Add(gatePars);
                     break;
 
-                case (int)TestParametersType.Bvt:
+                case (int)TestParametersType.BVT:
                     var bvtPars = FillBvtConditions(testTypeId);
                     FillBvtParameters(bvtPars, testTypeId);
                     profile.TestParametersAndNormatives.Add(bvtPars);
                     break;
 
-                case (int)TestParametersType.StaticLoses:
+                case (int)TestParametersType.SL:
                     var slParams = FillSlConditions(testTypeId);
                     FillSlParameters(slParams, testTypeId);
                     profile.TestParametersAndNormatives.Add(slParams);
                     break;
 
-                case (int)TestParametersType.Dvdt:
+                case (int)TestParametersType.dVdt:
                     var dVdtParams = FillDvdtConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(dVdtParams);
                     break;

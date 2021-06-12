@@ -539,7 +539,7 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddGateWarningEvent(Types.Gate.HWWarningReason Warning)
+        public void AddGateWarningEvent(Types.GTU.HWWarningReason Warning)
         {
             m_ActionQueue.Enqueue(delegate
             {
@@ -550,7 +550,7 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddGateFaultEvent(Types.Gate.HWFaultReason Fault)
+        public void AddGateFaultEvent(Types.GTU.HWFaultReason Fault)
         {
             m_ActionQueue.Enqueue(delegate
             {
@@ -561,7 +561,7 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddGateProblemEvent(Types.Gate.HWProblemReason Problem)
+        public void AddGateProblemEvent(Types.GTU.HWProblemReason Problem)
         {
             m_ActionQueue.Enqueue(delegate
             {

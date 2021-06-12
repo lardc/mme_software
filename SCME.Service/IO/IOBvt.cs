@@ -30,7 +30,7 @@ namespace SCME.Service.IO
         private bool m_IsBVTEmulation;
         private Types.BVT.TestParameters m_Parameters;
         private DeviceConnectionState m_ConnectionState;
-        private volatile DeviceState m_State;
+        private volatile Types.DeviceState m_State;
         private volatile Types.BVT.TestResults m_Result;
         private volatile bool m_Stop;
 
@@ -79,22 +79,22 @@ namespace SCME.Service.IO
 
                 ClearWarning();
 
-                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEVICE_STATE);
-                if (devState != Types.BVT.HWDeviceState.PowerReady)
+                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEV_STATE);
+                if (devState != Types.BVT.HWDeviceState.DS_Powered)
                 {
-                    if (devState == Types.BVT.HWDeviceState.Fault)
+                    if (devState == Types.BVT.HWDeviceState.DS_Fault)
                     {
                         ClearFault();
                         Thread.Sleep(100);
 
-                        devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEVICE_STATE);
+                        devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEV_STATE);
 
-                        if (devState == Types.BVT.HWDeviceState.Fault)
+                        if (devState == Types.BVT.HWDeviceState.DS_Fault)
                             throw new Exception(string.Format("BVT is in fault state, reason: {0}",
                                 (Types.BVT.HWFaultReason) ReadRegister(REG_FAULT_REASON)));
                     }
 
-                    if (devState == Types.BVT.HWDeviceState.Disabled)
+                    if (devState == Types.BVT.HWDeviceState.DS_Disabled)
                         throw new Exception(string.Format("BVT is in disabled state, reason: {0}",
                             (Types.BVT.HWDisableReason) ReadRegister(REG_DISABLE_REASON)));
 
@@ -106,15 +106,15 @@ namespace SCME.Service.IO
                     Thread.Sleep(100);
 
                     devState = (Types.BVT.HWDeviceState)
-                        ReadRegister(REG_DEVICE_STATE);
+                        ReadRegister(REG_DEV_STATE);
 
-                    if (devState == Types.BVT.HWDeviceState.PowerReady)
+                    if (devState == Types.BVT.HWDeviceState.DS_Powered)
                         break;
 
-                    if (devState == Types.BVT.HWDeviceState.Fault)
+                    if (devState == Types.BVT.HWDeviceState.DS_Fault)
                         throw new Exception(string.Format("BVT is in fault state, reason: {0}",
                             (Types.BVT.HWFaultReason) ReadRegister(REG_FAULT_REASON)));
-                    if (devState == Types.BVT.HWDeviceState.Disabled)
+                    if (devState == Types.BVT.HWDeviceState.DS_Disabled)
                         throw new Exception(string.Format("BVT is in disabled state, reason: {0}",
                             (Types.BVT.HWDisableReason) ReadRegister(REG_DISABLE_REASON)));
                 }
@@ -160,11 +160,11 @@ namespace SCME.Service.IO
             }
         }
 
-        internal DeviceState Start(Types.BVT.TestParameters parameters, Types.Commutation.TestParameters commParameters)
+        internal Types.DeviceState Start(Types.BVT.TestParameters parameters, Types.Commutation.TestParameters commParameters)
         {
             m_Parameters = parameters;
 
-            if (m_State == DeviceState.InProcess)
+            if (m_State == Types.DeviceState.InProcess)
                 throw new Exception("BVT test is already started");
 
             m_Result = new Types.BVT.TestResults {TestTypeId = parameters.TestTypeId};
@@ -174,8 +174,8 @@ namespace SCME.Service.IO
 
             if (!m_IsBVTEmulation)
             {
-                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEVICE_STATE);
-                if (devState == Types.BVT.HWDeviceState.Fault)
+                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEV_STATE);
+                if (devState == Types.BVT.HWDeviceState.DS_Fault)
                 {
                     var faultReason = (Types.BVT.HWFaultReason) ReadRegister(REG_FAULT_REASON);
                     FireNotificationEvent(Types.BVT.HWProblemReason.None, Types.BVT.HWWarningReason.None, faultReason,
@@ -184,7 +184,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("BVT is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == Types.BVT.HWDeviceState.Disabled)
+                if (devState == Types.BVT.HWDeviceState.DS_Disabled)
                 {
                     var disableReason = (Types.BVT.HWDisableReason) ReadRegister(REG_DISABLE_REASON);
                     FireNotificationEvent(Types.BVT.HWProblemReason.None, Types.BVT.HWWarningReason.None,
@@ -194,12 +194,12 @@ namespace SCME.Service.IO
                 }
             }
 
-            m_State = DeviceState.InProcess;
+            m_State = Types.DeviceState.InProcess;
             FireBvtAllEvent(m_State);
 
             MeasurementLogicRoutine(commParameters);
 
-            if (m_State != DeviceState.Success)
+            if (m_State != Types.DeviceState.Success)
                 FireBvtAllEvent(m_State);
 
             return m_State;
@@ -209,14 +209,14 @@ namespace SCME.Service.IO
         {
             CallAction(ACT_STOP);
             m_Stop = true;
-            m_State = DeviceState.Stopped;
+            m_State = Types.DeviceState.Stopped;
         }
 
         internal bool IsReadyToStart()
         {
-            var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEVICE_STATE);
+            var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEV_STATE);
 
-            return !((devState == Types.BVT.HWDeviceState.Fault) || (devState == Types.BVT.HWDeviceState.Disabled) || (m_State == DeviceState.InProcess));
+            return !((devState == Types.BVT.HWDeviceState.DS_Fault) || (devState == Types.BVT.HWDeviceState.DS_Disabled) || (m_State == Types.DeviceState.InProcess));
         }
 
         #region Standart API
@@ -261,6 +261,11 @@ namespace SCME.Service.IO
                     string.Format("BVT @ReadRegisterS, address {0}, value {1}", Address, value));
 
             return value;
+        }
+
+        internal ushort ReadDeviceState(bool skipJournal = false)
+        {
+            return ReadRegister(REG_DEV_STATE, skipJournal);
         }
 
         internal void WriteRegister(ushort Address, ushort Value, bool SkipJournal = false)
@@ -592,7 +597,7 @@ namespace SCME.Service.IO
                 "BVT @ReadArrays end");
         }
 
-        private DeviceState WaitForEndOfTest()
+        private Types.DeviceState WaitForEndOfTest()
         {
             var timeStamp = Environment.TickCount + m_Timeout;
 
@@ -601,13 +606,13 @@ namespace SCME.Service.IO
                 if (m_Stop)
                 {
                     CallAction(ACT_STOP);
-                    return DeviceState.Stopped;
+                    return Types.DeviceState.Stopped;
                 }
 
-                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEVICE_STATE, true);
+                var devState = (Types.BVT.HWDeviceState) ReadRegister(REG_DEV_STATE, true);
                 var opResult = (Types.BVT.HWOperationResult) ReadRegister(REG_TEST_FINISHED, true);
 
-                if (devState == Types.BVT.HWDeviceState.Fault)
+                if (devState == Types.BVT.HWDeviceState.DS_Fault)
                 {
                     var faultReason = (Types.BVT.HWFaultReason) ReadRegister(REG_FAULT_REASON);
 
@@ -616,7 +621,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("BVT device is in fault state, reason: {0}", faultReason));
                 }
 
-                if (devState == Types.BVT.HWDeviceState.Disabled)
+                if (devState == Types.BVT.HWDeviceState.DS_Disabled)
                 {
                     var disableReason = (Types.BVT.HWDisableReason) ReadRegister(REG_DISABLE_REASON);
 
@@ -655,7 +660,7 @@ namespace SCME.Service.IO
                 throw new Exception("Timeout while waiting for BVT test to end");
             }
 
-            return DeviceState.Success;
+            return Types.DeviceState.Success;
         }
 
         #region Events
@@ -666,18 +671,18 @@ namespace SCME.Service.IO
             m_Communication.PostDeviceConnectionEvent(ComplexParts.BVT, State, Message);
         }
 
-        private void FireBvtAllEvent(DeviceState State)
+        private void FireBvtAllEvent(Types.DeviceState State)
         {
             var message = string.Format("BVT test all state {0}", State);
             m_Communication.PostBVTAllEvent(State);
         }
 
 
-        private void FireBvtEvent(DeviceState State, Types.BVT.TestResults Result, BVTTestType type, bool IsUdsmUrsm)
+        private void FireBvtEvent(Types.DeviceState State, Types.BVT.TestResults Result, BVTTestType type, bool IsUdsmUrsm)
         {
             var message = string.Format($"BVT {(IsUdsmUrsm ? "UdsmUrsm" : "")} {(type == BVTTestType.Direct ? "direct" : "reverse")} test state {0}", State);
 
-            if (State == DeviceState.Success)
+            if (State == Types.DeviceState.Success)
                 message = string.Format($"BVT {(IsUdsmUrsm ? "UdsmUrsm" : "")} {(type == BVTTestType.Direct ? "direct" : "reverse")} test result " +
                                         $"{(type == BVTTestType.Direct ? Result.VDRM : Result.VRRM)} V, {(type == BVTTestType.Direct ? Result.IDRM : Result.IRRM)} mA");
 
@@ -789,9 +794,9 @@ namespace SCME.Service.IO
             REG_MEASUREMENT_MODE = 129,
             REG_LIMIT_CURRENT = 130,
             REG_LIMIT_VOLTAGE = 131,
-            REG_PLATE_TIME = 132,
-            REG_RAMPUP_RATE = 133,
-            REG_START_VOLTAGE = 134,
+            REG_VOLTAGE_PLATE_TIME = 132,
+            REG_VOLTAGE_AC_RATE = 133,
+            REG_START_VOLTAGE_AC = 134,
             REG_VOLTAGE_FREQUENCY = 135,
             REG_FREQUENCY_DIVISOR = 136,
             REG_S1_CURRENT1_FINE_N = 96,
@@ -802,7 +807,7 @@ namespace SCME.Service.IO
             REG_S1_VOLTAGE1_FINE_D = 105,
             REG_S1_VOLTAGE2_FINE_N = 106,
             REG_S1_VOLTAGE2_FINE_D = 107,
-            REG_DEVICE_STATE = 192,
+            REG_DEV_STATE = 192,
             REG_FAULT_REASON = 193,
             REG_DISABLE_REASON = 194,
             REG_WARNING = 195,
@@ -834,7 +839,7 @@ namespace SCME.Service.IO
 
         private void MeasurementLogicRoutine(Types.Commutation.TestParameters commutation)
         {
-            var internalState = DeviceState.InProcess;
+            var internalState = Types.DeviceState.InProcess;
 
             var data = new List<BvtInputParameters>()
             {
@@ -876,9 +881,9 @@ namespace SCME.Service.IO
                 try
                 {
                     WriteRegister(REG_LIMIT_CURRENT, (ushort) (bvtInputParameter.CurrentLimit * 10));
-                    WriteRegister(REG_PLATE_TIME, bvtInputParameter.PlateTime);
-                    WriteRegister(REG_RAMPUP_RATE, (ushort) (bvtInputParameter.RampUpVoltage * 10));
-                    WriteRegister(REG_START_VOLTAGE, bvtInputParameter.StartVoltage);
+                    WriteRegister(REG_VOLTAGE_PLATE_TIME, bvtInputParameter.PlateTime);
+                    WriteRegister(REG_VOLTAGE_AC_RATE, (ushort) (bvtInputParameter.RampUpVoltage * 10));
+                    WriteRegister(REG_START_VOLTAGE_AC, bvtInputParameter.StartVoltage);
                     WriteRegister(REG_VOLTAGE_FREQUENCY, bvtInputParameter.VoltageFrequency);
                     WriteRegister(REG_FREQUENCY_DIVISOR, bvtInputParameter.FrequencyDivisor);
                     WriteRegister(REG_MEASUREMENT_MODE,
@@ -889,15 +894,15 @@ namespace SCME.Service.IO
                     if (bvtInputParameter.TestType == Types.BVT.BVTTestType.Both ||
                         bvtInputParameter.TestType == Types.BVT.BVTTestType.Direct)
                     {
-                        internalState = DeviceState.InProcess;
+                        internalState = Types.DeviceState.InProcess;
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
 
                         if (m_IOCommutation.Switch( commutation.CommutationType == HWModuleCommutationType.Reverse ?
                             CommutationMode.BVTR : CommutationMode.BVTD
                                 , commutation.CommutationType, commutation.Position) ==
-                            DeviceState.Fault)
+                            Types.DeviceState.Fault)
                         {
-                            m_State = DeviceState.Fault;
+                            m_State = Types.DeviceState.Fault;
                             FireBvtAllEvent(m_State);
                             return;
                         }
@@ -927,7 +932,7 @@ namespace SCME.Service.IO
                         }
                         else
                         {
-                            internalState = DeviceState.Success;
+                            internalState = Types.DeviceState.Success;
 
                             if (bvtInputParameter.IsUdsmUrsm)
                             {
@@ -944,28 +949,28 @@ namespace SCME.Service.IO
                         FireBvtEvent(internalState, m_Result, BVTTestType.Direct, bvtInputParameter.IsUdsmUrsm);
 
 
-                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                        if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == Types.DeviceState.Fault)
                         {
-                            m_State = DeviceState.Fault;
+                            m_State = Types.DeviceState.Fault;
                             FireBvtAllEvent(m_State);
                             return;
                         }
                     }
                     else
-                        internalState = DeviceState.Success;
+                        internalState = Types.DeviceState.Success;
 
-                    if ((internalState == DeviceState.Success)
+                    if ((internalState == Types.DeviceState.Success)
                         && (bvtInputParameter.TestType == Types.BVT.BVTTestType.Both ||
                             bvtInputParameter.TestType == Types.BVT.BVTTestType.Reverse))
                     {
-                        internalState = DeviceState.InProcess;
+                        internalState = Types.DeviceState.InProcess;
                         FireBvtEvent(internalState, m_Result, BVTTestType.Reverse, bvtInputParameter.IsUdsmUrsm);
 
-                        if (m_IOCommutation.Switch(commutation.CommutationType == HWModuleCommutationType.Reverse ? 
-                                CommutationMode.BVTD: CommutationMode.BVTR, commutation.CommutationType, commutation.Position) ==
-                            DeviceState.Fault)
+                        if (m_IOCommutation.Switch(commutation.CommutationType == HWModuleCommutationType.Reverse ?
+                                CommutationMode.BVTD : CommutationMode.BVTR, commutation.CommutationType, commutation.Position) ==
+                            Types.DeviceState.Fault)
                         {
-                            m_State = DeviceState.Fault;
+                            m_State = Types.DeviceState.Fault;
                             FireBvtAllEvent(m_State);
                             return;
                         }
@@ -994,7 +999,7 @@ namespace SCME.Service.IO
                         }
                         else
                         {
-                            internalState = DeviceState.Success;
+                            internalState = Types.DeviceState.Success;
 
                             if (bvtInputParameter.IsUdsmUrsm)
                             {
@@ -1011,9 +1016,9 @@ namespace SCME.Service.IO
                         FireBvtEvent(internalState, m_Result, BVTTestType.Reverse, bvtInputParameter.IsUdsmUrsm);
                     }
 
-                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == DeviceState.Fault)
+                    if (m_IOCommutation.Switch(Types.Commutation.CommutationMode.None) == Types.DeviceState.Fault)
                     {
-                        m_State = DeviceState.Fault;
+                        m_State = Types.DeviceState.Fault;
                         FireBvtAllEvent(m_State);
                         return;
                     }
@@ -1023,7 +1028,7 @@ namespace SCME.Service.IO
                 catch (Exception ex)
                 {
                     m_IOCommutation.Switch(Types.Commutation.CommutationMode.None);
-                    m_State = DeviceState.Fault;
+                    m_State = Types.DeviceState.Fault;
                     FireBvtAllEvent(m_State);
 
                     FireExceptionEvent(ex.Message);

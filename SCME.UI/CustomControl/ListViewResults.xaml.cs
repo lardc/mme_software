@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using SCME.UI.Annotations;
 using SCME.UI.CustomControl;
-using GateTestParameters = SCME.Types.Gate.TestParameters;
+using GateTestParameters = SCME.Types.GTU.TestParameters;
 using BvtTestParameters = SCME.Types.BVT.TestParameters;
 using VtmTestParameters = SCME.Types.VTM.TestParameters;
 using DvDtTestParameters = SCME.Types.dVdt.TestParameters;

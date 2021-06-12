@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:gateParameters="clr-namespace:SCME.Types.Gate;assembly=SCME.Types" 
+             xmlns:gateParameters="clr-namespace:SCME.Types.GTU;assembly=SCME.Types" 
              xmlns:bvtParameters="clr-namespace:SCME.Types.BVT;assembly=SCME.Types" 
              xmlns:vtmParameters="clr-namespace:SCME.Types.VTM;assembly=SCME.Types"
              xmlns:dVdtParameters="clr-namespace:SCME.Types.dVdt;assembly=SCME.Types"

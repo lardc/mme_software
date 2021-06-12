@@ -51,15 +51,15 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        void GateWriteCalibrationParameters(Gate.CalibrationParameters Parameters);
+        void GateWriteCalibrationParameters(GTU.CalibrationParameters Parameters);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        Gate.CalibrationParameters GateReadCalibrationParameters();
+        GTU.CalibrationParameters GateReadCalibrationParameters();
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current);
+        GTU.CalibrationResultGate GatePulseCalibrationGate(ushort Current);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -83,11 +83,11 @@ namespace SCME.Types
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool Start(Gate.TestParameters ParametersGate, VTM.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
+        bool Start(GTU.TestParameters ParametersGate, VTM.TestParameters ParametersSL, BVT.TestParameters ParametersBVT, ATU.TestParameters ParametersATU, QrrTq.TestParameters ParametersQrrTq, IH.TestParameters ParametersIH, RCC.TestParameters ParametersRCC, Commutation.TestParameters ParametersCommutation, Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
-        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, Gate.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
+        bool StartDynamic(TestParameters parametersCommutation, Clamping.TestParameters parametersClamp, GTU.TestParameters[] parametersGate, VTM.TestParameters[] parametersVtm, BVT.TestParameters[] parametersBvt, dVdt.TestParameters[] parametersDvDt, ATU.TestParameters[] parametersAtu, QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU);
 
         [OperationContract]
         [FaultContract(typeof(FaultData))]
@@ -231,8 +231,8 @@ namespace SCME.Types
         void GateVgntHandler(DeviceState state, float vgnt, ushort ignt, long testTypeId);
 
         [OperationContract(IsOneWay = true)]
-        void GateNotificationHandler(Gate.HWProblemReason Problem, Gate.HWWarningReason Warning,
-                                     Gate.HWFaultReason Fault, Gate.HWDisableReason Disable);
+        void GateNotificationHandler(GTU.HWProblemReason Problem, GTU.HWWarningReason Warning,
+                                     GTU.HWFaultReason Fault, GTU.HWDisableReason Disable);
 
         [OperationContract(IsOneWay = true)]
         void SLHandler(DeviceState state, VTM.TestResults result);

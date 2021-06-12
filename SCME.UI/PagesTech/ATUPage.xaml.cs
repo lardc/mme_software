@@ -83,7 +83,7 @@ namespace SCME.UI.PagesTech
         {
             if (IsRunning)
                 return;
-            Types.Gate.TestParameters paramGate = new Types.Gate.TestParameters
+            Types.GTU.TestParameters paramGate = new Types.GTU.TestParameters
             {
                 IsEnabled = false
             };
@@ -125,17 +125,17 @@ namespace SCME.UI.PagesTech
             IsRunning = true;
         }
 
-        internal void SetResultAll(DeviceState state)
+        internal void SetResultAll(Types.DeviceState state)
         {
-            if (state == DeviceState.InProcess)
+            if (state == Types.DeviceState.InProcess)
                 ClearStatus();
             else
                 IsRunning = false;
         }
 
-        internal void SetResult(DeviceState state, TestResults result)
+        internal void SetResult(Types.DeviceState state, TestResults result)
         {
-            if (state == DeviceState.InProcess)
+            if (state == Types.DeviceState.InProcess)
                 ClearStatus();
             else
             {
@@ -204,7 +204,7 @@ namespace SCME.UI.PagesTech
                 case (ushort)HWWarningReason.FacetBreak:
                     lbAtuWarning.Background = Brushes.Orange;
                     break;
-                case (ushort)HWWarningReason.BreakDUT:
+                case (ushort)HWWarningReason.Break:
                 case (ushort)HWWarningReason.Short:               
                     lbAtuWarning.Background = (SolidColorBrush)FindResource("xRed1");
                     break;
@@ -238,7 +238,7 @@ namespace SCME.UI.PagesTech
             chartPlotter.Children.RemoveAll(typeof(LineGraph));
         }
 
-        private static void SetLabel(ContentControl target, DeviceState state, bool isFitWithNormatives, string value)
+        private static void SetLabel(ContentControl target, Types.DeviceState state, bool isFitWithNormatives, string value)
         {
             switch (state)
             {

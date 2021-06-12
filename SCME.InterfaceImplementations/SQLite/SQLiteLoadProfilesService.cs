@@ -90,7 +90,7 @@ namespace SCME.InterfaceImplementations
                         ProfileKey = profile.Key,
                         ProfileTS = profile.Timestamp,
                         Version = prof.Version,
-                        GateTestParameters = new List<Types.Gate.TestParameters>(),
+                        GateTestParameters = new List<Types.GTU.TestParameters>(),
                         VTMTestParameters = new List<Types.VTM.TestParameters>(),
                         BVTTestParameters = new List<Types.BVT.TestParameters>(),
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
@@ -119,7 +119,7 @@ namespace SCME.InterfaceImplementations
                             ProfileKey = childProfile.Key,
                             ProfileTS = childProfile.Timestamp,
                             Version = profilesChildsDict[i].Version,
-                            GateTestParameters = new List<Types.Gate.TestParameters>(),
+                            GateTestParameters = new List<Types.GTU.TestParameters>(),
                             VTMTestParameters = new List<Types.VTM.TestParameters>(),
                             BVTTestParameters = new List<Types.BVT.TestParameters>(),
                             DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
@@ -153,7 +153,7 @@ namespace SCME.InterfaceImplementations
         {
             foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
             {
-                var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                var gate = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                 if (gate != null)
                 {
                     profileItem.GateTestParameters.Add(gate);
@@ -379,7 +379,7 @@ namespace SCME.InterfaceImplementations
                         ProfileKey = profile.Key,
                         ProfileTS = profile.Timestamp,
                         Version = prof.Version,
-                        GateTestParameters = new List<Types.Gate.TestParameters>(),
+                        GateTestParameters = new List<Types.GTU.TestParameters>(),
                         VTMTestParameters = new List<Types.VTM.TestParameters>(),
                         BVTTestParameters = new List<Types.BVT.TestParameters>(),
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
@@ -394,7 +394,7 @@ namespace SCME.InterfaceImplementations
                     };
                     foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
                     {
-                        var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                        var gate = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                         if (gate != null)
                         {
                             profileItem.GateTestParameters.Add(gate);
@@ -444,25 +444,25 @@ namespace SCME.InterfaceImplementations
         {
             switch (testParametersType)
             {
-                case (int)TestParametersType.Gate:
+                case (int)TestParametersType.GTU:
                     var gatePars = FillGateConditions(testTypeId);
                     FillGateParameters(gatePars, testTypeId);
                     profile.TestParametersAndNormatives.Add(gatePars);
                     break;
 
-                case (int)TestParametersType.Bvt:
+                case (int)TestParametersType.BVT:
                     var bvtPars = FillBvtConditions(testTypeId);
                     FillBvtParameters(bvtPars, testTypeId);
                     profile.TestParametersAndNormatives.Add(bvtPars);
                     break;
 
-                case (int)TestParametersType.StaticLoses:
+                case (int)TestParametersType.SL:
                     var slParams = FillSlConditions(testTypeId);
                     FillSlParameters(slParams, testTypeId);
                     profile.TestParametersAndNormatives.Add(slParams);
                     break;
 
-                case (int)TestParametersType.Dvdt:
+                case (int)TestParametersType.dVdt:
                     var dVdtParams = FillDvdtConditions(testTypeId);
                     profile.TestParametersAndNormatives.Add(dVdtParams);
                     break;
@@ -691,10 +691,10 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private Types.Gate.TestParameters FillGateConditions(long testTypeId)
+        private Types.GTU.TestParameters FillGateConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(3);
-            var testParams = new Types.Gate.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
+            var testParams = new Types.GTU.TestParameters() { IsEnabled = true, TestTypeId = testTypeId };
 
             FillOrder(testTypeId, testParams);
 
@@ -735,7 +735,7 @@ namespace SCME.InterfaceImplementations
             }
         }
 
-        private void FillGateParameters(Types.Gate.TestParameters parameters, long testTypeId)
+        private void FillGateParameters(Types.GTU.TestParameters parameters, long testTypeId)
         {
             var results = new List<Tuple<string, float?, float?>>();
             FillParametersResults(testTypeId, results);
@@ -1077,7 +1077,7 @@ namespace SCME.InterfaceImplementations
                         ProfileKey = profileDict.Key,
                         ProfileTS = profileDict.TS,
                         Version = profileDict.Version,
-                        GateTestParameters = new List<Types.Gate.TestParameters>(),
+                        GateTestParameters = new List<Types.GTU.TestParameters>(),
                         VTMTestParameters = new List<Types.VTM.TestParameters>(),
                         BVTTestParameters = new List<Types.BVT.TestParameters>(),
                         DvDTestParameterses = new List<Types.dVdt.TestParameters>(),
@@ -1093,7 +1093,7 @@ namespace SCME.InterfaceImplementations
 
                     foreach (var baseTestParametersAndNormativese in profile.TestParametersAndNormatives)
                     {
-                        var gate = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                        var gate = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                         if (gate != null)
                             Result.GateTestParameters.Add(gate);
 

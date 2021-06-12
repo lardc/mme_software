@@ -225,22 +225,22 @@ namespace SCME.InterfaceImplementations.Common.DbService
         {
             switch ((TestParametersType) testParametersType)
             {
-                case TestParametersType.Gate:
+                case TestParametersType.GTU:
                     var gatePars = FillGateConditions(testTypeId);
                     FillGateParameters(gatePars, testTypeId);
                     data.TestParametersAndNormatives.Add(gatePars);
                     break;
-                case TestParametersType.Bvt:
+                case TestParametersType.BVT:
                     var bvtPars = FillBvtConditions(testTypeId);
                     FillBvtParameters(bvtPars, testTypeId);
                     data.TestParametersAndNormatives.Add(bvtPars);
                     break;
-                case TestParametersType.StaticLoses:
+                case TestParametersType.SL:
                     var slParams = FillSlConditions(testTypeId);
                     FillSlParameters(slParams, testTypeId);
                     data.TestParametersAndNormatives.Add(slParams);
                     break;
-                case TestParametersType.Dvdt:
+                case TestParametersType.dVdt:
                     var dVdtParams = FillDvdtConditions(testTypeId);
                     data.TestParametersAndNormatives.Add(dVdtParams);
                     break;
@@ -472,10 +472,10 @@ namespace SCME.InterfaceImplementations.Common.DbService
             }
         }
 
-        private Types.Gate.TestParameters FillGateConditions(long testTypeId)
+        private Types.GTU.TestParameters FillGateConditions(long testTypeId)
         {
             var results = new Dictionary<string, object>(3);
-            var testParams = new Types.Gate.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
+            var testParams = new Types.GTU.TestParameters() {IsEnabled = true, TestTypeId = testTypeId};
 
             FillOrder(testTypeId, testParams);
 
@@ -509,7 +509,7 @@ namespace SCME.InterfaceImplementations.Common.DbService
             return testParams;
         }
 
-        private void FillGateParameters(Types.Gate.TestParameters parameters, long testTypeId)
+        private void FillGateParameters(Types.GTU.TestParameters parameters, long testTypeId)
         {
             var results = new List<Tuple<string, float?, float?>>();
             FillParametersResults(testTypeId, results);

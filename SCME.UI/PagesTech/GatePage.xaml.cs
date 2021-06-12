@@ -25,7 +25,7 @@ namespace SCME.UI.PagesTech
         internal GatePage()
         {
             //Установка базовых параметров GTU и пресса
-            Parameters = new Types.Gate.TestParameters
+            Parameters = new Types.GTU.TestParameters
             {
                 IsEnabled = true
             };
@@ -46,7 +46,7 @@ namespace SCME.UI.PagesTech
         }
 
         /// <summary>Параметры GTU</summary>
-        public Types.Gate.TestParameters Parameters
+        public Types.GTU.TestParameters Parameters
         {
             get; set;
         }
@@ -160,7 +160,7 @@ namespace SCME.UI.PagesTech
 
         /// <summary>Установка ошибок</summary>
         /// <param name="fault">Ошибка</param>
-        internal void SetFault(Types.Gate.HWFaultReason fault)
+        internal void SetFault(Types.GTU.HWFaultReason fault)
         {
             lblFault.Content = fault.ToString();
             lblFault.Visibility = Visibility.Visible;
@@ -169,7 +169,7 @@ namespace SCME.UI.PagesTech
 
         /// <summary>Установка предупреждений</summary>
         /// <param name="warning">Предупреждение</param>
-        internal void SetWarning(Types.Gate.HWWarningReason warning)
+        internal void SetWarning(Types.GTU.HWWarningReason warning)
         {
             lblWarning.Content = warning.ToString();
             lblWarning.Visibility = Visibility.Visible;
@@ -177,7 +177,7 @@ namespace SCME.UI.PagesTech
         
         /// <summary>Установка проблем</summary>
         /// <param name="problem">Проблема</param>=
-        internal void SetProblem(Types.Gate.HWProblemReason problem)
+        internal void SetProblem(Types.GTU.HWProblemReason problem)
         {
             lblWarning.Content = problem.ToString();
             lblWarning.Visibility = Visibility.Visible;
@@ -335,7 +335,7 @@ namespace SCME.UI.PagesTech
         {
             try
             {
-                Types.Gate.CalibrationResultGate Result = Cache.Net.GatePulseCalibrationGate(ushort.Parse(calibrationCurrent.Text));
+                Types.GTU.CalibrationResultGate Result = Cache.Net.GatePulseCalibrationGate(ushort.Parse(calibrationCurrent.Text));
                 actualCurrent.Content = Result.Current.ToString(CultureInfo.InvariantCulture);
                 actualVoltage.Content = Result.Voltage.ToString(CultureInfo.InvariantCulture);
             }

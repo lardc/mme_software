@@ -25,7 +25,7 @@ namespace SCME.Service
         private readonly IOAdapter m_IOAdapter;
         private readonly IOGateway m_IOGateway;
         private readonly IOCommutation m_IOCommutation, m_IOCommutationEx;
-        private readonly IOGate m_IOGate;
+        private readonly IOGTU m_IOGate;
         private readonly IOStLs m_IOStls;
         private readonly IOBvt m_IOBvt;
         private readonly IOClamping m_IOClamping;
@@ -40,7 +40,7 @@ namespace SCME.Service
         public readonly IoDbSync IoDbSync;
         private readonly bool m_ClampingSystemConnected;
 
-        private Types.Gate.TestParameters m_ParametersGate;
+        private Types.GTU.TestParameters m_ParametersGate;
         private Types.VTM.TestParameters m_ParametersSL;
         private Types.BVT.TestParameters m_ParametersBvt;
         private Types.dVdt.TestParameters m_ParametersdVdt;
@@ -50,7 +50,7 @@ namespace SCME.Service
         private Types.RCC.TestParameters m_ParametersRCC;
         private Types.TOU.TestParameters m_ParametersTOU;
 
-        private Types.Gate.TestParameters[] m_ParametersGateDyn;
+        private Types.GTU.TestParameters[] m_ParametersGateDyn;
         private Types.VTM.TestParameters[] m_ParametersSLDyn;
         private Types.BVT.TestParameters[] m_ParametersBvtDyn;
         private Types.dVdt.TestParameters[] m_ParametersdVdtDyn;
@@ -86,7 +86,7 @@ namespace SCME.Service
             m_Thread = new ThreadService();
             m_Thread.FinishedHandler += Thread_FinishedHandler;
 
-            m_ParametersGate = new Types.Gate.TestParameters { IsEnabled = false };
+            m_ParametersGate = new Types.GTU.TestParameters { IsEnabled = false };
             m_ParametersSL = new Types.VTM.TestParameters { IsEnabled = false };
             m_ParametersBvt = new Types.BVT.TestParameters { IsEnabled = false };
             m_ParametersdVdt = new Types.dVdt.TestParameters { IsEnabled = false };
@@ -105,16 +105,15 @@ namespace SCME.Service
                                                   Settings.Default.IsCommutationExType6, ComplexParts.CommutationEx);
 
             m_IOClamping = new IOClamping(m_IOAdapter, m_Communication);
-            m_IOGate = new IOGate(m_IOAdapter, m_Communication);
+            m_IOGate = new IOGTU(m_IOAdapter, m_Communication);
             m_IOStls = new IOStLs(m_IOAdapter, m_Communication);
             m_IOBvt = new IOBvt(m_IOAdapter, m_Communication);
             m_IOdVdt = new IOdVdt(m_IOAdapter, m_Communication);
             m_IOAtu = new IOATU(m_IOAdapter, m_Communication);
             m_IOQrrTq = new IOQrrTq(m_IOAdapter, m_Communication);
             m_IOIH = new IOIH(m_IOGate, m_IOStls, m_Communication);
-            m_IOGate.IH = m_IOIH;
-            m_IOGate.SLIH = m_IOStls;
-            m_IOGate.VGNT = m_IOBvt;
+            m_IOGate.SL = m_IOStls;
+            m_IOGate.BVT = m_IOBvt;
             m_IORCC = new IORCC(m_IOGate, m_Communication);
             _ioSctu = new IoSctu(m_IOAdapter, m_Communication);
             m_IOTOU = new IOTOU(m_IOAdapter, m_Communication);
@@ -435,18 +434,18 @@ namespace SCME.Service
             IsInitialized = false;
         }
 
-        internal Types.Gate.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
+        internal Types.GTU.CalibrationResultGate GatePulseCalibrationGate(ushort Current)
         {
             try
             {
                 var res = m_IOGate.PulseCalibrationGate(Current);
 
-                return new Types.Gate.CalibrationResultGate { Current = res.Item1, Voltage = res.Item2 };
+                return new Types.GTU.CalibrationResultGate { Current = res.Item1, Voltage = res.Item2 };
             }
             catch (Exception ex)
             {
                 ThrowFaultException(ComplexParts.Gate, ex.Message, String.Format(@"{0}.{1}", GetType().Name, MethodBase.GetCurrentMethod().Name));
-                return new Types.Gate.CalibrationResultGate();
+                return new Types.GTU.CalibrationResultGate();
             }
         }
 
@@ -465,7 +464,7 @@ namespace SCME.Service
         }
 
 
-        internal void GateWriteCalibrationParams(Types.Gate.CalibrationParameters Parameters)
+        internal void GateWriteCalibrationParams(Types.GTU.CalibrationParameters Parameters)
         {
             try
             {
@@ -478,9 +477,9 @@ namespace SCME.Service
         }
 
 
-        internal Types.Gate.CalibrationParameters GateReadCalibrationParams()
+        internal Types.GTU.CalibrationParameters GateReadCalibrationParams()
         {
-            var parameters = new Types.Gate.CalibrationParameters();
+            var parameters = new Types.GTU.CalibrationParameters();
 
             try
             {
@@ -710,7 +709,7 @@ namespace SCME.Service
 
             foreach (var baseTestParametersAndNormativese in orderedParameters)
             {
-                var gateParams = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                var gateParams = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                 if (!ReferenceEquals(gateParams, null))
                     if (!m_IOGate.IsReadyToStart())
                         res = "Gate";
@@ -906,7 +905,7 @@ namespace SCME.Service
 
         #region Test sequence
 
-        public bool Start(Types.Gate.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
+        public bool Start(Types.GTU.TestParameters ParametersGate, Types.VTM.TestParameters ParametersSL, Types.BVT.TestParameters ParametersBvt, Types.ATU.TestParameters ParametersAtu, Types.QrrTq.TestParameters ParametersQrrTq, Types.IH.TestParameters ParametersIH, Types.RCC.TestParameters ParametersRCC, Types.Commutation.TestParameters ParametersComm, Types.Clamping.TestParameters ParametersClamp, Types.TOU.TestParameters ParametersTOU)
         {
             m_Stop = false;
 
@@ -961,7 +960,7 @@ namespace SCME.Service
             return true;
         }
 
-        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.Gate.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
+        public bool Start(TestParameters parametersCommutation, Types.Clamping.TestParameters parametersClamp, Types.GTU.TestParameters[] parametersGate, Types.VTM.TestParameters[] parametersSl, Types.BVT.TestParameters[] parametersBvt, Types.dVdt.TestParameters[] parametersDvDt, Types.ATU.TestParameters[] parametersAtu, Types.QrrTq.TestParameters[] parametersQrrTq, SctuTestParameters[] parametersSctu, Types.TOU.TestParameters[] parametersTOU)
         {
             m_Stop = false;
 
@@ -1153,7 +1152,7 @@ namespace SCME.Service
                         {
                             if (m_Stop) continue;
 
-                            var gateParams = baseTestParametersAndNormativese as Types.Gate.TestParameters;
+                            var gateParams = baseTestParametersAndNormativese as Types.GTU.TestParameters;
                             if (!ReferenceEquals(gateParams, null))
                                 try
                                 {
@@ -1856,7 +1855,7 @@ namespace SCME.Service
                         m_IOCommutationEx.ClearFault();
                         break;
                     case ComplexParts.Gate:
-                        m_IOGate.ClearFault();
+                        m_IOGate.ClearFaults();
                         break;
                     case ComplexParts.SL:
                         m_IOStls.ClearFault();

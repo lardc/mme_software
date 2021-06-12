@@ -101,6 +101,12 @@ namespace SCME.Types.VTM
     {
         [EnumMember]
         None = 0,
+
+        [EnumMember]
+        VoltageOutOfRange = 1,
+        [EnumMember]
+        CurrentOutOfRange = 2,
+
         [EnumMember]
         VTMUndervoltage = 201,
         [EnumMember]
@@ -262,7 +268,7 @@ namespace SCME.Types.VTM
             CurveAddTime = 0;
             Count = 1;
             VTM = 2.5f;
-            TestParametersType = TestParametersType.StaticLoses;
+            TestParametersType = TestParametersType.SL;
         }
 
         public object Clone()

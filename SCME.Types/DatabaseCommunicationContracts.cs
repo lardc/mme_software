@@ -5,8 +5,8 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using SCME.Types.Clamping;
 using SCME.Types.Commutation;
-using SCME.Types.Gate;
-using TestParameters = SCME.Types.Gate.TestParameters;
+using SCME.Types.GTU;
+using TestParameters = SCME.Types.GTU.TestParameters;
 
 namespace SCME.Types
 {

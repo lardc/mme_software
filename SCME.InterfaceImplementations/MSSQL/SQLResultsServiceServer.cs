@@ -438,7 +438,7 @@ namespace SCME.InterfaceImplementations
             }
             catch (Exception ex)
             {
-                throw new FaultException<FaultData>(new FaultData(){}, new FaultReason(ex.ToString()));
+                throw new FaultException<FaultData>(new FaultData(){}, new System.ServiceModel.FaultReason(ex.ToString()));
             }
         }
 

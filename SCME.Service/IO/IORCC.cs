@@ -13,7 +13,7 @@ namespace SCME.Service.IO
     internal class IORCC
     {
         //проверка сопротивления цепи катод-катод модуля на комплексе АКИМ, КИСПы не используют данный тип теста, поэтому для этого типа теста ничего нет в UI, нет возможности его использования в профилях, результат этого теста не сохраняется в БД
-        private readonly IOGate m_IOGate;
+        private readonly IOGTU m_IOGate;
         private readonly BroadcastCommunication m_Communication;
         private readonly bool m_IsEmulationHard;
         private bool m_IsEmulation;
@@ -24,7 +24,7 @@ namespace SCME.Service.IO
         private volatile DeviceState m_State;
         private volatile Types.RCC.TestResults m_Result;
 
-        internal IORCC(IOGate Gate, BroadcastCommunication Communication)
+        internal IORCC(IOGTU Gate, BroadcastCommunication Communication)
         {
             m_IOGate = Gate;
             m_State = DeviceState.None;
@@ -116,18 +116,18 @@ namespace SCME.Service.IO
                 resultRCC = RCCResult.OPRESULT_NONE;
 
                 //смотрим состояние Gate
-                m_IOGate.ClearWarning();
+                m_IOGate.Warnings_Clear();
                 ushort State = m_IOGate.ReadDeviceState();
 
                 switch (State)
                 {
-                    case (ushort)Types.Gate.HWDeviceState.Fault:
+                    case (ushort)Types.GTU.HWDeviceState.Fault:
                         ushort faultReason = m_IOGate.ReadFaultReason();
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, faultReason, (ushort)HWDisableReason.None);
 
                         return (DeviceState)State;
 
-                    case (ushort)Types.Gate.HWDeviceState.Disabled:
+                    case (ushort)Types.GTU.HWDeviceState.Disabled:
                         ushort disableReason = m_IOGate.ReadDisableReason();
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, disableReason);
 
@@ -154,10 +154,10 @@ namespace SCME.Service.IO
                 if (m_Stop)
                     return;
 
-                var devState = (Types.Gate.HWDeviceState)m_IOGate.ReadDeviceState(true);
-                var opResult = (Types.Gate.HWOperationResult)m_IOGate.ReadFinished(true);
+                var devState = (Types.GTU.HWDeviceState)m_IOGate.ReadDeviceState(true);
+                var opResult = (Types.GTU.HWOperationResult)m_IOGate.ReadFinished(true);
 
-                if (devState == Types.Gate.HWDeviceState.Fault)
+                if (devState == Types.GTU.HWDeviceState.Fault)
                 {
                     ushort faultReason = m_IOGate.ReadFaultReason();
 
@@ -166,7 +166,7 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("RCC virtual device. Gate device is in fault state, reason - {0}", faultReason));
                 }
 
-                if (devState == Types.Gate.HWDeviceState.Disabled)
+                if (devState == Types.GTU.HWDeviceState.Disabled)
                 {
                     ushort disableReason = m_IOGate.ReadDisableReason();
 
@@ -175,17 +175,17 @@ namespace SCME.Service.IO
                     throw new Exception(string.Format("RCC virtual device. Gate device is in disabled state, reason - {0}", disableReason));
                 }
 
-                if (opResult != Types.Gate.HWOperationResult.InProcess)
+                if (opResult != Types.GTU.HWOperationResult.InProcess)
                 {
                     ushort problem = m_IOGate.ReadProblem();
-                    if (problem != (ushort)Types.Gate.HWProblemReason.None)
+                    if (problem != (ushort)Types.GTU.HWProblemReason.None)
                         FireNotificationEvent(ComplexParts.Gate, problem, (ushort)HWWarningReason.None, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
 
                     ushort warning = m_IOGate.ReadWarning();
-                    if (warning != (ushort)Types.Gate.HWWarningReason.None)
+                    if (warning != (ushort)Types.GTU.HWWarningReason.None)
                     {
                         FireNotificationEvent(ComplexParts.Gate, (ushort)HWProblemReason.None, warning, (ushort)HWFaultReason.None, (ushort)HWDisableReason.None);
-                        m_IOGate.ClearWarning();
+                        m_IOGate.Warnings_Clear();
                     }
 
                     break;
@@ -224,7 +224,7 @@ namespace SCME.Service.IO
                     m_IOCommutation.CallAction(IOCommutation.ACT_COMM2_RCC);
 
                     //запускаем прозвонку цепи катод-катод
-                    m_IOGate.CallAction(IOGate.ACT_START_RCC);
+                    //m_IOGate.CallAction(IOGTU.ACT_START_RCC);
 
                     WaitForEndOfGateTest();
 
@@ -232,7 +232,7 @@ namespace SCME.Service.IO
                     m_State = DeviceState.Success;
 
                     //считываем значение регистра результата
-                    m_Result.RCC = (RCCResult)m_IOGate.ReadRegister(IOGate.REG_TEST_FINISHED);
+                    m_Result.RCC = (RCCResult)m_IOGate.ReadRegister(IOGTU.REG_TEST_FINISHED);
                 }
 
                 FireEvent(m_State, m_Result);

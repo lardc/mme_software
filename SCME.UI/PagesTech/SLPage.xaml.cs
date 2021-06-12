@@ -209,7 +209,7 @@ namespace SCME.UI.PagesTech
                 CommutationType = ConverterUtil.MapCommutationType(CommType),
                 Position = ConverterUtil.MapModulePosition(ModPosition)
             };
-            Types.Gate.TestParameters ParamGTU = new Types.Gate.TestParameters
+            Types.GTU.TestParameters ParamGTU = new Types.GTU.TestParameters
             {
                 IsEnabled = false
             };
