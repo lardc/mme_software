@@ -168,16 +168,16 @@ namespace SCME.Types.GTU
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
-            VGNT = 12000;
             IGNT = 1000;
+            VGNT = 12000;
             Itm = 0;
             CurrentLimit = 5;
             VoltageLimitD = 1000;
             PlateTime = 1000;
             RampUpVoltage = 2;
             StartVoltage = 500;
-            GateLimitV = 100;
-            GateLimitI = 25;
+            GateLimitV = 12000;
+            GateLimitI = 1000;
         }
 
         [DataMember]
@@ -266,7 +266,7 @@ namespace SCME.Types.GTU
         }
 
         [DataMember]
-        public float VGNT
+        public ushort VGNT
         {
             get; set;
         }
@@ -420,7 +420,7 @@ namespace SCME.Types.GTU
         }
 
         [DataMember]
-        public float VGNT
+        public ushort VGNT
         {
             get; set;
         }

@@ -93,7 +93,7 @@
                     </Grid.ColumnDefinitions>
                     <CheckBox Content="{x:Static res:Resources.PureVgt}" IsChecked="{Binding Parameters.IsCurrentEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <CheckBox Content="{x:Static res:Resources.HoldingCurrent}" IsChecked="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
-                    <ComboBox Style="{StaticResource CComboboxStyle}" SelectedIndex="{Binding Parameters.UseIhGost, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="10" VerticalAlignment="Center" IsEnabled="{Binding IHGOST, Source={x:Static uiServiceConfig:Settings.Default}}" Padding="5">
+                    <ComboBox Style="{StaticResource CComboboxStyle}" SelectedIndex="{Binding Parameters.UseIhGost, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Margin="10" VerticalAlignment="Center" IsEnabled="{Binding IHGOST, Source={x:Static uiServiceConfig:Settings.Default}}" Visibility="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5">
                         <ComboBoxItem Content="{x:Static res:Resources.Lardc}"/>
                         <ComboBoxItem Content="{x:Static res:Resources.Gost}"/>
                     </ComboBox>
@@ -107,17 +107,31 @@
                     </Grid>
                     <CheckBox Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding Parameters.IsIhStrikeCurrentEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
                     <CheckBox Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding Parameters.IsIlEnabled, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="0"/>
-                    <CheckBox Content="{x:Static res:Resources.Vgnt}" IsChecked="{Binding Parameters.UseVgnt, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="0"/>
-                    <Label Content="{x:Static res:Resources.CurrentLimit_mA}" Grid.Row="6" Grid.Column="0"  Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <customControls:ValidatingTextBox Text="{Binding Parameters.CurrentLimit, ElementName=gatePage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinIxRM_BVT}" Maximum="{StaticResource MaxIxRM_BVT}" TextAlignment="Right" Grid.Row="6" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
-                    <Label Content="{x:Static res:Resources.VoltageLimitD_V}" Grid.Row="7" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <customControls:ValidatingTextBox Text="{Binding Parameters.VoltageLimitD, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinVxRM_BVT}" Maximum="{StaticResource MaxVxRM_BVT}" TextAlignment="Right" Grid.Row="7" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
-                    <Label Content="{x:Static res:Resources.PlateTime_ms}" Grid.Row="8" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <customControls:ValidatingTextBox Text="{Binding Parameters.PlateTime, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinPlateVxRM_BVT}" Maximum="{StaticResource MaxPlateVxRM_BVT}" TextAlignment="Right" Grid.Row="8" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
-                    <Label Content="{x:Static res:Resources.Rampup_Vms}" Grid.Row="9" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <customControls:ValidatingTextBox Text="{Binding Parameters.RampUpVoltage, ElementName=gatePage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinRampVxRM_BVT}" Maximum="{StaticResource MaxRampVxRM_BVT}" TextAlignment="Right" Grid.Row="9" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
-                    <Label Content="{x:Static res:Resources.StartVoltage_V}" Grid.Row="10" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <customControls:ValidatingTextBox Text="{Binding Parameters.StartVoltage, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinStartVxRM_BVT}" Maximum="{StaticResource MaxStartVxRM_BVT}" TextAlignment="Right" Grid.Row="10" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                    <Grid Grid.Row="5" Grid.RowSpan="6" Grid.ColumnSpan="2" Visibility="{Binding VGNTIsVisible, Source={x:Static uiServiceConfig:Settings.Default}, Converter={StaticResource B2V}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="320"/>
+                            <ColumnDefinition Width="*" MinWidth="145"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Content="{x:Static res:Resources.Vgnt}" IsChecked="{Binding Parameters.UseVgnt, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0"/>
+                        <Label Content="{x:Static res:Resources.CurrentLimit_mA}" Grid.Row="1" Grid.Column="0"  Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                        <customControls:ValidatingTextBox Text="{Binding Parameters.CurrentLimit, ElementName=gatePage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinIxRM_BVT}" Maximum="{StaticResource MaxIxRM_BVT}" TextAlignment="Right" Grid.Row="1" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                        <Label Content="{x:Static res:Resources.VoltageLimitD_V}" Grid.Row="2" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                        <customControls:ValidatingTextBox Text="{Binding Parameters.VoltageLimitD, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinVxRM_BVT}" Maximum="{StaticResource MaxVxRM_BVT}" TextAlignment="Right" Grid.Row="2" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                        <Label Content="{x:Static res:Resources.PlateTime_ms}" Grid.Row="3" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                        <customControls:ValidatingTextBox Text="{Binding Parameters.PlateTime, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinPlateVxRM_BVT}" Maximum="{StaticResource MaxPlateVxRM_BVT}" TextAlignment="Right" Grid.Row="3" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                        <Label Content="{x:Static res:Resources.Rampup_Vms}" Grid.Row="4" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                        <customControls:ValidatingTextBox Text="{Binding Parameters.RampUpVoltage, ElementName=gatePage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinRampVxRM_BVT}" Maximum="{StaticResource MaxRampVxRM_BVT}" TextAlignment="Right" Grid.Row="4" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                        <Label Content="{x:Static res:Resources.StartVoltage_V}" Grid.Row="5" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                        <customControls:ValidatingTextBox Text="{Binding Parameters.StartVoltage, ElementName=gatePage}" IsNumeric="True" Minimum="{StaticResource MinStartVxRM_BVT}" Maximum="{StaticResource MaxStartVxRM_BVT}" TextAlignment="Right" Grid.Row="5" Grid.Column="1" Margin="10" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" Padding="5"/>
+                    </Grid>
                     <Label Content="{x:Static res:Resources.CommutationType}" Grid.Row="11" Grid.Column="0"/>
                     <ComboBox Style="{StaticResource CComboboxStyle}" ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}" SelectedValue="{Binding CommType, ElementName=gatePage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Key" MaxDropDownHeight="1500" Grid.Row="11" Grid.Column="1" Margin="10" Padding="5"/>
                     <Label Content="{x:Static res:Resources.Position}" Grid.Row="12" Grid.Column="0"/>
@@ -144,10 +158,10 @@
                     <Label x:Name="lblIH" Content="0" Grid.Row="22" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.IsIhEnabled, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
                     <Label Content="{x:Static res:Resources.Ilatching_mA}" Grid.Row="23" Grid.Column="0" Visibility="{Binding Parameters.IsIlEnabled, ElementName=gatePage, Converter={StaticResource B2V}}"/>
                     <Label x:Name="lblIL" Content="0" Grid.Row="23" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.IsIlEnabled, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
-                    <Label Content="{x:Static res:Resources.Vgnt_V}" Grid.Row="24" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <Label x:Name="lblVGNT" Content="0" Grid.Row="24" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
-                    <Label Content="{x:Static res:Resources.Ignt_mA}" Grid.Row="25" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
-                    <Label x:Name="lblIGNT" Content="0" Grid.Row="25" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
+                    <Label Content="{x:Static res:Resources.Ignt_mA}" Grid.Row="24" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                    <Label x:Name="lblIGNT" Content="0" Grid.Row="24" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
+                    <Label Content="{x:Static res:Resources.Vgnt_mV}" Grid.Row="25" Grid.Column="0" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}"/>
+                    <Label x:Name="lblVGNT" Content="0" Grid.Row="25" Grid.Column="1" Margin="10,3" HorizontalContentAlignment="Right" Visibility="{Binding Parameters.UseVgnt, ElementName=gatePage, Converter={StaticResource B2V}}" FontSize="28" Padding="0,0,10,0"/>
                     <Label Content="{x:Static res:Resources.NominalCurrent_mA}" Grid.Row="26" Grid.Column="0"/>
                     <customControls:ValidatingTextBox x:Name="calibrationCurrent" IsNumeric="True" Minimum="{StaticResource MinCalibrationCurrent_GATE}" Maximum="{StaticResource MaxCalibrationCurrent_GATE}" TextAlignment="Right" Grid.Row="26" Grid.Column="1" Margin="10,5" Padding="5"/>
                     <Label Content="{x:Static res:Resources.ActualCurrent_mA}" Grid.Row="27" Grid.Column="0"/>

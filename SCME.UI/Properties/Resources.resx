@@ -877,8 +877,8 @@
   <data name="Ignt_mA" xml:space="preserve">
     <value>IGNT, mA</value>
   </data>
-  <data name="Vgnt_V" xml:space="preserve">
-    <value>VGNT, V</value>
+  <data name="Vgnt_mV" xml:space="preserve">
+    <value>VGNT, mV</value>
   </data>
   <data name="ActualCurrent_mA" xml:space="preserve">
     <value>Actual current, mA</value>
@@ -903,5 +903,20 @@
   </data>
   <data name="Vtm_mv" xml:space="preserve">
     <value>VTM, mV</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Emulation" xml:space="preserve">
+    <value>Emulation</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Visibility</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ConfigChangeMessage" xml:space="preserve">
+    <value>Do you want to apply changes?</value>
   </data>
 </root>

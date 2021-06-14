@@ -12,6 +12,7 @@ using SCME.Types;
 using SCME.Types.BaseTestParams;
 using SCME.Types.Database;
 using SCME.Types.Profiles;
+using SCME.UIServiceConfig.Properties;
 using SCME.WpfControlLibrary.CustomControls;
 using SCME.WpfControlLibrary.ViewModels;
 
@@ -178,8 +179,7 @@ namespace SCME.WpfControlLibrary.Pages
                 ProfileVm.ProfileDeepDataCopy.IsHeightMeasureEnabled = true;
                 return;
             }
-
-            var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(ProfileVm.SelectedTestParametersType);
+            var newTestParameter = BaseTestParametersAndNormatives.CreateParametersByType(ProfileVm.SelectedTestParametersType);            
             newTestParameter.IsEnabled = true;
             newTestParameter.Order = maxOrder + 1;
             testParametersAndNormatives.Add(newTestParameter);

@@ -849,8 +849,8 @@
   <data name="Ignt_mA" xml:space="preserve">
     <value>IGNT, мА</value>
   </data>
-  <data name="Vgnt_V" xml:space="preserve">
-    <value>UGNT, В</value>
+  <data name="Vgnt_mV" xml:space="preserve">
+    <value>UGNT, мВ</value>
   </data>
   <data name="Temp" xml:space="preserve">
     <value>Температура, °С</value>
@@ -896,5 +896,20 @@
   </data>
   <data name="Vtm_mv" xml:space="preserve">
     <value>UTM, мВ</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Emulation" xml:space="preserve">
+    <value>Эмуляция блока</value>
+  </data>
+  <data name="Visibility" xml:space="preserve">
+    <value>Видимость блока</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="ConfigChangeMessage" xml:space="preserve">
+    <value>Вы хотите применить изменения?</value>
   </data>
 </root>

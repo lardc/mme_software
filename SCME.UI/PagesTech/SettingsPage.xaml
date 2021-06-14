@@ -1,0 +1,244 @@
+﻿<Page x:Class="SCME.UI.PagesTech.SettingsPage"
+      x:Name="settingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:res="clr-namespace:SCME.UI.Properties"
+      mc:Ignorable="d" 
+      d:DesignWidth="1280" d:DesignHeight="924"
+      Title="{x:Static res:Resources.Settings}"
+      Loaded="settingsPage_Loaded">
+    <Page.Resources>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Foreground" Value="{StaticResource xWhite1}"/>
+            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        </Style>
+        <Style TargetType="{x:Type Path}">
+            <Setter Property="StrokeThickness" Value="3"/>
+            <Setter Property="Stroke" Value="{StaticResource xWhite1}"/>
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="Stretch" Value="Uniform"/>
+        </Style>
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Viewbox>
+                            <Border x:Name="Border" CornerRadius="10"
+                            Background="#FFFFFFFF"
+                            Width="40" Height="20">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.3" />
+                                </Border.Effect>
+                                <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
+                                 Margin="2 1 2 1"
+                                 Stroke="Gray" StrokeThickness="0.2"
+                                 HorizontalAlignment="Stretch">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.3" Direction="260" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Border>
+                        </Viewbox>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#FF4CD661"
+                                                    Duration="0" />
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="20 1 2 1"
+                                                        Duration="0" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="White"
+                                                    Duration="0" />
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                        Storyboard.TargetProperty="Margin"
+                                                        To="2 1 2 1"
+                                                        Duration="0" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <UniformGrid Grid.Row="0" Columns="3">
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xGreen3}">
+                    <Path Data="{StaticResource AdapterPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Adapter}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="AdapterEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xGreen2}">
+                    <Path Data="{StaticResource GatewayPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Gateway}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="GatewayEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xYellow1}">
+                    <Path Data="{StaticResource CommutationPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Commutation}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="CommutationEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xOrange1}">
+                    <Path Data="{StaticResource ClampPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Clamp}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="ClampEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="ClampVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xOrange2}">
+                    <Path Data="{StaticResource GatePath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Gate}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="GTUEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="GTUVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xRed1}">
+                    <Path Data="{StaticResource VtmPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Vtm}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="SLEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="SLVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xBlue2}">
+                    <Path Data="{StaticResource BvtPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.Bvt}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="BVTEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="BVTVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xBlue2}">
+                    <Path Data="{StaticResource CurvePath}"/>
+                    <TextBlock Text="{x:Static res:Resources.dVdt}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="dVdtEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="dVdtVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xGreen4}">
+                    <Path Data="{StaticResource ATUPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.ATU}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="ATUEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="ATUVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xGreen1}">
+                    <Path Data="{StaticResource QrrTqPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.QrrTq}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="QrrTqEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="QrrTqVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+            <Label HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="5">
+                <Grid Background="{StaticResource xGreen2}">
+                    <Path Data="{StaticResource TOUPath}"/>
+                    <TextBlock Text="{x:Static res:Resources.TOU}" Margin="90,25,0,0" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal" Margin="10,30,10,10">
+                        <ToggleButton x:Name="TOUEmulation" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                        <ToggleButton x:Name="TOUVisible" Width="50" Height="30"/>
+                        <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Label>
+        </UniformGrid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnBack" Style="{StaticResource BackButton}" Content="{x:Static res:Resources.Back}" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="btnBack_Click"/>
+            <Button x:Name="btnSave" Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Save}" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="btnSave_Click"/>
+        </Grid>
+    </Grid>
+</Page>

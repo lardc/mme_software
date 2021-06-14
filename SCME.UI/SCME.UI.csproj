@@ -146,6 +146,9 @@
     <Compile Update="PagesTech\LogsPage.xaml.cs">
       <DependentUpon>LogsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="PagesTech\PasswordPage - Копировать.xaml.cs">
+      <DependentUpon>PasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="PagesTech\PasswordPage.xaml.cs">
       <DependentUpon>PasswordPage.xaml</DependentUpon>
     </Compile>

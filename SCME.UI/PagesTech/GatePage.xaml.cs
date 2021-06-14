@@ -152,10 +152,10 @@ namespace SCME.UI.PagesTech
         /// <param name="state">Состояние</param>
         /// <param name="vgnt">UGNT</param>
         /// <param name="ignt">IGNT</param>
-        internal void SetResultVgnt(DeviceState state, float vgnt, ushort ignt)
+        internal void SetResultVgnt(DeviceState state, ushort ignt, float vgnt)
         {
-            Label_Set(lblVGNT, state, vgnt.ToString());
             Label_Set(lblIGNT, state, ignt.ToString());
+            Label_Set(lblVGNT, state, vgnt.ToString());
         }
 
         /// <summary>Установка ошибок</summary>

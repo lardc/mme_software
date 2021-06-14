@@ -528,14 +528,14 @@ namespace SCME.UI.IO
             });
         }
 
-        public void AddGateVgntEvent(DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        public void AddGateVgntEvent(DeviceState state, ushort ignt, float vgnt, long testTypeId)
         {
             m_ActionQueue.Enqueue(delegate
             {
                 if (Cache.Main.mainFrame.Content.Equals(Cache.UserTest))
-                    Cache.UserTest.SetResultGateVgnt(state, vgnt, ignt, testTypeId);
+                    Cache.UserTest.SetResultGateVgnt(state, ignt, vgnt, testTypeId);
                 else
-                    Cache.Gate.SetResultVgnt(state, vgnt, ignt);
+                    Cache.Gate.SetResultVgnt(state, ignt, vgnt);
             });
         }
 

@@ -228,7 +228,7 @@ namespace SCME.Types
         void GateIlHandler(DeviceState state, float il, long testTypeId);
 
         [OperationContract(IsOneWay = true)]
-        void GateVgntHandler(DeviceState state, float vgnt, ushort ignt, long testTypeId);
+        void GateVgntHandler(DeviceState state, ushort ignt, float vgnt, long testTypeId);
 
         [OperationContract(IsOneWay = true)]
         void GateNotificationHandler(GTU.HWProblemReason Problem, GTU.HWWarningReason Warning,

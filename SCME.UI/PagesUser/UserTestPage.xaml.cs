@@ -930,29 +930,28 @@ namespace SCME.UI.PagesUser
             }
         }
 
-        internal void SetResultGateVgnt(Types.DeviceState state, float vgnt, ushort ignt, long testTypeId)
+        internal void SetResultGateVgnt(DeviceState state, ushort ignt, float vgnt, long testTypeId)
         {
             m_StateGate = state;
 
             List<DependencyObject> gateResults = GetGateItemContainer();
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
-            Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult1");
             Label labelIgntResult = FindChild<Label>(presenter, "labelIgntResult1");
-            if (labelVgntResult != null)
-                SetLabel(labelVgntResult, state, vgnt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT,
-                     string.Format("{0}", vgnt));
+            Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult1");
             if (labelIgntResult != null)
                 SetLabel(labelIgntResult, state, ignt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT,
                      string.Format("{0}", ignt));
+            if (labelVgntResult != null)
+                SetLabel(labelVgntResult, state, vgnt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT,
+                     string.Format("{0}", vgnt));
             if (state != Types.DeviceState.InProcess)
             {
-                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = vgnt;
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IGNT = ignt;
-
-                if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT)
-                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGNT");
+                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = (float)Math.Round((decimal)(vgnt / 1000.0), 2, MidpointRounding.ToEven);
                 if (ignt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGNT");
+                if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT)
+                    ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VGNT");
             }
         }
 

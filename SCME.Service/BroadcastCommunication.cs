@@ -118,7 +118,7 @@ namespace SCME.Service
 
         public void PostGateVgntEvent(DeviceState state, Types.GTU.TestResults result)
         {
-            EnumerateClients(client => client.GateVgntHandler(state, result.VGNT, result.IGNT, result.TestTypeId));
+            EnumerateClients(client => client.GateVgntHandler(state, result.IGNT, result.VGNT, result.TestTypeId));
         }
 
         public void PostGateNotificationEvent(Types.GTU.HWProblemReason Problem, Types.GTU.HWWarningReason Warning,

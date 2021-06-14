@@ -165,7 +165,7 @@ namespace SCME.Service.IO
         internal void Stop()
         {
             CallAction(ACT_STOP_TEST);
-            BVT.CallAction(ACT_STOP_VGNT);
+            BVT.CallAction(IOBvt.ACT_STOP);
             IsStopped = true;
             State = DeviceState.Stopped;
         }
@@ -381,7 +381,6 @@ namespace SCME.Service.IO
             ILEvent_Fire(DeviceState.Success, Result);
         }
 
-        //TODO!!!
         private void VGNT_Start() //VGNT
         {
             if (IsStopped)
@@ -396,13 +395,8 @@ namespace SCME.Service.IO
             BVT.WriteRegister(IOBvt.REG_VOLTAGE_PLATE_TIME, Parameter.PlateTime);
             BVT.WriteRegister(IOBvt.REG_VOLTAGE_AC_RATE, (ushort)(Parameter.RampUpVoltage * 10));
             BVT.WriteRegister(IOBvt.REG_START_VOLTAGE_AC, Parameter.StartVoltage);
-
-            WriteRegister(REG_V_GATE_LIMIT, 12000);
-            WriteRegister(REG_I_GATE_LIMIT, 1000);
-
-            //WriteRegister(REG_V_GATE_LIMIT, m_Parameter.GateLimitV);
-            //WriteRegister(REG_I_GATE_LIMIT, m_Parameter.GateLimitI);
-
+            WriteRegister(REG_V_GATE_LIMIT, Parameter.GateLimitV);
+            WriteRegister(REG_I_GATE_LIMIT, Parameter.GateLimitI);
             BVT.CallAction(IOBvt.ACT_START_TEST);
             CallAction(ACT_START_VGNT);
             //Эмуляция блока
@@ -411,6 +405,7 @@ namespace SCME.Service.IO
                 Result.IGNT = 25;
                 Result.VGNT = 100;
                 VGNTEvent_Fire(DeviceState.Success, Result);
+                return;
             }
             //Ожидание окончания VGNT
             EndOfVGNTTest_Wait();
@@ -492,12 +487,12 @@ namespace SCME.Service.IO
                     NotificationEvent_Fire(TypeGTU.HWFaultReason.None, TypeGTU.HWWarningReason.None, DisableReason, TypeGTU.HWProblemReason.None);
                     throw new Exception(string.Format("GTU is in disabled state, reason: {0}", DisableReason));
                 }
-                if (DevStateSL != TypeSL.HWDeviceState.Charging && DevStateSL != TypeSL.HWDeviceState.InProcess)
+                if (DevStateSL == TypeSL.HWDeviceState.Charging || DevStateSL == TypeSL.HWDeviceState.InProcess)
                 {
                     Thread.Sleep(RequestDelay);
                     continue;
                 }
-                if (DevState != TypeGTU.HWDeviceState.IH)
+                if (DevState == TypeGTU.HWDeviceState.IH)
                 {
                     Thread.Sleep(RequestDelay);
                     continue;
@@ -928,7 +923,6 @@ namespace SCME.Service.IO
             ACT_START_KELVIN = 100,
             ACT_START_TEST = 100,
             ACT_START_GATE = 101,
-            ACT_STOP_VGNT = 101,
             ACT_START_IH = 102,
             ACT_START_IL = 103,
             ACT_START_RG = 104,

@@ -358,6 +358,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Do you want to apply changes?.
+        /// </summary>
+        public static string ConfigChangeMessage {
+            get {
+                return ResourceManager.GetString("ConfigChangeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Console.
         /// </summary>
         public static string Console {
@@ -588,6 +597,15 @@ namespace SCME.UI.Properties {
         public static string DvdtVoltageRateOffSet {
             get {
                 return ResourceManager.GetString("DvdtVoltageRateOffSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Emulation.
+        /// </summary>
+        public static string Emulation {
+            get {
+                return ResourceManager.GetString("Emulation", resourceCulture);
             }
         }
         
@@ -1844,6 +1862,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Work mode.
         /// </summary>
         public static string SelectWorkModePageTitle {
@@ -1894,6 +1921,15 @@ namespace SCME.UI.Properties {
         public static string SetTemp {
             get {
                 return ResourceManager.GetString("SetTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
@@ -2258,11 +2294,11 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на VGNT, V.
+        ///   Ищет локализованную строку, похожую на VGNT, mV.
         /// </summary>
-        public static string Vgnt_V {
+        public static string Vgnt_mV {
             get {
-                return ResourceManager.GetString("Vgnt_V", resourceCulture);
+                return ResourceManager.GetString("Vgnt_mV", resourceCulture);
             }
         }
         
@@ -2290,6 +2326,15 @@ namespace SCME.UI.Properties {
         public static string VgtV {
             get {
                 return ResourceManager.GetString("VgtV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Visibility.
+        /// </summary>
+        public static string Visibility {
+            get {
+                return ResourceManager.GetString("Visibility", resourceCulture);
             }
         }
         

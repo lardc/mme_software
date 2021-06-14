@@ -20,7 +20,7 @@ namespace SCME.UI.PagesTech
             InitializeComponent();
         }
 
-        private void TechnicianPage_OnLoaded(object sender, RoutedEventArgs e) //Загрузка страницы
+        private void TechnicianPage_Loaded(object sender, RoutedEventArgs e) //Загрузка страницы
         {
             Cache.ProfilesPage.GoBackAction += () =>
             {
@@ -36,7 +36,7 @@ namespace SCME.UI.PagesTech
             btnGTU.IsEnabled = param.IsGateEnabled;
             btnSL.IsEnabled = param.IsSLEnabled;
             btnBVT.IsEnabled = param.IsBVTEnabled;
-            btndUdt.IsEnabled = param.IsdVdtEnabled;
+            btndVdt.IsEnabled = param.IsdVdtEnabled;
             btnATU.IsEnabled = param.IsATUEnabled;
             btnQrrTq.IsEnabled = param.IsQrrTqEnabled;
             btnTOU.IsEnabled = param.IsTOUEnabled;
@@ -62,6 +62,9 @@ namespace SCME.UI.PagesTech
                     Cache.Bvt = new BvtPage();
                     Page = Cache.Bvt;
                     Page.Margin = PageMargin;
+                    break;
+                case 4:
+                    Page = Cache.Settings;                    
                     break;
                 case 6:
                     Page = Cache.Console;

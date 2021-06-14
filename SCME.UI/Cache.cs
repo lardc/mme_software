@@ -12,6 +12,7 @@ namespace SCME.UI
     internal static class Cache
     {
         private static HardwareStatusPage ms_WelcomeScreen;
+        private static SettingsPage ms_SettingsPage;
         private static PasswordPage ms_PasswordPage;
         private static UserWorkModePage ms_UserWorkModePage;
         private static LoginPage ms_LoginPage;
@@ -110,6 +111,12 @@ namespace SCME.UI
         {
             get { return ms_TechnicianPage ?? (ms_TechnicianPage = new TechnicianPage()); }
             set { ms_TechnicianPage = value; }
+        }
+
+        internal static SettingsPage Settings
+        {
+            get { return ms_SettingsPage ?? (ms_SettingsPage = new SettingsPage()); }
+            set { ms_SettingsPage = value; }
         }
 
         internal static PasswordPage Password
