@@ -27,7 +27,8 @@ namespace SCME.UI.PagesTech
             //Установка базовых параметров GTU и пресса
             Parameters = new Types.GTU.TestParameters
             {
-                IsEnabled = true
+                IsEnabled = true,
+                UseIhGost = false
             };
             ClampParameters = new Types.Clamping.TestParameters
             {

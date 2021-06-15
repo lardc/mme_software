@@ -651,6 +651,8 @@ namespace SCME.Service.IO
             ACT_COMM2_DVDT = 115,
             ACT_COMM2_ATU = 115,
             ACT_COMM2_TOU = 115,
+            ACT_COMM2_GATE_SL = 116,
+            ACT_COMM2_VGNT = 117,
             ACT_COMM_IH = 116,
             ACT_COMM6_NONE = 120,
             ACT_COMM6_GATE = 121,

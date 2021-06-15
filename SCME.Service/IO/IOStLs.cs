@@ -622,7 +622,7 @@ namespace SCME.Service.IO
 
         #region Registers
 
-        private const ushort
+        internal const ushort
             ACT_ENABLE_POWER = 1,
             ACT_DISABLE_POWER = 2,
             ACT_CLEAR_FAULT = 3,
@@ -654,6 +654,7 @@ namespace SCME.Service.IO
             REG_SCURVE_DESIRED_TIME = 151,
             REG_SCURVE_FACTOR = 152,
             REG_SCURVE_ADD_TIME = 153,
+            REG_PULSE_MODE = 154,
             REG_USE_FULL_SCALE = 162,
             REG_DISABLE_VTM_PP = 161,
             REG_REPETITION_COUNT = 160,

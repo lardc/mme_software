@@ -189,7 +189,7 @@ namespace SCME.Service.IO
                 {
                     Resistance_Start();
                     VGT_Start();
-                    if (!Parameter.UseIhGost)
+                    if (!Settings.Default.IHGOST || !Parameter.UseIhGost)
                         IH_Start();
                     else
                         IHGOST_Start();
@@ -326,11 +326,11 @@ namespace SCME.Service.IO
             if (!Parameter.IsIhEnabled)
                 return;
             IHEvent_Fire(DeviceState.InProcess, Result);
-            ActiveCommutation.CallAction(ACT_COMM2_GATE_SL);
+            ActiveCommutation.CallAction(IOCommutation.ACT_COMM2_GATE_SL);
             WriteRegister(REG_HOLD_WITH_SL, 1);
             CallAction(ACT_START_IH);
 
-            SL.WriteRegister(154, 1);
+            SL.WriteRegister(IOStLs.REG_PULSE_MODE, 1);
             SL.WriteRegister(161, 1);
             SL.WriteRegister(162, 1);
             SL.WriteRegister(163, 1);
@@ -343,7 +343,7 @@ namespace SCME.Service.IO
             //Эмуляция блока
             if (IsEmulated)
             {
-                Result.IH = 32;
+                Result.IH = 45;
                 IHEvent_Fire(DeviceState.Success, Result);
                 return;
             }
@@ -388,7 +388,7 @@ namespace SCME.Service.IO
             if (!Parameter.UseVgnt)
                 return;
             VGNTEvent_Fire(DeviceState.InProcess, Result);
-            ActiveCommutation.CallAction(ACT_COMM2_VGNT);
+            ActiveCommutation.CallAction(IOCommutation.ACT_COMM2_VGNT);
             BVT.WriteRegister(IOBvt.REG_MEASUREMENT_TYPE, 3);
             BVT.WriteRegister(IOBvt.REG_LIMIT_CURRENT, (ushort)(Parameter.CurrentLimit * 10));
             BVT.WriteRegister(IOBvt.REG_LIMIT_VOLTAGE, Parameter.VoltageLimitD);
@@ -921,27 +921,18 @@ namespace SCME.Service.IO
             ACT_CLEAR_FAULT = 3,
             ACT_CLEAR_WARNING = 4,
             ACT_START_KELVIN = 100,
-            ACT_START_TEST = 100,
             ACT_START_GATE = 101,
             ACT_START_IH = 102,
             ACT_START_IL = 103,
             ACT_START_RG = 104,
             ACT_STOP_TEST = 105,
             ACT_START_VGNT = 106,
-            ACT_COMM2_GATE_SL = 116,
-            ACT_COMM2_VGNT = 117,
             //Регистры
             REG_GATE_VGT_PURE = 128,
-            REG_MEASUREMENT_TYPE = 128,
             REG_HOLD_USE_STRIKE = 129,
-            REG_LIMIT_CURRENT = 130,
             REG_HOLD_WITH_SL = 130,
-            REG_LIMIT_VOLTAGE = 131,
-            REG_VOLTAGE_PLATE_TIME = 132,
             REG_V_GATE_LIMIT = 133,
-            REG_VOLTAGE_AC_RATE = 133,
             REG_I_GATE_LIMIT = 134,
-            REG_START_VOLTAGE_AC = 134,
             REG_SCOPE_RATE = 150,
             REG_DEV_STATE = 192,
             REG_FAULT_REASON = 193,

@@ -156,7 +156,7 @@ namespace SCME.Types.GTU
     public class TestParameters : BaseTestParametersAndNormatives, ICloneable
     {
         //Использование IH ГОСТ
-        private int useIhGost;
+        private int useIhGost = 1;
 
         /// <summary>Инициализирует новый экземпляр класса TestParameters</summary>
         public TestParameters()
