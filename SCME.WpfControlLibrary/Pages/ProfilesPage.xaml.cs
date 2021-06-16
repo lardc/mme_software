@@ -150,7 +150,6 @@ namespace SCME.WpfControlLibrary.Pages
             }
 
             ProfileVm.SelectedProfile = newProfile;
-            HeightExpander.IsExpanded = false;
         }
 
         private void CancelEditProfile_Click(object sender, RoutedEventArgs e)
@@ -165,7 +164,6 @@ namespace SCME.WpfControlLibrary.Pages
 
             ProfileVm.ProfileDeepDataCopy = ProfileVm.SelectedProfile.DeepData;
             ProfileVm.SelectedProfileNameCopy = ProfileVm.SelectedProfile.Name;
-            HeightExpander.IsExpanded = false;
         }
 
         private void AddTestParametersEvent_Click()

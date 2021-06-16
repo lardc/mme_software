@@ -12,8 +12,6 @@ namespace SCME.Service.IO
 {
     internal class IOGTU
     {
-        private const int CAL_WAIT_TIME_MS = 5000;
-
         //Адаптер
         private readonly IOAdapter Adapter;
         //Коммуникация
@@ -318,7 +316,6 @@ namespace SCME.Service.IO
             IHEvent_Fire(DeviceState.Success, Result);
         }
 
-        //TODO!!!
         private void IHGOST_Start() //IH ГОСТ
         {
             if (IsStopped)
@@ -329,17 +326,15 @@ namespace SCME.Service.IO
             ActiveCommutation.CallAction(IOCommutation.ACT_COMM2_GATE_SL);
             WriteRegister(REG_HOLD_WITH_SL, 1);
             CallAction(ACT_START_IH);
-
             SL.WriteRegister(IOStLs.REG_PULSE_MODE, 1);
-            SL.WriteRegister(161, 1);
-            SL.WriteRegister(162, 1);
-            SL.WriteRegister(163, 1);
-            SL.WriteRegister(128, 1);
-            SL.WriteRegister(140, Parameter.Itm);
-            SL.WriteRegister(141, 10000);
-            SL.WriteRegister(160, 1);
-            SL.CallAction(100);
-            
+            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_3, 1);
+            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_4, 1);
+            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_5, 1);
+            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_1, 1);
+            SL.WriteRegister(IOStLs.REG_CURRENT_SETPOINT, Parameter.Itm);
+            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_2, 10000);
+            SL.WriteRegister(IOStLs.REG_DBG, 1);
+            SL.CallAction(IOStLs.ACT_START_TEST);
             //Эмуляция блока
             if (IsEmulated)
             {
@@ -354,9 +349,7 @@ namespace SCME.Service.IO
             if (IsGraphRead)
                 Result.ArrayIH = ReadArrayFastS(EP16_Data_Vg);
             WriteRegister(REG_HOLD_WITH_SL, 0);
-            
-            SL.WriteRegister(154, 0);
-            
+            SL.WriteRegister(IOStLs.REG_PULSE_MODE, 0);            
             IHEvent_Fire(DeviceState.Success, Result);
         }
 
@@ -449,7 +442,7 @@ namespace SCME.Service.IO
                 if (WarningReason != TypeGTU.HWWarningReason.None)
                 {
                     NotificationEvent_Fire(TypeGTU.HWFaultReason.None, WarningReason, TypeGTU.HWDisableReason.None, TypeGTU.HWProblemReason.None);
-                    CallAction(ACT_CLEAR_WARNING);
+                    CallAction(ACT_CLR_WARNING);
                 }
                 //Имеются проблемы
                 if (ProblemReason != TypeGTU.HWProblemReason.None)
@@ -503,7 +496,7 @@ namespace SCME.Service.IO
                 if (WarningReason != TypeGTU.HWWarningReason.None)
                 {
                     NotificationEvent_Fire(TypeGTU.HWFaultReason.None, WarningReason, TypeGTU.HWDisableReason.None, TypeGTU.HWProblemReason.None);
-                    CallAction(ACT_CLEAR_WARNING);
+                    CallAction(ACT_CLR_WARNING);
                 }
                 //Имеются проблемы
                 if (ProblemReason != TypeGTU.HWProblemReason.None)
@@ -553,7 +546,7 @@ namespace SCME.Service.IO
                 if (WarningReason != TypeGTU.HWWarningReason.None)
                 {
                     NotificationEvent_Fire(TypeGTU.HWFaultReason.None, WarningReason, TypeGTU.HWDisableReason.None, TypeGTU.HWProblemReason.None);
-                    CallAction(ACT_CLEAR_WARNING);
+                    CallAction(ACT_CLR_WARNING);
                 }
                 //Имеются проблемы
                 if (ProblemReason != TypeGTU.HWProblemReason.None)
@@ -571,102 +564,81 @@ namespace SCME.Service.IO
             }
         }
 
-        //WHAT IS THIS???
-        //{
         internal Tuple<ushort, ushort> PulseCalibrationGate(ushort current)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info,
-                                         string.Format("Calibrate gate, current - {0}", current));
-
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info, string.Format("Calibrate gare, current: {0}", current));
+            //Эмуляция блока
             if (IsEmulated)
                 return new Tuple<ushort, ushort>(0, 0);
-
-            if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.Gate) == DeviceState.Fault)
+            //Переключение коммутации
+            if (ActiveCommutation.Switch(CommutationMode.Gate) == DeviceState.Fault)
                 return new Tuple<ushort, ushort>(0, 0);
-
             try
             {
-                var timeout = Environment.TickCount + CAL_WAIT_TIME_MS;
-
+                //Время окончания таймаута
+                int Timestamp = Environment.TickCount + 5000;
                 WriteRegister(REG_CAL_CURRENT, current);
-                CallAction(ACT_CALIBRATE_GATE);
-
-                var done = false;
-                while (timeout > Environment.TickCount && !done)
-                    done = ReadRegister(REG_DEV_STATE, true) == (ushort)Types.GTU.HWDeviceState.None;
-
-                if (!done)
+                CallAction(ACT_START_CAL_VG);
+                bool IsDone = false;
+                while (Timestamp > Environment.TickCount && !IsDone)
+                    IsDone = (TypeGTU.HWDeviceState)ReadDeviceState(true) == TypeGTU.HWDeviceState.None;
+                if (!IsDone)
                     return new Tuple<ushort, ushort>(0, 0);
-
-                var resultCurrent = ReadRegister(REG_RES_CAL_CURRENT);
-                var resultVoltage = ReadRegister(REG_RES_CAL_VOLTAGE);
-
-                return new Tuple<ushort, ushort>(resultCurrent, resultVoltage);
+                ushort ResultCurrent = ReadRegister(REG_RESULT_CAL);
+                ushort ResultVoltage = ReadRegister(REG_RESULT_VGNT);
+                return new Tuple<ushort, ushort>(ResultCurrent, ResultVoltage);
             }
             finally
             {
-                ActiveCommutation.Switch(Types.Commutation.CommutationMode.None);
+                ActiveCommutation.Switch(CommutationMode.None);
             }
         }
 
-        internal ushort PulseCalibrationMain(ushort Current)
+        internal ushort PulseCalibrationMain(ushort current)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info,
-                                         string.Format("Calibrate main circuit, current - {0}", Current));
-
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Info, string.Format("Calibrate main circuit, current: {0}", current));
+            //Эмуляция блока
             if (IsEmulated)
                 return 0;
-
-            if (ActiveCommutation.Switch(Types.Commutation.CommutationMode.Gate) == DeviceState.Fault)
+            //Переключение коммутации
+            if (ActiveCommutation.Switch(CommutationMode.Gate) == DeviceState.Fault)
                 return 0;
-
             try
             {
-                var timeout = Environment.TickCount + CAL_WAIT_TIME_MS;
-
-                WriteRegister(REG_CAL_CURRENT, Current);
-                CallAction(ACT_CALIBRATE_HOLDING);
-
-                var done = false;
-                while (timeout > Environment.TickCount && !done)
-                    done = ReadRegister(REG_DEV_STATE, true) == (ushort)Types.GTU.HWDeviceState.None;
-
-                if (!done)
+                //Время окончания таймаута
+                int Timestamp = Environment.TickCount + 5000;
+                WriteRegister(REG_CAL_CURRENT, current);
+                CallAction(ACT_START_CAL_IG);
+                bool IsDone = false;
+                while (Timestamp > Environment.TickCount && !IsDone)
+                    IsDone = (TypeGTU.HWDeviceState)ReadDeviceState(true) == TypeGTU.HWDeviceState.None;
+                if (!IsDone)
                     return 0;
-
-                var resultCurrent = ReadRegister(REG_RES_CAL_CURRENT);
-
-                return resultCurrent;
+                ushort ResultCurrent = ReadRegister(REG_RESULT_CAL);
+                return ResultCurrent;
             }
             finally
             {
-                ActiveCommutation.Switch(Types.Commutation.CommutationMode.None);
+                ActiveCommutation.Switch(CommutationMode.None);
             }
         }
 
-        internal void WriteCalibrationParams(Types.GTU.CalibrationParameters Parameters)
+        internal void WriteCalibrationParams(TypeGTU.CalibrationParameters parameters)
         {
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         "Gate @WriteCalibrationParams begin");
-
-
-            WriteRegisterS(REG_GATE_VGT_OFFSET, Parameters.GateVGTOffset, true);
-            WriteRegisterS(REG_GATE_IGT_OFFSET, Parameters.GateIGTOffset, true);
-            WriteRegisterS(REG_GATE_IHL_OFFSET, Parameters.GateIHLOffset, true);
-
-            WriteRegister(REG_RG_CURRENT, Parameters.RgCurrent, true);
-            WriteRegister(REG_GATE_FINE_IGT_N, Parameters.GateFineIGT_N, true);
-            WriteRegister(REG_GATE_FINE_IGT_D, Parameters.GateFineIGT_D, true);
-            WriteRegister(REG_GATE_FINE_VGT_N, Parameters.GateFineVGT_N, true);
-            WriteRegister(REG_GATE_FINE_VGT_D, Parameters.GateFineVGT_D, true);
-            WriteRegister(REG_GATE_FINE_IHL_N, Parameters.GateFineIHL_N, true);
-            WriteRegister(REG_GATE_FINE_IHL_D, Parameters.GateFineIHL_D, true);
-
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "GTU @WriteCalibrationParams begin");
+            WriteRegisterS(REG_GATE_VGT_OFFSET, parameters.GateVGTOffset, true);
+            WriteRegisterS(REG_GATE_IGT_OFFSET, parameters.GateIGTOffset, true);
+            WriteRegisterS(REG_ADC_IG_FINE_P0, parameters.GateIHLOffset, true);
+            WriteRegister(REG_RG_CURRENT, parameters.RgCurrent, true);
+            WriteRegister(REG_DAC_IG_CONV_K, parameters.GateFineIGT_N, true);
+            WriteRegister(REG_DAC_IG_CONV_B, parameters.GateFineIGT_D, true);
+            WriteRegister(REG_GATE_FINE_VGT_N, parameters.GateFineVGT_N, true);
+            WriteRegister(REG_GATE_FINE_VGT_D, parameters.GateFineVGT_D, true);
+            WriteRegister(REG_ADC_IG_FINE_P2, parameters.GateFineIHL_N, true);
+            WriteRegister(REG_ADC_IG_FINE_P1, parameters.GateFineIHL_D, true);
             if (!IsEmulated)
                 CallAction(ACT_SAVE_TO_ROM);
-
-            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
-                                         "Gate @WriteCalibrationParams end");
+            SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "GTU @WriteCalibrationParams end");
         }
 
         internal TypeGTU.CalibrationParameters ReadCalibrationParams()
@@ -678,15 +650,15 @@ namespace SCME.Service.IO
             {
                 GateIGTOffset = ReadRegisterS(REG_GATE_IGT_OFFSET, true),
                 GateVGTOffset = ReadRegisterS(REG_GATE_VGT_OFFSET, true),
-                GateIHLOffset = ReadRegisterS(REG_GATE_IHL_OFFSET, true),
+                GateIHLOffset = ReadRegisterS(REG_ADC_IG_FINE_P0, true),
 
                 RgCurrent = ReadRegister(REG_RG_CURRENT, true),
-                GateFineIGT_N = ReadRegister(REG_GATE_FINE_IGT_N, true),
-                GateFineIGT_D = ReadRegister(REG_GATE_FINE_IGT_D, true),
+                GateFineIGT_N = ReadRegister(REG_DAC_IG_CONV_K, true),
+                GateFineIGT_D = ReadRegister(REG_DAC_IG_CONV_B, true),
                 GateFineVGT_N = ReadRegister(REG_GATE_FINE_VGT_N, true),
                 GateFineVGT_D = ReadRegister(REG_GATE_FINE_VGT_D, true),
-                GateFineIHL_N = ReadRegister(REG_GATE_FINE_IHL_N, true),
-                GateFineIHL_D = ReadRegister(REG_GATE_FINE_IHL_D, true),
+                GateFineIHL_N = ReadRegister(REG_ADC_IG_FINE_P2, true),
+                GateFineIHL_D = ReadRegister(REG_ADC_IG_FINE_P1, true),
             };
 
             SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note,
@@ -694,18 +666,17 @@ namespace SCME.Service.IO
 
             return parameters;
         }
-        //}
 
         #region Standart API
         internal void ClearFaults() //Очистка ошибок блока
         {
-            CallAction(ACT_CLEAR_FAULT);
+            CallAction(ACT_CLR_FAULT);
             SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "GTU faults cleared");
         }
 
         internal void Warnings_Clear() //Очистка предупреждений блока
         {
-            CallAction(ACT_CLEAR_WARNING);
+            CallAction(ACT_CLR_WARNING);
             SystemHost.Journal.AppendLog(ComplexParts.Gate, LogMessageType.Note, "GTU warnings cleared");
         }
 
@@ -918,8 +889,8 @@ namespace SCME.Service.IO
         #region Registers
         internal const ushort
             //Функции
-            ACT_CLEAR_FAULT = 3,
-            ACT_CLEAR_WARNING = 4,
+            ACT_CLR_FAULT = 3,
+            ACT_CLR_WARNING = 4,
             ACT_START_KELVIN = 100,
             ACT_START_GATE = 101,
             ACT_START_IH = 102,
@@ -927,7 +898,15 @@ namespace SCME.Service.IO
             ACT_START_RG = 104,
             ACT_STOP_TEST = 105,
             ACT_START_VGNT = 106,
+            ACT_START_CAL_VG = 110,
+            ACT_START_CAL_IG = 111,
+            ACT_SAVE_TO_ROM = 200,
             //Регистры
+            REG_ADC_IG_FINE_P2 = 33,
+            REG_ADC_IG_FINE_P1 = 34,
+            REG_ADC_IG_FINE_P0 = 35,
+            REG_DAC_IG_CONV_K = 50,
+            REG_DAC_IG_CONV_B = 51,
             REG_GATE_VGT_PURE = 128,
             REG_HOLD_USE_STRIKE = 129,
             REG_HOLD_WITH_SL = 130,
@@ -946,6 +925,7 @@ namespace SCME.Service.IO
             REG_RESULT_IH = 201,
             REG_RESULT_IL = 202,
             REG_RESULT_RG = 203,
+            REG_RESULT_CAL = 204,
             REG_RESULT_VGNT = 205,
             REG_RESULT_IGNT = 206,
             REG_KELVIN_1_2 = 211,
@@ -956,22 +936,12 @@ namespace SCME.Service.IO
             EP16_Data_Vg = 1,
             EP16_Data_Ig = 2,
 
-            REG_GATE_FINE_IHL_N = 33,
-            REG_GATE_FINE_IHL_D = 34,
-            REG_GATE_IHL_OFFSET = 35,
-            REG_GATE_FINE_IGT_N = 50,
-            REG_GATE_FINE_IGT_D = 51,
             REG_GATE_FINE_VGT_N = 52,
             REG_GATE_FINE_VGT_D = 53,
             REG_GATE_VGT_OFFSET = 56,
             REG_GATE_IGT_OFFSET = 57,
             REG_RG_CURRENT = 93,
-            ACT_CALIBRATE_GATE = 110,
-            ACT_CALIBRATE_HOLDING = 111,
-            REG_CAL_CURRENT = 140,
-            ACT_SAVE_TO_ROM = 200,
-            REG_RES_CAL_CURRENT = 204,
-            REG_RES_CAL_VOLTAGE = 205;
+            REG_CAL_CURRENT = 140;
         #endregion
     }
 }

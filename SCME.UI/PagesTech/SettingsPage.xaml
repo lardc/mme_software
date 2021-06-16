@@ -30,18 +30,13 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Viewbox>
-                            <Border x:Name="Border" CornerRadius="10"
-                            Background="#FFFFFFFF"
-                            Width="40" Height="20">
+                            <Border x:Name="Border" CornerRadius="10" Width="40" Height="20" Background="#FFFFFFFF">
                                 <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.3" />
+                                    <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.3"/>
                                 </Border.Effect>
-                                <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
-                                 Margin="2 1 2 1"
-                                 Stroke="Gray" StrokeThickness="0.2"
-                                 HorizontalAlignment="Stretch">
+                                <Ellipse x:Name="Ellipse" StrokeThickness="0.2" Stroke="Gray" Fill="#FFFFFFFF" Stretch="Uniform" Margin="2 1 2 1" HorizontalAlignment="Stretch">
                                     <Ellipse.Effect>
-                                        <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.3" Direction="260" />
+                                        <DropShadowEffect ShadowDepth="1" BlurRadius="10" Direction="260" Opacity="0.3"/>
                                     </Ellipse.Effect>
                                 </Ellipse>
                             </Border>
@@ -50,28 +45,16 @@
                             <EventTrigger RoutedEvent="Checked">
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="#FF4CD661"
-                                                    Duration="0" />
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        To="20 1 2 1"
-                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FF4CD661" Duration="0"/>
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="Margin" To="20 1 2 1" Duration="0"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
                             <EventTrigger RoutedEvent="Unchecked">
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                    To="White"
-                                                    Duration="0" />
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        To="2 1 2 1"
-                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="White" Duration="0"/>
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="Margin" To="2 1 2 1" Duration="0"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -125,7 +108,7 @@
                         <ToggleButton x:Name="ClampEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="ClampVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -139,7 +122,7 @@
                         <ToggleButton x:Name="GTUEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="GTUVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -153,7 +136,7 @@
                         <ToggleButton x:Name="SLEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="SLVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -167,7 +150,7 @@
                         <ToggleButton x:Name="BVTEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="BVTVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -181,7 +164,7 @@
                         <ToggleButton x:Name="dVdtEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="dVdtVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -195,7 +178,7 @@
                         <ToggleButton x:Name="ATUEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="ATUVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -209,7 +192,7 @@
                         <ToggleButton x:Name="QrrTqEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="QrrTqVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -223,7 +206,7 @@
                         <ToggleButton x:Name="TOUEmulation" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Emulation}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,100,10,10">
+                    <StackPanel Orientation="Horizontal" Margin="10,140,10,10">
                         <ToggleButton x:Name="TOUVisible" Width="50" Height="30"/>
                         <TextBlock Text="{x:Static res:Resources.Visibility}" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     </StackPanel>

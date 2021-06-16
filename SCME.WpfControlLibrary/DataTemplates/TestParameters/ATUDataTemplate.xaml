@@ -1,39 +1,40 @@
 ﻿<Grid x:Class="SCME.WpfControlLibrary.DataTemplates.TestParameters.ATUDataTemplate"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-             xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
-             xmlns:atu="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=atu:TestParameters}"
-             d:DesignWidth="800">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:atu="clr-namespace:SCME.Types.ATU;assembly=SCME.Types"
+      xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
+      xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance Type=atu:TestParameters}"
+      d:DesignWidth="800" d:DesignHeight="450">
     <Grid.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml" />
-                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml" />
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ValueConvertersDictionary.xaml"/>
+                <ResourceDictionary Source="/SCME.WpfControlLibrary;component/Resources/ObjectDataProvider.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160" SharedSizeGroup="Column0a" />
-            <ColumnDefinition Width="220" SharedSizeGroup="Column1a"/>
-            <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="160" SharedSizeGroup="Column3a" />
-            <ColumnDefinition Width="220" SharedSizeGroup="Column4a"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
-            <RowDefinition Height="45" />
-            <RowDefinition Height="45" />
-        </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Content="{x:Static res:Resources.AtuPrePulseValue}" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding PrePulseValue}" IsNumeric="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-    <Label Grid.Column="0" Grid.Row="1" Content="{x:Static res:Resources.AtuPowerValueSet}"  Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding PowerValue, StringFormat={}{0:N1}}" IsFloat="True" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-    <Label Grid.Column="0" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMin}" Foreground="Black"/>
-    <customControls:ValidatingTextBox x:Name="PrsmMin" Text="{Binding PRSM_Min, StringFormat={}{0:N2}}" IsFloat="True" Maximum="{Binding ElementName=PrsmMax, Path=Text}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-    <Label Grid.Column="3" Grid.Row="2" Content="{x:Static res:Resources.AtuPrsmMax}"  Foreground="Black"/>
-    <customControls:ValidatingTextBox x:Name="PrsmMax" Text="{Binding PRSM_Max, StringFormat={}{0:N2}}" IsFloat="True" Minimum="{Binding ElementName=PrsmMin, Path=Text}" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <ColumnDefinition Width="Auto" MinWidth="160" SharedSizeGroup="Column0a"/>
+        <ColumnDefinition Width="Auto" MinWidth="220" SharedSizeGroup="Column1a"/>
+        <ColumnDefinition Width="30"/>
+        <ColumnDefinition Width="Auto" MinWidth="160" SharedSizeGroup="Column3a"/>
+        <ColumnDefinition Width="Auto" MinWidth="220" SharedSizeGroup="Column4a"/>
+    </Grid.ColumnDefinitions>
+    <Label Content="{x:Static res:Resources.AtuPrePulseValue}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,5,0,0" Foreground="Black"/>
+    <customControls:ValidatingTextBox Text="{Binding PrePulseValue}" IsNumeric="True" Minimum="{StaticResource MinPrePulseValue_ATU}" Maximum="{StaticResource MaxPrePulseValue_ATU}" Grid.Row="0" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Content="{x:Static res:Resources.AtuPowerValueSet}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
+    <customControls:ValidatingTextBox Text="{Binding PowerValue}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinPowerValue_ATU}" Maximum="{StaticResource MaxPowerValue_ATU}" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Content="{x:Static res:Resources.AtuPrsmMin}" Grid.Row="2" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
+    <customControls:ValidatingTextBox x:Name="PrsmMin" Text="{Binding PRSM_Min}" IsNumeric="True" IsFloat="True" Maximum="{Binding Text, ElementName=PrsmMax}" Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Label Content="{x:Static res:Resources.AtuPrsmMax}" Grid.Row="2" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
+    <customControls:ValidatingTextBox x:Name="PrsmMax" Text="{Binding PRSM_Max}" IsNumeric="True" IsFloat="True" Minimum="{Binding Text, ElementName=PrsmMin}" Grid.Row="2" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
 </Grid>

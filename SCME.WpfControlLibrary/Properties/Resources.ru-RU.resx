@@ -796,10 +796,10 @@
     <value>Список КИП</value>
   </data>
   <data name="AtuPrsmMin" xml:space="preserve">
-    <value>PRSM min, kW</value>
+    <value>Мин. PRSM, кВ</value>
   </data>
   <data name="AtuPrsmMax" xml:space="preserve">
-    <value>PRSM max, kW</value>
+    <value>Макс. PRSM, кВ</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>

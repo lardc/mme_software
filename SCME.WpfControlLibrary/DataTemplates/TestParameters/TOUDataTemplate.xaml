@@ -28,5 +28,5 @@
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Content="{x:Static res:Resources.TOUITM}" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding CurrentAmplitude}" IsFloat="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding CurrentAmplitude}" IsNumeric="True" Minimum="{StaticResource MinCurrentAmplitudeMax_TOU}" Maximum="{StaticResource MaxCurrentAmplitudeMax_TOU}" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
 </Grid>

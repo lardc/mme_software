@@ -43,7 +43,7 @@ namespace SCME.WpfControlLibrary.CustomControls
         public ValidatingTextBox()
         {
             Minimum = 0;
-            Maximum = 100;
+            Maximum = float.MaxValue;
             IsNumeric = false;
             IsFloat = false;
 
@@ -94,16 +94,16 @@ namespace SCME.WpfControlLibrary.CustomControls
             if (IsFloat)
             {
                 badEntry =
-                    !double.TryParse(Text, NumberStyles.Number | NumberStyles.AllowDecimalPoint,
-                        CultureInfo.InvariantCulture, out floatValue);
+                    !double.TryParse(Text, NumberStyles.Number,
+                        CultureInfo.GetCultureInfo("en-US"), out floatValue);
             }
             else
             {
                 int value;
 
                 badEntry =
-                    !int.TryParse(Text, NumberStyles.Number | NumberStyles.AllowDecimalPoint,
-                        CultureInfo.InvariantCulture, out value);
+                    !int.TryParse(Text, NumberStyles.Number,
+                        CultureInfo.GetCultureInfo("en-US"), out value);
                 floatValue = value;
             }
 
@@ -111,17 +111,17 @@ namespace SCME.WpfControlLibrary.CustomControls
             {
                 if (floatValue > Maximum)
                 {
-                    Text = Maximum.ToString(CultureInfo.InvariantCulture);
+                    Text = Maximum.ToString(CultureInfo.CurrentUICulture);
                     Select(Text.Length, 0);
                 }
                 else if (floatValue < Minimum)
                 {
-                    Text = Minimum.ToString(CultureInfo.InvariantCulture);
+                    Text = Minimum.ToString(CultureInfo.CurrentUICulture);
                     Select(Text.Length, 0);
                 }
                 else
                 {
-                    Text = floatValue.ToString(CultureInfo.InvariantCulture);
+                    Text = floatValue.ToString(CultureInfo.CurrentUICulture);
                     Select(Text.Length, 0);
                 }
             }

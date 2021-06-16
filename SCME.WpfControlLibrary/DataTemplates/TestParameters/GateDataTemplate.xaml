@@ -4,9 +4,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:gate="clr-namespace:SCME.Types.GTU;assembly=SCME.Types"
+      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       xmlns:customControls="clr-namespace:SCME.WpfControlLibrary.CustomControls"
       xmlns:res="clr-namespace:SCME.WpfControlLibrary.Properties"
-      xmlns:uiServiceConfig="clr-namespace:SCME.UIServiceConfig.Properties;assembly=SCME.UIServiceConfig"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=gate:TestParameters}"
       d:DesignWidth="800" d:DesignHeight="450">
@@ -50,7 +50,7 @@
             <ColumnDefinition Width="Auto" MinWidth="220" SharedSizeGroup="Column4b"/>
         </Grid.ColumnDefinitions>
         <Label Content="{x:Static res:Resources.IHItm}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
-        <customControls:ValidatingTextBox Text="{Binding IGT, StringFormat={}{0:N0}}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinItm_IH_GATE}" Maximum="{StaticResource MaxItm_IH_GATE}" Grid.Row="0" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+        <customControls:ValidatingTextBox Text="{Binding Itm}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinItm_IH_GATE}" Maximum="{StaticResource MaxItm_IH_GATE}" Grid.Row="0" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
     </Grid>
     <CheckBox Content="{x:Static res:Resources.HoldingStrikeCurrent}" IsChecked="{Binding IsIhStrikeCurrentEnabled}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BorderBrush="#FFC9C9C9" Foreground="Black"/>
     <CheckBox Content="{x:Static res:Resources.LatchingCurrent}" IsChecked="{Binding IsIlEnabled}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,5,0,0" BorderBrush="#FFC9C9C9" Foreground="Black"/>
@@ -70,30 +70,42 @@
         </Grid.ColumnDefinitions>
         <CheckBox Content="{x:Static res:Resources.Vgnt}" IsChecked="{Binding UseVgnt}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,5,0,0" BorderBrush="#FFC9C9C9" Foreground="Black"/>
         <Label Content="{x:Static res:Resources.CurrentLimit_mA}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
-        <customControls:ValidatingTextBox Text="{Binding CurrentLimit, StringFormat={}{0:N0}}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinIxRM_BVT}" Maximum="{StaticResource MaxIxRM_BVT}" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+        <customControls:ValidatingTextBox Text="{Binding CurrentLimit}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinIxRM_BVT}" Maximum="{StaticResource MaxIxRM_BVT}" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.VoltageLimitD_V}" Grid.Row="1" Grid.Column="3" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
-        <customControls:ValidatingTextBox Text="{Binding VoltageLimitD, StringFormat={}{0:N0}}" IsNumeric="True" Minimum="{StaticResource MinVxRM_BVT}" Maximum="{StaticResource MaxVxRM_BVT}" Grid.Row="1" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+        <customControls:ValidatingTextBox Text="{Binding VoltageLimitD}" IsNumeric="True" Minimum="{StaticResource MinVxRM_BVT}" Maximum="{StaticResource MaxVxRM_BVT}" Grid.Row="1" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.PlateTime_ms}" Grid.Row="2" Grid.Column="0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
-        <customControls:ValidatingTextBox Text="{Binding PlateTime, StringFormat={}{0:N0}}" IsNumeric="True" Minimum="{StaticResource MinPlateVxRM_BVT}" Maximum="{StaticResource MaxPlateVxRM_BVT}" Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+        <customControls:ValidatingTextBox Text="{Binding PlateTime}" IsNumeric="True" Minimum="{StaticResource MinPlateVxRM_BVT}" Maximum="{StaticResource MaxPlateVxRM_BVT}" Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.Rampup_Vms}" Grid.Row="2" Grid.Column="3" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
         <customControls:ValidatingTextBox Text="{Binding RampUpVoltage}" IsNumeric="True" IsFloat="True" Minimum="{StaticResource MinRampVxRM_BVT}" Maximum="{StaticResource MaxRampVxRM_BVT}" Grid.Row="2" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.StartVoltage_V}" Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" />
         <customControls:ValidatingTextBox Text="{Binding StartVoltage}" IsNumeric="True" Minimum="{StaticResource MinStartVxRM_BVT}" Maximum="{StaticResource MaxStartVxRM_BVT}" Grid.Row="3" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
     </Grid>
     <Label Content="{x:Static res:Resources.MaxResistance_Ohm}" Grid.Row="7" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding Resistance, StringFormat={}{0:N0}}" IsNumeric="True" Grid.Row="7" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding Resistance}" IsNumeric="True" Grid.Row="7" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Content="{x:Static res:Resources.MaxVgt_V}" Grid.Row="7" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding VGT, StringFormat={}{0:N1}}" IsFloat="True" Grid.Row="7" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding VGT}" IsNumeric="True" IsFloat="True" Grid.Row="7" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Content="{x:Static res:Resources.MinIgt_mA}" Grid.Row="8" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding MinIGT, StringFormat={}{0:N0}}" IsFloat="True" Grid.Row="8" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding MinIGT}" IsNumeric="True" IsFloat="True" Grid.Row="8" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Content="{x:Static res:Resources.MaxIgt_mA}" Grid.Row="8" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding IGT, StringFormat={}{0:N0}}" IsFloat="True" Grid.Row="8" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding IGT}" IsNumeric="True" IsFloat="True" Grid.Row="8" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Content="{x:Static res:Resources.MaxIh_mA}" Grid.Row="9" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding IH, StringFormat={}{0:N0}}" IsFloat="True" Grid.Row="9" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding IH}" IsNumeric="True" IsFloat="True" Grid.Row="9" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
     <Label Content="{x:Static res:Resources.MaxIl_mA}" Grid.Row="9" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
-    <customControls:ValidatingTextBox Text="{Binding IL, StringFormat={}{0:N0}}" IsFloat="True" Grid.Row="9" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-    <Label Content="{x:Static res:Resources.GateLimitV}" Grid.Row="10" Grid.Column="0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
-    <customControls:ValidatingTextBox Text="{Binding GateLimitV}" IsNumeric="True" Grid.Row="10" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
-    <Label Content="{x:Static res:Resources.GateLimitI}" Grid.Row="10" Grid.Column="3" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
-    <customControls:ValidatingTextBox Text="{Binding GateLimitI}" IsNumeric="True" Grid.Row="10" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+    <customControls:ValidatingTextBox Text="{Binding IL}" IsNumeric="True" IsFloat="True" Grid.Row="9" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+    <Grid Grid.Row="10" Grid.ColumnSpan="5" Visibility="{Binding VGNTIsVisible, Source={x:Static uiServiceConfig:Settings.Default}, Converter={StaticResource B2V}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="170" SharedSizeGroup="Column0b"/>
+            <ColumnDefinition Width="Auto" MinWidth="220" SharedSizeGroup="Column1b"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="Auto" MinWidth="160" SharedSizeGroup="Column3b"/>
+            <ColumnDefinition Width="Auto" MinWidth="220" SharedSizeGroup="Column4b"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="{x:Static res:Resources.GateLimitV}" Grid.Row="0" Grid.Column="0" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+        <customControls:ValidatingTextBox Text="{Binding GateLimitV}" IsNumeric="True" IsFloat="True" Grid.Row="0" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+        <Label Content="{x:Static res:Resources.GateLimitI}" Grid.Row="0" Grid.Column="3" Foreground="Black" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+        <customControls:ValidatingTextBox Text="{Binding GateLimitI}" IsNumeric="True" IsFloat="True" Grid.Row="0" Grid.Column="4" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}" Padding="0,0,10,0"/>
+    </Grid>
 </Grid>
