@@ -168,16 +168,14 @@ namespace SCME.Types.GTU
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
-            IGNT = 1000;
-            VGNT = 12000;
             Itm = 0;
             CurrentLimit = 5;
             VoltageLimitD = 1000;
             PlateTime = 1000;
             RampUpVoltage = 2;
             StartVoltage = 500;
-            GateLimitV = 12000;
-            GateLimitI = 1000;
+            IGNT = 200;
+            VGNT = 2000;
         }
 
         [DataMember]
@@ -301,18 +299,6 @@ namespace SCME.Types.GTU
             get; set;
         }
 
-        [DataMember]
-        public ushort GateLimitV
-        {
-            get; set;
-        }
-
-        [DataMember]
-        public ushort GateLimitI
-        {
-            get; set;
-        }
-
         /// <summary>Проверка изменений в параметрах</summary>
         /// <param name="oldParameters">Старые параметры</param>
         /// <returns>Возвращает True, если параметры были изменены</returns>
@@ -354,10 +340,6 @@ namespace SCME.Types.GTU
                 return true;
             if (StartVoltage != OldTestParameters.StartVoltage)
                 return true;
-            if (GateLimitV != OldTestParameters.GateLimitV)
-                return true;
-            if (GateLimitI != OldTestParameters.GateLimitI)
-                return true;
             return false;
         }
 
@@ -379,8 +361,8 @@ namespace SCME.Types.GTU
             VGT = 2.5f;
             IH = 150;
             IL = 1000;
-            IGNT = 100;
-            VGNT = 100;
+            IGNT = 200;
+            VGNT = 2000;
         }
 
         [DataMember]

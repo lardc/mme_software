@@ -90,7 +90,7 @@
                     <Label Name="labelIlResult1"  Grid.Column="1" Grid.Row="5" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
-                    <customControls:LabelWithIndex Content="UGNT, В" Grid.Column="0" Grid.Row="6" Height="Auto" />
+                    <customControls:LabelWithIndex Content="UGNT, мВ" Grid.Column="0" Grid.Row="6" Height="Auto" />
                     <Label Name="labelVgntResult1"  Grid.Column="1" Grid.Row="6"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
                     <customControls:LabelWithIndex Content="IGNT, мА" Grid.Column="0" Grid.Row="7" Height="Auto" />

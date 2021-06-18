@@ -835,6 +835,6 @@
     <value>Макс. IGNT, мА</value>
   </data>
   <data name="GateLimitV" xml:space="preserve">
-    <value>Макс. UGNT, В</value>
+    <value>Макс. UGNT, мВ</value>
   </data>
 </root>

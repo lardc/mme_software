@@ -14,12 +14,15 @@ namespace SCME.Agent
         //Супервайзер и конфигурационные данные
         private static Supervisor Supervisor;
         public static ConfigData ConfigData;
+        //Расположение файла с логами
+        public static string LogFilePath;
 
         [STAThread]
         private static void Main()
         {
             //Добавление обработчика исключений
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            LogFilePath = string.Format(@"Logs\Agent {0:dd.MM.yyyy HH_mm_ss}.log", DateTime.Now);
             //Создание конфигурационного json-файла
             IConfigurationBuilder СonfigBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true);
             IConfigurationRoot Сonfiguration = СonfigBuilder.Build();
@@ -66,7 +69,13 @@ namespace SCME.Agent
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Возникла одна или несколько ошибок при обновлении ПО, попытка запуска. {0}{1}", Environment.NewLine, ex), "Ошибка");
+                MessageBox.Show("Не удалось подключиться к SCME.UpdateServer. Запуск установленной версии ПО", "Ошибка");
+                //Запись логов ошибки
+                if (Directory.Exists("Logs"))
+                {
+                    string ErrorMessage = string.Format("{0:dd.MM.yyyy HH:mm:ss} ERROR - connection to UpdateServer wasn't established. Reason:\n{1}\n", DateTime.Now, ex);
+                    File.AppendAllText(LogFilePath, ErrorMessage);
+                }
             }
             //Перезапуск супервайзера
             using (Mutex)

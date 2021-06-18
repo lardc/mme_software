@@ -25,7 +25,7 @@
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="background" Property="Background" Value="{StaticResource xBlue1}" />
+                                        <Setter TargetName="background" Property="Background" Value="{StaticResource BlueBrush}" />
                                         <Setter TargetName="ContentPresenter" Property="TextBlock.Foreground" Value="White"></Setter>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
@@ -69,7 +69,7 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type RepeatButton}">
                                                 <Grid Name="border">
-                                                    <Border Background="{StaticResource xBlue1}" Width="{TemplateBinding Width}"
+                                                    <Border Background="{StaticResource BlueBrush}" Width="{TemplateBinding Width}"
                                     Height="{TemplateBinding Width}" CornerRadius="2">
                                                         <Path Name="path" Stretch="Uniform" Margin="5"
                                       Stroke="White" StrokeThickness="6"
@@ -78,7 +78,7 @@
                                                 </Grid>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsPressed" Value="True">
-                                                        <Setter TargetName="border" Property="Background" Value="{StaticResource xBlue1}" />
+                                                        <Setter TargetName="border" Property="Background" Value="{StaticResource BlueBrush}" />
                                                         <Setter TargetName="path" Property="Margin" Value="2" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
@@ -117,7 +117,7 @@
                                                                   Command="ScrollBar.PageUpCommand" />
                                             </Track.DecreaseRepeatButton>
                                             <Track.Thumb>
-                                                <Thumb MinHeight="50" Background="{StaticResource xBlue1}" 
+                                                <Thumb MinHeight="50" Background="{StaticResource BlueBrush}" 
                                                            Style="{StaticResource ScrollBarThumb}" />
                                             </Track.Thumb>
                                             <Track.IncreaseRepeatButton>

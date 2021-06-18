@@ -12,7 +12,7 @@ namespace SCME.ProfileBuilder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -34,7 +34,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("IVAN-PC\\SQLEXPRESS")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.128.4")]
         public string MSSQLServer {
             get {
                 return ((string)(this["MSSQLServer"]));
@@ -77,21 +77,9 @@ namespace SCME.ProfileBuilder.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("A")]
-        public string LastSelectedMMECode {
-            get {
-                return ((string)(this["LastSelectedMMECode"]));
-            }
-            set {
-                this["LastSelectedMMECode"] = value;
-            }
-        }
-        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("qwerty_123")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ufkfrnbrf6084")]
         public string MSSQLPassword {
             get {
                 return ((string)(this["MSSQLPassword"]));
@@ -100,8 +88,7 @@ namespace SCME.ProfileBuilder.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Ivan\\Desktop\\Работа\\mme_software_TS05\\Debug\\UIService\\Db\\SCME_ResultsDB_" +
-            "Local.sqlite")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Visual Studio\\mme_software\\Debug\\UIServiceData\\SCME_ResultsDB_Local.sqlite")]
         public string SQLiteFileName {
             get {
                 return ((string)(this["SQLiteFileName"]));
@@ -123,6 +110,18 @@ namespace SCME.ProfileBuilder.Properties {
         public string MSSQLDatabase {
             get {
                 return ((string)(this["MSSQLDatabase"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("MME008")]
+        public string LastSelectedMMECode {
+            get {
+                return ((string)(this["LastSelectedMMECode"]));
+            }
+            set {
+                this["LastSelectedMMECode"] = value;
             }
         }
     }

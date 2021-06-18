@@ -947,7 +947,7 @@ namespace SCME.UI.PagesUser
             if (state != Types.DeviceState.InProcess)
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IGNT = ignt;
-                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = (float)Math.Round((decimal)(vgnt / 1000.0), 2, MidpointRounding.ToEven);
+                ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGNT = vgnt;
                 if (ignt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IGNT");
                 if (vgnt > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].VGNT)

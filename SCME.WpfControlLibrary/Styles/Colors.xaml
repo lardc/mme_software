@@ -3,7 +3,7 @@
 
     <AlternationConverter x:Key="BackgroundConverter">
         <SolidColorBrush>Transparent</SolidColorBrush>
-        <StaticResource ResourceKey="xGray3" />
+        <!--<StaticResource ResourceKey="xGray3" />-->
     </AlternationConverter>
 
     <Color x:Key="Purple1">#FF8C0095</Color>
@@ -38,6 +38,8 @@
     <SolidColorBrush x:Key="ButtonWithIconBrush" Color="{StaticResource Purple2}" ></SolidColorBrush>
     
     <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource Blue1}" ></SolidColorBrush>
-    
+    <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource Green1}" ></SolidColorBrush>
+
+
     <SolidColorBrush x:Key="SelectEditModePageButtonBrush" Color="{StaticResource SelectEditModePageButtonColor}"/>
 </ResourceDictionary>

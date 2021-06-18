@@ -67,7 +67,7 @@
 
     <Style x:Key="FlatButtonAllSize" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontSize" Value="{DynamicResource BaseFontSize}" />
+        <Setter Property="FontSize" Value="24" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
@@ -94,15 +94,15 @@
     </Style>
 
     <Style x:Key="BackButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="{StaticResource xBlue1}" />
+        <Setter Property="Background" Value="{StaticResource BlueBrush}" />
     </Style>
 
     <Style x:Key="StopButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="{StaticResource xRed1}" />
+        <Setter Property="Background" Value="{StaticResource BlueBrush}" />
     </Style>
 
     <Style x:Key="StartButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
-        <Setter Property="Background" Value="{StaticResource xGreen1}" />
+        <Setter Property="Background" Value="{StaticResource GreenBrush}" />
     </Style>
 
     <Style x:Key="PurpleButton" TargetType="Button" BasedOn="{StaticResource BaseFlatButton}">

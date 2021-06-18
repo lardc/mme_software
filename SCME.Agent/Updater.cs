@@ -17,8 +17,7 @@ namespace SCME.Agent
     /// <summary>Апдейтер</summary>
     internal class Updater
     {
-        //Расположения файлов для обновления
-        private const string ErrorFilePath = "UpdateError.txt";
+        //Запросы к контроллеру UpdateServer
         private const string AgentVersionPath = "Update/GetAgentVersion";
         private const string AgentFolderPath = "Update/GetAgentFolder";
         private const string EqualSoftwareVersionPath = "Update/EqualSoftwareVersion";
@@ -75,16 +74,29 @@ namespace SCME.Agent
                     Archive.ExtractToDirectory(Directory.GetCurrentDirectory(), true);
                     File.Copy(Path.Combine(BackAgentPath, "appsettings.json"), "appsettings.json", true);
                 }
-                catch
+                catch (Exception ex)
                 {
                     Directory_Move(BackAgentPath, Directory.GetCurrentDirectory(), true);
+                    MessageBox.Show("Не удалось обновить SCME.Agent", "Ошибка");
+                    //Запись логов ошибки
+                    if (Directory.Exists("Logs"))
+                    {
+                        string ErrorMessage = string.Format("{0:dd.MM.yyyy HH:mm:ss} ERROR - Couldn't update SCME.Agent. Reason:\n{1}\n", DateTime.Now, ex);
+                        File.AppendAllText(Program.LogFilePath, ErrorMessage);
+                    }
                     throw;
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                File.WriteAllText(ErrorFilePath, ex.ToString());
+                MessageBox.Show("Не удалось обновить SCME.Agent", "Ошибка");
+                //Запись логов ошибки
+                if (Directory.Exists("Logs"))
+                {
+                    string ErrorMessage = string.Format("{0:dd.MM.yyyy HH:mm:ss} ERROR - Couldn't update SCME.Agent. Reason:\n{1}\n", DateTime.Now, ex);
+                    File.AppendAllText(Program.LogFilePath, ErrorMessage);
+                }
                 throw;
             }
         }
@@ -158,11 +170,17 @@ namespace SCME.Agent
                         Directory_Move(BackUIServicePath, ServiceDirectory, true);
                     throw;
                 }
+                MessageBox.Show(string.Format("SCME.UIService обновлен до версии {0}", FileVersionInfo.GetVersionInfo(Program.ConfigData.UIAppPath).ProductVersion), "Обновление выполнено");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Ошибка");
-                File.WriteAllText(ErrorFilePath, ex.ToString());
+                MessageBox.Show("Не удалось обновить SCME.UIService", "Ошибка");
+                //Запись логов ошибки
+                if (Directory.Exists("Logs"))
+                {
+                    string ErrorMessage = string.Format("{0:dd.MM.yyyy HH:mm:ss} ERROR - Couldn't update SCME.UIService. Reason:\n{1}\n", DateTime.Now, ex);
+                    File.AppendAllText(Program.LogFilePath, ErrorMessage);
+                }
                 throw;
             }
             return true;

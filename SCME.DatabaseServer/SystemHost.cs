@@ -57,7 +57,7 @@ namespace SCME.DatabaseServer
             try
             {
                 //Строка подключения к БД
-                string ConnectionString = string.Format(@"Data Source={0}; Initial Catalog={1}; IntegratedSecurity={2}; User ID={3}; Password={4}; Connection Timeout=5", Settings.Default.DbPath, Settings.Default.DBName, Settings.Default.DBIntegratedSecurity, Settings.Default.DBUser, Settings.Default.DBPassword);
+                string ConnectionString = string.Format(@"Data Source={0}; Initial Catalog={1}; Integrated Security={2}; User ID={3}; Password={4}; Connect Timeout=5", Settings.Default.DbPath, Settings.Default.DBName, Settings.Default.DBIntegratedSecurity, Settings.Default.DBUser, Settings.Default.DBPassword);
                 MSSQLDbService MssqlDbService;
                 DatabaseServiceHost = new ServiceHost(MssqlDbService = new MSSQLDbService(new SqlConnection(ConnectionString), false));
                 ServiceBehaviorAttribute Behaviour = DatabaseServiceHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();

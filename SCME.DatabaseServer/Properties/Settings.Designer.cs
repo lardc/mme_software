@@ -61,7 +61,7 @@ namespace SCME.DatabaseServer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Hpl1520")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Ufkfrnbrf6084")]
         public string DBPassword {
             get {
                 return ((string)(this["DBPassword"]));
@@ -70,7 +70,7 @@ namespace SCME.DatabaseServer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("tcp:192.168.0.134, 1444")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.128.4")]
         public string DbPath {
             get {
                 return ((string)(this["DbPath"]));

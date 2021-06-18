@@ -388,8 +388,10 @@ namespace SCME.Service.IO
             BVT.WriteRegister(IOBvt.REG_VOLTAGE_PLATE_TIME, Parameter.PlateTime);
             BVT.WriteRegister(IOBvt.REG_VOLTAGE_AC_RATE, (ushort)(Parameter.RampUpVoltage * 10));
             BVT.WriteRegister(IOBvt.REG_START_VOLTAGE_AC, Parameter.StartVoltage);
-            WriteRegister(REG_V_GATE_LIMIT, Parameter.GateLimitV);
-            WriteRegister(REG_I_GATE_LIMIT, Parameter.GateLimitI);
+            
+            //WriteRegister(REG_V_GATE_LIMIT, Parameter.VGNT);
+            //WriteRegister(REG_I_GATE_LIMIT, Parameter.IGNT);
+            
             BVT.CallAction(IOBvt.ACT_START_TEST);
             CallAction(ACT_START_VGNT);
             //Эмуляция блока

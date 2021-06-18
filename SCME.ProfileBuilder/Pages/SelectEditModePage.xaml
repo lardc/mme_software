@@ -11,7 +11,7 @@
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:res1="clr-namespace:SCME.WpfControlLibrary.Properties;assembly=SCME.WpfControlLibrary"
       d:DesignWidth="1280" d:DesignHeight="924"
-      DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
+      
 	Title="ConnectPage">
     <Page.Resources>
         <ResourceDictionary>

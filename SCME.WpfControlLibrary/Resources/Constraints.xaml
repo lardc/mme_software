@@ -1,0 +1,101 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Static losses parameters -->
+    <system:Single x:Key="MaxITM_SL">12500</system:Single>
+    <system:Single x:Key="MinITM_SL">150</system:Single>
+
+    <system:Single x:Key="MaxTimeITM_SL">10000</system:Single>
+    <system:Single x:Key="MinTimeITM_SL">10000</system:Single>
+
+    <system:Single x:Key="MaxPulsesITM_SL">10</system:Single>
+    <system:Single x:Key="MinPulsesITM_SL">1</system:Single>
+
+    <!-- Blocking voltage parameters -->
+    <system:Single x:Key="MaxIxRM_BVT">300</system:Single>
+    <system:Single x:Key="MinIxRM_BVT">0.5</system:Single>
+
+    <system:Single x:Key="MaxVxRM_BVT">8000</system:Single>
+    <system:Single x:Key="MinVxRM_BVT">500</system:Single>
+
+    <system:Single x:Key="MaxPlateVxRM_BVT">10000</system:Single>
+    <system:Single x:Key="MinPlateVxRM_BVT">100</system:Single>
+
+    <system:Single x:Key="MaxRampVxRM_BVT">5</system:Single>
+    <system:Single x:Key="MinRampVxRM_BVT">0.5</system:Single>
+
+    <system:Single x:Key="MaxStartVxRM_BVT">3000</system:Single>
+    <system:Single x:Key="MinStartVxRM_BVT">300</system:Single>
+
+    <!-- Clamping system parameters -->
+    <system:Single x:Key="MaxForceCS">100</system:Single>
+    <system:Single x:Key="MinForceCS">5</system:Single>
+
+    <system:Single x:Key="MaxTempCS">200</system:Single>
+    <system:Single x:Key="MinTempCS">0</system:Single>
+
+    <system:Single x:Key="MaxHeightCS">80</system:Single>
+    <system:Single x:Key="MinHeightCS">0</system:Single>
+
+
+    <system:Single x:Key="MaxDirectCurrent_QRRTQ">500</system:Single>
+    <system:Single x:Key="MinDirectCurrent_QRRTQ">50</system:Single>
+
+    <system:Single x:Key="MaxDCPulseWidth_QRRTQ">5000</system:Single>
+    <system:Single x:Key="MinDCPulseWidth_QRRTQ">500</system:Single>
+
+    <system:Single x:Key="MaxDCRiseRate_QRRTQ">5</system:Single>
+    <system:Single x:Key="MinDCRiseRate_QRRTQ">0.2</system:Single>
+
+    <system:Single x:Key="MaxOffStateVoltage_QRRTQ">5</system:Single>
+    <system:Single x:Key="MinOffStateVoltage_QRRTQ">0.2</system:Single>
+
+    <system:Single x:Key="MaxRampTime_SL">10000</system:Single>
+    <system:Single x:Key="MinRampTime_SL">200</system:Single>
+
+    <system:Single x:Key="MaxRampOpeningCurrent_SL">1000</system:Single>
+    <system:Single x:Key="MinRampOpeningCurrent_SL">100</system:Single>
+
+    <system:Single x:Key="MaxRampOpeningTime_SL">5000</system:Single>
+    <system:Single x:Key="MinRampOpeningTime_SL">50</system:Single>
+
+    <system:Single x:Key="MaxSinusTime_SL">15000</system:Single>
+    <system:Single x:Key="MinSinusTime_SL">4000</system:Single>
+
+    <system:Single x:Key="MaxCurveFactor_SL">100</system:Single>
+    <system:Single x:Key="MinCurveFactor_SL">1</system:Single>
+
+    <system:Single x:Key="MaxCurveAddTime_SL">5000</system:Single>
+    <system:Single x:Key="MinCurveAddTime_SL">0</system:Single>
+
+    <system:Single x:Key="MaxCurrentAmplitudeMax_TOU">1250</system:Single>
+    <system:Single x:Key="MinCurrentAmplitudeMax_TOU">160</system:Single>
+
+    <system:Single x:Key="MaxItm_IH_GATE">2000</system:Single>
+    <system:Single x:Key="MinItm_IH_GATE">500</system:Single>
+
+    <system:Single x:Key="MaxCalibrationCurrent_GATE">65535</system:Single>
+    <system:Single x:Key="MinCalibrationCurrent_GATE">0</system:Single>
+
+    <system:Single x:Key="MaxVoltage_DVDT">10000</system:Single>
+    <system:Single x:Key="MinVoltage_DVDT">0</system:Single>
+
+    <system:Single x:Key="MaxVoltageRateOffSet_DVDT">2000</system:Single>
+    <system:Single x:Key="MinVoltageRateOffSet_DVDT">50</system:Single>
+
+    <system:Single x:Key="MaxConfirmationCount_DVDT">100</system:Single>
+    <system:Single x:Key="MinConfirmationCount_DVDT">1</system:Single>
+
+    <system:Single x:Key="MaxVoltageRateLimit_DVDT">2500</system:Single>
+    <system:Single x:Key="MinVoltageRateLimit_DVDT">500</system:Single>
+
+    <system:Single x:Key="MaxPrePulseValue_ATU">250</system:Single>
+    <system:Single x:Key="MinPrePulseValue_ATU">15</system:Single>
+
+    <system:Single x:Key="MaxPowerValue_ATU">75</system:Single>
+    <system:Single x:Key="MinPowerValue_ATU">2</system:Single>
+
+
+
+</ResourceDictionary>
