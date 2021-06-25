@@ -912,4 +912,7 @@
   <data name="ConfigChangeMessage" xml:space="preserve">
     <value>Вы хотите применить изменения?</value>
   </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Не удалось подключиться к серверу БД. Комплекс продолжит работу в локальном режиме, результаты измерений будут синхронизированы на сервер БД при следующем подключении</value>
+  </data>
 </root>

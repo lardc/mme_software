@@ -180,24 +180,35 @@
                         </Label>
                         <Label Margin="0,2,20,0" Background="Transparent" HorizontalAlignment="Center">
                             <Label.ToolTip>
-                                <StackPanel>
+                                <StackPanel Width="400">
                                     <TextBlock Text="{Binding Version, StringFormat={}Текущая версия ПО: {0}}"/>
-                                    <TextBlock>
+                                    <TextBlock TextWrapping="WrapWithOverflow">
                                         Основные нововведения патча:
                                         <LineBreak/>
-                                        <Run FontSize="16">1. Добавление обработки исключений при обновлении SCME.Agent</Run>
+                                        <Run FontSize="16">- Редизайн приложения</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">2. Добавление проектов, связанных с MEFA</Run>
+                                        <Run FontSize="16">- Добавление измерения UGNT блока GTU</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">3. Имплементация Heartbeat связи с сервером</Run>
+                                        <Run FontSize="16">- Добавление измерения IH ГОСТ блока GTU</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">4. Вывод сообщений об эмулируемых блоках</Run>
+                                        <Run FontSize="16">- Добавление возможности программного отключения и эмуляции блоков на панели наладчика</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">5. Отображение статуса связи с сервером</Run>
+                                        <Run FontSize="16">- Добавление графика уставки dUdt на панели наладчика</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">6. Исправление внешнего вида некоторых объектов интерфейса</Run>
+                                        <Run FontSize="16">- Добавление графика ATU на панели наладчика</Run>
                                         <LineBreak/>
-                                        <Run FontSize="16">7. Очистка репозитория от неподдерживаемого кода</Run>
+                                        <Run FontSize="16">- Унификация наименований блоков</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">- Перенос измерения высоты в раздел параметров</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">- Добавление граничных значений при редактировании профиля</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">- Сокрытие контролов температуры через файл конфигурации</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">- Оповещение пользователя при переходе в локальный режим</Run>
+                                        <LineBreak/>
+                                        <Run FontSize="16">- Обработка потери связи с сервисами</Run>
+                                        <LineBreak/>
                                     </TextBlock>
                                 </StackPanel>
                             </Label.ToolTip>

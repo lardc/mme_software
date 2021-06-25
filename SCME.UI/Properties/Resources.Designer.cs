@@ -367,6 +367,15 @@ namespace SCME.UI.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Couldn&apos;t connect to DatabaseServer. Turning to local mode. Test results will be synchronized with server with a next successful connection.
+        /// </summary>
+        public static string ConnectionFailed {
+            get {
+                return ResourceManager.GetString("ConnectionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Console.
         /// </summary>
         public static string Console {

@@ -85,6 +85,11 @@ namespace SCME.UI.IO
                                 Cache.Main.VM.ConnectStateBrush = Cache.Main.VM.ConnectStateBrushNoLink;
                                 Cache.Main.VM.ConnectStateGeometry = Cache.Main.VM.ConnectStateGeometryNoLink;
                                 Cache.Main.VM.ConnectStateText = Resources.NoLink;
+
+                                DialogWindow DialogWindow = new DialogWindow(Resources.Warning, Resources.ConnectionFailed);
+                                DialogWindow.ButtonConfig(DialogWindow.EbConfig.OK);
+                                DialogWindow.ShowDialog();
+
                                 break;
                         }
 

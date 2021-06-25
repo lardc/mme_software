@@ -919,4 +919,7 @@
   <data name="ConfigChangeMessage" xml:space="preserve">
     <value>Do you want to apply changes?</value>
   </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Couldn't connect to DatabaseServer. Turning to local mode. Test results will be synchronized with server with a next successful connection</value>
+  </data>
 </root>

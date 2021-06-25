@@ -55,24 +55,31 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.Column="0" Background="#FFC9C9C9" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2V}}">
-                <TextBlock Text="{Binding SelectedProfileNameCopy}" HorizontalAlignment="Center" Foreground="Black"/>
+            <Grid Grid.Row="0" Grid.Column="0" Height="60" Background="#FFC9C9C9" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2V}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding SelectedProfileNameCopy}" Grid.Column="0" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="Black"/>
+                <TextBlock Text="{Binding SelectedProfile.Timestamp}" Grid.Column="1" VerticalAlignment="Center" Foreground="Black"/>
             </Grid>
             <Grid Grid.Row="0" Grid.Column="0" Height="60" Background="#FFC9C9C9" Visibility="{Binding ReadOnlyMode, Converter={StaticResource B2VI}}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <customControls:ValidatingTextBox Grid.Row="0" Grid.Column="0" Text="{Binding SelectedProfileNameCopy}" BorderThickness="0" Margin="10,0,0,0" VerticalContentAlignment="Center" Background="#FFC9C9C9" Foreground="Black" IsEnabled="{Binding IsEditModeActive}"/>
-                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="2" Margin="5,0" IsEnabled="{Binding IsEditModeActive}" Click="CancelEditProfile_Click">
+                <TextBlock Text="{Binding SelectedProfile.Timestamp}" Grid.Column="1" VerticalAlignment="Center" Foreground="Black"/>
+                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="3" Margin="5,0" IsEnabled="{Binding IsEditModeActive}" Click="CancelEditProfile_Click">
                     <Path Style="{StaticResource PathIcon}" Data="{StaticResource Cansel}"/>
                 </Button>
-                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="1" IsEnabled="{Binding IsEditModeEnabled}" Click="BeginEditProfile_Click">
+                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="2" IsEnabled="{Binding IsEditModeEnabled}" Click="BeginEditProfile_Click">
                     <Path Style="{StaticResource PathIcon}" Data="{StaticResource Edit}"/>
                 </Button>
-                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="3" Margin="0,0,10,0" IsEnabled="{Binding IsEditModeActive}" Click="EndEditProfile_Click">
+                <Button Style="{StaticResource ButtonWithIcon}" Grid.Row="0" Grid.Column="4" Margin="0,0,10,0" IsEnabled="{Binding IsEditModeActive}" Click="EndEditProfile_Click">
                     <Path Style="{StaticResource PathIcon}" Data="{StaticResource Save}"/>
                 </Button>
             </Grid>

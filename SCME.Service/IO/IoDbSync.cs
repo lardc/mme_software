@@ -76,7 +76,8 @@ namespace SCME.Service.IO
                 {
                     initializationResponse.SyncMode = SyncMode.NotSync;
                     _communication.PostDbSyncState(DeviceConnectionState.ConnectionFailed, e.Message);
-                    MessageBox.Show(e.ToString(), "Error sync, передайте сообщение разработчику");
+                    
+                    //MessageBox.Show(e.ToString(), "Error sync, передайте сообщение разработчику");
                 }
 
                 _communication.PostDbSyncState(DeviceConnectionState.ConnectionSuccess, string.Empty);
@@ -127,10 +128,20 @@ namespace SCME.Service.IO
 
         private void SendUnSendedResult()
         {
+            int UnsentCount = 0;
+            DateTime UnsentStartDate = DateTime.Now;
             using (var centralDbClient = new CentralDatabaseServiceClient(Settings.Default.CentralDatabaseService))
                 foreach (var unSendedDevice in _sqLiteDbService.SqLiteResultsServiceLocal.GetUnsendedDevices())
                     if (centralDbClient.SendResultToServer(unSendedDevice))
                         _sqLiteDbService.SqLiteResultsServiceLocal.SetResultSended(unSendedDevice.Id);
+                    //Подсчет неотправленных
+                    else
+                    {
+                        UnsentCount++;
+                        if (unSendedDevice.Timestamp <= UnsentStartDate)
+                            UnsentStartDate = unSendedDevice.Timestamp;
+                    }
+            MessageBox.Show(string.Format("Количество неотправленных результатов: {0}\nРанняя дата: {1:dd.MM.yyyy HH:mm:ss}", UnsentCount, UnsentStartDate), "Информация о неотправленных результатах");
         }
 
         public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)
