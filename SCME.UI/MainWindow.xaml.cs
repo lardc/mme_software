@@ -223,6 +223,22 @@ namespace SCME.UI
                 Process.Start("explorer.exe");
         }
 
+        private async void VersionInfo_Click(object sender, RoutedEventArgs e) //Информация о текущей версии
+        {
+            ToolTip VersionToolTip = (ToolTip)VersionInfo.ToolTip;
+            VersionToolTip.IsOpen = true;
+            await System.Threading.Tasks.Task.Delay(10000);
+            VersionToolTip.IsOpen = false;
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e) //Выход из профиля
+        {
+            Cache.Net.SetSafetyMode(SafetyMode.Internal);
+            if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
+                Cache.UserTest.OnLeaveNotify();
+            mainFrame.Navigate(Cache.Login);
+        }
+
         private void Tech_Click(object sender, RoutedEventArgs e) //Переход в режим наладчика
         {
             ServiceManLogin();
@@ -310,14 +326,6 @@ namespace SCME.UI
         private void Keyboard_EnterPressed(object sender, RoutedEventArgs e) //Подтверждение ввода на виртуальной клавиатуре
         {
             ShowKeyboard(false, null);
-        }
-
-        private void Logout_Click(object sender, RoutedEventArgs e) //Выход из профиля
-        {
-            Cache.Net.SetSafetyMode(SafetyMode.Internal);
-            if (Equals(Cache.Main.mainFrame.Content, Cache.UserTest))
-                Cache.UserTest.OnLeaveNotify();
-            mainFrame.Navigate(Cache.Login);
         }
 
         private void MainFrame_Navigating(object sender, NavigatingCancelEventArgs e) //Анимация при навигации

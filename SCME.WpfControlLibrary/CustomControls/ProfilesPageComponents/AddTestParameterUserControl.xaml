@@ -37,7 +37,7 @@
         <Label Content="{x:Static res:Resources.Force}" Grid.Row="0" Grid.Column="3" Foreground="Black"/>
         <customControl:ValidatingTextBox Text="{Binding ParameterClamp}" IsNumeric="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
-        <customControl:ValidatingTextBox Text="{Binding Height}" IsNumeric="True" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <customControl:ValidatingTextBox Text="{Binding Height}" IsNumeric="True" Maximum="70" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.Temp}" Grid.Row="1" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
         <customControl:ValidatingTextBox Text="{Binding Temperature}" IsNumeric="True" Grid.Column="4" Grid.Row="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
         <Label Content="{x:Static res:Resources.ParameterType}" Grid.Row="2" Grid.Column="0" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"/>

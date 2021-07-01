@@ -178,11 +178,12 @@
                                 </Path.Style>
                             </Path>
                         </Label>
-                        <Label Margin="0,2,20,0" Background="Transparent" HorizontalAlignment="Center">
-                            <Label.ToolTip>
-                                <StackPanel Width="400">
-                                    <TextBlock Text="{Binding Version, StringFormat={}Текущая версия ПО: {0}}"/>
-                                    <TextBlock TextWrapping="WrapWithOverflow">
+                        <Button x:Name="VersionInfo" Margin="0,10,20,10" BorderThickness="0" Background="Transparent" HorizontalAlignment="Center" Click="VersionInfo_Click">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel Width="400">
+                                        <TextBlock Text="{Binding Version, StringFormat={}Текущая версия ПО: {0}}"/>
+                                        <TextBlock TextWrapping="WrapWithOverflow">
                                         Основные нововведения патча:
                                         <LineBreak/>
                                         <Run FontSize="16">- Редизайн приложения</Run>
@@ -209,11 +210,12 @@
                                         <LineBreak/>
                                         <Run FontSize="16">- Обработка потери связи с сервисами</Run>
                                         <LineBreak/>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Label.ToolTip>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
                             <Path VerticalAlignment="Center" Width="48" Height="48" Stretch="Uniform" Fill="Black" Data="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
-                        </Label>
+                        </Button>
                         <Button Click="Logout_Click"
                             Visibility="{Binding AccountButtonVisibility}"  Background="Transparent" BorderThickness="0"
                              Margin="0, 10, 30, 10" >

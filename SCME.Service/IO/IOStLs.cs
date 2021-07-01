@@ -407,7 +407,7 @@ namespace SCME.Service.IO
                         {
                             case Types.VTM.VTMTestType.Ramp:
                                 {
-                                    WriteRegister(REG_FOR_COMPATIBILITY_1, MEASURE_RAMP);
+                                    WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_RAMP);
                                     WriteRegister(REG_RAMP_DESIRED_CURRENT, m_Parameter.RampCurrent);
                                     WriteRegister(REG_RAMP_DESIRED_TIME, m_Parameter.RampTime);
                                     WriteRegister(REG_HEATING_ENABLE, (ushort)(m_Parameter.IsRampOpeningEnabled ? 1 : 0));
@@ -424,9 +424,9 @@ namespace SCME.Service.IO
 
                             case Types.VTM.VTMTestType.Sinus:
                                 {
-                                    WriteRegister(REG_FOR_COMPATIBILITY_1, MEASURE_SIN);
+                                    WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_SIN);
                                     WriteRegister(REG_CURRENT_SETPOINT, m_Parameter.SinusCurrent);
-                                    WriteRegister(REG_FOR_COMPATIBILITY_2, m_Parameter.SinusTime);
+                                    WriteRegister(REG_SIN_DESIRED_LENGTH, m_Parameter.SinusTime);
 
                                     current = m_Parameter.SinusCurrent;
                                 }
@@ -434,7 +434,7 @@ namespace SCME.Service.IO
 
                             case Types.VTM.VTMTestType.Curve:
                                 {
-                                    WriteRegister(REG_FOR_COMPATIBILITY_1, MEASURE_S_CURVE);
+                                    WriteRegister(REG_MEASUREMENT_TYPE, MEASURE_S_CURVE);
                                     WriteRegister(REG_SCURVE_DESIRED_CURRENT, m_Parameter.CurveCurrent);
                                     WriteRegister(REG_SCURVE_DESIRED_TIME, m_Parameter.CurveTime);
                                     WriteRegister(REG_SCURVE_ADD_TIME, m_Parameter.CurveAddTime);
@@ -445,8 +445,8 @@ namespace SCME.Service.IO
                                 break;
                         }
 
-                        WriteRegister(REG_FOR_COMPATIBILITY_4, (ushort)(m_Parameter.UseFullScale ? 1 : 0));
-                        WriteRegister(REG_FOR_COMPATIBILITY_3, (ushort)(m_Parameter.UseLsqMethod ? 0 : 1));
+                        WriteRegister(REG_USE_FULL_SCALE, (ushort)(m_Parameter.UseFullScale ? 1 : 0));
+                        WriteRegister(REG_DISABLE_MATH, (ushort)(m_Parameter.UseLsqMethod ? 0 : 1));
 
                         WriteRegister(REG_DBG, m_Parameter.Count);
                         CallAction(ACT_START_TEST);
@@ -649,17 +649,18 @@ namespace SCME.Service.IO
             REG_HEATING_TIME = 132,
             REG_HEATING_ENABLE = 133,
             REG_CURRENT_SETPOINT = 140,
-            REG_FOR_COMPATIBILITY_2 = 141,
+            REG_SIN_DESIRED_LENGTH = 141,
             REG_SCURVE_DESIRED_CURRENT = 150,
             REG_SCURVE_DESIRED_TIME = 151,
             REG_SCURVE_FACTOR = 152,
             REG_SCURVE_ADD_TIME = 153,
             REG_PULSE_MODE = 154,
-            REG_FOR_COMPATIBILITY_4 = 162,
-            REG_FOR_COMPATIBILITY_3 = 161,
+            REG_USE_FULL_SCALE = 162,
+            REG_DISABLE_MATH = 161,
+            REG_USE_WITH_GTU = 163,
             REG_FOR_COMPATIBILITY_5 = 165,
             REG_DBG = 160,
-            REG_FOR_COMPATIBILITY_1 = 128,
+            REG_MEASUREMENT_TYPE = 128,
             REG_DEVICE_STATE = 192,
             REG_FAULT_REASON = 193,
             REG_DISABLE_REASON = 194,

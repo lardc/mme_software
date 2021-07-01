@@ -326,13 +326,15 @@ namespace SCME.Service.IO
             ActiveCommutation.CallAction(IOCommutation.ACT_COMM2_GATE_SL);
             WriteRegister(REG_HOLD_WITH_SL, 1);
             CallAction(ACT_START_IH);
-            SL.WriteRegister(IOStLs.REG_PULSE_MODE, 1);
-            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_3, 1);
-            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_4, 1);
-            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_5, 1);
-            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_1, 1);
+            SL.WriteRegister(IOStLs.REG_DISABLE_MATH, 1);
+            SL.WriteRegister(IOStLs.REG_USE_FULL_SCALE, 1);
+            SL.WriteRegister(IOStLs.REG_USE_WITH_GTU, 1);
+            
+            //SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_5, 1);
+            
+            SL.WriteRegister(IOStLs.REG_MEASUREMENT_TYPE, 1);
             SL.WriteRegister(IOStLs.REG_CURRENT_SETPOINT, Parameter.Itm);
-            SL.WriteRegister(IOStLs.REG_FOR_COMPATIBILITY_2, 10000);
+            SL.WriteRegister(IOStLs.REG_SIN_DESIRED_LENGTH, 10000);
             SL.WriteRegister(IOStLs.REG_DBG, 1);
             SL.CallAction(IOStLs.ACT_START_TEST);
             //Эмуляция блока
@@ -349,7 +351,7 @@ namespace SCME.Service.IO
             if (IsGraphRead)
                 Result.ArrayIH = ReadArrayFastS(EP16_Data_Vg);
             WriteRegister(REG_HOLD_WITH_SL, 0);
-            SL.WriteRegister(IOStLs.REG_PULSE_MODE, 0);            
+            SL.WriteRegister(IOStLs.REG_DISABLE_MATH, 0);
             IHEvent_Fire(DeviceState.Success, Result);
         }
 

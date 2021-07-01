@@ -14,7 +14,7 @@
                             Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             x:Name="textSource" Background="Transparent" Panel.ZIndex="2" BorderThickness="0" VerticalContentAlignment="Center" />
                         <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" VerticalContentAlignment="Center"
-                                 Panel.ZIndex="1" FontSize="{DynamicResource SCME.BaseFontSize}" BorderThickness="0" >
+                                 Panel.ZIndex="1" FontSize="{DynamicResource SCME.BaseFontSize}" BorderThickness="0" Padding="10,0,0,0">
                             <TextBox.Style>
                                 <Style TargetType="{x:Type TextBox}">
                                     <Setter Property="Foreground" Value="Transparent" />

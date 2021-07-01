@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyVersion>3.12.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
     <Version>3.12</Version>
     <Authors>Proton-Electrotex</Authors>
     <Description>Update application for SCME projects</Description>
     <Copyright>Copyright © Proton-Electrotex JSC 2014</Copyright>
-    <FileVersion>3.12.0.0</FileVersion>
+    <FileVersion>4.0.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>

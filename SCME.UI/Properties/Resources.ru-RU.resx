@@ -844,13 +844,13 @@
     <value>Всего профилей</value>
   </data>
   <data name="Vgnt" xml:space="preserve">
-    <value>UGNT</value>
+    <value>UGD</value>
   </data>
   <data name="Ignt_mA" xml:space="preserve">
-    <value>IGNT, мА</value>
+    <value>IGD, мА</value>
   </data>
   <data name="Vgnt_mV" xml:space="preserve">
-    <value>UGNT, мВ</value>
+    <value>UGD, мВ</value>
   </data>
   <data name="Temp" xml:space="preserve">
     <value>Температура, °С</value>

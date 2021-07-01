@@ -826,15 +826,15 @@
     <value>Верхняя пластина, C</value>
   </data>
   <data name="Vgnt" xml:space="preserve">
-    <value>UGNT</value>
+    <value>UGD</value>
   </data>
   <data name="TestVoltage" xml:space="preserve">
     <value>Test Voltage</value>
   </data>
   <data name="GateLimitI" xml:space="preserve">
-    <value>Макс. IGNT, мА</value>
+    <value>Макс. IGD, мА</value>
   </data>
   <data name="GateLimitV" xml:space="preserve">
-    <value>Макс. UGNT, мВ</value>
+    <value>Макс. UGD, мВ</value>
   </data>
 </root>

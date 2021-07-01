@@ -141,7 +141,8 @@ namespace SCME.Service.IO
                         if (unSendedDevice.Timestamp <= UnsentStartDate)
                             UnsentStartDate = unSendedDevice.Timestamp;
                     }
-            MessageBox.Show(string.Format("Количество неотправленных результатов: {0}\nРанняя дата: {1:dd.MM.yyyy HH:mm:ss}", UnsentCount, UnsentStartDate), "Информация о неотправленных результатах");
+            if (UnsentCount != 0)
+                MessageBox.Show(string.Format("Количество неотправленных результатов: {0}\nРанняя дата: {1:dd.MM.yyyy HH:mm:ss}", UnsentCount, UnsentStartDate), "Информация о неотправленных результатах");
         }
 
         public (MyProfile profile, bool IsInMmeCode) SyncProfile(MyProfile profile)

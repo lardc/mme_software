@@ -194,33 +194,33 @@
                     <customControls:ValidatingTextBox x:Name="tbWriteAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="2" Maximum="65535" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
-                                            TextBlock.TextAlignment="Right" Margin="20,30" />
+                                            TextBlock.TextAlignment="Right" VerticalAlignment="Center" Margin="20,30" Padding="5"/>
                     <customControls:ValidatingTextBox x:Name="tbWriteValue" x:FieldModifier="private"
                                             Grid.Column="2" Grid.Row="2" Maximum="65535" Minimum="-32767" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
-                                            TextBlock.TextAlignment="Right" Margin="20,30" />
-                    <Button Grid.Column="3" Grid.Row="2" Margin="20,30" Content="{x:Static res:Resources.Write}"
+                                            TextBlock.TextAlignment="Right" VerticalAlignment="Center" Margin="20,30" Padding="5"/>
+                    <Button Grid.Column="3" Grid.Row="2" Margin="20,30" Content="{x:Static res:Resources.Write}" Width="180"
                             Click="Write_Click" />
 
                     <Label Grid.Column="0" Grid.Row="3" Margin="40,5,0,5" Content="{x:Static res:Resources.Read}" />
                     <customControls:ValidatingTextBox x:Name="tbReadAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="3" Maximum="99999" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
-                                            TextBlock.TextAlignment="Right" Margin="20,30" />
+                                            TextBlock.TextAlignment="Right" VerticalAlignment="Center" Margin="20,30" Padding="5"/>
                     <Label x:Name="lblReadValue" x:FieldModifier="private"
                            Grid.Column="2" Grid.Row="3" Margin="20,30,35,30"
                            FontSize="{StaticResource DefaultFontSize}"
                            HorizontalContentAlignment="Right" Content="0" />
                     <Button Grid.Column="3" Grid.Row="3" Margin="20,30" Content="{x:Static res:Resources.Read}"
-                            Click="Read_Click" />
+                            Click="Read_Click" Width="180"/>
 
                     <Label Grid.Column="0" Grid.Row="4" Margin="40,5,0,5" Content="{x:Static res:Resources.Call}" />
                     <customControls:ValidatingTextBox x:Name="tbCallAddress" x:FieldModifier="private"
                                             Grid.Column="1" Grid.Row="4" Maximum="65535" Minimum="0" IsNumeric="True"
                                             Text="0" FontSize="{StaticResource DefaultFontSize}"
-                                            TextBlock.TextAlignment="Right" Margin="20,30" />
+                                            TextBlock.TextAlignment="Right" VerticalAlignment="Center" Margin="20,30" Padding="5"/>
                     <Button Grid.Column="3" Grid.Row="4" Margin="20,30" Content="{x:Static res:Resources.Call}"
-                            Click="Call_Click" />
+                            Click="Call_Click" Width="180"/>
 
                     <TextBlock Name="lblError" x:FieldModifier="private"
                                Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="4"
