@@ -16,6 +16,8 @@ namespace SCME.ProfileBuilder
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            UIServiceConfig.Settings.LoadSettings();
+
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             Thread.CurrentThread.CurrentCulture = new CultureInfo(Settings.Default.CurrentCulture);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.CurrentCulture);

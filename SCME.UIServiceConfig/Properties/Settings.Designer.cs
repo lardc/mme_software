@@ -994,5 +994,17 @@ namespace SCME.UIServiceConfig.Properties {
                 return ((bool)(this["VGNTIsVisible"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsLSL {
+            get {
+                return ((bool)(this["IsLSL"]));
+            }
+            set {
+                this["IsLSL"] = value;
+            }
+        }
     }
 }
