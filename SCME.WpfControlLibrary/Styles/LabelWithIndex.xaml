@@ -23,7 +23,7 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <ContentPresenter/>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="3,0,0,0" FontSize="12" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:LabelWithIndex}, Path=Number}"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="3,-15,0,0" FontSize="12" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=customControls:LabelWithIndex}, Path=Number}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -32,7 +32,7 @@ namespace SCME.Types.Profiles
         [DataMember]
         public int Height { get; set; }
         [DataMember]
-        public int Temperature { get; set; }
+        public int Temperature { get; set; } = 25;
         #endregion
     }
 

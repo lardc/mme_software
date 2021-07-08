@@ -217,7 +217,7 @@
     <value>Открытие</value>
   </data>
   <data name="Kelvin" xml:space="preserve">
-    <value>Прозвонка</value>
+    <value>Прозв.</value>
   </data>
   <data name="LatchingCurrent" xml:space="preserve">
     <value>Ток включения</value>
@@ -655,7 +655,7 @@
     <value>Результаты измерений не будут сохранены</value>
   </data>
   <data name="SettingTemperatureName" xml:space="preserve">
-    <value>Уставка по температуре, °C</value>
+    <value>Уставка, °C</value>
   </data>
   <data name="ProfileNotSynced" xml:space="preserve">
     <value>Профиль не синхронизирован</value>

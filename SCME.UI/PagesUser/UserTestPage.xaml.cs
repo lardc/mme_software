@@ -114,9 +114,7 @@ namespace SCME.UI.PagesUser
                 line2.Visibility = Visibility.Collapsed;
                 Grid.SetColumn(gridResult1, 3);
                 Grid.SetColumn(line1, 3);
-
                 chartPlotter2.Visibility = Visibility.Collapsed;
-
                 Grid.SetRow(chartPlotter1, 6);
                 Grid.SetColumnSpan(chartPlotter1, 3);
                 Grid.SetRowSpan(chartPlotter1, 2);
@@ -1871,8 +1869,6 @@ namespace SCME.UI.PagesUser
 
                 label.Visibility = Visibility.Visible;
 
-                label = FindChild<Label>(presenter, "lbTittleProblem");
-                label.Visibility = Visibility.Visible;
             }
 
             IsRunning = false;
@@ -1892,8 +1888,6 @@ namespace SCME.UI.PagesUser
                 label.Content = WarningReason.ToString();
                 label.Visibility = Visibility.Visible;
 
-                label = FindChild<Label>(presenter, "lbTittleWarning");
-                label.Visibility = Visibility.Visible;
             }
 
             IsRunning = false;
@@ -1914,8 +1908,6 @@ namespace SCME.UI.PagesUser
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
 
-                label = FindChild<Label>(presenter, "lbTittleFaultReason");
-                label.Visibility = Visibility.Visible;
             }
         }
 
@@ -2031,8 +2023,6 @@ namespace SCME.UI.PagesUser
                 label.Content = WarningReason.ToString();
                 label.Visibility = Visibility.Visible;
 
-                label = FindChild<Label>(presenter, "lbTittleWarning");
-                label.Visibility = Visibility.Visible;
             }
 
             IsRunning = false;
@@ -2053,8 +2043,6 @@ namespace SCME.UI.PagesUser
                 label.Content = FaultReason.ToString();
                 label.Visibility = Visibility.Visible;
 
-                label = FindChild<Label>(presenter, "lbTittleFaultReason");
-                label.Visibility = Visibility.Visible;
             }
 
             List<string> errors = (m_CurrentPos == 1) ? m_Errors1 : m_Errors2;
@@ -2090,31 +2078,46 @@ namespace SCME.UI.PagesUser
         public void SetTopTemp(int temeprature)
         {
             TopTempLabel.Content = temeprature;
+            
+            object SetTemp = SettingTemperatureLabel.Content;
+            if (SetTemp is string)
+                return;
+            int SettingTemp = (int)SetTemp;
+            if (SettingTemp < 70 && temeprature < 70)
+            {
+                TopTempLabel.Background = Brushes.LightGreen;
+                return;
+            }
+
             var bottomTemp = Profile.Temperature - 2;
             var topTemp = Profile.Temperature + 2;
             if (temeprature < bottomTemp || temeprature > topTemp)
-            {
                 TopTempLabel.Background = Brushes.Tomato;
-            }
             else
-            {
                 TopTempLabel.Background = Brushes.LightGreen;
-            }
         }
 
         public void SetBottomTemp(int temeprature)
         {
             BotTempLabel.Content = temeprature;
-            var bottomTemp = Profile.Temperature - 2;
-            var topTemp = Profile.Temperature + 2;
-            if (temeprature < bottomTemp || temeprature > topTemp)
-            {
-                BotTempLabel.Background = Brushes.Tomato;
-            }
-            else
+
+            object SetTemp = SettingTemperatureLabel.Content;
+            if (SetTemp is string)
+                return;
+            int SettingTemp = (int)SetTemp;
+            if (SettingTemp < 70 && temeprature < 70)
             {
                 BotTempLabel.Background = Brushes.LightGreen;
+                return;
             }
+
+            var bottomTemp = Profile.Temperature - 2;
+            var topTemp = Profile.Temperature + 2;
+
+            if (temeprature < bottomTemp || temeprature > topTemp)
+                BotTempLabel.Background = Brushes.Tomato;
+            else
+                BotTempLabel.Background = Brushes.LightGreen;
         }
 
         private static void SetLabel(ContentControl Target, Types.DeviceState State, bool IsFitWithNormatives, string Value, bool UseIsFitWithNormatives = true)
