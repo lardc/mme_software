@@ -6,7 +6,7 @@
         public const string TEST_EVENT_NAME = "MME_TEST";
         public const string ERROR_EVENT_NAME = "MME_ERROR";
         public const string SYNC_EVENT_NAME = "MME_SYNC";
-            
+
         public int Id { get; set; }
         public string EventName { get; set; }
     }

@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SCME.MEFAViewer" DataContext="{Binding RelativeSource={RelativeSource Self}, Path=Vm}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="900" Background="WhiteSmoke" TextElement.FontSize="14">
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="445"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding MmeTiles}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedMmeTile}" SelectionChanged="MmeTile_OnSelectionChanged">
+        <ListView x:Name="MmeTable" ItemsSource="{Binding MmeTiles}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedMmeTile}" SelectionChanged="MmeTile_OnSelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel  Orientation="Horizontal" />
@@ -20,90 +20,80 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Width="100" Height="100" Background="{Binding Color}" BorderBrush="Aqua" BorderThickness="2">
-                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding SWVersionAtLastStart, TargetNullValue='нет данных'}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                        </StackPanel>
                     </Border>    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid Grid.Column="1" DataContext="{Binding SelectedMmeTile}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="LastStartTimestamp"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="SWVersionAtLastStart"/>
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="TestCounterSinceLastStart"/>            
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="TestCounterTotal"/>
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="TestCounter"/>
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="WorkingHoursSinceLastStart"/>
-            <TextBlock Grid.Column="0" Grid.Row="6" Text="WorkingHoursTotal"/>
-            <TextBlock Grid.Column="0" Grid.Row="7" Text="WorkingHours"/>
-            <TextBlock Grid.Column="0" Grid.Row="8" Text="HardwareErrorCounterTotal"/>
-            <TextBlock Grid.Column="0" Grid.Row="9" Text="HardwareErrorCounter"/>
-            <TextBlock Grid.Column="0" Grid.Row="10" Text="LastTestTimestamp"/>
-            <TextBlock Grid.Column="0" Grid.Row="11" Text="LastState"/>
-            <TextBlock Grid.Column="0" Grid.Row="12" Text="ActiveProfilesCount"/>
-            <TextBlock Grid.Column="0" Grid.Row="13" Text="LastSWUpdateTimestamp"/>
-            
-            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding LastStartTimestamp}" TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding SWVersionAtLastStart}" TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding TestCounterSinceLastStart}" TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding TestCounterTotal}" TextAlignment="Right"/>
-            <Grid Grid.Column="1" Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DatePicker Grid.Column="0" SelectedDate="{Binding TestCounterBeginDateTime}" />
-                <DatePicker Grid.Column="1" SelectedDate="{Binding TestCounterEndDateTime}"/>
-                <TextBlock Grid.Column="2" Text="{Binding TestCounter}"/>
-            </Grid>
-            <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding WorkingHoursSinceLastStart}" TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding WorkingHoursTotal}" TextAlignment="Right"/>
-            <Grid Grid.Column="1" Grid.Row="7">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DatePicker Grid.Column="0" SelectedDate="{Binding WorkingHoursBeginDateTime}" />
-                <DatePicker Grid.Column="1" SelectedDate="{Binding WorkingHoursEndDateTime}"/>
-                <TextBlock Grid.Column="2" Text="{Binding WorkingHours}"/>
-            </Grid>
-            <TextBlock Grid.Column="1" Grid.Row="8" Text="{Binding HardwareErrorCounterTotal}" TextAlignment="Right"/>
-            <Grid Grid.Column="1" Grid.Row="9">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <DatePicker Grid.Column="0" SelectedDate="{Binding HardwareErrorCounterBeginDateTime}" />
-                <DatePicker Grid.Column="1" SelectedDate="{Binding HardwareErrorCounterEndDateTime}"/>
-                <TextBlock Grid.Column="2" Text="{Binding HardwareErrorCounter}"/>
-            </Grid>
-            <TextBlock Grid.Column="1" Grid.Row="10" Text="{Binding LastTestTimestamp}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="11" Text="{Binding LastState}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="12" Text="{Binding ActiveProfilesCount}"  TextAlignment="Right"/>
-            <TextBlock Grid.Column="1" Grid.Row="13" Text="{Binding LastSwUpdateTimestamp}"  TextAlignment="Right"/>
-            
-        </Grid>
-        
+        <StackPanel Grid.Column="1" DataContext="{Binding SelectedMmeTile}" Margin="5,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Установленная версия:"/>
+                <TextBlock Text="{Binding SWVersionAtLastStart, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Дата обновления:"/>
+                <TextBlock Text="{Binding LastSwUpdateTimestamp, StringFormat={}{0:MM.dd.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Послений запуск:"/>
+                <TextBlock Text="{Binding LastStartTimestamp, StringFormat={}{0:MM.dd.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Последнее состояние:"/>
+                <TextBlock Text="{Binding LastState}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Аптайм:"/>
+                <TextBlock Text="{Binding WorkingHoursSinceLastStart, StringFormat={}{0:hh\\:mm}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Суммарный аптайм:"/>
+                <TextBlock Text="{Binding WorkingHoursTotal, StringFormat={}{0:hh\\:mm}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="За период: с" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding WorkingHoursBeginDateTime}" Margin="5,0,0,0" SelectedDateChanged="UptimePeriod_Changed"/>
+                <TextBlock Text="по" VerticalAlignment="Center" Margin="5,0"/>
+                <DatePicker SelectedDate="{Binding WorkingHoursEndDateTime}" SelectedDateChanged="UptimePeriod_Changed"/>
+                <TextBlock Text="{Binding WorkingHours, StringFormat={}{0:hh\\:mm}, TargetNullValue='нет данных'}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Число измерений за сессию:"/>
+                <TextBlock Text="{Binding TestCounterSinceLastStart, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Суммарное число измерений:"/>
+                <TextBlock Text="{Binding TestCounterTotal, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="За период: с" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding TestCounterBeginDateTime}" Margin="5,0,0,0" SelectedDateChanged="TestCountPeriod_Changed"/>
+                <TextBlock Text="по" VerticalAlignment="Center" Margin="5,0"/>
+                <DatePicker SelectedDate="{Binding TestCounterEndDateTime}" SelectedDateChanged="TestCountPeriod_Changed"/>
+                <TextBlock Text="{Binding TestCounter, TargetNullValue='нет данных'}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Суммарное число ошибок:"/>
+                <TextBlock Text="{Binding HardwareErrorCounterTotal, TargetNullValue='нет данных'}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="За период:" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding HardwareErrorCounterBeginDateTime}" Margin="5,0,0,0" SelectedDateChanged="HWErrorCountPeriod_Changed"/>
+                <TextBlock Text="-" VerticalAlignment="Center" Margin="2,0"/>
+                <DatePicker SelectedDate="{Binding HardwareErrorCounterEndDateTime}" SelectedDateChanged="HWErrorCountPeriod_Changed"/>
+                <TextBlock Text="{Binding HardwareErrorCounter, TargetNullValue='нет данных'}" Margin="5,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Дата последнего измерения:"/>
+                <TextBlock Text="{Binding LastTestTimestamp, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <TextBlock Text="Число активных профилей:"/>
+                <TextBlock Text="{Binding ActiveProfilesCount, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

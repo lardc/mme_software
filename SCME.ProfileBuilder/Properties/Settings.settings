@@ -33,7 +33,7 @@
       <Value Profile="(Default)">SCME_ResultsDB</Value>
     </Setting>
     <Setting Name="LastSelectedMMECode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MME008</Value>
+      <Value Profile="(Default)">MME020</Value>
     </Setting>
   </Settings>
 </SettingsFile>

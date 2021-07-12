@@ -24,9 +24,9 @@ namespace SCME.MEFAViewer
         public DateTime TestCounterEndDateTime { get; set; } = DateTime.Now;
         
 
-        public long? WorkingHoursSinceLastStart { get; set; }
-        public long? WorkingHoursTotal { get; set; }
-        public long? WorkingHours { get; set; }
+        public TimeSpan? WorkingHoursSinceLastStart { get; set; }
+        public TimeSpan? WorkingHoursTotal { get; set; }
+        public TimeSpan? WorkingHours { get; set; }
         public DateTime WorkingHoursBeginDateTime { get; set; } = DateTime.Now.AddDays(-7);
         public DateTime WorkingHoursEndDateTime { get; set; } = DateTime.Now;
         
@@ -37,7 +37,7 @@ namespace SCME.MEFAViewer
         public DateTime HardwareErrorCounterEndDateTime { get; set; } =DateTime.Now;
         
         public DateTime? LastTestTimestamp { get; set; }
-        public DateTime? LastState { get; set; }
+        public string LastState { get; set; }
         
         public long? ActiveProfilesCount { get; set; }
         
