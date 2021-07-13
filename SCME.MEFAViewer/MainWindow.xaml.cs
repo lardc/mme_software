@@ -36,26 +36,6 @@ namespace SCME.MEFAViewer
             _dispatcherTimer.Tick += RefreshMmeOnTick;
             _dispatcherTimer.Start();
             RefreshMme();
-
-            /*_db.MonitoringEvents.Add(new MonitoringEvent()
-            {
-                Timestamp = DateTime.Now,
-                MmeCode = "A",
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m=> m.EventName == MonitoringEventType.HEART_BEAT_EVENT_NAME)
-            });
-            _db.MonitoringEvents.Add(new MonitoringEvent()
-            {
-                Timestamp = DateTime.Now,
-                MmeCode = "MME009",
-                MonitoringEventType = _db.MonitoringEventTypes.Single(m=> m.EventName == MonitoringEventType.HEART_BEAT_EVENT_NAME)
-            });*/
-            //_db.MonitoringEvents.Add(new MonitoringEvent()
-            //{
-            //    Timestamp = DateTime.Now,
-            //    MmeCode = "MME009",
-            //    MonitoringEventType = _db.MonitoringEventTypes.Single(m=> m.EventName == MonitoringEventType.TEST_EVENT_NAME)
-            //});
-            //_db.SaveChanges();
         }
 
         private void RefreshMmeOnTick(object sender, EventArgs e)
@@ -71,13 +51,23 @@ namespace SCME.MEFAViewer
             foreach (MmeTile i in Vm.MmeTiles)
             {
                 Brush brush = Brushes.WhiteSmoke;
-                if (_db.MonitoringEvents.FirstOrDefault(m => m.MonitoringEventType.EventName == MonitoringEventType.START_EVENT_NAME && m.MmeCode == i.Name &&
-                                              m.Timestamp > limitDateTime) != null)
-                    brush = _db.MonitoringEvents.FirstOrDefault(m => m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME && m.MmeCode == i.Name &&
-                                                                     m.Timestamp > limitDateTime) != null ? Brushes.Orange : Brushes.LightGreen;
-
-                i.Color = brush;
                 MonitoringEvent monitoringEventsStart = _db.MonitoringEvents.Where(m => m.MmeCode == i.Name && m.MonitoringEventType.EventName == MonitoringEventType.START_EVENT_NAME).OrderByDescending(m => m.Timestamp).FirstOrDefault();
+                //Были измерения
+                if (_db.MonitoringEvents.FirstOrDefault(m => m.MmeCode == i.Name && m.MonitoringEventType.EventName == MonitoringEventType.TEST_EVENT_NAME && m.Timestamp > limitDateTime) != null)
+                {
+                    brush = Brushes.Orange;
+                    i.Color = brush;
+                    i.SWVersionAtLastStart = monitoringEventsStart?.Data4;
+                    continue;
+                }
+                //Комплекс простаивает
+                if (monitoringEventsStart != null)
+                {
+                    //Аптайм
+                    DateTime Uptime = _db.MonitoringStats.Single(m => m.MmeCode == i.Name && m.MonitoringStatType.StatName == MonitoringStatType.LAST_START_HOURS).KeyData;
+                    brush = DateTime.Now - Uptime < fiveMinutes ? Brushes.LightGreen : Brushes.WhiteSmoke;
+                }
+                i.Color = brush;
                 i.SWVersionAtLastStart = monitoringEventsStart?.Data4;
             }
         }
