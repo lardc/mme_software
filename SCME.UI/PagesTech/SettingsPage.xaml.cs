@@ -60,8 +60,12 @@ namespace SCME.UI.PagesTech
             XmlDocument Document = new XmlDocument();
             Document.Load(ConfigPath);
             //Получение списка параметров
-            foreach (XmlElement Element in Document.SelectNodes(@"//applicationSettings/SCME.UIServiceConfig.Properties.Settings")[0])
+            foreach (object Node in Document.SelectNodes(@"//applicationSettings/SCME.UIServiceConfig.Properties.Settings")[0])
             {
+                //Комментарий документа
+                if (Node is XmlComment)
+                    continue;
+                XmlElement Element = (XmlElement)Node;
                 string NameSetting = Element.GetAttribute("name");
                 switch (NameSetting)
                 {

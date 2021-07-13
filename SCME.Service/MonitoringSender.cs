@@ -27,9 +27,9 @@ namespace SCME.Service
             client.PostAsync(uri, new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("mme", _mme),
-                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString()),
                 new KeyValuePair<string, string>("debug", _debug.ToString()),
-                new KeyValuePair<string, string>("lastUpdate", _lastUpdate.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("lastUpdate", _lastUpdate.ToString()),
                 new KeyValuePair<string, string>("softVersion", softVersion),
             }));
         }
@@ -41,7 +41,7 @@ namespace SCME.Service
             client.PostAsync(uri, new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("mme", _mme),
-                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString()),
                 new KeyValuePair<string, string>("profilesCount", profilesCount.ToString())
             }));
         }
@@ -53,7 +53,7 @@ namespace SCME.Service
             client.PostAsync(uri, new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("mme", _mme),
-                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString()),
                 new KeyValuePair<string, string>("profileGuid", profileGuid.ToString("N")),
                 new KeyValuePair<string, string>("devId", devId.ToString())
             }));
@@ -66,7 +66,7 @@ namespace SCME.Service
             client.PostAsync(uri, new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("mme", _mme),
-                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString()),
                 new KeyValuePair<string, string>("error", error)
             }));
         }
@@ -78,7 +78,7 @@ namespace SCME.Service
             client.PostAsync(uri, new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("mme", _mme),
-                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString(CultureInfo.InvariantCulture)),
+                new KeyValuePair<string, string>("timestamp", DateTime.Now.ToString()),
             }));
         }
         

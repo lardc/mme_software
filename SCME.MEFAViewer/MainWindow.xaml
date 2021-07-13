@@ -35,11 +35,11 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                 <TextBlock Text="Дата обновления:"/>
-                <TextBlock Text="{Binding LastSwUpdateTimestamp, StringFormat={}{0:MM.dd.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding LastSwUpdateTimestamp, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                 <TextBlock Text="Послений запуск:"/>
-                <TextBlock Text="{Binding LastStartTimestamp, StringFormat={}{0:MM.dd.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding LastStartTimestamp, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}, TargetNullValue='нет данных'}" Margin="5,0,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                 <TextBlock Text="Последнее состояние:"/>
