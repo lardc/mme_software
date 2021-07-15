@@ -102,58 +102,61 @@
         </Grid>
         <Label x:Name="lblDeviceClass" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Content="{x:Static res:Resources.DeviceRTClass}" FontSize="24" FontWeight="Bold" Height="Auto"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Left">
             <Label x:Name="lblSettingTemperature" Content="{x:Static res:Resources.SettingTemperatureName}" FontSize="25" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
             <Label HorizontalAlignment="Center" Content="0" x:Name="SettingTemperatureLabel" FontSize="28" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="-80,0,0,0">
             <Label x:Name="lblTitleTop"  HorizontalAlignment="Center" Content="{x:Static res:Resources.TopTempName}" FontSize="25" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
             <Label HorizontalAlignment="Center" Content="0" x:Name="TopTempLabel" Background="LightGreen" FontSize="28" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" Margin="-80,0,0,0">
             <Label  x:Name="lblTitleBot"  HorizontalAlignment="Center" Content="{x:Static res:Resources.BotTempName}" FontSize="25" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
             <Label x:Name="BotTempLabel" HorizontalAlignment="Center" Content="0" Background="LightGreen" FontSize="28" Height="Auto" Visibility="{Binding Source={x:Static uiServiceConfig:Settings.Default}, Path=TempIsVisible, Converter={StaticResource B2V}}"/>
         </StackPanel>
 
-        <dynamicDataDisplay:ChartPlotter x:Name="chartPlotter1" Grid.Row="6" Grid.ColumnSpan="2" Grid.Column="0" Margin="0,8,10,10" Background="Transparent" Foreground="{StaticResource xBlack1}" BorderBrush="Transparent" IsTabStop="False">
+        <dynamicDataDisplay:ChartPlotter x:Name="chartPlotter1" Grid.Row="6" Grid.ColumnSpan="3" Grid.Column="0" Margin="0,8,90,10" Background="Transparent" Foreground="{StaticResource xBlack1}" BorderBrush="Transparent" IsTabStop="False">
             <dynamicDataDisplay:HorizontalAxisTitle x:Name="chartPlotter1HorizontalAxisTitle" Content="{x:Static res:Resources.Graph_V}" />
             <dynamicDataDisplay:VerticalAxisTitle x:Name="chartPlotter1VerticalAxisTitle" Content="{x:Static res:Resources.Graph_ImA}" />
             <dynamicDataDisplay:AxisGrid Visibility="Hidden" />
         </dynamicDataDisplay:ChartPlotter>
 
-        <dynamicDataDisplay:ChartPlotter x:Name="chartPlotter2" Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0" Margin="0,8,10,10" Background="Transparent" Foreground="{StaticResource xBlack1}" BorderBrush="Transparent" IsTabStop="False">
+        <dynamicDataDisplay:ChartPlotter x:Name="chartPlotter2" Grid.Row="7" Grid.ColumnSpan="3" Grid.Column="0" Margin="0,8,90,10" Background="Transparent" Foreground="{StaticResource xBlack1}" BorderBrush="Transparent" IsTabStop="False">
             <dynamicDataDisplay:HorizontalAxisTitle x:Name="chartPlotter2HorizontalAxisTitle" Content="{x:Static res:Resources.Graph_V}" />
             <dynamicDataDisplay:VerticalAxisTitle x:Name="chartPlotter2VerticalAxisTitle" Content="{x:Static res:Resources.Graph_ImA}" />
             <dynamicDataDisplay:AxisGrid Visibility="Hidden" />
         </dynamicDataDisplay:ChartPlotter>
 
-        <Grid Name="gridResult1" Grid.Column="2" Grid.Row="0"  Grid.RowSpan="8" Margin="0,0,0,1">
+        <Grid Name="gridResult1" Grid.Column="3" Grid.Row="0"  Grid.RowSpan="8" Margin="-80,0,0,1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Label Content="{x:Static res:Resources.Position_1}" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Center" FontSize="28" />
-            <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Margin="6,0,11,2">
+            <Border x:Name="HeightBorder" BorderThickness="1" BorderBrush="Black" Grid.Row="1" Margin="6,0,11,2">
+                <Border.Visibility>
+                    <MultiBinding Converter="{StaticResource MB2V}">
+                        <Binding ElementName="userTestPage" Path="Profile.IsHeightMeasureEnabled"/>
+                        <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="IsHeighMeasureEnable"/>
+                    </MultiBinding>
+                </Border.Visibility>
                 <Grid Margin="-10,0,0,0">
-                    <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource MB2V}">
-                            <Binding ElementName="userTestPage" Path="Profile.IsHeightMeasureEnabled" />
-                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="IsHeighMeasureEnable" />
-                        </MultiBinding>
-                    </Grid.Visibility>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="115"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="108"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="{x:Static res:Resources.Height}" Grid.Column="0" Height="Auto" />
                     <Rectangle Fill="Black" Grid.Column="1" Width="1"/>
                     <Rectangle Fill="Black" Grid.Column="2" Width="1" Margin="0,0,-8,0" HorizontalAlignment="Right"/>
-                    <Label Name="labelHeightResult1" x:FieldModifier="private" Grid.Column="3" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
+                    <Label Name="labelHeightResult1" x:FieldModifier="private" Grid.Column="3" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" Margin="8,0,-6,0"/>
+                    <Rectangle x:Name="HeightSeparator" Fill="Black" Grid.Column="3" Width="1" Margin="0,0,-8,0" HorizontalAlignment="Right"/>
+                    <Label Name="labelHeightResult2"  x:FieldModifier="private" Grid.Column="5" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
                 </Grid>
             </Border>
             <customControl:ListViewResults Grid.Row="2" MaxHeight="740" x:Name="ListViewResults1" ItemsSource="{Binding ElementName=userTestPage, Path=Profile.TestParametersAndNormatives}"/>
@@ -162,46 +165,12 @@
         <Line x:Name="line1" HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
               X1="0" Y1="0" X2="0" Y2="{Binding ElementName=gridResult1, Path=ActualHeight}"
               Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Margin="0,20" Width="0" />
-
-        <Grid Name="gridResult2" Grid.Column="3" Grid.Row="0" Grid.RowSpan="8" Margin="0,0,0,1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Label Content="{x:Static res:Resources.Position_2}" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Center" FontSize="28" />
-            <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Margin="6,0,11,2">
-                <Grid Margin="-10,0,0,0">
-                    <Grid.Visibility>
-                        <MultiBinding Converter="{StaticResource MB2V}">
-                            <Binding ElementName="userTestPage" Path="Profile.IsHeightMeasureEnabled" />
-                            <Binding Source="{x:Static uiServiceConfig:Settings.Default}" Path="IsHeighMeasureEnable" />
-                        </MultiBinding>
-                    </Grid.Visibility>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="115"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="70"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="{x:Static res:Resources.Height}" Grid.Column="0" Height="Auto" />
-                    <Rectangle Fill="Black" Grid.Column="1" Width="1"/>
-                    <Rectangle Fill="Black" Grid.Column="2" Width="1" Margin="0,0,-8,0" HorizontalAlignment="Right"/>
-                    <Label Name="labelHeightResult2" x:FieldModifier="private" Grid.Column="3" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
-                </Grid>
-            </Border>
-            <customControl:ListViewResults Grid.Row="2" MaxHeight="740" x:Name="ListViewResults2" ItemsSource="{Binding ElementName=userTestPage, Path=Profile.TestParametersAndNormatives}"/>
-        </Grid>
-
-        <Line x:Name="line2" HorizontalAlignment="Left" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
-              X1="0" Y1="0" X2="0" Y2="{Binding ElementName=gridResult2, Path=ActualHeight}"
-              Grid.Column="3" Grid.Row="0" Grid.RowSpan="6" Margin="0,20" Width="0" />
-
+        
         <Button Name="btnBack" x:FieldModifier="private" Grid.Column="0" Grid.Row="8" Content="{x:Static res:Resources.Back}" Click="Back_Click" Margin="0" TabIndex="7" Style="{StaticResource BackButton}" HorizontalAlignment="Left"/>
         <Grid Grid.Column="1" Grid.Row="8"  Visibility="{Binding Source={x:Static ui:Cache.Main}, Path=VM.IsLocal, Converter={StaticResource B2VI}}" Margin="6,0">
             <Button Name="btnSync" x:FieldModifier="private"  Content="{x:Static res:Resources.Sync}" Visibility="{Binding SpecialMeasureMode, Converter={StaticResource B2VI}}"  Click="BtnSync_OnClick" TabIndex="7"/>
         </Grid>
         <Button Grid.Column="2" Grid.Row="8" Content="{x:Static res:Resources.Stop}" Background="{StaticResource xRed1}" Click="Stop_Click" Margin="6,0"  TabIndex="8" />
-        <Button Name="btnStart" x:FieldModifier="private" Grid.Column="3" Grid.Row="8" Content="{x:Static res:Resources.Start}" Background="{StaticResource xGreen1}" Margin="0" Click="Start_Click"  TabIndex="5"/>
+        <Button Name="btnStart" x:FieldModifier="private" Grid.Column="3" Grid.Row="8" Content="{x:Static res:Resources.Start}" Background="{StaticResource xGreen1}" Margin="40,0,0,0" Click="Start_Click"  TabIndex="5"/>
     </Grid>
 </Page>

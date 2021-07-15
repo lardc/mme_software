@@ -16,7 +16,6 @@ namespace SCME.MEFAViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        
         public MainWindowVm Vm { get; set; } = new MainWindowVm();
         private readonly MonitoringContext _db;
         private readonly DispatcherTimer _dispatcherTimer;

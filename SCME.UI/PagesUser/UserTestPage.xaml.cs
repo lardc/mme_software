@@ -110,14 +110,17 @@ namespace SCME.UI.PagesUser
 
             if (Settings.Default.SinglePositionModuleMode)
             {
-                gridResult2.Visibility = Visibility.Collapsed;
-                line2.Visibility = Visibility.Collapsed;
-                Grid.SetColumn(gridResult1, 3);
-                Grid.SetColumn(line1, 3);
                 chartPlotter2.Visibility = Visibility.Collapsed;
                 Grid.SetRow(chartPlotter1, 6);
                 Grid.SetColumnSpan(chartPlotter1, 3);
                 Grid.SetRowSpan(chartPlotter1, 2);
+                chartPlotter1.Margin = new Thickness(0, 8, 0, 10);
+
+                HeightBorder.HorizontalAlignment = HorizontalAlignment.Right;
+                HeightBorder.Width = 293;
+                HeightSeparator.Visibility = Visibility.Collapsed;
+                ListViewResults1.HorizontalAlignment = HorizontalAlignment.Right;
+                ListViewResults1.Width = 310;
             }
 
             SetChartPlotterSettings(Settings.Default.SinglePositionModuleMode);
@@ -195,8 +198,6 @@ namespace SCME.UI.PagesUser
             var collectionView1 = CollectionViewSource.GetDefaultView(ListViewResults1.ItemsSource);
             collectionView1.SortDescriptions.Add(new SortDescription("Order", ListSortDirection.Ascending));
 
-            var collectionView2 = CollectionViewSource.GetDefaultView(ListViewResults2.ItemsSource);
-            collectionView2.SortDescriptions.Add(new SortDescription("Order", ListSortDirection.Ascending));
         }
 
         public void InitTemp()
@@ -366,39 +367,18 @@ namespace SCME.UI.PagesUser
 
             bool isNewlyRealized;
 
-            if (m_CurrentPos == 1)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                for (int i = 0; i < ListViewResults1.Items.Count; i++)
+                if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
                 {
-                    if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
-                    {
-                        IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            gateResults.Add(child);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < ListViewResults2.Items.Count; i++)
-                {
-                    if (ListViewResults2.Items[i] is Types.GTU.TestParameters)
+                    var position = generator.GeneratorPositionFromIndex(i);
+                    using (generator.StartAt(position, GeneratorDirection.Forward, true))
                     {
-                        IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
-
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            gateResults.Add(child);
-                        }
+                        var child = generator.GenerateNext(out isNewlyRealized);
+                        generator.PrepareItemContainer(child);
+                        gateResults.Add(child);
                     }
                 }
             }
@@ -636,6 +616,21 @@ namespace SCME.UI.PagesUser
                     };
 
                     HeightMeasureResult = measureDialog.ShowDialog() ?? false;
+
+                    if (paramsClamp.IsHeightMeasureEnabled)
+                    {
+                        if (m_CurrentPos == 1)
+                        {
+                            labelHeightResult1.Content = HeightMeasureResult ? "OK" : "Not OK";
+                            labelHeightResult1.Background = HeightMeasureResult ? Brushes.LightGreen : Brushes.Tomato;
+                        }
+                        else
+                        {
+                            labelHeightResult2.Content = HeightMeasureResult ? "OK" : "Not OK";
+                            labelHeightResult2.Background = HeightMeasureResult ? Brushes.LightGreen : Brushes.Tomato;
+                        }
+                    }
+
                 }
 
                 ValidatingTextBox tbNumber = null;
@@ -764,20 +759,6 @@ namespace SCME.UI.PagesUser
                 if(_HasFault == true || needSave == false )
                     File.AppendAllText("WriteResultTimeSpan.txt",$"{Environment.NewLine}can`t write result needSave={needSave}, _HasFault={_HasFault} {Environment.NewLine}");
 
-                if (paramsClamp.IsHeightMeasureEnabled)
-                {
-                    if (m_CurrentPos == 1)
-                    {
-                        labelHeightResult1.Content = HeightMeasureResult ? "OK" : "Not OK";
-                        labelHeightResult1.Background = HeightMeasureResult ? Brushes.LightGreen : Brushes.Tomato;
-                    }
-                    else
-                    {
-                        labelHeightResult2.Content = HeightMeasureResult ? "OK" : "Not OK";
-                        labelHeightResult2.Background = HeightMeasureResult ? Brushes.LightGreen : Brushes.Tomato;
-                    }
-                }
-
                 tbPseNumber.TextChanged -= tbPseNumber_TextChanged;
                 tbPseNumber.Text = "";
                 tbPseNumber.TextChanged += tbPseNumber_TextChanged;
@@ -794,17 +775,15 @@ namespace SCME.UI.PagesUser
 
         internal void SetResultGateKelvin(Types.DeviceState state, bool isKelvinOk, long testTypeId)
         {
-            if (state == Types.DeviceState.InProcess)
+            if (state == DeviceState.InProcess)
             {
                 _gateCounter++;
             }
             m_StateGate = state;
-
             var gateResults = GetGateItemContainer();
-
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
-            var labelKelvinResult = FindChild<Label>(presenter, "labelKelvinResult1");
+            var labelKelvinResult = FindChild<Label>(presenter, "labelKelvinResult" + m_CurrentPos);
             if (labelKelvinResult != null)
                 SetLabel(labelKelvinResult, state, isKelvinOk, isKelvinOk ? Properties.Resources.Ok : Properties.Resources.Fault);
 
@@ -827,7 +806,7 @@ namespace SCME.UI.PagesUser
 
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
-            var labelRgResult = FindChild<Label>(presenter, "labelRgResult1");
+            var labelRgResult = FindChild<Label>(presenter, "labelRgResult" + m_CurrentPos);
             if (labelRgResult != null)
                 SetLabel(labelRgResult, state,
                      resistance <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].Resistance,
@@ -837,7 +816,7 @@ namespace SCME.UI.PagesUser
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).Resistance = resistance;
 
-                if (resistance > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].Resistance)
+                if (resistance > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].Resistance)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_RG");
             }
         }
@@ -855,13 +834,13 @@ namespace SCME.UI.PagesUser
             ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT =
                 (float)Math.Round((decimal)(vgt / 1000.0), 2, MidpointRounding.ToEven);
 
-            var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult1");
+            var labelIgtResult = FindChild<Label>(presenter, "labelIgtResult" + m_CurrentPos);
             if (labelIgtResult != null)
                 SetLabel(labelIgtResult, state, igt <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IGT &&
                                                 igt >= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].MinIGT,
                      string.Format("{0}", igt));
 
-            var labelVgtResult = FindChild<Label>(presenter, "labelVgtResult1");
+            var labelVgtResult = FindChild<Label>(presenter, "labelVgtResult" + m_CurrentPos);
             if (labelVgtResult != null)
                 SetLabel(labelVgtResult, state,
                         ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).VGT <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].VGT,
@@ -890,7 +869,7 @@ namespace SCME.UI.PagesUser
 
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
-            var labelIhResult = FindChild<Label>(presenter, "labelIhResult1");
+            var labelIhResult = FindChild<Label>(presenter, "labelIhResult" + m_CurrentPos);
             if (labelIhResult != null)
                 SetLabel(labelIhResult, state, ih <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IH,
                      string.Format("{0}", ih));
@@ -899,7 +878,7 @@ namespace SCME.UI.PagesUser
             {
                 ((m_CurrentPos == 1) ? ResultsGate1[_gateCounter] : ResultsGate2[_gateCounter]).IH = ih;
 
-                if (ih > (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IH)
+                if (ih > Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IH)
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_IH");
             }
 
@@ -915,7 +894,7 @@ namespace SCME.UI.PagesUser
 
             var presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
 
-            var labelIlResult = FindChild<Label>(presenter, "labelIlResult1");
+            var labelIlResult = FindChild<Label>(presenter, "labelIlResult" + m_CurrentPos);
             if (labelIlResult != null)
                 SetLabel(labelIlResult, state, il <= (Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray())[_gateCounter].IL, string.Format("{0}", il));
 
@@ -934,8 +913,8 @@ namespace SCME.UI.PagesUser
 
             List<DependencyObject> gateResults = GetGateItemContainer();
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(gateResults[_gateCounter]);
-            Label labelIgntResult = FindChild<Label>(presenter, "labelIgntResult1");
-            Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult1");
+            Label labelIgntResult = FindChild<Label>(presenter, "labelIgntResult" + m_CurrentPos);
+            Label labelVgntResult = FindChild<Label>(presenter, "labelVgntResult" + m_CurrentPos);
             if (labelIgntResult != null)
                 SetLabel(labelIgntResult, state, ignt <= Profile.TestParametersAndNormatives.OfType<Types.GTU.TestParameters>().ToArray()[_gateCounter].IGNT,
                      string.Format("{0}", ignt));
@@ -1028,39 +1007,18 @@ namespace SCME.UI.PagesUser
 
             bool isNewlyRealized;
 
-            if (m_CurrentPos == 1)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                for (int i = 0; i < ListViewResults1.Items.Count; i++)
+                if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
                 {
-                    if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
-                    {
-                        IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            gateResults.Add(child);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < ListViewResults2.Items.Count; i++)
-                {
-                    if (ListViewResults2.Items[i] is Types.VTM.TestParameters)
+                    var position = generator.GeneratorPositionFromIndex(i);
+                    using (generator.StartAt(position, GeneratorDirection.Forward, true))
                     {
-                        IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
-
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            gateResults.Add(child);
-                        }
+                        var child = generator.GenerateNext(out isNewlyRealized);
+                        generator.PrepareItemContainer(child);
+                        gateResults.Add(child);
                     }
                 }
             }
@@ -1085,7 +1043,7 @@ namespace SCME.UI.PagesUser
             var vtmResults = GetVtmItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(vtmResults[slCounter]);
 
-            var labelVtmResult = FindChild<Label>(presenter, "labelVtmResult1");
+            var labelVtmResult = FindChild<Label>(presenter, "labelVtmResult" + m_CurrentPos);
             if (labelVtmResult != null)
                 SetLabel(labelVtmResult, state,
                      ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Voltage <= (Profile.TestParametersAndNormatives.OfType<Types.VTM.TestParameters>().ToArray())[slCounter].VTM,
@@ -1096,7 +1054,7 @@ namespace SCME.UI.PagesUser
                     ((m_CurrentPos == 1) ? m_Errors1 : m_Errors2).Add("ERR_VTM");
 
             //ток. не используем реализацию SetLabel т.к. нам не надо устанавливать Background
-            var labelItmResult = FindChild<Label>(presenter, "labelItmResult1");
+            var labelItmResult = FindChild<Label>(presenter, "labelItmResult" + m_CurrentPos);
             if (labelItmResult != null)
                 labelItmResult.Content = string.Format("{0}", ((m_CurrentPos == 1) ? ResultsVTM1[slCounter] : ResultsVTM2[slCounter]).Current);
 
@@ -1188,24 +1146,6 @@ namespace SCME.UI.PagesUser
                     if (ListViewResults1.Items[i] is Types.BVT.TestParameters)
                     {
                         IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
-
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            gateResults.Add(child);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < ListViewResults2.Items.Count; i++)
-                {
-                    if (ListViewResults2.Items[i] is Types.BVT.TestParameters)
-                    {
-                        IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
 
                         var position = generator.GeneratorPositionFromIndex(i);
                         using (generator.StartAt(position, GeneratorDirection.Forward, true))
@@ -1459,39 +1399,18 @@ namespace SCME.UI.PagesUser
 
             bool isNewlyRealized;
 
-            if (m_CurrentPos == 1)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                for (int i = 0; i < ListViewResults1.Items.Count; i++)
+                if (ListViewResults1.Items[i] is Types.dVdt.TestParameters)
                 {
-                    if (ListViewResults1.Items[i] is Types.dVdt.TestParameters)
-                    {
-                        IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            results.Add(child);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < ListViewResults2.Items.Count; i++)
-                {
-                    if (ListViewResults2.Items[i] is Types.dVdt.TestParameters)
+                    var position = generator.GeneratorPositionFromIndex(i);
+                    using (generator.StartAt(position, GeneratorDirection.Forward, true))
                     {
-                        IItemContainerGenerator generator = ListViewResults2.ItemContainerGenerator;
-
-                        var position = generator.GeneratorPositionFromIndex(i);
-                        using (generator.StartAt(position, GeneratorDirection.Forward, true))
-                        {
-                            var child = generator.GenerateNext(out isNewlyRealized);
-                            generator.PrepareItemContainer(child);
-                            results.Add(child);
-                        }
+                        var child = generator.GenerateNext(out isNewlyRealized);
+                        generator.PrepareItemContainer(child);
+                        results.Add(child);
                     }
                 }
             }
@@ -1518,7 +1437,7 @@ namespace SCME.UI.PagesUser
             var dvDtItemContainer = GetDvDtItemContainer();
             var presenter = FindVisualChild<ContentPresenter>(dvDtItemContainer[dvdtCounter]);
 
-            var labelResult = FindChild<Label>(presenter, "labelResult");
+            var labelResult = FindChild<Label>(presenter, "labelResult" + m_CurrentPos);
             if (labelResult != null)
             {
                 SetLabel(labelResult, state, Result.Passed, Result.Passed ? "OK" : "Not OK");
@@ -1526,7 +1445,7 @@ namespace SCME.UI.PagesUser
 
             if (state == Types.DeviceState.Success)
             {
-                var labelDvdTVoltageRate = FindChild<Label>(presenter, "labelVoltageRate");
+                var labelDvdTVoltageRate = FindChild<Label>(presenter, "labelVoltageRate" + m_CurrentPos);
                 if (labelDvdTVoltageRate != null)
                 {
                     SetLabel(labelDvdTVoltageRate, state, true, Result.VoltageRate.ToString());
@@ -1586,26 +1505,14 @@ namespace SCME.UI.PagesUser
         private List<DependencyObject> GetATUItemContainer()
         {
             var results = new List<DependencyObject>(5);
-            ListView ListView = null;
-
-            switch (m_CurrentPos)
-            {
-                case (1):
-                    ListView = ListViewResults1;
-                    break;
-
-                default:
-                    ListView = ListViewResults2;
-                    break;
-            }
 
             bool isNewlyRealized;
 
-            for (int i = 0; i < ListView.Items.Count; i++)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                if (ListView.Items[i] is Types.ATU.TestParameters)
+                if (ListViewResults1.Items[i] is Types.ATU.TestParameters)
                 {
-                    IItemContainerGenerator generator = ListView.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
                     var position = generator.GeneratorPositionFromIndex(i);
                     using (generator.StartAt(position, GeneratorDirection.Forward, true))
@@ -1647,28 +1554,28 @@ namespace SCME.UI.PagesUser
                 List<DependencyObject> ATUItemContainer = GetATUItemContainer();
                 ContentPresenter presenter = FindVisualChild<ContentPresenter>(ATUItemContainer[ATUCounter]);
 
-                Label labelMeasure = FindChild<Label>(presenter, "lbAtuUBR");
+                Label labelMeasure = FindChild<Label>(presenter, "lbAtuUBR" + m_CurrentPos);
 
                 if (labelMeasure != null)
                 {
                     SetLabel(labelMeasure, state, true, result.UBR.ToString());
                 }
 
-                labelMeasure = FindChild<Label>(presenter, "lbAtuUPRSM");
+                labelMeasure = FindChild<Label>(presenter, "lbAtuUPRSM" + m_CurrentPos);
 
                 if (labelMeasure != null)
                 {
                     SetLabel(labelMeasure, state, true, result.UPRSM.ToString());
                 }
 
-                labelMeasure = FindChild<Label>(presenter, "lbAtuIPRSM");
+                labelMeasure = FindChild<Label>(presenter, "lbAtuIPRSM" + m_CurrentPos);
 
                 if (labelMeasure != null)
                 {
                     SetLabel(labelMeasure, state, true, result.IPRSM.ToString());
                 }
 
-                labelMeasure = FindChild<Label>(presenter, "lbAtuPRSM");
+                labelMeasure = FindChild<Label>(presenter, "lbAtuPRSM" + m_CurrentPos);
 
                 if (labelMeasure != null)
                 {
@@ -1717,26 +1624,14 @@ namespace SCME.UI.PagesUser
         private List<DependencyObject> GetQrrTqItemContainer()
         {
             var results = new List<DependencyObject>(7);
-            ListView ListView = null;
-
-            switch (m_CurrentPos)
-            {
-                case (1):
-                    ListView = ListViewResults1;
-                    break;
-
-                default:
-                    ListView = ListViewResults2;
-                    break;
-            }
 
             bool isNewlyRealized;
 
-            for (int i = 0; i < ListView.Items.Count; i++)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                if (ListView.Items[i] is Types.QrrTq.TestParameters)
+                if (ListViewResults1.Items[i] is Types.QrrTq.TestParameters)
                 {
-                    IItemContainerGenerator generator = ListView.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
                     var position = generator.GeneratorPositionFromIndex(i);
                     using (generator.StartAt(position, GeneratorDirection.Forward, true))
@@ -1791,7 +1686,7 @@ namespace SCME.UI.PagesUser
                 //var profileArr = (Profile.TestParametersAndNormatives.OfType<Types.QrrTq.TestParameters>().ToArray())[QrrTqCounter];
 
                 //OffStateVoltage
-                Label labelMeasure = FindChild<Label>(presenter, "lbOffStateVoltage");
+                Label labelMeasure = FindChild<Label>(presenter, "lbOffStateVoltage" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.QrrTq)
@@ -1799,7 +1694,7 @@ namespace SCME.UI.PagesUser
                 }
 
                 //OsvRate
-                labelMeasure = FindChild<Label>(presenter, "lbOsvRate");
+                labelMeasure = FindChild<Label>(presenter, "lbOsvRate" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.QrrTq)
@@ -1807,12 +1702,12 @@ namespace SCME.UI.PagesUser
                 }
 
                 //Idc
-                labelMeasure = FindChild<Label>(presenter, "lbIdc");
+                labelMeasure = FindChild<Label>(presenter, "lbIdc" + m_CurrentPos);
                 if (labelMeasure != null)
                     SetLabel(labelMeasure, state, false, result.Idc.ToString(), false);
 
                 //Qrr
-                labelMeasure = FindChild<Label>(presenter, "lbQrr");
+                labelMeasure = FindChild<Label>(presenter, "lbQrr" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.Qrr)
@@ -1820,7 +1715,7 @@ namespace SCME.UI.PagesUser
                 }
 
                 //Irr
-                labelMeasure = FindChild<Label>(presenter, "lbIrr");
+                labelMeasure = FindChild<Label>(presenter, "lbIrr" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.Qrr)
@@ -1828,19 +1723,19 @@ namespace SCME.UI.PagesUser
                 }
 
                 //Trr
-                labelMeasure = FindChild<Label>(presenter, "lbTrr");
+                labelMeasure = FindChild<Label>(presenter, "lbTrr" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.Qrr)
                         SetLabel(labelMeasure, state, true, result.Trr.ToString());
                 }
 
-                labelMeasure = FindChild<Label>(presenter, "lbDCFactFallRate");
+                labelMeasure = FindChild<Label>(presenter, "lbDCFactFallRate" + m_CurrentPos);
                 if (labelMeasure != null)
                     SetLabel(labelMeasure, state, false, result.DCFactFallRate.ToString(), false);
 
                 //Tq
-                labelMeasure = FindChild<Label>(presenter, "lbTq");
+                labelMeasure = FindChild<Label>(presenter, "lbTq" + m_CurrentPos);
                 if (labelMeasure != null)
                 {
                     if (result.Mode == Types.QrrTq.TMode.QrrTq)
@@ -1921,26 +1816,14 @@ namespace SCME.UI.PagesUser
         private List<DependencyObject> GetTOUItemContainer()
         {
             var results = new List<DependencyObject>(7);
-            ListView ListView = null;
-
-            switch (m_CurrentPos)
-            {
-                case (1):
-                    ListView = ListViewResults1;
-                    break;
-
-                default:
-                    ListView = ListViewResults2;
-                    break;
-            }
 
             bool isNewlyRealized;
 
-            for (int i = 0; i < ListView.Items.Count; i++)
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                if (ListView.Items[i] is Types.TOU.TestParameters)
+                if (ListViewResults1.Items[i] is Types.TOU.TestParameters)
                 {
-                    IItemContainerGenerator generator = ListView.ItemContainerGenerator;
+                    IItemContainerGenerator generator = ListViewResults1.ItemContainerGenerator;
 
                     var position = generator.GeneratorPositionFromIndex(i);
                     using (generator.StartAt(position, GeneratorDirection.Forward, true))
@@ -1973,18 +1856,18 @@ namespace SCME.UI.PagesUser
                 List<DependencyObject> TOUItemContainer = GetTOUItemContainer();
                 ContentPresenter presenter = FindVisualChild<ContentPresenter>(TOUItemContainer[TOUCounter]);
 
-                Label labelITM = FindChild<Label>(presenter, "lbTOUITM");
-                Label labelTGD = FindChild<Label>(presenter, "lbTOUTGD");
-                Label labelTGT = FindChild<Label>(presenter, "lbTOUTGT");
+                Label labelITM = FindChild<Label>(presenter, "lbTOUITM" + m_CurrentPos);
+                Label labelTGD = FindChild<Label>(presenter, "lbTOUTGD" + m_CurrentPos);
+                Label labelTGT = FindChild<Label>(presenter, "lbTOUTGT" + m_CurrentPos);
 
                 if (labelITM != null)
-                    SetLabel(labelITM, state, true, result.ITM.ToString());
+                    SetLabel(labelITM, state, true, result.ITM.ToString("F2"));
 
                 if (labelTGD != null)
-                    SetLabel(labelTGD, state, true, (result.TGD / 1000).ToString());
+                    SetLabel(labelTGD, state, true, (result.TGD / 1000).ToString("F2"));
 
                 if (labelTGT != null)
-                    SetLabel(labelTGT, state, true, (result.TGT / 1000).ToString());
+                    SetLabel(labelTGT, state, true, (result.TGT / 1000).ToString("F2"));
             }
         }
 
@@ -2247,117 +2130,129 @@ namespace SCME.UI.PagesUser
 
         private void ClearStatus(bool Position1, bool Position2)
         {
+            labelHeightResult1.Content = "";
+            labelHeightResult1.Background = new SolidColorBrush(Colors.Transparent);
+            labelHeightResult2.Content = "";
+            labelHeightResult2.Background = new SolidColorBrush(Colors.Transparent);
+
             if (Position1)
-            {
-                for (int i = 0; i < ListViewResults1.Items.Count; i++)
-                {
-                    var element = (ListViewResults1.ItemContainerGenerator.ContainerFromIndex(i));
-                    if (element != null)
-                    {
-                        ListViewResults1.UpdateLayout();
-
-                        foreach (var j in FindVisualChildren<LabelWithIndex>(element))
-                            j.Number = ListViewResults1.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
-
-                        if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
-                        {
-                            ClearResultsGate(element);
-                            continue;
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
-                        {
-                            ClearVtmResults(element);
-                            continue;
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.BVT.TestParameters)
-                        {
-                            ClearBvtResults(element);
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.dVdt.TestParameters)
-                        {
-                            ClearResultsDvDt(element);
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.ATU.TestParameters)
-                        {
-                            ClearResultsATU(element);
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.QrrTq.TestParameters)
-                        {
-                            ClearResultsQrrTq(element);
-                        }
-
-                        if (ListViewResults1.Items[i] is Types.TOU.TestParameters)
-                        {
-                            ClearResultsTOU(element);
-                        }
-                        
-                    }
-                }
-
-                ResetLabel(labelHeightResult1);
-                chartPlotter1.Children.RemoveAll(typeof(LineGraph));
-            }
-
+                PositionStatus_Clear(1);
             if (Position2)
+                PositionStatus_Clear(2);
+        }
+
+        private void PositionStatus_Clear(int position)
+        {
+            for (int i = 0; i < ListViewResults1.Items.Count; i++)
             {
-                for (int i = 0; i < ListViewResults2.Items.Count; i++)
+                var element = ListViewResults1.ItemContainerGenerator.ContainerFromIndex(i);
+                if (element != null)
                 {
-                    var element = (ListViewResults2.ItemContainerGenerator.ContainerFromIndex(i));
-                    if (element != null)
+                    ListViewResults1.UpdateLayout();
+
+                    foreach (var j in FindVisualChildren<LabelWithIndex>(element))
+                        j.Number = ListViewResults1.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
+
+                    if (ListViewResults1.Items[i] is Types.GTU.TestParameters)
                     {
-                        ListViewResults2.UpdateLayout();
+                        ClearResultsGate(element, position);
+                        continue;
+                    }
 
-                        foreach (var j in FindVisualChildren<LabelWithIndex>(element))
-                            j.Number = ListViewResults2.Items.Cast<object>().ToList().Where(m => m.GetType() == element.GetValue(ContentProperty).GetType()).ToList().IndexOf(element.GetValue(ContentProperty)) + 1;
+                    if (ListViewResults1.Items[i] is Types.VTM.TestParameters)
+                    {
+                        ClearVtmResults(element, position);
+                        continue;
+                    }
 
-                        if (ListViewResults2.Items[i] is Types.GTU.TestParameters)
-                        {
-                            ClearResultsGate(element);
-                            continue;
-                        }
-                        if (ListViewResults2.Items[i] is Types.VTM.TestParameters)
-                        {
-                            ClearVtmResults(element);
-                            continue;
-                        }
-                        if (ListViewResults2.Items[i] is Types.BVT.TestParameters)
-                        {
-                            ClearBvtResults(element);
-                        }
-                        if (ListViewResults2.Items[i] is Types.dVdt.TestParameters)
-                        {
-                            ClearResultsDvDt(element);
-                        }
+                    if (ListViewResults1.Items[i] is Types.BVT.TestParameters)
+                    {
+                        ClearBvtResults(element, position);
+                    }
 
-                        if (ListViewResults2.Items[i] is Types.ATU.TestParameters)
-                        {
-                            ClearResultsATU(element);
-                        }
+                    if (ListViewResults1.Items[i] is Types.dVdt.TestParameters)
+                    {
+                        ClearResultsDvDt(element, position);
+                    }
 
-                        if (ListViewResults2.Items[i] is Types.QrrTq.TestParameters)
-                        {
-                            ClearResultsQrrTq(element);
-                        }
+                    if (ListViewResults1.Items[i] is Types.ATU.TestParameters)
+                    {
+                        ClearResultsATU(element, position);
+                    }
 
-                        if (ListViewResults2.Items[i] is Types.TOU.TestParameters)
-                        {
-                            ClearResultsTOU(element);
-                        }
-                        
+                    if (ListViewResults1.Items[i] is Types.QrrTq.TestParameters)
+                    {
+                        ClearResultsQrrTq(element, position);
+                    }
+
+                    if (ListViewResults1.Items[i] is Types.TOU.TestParameters)
+                    {
+                        ClearResultsTOU(element, position);
                     }
                 }
-
-                ResetLabel(labelHeightResult2);
-                chartPlotter2.Children.RemoveAll(typeof(LineGraph));
             }
         }
 
-        private void ClearBvtResults(DependencyObject element)
+        private void ClearResultsGate(DependencyObject element, int position)
+        {
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
+
+            var labelWarning = FindChild<Label>(presenter, "labelGateWarning1");
+            if (labelWarning != null)
+                labelWarning.Visibility = Visibility.Collapsed;
+
+            var labelFault = FindChild<Label>(presenter, "labelGateFault1");
+            if (labelWarning != null)
+                labelFault.Visibility = Visibility.Collapsed;
+
+            var labelKelvinResult1 = FindChild<Label>(presenter, "labelKelvinResult" + position);
+            if (labelKelvinResult1 != null)
+                ResetLabel(labelKelvinResult1);
+
+            var labelRgResult1 = FindChild<Label>(presenter, "labelRgResult" + position);
+            if (labelRgResult1 != null)
+                ResetLabel(labelRgResult1);
+
+            var labelIgtResult1 = FindChild<Label>(presenter, "labelIgtResult" + position);
+            if (labelIgtResult1 != null)
+                ResetLabel(labelIgtResult1);
+
+            var labelVgtResult1 = FindChild<Label>(presenter, "labelVgtResult" + position);
+            if (labelVgtResult1 != null)
+                ResetLabel(labelVgtResult1);
+
+            var labelIhResult1 = FindChild<Label>(presenter, "labelIhResult" + position);
+            if (labelIhResult1 != null)
+                ResetLabel(labelIhResult1);
+
+            var labelIlResult1 = FindChild<Label>(presenter, "labelIlResult" + position);
+            if (labelIlResult1 != null)
+                ResetLabel(labelIlResult1);
+
+        }
+
+        private void ClearVtmResults(DependencyObject element, int position)
+        {
+            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
+
+            var labelVtmWarning1 = FindChild<Label>(presenter, "labelVtmWarning1");
+            if (labelVtmWarning1 != null)
+                labelVtmWarning1.Visibility = Visibility.Collapsed;
+
+            var labelVtmFault1 = FindChild<Label>(presenter, "labelVtmFault1");
+            if (labelVtmFault1 != null)
+                labelVtmFault1.Visibility = Visibility.Collapsed;
+
+            var labelVtmResult1 = FindChild<Label>(presenter, "labelVtmResult" + position);
+            if (labelVtmResult1 != null)
+                ResetLabel(labelVtmResult1);
+
+            var labelItmResult1 = FindChild<Label>(presenter, "labelItmResult" + position);
+            if (labelItmResult1 != null)
+                ResetLabel(labelItmResult1);
+        }
+
+        private void ClearBvtResults(DependencyObject element, int position)
         {
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
 
@@ -2421,66 +2316,7 @@ namespace SCME.UI.PagesUser
 
         }
 
-        private void ClearVtmResults(DependencyObject element)
-        {
-            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
-
-            var labelVtmWarning1 = FindChild<Label>(presenter, "labelVtmWarning1");
-            if (labelVtmWarning1 != null)
-                labelVtmWarning1.Visibility = Visibility.Collapsed;
-
-            var labelVtmFault1 = FindChild<Label>(presenter, "labelVtmFault1");
-            if (labelVtmFault1 != null)
-                labelVtmFault1.Visibility = Visibility.Collapsed;
-
-            var labelVtmResult1 = FindChild<Label>(presenter, "labelVtmResult1");
-            if (labelVtmResult1 != null)
-                ResetLabel(labelVtmResult1);
-
-            var labelItmResult1 = FindChild<Label>(presenter, "labelItmResult1");
-            if (labelItmResult1 != null)
-                ResetLabel(labelItmResult1);
-        }
-
-        private void ClearResultsGate(DependencyObject element)
-        {
-            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
-
-            var labelWarning = FindChild<Label>(presenter, "labelGateWarning1");
-            if (labelWarning != null)
-                labelWarning.Visibility = Visibility.Collapsed;
-
-            var labelFault = FindChild<Label>(presenter, "labelGateFault1");
-            if (labelWarning != null)
-                labelFault.Visibility = Visibility.Collapsed;
-
-            var labelKelvinResult1 = FindChild<Label>(presenter, "labelKelvinResult1");
-            if (labelKelvinResult1 != null)
-                ResetLabel(labelKelvinResult1);
-
-            var labelRgResult1 = FindChild<Label>(presenter, "labelRgResult1");
-            if (labelRgResult1 != null)
-                ResetLabel(labelRgResult1);
-
-            var labelIgtResult1 = FindChild<Label>(presenter, "labelIgtResult1");
-            if (labelIgtResult1 != null)
-                ResetLabel(labelIgtResult1);
-
-            var labelVgtResult1 = FindChild<Label>(presenter, "labelVgtResult1");
-            if (labelVgtResult1 != null)
-                ResetLabel(labelVgtResult1);
-
-            var labelIhResult1 = FindChild<Label>(presenter, "labelIhResult1");
-            if (labelIhResult1 != null)
-                ResetLabel(labelIhResult1);
-
-            var labelIlResult1 = FindChild<Label>(presenter, "labelIlResult1");
-            if (labelIlResult1 != null)
-                ResetLabel(labelIlResult1);
-
-        }
-
-        private void ClearResultsDvDt(DependencyObject element)
+        private void ClearResultsDvDt(DependencyObject element, int position)
         {
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
 
@@ -2492,27 +2328,27 @@ namespace SCME.UI.PagesUser
             if (labelWarning != null)
                 labelFault.Visibility = Visibility.Collapsed;
 
-            var labelResult = FindChild<Label>(presenter, "labelResult");
+            var labelResult = FindChild<Label>(presenter, "labelResult" + position);
             if (labelResult != null)
                 ResetLabel(labelResult);
 
         }
 
-        private void ClearResultsATU(DependencyObject element)
+        private void ClearResultsATU(DependencyObject element, int position)
         {
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
 
             //чистим результаты измерений
-            var label = FindChild<Label>(presenter, "lbAtuUBR");
+            var label = FindChild<Label>(presenter, "lbAtuUBR" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbAtuUPRSM");
+            label = FindChild<Label>(presenter, "lbAtuUPRSM" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbAtuIPRSM");
+            label = FindChild<Label>(presenter, "lbAtuIPRSM" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbAtuPRSM");
+            label = FindChild<Label>(presenter, "lbAtuPRSM" + position);
             if (label != null) ResetLabel(label);
 
             //чистим Warning и Fault
@@ -2523,27 +2359,27 @@ namespace SCME.UI.PagesUser
             if (label != null) label.Visibility = Visibility.Collapsed;
         }
 
-        private void ClearResultsQrrTq(DependencyObject element)
+        private void ClearResultsQrrTq(DependencyObject element, int position)
         {
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
 
             //чистим результаты измерений
-            var label = FindChild<Label>(presenter, "lbIdc");
+            var label = FindChild<Label>(presenter, "lbIdc" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbQrr");
+            label = FindChild<Label>(presenter, "lbQrr" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbIrr");
+            label = FindChild<Label>(presenter, "lbIrr" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbTrr");
+            label = FindChild<Label>(presenter, "lbTrr" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbDCFactFallRate");
+            label = FindChild<Label>(presenter, "lbDCFactFallRate" + position);
             if (label != null) ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbTq");
+            label = FindChild<Label>(presenter, "lbTq" + position);
             if (label != null) ResetLabel(label);
 
             //чистим Warning, Fault и Problem
@@ -2563,45 +2399,20 @@ namespace SCME.UI.PagesUser
             if (label != null) label.Visibility = Visibility.Collapsed;
         }
 
-        private void ClearResultsRAC(DependencyObject element)
+        private void ClearResultsTOU(DependencyObject element, int position)
         {
             ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
 
             //чистим результаты измерений
-            var label = FindChild<Label>(presenter, "lbResultR");
-            if (label != null) ResetLabel(label);
-
-            //чистим Warning, Fault и Problem
-            label = FindChild<Label>(presenter, "lbTittleWarning");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-            label = FindChild<Label>(presenter, "lbWarning");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-
-            label = FindChild<Label>(presenter, "lbTittleFaultReason");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-            label = FindChild<Label>(presenter, "lbFaultReason");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-
-            label = FindChild<Label>(presenter, "lbTittleProblem");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-            label = FindChild<Label>(presenter, "lbProblem");
-            if (label != null) label.Visibility = Visibility.Collapsed;
-        }
-
-        private void ClearResultsTOU(DependencyObject element)
-        {
-            ContentPresenter presenter = FindVisualChild<ContentPresenter>(element);
-
-            //чистим результаты измерений
-            var label = FindChild<Label>(presenter, "lbTOUITM");
+            var label = FindChild<Label>(presenter, "lbTOUITM" + position);
             if (label != null)
                 ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbTOUTGD");
+            label = FindChild<Label>(presenter, "lbTOUTGD" + position);
             if (label != null)
                 ResetLabel(label);
 
-            label = FindChild<Label>(presenter, "lbTOUTGT");
+            label = FindChild<Label>(presenter, "lbTOUTGT" + position);
             if (label != null)
                 ResetLabel(label);
 
@@ -2839,7 +2650,6 @@ namespace SCME.UI.PagesUser
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.MD1 ||
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Direct ||
                   Profile.ParametersComm == Types.Commutation.ModuleCommutationType.Reverse);
-
 
             StartN(1);
         }

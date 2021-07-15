@@ -27,10 +27,6 @@
         <ui:GridLengthConverter x:Key="G2L" />
         <ui:DvdtTestTypeToVisibilityUnConverter x:Key="DT2VB"/>
         <ui:QrrTqModeVisibilityConverter x:Key="QrrTqM2V" />
-        
-       
-
-
         <Style x:Key="WarningFaultLabelStyle" TargetType="{x:Type Label}" BasedOn="{StaticResource CLabelStyle}">
             <Setter Property="Height" Value="44" />
             <Setter Property="Padding" Value="10,0" />
@@ -55,6 +51,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -72,54 +70,69 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="8" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="8" Margin="0,0,-15,0" Width="1"/>
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="8" Margin="0,0,-15,0" Width="1"/>
 
                         <customControls:LabelWithIndex Content="{x:Static res:Resources.Kelvin}" Grid.Column="0" Grid.Row="0" Height="Auto" />
                         <Label Name="labelKelvinResult1" Grid.Column="4" Grid.Row="0" Content="OK"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" Margin="8,1,-6,0"/>
+                        <Label Name="labelKelvinResult2" Grid.Column="6" Grid.Row="0" Content="OK"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
 
                         <customControls:LabelWithIndex Content="Rg" Grid.Column="0" Grid.Row="1" Height="Auto" />
                         <TextBlock Text="Ом" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <Label Name="labelRgResult1" Grid.Column="4" Grid.Row="1" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"  Margin="8,1,-6,0"/>
+                        <Label Name="labelRgResult2" Grid.Column="6" Grid.Row="1" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
                         <customControls:LabelWithIndex Content="IGT" Grid.Column="0" Grid.Row="2" Height="Auto" />
                         <TextBlock Text="мА" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <Label Name="labelIgtResult1" Grid.Column="4" Grid.Row="2" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"  Margin="8,1,-6,0"/>
+                        <Label Name="labelIgtResult2" Grid.Column="6" Grid.Row="2" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
                         <customControls:LabelWithIndex Content="UGT" Grid.Column="0" Grid.Row="3" Height="Auto" />
                         <TextBlock Text="В" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <Label Name="labelVgtResult1"  Grid.Column="4" Grid.Row="3" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0" />
+                        <Label Name="labelVgtResult2"  Grid.Column="6" Grid.Row="3" Content="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
-                        <customControls:LabelWithIndex Content="IH" Grid.Column="0" Grid.Row="4" Height="Auto" />
-                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <customControls:LabelWithIndex Content="IH" Grid.Column="0" Grid.Row="4" Height="Auto" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
+                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
                         <Label Name="labelIhResult1"  Grid.Column="4" Grid.Row="4" Content="0"
-                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
+                        <Label Name="labelIhResult2"  Grid.Column="6" Grid.Row="4" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Visibility="{Binding IsIhEnabled, Converter={StaticResource B2V}}"/>
 
-                        <customControls:LabelWithIndex Content="IL" Grid.Column="0" Grid.Row="5" Height="Auto" />
-                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <customControls:LabelWithIndex Content="IL" Grid.Column="0" Grid.Row="5" Height="Auto" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}"/>
+                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}"/>
                         <Label Name="labelIlResult1"  Grid.Column="4" Grid.Row="5" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}"/>
+                        <Label Name="labelIlResult2"  Grid.Column="6" Grid.Row="5" Content="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Visibility="{Binding IsIlEnabled, Converter={StaticResource B2V}}"/>
+
+                        <customControls:LabelWithIndex Content="IGD" Grid.Column="0" Grid.Row="6" Height="Auto" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+                        <Label Name="labelIgntResult1"  Grid.Column="4" Grid.Row="6" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0" />
+                        <Label Name="labelIgntResult2"  Grid.Column="6" Grid.Row="6" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
-                        <customControls:LabelWithIndex Content="IGD" Grid.Column="0" Grid.Row="6" Height="Auto" />
-                        <TextBlock Text="мА" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="labelIgntResult1"  Grid.Column="4" Grid.Row="6"
+                        <customControls:LabelWithIndex Content="UGD" Grid.Column="0" Grid.Row="7" Height="Auto" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+                        <TextBlock Text="мВ" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"/>
+                        <Label Name="labelVgntResult1"  Grid.Column="4" Grid.Row="7" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0" />
+                        <Label Name="labelVgntResult2"  Grid.Column="6" Grid.Row="7" Visibility="{Binding UseVgnt, Converter={StaticResource B2V}}"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
 
-                        <customControls:LabelWithIndex Content="UGD" Grid.Column="0" Grid.Row="7" Height="Auto" />
-                        <TextBlock Text="мВ" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="labelVgntResult1"  Grid.Column="4" Grid.Row="7"
-                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" />
-
-                        <Label Name="labelGateWarning1"  Background="Gold" Grid.Column="0" Grid.ColumnSpan="5"
+                        <Label Name="labelGateWarning1"  Background="Gold" Grid.Column="0" Grid.ColumnSpan="7"
                        Grid.Row="8" Content="Warning"
                        Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" />
-                        <Label Name="labelGateFault1"  Background="Tomato" Grid.Column="0" Grid.ColumnSpan="5"
+                        <Label Name="labelGateFault1"  Background="Tomato" Grid.Column="0" Grid.ColumnSpan="7"
                        Grid.Row="9" Content="Fault"
                        Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" />
-
-
 
                         <Line VerticalAlignment="Bottom" Stroke="{StaticResource xBlue1}" StrokeThickness="1"
                       SnapsToDevicePixels="True"
@@ -143,6 +156,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -154,19 +169,22 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="2" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,-15,0" Width="1"/>
-
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="2" Margin="0,0,-15,0" Width="1"/>
+                        
                         <customControls:LabelWithIndex Content="UTM" Grid.Column="0" Grid.Row="0" />
                         <TextBlock Text="В" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="labelVtmResult1" Grid.Column="4" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"/>
+                        <Label Name="labelVtmResult1" Grid.Column="4" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0"/>
+                        <Label Name="labelVtmResult2" Grid.Column="6" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Content="ITM" Grid.Column="0" Grid.Row="1"/>
                         <TextBlock Text="А" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="labelItmResult1" Grid.Column="4" Grid.Row="1" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"/>
+                        <Label Name="labelItmResult1" Grid.Column="4" Grid.Row="1" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto" Margin="8,1,-6,0"/>
+                        <Label Name="labelItmResult2" Grid.Column="6" Grid.Row="1" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize30}" Height="Auto"/>
 
-                        <Label Name="labelVtmWarning1"  Background="Gold" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5"
+                        <Label Name="labelVtmWarning1"  Background="Gold" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="7"
                        Content="Warning"
                        Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" />
-                        <Label Name="labelVtmFault1"  Background="Tomato" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5"
+                        <Label Name="labelVtmFault1"  Background="Tomato" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="7"
                        Content="Fault"
                        Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" />
 
@@ -362,6 +380,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -373,23 +393,29 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="2" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="2" Margin="0,0,-15,0" Width="1"/>
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="2" Margin="0,0,-15,0" Width="1"/>
 
                         <customControls:LabelWithIndex Content="dVdt" Grid.Column="0" Grid.Row="0" Height="Auto" />
-                        <Label Name="labelResult" Grid.Column="4" Grid.Row="0"
+                        <Label Name="labelResult1" Grid.Column="4" Grid.Row="0"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" Margin="8,1,-6,0" />
+                        <Label Name="labelResult2" Grid.Column="6" Grid.Row="0"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
 
                         <customControls:LabelWithIndex Content="VoltageRate" Grid.Column="0"  Grid.Row="1"  Height="Auto"
                               Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            />
                         <TextBlock Text="В" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Name="labelVoltageRate" Grid.Column="4" Grid.Row="1" 
+                        <Label Name="labelVoltageRate1" Grid.Column="4" Grid.Row="1"  Margin="8,1,-6,0"
+                            Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
+                        <Label Name="labelVoltageRate2" Grid.Column="6" Grid.Row="1" 
                             Visibility="{Binding Mode, Converter={StaticResource DT2VB}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto" />
 
                         <Label Name="labelDvdtWarning" Visibility="Collapsed"  Background="Gold" Grid.Column="0" Grid.Row="2"
                        Content="Warning"
-                       Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" Grid.ColumnSpan="5" />
-                        <Label Name="labelDvdtFault" Visibility="Collapsed" Background="Tomato" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="5"
+                       Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0" Grid.ColumnSpan="7" />
+                        <Label Name="labelDvdtFault" Visibility="Collapsed" Background="Tomato" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="7"
                        Content="Fault"
                        Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"  />
                     </Grid>
@@ -409,6 +435,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -422,25 +450,30 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="4" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="4" Margin="0,0,-15,0" Width="1"/>
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="4" Margin="0,0,-15,0" Width="1"/>
 
                         <customControls:LabelWithIndex Content="UBR" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock Text="В" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="lbAtuUBR" Grid.Column="4" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuUBR1" Grid.Column="4" Grid.Row="0" Margin="8,1,-6,0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuUBR2" Grid.Column="6" Grid.Row="0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Content="U(PRSM)" Grid.Column="0" Grid.Row="1"/>
                         <TextBlock Text="В" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="lbAtuUPRSM"  Grid.Column="4" Grid.Row="1" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuUPRSM1"  Grid.Column="4" Grid.Row="1" Margin="8,1,-6,0" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuUPRSM2"  Grid.Column="6" Grid.Row="1" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Content="I(PRSM)" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock Text="А" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="lbAtuIPRSM"  Grid.Column="4" Grid.Row="2" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuIPRSM1"  Grid.Column="4" Grid.Row="2" Margin="8,1,-6,0" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuIPRSM2"  Grid.Column="6" Grid.Row="2" Content="OK" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Content="PRSM" Grid.Column="0" Grid.Row="3"/>
                         <TextBlock Text="кВТ" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Name="lbAtuPRSM" Grid.Column="4" Grid.Row="3" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuPRSM1" Grid.Column="4" Grid.Row="3" Margin="8,1,-6,0" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Name="lbAtuPRSM2" Grid.Column="6" Grid.Row="3" Content="0" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
-                        <Label Name="lbAtuWarning" Background="Gold" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="5" Content="Warning" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
-                        <Label Name="lbAtuFaultReason"  Background="Tomato" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="5" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbAtuWarning" Background="Gold" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="7" Content="Warning" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbAtuFaultReason"  Background="Tomato" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="7" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
                     </Grid>
                 </Border>
             </DataTemplate>
@@ -457,6 +490,8 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -476,44 +511,53 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="7" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="7" Margin="0,0,-15,0" Width="1"/>
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="7" Margin="0,0,-15,0" Width="1"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="0" Content="Uma" Visibility="{Binding Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="B" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Grid.Column="4" Grid.Row="0" x:Name="lbOffStateVoltage" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}" Height="Auto"/>
+                        <Label Grid.Column="4" Grid.Row="0" Margin="8,1,-6,0" x:Name="lbOffStateVoltage1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}" Height="Auto"/>
+                        <Label Grid.Column="6" Grid.Row="0" x:Name="lbOffStateVoltage2" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OffStateVoltage, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="1" Content="dU/dt" Visibility="{Binding Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="В/мкс" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Grid.Column="4" Grid.Row="1" x:Name="lbOsvRate" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="4" Grid.Row="1" Margin="8,1,-6,0" x:Name="lbOsvRate1" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="6" Grid.Row="1" x:Name="lbOsvRate2" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=OsvRate, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="2" Content="IDC"/>
                         <TextBlock Text="A" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="4" x:Name="lbIdc" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                        <Label Grid.Column="4" Grid.Row="4" Margin="8,1,-6,0" x:Name="lbIdc1" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                        <Label Grid.Column="6" Grid.Row="4" x:Name="lbIdc2" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="3" Content="QRR" Visibility="{Binding Mode, ConverterParameter=Qrr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="мкКл" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Mode, ConverterParameter=Qrr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Grid.Column="4" Grid.Row="3" x:Name="lbQrr" HorizontalContentAlignment="Right" Height="Auto" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Qrr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="4" Grid.Row="3" Margin="8,1,-6,0" x:Name="lbQrr1" HorizontalContentAlignment="Right" Height="Auto" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Qrr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="6" Grid.Row="3" x:Name="lbQrr2" HorizontalContentAlignment="Right" Height="Auto" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Qrr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="4" Content="IRR" Visibility="{Binding Mode, ConverterParameter=Irr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="A" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding Mode, ConverterParameter=Irr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Label Grid.Column="4" Grid.Row="4" x:Name="lbIrr" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Irr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="4" Grid.Row="4" Margin="8,1,-6,0" x:Name="lbIrr1" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Irr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="6" Grid.Row="4" x:Name="lbIrr2" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Irr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="5" Content="TRR" Visibility="{Binding Mode, ConverterParameter=Trr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="мкс" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Center"  Visibility="{Binding Mode, ConverterParameter=Trr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="5" x:Name="lbTrr" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Trr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="4" Grid.Row="5" Margin="8,1,-6,0" x:Name="lbTrr1" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Trr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="6" Grid.Row="5" x:Name="lbTrr2" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Trr, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="6" Content="dIDC/dt"/>
                         <TextBlock Text="А/мкс" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="6" x:Name="lbDCFactFallRate" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                        <Label Grid.Column="4" Grid.Row="6" Margin="8,1,-6,0" x:Name="lbDCFactFallRate1" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
+                        <Label Grid.Column="6" Grid.Row="6" x:Name="lbDCFactFallRate2" Height="Auto" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="7" Content="Tq" Visibility="{Binding Mode, ConverterParameter=Tq, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="мкс" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Center" Visibility="{Binding Mode, ConverterParameter=Tq, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="7" Height="Auto" x:Name="lbTq" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Tq, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="4" Grid.Row="7" Margin="8,1,-6,0" Height="Auto" x:Name="lbTq1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Tq, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Column="6" Grid.Row="7" Height="Auto" x:Name="lbTq2" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Visibility="{Binding Mode, ConverterParameter=Tq, Converter={StaticResource QrrTqM2V}, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <Label Name="lbWarning" Background="Gold" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="8" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbWarning" Background="Gold" Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="8" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
 
-                        <Label Name="lbFaultReason" Background="Tomato" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="5" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbFaultReason" Background="Tomato" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="7" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
 
-                        <Label Name="lbProblem" Background="Gold" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="5" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbProblem" Background="Gold" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="7" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
                     </Grid>
                 </Border>
             </DataTemplate>
@@ -531,6 +575,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="108"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -543,22 +589,26 @@
 
                         <Rectangle Fill="Black" Grid.Column="1" Grid.RowSpan="3" Width="1"/>
                         <Rectangle Fill="Black" Grid.Column="3" Grid.RowSpan="3" Margin="0,0,-15,0" Width="1"/>
+                        <Rectangle Fill="Black" Grid.Column="5" Grid.RowSpan="3" Margin="0,0,-15,0" Width="1"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="0" Content="ITM"/>
                         <TextBlock Text="A" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="0" Content="0" x:Name="lbTOUITM" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Grid.Column="4" Grid.Row="0" Content="0" Margin="8,1,-6,0" x:Name="lbTOUITM1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Grid.Column="6" Grid.Row="0" Content="0" x:Name="lbTOUITM2" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="1" Content="tGD"/>
                         <TextBlock Text="us" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="1" Content="0" x:Name="lbTOUTGD" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Grid.Column="4" Grid.Row="1" Content="0" Margin="8,1,-6,0" x:Name="lbTOUTGD1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
+                        <Label Grid.Column="6" Grid.Row="1" Content="0" x:Name="lbTOUTGD2" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height="Auto"/>
 
                         <customControls:LabelWithIndex Grid.Column="0" Grid.Row="2" Content="tGT"/>
                         <TextBlock Text="us" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center"/>
-                        <Label Grid.Column="4" Grid.Row="2" Content="0" x:Name="lbTOUTGT" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height=" Auto"/>
+                        <Label Grid.Column="4" Grid.Row="2" Content="0" Margin="8,1,-6,0" x:Name="lbTOUTGT1" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height=" Auto"/>
+                        <Label Grid.Column="6" Grid.Row="2" Content="0" x:Name="lbTOUTGT2" HorizontalContentAlignment="Right" FontSize="{StaticResource FontSize26}" Height=" Auto"/>
 
-                        <Label Name="lbWarning" Background="Gold" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbWarning" Background="Gold" Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="3" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
 
-                        <Label Name="lbFaultReason" Background="Tomato" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="5" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
+                        <Label Name="lbFaultReason" Background="Tomato" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="7" Content="Fault" Style="{StaticResource WarningFaultLabelStyle}" Margin="-5,0,0,0"/>
                     </Grid>
                 </Border>
             </DataTemplate>

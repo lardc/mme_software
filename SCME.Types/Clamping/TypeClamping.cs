@@ -32,7 +32,8 @@ namespace SCME.Types.Clamping
         [EnumMember] None = 0,
         [EnumMember] SafetyCircuit = 1,
         [EnumMember] Thermocouple = 2,
-        [EnumMember] CANOpen = 3
+        [EnumMember] CANOpen = 3,
+        [EnumMember] TRM = 4
     };
 
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
