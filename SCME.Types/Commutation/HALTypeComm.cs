@@ -62,6 +62,16 @@ namespace SCME.Types.Commutation
         Reverse = 0x0F
     }
 
+    public enum ModuleType
+    {
+        A2 = 1001,
+        C1 = 1002,
+        E0 = 1003,
+        F1 = 1004,
+        D0 = 1005,
+        B1 = 1006
+    }
+
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ModulePosition
     {

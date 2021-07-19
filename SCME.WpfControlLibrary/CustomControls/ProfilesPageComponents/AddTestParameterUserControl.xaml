@@ -22,7 +22,7 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="normRow" Height="Auto" MinHeight="45"/>
-            <RowDefinition Height="Auto" MinHeight="45"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -33,13 +33,15 @@
             <ColumnDefinition Width="245" SharedSizeGroup="Column4"/>
         </Grid.ColumnDefinitions>
         <Label Content="{x:Static res:Resources.CommutationTypeT}" Grid.Row="0" Grid.Column="0" Foreground="Black"/>
-        <ComboBox x:Name="normComboBox" ItemsSource="{Binding Source={StaticResource ModuleCommutationTypes}}" SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" Grid.Row="0" Grid.Column="1"/>
-        <Label Content="{x:Static res:Resources.Force}" Grid.Row="0" Grid.Column="3" Foreground="Black"/>
-        <customControl:ValidatingTextBox Text="{Binding ParameterClamp}" IsNumeric="True" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-        <Label Content="{x:Static res:Resources.Height_Prof}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
-        <customControl:ValidatingTextBox Text="{Binding Height}" IsNumeric="True" Maximum="70" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
-        <Label Content="{x:Static res:Resources.Temp}" Grid.Row="1" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
-        <customControl:ValidatingTextBox Text="{Binding Temperature}" IsNumeric="True" Grid.Column="4" Grid.Row="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <ComboBox x:Name="normComboBox" ItemsSource="{Binding Source={StaticResource DataFromCommutationModeEnum}}" SelectedValue="{Binding CommutationType}" SelectedValuePath="Value" DisplayMemberPath="Key" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="{x:Static res:Resources.Temp}" Grid.Row="0" Grid.Column="3" Margin="0,5,0,0" Foreground="Black"/>
+        <customControl:ValidatingTextBox Text="{Binding Temperature}" IsNumeric="True" Grid.Column="4" Grid.Row="0" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <Label Content="{x:Static res:Resources.Height_Prof}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
+        <customControl:ValidatingTextBox Text="{Binding Height}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" IsNumeric="True" Maximum="70" Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <Label Content="{x:Static res:Resources.Force}" Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Grid.Row="1" Grid.Column="3" Foreground="Black"/>
+        <customControl:ValidatingTextBox Visibility="{Binding Source={StaticResource VisibilityHeightForce}}" Text="{Binding ParameterClamp}" IsNumeric="True" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Padding="0,0,10,0"/>
+        <Label Content="{x:Static res:Resources.ModuleType}" Visibility="{Binding Source={StaticResource VisibilityModuleType}}" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Foreground="Black"/>
+        <ComboBox ItemsSource="{Binding Source={StaticResource ModuleTypes}}" SelectedValue="{Binding Height, Converter={StaticResource ModuleTypeConverter}}" SelectedValuePath="Value" DisplayMemberPath="Key" Grid.Row="1" Grid.Column="1" Visibility="{Binding Source={StaticResource VisibilityModuleType}}"/>
         <Label Content="{x:Static res:Resources.ParameterType}" Grid.Row="2" Grid.Column="0" Margin="0,5,0,0" Foreground="Black" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"/>
         <ComboBox ItemsSource="{Binding Source={StaticResource TestParametersTypes}}" SelectedValue="{Binding Path=ProfileVm.SelectedTestParametersType, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type pages:ProfilesPage}}}" SelectedValuePath="TestParametersType" DisplayMemberPath="Name" Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" Height="{Binding ActualHeight, ElementName=normComboBox}" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}"/>
         <Button Style="{StaticResource PrimaryButton}" Content="{x:Static res:Resources.Add}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Margin="0,5,0,0" Width="Auto" Height="{Binding ActualHeight, ElementName=normComboBox}" Background="#FF0078D7" Visibility="{Binding ProfileVm.IsEditModeActive, RelativeSource={RelativeSource FindAncestor, AncestorType=pages:ProfilesPage}, Converter={StaticResource B2V}}" Click="AddTestParameters_Click"/>

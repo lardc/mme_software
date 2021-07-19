@@ -837,4 +837,7 @@
   <data name="GateLimitV" xml:space="preserve">
     <value>Макс. UGD, мВ</value>
   </data>
+  <data name="ModuleType" xml:space="preserve">
+    <value>Тип модуля</value>
+  </data>
 </root>

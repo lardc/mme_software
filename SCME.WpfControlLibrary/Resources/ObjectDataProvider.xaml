@@ -22,13 +22,13 @@
     <ObjectDataProvider x:Key="ClampingForceTypes" MethodName="GetClampingForceTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="ModuleCommutationTypes" MethodName="GetModuleCommutationTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TestParametersTypes" MethodName="GetTestParametersTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
-    
-    
     <ObjectDataProvider x:Key="FrequencyDivisors" MethodName="GetFrequencyDivisors" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VoltageFrequency" MethodName="GetVoltageFrequency" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     
     <ObjectDataProvider x:Key="DataFromCommutationModeEnum" MethodName="GetDataFromCommutationModeEnum" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="ModuleTypes" MethodName="GetModuleTypes" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VisibilityHeightForce" MethodName="GetVisibilityHeightForce" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
+    <ObjectDataProvider x:Key="VisibilityModuleType" MethodName="GetVisibilityModuleType" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="VisibilityTopTemp" MethodName="GetVisibilityTopTemp" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="TopTempName" MethodName="GetTopTempName" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>
     <ObjectDataProvider x:Key="BottomTempName" MethodName="GetBottomTempName" ObjectType="{x:Type dataProviders:TestTypeEnumDictionary}"/>

@@ -34,7 +34,7 @@ namespace SCME.UI
         private static ProfilesPage _profilesPageSelectForTest;
         private static ProfilesPage _profilesPageSpecialMeasure;
 
-        public static bool ClampingSystemTypeShow => UIServiceConfig.Properties.Settings.Default.ClampingSystemType == Types.Clamping.ClampingSystemType.kN100;
+        public static bool ClampingSystemTypeShow => UIServiceConfig.Properties.Settings.Default.ClampingSystemType == Types.Clamping.ClampingSystemType.Presspack;
 
 
 

@@ -961,7 +961,7 @@ namespace SCME.UIServiceConfig.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("kN100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Presspack")]
         public global::SCME.Types.Clamping.ClampingSystemType ClampingSystemType {
             get {
                 return ((global::SCME.Types.Clamping.ClampingSystemType)(this["ClampingSystemType"]));

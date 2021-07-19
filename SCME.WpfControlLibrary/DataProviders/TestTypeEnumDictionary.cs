@@ -135,9 +135,9 @@ namespace SCME.WpfControlLibrary.DataProviders
         {
             return UIServiceConfig.Properties.Settings.Default.ClampingSystemType switch
             {
-                ClampingSystemType.kN100 => new Dictionary<string, ModuleCommutationType>() {{nameof(ModuleCommutationType.Direct), ModuleCommutationType.Direct},},
-                ClampingSystemType.Studs => new Dictionary<string, ModuleCommutationType>() {{nameof(ModuleCommutationType.Direct), ModuleCommutationType.Direct}, {nameof(ModuleCommutationType.Reverse), ModuleCommutationType.Reverse},},
-                ClampingSystemType.Modules => new Dictionary<string, ModuleCommutationType>()
+                ClampingSystemType.Presspack => new Dictionary<string, ModuleCommutationType>() {{nameof(ModuleCommutationType.Direct), ModuleCommutationType.Direct},},
+                ClampingSystemType.Stud => new Dictionary<string, ModuleCommutationType>() {{nameof(ModuleCommutationType.Direct), ModuleCommutationType.Direct}, {nameof(ModuleCommutationType.Reverse), ModuleCommutationType.Reverse},},
+                ClampingSystemType.Module => new Dictionary<string, ModuleCommutationType>()
                 {
                     {nameof(ModuleCommutationType.MD1), ModuleCommutationType.MD1},
                     {nameof(ModuleCommutationType.MD3), ModuleCommutationType.MD3},
@@ -160,15 +160,31 @@ namespace SCME.WpfControlLibrary.DataProviders
 
         public static Visibility GetVisibilityHeightForce()
         {
-            return Settings.Default.ClampingSystemType == ClampingSystemType.kN100 ? Visibility.Visible : Visibility.Collapsed;
+            return Settings.Default.ClampingSystemType == ClampingSystemType.Presspack ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public static Visibility GetVisibilityModuleType()
+        {
+            return Settings.Default.ClampingSystemType == ClampingSystemType.Module ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public static Dictionary<string, ModuleType> GetModuleTypes()
+        {
+            return new Dictionary<string, ModuleType>()
+            {
+                {nameof(ModuleType.A2), ModuleType.A2},
+                {nameof(ModuleType.C1), ModuleType.C1},
+                {nameof(ModuleType.E0), ModuleType.E0},
+                {nameof(ModuleType.F1), ModuleType.F1},
+                {nameof(ModuleType.D0), ModuleType.D0},
+                {nameof(ModuleType.B1), ModuleType.B1}
+            };
         }
 
         public static Visibility GetVisibilityTopTemp()
         {
-            return Settings.Default.ClampingSystemType == ClampingSystemType.Modules ? Visibility.Collapsed: Visibility.Visible;
+            return Settings.Default.ClampingSystemType == ClampingSystemType.Module ? Visibility.Collapsed: Visibility.Visible;
         }
-
-       
 
         public static Dictionary<string, ClampingForce> GetClampingForceTypes()
         {
@@ -233,12 +249,12 @@ namespace SCME.WpfControlLibrary.DataProviders
 
         public static string GetTopTempName()
         {
-            return Settings.Default.ClampingSystemType == ClampingSystemType.Studs ? Resources.Housing : Resources.TopTempName;
+            return Settings.Default.ClampingSystemType == ClampingSystemType.Stud ? Resources.Housing : Resources.TopTempName;
         }
         
         public static string GetBottomTempName()
         {
-            return Settings.Default.ClampingSystemType == ClampingSystemType.Studs ? Resources.Output : Resources.BotTempName;
+            return Settings.Default.ClampingSystemType == ClampingSystemType.Stud ? Resources.Output : Resources.BotTempName;
         }
         
     }

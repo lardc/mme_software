@@ -840,4 +840,7 @@
   <data name="GateLimitV" xml:space="preserve">
     <value>Gate limit, Vg</value>
   </data>
+  <data name="ModuleType" xml:space="preserve">
+    <value>Module type</value>
+  </data>
 </root>

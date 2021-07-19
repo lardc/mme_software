@@ -6,9 +6,9 @@ namespace SCME.Types.Clamping
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]
     public enum ClampingSystemType
     {
-        [EnumMember] kN100 = 0,
-        [EnumMember] Studs = 1,
-        [EnumMember] Modules = 2
+        [EnumMember] Presspack = 0,
+        [EnumMember] Stud = 1,
+        [EnumMember] Module = 2
     }
     
     [DataContract(Namespace = "http://proton-electrotex.com/SCME")]

@@ -1267,6 +1267,15 @@ namespace SCME.WpfControlLibrary.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Module type.
+        /// </summary>
+        public static string ModuleType {
+            get {
+                return ResourceManager.GetString("ModuleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Navigation.
         /// </summary>
         public static string Navigation {
